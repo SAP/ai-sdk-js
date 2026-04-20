@@ -1,0 +1,317 @@
+openapi: 3.0.0
+info:
+  title: LLM Batch Service API
+  description: API for managing LLM batch processing jobs
+  version: 0.0.1
+
+paths:
+  /batches:
+    post:
+      summary: Create a new batch job
+      operationId: batch_service.controller.batch_controller.create_batch
+      tags:
+        - Batches
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateRequest'
+      responses:
+        '202':
+          description: Batch job scheduled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchCreateResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+      security:
+        - {}
+
+    get:
+      summary: List all batches
+      operationId: batch_service.controller.batch_controller.list_batches
+      tags:
+        - Batches
+      responses:
+        '200':
+          description: List of batches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchListResponse'
+        '500':
+          description: Internal server error
+      security:
+        - {}
+
+  /batches/{batch_id}:
+    get:
+      summary: Get Batch job details
+      operationId: batch_service.controller.batch_controller.get_batch_by_id
+      tags:
+        - Batches
+      parameters:
+        - name: batch_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Batch job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchDetailResponse'
+        '404':
+          description: Batch job not found
+        '500':
+          description: Internal server error
+      security:
+        - {}
+
+    delete:
+      summary: Delete a Batch job (only for cancelled, completed, or failed batches)
+      operationId: batch_service.controller.batch_controller.delete_batch
+      tags:
+        - Batches
+      parameters:
+        - name: batch_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Batch job deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchDeleteResponse'
+        '400':
+          description: Bad request - Batch job not in deletable state
+        '404':
+          description: Batch job not found
+        '500':
+          description: Internal server error
+      security:
+        - {}
+
+  /batches/{batch_id}/status:
+    get:
+      summary: Get Batch job status
+      operationId: batch_service.controller.batch_controller.get_batch_status
+      tags:
+        - Batches
+      parameters:
+        - name: batch_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Batch job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchStatusResponse'
+        '404':
+          description: Batch job not found
+        '500':
+          description: Internal server error
+      security:
+        - {}
+
+  /batches/{batch_id}/cancel:
+    patch:
+      summary: Cancel a batch
+      operationId: batch_service.controller.batch_controller.cancel_batch
+      tags:
+        - Batches
+      parameters:
+        - name: batch_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '202':
+          description: Batch job scheduled for cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchCancelResponse'
+        '404':
+          description: Batch job not found
+        '500':
+          description: Internal server error
+      security:
+        - {}
+
+components:
+  schemas:
+    BatchCreateRequest:
+      type: object
+      required:
+        - type
+        - input
+        - output
+        - spec
+      properties:
+        type:
+          type: string
+          enum: [llm-native]
+          description: Type of batch processing
+        input:
+          type: object
+          required:
+            - uri
+          properties:
+            uri:
+              type: string
+              description: Input file URI (must be .jsonl file)
+        output:
+          type: object
+          required:
+            - uri
+          properties:
+            uri:
+              type: string
+              description: Output directory URI
+        spec:
+          type: object
+          description: Batch job specification
+          required:
+            - provider
+            - model
+          properties:
+            provider:
+              type: string
+              description: LLM provider name
+            model:
+              type: string
+              description: Model name
+
+    BatchCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+        message:
+          type: string
+
+    BatchListResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              type:
+                type: string
+              provider:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+              status:
+                type: string
+
+    BatchDetailResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        provider:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        input:
+          type: object
+          properties:
+            uri:
+              type: string
+        output:
+          type: object
+          properties:
+            uri:
+              type: string
+        spec:
+          type: object
+        status:
+          type: object
+          properties:
+            current_status:
+              type: string
+            target_status:
+              type: string
+            updated_at:
+              type: string
+              format: date-time
+            message:
+              type: string
+              nullable: true
+
+    BatchStatusResponse:
+      type: object
+      properties:
+        current_status:
+          type: string
+        target_status:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+        message:
+          type: string
+          nullable: true
+
+    BatchCancelResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        message:
+          type: string
+
+    BatchDeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        message:
+          type: string
