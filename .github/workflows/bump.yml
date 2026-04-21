@@ -23,7 +23,7 @@ jobs:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
@@ -63,7 +63,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - name: Checkout current repository
-        uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
+        uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}

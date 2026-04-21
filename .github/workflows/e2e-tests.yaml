@@ -20,7 +20,7 @@ jobs:
     name: 'Build and Test'
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Create .env file

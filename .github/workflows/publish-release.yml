@@ -21,7 +21,7 @@ jobs:
           repositories: ai-sdk
           permission-contents: read
           permission-pull-requests: read
-      - uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Determine Docs PR Branch Name
@@ -66,7 +66,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
           registry-url: 'https://registry.npmjs.org'

@@ -18,7 +18,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - name: Setup Environment
-        uses: sap/cloud-sdk-js/.github/actions/setup@pnpm-setup
+        uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: 'true'
