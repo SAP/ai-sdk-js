@@ -28,6 +28,48 @@
 
 -
 
+# 2.10.0
+## Compatibility Notes
+
+- [document-grounding] `DocumentKeyValueListPair`, `RetrievalDocumentKeyValueListPair`, `VectorDocumentKeyValueListPair`: the `matchMode` property type was narrowed from an open union (`'ANY' | 'ALL' | any`) to the strict `FilterMatchModeEnum` (`'ANY' | 'ALL'`). (029f091)
+- [document-grounding] `CollectionPendingResponse`: fields `Location` and `status` were removed.
+  A new `monitorURL` property was added instead. (029f091)
+- [document-grounding] `GoogleDrivePipelineCreateRequest`: the `configuration` property is now required (was optional).
+  Code constructing this request without `configuration` must be updated to provide it. (94546e6)
+- [document-grounding] `GoogleDriveFolderDetail` type was removed.
+  Code referencing `GoogleDriveFolderDetail` must be updated to use `GoogleDriveResourceDetail` instead. (94546e6)
+- [document-grounding] `DataRepositoryType`, `RetrievalSearchSelectOptionEnum`, `VectorSearchSelectOptionEnum`: previously open (`| any`) unions are now strictly typed.
+  Only the specified string literals are accepted. (029f091)
+- [document-grounding] `S3PipelineMinimalResponse`, `SFTPPipelineMinimalResponse`: the `configuration` property is now optional. (029f091)
+- [document-grounding] `GoogleDriveFolder` type was removed and replaced by `GoogleDriveResourceDetail`.
+  The properties `id`, `driveId`, and `driverType` were replaced by `resourceType` and `resourceId`.
+  Code referencing `GoogleDriveFolder` or its properties must be updated to use `GoogleDriveResourceDetail` with the new property names. (94546e6)
+- [document-grounding] `TextOnlyBaseChunk`: new required field `id: string` added and `metadata` is now optional. (029f091)
+- [document-grounding] `GoogleDriveConfig`: the `folder` property was removed and replaced by a new required `resourceType: 'SHARED_FOLDER' | 'SHARED_DRIVE'` property, plus optional `resourceId` and `includePaths` properties.
+  Code constructing `GoogleDriveConfig` objects must be updated to use the new shape. (94546e6)
+- [document-grounding] `BaseDocument` / `DocumentInput`: `chunks` type changed from `TextOnlyBaseChunk[]` to `TextOnlyBaseChunkCreate[]`.
+  The `metadata` property is now optional. (029f091)
+- [foundation-models] Support for constructing an `AzureOpenAiChatCompletionStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+  Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response. (a722171)
+- [prompt-registry] `listPromptTemplateHistory()`: the `includeSpec` query parameter has been removed. (dce18df)
+- [prompt-registry] The `include_spec` parameter is deprecated in favor of `includeSpec` and `resolve_template_ref` is deprecated in favor of `resolveTemplateRef`. (cc9e80c)
+- [prompt-registry] `PromptTemplateSubstitutionRequest` now requires the `inputParams` property. (cc9e80c)
+
+## New Features
+
+- [document-grounding] Update document grounding specification. (029f091)
+- [foundation-models] Add `getRequestId()` method to `AzureOpenAiChatCompletionResponse`, `AzureOpenAiChatCompletionStreamResponse` and `AzureOpenAiEmbeddingResponse`.
+  The new method retrieves the request ID from the `x-aicore-request-id` response header, useful for debugging and tracking requests. (a722171)
+- [foundation-models] Add `rawResponse` property to `AzureOpenAiChatCompletionStreamResponse`.
+  The new property exposes the raw HTTP response for advanced use cases such as accessing response headers. (a722171)
+- [orchestration] Update orchestration specification to 0.115.19.
+  Multiple embedding output formats are not yet supported in the orchestration embedding client. (cf767a9)
+- [prompt-registry] Update prompt registry specification. (cc9e80c)
+
+## Improvements
+
+- [core] Remove deprecated models `amazon--titan-embed-image` and `anthropic--claude-4.5-opus`. (8cb466a)
+
 # 2.9.0
 ## New Features
 

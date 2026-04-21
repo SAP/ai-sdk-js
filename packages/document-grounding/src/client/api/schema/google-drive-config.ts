@@ -3,10 +3,18 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { GoogleDriveFolder } from './google-drive-folder.js';
+import type { IncludePathsArray } from './include-paths-array.js';
 /**
  * Representation of the 'GoogleDriveConfig' schema.
  */
 export type GoogleDriveConfig = {
-  folder: GoogleDriveFolder;
+  /**
+   * @example "SHARED_DRIVE"
+   */
+  resourceType: 'SHARED_FOLDER' | 'SHARED_DRIVE';
+  /**
+   * @example "0AGVUFpXcXc5Uk9PVA"
+   */
+  resourceId?: string;
+  includePaths?: IncludePathsArray;
 } & Record<string, any>;

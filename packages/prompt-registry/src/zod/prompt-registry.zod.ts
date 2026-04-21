@@ -201,12 +201,6 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
   "name": zod.string()
 })
 
-export const registryControllerPromptControllerListPromptTemplateHistoryQueryIncludeSpecDefault = false;
-
-export const RegistryControllerPromptControllerListPromptTemplateHistoryQueryParams = zod.object({
-  "includeSpec": zod.boolean().default(registryControllerPromptControllerListPromptTemplateHistoryQueryIncludeSpecDefault)
-})
-
 export const RegistryControllerPromptControllerListPromptTemplateHistoryHeader = zod.object({
   "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use'),
   "AI-Resource-Group-Scope": zod.enum(['true', 'True', 'false', 'False']).optional().describe('Specify whether the resource group scope is to be used')

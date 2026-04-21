@@ -1,5 +1,19 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.10.0
+
+### Minor Changes
+
+- dce18df: [Compatibility Note] `listPromptTemplateHistory()`: the `includeSpec` query parameter has been removed.
+- cc9e80c: [compat] The `include_spec` parameter is deprecated in favor of `includeSpec` and `resolve_template_ref` is deprecated in favor of `resolveTemplateRef`.
+- cc9e80c: [compat] `PromptTemplateSubstitutionRequest` now requires the `inputParams` property.
+- cc9e80c: [feat] Update prompt registry specification.
+
+### Patch Changes
+
+- Updated dependencies [8cb466a]
+  - @sap-ai-sdk/core@2.10.0
+
 ## 2.9.0
 
 ### Patch Changes
