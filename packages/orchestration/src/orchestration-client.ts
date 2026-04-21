@@ -70,11 +70,9 @@ export class OrchestrationClient {
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
-    } else if (isOrchestrationModuleConfigList(config)) {
-      this.config = this.parseModuleConfigList(config);
     } else if (Array.isArray(config)) {
-      // Array that failed isOrchestrationModuleConfigList validation - let assertion throw with proper error
       assertIsOrchestrationModuleConfigList(config);
+      this.config = this.parseModuleConfigList(config);
     } else if (!isConfigReference(config)) {
       this.config = this.parseTemplatingModule(config);
     }
