@@ -61,7 +61,10 @@ export class OrchestrationClient {
   constructor(
     private config:
       | string
-      | Xor<OrchestrationConfigRef, OrchestrationModuleConfig | OrchestrationModuleConfigList>,
+      | Xor<
+          OrchestrationConfigRef,
+          OrchestrationModuleConfig | OrchestrationModuleConfigList
+        >,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
