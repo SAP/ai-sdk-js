@@ -33,7 +33,7 @@ importers:
         version: 4.6.0
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.6.0
-        version: 4.6.0(@typescript-eslint/eslint-plugin@8.58.1(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.1)(typescript@5.9.3)
+        version: 4.6.0(@typescript-eslint/eslint-plugin@8.58.1(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.3)(typescript@5.9.3)
       '@sap-cloud-sdk/generator-common':
         specifier: ^4.6.0
         version: 4.6.0
@@ -80,11 +80,11 @@ importers:
         specifier: ^14.0.12
         version: 14.0.12
       orval:
-        specifier: ^8.6.2
-        version: 8.6.2(prettier@3.8.1)(typescript@5.9.3)
+        specifier: ^8.8.0
+        version: 8.8.0(prettier@3.8.3)(typescript@5.9.3)
       prettier:
-        specifier: ^3.8.1
-        version: 3.8.1
+        specifier: ^3.8.3
+        version: 3.8.3
       ts-jest:
         specifier: ^29.4.9
         version: 29.4.9(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.3.0)(babel-jest@30.3.0(@babel/core@7.29.0))(jest-util@30.3.0)(jest@30.3.0(@types/node@22.19.17)(ts-node@10.9.2(@types/node@22.19.17)(typescript@5.9.3)))(typescript@5.9.3)
@@ -159,7 +159,7 @@ importers:
     dependencies:
       '@langchain/core':
         specifier: ^1.1.16
-        version: 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+        version: 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
@@ -183,8 +183,8 @@ importers:
         version: 13.0.0
     devDependencies:
       '@langchain/langgraph':
-        specifier: ^1.2.8
-        version: 1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
+        specifier: ^1.2.9
+        version: 1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -263,26 +263,26 @@ importers:
         version: 5.2.1
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.8.3
-        version: 9.8.3(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1)))
+        specifier: ^9.8.4
+        version: 9.8.4(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1)))
 
   sample-code:
     dependencies:
       '@langchain/classic':
-        specifier: ^1.0.29
-        version: 1.0.29(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+        specifier: ^1.0.31
+        version: 1.0.31(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       '@langchain/core':
-        specifier: ^1.1.39
-        version: 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+        specifier: ^1.1.40
+        version: 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       '@langchain/langgraph':
-        specifier: ^1.2.8
-        version: 1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
+        specifier: ^1.2.9
+        version: 1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
       '@langchain/mcp-adapters':
         specifier: ^1.1.3
-        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(@langchain/langgraph@1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6))
+        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(@langchain/langgraph@1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6))
       '@langchain/textsplitters':
         specifier: ^1.0.1
-        version: 1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+        version: 1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.3.6)
@@ -320,8 +320,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       langchain:
-        specifier: ^1.3.1
-        version: 1.3.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6))
+        specifier: ^1.3.3
+        version: 1.3.3(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6))
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -357,47 +357,47 @@ importers:
         specifier: ^1.3.3
         version: 1.3.3
       dotenv:
-        specifier: ^17.4.1
-        version: 17.4.1
+        specifier: ^17.4.2
+        version: 17.4.2
 
   tests/smoke-tests:
     dependencies:
       '@langchain/classic':
-        specifier: '=1.0.29'
-        version: 1.0.29(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+        specifier: '=1.0.31'
+        version: 1.0.31(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       '@langchain/core':
-        specifier: '=1.1.39'
-        version: 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+        specifier: '=1.1.40'
+        version: 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       '@langchain/langgraph':
-        specifier: '=1.2.8'
-        version: 1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
+        specifier: '=1.2.9'
+        version: 1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
       '@langchain/mcp-adapters':
         specifier: '=1.1.3'
-        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(@langchain/langgraph@1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6))
+        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(@langchain/langgraph@1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6))
       '@langchain/textsplitters':
         specifier: '=1.0.1'
-        version: 1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+        version: 1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.9.1-20260408013619.0
+        version: 2.9.1-20260416013625.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.9.1-20260408013619.0
+        version: 2.9.1-20260416013625.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.9.1-20260408013619.0
+        version: 2.9.1-20260416013625.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.9.1-20260408013619.0(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+        version: 2.9.1-20260416013625.0(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.9.1-20260408013619.0
+        version: 2.9.1-20260416013625.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.9.1-20260408013619.0
+        version: 2.9.1-20260416013625.0
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.9.1-20260408013619.0
+        version: 2.9.1-20260416013625.0
       '@sap-cloud-sdk/util':
         specifier: '=4.6.0'
         version: 4.6.0
@@ -408,8 +408,8 @@ importers:
         specifier: '=4.12.10'
         version: 4.12.10
       langchain:
-        specifier: '=1.3.1'
-        version: 1.3.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6))
+        specifier: '=1.3.3'
+        version: 1.3.3(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6))
       uuid:
         specifier: '=13.0.0'
         version: 13.0.0
@@ -421,8 +421,8 @@ importers:
         specifier: '=5.0.6'
         version: 5.0.6
       dotenv:
-        specifier: '=17.4.1'
-        version: 17.4.1
+        specifier: '=17.4.2'
+        version: 17.4.2
       dotenv-cli:
         specifier: '=11.0.0'
         version: 11.0.0
@@ -759,8 +759,20 @@ packages:
     cpu: [ppc64]
     os: [aix]
 
+  '@esbuild/aix-ppc64@0.27.7':
+    resolution: {integrity: sha512-EKX3Qwmhz1eMdEJokhALr0YiD0lhQNwDqkPYyPhiSwKrh7/4KRjQc04sZ8db+5DVVnZ1LmbNDI1uAMPEUBnQPg==}
+    engines: {node: '>=18'}
+    cpu: [ppc64]
+    os: [aix]
+
   '@esbuild/android-arm64@0.27.4':
     resolution: {integrity: sha512-gdLscB7v75wRfu7QSm/zg6Rx29VLdy9eTr2t44sfTW7CxwAtQghZ4ZnqHk3/ogz7xao0QAgrkradbBzcqFPasw==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [android]
+
+  '@esbuild/android-arm64@0.27.7':
+    resolution: {integrity: sha512-62dPZHpIXzvChfvfLJow3q5dDtiNMkwiRzPylSCfriLvZeq0a1bWChrGx/BbUbPwOrsWKMn8idSllklzBy+dgQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [android]
@@ -771,8 +783,20 @@ packages:
     cpu: [arm]
     os: [android]
 
+  '@esbuild/android-arm@0.27.7':
+    resolution: {integrity: sha512-jbPXvB4Yj2yBV7HUfE2KHe4GJX51QplCN1pGbYjvsyCZbQmies29EoJbkEc+vYuU5o45AfQn37vZlyXy4YJ8RQ==}
+    engines: {node: '>=18'}
+    cpu: [arm]
+    os: [android]
+
   '@esbuild/android-x64@0.27.4':
     resolution: {integrity: sha512-PzPFnBNVF292sfpfhiyiXCGSn9HZg5BcAz+ivBuSsl6Rk4ga1oEXAamhOXRFyMcjwr2DVtm40G65N3GLeH1Lvw==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [android]
+
+  '@esbuild/android-x64@0.27.7':
+    resolution: {integrity: sha512-x5VpMODneVDb70PYV2VQOmIUUiBtY3D3mPBG8NxVk5CogneYhkR7MmM3yR/uMdITLrC1ml/NV1rj4bMJuy9MCg==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [android]
@@ -783,8 +807,20 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@esbuild/darwin-arm64@0.27.7':
+    resolution: {integrity: sha512-5lckdqeuBPlKUwvoCXIgI2D9/ABmPq3Rdp7IfL70393YgaASt7tbju3Ac+ePVi3KDH6N2RqePfHnXkaDtY9fkw==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [darwin]
+
   '@esbuild/darwin-x64@0.27.4':
     resolution: {integrity: sha512-sR+OiKLwd15nmCdqpXMnuJ9W2kpy0KigzqScqHI3Hqwr7IXxBp3Yva+yJwoqh7rE8V77tdoheRYataNKL4QrPw==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@esbuild/darwin-x64@0.27.7':
+    resolution: {integrity: sha512-rYnXrKcXuT7Z+WL5K980jVFdvVKhCHhUwid+dDYQpH+qu+TefcomiMAJpIiC2EM3Rjtq0sO3StMV/+3w3MyyqQ==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [darwin]
@@ -795,8 +831,20 @@ packages:
     cpu: [arm64]
     os: [freebsd]
 
+  '@esbuild/freebsd-arm64@0.27.7':
+    resolution: {integrity: sha512-B48PqeCsEgOtzME2GbNM2roU29AMTuOIN91dsMO30t+Ydis3z/3Ngoj5hhnsOSSwNzS+6JppqWsuhTp6E82l2w==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [freebsd]
+
   '@esbuild/freebsd-x64@0.27.4':
     resolution: {integrity: sha512-2kb4ceA/CpfUrIcTUl1wrP/9ad9Atrp5J94Lq69w7UwOMolPIGrfLSvAKJp0RTvkPPyn6CIWrNy13kyLikZRZQ==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@esbuild/freebsd-x64@0.27.7':
+    resolution: {integrity: sha512-jOBDK5XEjA4m5IJK3bpAQF9/Lelu/Z9ZcdhTRLf4cajlB+8VEhFFRjWgfy3M1O4rO2GQ/b2dLwCUGpiF/eATNQ==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [freebsd]
@@ -807,8 +855,20 @@ packages:
     cpu: [arm64]
     os: [linux]
 
+  '@esbuild/linux-arm64@0.27.7':
+    resolution: {integrity: sha512-RZPHBoxXuNnPQO9rvjh5jdkRmVizktkT7TCDkDmQ0W2SwHInKCAV95GRuvdSvA7w4VMwfCjUiPwDi0ZO6Nfe9A==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [linux]
+
   '@esbuild/linux-arm@0.27.4':
     resolution: {integrity: sha512-aBYgcIxX/wd5n2ys0yESGeYMGF+pv6g0DhZr3G1ZG4jMfruU9Tl1i2Z+Wnj9/KjGz1lTLCcorqE2viePZqj4Eg==}
+    engines: {node: '>=18'}
+    cpu: [arm]
+    os: [linux]
+
+  '@esbuild/linux-arm@0.27.7':
+    resolution: {integrity: sha512-RkT/YXYBTSULo3+af8Ib0ykH8u2MBh57o7q/DAs3lTJlyVQkgQvlrPTnjIzzRPQyavxtPtfg0EopvDyIt0j1rA==}
     engines: {node: '>=18'}
     cpu: [arm]
     os: [linux]
@@ -819,8 +879,20 @@ packages:
     cpu: [ia32]
     os: [linux]
 
+  '@esbuild/linux-ia32@0.27.7':
+    resolution: {integrity: sha512-GA48aKNkyQDbd3KtkplYWT102C5sn/EZTY4XROkxONgruHPU72l+gW+FfF8tf2cFjeHaRbWpOYa/uRBz/Xq1Pg==}
+    engines: {node: '>=18'}
+    cpu: [ia32]
+    os: [linux]
+
   '@esbuild/linux-loong64@0.27.4':
     resolution: {integrity: sha512-8mL/vh8qeCoRcFH2nM8wm5uJP+ZcVYGGayMavi8GmRJjuI3g1v6Z7Ni0JJKAJW+m0EtUuARb6Lmp4hMjzCBWzA==}
+    engines: {node: '>=18'}
+    cpu: [loong64]
+    os: [linux]
+
+  '@esbuild/linux-loong64@0.27.7':
+    resolution: {integrity: sha512-a4POruNM2oWsD4WKvBSEKGIiWQF8fZOAsycHOt6JBpZ+JN2n2JH9WAv56SOyu9X5IqAjqSIPTaJkqN8F7XOQ5Q==}
     engines: {node: '>=18'}
     cpu: [loong64]
     os: [linux]
@@ -831,8 +903,20 @@ packages:
     cpu: [mips64el]
     os: [linux]
 
+  '@esbuild/linux-mips64el@0.27.7':
+    resolution: {integrity: sha512-KabT5I6StirGfIz0FMgl1I+R1H73Gp0ofL9A3nG3i/cYFJzKHhouBV5VWK1CSgKvVaG4q1RNpCTR2LuTVB3fIw==}
+    engines: {node: '>=18'}
+    cpu: [mips64el]
+    os: [linux]
+
   '@esbuild/linux-ppc64@0.27.4':
     resolution: {integrity: sha512-tLCwNG47l3sd9lpfyx9LAGEGItCUeRCWeAx6x2Jmbav65nAwoPXfewtAdtbtit/pJFLUWOhpv0FpS6GQAmPrHA==}
+    engines: {node: '>=18'}
+    cpu: [ppc64]
+    os: [linux]
+
+  '@esbuild/linux-ppc64@0.27.7':
+    resolution: {integrity: sha512-gRsL4x6wsGHGRqhtI+ifpN/vpOFTQtnbsupUF5R5YTAg+y/lKelYR1hXbnBdzDjGbMYjVJLJTd2OFmMewAgwlQ==}
     engines: {node: '>=18'}
     cpu: [ppc64]
     os: [linux]
@@ -843,8 +927,20 @@ packages:
     cpu: [riscv64]
     os: [linux]
 
+  '@esbuild/linux-riscv64@0.27.7':
+    resolution: {integrity: sha512-hL25LbxO1QOngGzu2U5xeXtxXcW+/GvMN3ejANqXkxZ/opySAZMrc+9LY/WyjAan41unrR3YrmtTsUpwT66InQ==}
+    engines: {node: '>=18'}
+    cpu: [riscv64]
+    os: [linux]
+
   '@esbuild/linux-s390x@0.27.4':
     resolution: {integrity: sha512-+eUqgb/Z7vxVLezG8bVB9SfBie89gMueS+I0xYh2tJdw3vqA/0ImZJ2ROeWwVJN59ihBeZ7Tu92dF/5dy5FttA==}
+    engines: {node: '>=18'}
+    cpu: [s390x]
+    os: [linux]
+
+  '@esbuild/linux-s390x@0.27.7':
+    resolution: {integrity: sha512-2k8go8Ycu1Kb46vEelhu1vqEP+UeRVj2zY1pSuPdgvbd5ykAw82Lrro28vXUrRmzEsUV0NzCf54yARIK8r0fdw==}
     engines: {node: '>=18'}
     cpu: [s390x]
     os: [linux]
@@ -855,8 +951,20 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  '@esbuild/linux-x64@0.27.7':
+    resolution: {integrity: sha512-hzznmADPt+OmsYzw1EE33ccA+HPdIqiCRq7cQeL1Jlq2gb1+OyWBkMCrYGBJ+sxVzve2ZJEVeePbLM2iEIZSxA==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [linux]
+
   '@esbuild/netbsd-arm64@0.27.4':
     resolution: {integrity: sha512-xHT8X4sb0GS8qTqiwzHqpY00C95DPAq7nAwX35Ie/s+LO9830hrMd3oX0ZMKLvy7vsonee73x0lmcdOVXFzd6Q==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [netbsd]
+
+  '@esbuild/netbsd-arm64@0.27.7':
+    resolution: {integrity: sha512-b6pqtrQdigZBwZxAn1UpazEisvwaIDvdbMbmrly7cDTMFnw/+3lVxxCTGOrkPVnsYIosJJXAsILG9XcQS+Yu6w==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [netbsd]
@@ -867,8 +975,20 @@ packages:
     cpu: [x64]
     os: [netbsd]
 
+  '@esbuild/netbsd-x64@0.27.7':
+    resolution: {integrity: sha512-OfatkLojr6U+WN5EDYuoQhtM+1xco+/6FSzJJnuWiUw5eVcicbyK3dq5EeV/QHT1uy6GoDhGbFpprUiHUYggrw==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [netbsd]
+
   '@esbuild/openbsd-arm64@0.27.4':
     resolution: {integrity: sha512-2MyL3IAaTX+1/qP0O1SwskwcwCoOI4kV2IBX1xYnDDqthmq5ArrW94qSIKCAuRraMgPOmG0RDTA74mzYNQA9ow==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [openbsd]
+
+  '@esbuild/openbsd-arm64@0.27.7':
+    resolution: {integrity: sha512-AFuojMQTxAz75Fo8idVcqoQWEHIXFRbOc1TrVcFSgCZtQfSdc1RXgB3tjOn/krRHENUB4j00bfGjyl2mJrU37A==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openbsd]
@@ -879,8 +999,20 @@ packages:
     cpu: [x64]
     os: [openbsd]
 
+  '@esbuild/openbsd-x64@0.27.7':
+    resolution: {integrity: sha512-+A1NJmfM8WNDv5CLVQYJ5PshuRm/4cI6WMZRg1by1GwPIQPCTs1GLEUHwiiQGT5zDdyLiRM/l1G0Pv54gvtKIg==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [openbsd]
+
   '@esbuild/openharmony-arm64@0.27.4':
     resolution: {integrity: sha512-JkTZrl6VbyO8lDQO3yv26nNr2RM2yZzNrNHEsj9bm6dOwwu9OYN28CjzZkH57bh4w0I2F7IodpQvUAEd1mbWXg==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [openharmony]
+
+  '@esbuild/openharmony-arm64@0.27.7':
+    resolution: {integrity: sha512-+KrvYb/C8zA9CU/g0sR6w2RBw7IGc5J2BPnc3dYc5VJxHCSF1yNMxTV5LQ7GuKteQXZtspjFbiuW5/dOj7H4Yw==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [openharmony]
@@ -891,8 +1023,20 @@ packages:
     cpu: [x64]
     os: [sunos]
 
+  '@esbuild/sunos-x64@0.27.7':
+    resolution: {integrity: sha512-ikktIhFBzQNt/QDyOL580ti9+5mL/YZeUPKU2ivGtGjdTYoqz6jObj6nOMfhASpS4GU4Q/Clh1QtxWAvcYKamA==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [sunos]
+
   '@esbuild/win32-arm64@0.27.4':
     resolution: {integrity: sha512-Z9SExBg2y32smoDQdf1HRwHRt6vAHLXcxD2uGgO/v2jK7Y718Ix4ndsbNMU/+1Qiem9OiOdaqitioZwxivhXYg==}
+    engines: {node: '>=18'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@esbuild/win32-arm64@0.27.7':
+    resolution: {integrity: sha512-7yRhbHvPqSpRUV7Q20VuDwbjW5kIMwTHpptuUzV+AA46kiPze5Z7qgt6CLCK3pWFrHeNfDd1VKgyP4O+ng17CA==}
     engines: {node: '>=18'}
     cpu: [arm64]
     os: [win32]
@@ -903,8 +1047,20 @@ packages:
     cpu: [ia32]
     os: [win32]
 
+  '@esbuild/win32-ia32@0.27.7':
+    resolution: {integrity: sha512-SmwKXe6VHIyZYbBLJrhOoCJRB/Z1tckzmgTLfFYOfpMAx63BJEaL9ExI8x7v0oAO3Zh6D/Oi1gVxEYr5oUCFhw==}
+    engines: {node: '>=18'}
+    cpu: [ia32]
+    os: [win32]
+
   '@esbuild/win32-x64@0.27.4':
     resolution: {integrity: sha512-+knoa0BDoeXgkNvvV1vvbZX4+hizelrkwmGJBdT17t8FNPwG2lKemmuMZlmaNQ3ws3DKKCxpb4zRZEIp3UxFCg==}
+    engines: {node: '>=18'}
+    cpu: [x64]
+    os: [win32]
+
+  '@esbuild/win32-x64@0.27.7':
+    resolution: {integrity: sha512-56hiAJPhwQ1R4i+21FVF7V8kSD5zZTdHcVuRFMW0hn753vVfQN8xlx4uOPT4xoGH0Z/oVATuR82AiqSTDIpaHg==}
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
@@ -1110,8 +1266,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@langchain/classic@1.0.29':
-    resolution: {integrity: sha512-b87q4x4hVLZYuFQ6X0nyBs59JoazSCvmOTeu6Q0NgVGbxYjZVSBuwBIYenmf4vzyCfDf36GOs7WdoKkUVEKvYg==}
+  '@langchain/classic@1.0.31':
+    resolution: {integrity: sha512-iEtW9CWr7fL8gs6+ROeLOfRSoBIzBSMi6h5UHdKItc27P4EpGuxCkFeY2e/2nBaS6GDACMM9+PhDzXIucVz9RQ==}
     engines: {node: '>=20'}
     peerDependencies:
       '@langchain/core': ^1.0.0
@@ -1126,8 +1282,8 @@ packages:
       typeorm:
         optional: true
 
-  '@langchain/core@1.1.39':
-    resolution: {integrity: sha512-DP9c7TREy6iA7HnywstmUAsNyJNYTFpRg2yBfQ+6H0l1HnvQzei9GsQ36GeOLxgRaD3vm9K8urCcawSC7yQpCw==}
+  '@langchain/core@1.1.40':
+    resolution: {integrity: sha512-RJ41GQEMxr9ZEZNoIiPgW0+v9nAY6FEZGlk+MjBghr2GR8He50abLam0XCe1aqUJjuKbqt2lUD6M+6SZ+2NIJg==}
     engines: {node: '>=20'}
 
   '@langchain/langgraph-checkpoint@1.0.1':
@@ -1136,8 +1292,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.0.1
 
-  '@langchain/langgraph-sdk@1.8.8':
-    resolution: {integrity: sha512-4OoqFAvPloOTZ6oPxXbJngz4FLJO8QSXb+BQV3qvNTvmfu1LQA7cCEqSNLYX9MoC340PbnDkHNgUtjajwkDHRg==}
+  '@langchain/langgraph-sdk@1.8.9':
+    resolution: {integrity: sha512-vpz90auS4iFTNy2X/CFexOEoeFSvaK+MyI7iSmzYs9gGcfzwRjWUJ4MWsuc5ZNRecLStwho0PExVXRgGOXtcRw==}
     peerDependencies:
       '@langchain/core': ^1.1.16
       react: ^18 || ^19
@@ -1156,11 +1312,11 @@ packages:
       vue:
         optional: true
 
-  '@langchain/langgraph@1.2.8':
-    resolution: {integrity: sha512-kKkRpC5xFz1e6vPivE7lwRJa5oahLAMaVQvVGZdTa6uJIchIYJDIuM1n93FqGvg8aYVcgYU4FENtKKC5Eh1JYw==}
+  '@langchain/langgraph@1.2.9':
+    resolution: {integrity: sha512-3c7BtGycHC2v9p6w/Hv8L7kEl1YnZYOQTDJtmAp3knk6JOedO7d2bYP3y0SRyhv5orUEGf/KGvx8ZsB/ideP7g==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': ^1.1.16
+      '@langchain/core': ^1.1.40
       zod: ^3.25.32 || ^4.2.0
       zod-to-json-schema: ^3.x
     peerDependenciesMeta:
@@ -1174,8 +1330,8 @@ packages:
       '@langchain/core': ^1.0.0
       '@langchain/langgraph': ^1.0.0
 
-  '@langchain/openai@1.4.3':
-    resolution: {integrity: sha512-psf/e06nJ9YFXG67VVaKw6dAEeHLSc6wSbB3+sXpe6zEdpvC7+fyiEIxY6HntBkBU/uyqdeSt8Uu5WL+pQD+vg==}
+  '@langchain/openai@1.4.4':
+    resolution: {integrity: sha512-mRr/X5rvlwPj6cSXPxbL+CtOqYANO1/+CQ3Z+5t48kWnrlgPYOazmA+UAWvqQOuwJ6LaYn3SFrt43rR4lte/Ow==}
     engines: {node: '>=20'}
     peerDependencies:
       '@langchain/core': ^1.1.39
@@ -1230,43 +1386,43 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
-  '@orval/angular@8.6.2':
-    resolution: {integrity: sha512-XNTYgfbsjnyGWG12jKkC5URFILTRUASOizypqDLKJWxA3ZEJ6/Dwnuz4wgdiTxb8Ltv1IyuJABkkxk2OM8eCMg==}
+  '@orval/angular@8.8.0':
+    resolution: {integrity: sha512-/In87dL59GkP5GTq+rPK8g68MqsTKxbQy0CgEiyw+edzihWmrAOnni72OXAVIt/gK0cCuh75IPu6dlqwAnXuKg==}
 
-  '@orval/axios@8.6.2':
-    resolution: {integrity: sha512-76xSbiwqbYNbM1pasbPv2fSo2Dmwe879HnAWi406GSHAmwlDu5qCN+E53vsvceidUWWuMjh/JuEWgptx/tPGBQ==}
+  '@orval/axios@8.8.0':
+    resolution: {integrity: sha512-kFb8kVr8GyiMj+FF2MpNsPPkDQy/2b5Fj+3s+pARwFjfG4VEJUUUZu6YYMgKLIdUhNA5sGB5tm+Hlv28kmmszw==}
 
-  '@orval/core@8.6.2':
-    resolution: {integrity: sha512-spwJFnqyEm96R7pt+DXgpqmOA2g1iJVN8R/xhub8z6uZVvxEsRMWxZs93Idk0fpZOFkfmq+d6LuZCd5/lbIzCg==}
+  '@orval/core@8.8.0':
+    resolution: {integrity: sha512-0HTUy212vjewYikEBur+nfhjBl+QTtVw8IbenDr2t9ufPIsvQ4ftt8kKsfeIp62nrb5c+tY1ynTCnqf6zKXvNw==}
     peerDependencies:
       '@faker-js/faker': '>=10'
     peerDependenciesMeta:
       '@faker-js/faker':
         optional: true
 
-  '@orval/fetch@8.6.2':
-    resolution: {integrity: sha512-MBQ88xSQmx+5hAirCBiHSYL/rtDy6T3e7eAXaCGZ8trjeWryGpW9hF+dJukFw0QmWL8ql6ez0O9VnRkEDeVYhQ==}
+  '@orval/fetch@8.8.0':
+    resolution: {integrity: sha512-wFNSn1DzMDdo2DpL26Rb7m+FtUlIZ4CE3EuYNmGKUZogfIdlQBR6NUjOgh82j3mJPcWUSn/DJagMnF/MUSh37Q==}
 
-  '@orval/hono@8.6.2':
-    resolution: {integrity: sha512-zv3ZomWvGuVqSoWIUujA6Z0rpxGo9g0dA58+tcPCRaxBIq6ld1YYhLea9QVE96xvb3RfFrOYhGgS840/yVpwyQ==}
+  '@orval/hono@8.8.0':
+    resolution: {integrity: sha512-UYDN8kbrjIHPpEpV8hfzirfSrl4ziaIDj+tM92IrgoM5KeOJqYNiBaW+KuxDn1aR9z79zKzjX3lGoAKo42Diiw==}
 
-  '@orval/mcp@8.6.2':
-    resolution: {integrity: sha512-iw4opul8nI97y4bpoTzQS611HefBEQUPfnLS4RCilQyi23mCH0/Ee60USHf7aUeBqdp5yboyWOZxNRLr2T/fuQ==}
+  '@orval/mcp@8.8.0':
+    resolution: {integrity: sha512-OIoRBO++fLFYnQDVT/M/Z7fFOo5pvcVTcUx8uoOBIrGWUw5eeivdOZ8qE2i2Er+cHOh+3pc/tsY/E6GgSpfviw==}
 
-  '@orval/mock@8.6.2':
-    resolution: {integrity: sha512-5/21u5RdROmXyzpuBzj1+sbMwP+YgLuzR2YDxx7I9nNZd/IB77o5mZyzaPXxmZ5AG4ONQJ/07gBsapxmhQrT8A==}
+  '@orval/mock@8.8.0':
+    resolution: {integrity: sha512-KMPaEYtGXsYy1ZFDko6UaibOY8KHuanfC3x+5haOtkOYMVgk7D8iUSIwk7RGvPwjNJJ7fPmG/G3d+y14U16fYw==}
 
-  '@orval/query@8.6.2':
-    resolution: {integrity: sha512-cyIqk25w6R8VehCGZT2KunOpen3V1qKVqJy1Jn+oDkPDDr9aGAU5f1ohBqNQuL4/bowYmzay0VApD73PqIjbgA==}
+  '@orval/query@8.8.0':
+    resolution: {integrity: sha512-mp6ZqVK/8jQTJ09pwvRtKsBhdvIGqIVnF43s9d9GM1SNHqvZXYNtbgMKKuccssPSl3tV5s3K6a6fLFof//iPEA==}
 
-  '@orval/solid-start@8.6.2':
-    resolution: {integrity: sha512-FAskL7OhN0/oV2S5sEA4gz6J8Cp+9GpqTfwQTeZAJ7Iq1wH6xzQBSkjhuJ0pveSrONGTDLj6PEO3g0NqP/AakQ==}
+  '@orval/solid-start@8.8.0':
+    resolution: {integrity: sha512-PCQFpmkQIztFmjkzdkbrpxUmK4tQN0p/9RJd2QRwunYHjVOxXgLDSw8oa0eoQWDtXr7fqZXrXCp7RKaS2mgclQ==}
 
-  '@orval/swr@8.6.2':
-    resolution: {integrity: sha512-vQmE3AwQE45PxMXYyuHLIXd7NjDKmJNlCg4VSeO0hznAAwPhubussCrFDeq/x6QbnBp/IOUBZh2SSf85W/AsPQ==}
+  '@orval/swr@8.8.0':
+    resolution: {integrity: sha512-5GRzlPCDUlQk16LxHsRorFoeFyirRWcUfABK1zbEWXXbbTUoUaRk4Ox0v9ImQ9jzs+K8ihaVuTZYbkn6WqWraQ==}
 
-  '@orval/zod@8.6.2':
-    resolution: {integrity: sha512-bVEXzO7W8kXtRNzTDoN+Pq8NVJnYGS+P4PbqpO5k56rWiTqEsYKzQU0vR2jHOeao2RGoIF3OiX3qMrhfak5GfA==}
+  '@orval/zod@8.8.0':
+    resolution: {integrity: sha512-ouKzo7srJXuwsZmNzp8nXkM6lwiYCZoSRYFH1JFAYF77SK7AEoFul8AYObzebqmHIXC4GLUNOsxHT9N0NE8zmQ==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1279,31 +1435,31 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-QO5XAjPp5crh6/x9z9EYQX65uGSBXy2Ir3R8Q/Uvk0H3DXfMjSsMoJkhwub5htFd2KQvemfQDskFoFS6KXxG+A==}
+  '@sap-ai-sdk/ai-api@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-B/n4CFphSbNoUqpFWSLBeAOKHQvz3H4gS3aTYRYGaZsyWAPsPM4pFonv9YyYufkOO52pD1JhcDOsWlgMS0PJUQ==}
 
-  '@sap-ai-sdk/core@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-XcultXBfIBSwmK60zRA0SfDp+dCV+h8lZMBfFvaz1izZWrR3efSes6fBeJEpNnVWliVTKxEPiQbB/4q9n2tbIw==}
+  '@sap-ai-sdk/core@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-FQmYIsQ4mq7Gu8oaZGRQYwC1r1mzW9s7NTZexhGORorMDpHxt28I85DKkgwuLNo1wvOz131rMYw709K9MABcyA==}
 
-  '@sap-ai-sdk/document-grounding@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-rvKCPr/1E9jXvBQ3Q3M247Zd+pNcXDv3j4hss9pnq2w1pMrQB25dPpqGSk9gVVKUG4dBE4rwTDbftBFZujNtkg==}
+  '@sap-ai-sdk/document-grounding@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-HXOjiFUtducI0w/jO9/ZGk8FRnJfDKY+riqARsibXGpLqRC42sRpdEH0lgk8CtCFnHfjcEtLzN1aWJ2t42ujQw==}
 
-  '@sap-ai-sdk/foundation-models@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-AyU1G5PhmwDZLgFMnjbsyKshdd13U8bXLjbb7z3qd6h5zmGPYpJr4Rp0a2zZepUGhdFhHTBOfD2ThXfazMicUw==}
+  '@sap-ai-sdk/foundation-models@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-64zxpI/NvcK4WIJOkJsf6tzdBbsTgounWb72vPo65roxF3e69yxkb+5uFGeY82zz7t85xL9+5ITT6IARpgGBBA==}
 
-  '@sap-ai-sdk/langchain@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-iHfPgN+8AMJMW3/JDrlQs3ggslFb2PFvBQtwUBAeOfQCcMb9dpvS0kqhl85I6Ti2OF0sqLFg9opu1SHIUQKVFA==}
+  '@sap-ai-sdk/langchain@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-KjthWL7X16ET4R19IVeSkwE6QFyvYxpFWkeiC/dUVGaRURDB237wpipcK23F2+XdZ9LgMc/QjDP7kZdxUs9VIA==}
     peerDependencies:
       '@langchain/core': ^1.1.16
 
-  '@sap-ai-sdk/orchestration@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-I3/cCu93ZdJWwFinr5+WKjWZZwvLEkQmUhQuq8MWLbhO+3lK3Kz/eBjoF+kF5x8X3MKpokNc5CH7RdBGr3FEgA==}
+  '@sap-ai-sdk/orchestration@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-HnWuLTJTW8vqge+gkbt5wO+HNtQ4I0lddi6bF4yeGyvl4pS+fgrG9U05wTQtWJUMIJ4U/ccu++URm3XK3VpNTw==}
 
-  '@sap-ai-sdk/prompt-registry@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-cRswEC7YObuqHI4aJiJhSLyYSco0VuK7AWI/SQrv9bYDoFyAaRI3jmfj3nMc9Qwh6l83+E6534JOZXXxoBDlUA==}
+  '@sap-ai-sdk/prompt-registry@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-FEow34dUMc3mRSEWrmWlPJKAgPji5UWhH8aKqT3qodj02ZAbI67vZyeGof+sKrwMtcvVt+x/fPA4V7oaol2LxA==}
 
-  '@sap-ai-sdk/rpt@2.9.1-20260408013619.0':
-    resolution: {integrity: sha512-iBW2+2+JxVDirRJ0kESRelgX0HOB/ZYvDHrP0jTTGCODXF3UEjmFJsdyuhCNOLOEYyacey4TFYpH4ani4TVL5Q==}
+  '@sap-ai-sdk/rpt@2.9.1-20260416013625.0':
+    resolution: {integrity: sha512-t7hPF53bPswbpUYAWC0GEbwKvEZFgk59Zm/14yTbWZ/EMqj8YOAS/AFvs6uLC7H9QOQbMwO6eK9NwjPJgpQx4w==}
 
   '@sap-cloud-sdk/connectivity@4.6.0':
     resolution: {integrity: sha512-Pf+0O1s4eDNR/MZ+UcyOyPa/U8dl3xUHEbjY+BG7DHZtLZFYVfKg2dV63ZTzeHypqMRVQePCN8yIyIz296FWHg==}
@@ -1337,8 +1493,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.8.3':
-    resolution: {integrity: sha512-krQpely2tIm7DdHMDKtoIMPwfoKV/vGsLfrqq07LA677QmrDXtMXfZbmpzuIY4SdvYVYurcH9nM9y6E+mpyVQg==}
+  '@sap/cds-dk@9.8.4':
+    resolution: {integrity: sha512-SZ8/J74QNBwZcRZzo5dQKGnVAMVHOUkFTrtDsB1meMIZDqTgjeKIgpSDk7LVDnHABXkSq6xVYwP2NAevIA9j8Q==}
     hasBin: true
 
   '@sap/cds-fiori@2.3.0':
@@ -1391,33 +1547,37 @@ packages:
     resolution: {integrity: sha512-vlW4Zad3uiDqHtnYdQ0TsEIH8VIO4HmPGDowfBL5dIcHPmeKDISEQ9ibeHL5FkceqvYcXJEQAVZ5/hsHDqlXZg==}
     engines: {node: ^20.0.0  || ^22.0.0 || ^24.0.0}
 
+  '@sap/xsenv@6.2.0':
+    resolution: {integrity: sha512-8jrsX1OAM3YUqGU+4deggqvkxrBrHAPYEllBX0YJfWNffgxSZKHG75bRd/RV6hxPwulPL0DeHfd2eYJMeY5gdw==}
+    engines: {node: ^20.0.0  || ^22.0.0 || ^24.0.0}
+
   '@sap/xssec@4.13.0':
     resolution: {integrity: sha512-8e+bU+OyAIpAGXQanOopZa5YEK+yHKw84dhhihcCotF40MSNFbVHjQ4xM5hf4QndlqDGfXIuvXmoOMuDATa/gA==}
     engines: {node: '>=18'}
 
-  '@scalar/helpers@0.2.18':
-    resolution: {integrity: sha512-w1d4tpNEVZ293oB2BAgLrS0kVPUtG3eByNmOCJA5eK9vcT4D3cmsGtWjUaaqit0BQCsBFHK51rasGvSWnApYTw==}
-    engines: {node: '>=20'}
+  '@scalar/helpers@0.5.0':
+    resolution: {integrity: sha512-S7m46UWqngUmDXuihUerNKS58vlUqF/qaXle3QREfc8Xh9wperAKxFmmxrnulAayrcCQ/fTJyGu5oSM2STlxkA==}
+    engines: {node: '>=22'}
 
-  '@scalar/json-magic@0.11.7':
-    resolution: {integrity: sha512-GVz9E0vXu+ecypkdn0biK1gbQVkK4QTTX1Hq3eMgxlLQC91wwiqWfCqwfhuX0LRu+Z5OmYhLhufDJEEh56rVgA==}
-    engines: {node: '>=20'}
+  '@scalar/json-magic@0.12.6':
+    resolution: {integrity: sha512-N5NMOmKfDBcQBXVAdL26p6f9J9d5czku5GnXJ8ifA/w00D7imlwLhrfQPeL1nN17vt2xBYTym8ulx/w3+lWmfA==}
+    engines: {node: '>=22'}
 
-  '@scalar/openapi-parser@0.24.17':
-    resolution: {integrity: sha512-aM9UVrzlMreC3X/sZbyj+7XDZmat3ecGC3RpU8dqEO/HIH+CEX0xMLuP+41DhePCYg5+9TtDomSfWuMq4x1Z1A==}
-    engines: {node: '>=20'}
+  '@scalar/openapi-parser@0.25.9':
+    resolution: {integrity: sha512-1KtcL1DDDt+LWQMSThTtXvqdqqMbrv0nHFErKduVimT2Cvk1B2H31+BLOSr0eH28AYCGYCmZ4xY8lN074rPgHg==}
+    engines: {node: '>=22'}
 
-  '@scalar/openapi-types@0.5.3':
-    resolution: {integrity: sha512-m4n/Su3K01d15dmdWO1LlqecdSPKuNjuokrJLdiQ485kW/hRHbXW1QP6tJL75myhw/XhX5YhYAR+jrwnGjXiMw==}
-    engines: {node: '>=20'}
+  '@scalar/openapi-types@0.6.1':
+    resolution: {integrity: sha512-P1RvyTFN0vRSL136OqWjlZfSFjY9JoJfuD6LM1mIjoocfwmqX3WuzsFEFX6hAeeDlTh6gjbiy+OdhSee8GFfSA==}
+    engines: {node: '>=22'}
 
-  '@scalar/openapi-types@0.5.4':
-    resolution: {integrity: sha512-2pEbhprh8lLGDfUI6mNm9EV104pjb3+aJsXrFaqfgOSre7r6NlgM5HcSbsLjzDAnTikjJhJ3IMal1Rz8WVwiOw==}
-    engines: {node: '>=20'}
+  '@scalar/openapi-types@0.7.0':
+    resolution: {integrity: sha512-kN0PwlJW0de4bwQ4ib+mBHzKJUvBCyR/gwU4zLEq6SCbj+GfgYUh+2a0/yl1WYVUiSkkwFsHjfmQ8KjhR3HK0Q==}
+    engines: {node: '>=22'}
 
-  '@scalar/openapi-upgrader@0.1.11':
-    resolution: {integrity: sha512-ngJcHGoCHmpWgYtNy08vmzFfLdQEkMpvaCQqNPPMNKq0QEXOv89e/rn+TZJZgPnRlY7fDIoIhn9lNgr+azBW+w==}
-    engines: {node: '>=20'}
+  '@scalar/openapi-upgrader@0.2.5':
+    resolution: {integrity: sha512-Nmfwx9JpH4hPnbWV2NOzQ+bz1VTHEPlnIvkBF8Q8coW+TCBHmQzuM8hHzJp5NicX0UAZCT62X7+QzBUsVUlX0w==}
+    engines: {node: '>=22'}
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -2015,8 +2175,8 @@ packages:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
 
-  better-sqlite3@12.8.0:
-    resolution: {integrity: sha512-RxD2Vd96sQDjQr20kdP+F+dK/1OUNiVOl200vKBZY8u0vTwysfolF6Hq+3ZK2+h8My9YvZhHsF+RSGZW2VYrPQ==}
+  better-sqlite3@12.9.0:
+    resolution: {integrity: sha512-wqUv4Gm3toFpHDQmaKD4QhZm3g1DjUBI0yzS4UBl6lElUmXFYdTQmmEDpAFa5o8FiFiymURypEnfVHzILKaxqQ==}
     engines: {node: 20.x || 22.x || 23.x || 24.x || 25.x}
 
   bindings@1.5.0:
@@ -2354,8 +2514,8 @@ packages:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
 
-  dotenv@17.4.1:
-    resolution: {integrity: sha512-k8DaKGP6r1G30Lx8V4+pCsLzKr8vLmV2paqEj1Y55GdAgJuIqpRp5FfajGF8KtwMxCz9qJc6wUIJnm053d/WCw==}
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -2442,6 +2602,11 @@ packages:
 
   esbuild@0.27.4:
     resolution: {integrity: sha512-Rq4vbHnYkK5fws5NF7MYTU68FPRE1ajX7heQ/8QXXWqNgqqJ/GkmmyxIzUnf2Sr/bakf8l54716CcMGHYhMrrQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  esbuild@0.27.7:
+    resolution: {integrity: sha512-IxpibTjyVnmrIQo5aqNpCgoACA/dTKLTlhMHihVHhdkxKyPO1uBBthumT0rdHmcsk9uMonIWS0m4FljWzILh3w==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3504,11 +3669,11 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  langchain@1.3.1:
-    resolution: {integrity: sha512-tJu8Ibf3NAuDW8pMT7VIBCc96m8TymjSMqRBpQawlG8zeTGPZK5TKA5gBYRNZvrz0YkJA57O2rcjP+mIxrS0+g==}
+  langchain@1.3.3:
+    resolution: {integrity: sha512-X6RgeeAmr6pve/s7EHPAx2CIyqyDWt//VBp9Sd8k2Bpr+p/NWFGAg+WoeknAbwUaDMWgSn2OLM8kGPdPQr+MRw==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@langchain/core': ^1.1.39
+      '@langchain/core': ^1.1.40
 
   langsmith@0.5.20:
     resolution: {integrity: sha512-ULhLM8RswvQDXufLtNtvclHrWCBx8Cb5UPI6lAZC+8Dq59iHsVPz/3Ac9khWNm1VIvChRsuykixD/WrmzuuA3Q==}
@@ -3926,8 +4091,8 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  orval@8.6.2:
-    resolution: {integrity: sha512-hnWdF7jrdgZFhRy4ZVMpLMYpkmfLDkO1wTh881Ll0w18XOmvJauYvrsTmTby3gf4qEChtWxNULI3HlY173NqvA==}
+  orval@8.8.0:
+    resolution: {integrity: sha512-jcHcAmXCvC0g+1acsUOv722ICuXCJ0tmRl3+e0kj1lgFVsuGYame+jRZUrNtpkEZgF1RlDtmL91yFsVHv3X1eA==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -4140,8 +4305,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  prettier@3.8.1:
-    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -4251,8 +4416,8 @@ packages:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
 
-  remeda@2.33.6:
-    resolution: {integrity: sha512-tazDGH7s75kUPGBKLvhgBEHMgW+TdDFhjUAMdQj57IoWz6HsGa5D2RX5yDUz6IIqiRRvZiaEHzCzWdTeixc/Kg==}
+  remeda@2.33.7:
+    resolution: {integrity: sha512-cXlyjevWx5AcslOUEETG4o8XYi9UkoCXcJmj7XhPFVbla+ITuOBxv6ijBrmbeg+ZhzmDThkNdO+iXKUfrJep1w==}
 
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
@@ -4757,8 +4922,8 @@ packages:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
 
-  typedoc-plugin-coverage@4.0.2:
-    resolution: {integrity: sha512-mfn0e7NCqB8x2PfvhXrtmd7KWlsNf1+B2N9y8gR/jexXBLrXl/0e+b2HdG5HaTXGi7i0t2pyQY2VRmq7gtdEHQ==}
+  typedoc-plugin-coverage@4.0.3:
+    resolution: {integrity: sha512-baim3wyMkqpX7rBzL/6iZ7wzKJuSr9ffP16RHOsdTUNoHUZeXLIZHSUBtUhXmNHaUNRgfqdmKLBwyggbJjGdeQ==}
     engines: {node: '>= 18'}
     peerDependencies:
       typedoc: 0.28.x
@@ -5241,7 +5406,7 @@ snapshots:
     dependencies:
       '@cap-js/db-service': 2.9.0(@sap/cds@9.8.5(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
       '@sap/cds': 9.8.5(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1)))
-      better-sqlite3: 12.8.0
+      better-sqlite3: 12.9.0
     optional: true
 
   '@cfworker/json-schema@4.1.1': {}
@@ -5434,79 +5599,157 @@ snapshots:
   '@esbuild/aix-ppc64@0.27.4':
     optional: true
 
+  '@esbuild/aix-ppc64@0.27.7':
+    optional: true
+
   '@esbuild/android-arm64@0.27.4':
+    optional: true
+
+  '@esbuild/android-arm64@0.27.7':
     optional: true
 
   '@esbuild/android-arm@0.27.4':
     optional: true
 
+  '@esbuild/android-arm@0.27.7':
+    optional: true
+
   '@esbuild/android-x64@0.27.4':
+    optional: true
+
+  '@esbuild/android-x64@0.27.7':
     optional: true
 
   '@esbuild/darwin-arm64@0.27.4':
     optional: true
 
+  '@esbuild/darwin-arm64@0.27.7':
+    optional: true
+
   '@esbuild/darwin-x64@0.27.4':
+    optional: true
+
+  '@esbuild/darwin-x64@0.27.7':
     optional: true
 
   '@esbuild/freebsd-arm64@0.27.4':
     optional: true
 
+  '@esbuild/freebsd-arm64@0.27.7':
+    optional: true
+
   '@esbuild/freebsd-x64@0.27.4':
+    optional: true
+
+  '@esbuild/freebsd-x64@0.27.7':
     optional: true
 
   '@esbuild/linux-arm64@0.27.4':
     optional: true
 
+  '@esbuild/linux-arm64@0.27.7':
+    optional: true
+
   '@esbuild/linux-arm@0.27.4':
+    optional: true
+
+  '@esbuild/linux-arm@0.27.7':
     optional: true
 
   '@esbuild/linux-ia32@0.27.4':
     optional: true
 
+  '@esbuild/linux-ia32@0.27.7':
+    optional: true
+
   '@esbuild/linux-loong64@0.27.4':
+    optional: true
+
+  '@esbuild/linux-loong64@0.27.7':
     optional: true
 
   '@esbuild/linux-mips64el@0.27.4':
     optional: true
 
+  '@esbuild/linux-mips64el@0.27.7':
+    optional: true
+
   '@esbuild/linux-ppc64@0.27.4':
+    optional: true
+
+  '@esbuild/linux-ppc64@0.27.7':
     optional: true
 
   '@esbuild/linux-riscv64@0.27.4':
     optional: true
 
+  '@esbuild/linux-riscv64@0.27.7':
+    optional: true
+
   '@esbuild/linux-s390x@0.27.4':
+    optional: true
+
+  '@esbuild/linux-s390x@0.27.7':
     optional: true
 
   '@esbuild/linux-x64@0.27.4':
     optional: true
 
+  '@esbuild/linux-x64@0.27.7':
+    optional: true
+
   '@esbuild/netbsd-arm64@0.27.4':
+    optional: true
+
+  '@esbuild/netbsd-arm64@0.27.7':
     optional: true
 
   '@esbuild/netbsd-x64@0.27.4':
     optional: true
 
+  '@esbuild/netbsd-x64@0.27.7':
+    optional: true
+
   '@esbuild/openbsd-arm64@0.27.4':
+    optional: true
+
+  '@esbuild/openbsd-arm64@0.27.7':
     optional: true
 
   '@esbuild/openbsd-x64@0.27.4':
     optional: true
 
+  '@esbuild/openbsd-x64@0.27.7':
+    optional: true
+
   '@esbuild/openharmony-arm64@0.27.4':
+    optional: true
+
+  '@esbuild/openharmony-arm64@0.27.7':
     optional: true
 
   '@esbuild/sunos-x64@0.27.4':
     optional: true
 
+  '@esbuild/sunos-x64@0.27.7':
+    optional: true
+
   '@esbuild/win32-arm64@0.27.4':
+    optional: true
+
+  '@esbuild/win32-arm64@0.27.7':
     optional: true
 
   '@esbuild/win32-ia32@0.27.4':
     optional: true
 
+  '@esbuild/win32-ia32@0.27.7':
+    optional: true
+
   '@esbuild/win32-x64@0.27.4':
+    optional: true
+
+  '@esbuild/win32-x64@0.27.7':
     optional: true
 
   '@eslint-community/eslint-utils@4.9.1(eslint@9.39.4(jiti@2.6.1))':
@@ -5815,11 +6058,11 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@langchain/classic@1.0.29(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)':
+  '@langchain/classic@1.0.31(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
-      '@langchain/openai': 1.4.3(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(ws@8.20.0)
-      '@langchain/textsplitters': 1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/openai': 1.4.4(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(ws@8.20.0)
+      '@langchain/textsplitters': 1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
       handlebars: 4.7.9
       js-yaml: 4.1.1
       jsonpointer: 5.0.1
@@ -5836,7 +6079,7 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)':
+  '@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       '@standard-schema/spec': 1.1.0
@@ -5856,25 +6099,25 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/langgraph-checkpoint@1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
+  '@langchain/langgraph-checkpoint@1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@1.8.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
+  '@langchain/langgraph-sdk@1.8.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
     dependencies:
       '@types/json-schema': 7.0.15
       p-queue: 9.1.2
       p-retry: 7.1.1
       uuid: 13.0.0
     optionalDependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
 
-  '@langchain/langgraph@1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)':
+  '@langchain/langgraph@1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
-      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
-      '@langchain/langgraph-sdk': 1.8.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+      '@langchain/langgraph-sdk': 1.8.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
       '@standard-schema/spec': 1.1.0
       uuid: 10.0.0
       zod: 4.3.6
@@ -5886,10 +6129,10 @@ snapshots:
       - svelte
       - vue
 
-  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(@langchain/langgraph@1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6))':
+  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(@langchain/langgraph@1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6))':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
-      '@langchain/langgraph': 1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/langgraph': 1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
       '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.3.6)
       debug: 4.4.3
       zod: 4.3.6
@@ -5899,18 +6142,18 @@ snapshots:
       - '@cfworker/json-schema'
       - supports-color
 
-  '@langchain/openai@1.4.3(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(ws@8.20.0)':
+  '@langchain/openai@1.4.4(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(ws@8.20.0)':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       js-tiktoken: 1.0.21
       openai: 6.34.0(ws@8.20.0)(zod@4.3.6)
       zod: 4.3.6
     transitivePeerDependencies:
       - ws
 
-  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
+  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       js-tiktoken: 1.0.21
 
   '@manypkg/find-root@1.1.0':
@@ -5990,110 +6233,110 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@orval/angular@8.6.2(typescript@5.9.3)':
+  '@orval/angular@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
+      '@orval/core': 8.8.0(typescript@5.9.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/axios@8.6.2(typescript@5.9.3)':
+  '@orval/axios@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
+      '@orval/core': 8.8.0(typescript@5.9.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/core@8.6.2(typescript@5.9.3)':
+  '@orval/core@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@scalar/openapi-types': 0.5.3
+      '@scalar/openapi-types': 0.6.1
       acorn: 8.16.0
       compare-versions: 6.1.1
       debug: 4.4.3
-      esbuild: 0.27.4
+      esbuild: 0.27.7
       esutils: 2.0.3
       fs-extra: 11.3.4
       globby: 16.1.0
       jiti: 2.6.1
-      remeda: 2.33.6
+      remeda: 2.33.7
       typedoc: 0.28.18(typescript@5.9.3)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  '@orval/fetch@8.6.2(typescript@5.9.3)':
+  '@orval/fetch@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@scalar/openapi-types': 0.5.3
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@scalar/openapi-types': 0.6.1
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/hono@8.6.2(typescript@5.9.3)':
+  '@orval/hono@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@orval/zod': 8.6.2(typescript@5.9.3)
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@orval/zod': 8.8.0(typescript@5.9.3)
       fs-extra: 11.3.4
-      remeda: 2.33.6
+      remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/mcp@8.6.2(typescript@5.9.3)':
+  '@orval/mcp@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@orval/fetch': 8.6.2(typescript@5.9.3)
-      '@orval/zod': 8.6.2(typescript@5.9.3)
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@orval/fetch': 8.8.0(typescript@5.9.3)
+      '@orval/zod': 8.8.0(typescript@5.9.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/mock@8.6.2(typescript@5.9.3)':
+  '@orval/mock@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      remeda: 2.33.6
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/query@8.6.2(typescript@5.9.3)':
+  '@orval/query@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@orval/fetch': 8.6.2(typescript@5.9.3)
-      remeda: 2.33.6
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@orval/fetch': 8.8.0(typescript@5.9.3)
+      remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/solid-start@8.6.2(typescript@5.9.3)':
+  '@orval/solid-start@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@scalar/openapi-types': 0.5.3
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@scalar/openapi-types': 0.6.1
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/swr@8.6.2(typescript@5.9.3)':
+  '@orval/swr@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@orval/fetch': 8.6.2(typescript@5.9.3)
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@orval/fetch': 8.8.0(typescript@5.9.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/zod@8.6.2(typescript@5.9.3)':
+  '@orval/zod@8.8.0(typescript@5.9.3)':
     dependencies:
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      remeda: 2.33.6
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
@@ -6106,16 +6349,16 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@sap-ai-sdk/ai-api@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/ai-api@2.9.1-20260416013625.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
       '@sap-cloud-sdk/connectivity': 4.6.0
       '@sap-cloud-sdk/util': 4.6.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/core@2.9.1-20260416013625.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.6.0
       '@sap-cloud-sdk/http-client': 4.6.0
@@ -6125,17 +6368,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/document-grounding@2.9.1-20260416013625.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/foundation-models@2.9.1-20260416013625.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
+      '@sap-ai-sdk/ai-api': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
       '@sap-cloud-sdk/connectivity': 4.6.0
       '@sap-cloud-sdk/http-client': 4.6.0
       '@sap-cloud-sdk/util': 4.6.0
@@ -6143,13 +6386,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.9.1-20260408013619.0(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
+  '@sap-ai-sdk/langchain@2.9.1-20260416013625.0(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))':
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
-      '@sap-ai-sdk/ai-api': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/foundation-models': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/orchestration': 2.9.1-20260408013619.0
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@sap-ai-sdk/ai-api': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/foundation-models': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/orchestration': 2.9.1-20260416013625.0
       '@sap-cloud-sdk/connectivity': 4.6.0
       '@sap-cloud-sdk/util': 4.6.0
       uuid: 13.0.0
@@ -6157,29 +6400,29 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/orchestration@2.9.1-20260416013625.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/prompt-registry': 2.9.1-20260408013619.0
+      '@sap-ai-sdk/ai-api': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/prompt-registry': 2.9.1-20260416013625.0
       '@sap-cloud-sdk/util': 4.6.0
       yaml: 2.8.3
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/prompt-registry@2.9.1-20260416013625.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
       zod: 4.3.6
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.9.1-20260408013619.0':
+  '@sap-ai-sdk/rpt@2.9.1-20260416013625.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.9.1-20260408013619.0
-      '@sap-ai-sdk/core': 2.9.1-20260408013619.0
+      '@sap-ai-sdk/ai-api': 2.9.1-20260416013625.0
+      '@sap-ai-sdk/core': 2.9.1-20260416013625.0
       '@sap-cloud-sdk/connectivity': 4.6.0
       '@sap-cloud-sdk/http-client': 4.6.0
       '@sap-cloud-sdk/util': 4.6.0
@@ -6201,7 +6444,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.6.0(@typescript-eslint/eslint-plugin@8.58.1(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.1)(typescript@5.9.3)':
+  '@sap-cloud-sdk/eslint-config@4.6.0(@typescript-eslint/eslint-plugin@8.58.1(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.3)(typescript@5.9.3)':
     dependencies:
       '@eslint/js': 10.0.1(eslint@9.39.4(jiti@2.6.1))
       '@stylistic/eslint-plugin': 3.1.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
@@ -6211,7 +6454,7 @@ snapshots:
       eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-jsdoc: 62.9.0(eslint@9.39.4(jiti@2.6.1))
-      eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.1)
+      eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.3)
       eslint-plugin-regex: 1.10.0(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.58.1(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))
       typescript-eslint: 8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
@@ -6230,7 +6473,7 @@ snapshots:
       fast-levenshtein: 3.0.0
       fs-extra: 11.3.4
       glob: 13.0.6
-      prettier: 3.8.1
+      prettier: 3.8.3
       typescript: 5.9.3
       voca: 1.4.1
       yargs: 17.7.2
@@ -6294,7 +6537,7 @@ snapshots:
 
   '@sap/cds-compiler@6.8.0': {}
 
-  '@sap/cds-dk@9.8.3(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1)))':
+  '@sap/cds-dk@9.8.4(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1)))':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.8.5(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
       '@cap-js/openapi': 1.4.0(@sap/cds@9.8.5(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
@@ -6347,7 +6590,7 @@ snapshots:
   '@sap/hdi-deploy@5.6.1(hdb@2.27.1)':
     dependencies:
       '@sap/hdi': 4.8.0(hdb@2.27.1)
-      '@sap/xsenv': 6.1.0
+      '@sap/xsenv': 6.2.0
       async: 3.2.6
       dotenv: 16.6.1
       handlebars: 4.7.9
@@ -6371,6 +6614,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@sap/xsenv@6.2.0':
+    dependencies:
+      debug: 4.4.3
+      node-cache: 5.1.2
+      verror: 1.10.1
+    transitivePeerDependencies:
+      - supports-color
+
   '@sap/xssec@4.13.0':
     dependencies:
       debug: 4.4.3
@@ -6378,20 +6629,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@scalar/helpers@0.2.18': {}
+  '@scalar/helpers@0.5.0': {}
 
-  '@scalar/json-magic@0.11.7':
+  '@scalar/json-magic@0.12.6':
     dependencies:
-      '@scalar/helpers': 0.2.18
+      '@scalar/helpers': 0.5.0
       pathe: 2.0.3
       yaml: 2.8.3
 
-  '@scalar/openapi-parser@0.24.17':
+  '@scalar/openapi-parser@0.25.9':
     dependencies:
-      '@scalar/helpers': 0.2.18
-      '@scalar/json-magic': 0.11.7
-      '@scalar/openapi-types': 0.5.4
-      '@scalar/openapi-upgrader': 0.1.11
+      '@scalar/helpers': 0.5.0
+      '@scalar/json-magic': 0.12.6
+      '@scalar/openapi-types': 0.7.0
+      '@scalar/openapi-upgrader': 0.2.5
       ajv: 8.18.0
       ajv-draft-04: 1.0.0(ajv@8.18.0)
       ajv-formats: 3.0.1(ajv@8.18.0)
@@ -6399,17 +6650,15 @@ snapshots:
       leven: 4.1.0
       yaml: 2.8.3
 
-  '@scalar/openapi-types@0.5.3':
+  '@scalar/openapi-types@0.6.1':
     dependencies:
       zod: 4.3.6
 
-  '@scalar/openapi-types@0.5.4':
-    dependencies:
-      zod: 4.3.6
+  '@scalar/openapi-types@0.7.0': {}
 
-  '@scalar/openapi-upgrader@0.1.11':
+  '@scalar/openapi-upgrader@0.2.5':
     dependencies:
-      '@scalar/openapi-types': 0.5.4
+      '@scalar/openapi-types': 0.7.0
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -7069,7 +7318,7 @@ snapshots:
     dependencies:
       is-windows: 1.0.2
 
-  better-sqlite3@12.8.0:
+  better-sqlite3@12.9.0:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.3
@@ -7402,7 +7651,7 @@ snapshots:
   dotenv-cli@11.0.0:
     dependencies:
       cross-spawn: 7.0.6
-      dotenv: 17.4.1
+      dotenv: 17.4.2
       dotenv-expand: 12.0.3
       minimist: 1.2.8
 
@@ -7412,7 +7661,7 @@ snapshots:
 
   dotenv@16.6.1: {}
 
-  dotenv@17.4.1: {}
+  dotenv@17.4.2: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -7571,6 +7820,35 @@ snapshots:
       '@esbuild/win32-ia32': 0.27.4
       '@esbuild/win32-x64': 0.27.4
 
+  esbuild@0.27.7:
+    optionalDependencies:
+      '@esbuild/aix-ppc64': 0.27.7
+      '@esbuild/android-arm': 0.27.7
+      '@esbuild/android-arm64': 0.27.7
+      '@esbuild/android-x64': 0.27.7
+      '@esbuild/darwin-arm64': 0.27.7
+      '@esbuild/darwin-x64': 0.27.7
+      '@esbuild/freebsd-arm64': 0.27.7
+      '@esbuild/freebsd-x64': 0.27.7
+      '@esbuild/linux-arm': 0.27.7
+      '@esbuild/linux-arm64': 0.27.7
+      '@esbuild/linux-ia32': 0.27.7
+      '@esbuild/linux-loong64': 0.27.7
+      '@esbuild/linux-mips64el': 0.27.7
+      '@esbuild/linux-ppc64': 0.27.7
+      '@esbuild/linux-riscv64': 0.27.7
+      '@esbuild/linux-s390x': 0.27.7
+      '@esbuild/linux-x64': 0.27.7
+      '@esbuild/netbsd-arm64': 0.27.7
+      '@esbuild/netbsd-x64': 0.27.7
+      '@esbuild/openbsd-arm64': 0.27.7
+      '@esbuild/openbsd-x64': 0.27.7
+      '@esbuild/openharmony-arm64': 0.27.7
+      '@esbuild/sunos-x64': 0.27.7
+      '@esbuild/win32-arm64': 0.27.7
+      '@esbuild/win32-ia32': 0.27.7
+      '@esbuild/win32-x64': 0.27.7
+
   escalade@3.2.0: {}
 
   escape-html@1.0.3: {}
@@ -7684,10 +7962,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.1):
+  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(prettier@3.8.3):
     dependencies:
       eslint: 9.39.4(jiti@2.6.1)
-      prettier: 3.8.1
+      prettier: 3.8.3
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.12
     optionalDependencies:
@@ -8893,11 +9171,11 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@1.3.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6)):
+  langchain@1.3.3(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6)):
     dependencies:
-      '@langchain/core': 1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
-      '@langchain/langgraph': 1.2.8(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
-      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.39(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
+      '@langchain/core': 1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
+      '@langchain/langgraph': 1.2.9(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.3.6))(zod@4.3.6)
+      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.40(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))
       langsmith: 0.5.20(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)
       uuid: 11.1.0
       zod: 4.3.6
@@ -9307,23 +9585,23 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@8.6.2(prettier@3.8.1)(typescript@5.9.3):
+  orval@8.8.0(prettier@3.8.3)(typescript@5.9.3):
     dependencies:
       '@commander-js/extra-typings': 14.0.0(commander@14.0.3)
-      '@orval/angular': 8.6.2(typescript@5.9.3)
-      '@orval/axios': 8.6.2(typescript@5.9.3)
-      '@orval/core': 8.6.2(typescript@5.9.3)
-      '@orval/fetch': 8.6.2(typescript@5.9.3)
-      '@orval/hono': 8.6.2(typescript@5.9.3)
-      '@orval/mcp': 8.6.2(typescript@5.9.3)
-      '@orval/mock': 8.6.2(typescript@5.9.3)
-      '@orval/query': 8.6.2(typescript@5.9.3)
-      '@orval/solid-start': 8.6.2(typescript@5.9.3)
-      '@orval/swr': 8.6.2(typescript@5.9.3)
-      '@orval/zod': 8.6.2(typescript@5.9.3)
-      '@scalar/json-magic': 0.11.7
-      '@scalar/openapi-parser': 0.24.17
-      '@scalar/openapi-types': 0.5.3
+      '@orval/angular': 8.8.0(typescript@5.9.3)
+      '@orval/axios': 8.8.0(typescript@5.9.3)
+      '@orval/core': 8.8.0(typescript@5.9.3)
+      '@orval/fetch': 8.8.0(typescript@5.9.3)
+      '@orval/hono': 8.8.0(typescript@5.9.3)
+      '@orval/mcp': 8.8.0(typescript@5.9.3)
+      '@orval/mock': 8.8.0(typescript@5.9.3)
+      '@orval/query': 8.8.0(typescript@5.9.3)
+      '@orval/solid-start': 8.8.0(typescript@5.9.3)
+      '@orval/swr': 8.8.0(typescript@5.9.3)
+      '@orval/zod': 8.8.0(typescript@5.9.3)
+      '@scalar/json-magic': 0.12.6
+      '@scalar/openapi-parser': 0.25.9
+      '@scalar/openapi-types': 0.6.1
       chokidar: 5.0.0
       commander: 14.0.3
       enquirer: 2.4.1
@@ -9332,14 +9610,14 @@ snapshots:
       fs-extra: 11.3.4
       jiti: 2.6.1
       js-yaml: 4.1.1
-      remeda: 2.33.6
+      remeda: 2.33.7
       string-argv: 0.3.2
       tsconfck: 3.1.6(typescript@5.9.3)
       typedoc: 0.28.18(typescript@5.9.3)
-      typedoc-plugin-coverage: 4.0.2(typedoc@0.28.18(typescript@5.9.3))
+      typedoc-plugin-coverage: 4.0.3(typedoc@0.28.18(typescript@5.9.3))
       typedoc-plugin-markdown: 4.11.0(typedoc@0.28.18(typescript@5.9.3))
     optionalDependencies:
-      prettier: 3.8.1
+      prettier: 3.8.3
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
@@ -9522,7 +9800,7 @@ snapshots:
 
   prettier@2.8.8: {}
 
-  prettier@3.8.1: {}
+  prettier@3.8.3: {}
 
   pretty-format@29.7.0:
     dependencies:
@@ -9649,7 +9927,7 @@ snapshots:
       gopd: 1.2.0
       set-function-name: 2.0.2
 
-  remeda@2.33.6: {}
+  remeda@2.33.7: {}
 
   require-directory@2.1.1: {}
 
@@ -10207,7 +10485,7 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
-  typedoc-plugin-coverage@4.0.2(typedoc@0.28.18(typescript@5.9.3)):
+  typedoc-plugin-coverage@4.0.3(typedoc@0.28.18(typescript@5.9.3)):
     dependencies:
       typedoc: 0.28.18(typescript@5.9.3)
 
