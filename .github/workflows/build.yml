@@ -51,7 +51,7 @@ jobs:
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        uses: sap/cloud-sdk-js/.github/actions/check-license@davidkna-sap_pnpm-license
+        uses: sap/cloud-sdk-js/.github/actions/check-license@main
       - run: pnpm doc
         name: API Doc Check
 
