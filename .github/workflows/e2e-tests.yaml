@@ -49,7 +49,7 @@ jobs:
         run: pnpm test:e2e
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
-        uses: slackapi/slack-github-action@v3.0.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
