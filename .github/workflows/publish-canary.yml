@@ -15,10 +15,11 @@ jobs:
       id-token: write
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
           pnpm-install-args: ''
+          registry-url: 'https://registry.npmjs.org'
 
       - name: prepare canary changeset
         run: |
