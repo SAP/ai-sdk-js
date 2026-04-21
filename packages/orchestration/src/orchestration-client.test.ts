@@ -6,6 +6,7 @@ import {
   getOrchestrationDeploymentId
 } from '@sap-ai-sdk/ai-api/internal.js';
 import {
+  aiCoreDestination,
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
@@ -704,6 +705,45 @@ describe('orchestration service client', () => {
     const response = await new OrchestrationClient(config).chatCompletion(
       prompt
     );
+    expect(response._data).toEqual(mockResponse);
+  });
+
+  it('passes AI-Object-Store-Secret-Name header to the HTTP request', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5-mini',
+          params: { max_tokens: 50 }
+        }
+      }
+    };
+
+    const prompt: ChatCompletionRequest = {
+      messages: [{ role: 'user', content: 'Hello' }]
+    };
+
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+
+    nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default',
+        'AI-Object-Store-Secret-Name': 'my-object-store-secret'
+      }
+    })
+      .post(
+        '/v2/inference/deployments/1234/v2/completion',
+        constructCompletionPostRequest(config, prompt)
+      )
+      .reply(200, mockResponse);
+
+    const response = await new OrchestrationClient(config).chatCompletion(
+      prompt,
+      { headers: { 'AI-Object-Store-Secret-Name': 'my-object-store-secret' } }
+    );
+
     expect(response._data).toEqual(mockResponse);
   });
 

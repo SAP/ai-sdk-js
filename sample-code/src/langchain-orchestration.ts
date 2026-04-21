@@ -36,7 +36,7 @@ export async function invokeChain(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   };
@@ -119,7 +119,7 @@ function createLangGraphApp() {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   };

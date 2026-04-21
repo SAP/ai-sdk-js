@@ -14,9 +14,15 @@ packages:
   - tests/type-tests
 
 blockExoticSubdeps: true
-trustPolicy: no-downgrade
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-cloud-sdk/*'
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
+  - follow-redirects@1.16.0
+  - hono@4.12.14
+  - '@hono/node-server@1.19.14'
+  - 'langsmith@0.5.20'
+
+# TODO: This is failing too often, wait for pnpm-updates
+# trustPolicy: no-downgrade

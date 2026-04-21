@@ -44,7 +44,8 @@ export type {
   EmbeddingModelDetails,
   EmbeddingModelParams,
   EmbeddingModuleConfig,
-  EmbeddingData
+  EmbeddingData,
+  OrchestrationRequestHeaders
 } from './orchestration-types.js';
 export {
   isConfigReference,
