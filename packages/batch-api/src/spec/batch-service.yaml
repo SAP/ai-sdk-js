@@ -5,15 +5,12 @@ info:
   version: 0.0.1
 
 paths:
-  /llm-batch-service/v1/batches:
+  /batches:
     post:
       summary: Create a new batch job
       operationId: batch_service.controller.batch_controller.create_batch
       tags:
         - Batches
-      parameters:
-        - $ref: '#/components/parameters/ai-resource-group'
-        - $ref: '#/components/parameters/ai-main-tenant'
       requestBody:
         required: true
         content:
@@ -39,9 +36,6 @@ paths:
       operationId: batch_service.controller.batch_controller.list_batches
       tags:
         - Batches
-      parameters:
-        - $ref: '#/components/parameters/ai-resource-group'
-        - $ref: '#/components/parameters/ai-main-tenant'
       responses:
         '200':
           description: List of batches
@@ -54,16 +48,14 @@ paths:
       security:
         - {}
 
-  /llm-batch-service/v1/batches/{batchId}:
+  /batches/{batch_id}:
     get:
       summary: Get Batch job details
       operationId: batch_service.controller.batch_controller.get_batch_by_id
       tags:
         - Batches
       parameters:
-        - $ref: '#/components/parameters/ai-resource-group'
-        - $ref: '#/components/parameters/ai-main-tenant'
-        - name: batchId
+        - name: batch_id
           in: path
           required: true
           schema:
@@ -89,9 +81,7 @@ paths:
       tags:
         - Batches
       parameters:
-        - $ref: '#/components/parameters/ai-resource-group'
-        - $ref: '#/components/parameters/ai-main-tenant'
-        - name: batchId
+        - name: batch_id
           in: path
           required: true
           schema:
@@ -113,16 +103,14 @@ paths:
       security:
         - {}
 
-  /llm-batch-service/v1/batches/{batchId}/status:
+  /batches/{batch_id}/status:
     get:
       summary: Get Batch job status
       operationId: batch_service.controller.batch_controller.get_batch_status
       tags:
         - Batches
       parameters:
-        - $ref: '#/components/parameters/ai-resource-group'
-        - $ref: '#/components/parameters/ai-main-tenant'
-        - name: batchId
+        - name: batch_id
           in: path
           required: true
           schema:
@@ -142,16 +130,14 @@ paths:
       security:
         - {}
 
-  /llm-batch-service/v1/batches/{batchId}/cancel:
+  /batches/{batch_id}/cancel:
     patch:
       summary: Cancel a batch
       operationId: batch_service.controller.batch_controller.cancel_batch
       tags:
         - Batches
       parameters:
-        - $ref: '#/components/parameters/ai-resource-group'
-        - $ref: '#/components/parameters/ai-main-tenant'
-        - name: batchId
+        - name: batch_id
           in: path
           required: true
           schema:
@@ -172,22 +158,6 @@ paths:
         - {}
 
 components:
-  parameters:
-    ai-resource-group:
-      name: AI-Resource-Group
-      in: header
-      required: true
-      schema:
-        type: string
-      description: AI Resource Group identifier
-    ai-main-tenant:
-      name: AI-Main-Tenant
-      in: header
-      required: false
-      schema:
-        type: string
-      description: AI Main Tenant identifier
-
   schemas:
     BatchCreateRequest:
       type: object

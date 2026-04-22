@@ -35,10 +35,9 @@ describe('batches api', () => {
       });
 
     const result: BatchListResponse =
-      await BatchesApi.batchServiceControllerBatchControllerListBatches({
-        'AI-Resource-Group': 'ai-sdk-js-e2e',
-        'AI-Main-Tenant': 'tta-m-sap-internal'
-      }).execute();
+      await BatchesApi.batchServiceControllerBatchControllerListBatches()
+        .addCustomHeaders({ 'AI-Resource-Group': 'ai-sdk-js-e2e' })
+        .execute();
 
     expect(result).toEqual(expectedResponse);
   });

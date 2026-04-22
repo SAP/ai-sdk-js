@@ -30,7 +30,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client -s ./src/spec/options-per-service.json",
     "postgenerate": "pnpm update-imports && pnpm lint:fix",
     "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/batch-service"
   },

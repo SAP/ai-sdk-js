@@ -1,0 +1,7 @@
+{
+  "src/spec/batch-service.yaml": {
+    "packageName": "batch-service",
+    "directoryName": "batch-service",
+    "basePath": "/llm-batch-service/v1"
+  }
+}
