@@ -55,8 +55,8 @@ jobs:
         run: pnpm check:deps
       - name: License Check
         uses: sap/cloud-sdk-js/.github/actions/check-license@license-checker
-      - run: pnpm doc
-        name: API Doc Check
+      - name: API Doc Check
+        run: pnpm doc
 
   dependabot:
     runs-on: ubuntu-latest
@@ -73,13 +73,13 @@ jobs:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Approve a PR
         if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major' }}
-        run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh pr review --approve "$PR_URL"
       - name: Enable auto-merge for Dependabot PRs
         if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major' }}
-        run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh pr merge --auto --squash "$PR_URL"

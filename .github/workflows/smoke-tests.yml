@@ -14,13 +14,13 @@ jobs:
           node-version: '24'
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Update smoke test dependencies
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
         run: |
           # Always use latest SDK packages for smoke tests to ensure they are tested against the latest version. The registry is set to npmjs to avoid issues with outdated packages in the Artifactory registry.
           pnpm config set --location=project @sap-ai-sdk:registry https://registry.npmjs.org/
           pnpm config set --location=project @sap-cloud-sdk:registry https://registry.npmjs.org/
           pnpm --filter @sap-ai-sdk/smoke-tests update '@sap-ai-sdk/*' --no-save --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Create deployment
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}

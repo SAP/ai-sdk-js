@@ -30,17 +30,17 @@ jobs:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: 'true'
       - name: Bump version
-        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
+        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         with:
           majorVersion: ${{ inputs.majorVersion }}
       - name: Merge and write changelogs
         id: merge-changelogs
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
-        name: Commit and tag
+        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+      - name: Commit and tag
+        uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
@@ -79,14 +79,14 @@ jobs:
         id: update-notes
         run: |
           pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
-      
-      - name: Open Release notes PR
-        id: open-pr
-        working-directory: ./ai-sdk-docs
+
+      - name: Open Release notes and API docs PR
+        id: open_pr
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        working-directory: ./ai-sdk-docs
         run: |
           git config --local user.email "$BOT_EMAIL"
           git config --local user.name "$BOT_NAME"
