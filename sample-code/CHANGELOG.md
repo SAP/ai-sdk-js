@@ -1,5 +1,36 @@
 # @sap-ai-sdk/sample-code
 
+## 2.10.0
+
+### Patch Changes
+
+- Updated dependencies [029f091]
+- Updated dependencies [029f091]
+- Updated dependencies [029f091]
+- Updated dependencies [a722171]
+- Updated dependencies [a722171]
+- Updated dependencies [a722171]
+- Updated dependencies [dce18df]
+- Updated dependencies [94546e6]
+- Updated dependencies [94546e6]
+- Updated dependencies [cf767a9]
+- Updated dependencies [029f091]
+- Updated dependencies [029f091]
+- Updated dependencies [94546e6]
+- Updated dependencies [cc9e80c]
+- Updated dependencies [029f091]
+- Updated dependencies [cc9e80c]
+- Updated dependencies [cc9e80c]
+- Updated dependencies [94546e6]
+- Updated dependencies [029f091]
+  - @sap-ai-sdk/document-grounding@2.10.0
+  - @sap-ai-sdk/foundation-models@2.10.0
+  - @sap-ai-sdk/prompt-registry@2.10.0
+  - @sap-ai-sdk/orchestration@2.10.0
+  - @sap-ai-sdk/ai-api@2.10.0
+  - @sap-ai-sdk/langchain@2.10.0
+  - @sap-ai-sdk/rpt@2.10.0
+
 ## 2.9.0
 
 ### Patch Changes

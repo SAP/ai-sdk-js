@@ -642,6 +642,21 @@ expectType<Promise<OrchestrationResponse>>(
   })
 );
 
+expectError(
+  new OrchestrationClient({
+    id: 'test-config-id',
+    promptTemplating: {
+      model: { name: 'gpt-5-mini' },
+      prompt: { template: [{ role: 'user', content: 'Hello!' }] }
+    }
+  }).chatCompletion({
+    placeholderValues: { name: 'Alice' },
+    messagesHistory: [
+      { role: 'system', content: 'You are a helpful assistant.' }
+    ]
+  })
+);
+
 /**
  * Streaming with Config References.
  */
