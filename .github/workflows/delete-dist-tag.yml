@@ -19,6 +19,8 @@ jobs:
           cache: 'pnpm'
 
       - name: delete dist tag
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
         run: |
           npm dist-tag rm @sap-ai-sdk/ai-api ${{ inputs.tag }}
           npm dist-tag rm @sap-ai-sdk/foundation-models ${{ inputs.tag }}
@@ -27,5 +29,3 @@ jobs:
           npm dist-tag rm @sap-ai-sdk/document-grounding ${{ inputs.tag }}
           npm dist-tag rm @sap-ai-sdk/langchain ${{ inputs.tag }}
           npm dist-tag rm @sap-ai-sdk/prompt-registry ${{ inputs.tag }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
