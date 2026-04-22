@@ -17,8 +17,8 @@ jobs:
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: 'Run OWASP Dependency Check'
-        uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
         id: depcheck
+        uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
         with:
           project: ${{ github.repository }}
           path: '.'
