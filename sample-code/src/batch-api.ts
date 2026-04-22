@@ -19,7 +19,7 @@ const defaultHeaders = {
 export async function listBatches(): Promise<BatchListResponse> {
   return BatchesApi.batchServiceControllerBatchControllerListBatches()
     .addCustomHeaders(defaultHeaders)
-    .execute()
+    .execute();
 }
 
 /**
