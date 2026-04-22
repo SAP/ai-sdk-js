@@ -81,7 +81,7 @@ jobs:
           pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
 
       - name: Open Release notes and API docs PR
-        id: open_pr
+        id: open-pr
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
