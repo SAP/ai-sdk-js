@@ -80,7 +80,7 @@ jobs:
         run: |
           pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
 
-      - name: Open Release notes and API docs PR
+      - name: Open release notes PR
         id: open-pr
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
