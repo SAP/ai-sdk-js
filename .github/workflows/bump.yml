@@ -114,11 +114,3 @@ jobs:
               echo "pr-url=" >> "$GITHUB_OUTPUT"
             fi
           fi
-
-  generate-api-docs:
-    name: Generate and Push API Documentation
-    needs: [bump]
-    uses: ./.github/workflows/api-docs.yml
-    secrets: inherit
-    with:
-      version: ${{ needs.bump.outputs.version }}
