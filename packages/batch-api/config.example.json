@@ -1,0 +1,9 @@
+{
+  "access_key_id": "<your-access-key-id>",
+  "bucket": "<your-bucket-name>",
+  "secret_access_key": "<your-secret-access-key>",
+  "host": "<your-s3-host>",
+  "region": "<your-region>",
+  "uri": "<your-s3-uri>",
+  "username": "<your-username>"
+}

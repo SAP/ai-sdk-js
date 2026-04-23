@@ -35,6 +35,10 @@
     "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/batch-service"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1032.0",
     "@sap-ai-sdk/core": "workspace:^"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
   }
 }
