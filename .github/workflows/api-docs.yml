@@ -24,8 +24,6 @@ jobs:
 
       - name: Prepare
         id: prepare
-        env:
-          FULL_VERSION: ${{ inputs.version }}
         run: |
           if [ -z "$FULL_VERSION" ]; then
             FULL_VERSION=$(node -p "require('./package.json').version")
