@@ -24,5 +24,5 @@ minimumReleaseAgeExclude:
   - '@hono/node-server@1.19.14'
   - 'langsmith@0.5.20'
 
-# TODO: This is failing too often, wait for pnpm-updates
-# trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 131400 # 3 months
+trustPolicy: no-downgrade
