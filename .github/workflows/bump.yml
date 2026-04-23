@@ -45,7 +45,7 @@ jobs:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
 
-  prepare-release-notes:
+ release-notes:
     name: Prepare Release Notes
     runs-on: ubuntu-latest
     needs: [bump]
