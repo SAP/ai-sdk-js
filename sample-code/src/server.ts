@@ -80,6 +80,14 @@ import {
   deletePromptTemplate
 } from './prompt-registry.js';
 import {
+  listBatches,
+  createBatch,
+  getBatchById,
+  getBatchStatus,
+  cancelBatch,
+  deleteBatch
+} from './batch-api.js';
+import {
   predictAutomaticParsing,
   predictWithSchema,
   predictParquetBlob
@@ -871,6 +879,55 @@ app.get('/prompt-registry/template', async (req, res) => {
     res.write(`Prompt template deleted: ${response.message}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/batch-api/batches', async (req, res) => {
+  try {
+    res.send(await listBatches());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.post('/batch-api/batches', express.json(), async (req, res) => {
+  try {
+    const { inputUri, outputUri } = req.body;
+    res.send(await createBatch(inputUri, outputUri));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/batch-api/batches/:batchId', async (req, res) => {
+  try {
+    res.send(await getBatchById(req.params.batchId));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/batch-api/batches/:batchId/status', async (req, res) => {
+  try {
+    res.send(await getBatchStatus(req.params.batchId));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.patch('/batch-api/batches/:batchId/cancel', async (req, res) => {
+  try {
+    res.send(await cancelBatch(req.params.batchId));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.delete('/batch-api/batches/:batchId', async (req, res) => {
+  try {
+    res.send(await deleteBatch(req.params.batchId));
   } catch (error: any) {
     sendError(res, error);
   }
