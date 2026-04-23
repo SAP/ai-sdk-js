@@ -32,6 +32,9 @@ jobs:
         env:
           FULL_VERSION: ${{ inputs.version }}
         run: |
+          if [ -z "$FULL_VERSION" ]; then
+            FULL_VERSION=$(node -p "require('./package.json').version")
+          fi
           MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
           echo "major-version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
           echo "branch-name=docs/api-update-v${MAJOR_VERSION}-$(date +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
