@@ -67,83 +67,8 @@ jobs:
             });
             console.log(`Pull Request created: ${result.data.html_url}`);
 
-      - name: Install async-retry for auto-merge
+      - name: Enable auto-merge
         if: steps.update-deps.outputs.branch-created == 'true'
-        run: pnpm install async-retry -w
-
-      - name: Auto-merge if checks pass
-        if: steps.update-deps.outputs.branch-created == 'true' && success()
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            const { setTimeout } = require('node:timers/promises');
-            const retry = require('async-retry');
-            const { repo, owner } = context.repo;
-            const branch = '${{ steps.update-deps.outputs.branch-name }}';
-
-            const pulls = await github.rest.pulls.list({
-              owner,
-              repo,
-              head: branch,
-              base: 'main',
-              state: 'open'
-            });
-
-            if (pulls.data.length === 0) {
-              console.log('No matching pull request found');
-              return;
-            }
-
-            const pr = pulls.data[0];
-
-            // Wait 2 minutes for jobs to start
-            await setTimeout(2 * 60 * 1000);
-
-            const result = await retry(
-              async () => {
-                const { data: checks } = await github.rest.checks.listForRef({
-                  owner,
-                  repo,
-                  ref: pr.head.sha
-                });
-
-                const allCompleted = checks.check_runs.every(run => run.status === 'completed');
-                const allAcceptable = checks.check_runs.every(run =>
-                  ['success', 'skipped', 'neutral'].includes(run.conclusion)
-                );
-
-                if (!allCompleted) {
-                  throw new Error(`PR #${pr.number} still has pending checks. Retrying...`);
-                }
-
-                if (!allAcceptable) {
-                  console.log(`PR #${pr.number} has failed checks that prevent merging.`);
-                  return 'failed-checks';
-                }
-
-                return 'success';
-              },
-              {
-                retries: 5,
-                minTimeout: 2 * 60 * 1000,
-                maxTimeout: 2 * 60 * 1000,
-                onRetry: (error, attempt) => {
-                  const timestamp = new Date().toISOString();
-                  console.log(`[${timestamp}] Attempt ${attempt} failed: ${error.message}. Retrying...`);
-                }
-              }
-            );
-
-            if (result === 'success') {
-              await github.rest.pulls.merge({
-                owner,
-                repo,
-                pull_number: pr.number,
-                merge_method: 'squash'
-              });
-              console.log(`PR #${pr.number} merged successfully.`);
-            }
-            else {
-              console.log(`PR #${pr.number} could not be merged due to failed checks.`);
-            }
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: gh pr merge --auto --squash "${{ steps.update-deps.outputs.branch-name }}"
