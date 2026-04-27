@@ -1,4 +1,4 @@
-name: Monthly pnpm Dependency Update
+name: transitive dependency update
 
 on:
   schedule:
