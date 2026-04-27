@@ -29,6 +29,7 @@ jobs:
         env:
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
         run: |
           pnpm --no-save update --recursive
           pnpm audit --audit-level high
@@ -38,7 +39,7 @@ jobs:
             git config --global user.name "$BOT_NAME"
             BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
             git checkout -b "$BRANCH_NAME"
-            git add .
+            git add pnpm-lock.yaml
             git commit -m "chore: update pnpm transitive dependencies"
             git push --set-upstream origin "$BRANCH_NAME"
             echo "branch-created=true" >> $GITHUB_OUTPUT
