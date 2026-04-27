@@ -29,6 +29,7 @@ jobs:
         env:
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
         run: |
           pnpm --no-save update --recursive
           pnpm audit --audit-level high
