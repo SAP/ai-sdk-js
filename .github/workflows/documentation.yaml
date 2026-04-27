@@ -10,33 +10,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Determine Changed Files
         id: changed-files
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           ALL_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[] | select(.additions > 0) | .path')
           CHANGED_FILES="${ALL_FILES//$'\n'/,}"
 
           echo "[DEBUG] Following files have been changed: $CHANGED_FILES"
           echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Vale
         # vale fails if the PR is too large, e.g. when updating API docs
         if: ${{ github.event.pull_request.changed_files < 100 }}
-        # You may pin to the exact commit or the version.
-        # uses: errata-ai/vale-action@0da98680790f89b8d5b685de9c264f55addc971b
-        uses: errata-ai/vale-action@reviewdog
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        uses: vale-cli/vale-action@d89dee975228ae261d22c15adcd03578634d429c # v2.1.1
         with:
           # version of 'vale' to use
-          # see https://github.com/errata-ai/vale for all releases
-          version: 3.7.1
+          # see https://github.com/vale-cli/vale for all releases
+          version: 3.14.1
           # changed files. computed in the step above
           files: ${{ steps.changed-files.outputs.CHANGED_FILES }}
           # the separator for the file list. we are using a comma (see step above)
-          separator: ","
+          separator: ','
           # let review dog fail if there are errors
           fail_on_error: true
-        env:
-          # Required
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

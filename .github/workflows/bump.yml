@@ -18,27 +18,29 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         with:
-          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          persist-credentials: 'true'
       - name: Bump version
-        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         id: bump
+        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         with:
           majorVersion: ${{ inputs.majorVersion }}
       - name: Merge and write changelogs
         id: merge-changelogs
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
-        name: Commit and tag
+        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+      - name: Commit and tag
+        uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
@@ -52,24 +54,25 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         with:
-          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk
           permission-contents: write
           permission-pull-requests: write
       - name: Checkout current repository
-        uses: sap/ai-sdk-js/.github/actions/setup@main
+        uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-      
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+
       - name: Generate API documentation
         run: |
           pnpm generate
           pnpm doc
-      
+
       - name: Checkout Docs Repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -81,34 +84,34 @@ jobs:
         id: update-notes
         run: |
           pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
-      
+
       - name: Copy API documentation to docs repo
         run: |
           # Extract major version from full version (e.g., "2.8.0" -> "v2")
           FULL_VERSION="${{ needs.bump.outputs.version }}"
           MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
           VERSION="v${MAJOR_VERSION}"
-          
+
           # Copy generated docs to versioned folder
           rsync -avz --delete knowledge-base/api-reference/ "${{ env.DOCS_CHECKOUT_PATH }}/static/api/${VERSION}/"
-      
+
       - name: Open Release notes and API docs PR
         id: open_pr
-        working-directory: ./ai-sdk-docs
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        working-directory: ./ai-sdk-docs
         run: |
           git config --local user.email "$BOT_EMAIL"
           git config --local user.name "$BOT_NAME"
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
-          
+
           # Stage both release notes and API docs
           git add docs-js/release-notes.mdx
           git add static/api/
-          
+
           if git diff --staged --quiet; then
             echo "No changes to commit."
             # Output an empty pr_url if no changes
