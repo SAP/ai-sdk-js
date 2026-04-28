@@ -2,6 +2,7 @@ import { expectAssignable, expectError, expectType } from 'tsd';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import type {
   LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList,
   OrchestrationCallOptions
 } from '@sap-ai-sdk/langchain';
 
@@ -13,10 +14,7 @@ const singleConfig: LangChainOrchestrationModuleConfig = {
   }
 };
 
-const fallbackConfigs: [
-  LangChainOrchestrationModuleConfig,
-  ...LangChainOrchestrationModuleConfig[]
-] = [
+const fallbackConfigs: LangChainOrchestrationModuleConfigList = [
   singleConfig,
   {
     promptTemplating: {
