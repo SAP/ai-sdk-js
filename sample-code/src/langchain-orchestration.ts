@@ -25,7 +25,10 @@ import { createAgent, createMiddleware } from 'langchain';
 // eslint-disable-next-line import/no-internal-modules
 import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
-import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import type {
+  LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList
+} from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -56,21 +59,32 @@ export async function invokeChain(): Promise<string> {
  * @returns The answer from ChatGPT.
  */
 export async function invokeChainWithFallbackConfigs(): Promise<string> {
-  const orchestrationConfigs: [
-    LangChainOrchestrationModuleConfig,
-    ...LangChainOrchestrationModuleConfig[]
-  ] = [
+  const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
     {
+      // First configuration with a non-existent model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'gpt-5'
+          name: 'non-existent-model'
         }
       }
     },
     {
+      // Second configuration with a slow model with a short timeout to trigger fallback
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5-mini',
+          timeout: 1, // 1 s timeout to trigger timeout error
+          params: {
+            reasoning_effort: 'high'
+          }
+        }
+      }
+    },
+    {
+      // Third configuration with a valid model that will succeed
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
         }
       }
     }
@@ -303,14 +317,16 @@ export async function streamChainWithFallbackConfigs(
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5'
+          name: 'non-existing-model'
         }
       }
     },
+    // In the streaming scenario, timeouts will not trigger module fallback.
+    // Therefore, this is not tested in this example.
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'anthropic--claude-4.5-haiku'
         }
       }
     }

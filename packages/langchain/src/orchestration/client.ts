@@ -43,7 +43,24 @@ import type {
   ChatOrchestrationToolType
 } from './types.js';
 
-type LangChainOrchestrationModuleConfigList = [
+/**
+ * Non-empty list of orchestration module configurations for module fallback.
+ * The orchestration service will try each configuration in order until one succeeds.
+ * @example
+ * const fallbackConfig: OrchestrationModuleConfigList = [
+ *   {
+ *     promptTemplating: {
+ *       model: { name: 'gpt-5', timeout: 5 }
+ *     }
+ *   },
+ *   {
+ *     promptTemplating: {
+ *       model: { name: 'gpt-5-mini' }
+ *     }
+ *   }
+ * ];
+ */
+export type LangChainOrchestrationModuleConfigList = [
   LangChainOrchestrationModuleConfig,
   ...LangChainOrchestrationModuleConfig[]
 ];
