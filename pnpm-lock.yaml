@@ -222,8 +222,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/orchestration
       '@sap/cds':
-        specifier: ^9.8.5
-        version: 9.8.5(@eslint/js@9.39.4)
+        specifier: ^9.9.0
+        version: 9.9.0(@eslint/js@9.39.4)
       '@sap/xssec':
         specifier: ^4.13.0
         version: 4.13.0
@@ -1447,8 +1447,8 @@ packages:
   '@sap-cloud-sdk/util@4.5.1':
     resolution: {integrity: sha512-1p/k8MUFv7XcEJkd7c7qfUry+Bg2JtGiVeLx1QjRj49XuM8fpjGeWP2tV+EQ594yWS541Pb1K/xbTRj4uaIDIA==}
 
-  '@sap/cds-compiler@6.8.0':
-    resolution: {integrity: sha512-yRoTZcH8DFiP4PcEuIHe42YAaNt51V736+6RRr+U4nbO91sz36L8be2djcE8n760t8IbqLxzZ/UkATiL0fjRmA==}
+  '@sap/cds-compiler@6.9.0':
+    resolution: {integrity: sha512-UXQ5pomb+Fw48Ch1mJoN1JkDy0loZX8nZKXjy4qxY2s9FMwNOwKJP9wPomAVlYcuzq6u8Viqh5j70ty8ciGWGg==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -1467,8 +1467,8 @@ packages:
     peerDependencies:
       '@sap/cds': ^9
 
-  '@sap/cds@9.8.5':
-    resolution: {integrity: sha512-AU7HzrdEf8u13W2Aff8GyqKpJh6w9yXK/68xvXD+6cuU21JcGOLQ+dInbNV8vRKaCMn2cVVrsx7OoR+j7z5QKA==}
+  '@sap/cds@9.9.0':
+    resolution: {integrity: sha512-09qkye9erBr71GNt6vdu9HmvZCKSTECYdxppQyAYJjeOeLJW4eL1eyZThawRkvqqLOEdmsEZdfG6eZ3X+w0YYA==}
     engines: {node: '>=20'}
     hasBin: true
     peerDependencies:
@@ -5475,25 +5475,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@9.8.5(@eslint/js@9.39.4))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@9.9.0(@eslint/js@9.39.4))':
     dependencies:
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
 
-  '@cap-js/db-service@2.9.0(@sap/cds@9.8.5(@eslint/js@9.39.4))':
+  '@cap-js/db-service@2.9.0(@sap/cds@9.9.0(@eslint/js@9.39.4))':
     dependencies:
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.4.0(@sap/cds@9.8.5(@eslint/js@9.39.4))':
+  '@cap-js/openapi@1.4.0(@sap/cds@9.9.0(@eslint/js@9.39.4))':
     dependencies:
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.2.0(@sap/cds@9.8.5(@eslint/js@9.39.4))':
+  '@cap-js/sqlite@2.2.0(@sap/cds@9.9.0(@eslint/js@9.39.4))':
     dependencies:
-      '@cap-js/db-service': 2.9.0(@sap/cds@9.8.5(@eslint/js@9.39.4))
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
+      '@cap-js/db-service': 2.9.0(@sap/cds@9.9.0(@eslint/js@9.39.4))
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
       better-sqlite3: 12.9.0
     optional: true
 
@@ -6630,14 +6630,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sap/cds-compiler@6.8.0': {}
+  '@sap/cds-compiler@6.9.0': {}
 
   '@sap/cds-dk@9.8.4(@eslint/js@9.39.4)':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.8.5(@eslint/js@9.39.4))
-      '@cap-js/openapi': 1.4.0(@sap/cds@9.8.5(@eslint/js@9.39.4))
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
-      '@sap/cds-mtxs': 3.8.1(@sap/cds@9.8.5(@eslint/js@9.39.4))(hdb@2.27.1)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.9.0(@eslint/js@9.39.4))
+      '@cap-js/openapi': 1.4.0(@sap/cds@9.9.0(@eslint/js@9.39.4))
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
+      '@sap/cds-mtxs': 3.8.1(@sap/cds@9.9.0(@eslint/js@9.39.4))(hdb@2.27.1)
       '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
       axios: 1.15.1
       express: 5.2.1
@@ -6648,7 +6648,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.3
     optionalDependencies:
-      '@cap-js/sqlite': 2.2.0(@sap/cds@9.8.5(@eslint/js@9.39.4))
+      '@cap-js/sqlite': 2.2.0(@sap/cds@9.9.0(@eslint/js@9.39.4))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6659,26 +6659,26 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@2.3.0(@sap/cds@9.8.5(@eslint/js@9.39.4))':
+  '@sap/cds-fiori@2.3.0(@sap/cds@9.9.0(@eslint/js@9.39.4))':
     dependencies:
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
 
-  '@sap/cds-mtxs@3.8.1(@sap/cds@9.8.5(@eslint/js@9.39.4))(hdb@2.27.1)':
+  '@sap/cds-mtxs@3.8.1(@sap/cds@9.9.0(@eslint/js@9.39.4))(hdb@2.27.1)':
     dependencies:
-      '@sap/cds': 9.8.5(@eslint/js@9.39.4)
+      '@sap/cds': 9.9.0(@eslint/js@9.39.4)
       '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
       - supports-color
 
-  '@sap/cds@9.8.5(@eslint/js@9.39.4)':
+  '@sap/cds@9.9.0(@eslint/js@9.39.4)':
     dependencies:
       '@eslint/js': 9.39.4
-      '@sap/cds-compiler': 6.8.0
-      '@sap/cds-fiori': 2.3.0(@sap/cds@9.8.5(@eslint/js@9.39.4))
+      '@sap/cds-compiler': 6.9.0
+      '@sap/cds-fiori': 2.3.0(@sap/cds@9.9.0(@eslint/js@9.39.4))
       express: 5.2.1
-      js-yaml: 4.1.1
+      yaml: 2.8.3
     transitivePeerDependencies:
       - supports-color
 
