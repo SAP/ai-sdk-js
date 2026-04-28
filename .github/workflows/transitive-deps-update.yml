@@ -23,6 +23,7 @@ jobs:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: 'true'
           token: ${{ steps.app-token.outputs.token }}
+          skip-install: 'true'
 
       - name: Update Transitive Dependencies
         env:
