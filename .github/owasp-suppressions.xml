@@ -8,4 +8,12 @@
       <packageUrl regex="true">^pkg:npm/express@.*$</packageUrl>
       <vulnerabilityName>CVE-2024-10491</vulnerabilityName>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+         file name: hono:=4.12.10
+         CVE-2026-39408: hono has been upgraded to 4.12.14 which fixes this vulnerability. False positive due to NVD/OSS Index matching on the old version string.
+      ]]></notes>
+      <packageUrl regex="true">^pkg:npm/hono@.*$</packageUrl>
+      <vulnerabilityName>CVE-2026-39408</vulnerabilityName>
+   </suppress>
 </suppressions>
