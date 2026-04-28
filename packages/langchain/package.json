@@ -31,7 +31,7 @@
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.5.1",
-    "uuid": "^13.0.0",
+    "uuid": "^14.0.0",
     "@langchain/core": "0.3.80"
   }
 }
