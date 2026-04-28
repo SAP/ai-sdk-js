@@ -27,10 +27,15 @@ jobs:
         uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
-          pnpm-install-args: --lockfile-only
+          skip-install: 'true'
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: 'true'
           token: ${{ steps.app-token.outputs.token }}
+
+      - name: Regenerate lockfile
+        run: pnpm install --lockfile-only
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
 
       - name: Commit and push if changed
         env:
