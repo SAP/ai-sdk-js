@@ -35,7 +35,7 @@
   "devDependencies": {
     "orval": "^8.8.0",
     "zod": "^3.25.76",
-    "@changesets/cli": "^2.30.0",
+    "@changesets/cli": "^2.31.0",
     "@jest/globals": "^30.3.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
