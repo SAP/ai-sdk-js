@@ -104,7 +104,7 @@ jobs:
             git commit -m "Update JS release notes for ${{ needs.bump.outputs.version }}"
             git push -u origin "${BRANCH_NAME}"
             PR_BODY="Auto-created by bump workflow."
-            PR_TITLE="Update JS Release Notes for ${{ needs.bump.outputs.version }}"
+            PR_TITLE="chore: Update JS Release Notes for ${{ needs.bump.outputs.version }}"
             PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
             echo "Release notes PR created: $PR_URL"
             if [[ -n "$PR_URL" ]]; then
