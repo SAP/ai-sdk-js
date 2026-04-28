@@ -26,3 +26,4 @@ minimumReleaseAgeExclude:
 
 trustPolicyIgnoreAfter: 131400 # 3 months
 trustPolicy: no-downgrade
+shellEmulator: true

@@ -10,8 +10,8 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
-    "compile:cjs": "pnpm -r -F=./packages/** compile:cjs",
-    "test:unit": "pnpm -r -F=./packages/** test",
+    "compile:cjs": "pnpm -r '-F=./packages/**' compile:cjs",
+    "test:unit": "pnpm -r '-F=./packages/**' test",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
     "test:smoke": "pnpm smoke-tests test",
