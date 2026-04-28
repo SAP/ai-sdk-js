@@ -1,4 +1,4 @@
-name: Monthly pnpm Dependency Update
+name: transitive dependency update
 
 on:
   schedule:
@@ -23,127 +23,53 @@ jobs:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: 'true'
           token: ${{ steps.app-token.outputs.token }}
+          skip-install: 'true'
 
       - name: Update Transitive Dependencies
-        id: update-deps
         env:
-          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
         run: |
           pnpm --no-save update --recursive
           pnpm audit --audit-level high
 
+      - name: Check for Changes
+        id: check-changes
+        run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            git config --global user.email "$BOT_EMAIL"
-            git config --global user.name "$BOT_NAME"
-            BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
-            git checkout -b "$BRANCH_NAME"
-            git add pnpm-lock.yaml
-            git commit -m "chore: update pnpm transitive dependencies"
-            git push --set-upstream origin "$BRANCH_NAME"
-            echo "branch-created=true" >> $GITHUB_OUTPUT
-            echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+            echo "has-changes=true" >> $GITHUB_OUTPUT
           else
-            echo "No changes to commit"
-            echo "branch-created=false" >> $GITHUB_OUTPUT
+            echo "has-changes=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Commit and Push
+        id: commit
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        run: |
+          git config --global user.email "$BOT_EMAIL"
+          git config --global user.name "$BOT_NAME"
+          BRANCH_NAME="bot/monthly-transitive-dependency-update-$(date -u +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+          git add pnpm-lock.yaml
+          git commit -m "chore: update pnpm transitive dependencies"
+          git push --set-upstream origin "$BRANCH_NAME"
+          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
       - name: Create Pull Request
-        if: steps.update-deps.outputs.branch-created == 'true'
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            const { repo, owner } = context.repo;
-            const branch = '${{ steps.update-deps.outputs.branch-name }}';
-            const result = await github.rest.pulls.create({
-              title: 'chore: Monthly Transitive Dependency Update',
-              owner,
-              repo,
-              head: branch,
-              base: 'main',
-              body: 'This is an automated PR to update pnpm transitive dependencies.'
-            });
-            console.log(`Pull Request created: ${result.data.html_url}`);
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh pr create \
+            --title "chore: Monthly Transitive Dependency Update" \
+            --body "This is an automated PR to update pnpm transitive dependencies." \
+            --base main \
+            --head "${{ steps.commit.outputs.branch-name }}"
 
-      - name: Install async-retry for auto-merge
-        if: steps.update-deps.outputs.branch-created == 'true'
-        run: pnpm install async-retry -w
-
-      - name: Auto-merge if checks pass
-        if: steps.update-deps.outputs.branch-created == 'true' && success()
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            const { setTimeout } = require('node:timers/promises');
-            const retry = require('async-retry');
-            const { repo, owner } = context.repo;
-            const branch = '${{ steps.update-deps.outputs.branch-name }}';
-
-            const pulls = await github.rest.pulls.list({
-              owner,
-              repo,
-              head: branch,
-              base: 'main',
-              state: 'open'
-            });
-
-            if (pulls.data.length === 0) {
-              console.log('No matching pull request found');
-              return;
-            }
-
-            const pr = pulls.data[0];
-
-            // Wait 2 minutes for jobs to start
-            await setTimeout(2 * 60 * 1000);
-
-            const result = await retry(
-              async () => {
-                const { data: checks } = await github.rest.checks.listForRef({
-                  owner,
-                  repo,
-                  ref: pr.head.sha
-                });
-
-                const allCompleted = checks.check_runs.every(run => run.status === 'completed');
-                const allAcceptable = checks.check_runs.every(run =>
-                  ['success', 'skipped', 'neutral'].includes(run.conclusion)
-                );
-
-                if (!allCompleted) {
-                  throw new Error(`PR #${pr.number} still has pending checks. Retrying...`);
-                }
-
-                if (!allAcceptable) {
-                  console.log(`PR #${pr.number} has failed checks that prevent merging.`);
-                  return 'failed-checks';
-                }
-
-                return 'success';
-              },
-              {
-                retries: 5,
-                minTimeout: 2 * 60 * 1000,
-                maxTimeout: 2 * 60 * 1000,
-                onRetry: (error, attempt) => {
-                  const timestamp = new Date().toISOString();
-                  console.log(`[${timestamp}] Attempt ${attempt} failed: ${error.message}. Retrying...`);
-                }
-              }
-            );
-
-            if (result === 'success') {
-              await github.rest.pulls.merge({
-                owner,
-                repo,
-                pull_number: pr.number,
-                merge_method: 'squash'
-              });
-              console.log(`PR #${pr.number} merged successfully.`);
-            }
-            else {
-              console.log(`PR #${pr.number} could not be merged due to failed checks.`);
-            }
+      - name: Enable auto-merge
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: gh pr merge --auto --squash "${{ steps.commit.outputs.branch-name }}"
