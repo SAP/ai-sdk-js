@@ -393,7 +393,7 @@ export function constructCompletionPostRequest(
   const messagesHistory =
     routeMessagesToHistory && request?.messages?.length
       ? [...(request.messagesHistory || []), ...request.messages]
-      : undefined;
+      : request?.messagesHistory;
 
   return {
     config: configWithStream,
