@@ -390,7 +390,7 @@ expectType<Promise<OrchestrationResponse>>(
   }).chatCompletion()
 );
 
-expect<ChatModel>('custom-model');
+expectAssignable<ChatModel>('custom-model');
 
 /**
  * Filtering Util for Azure content safety.
