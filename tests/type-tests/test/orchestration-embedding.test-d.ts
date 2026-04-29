@@ -20,7 +20,7 @@ expectType<OrchestrationEmbeddingClient>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   })
@@ -31,7 +31,7 @@ expectType<OrchestrationEmbeddingClient>(
     {
       embeddings: {
         model: {
-          name: 'text-embedding-ada-002'
+          name: 'text-embedding-3-small'
         }
       }
     },
@@ -44,7 +44,7 @@ expectType<OrchestrationEmbeddingClient>(
     {
       embeddings: {
         model: {
-          name: 'text-embedding-ada-002'
+          name: 'text-embedding-3-small'
         }
       }
     },
@@ -57,7 +57,7 @@ expectType<OrchestrationEmbeddingClient>(
     {
       embeddings: {
         model: {
-          name: 'text-embedding-ada-002'
+          name: 'text-embedding-3-small'
         }
       }
     },
@@ -73,7 +73,7 @@ expectType<Promise<OrchestrationEmbeddingResponse>>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   }).embed({
@@ -85,7 +85,7 @@ expectType<Promise<OrchestrationEmbeddingResponse>>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   }).embed({
@@ -97,7 +97,7 @@ expectType<Promise<OrchestrationEmbeddingResponse>>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   }).embed({
@@ -110,7 +110,7 @@ expectType<Promise<OrchestrationEmbeddingResponse>>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   }).embed(
@@ -130,7 +130,7 @@ expectType<EmbeddingData[]>(
     await new OrchestrationEmbeddingClient({
       embeddings: {
         model: {
-          name: 'text-embedding-ada-002'
+          name: 'text-embedding-3-small'
         }
       }
     }).embed({
@@ -144,7 +144,7 @@ expectType<EmbeddingsUsage>(
     await new OrchestrationEmbeddingClient({
       embeddings: {
         model: {
-          name: 'text-embedding-ada-002'
+          name: 'text-embedding-3-small'
         }
       }
     }).embed({
@@ -158,7 +158,7 @@ expectType<ModuleResultsBase | undefined>(
     await new OrchestrationEmbeddingClient({
       embeddings: {
         model: {
-          name: 'text-embedding-ada-002'
+          name: 'text-embedding-3-small'
         }
       }
     }).embed({
@@ -171,7 +171,7 @@ expectType<Promise<OrchestrationEmbeddingResponse>>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002',
+        name: 'text-embedding-3-small',
         params: {
           dimensions: 1536
         }
@@ -189,7 +189,7 @@ expectType<Promise<OrchestrationEmbeddingResponse>>(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     },
     masking: {
@@ -220,11 +220,11 @@ expectAssignable<EmbeddingData>({
 });
 
 expectAssignable<EmbeddingModelDetails>({
-  name: 'text-embedding-ada-002'
+  name: 'text-embedding-3-small'
 });
 
 expectAssignable<EmbeddingModelDetails>({
-  name: 'text-embedding-ada-002',
+  name: 'text-embedding-3-small',
   params: {
     dimensions: 1536
   }
@@ -255,7 +255,7 @@ expectError(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   }).embed({
@@ -271,7 +271,7 @@ expectError(
   new OrchestrationEmbeddingClient({
     embeddings: {
       model: {
-        name: 'text-embedding-ada-002'
+        name: 'text-embedding-3-small'
       }
     }
   }).embed({})
