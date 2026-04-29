@@ -6,9 +6,6 @@ on:
       majorVersion:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
-env:
-  DOCS_REPO: SAP/ai-sdk
-  DOCS_CHECKOUT_PATH: ./ai-sdk-docs
 
 jobs:
   auth:
@@ -19,25 +16,34 @@ jobs:
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
         with:
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
-      - name: bump version
-        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          persist-credentials: 'true'
+      - name: Bump version
         id: bump
+        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
         with:
           majorVersion: ${{ inputs.majorVersion }}
-      - name: merge and write Changelogs
+      - name: Merge and write changelogs
         id: merge-changelogs
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-      - uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
-        name: Commit and tag
+        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+      - name: Commit and tag
+        uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
         with:
           version: ${{ steps.bump.outputs.version }}
-          user-name: sap-ai-sdk
+          user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
 
   prepare-release-notes-and-docs:
     name: Prepare Release Notes and API Documentation
@@ -46,52 +52,66 @@ jobs:
     outputs:
       pr_url: ${{ steps.open_pr.outputs.pr_url }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
       - name: Checkout current repository
-        uses: sap/ai-sdk-js/.github/actions/setup@main
+        uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-      
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+
       - name: Generate API documentation
         run: |
           pnpm generate
           pnpm doc
-      
+
       - name: Checkout Docs Repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          repository: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          repository: SAP/ai-sdk
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
-          path: ${{ env.DOCS_CHECKOUT_PATH }}
-      
+          path: ./ai-sdk-docs
       - name: Update release notes file
         id: update-notes
         run: |
           pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
-      
+
       - name: Copy API documentation to docs repo
         run: |
           # Extract major version from full version (e.g., "2.8.0" -> "v2")
           FULL_VERSION="${{ needs.bump.outputs.version }}"
           MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
           VERSION="v${MAJOR_VERSION}"
-          
+
           # Copy generated docs to versioned folder
           rsync -avz --delete knowledge-base/api-reference/ "${{ env.DOCS_CHECKOUT_PATH }}/static/api/${VERSION}/"
-      
+
       - name: Open Release notes and API docs PR
         id: open_pr
-        working-directory: ${{ env.DOCS_CHECKOUT_PATH }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        working-directory: ./ai-sdk-docs
         run: |
-          git config --local user.email "cloudsdk@sap.com"
-          git config --local user.name "SAP Cloud SDK Bot"
+          git config --local user.email "$BOT_EMAIL"
+          git config --local user.name "$BOT_NAME"
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
-          
+
           # Stage both release notes and API docs
           git add docs-js/release-notes.mdx
           git add static/api/
-          
+
           if git diff --staged --quiet; then
             echo "No changes to commit."
             # Output an empty pr_url if no changes
@@ -105,7 +125,7 @@ jobs:
             - Updated release notes for version ${{ needs.bump.outputs.version }}
             - Updated API documentation"
             PR_TITLE="Update JS Release Notes and API Docs for ${{ needs.bump.outputs.version }}"
-            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "${{ env.DOCS_REPO }}")
+            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
             echo "Release notes and API docs PR created: $PR_URL"
             if [[ -n "$PR_URL" ]]; then
               echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
@@ -114,5 +134,3 @@ jobs:
               echo "pr_url=" >> "$GITHUB_OUTPUT"
             fi
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}

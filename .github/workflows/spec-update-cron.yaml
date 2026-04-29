@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: 'Get orchestration version'
         id: orch-version
+        env:
+          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
           ORCH_VERSION=$(curl --fail --silent --request GET \
             --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
@@ -31,8 +33,6 @@ jobs:
           echo "Orchestration version: $ORCH_VERSION"
           ORCH_VERSION="$(echo "$ORCH_VERSION" | sed 's/-.*//')"
           echo "orchestration-branch=rel-$ORCH_VERSION" >> "$GITHUB_OUTPUT"
-        env:
-          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
   # get-rpt-reference:
   #   runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Slack Notification'
-        uses: slackapi/slack-github-action@v3.0.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

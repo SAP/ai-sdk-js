@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -35,14 +35,14 @@
     "rename-generated-files": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-orchestration.ts ./src/client/api"
   },
   "dependencies": {
-    "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
-    "@sap-cloud-sdk/util": "^4.5.1",
+    "@sap-cloud-sdk/util": "^4.6.0",
     "yaml": "^2.8.3"
   },
   "devDependencies": {
-    "@sap-cloud-sdk/http-client": "^4.5.1",
-    "@sap-cloud-sdk/connectivity": "^4.5.1"
+    "@sap-cloud-sdk/connectivity": "^4.6.0",
+    "@sap-cloud-sdk/http-client": "^4.6.0"
   }
 }

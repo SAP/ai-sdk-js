@@ -3,9 +3,6 @@ name: publish
 on:
   workflow_call:
 
-env:
-  DOCS_REPO: SAP/ai-sdk
-
 jobs:
   check-docs-pr:
     name: Check Docs PR Status (Release Notes + API Docs)
@@ -14,7 +11,20 @@ jobs:
       docs_branch: ${{ steps.determine-branch-name.outputs.docs_branch }}
       is_merged: ${{ steps.check_pr_status.outputs.merged }}
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: read
+          permission-pull-requests: read
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          package-manager-cache: false
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Determine Docs PR Branch Name
         id: determine-branch-name
         run: |
@@ -25,26 +35,26 @@ jobs:
 
       - name: Check PR Status (Exists, Merged)
         id: check_pr_status
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           BRANCH_NAME="${{ steps.determine-branch-name.outputs.docs_branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
           # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
-          MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "${{ env.DOCS_REPO }}" --json state --jq '.state == "MERGED" | tostring')
+          MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "SAP/ai-sdk" --json state --jq '.state == "MERGED" | tostring')
 
           # This part only runs if the above command succeeded
           echo "PR found. Is Merged: $MERGED_OUTPUT"
           echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
-        env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
 
       - name: 'Check Whether Docs PR Can Be Merged'
         if: steps.check_pr_status.outputs.merged == 'false'
         uses: ./.github/actions/pr-is-mergeable
         with:
           pr-ref: ${{ steps.determine-branch-name.outputs.docs_branch }}
-          repo: ${{ env.DOCS_REPO }}
-          token: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
+          repo: SAP/ai-sdk
+          token: ${{ steps.app-token.outputs.token }}
           excluded-check-runs: |
             {
               \"Build Cloud SDK Documentation\": [\"dependabot\"]
@@ -57,9 +67,11 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
+          package-manager-cache: false
+          registry-url: 'https://registry.npmjs.org'
       - name: publish
         run: |
           pnpm changeset publish
@@ -70,9 +82,19 @@ jobs:
     needs: [check-docs-pr, publish-npm]
     if: needs.check-docs-pr.outputs.is_merged == 'false'
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
       - name: 'Merge Docs PR'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           echo "Attempting to merge PR for branch: ${{ needs.check-docs-pr.outputs.docs_branch }}"
           gh pr merge --squash "${{ needs.check-docs-pr.outputs.docs_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
-        env:
-          GH_TOKEN: ${{ secrets.GH_CLOUD_SDK_JS_ADMIN_WRITE_TOKEN }}
