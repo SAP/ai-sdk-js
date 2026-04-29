@@ -67,13 +67,19 @@ export function constructCompletionPostRequestFromConfigReference(
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
+  // Route request.messages into messages_history since there is no local
+  // prompt.template to merge them into for config references.
+  const messagesHistory = request?.messages?.length
+    ? [...(request.messagesHistory || []), ...request.messages]
+    : request?.messagesHistory;
+
   return {
     config_ref: configRef,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(request?.messagesHistory && {
-      messages_history: request.messagesHistory
+    ...(messagesHistory && {
+      messages_history: messagesHistory
     })
   } as
     | CompletionRequestConfigurationReferenceById
@@ -351,12 +357,27 @@ export function constructCompletionPostRequest(
   // The orchestration service expects the config structure to match the input:
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
+
+  // When any config uses a TemplateRef, messages cannot be merged into prompt.template
+  // (the template lives remotely). Route them to messages_history instead.
+  const configs = Array.isArray(config) ? config : [config];
+  const routeMessagesToHistory = configs.some(c =>
+    isTemplateRef(
+      (c.promptTemplating.prompt as Template | TemplateRef) || {}
+    )
+  );
+
+  const moduleRequest =
+    routeMessagesToHistory && request
+      ? { ...request, messages: undefined }
+      : request;
+
   /**
    * Module configurations for the orchestration request.
    */
   const moduleConfigurations = Array.isArray(config)
-    ? config.map(c => buildCompletionModulesConfig(c, request))
-    : buildCompletionModulesConfig(config, request);
+    ? config.map(c => buildCompletionModulesConfig(c, moduleRequest))
+    : buildCompletionModulesConfig(config, moduleRequest);
 
   /**
    * Orchestration configuration with or without streaming enabled.
@@ -370,13 +391,19 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
+  // When routing messages to history, append request.messages after messagesHistory
+  const messagesHistory =
+    routeMessagesToHistory && request?.messages?.length
+      ? [...(request.messagesHistory || []), ...request.messages]
+      : undefined;
+
   return {
     config: configWithStream,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(request?.messagesHistory && {
-      messages_history: request.messagesHistory
+    ...((messagesHistory || request?.messagesHistory) && {
+      messages_history: messagesHistory || request?.messagesHistory
     })
   };
 }
@@ -425,6 +452,16 @@ function isTemplate(
     templating &&
     typeof templating === 'object' &&
     !('template_ref' in templating)
+  );
+}
+
+function isTemplateRef(
+  templating: Template | TemplateRef
+): templating is TemplateRef {
+  return (
+    templating &&
+    typeof templating === 'object' &&
+    'template_ref' in templating
   );
 }
 
