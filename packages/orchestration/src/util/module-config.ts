@@ -362,9 +362,7 @@ export function constructCompletionPostRequest(
   // (the template lives remotely). Route them to messages_history instead.
   const configs = Array.isArray(config) ? config : [config];
   const routeMessagesToHistory = configs.some(c =>
-    isTemplateRef(
-      (c.promptTemplating.prompt as Template | TemplateRef) || {}
-    )
+    isTemplateRef((c.promptTemplating.prompt as Template | TemplateRef) || {})
   );
 
   const moduleRequest =
@@ -459,9 +457,7 @@ function isTemplateRef(
   templating: Template | TemplateRef
 ): templating is TemplateRef {
   return (
-    templating &&
-    typeof templating === 'object' &&
-    'template_ref' in templating
+    templating && typeof templating === 'object' && 'template_ref' in templating
   );
 }
 
