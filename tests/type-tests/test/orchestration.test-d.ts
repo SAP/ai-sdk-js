@@ -681,6 +681,20 @@ expectType<
 );
 
 /**
+ * Messages can be passed with a prompt template reference and will be routed to messages_history.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    promptTemplating: {
+      prompt: { template_ref: { id: 'template-id' } },
+      model: { name: 'gpt-5-mini' }
+    }
+  }).chatCompletion({
+    messages: [{ role: 'user', content: 'Hello!' }]
+  })
+);
+
+/**
  * isConfigReference function should be importable as a value (not just a type).
  */
 expectType<boolean>(

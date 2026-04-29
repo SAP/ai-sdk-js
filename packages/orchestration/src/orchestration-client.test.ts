@@ -1342,7 +1342,13 @@ describe('orchestration service client', () => {
         messages: [{ role: 'user', content: 'test' }]
       });
 
-      for await (const _ of response.stream) {
+      const initialResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-initial.json'
+      );
+
+      for await (const chunk of response.stream) {
+        expect(chunk._data).toEqual(JSON.parse(initialResponse));
         break;
       }
 
