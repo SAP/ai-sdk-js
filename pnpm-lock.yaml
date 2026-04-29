@@ -405,8 +405,8 @@ importers:
         specifier: '=5.2.1'
         version: 5.2.1
       hono:
-        specifier: '=4.12.14'
-        version: 4.12.14
+        specifier: '=4.12.15'
+        version: 4.12.15
       langchain:
         specifier: '=1.3.4'
         version: 1.3.4(@langchain/core@1.1.41(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0))(openai@6.34.0(ws@8.20.0)(zod@4.3.6))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.3.6))
@@ -435,6 +435,9 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../../packages/foundation-models
+      '@sap-ai-sdk/langchain':
+        specifier: workspace:^
+        version: link:../../packages/langchain
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration
@@ -2952,6 +2955,10 @@ packages:
 
   hono@4.12.14:
     resolution: {integrity: sha512-am5zfg3yu6sqn5yjKBNqhnTX7Cv+m00ox+7jbaKkrLMRJ4rAdldd1xPd/JzbBWspqaQv6RSTrgFN95EsfhC+7w==}
+    engines: {node: '>=16.9.0'}
+
+  hono@4.12.15:
+    resolution: {integrity: sha512-qM0jDhFEaCBb4TxoW7f53Qrpv9RBiayUHo0S52JudprkhvpjIrGoU1mnnr29Fvd1U335ZFPZQY1wlkqgfGXyLg==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -8166,6 +8173,8 @@ snapshots:
       parse-passwd: 1.0.0
 
   hono@4.12.14: {}
+
+  hono@4.12.15: {}
 
   hosted-git-info@2.8.9: {}
 
