@@ -400,8 +400,8 @@ export function constructCompletionPostRequest(
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...((messagesHistory || request?.messagesHistory) && {
-      messages_history: messagesHistory || request?.messagesHistory
+    ...(messagesHistory && {
+      messages_history: messagesHistory
     })
   };
 }
