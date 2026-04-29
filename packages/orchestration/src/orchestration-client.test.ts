@@ -1263,13 +1263,13 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('warns when messages field is provided with config reference by ID', async () => {
+    it('logs debug and routes messages to messages_history when using config reference by ID', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'
       });
 
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const debugSpy = jest.spyOn(logger, 'debug');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1283,7 +1283,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            messages_history: [{ role: 'user', content: 'test' }]
           }
         },
         {
@@ -1299,9 +1300,105 @@ describe('orchestration service client', () => {
         messages: [{ role: 'user', content: 'test' }]
       });
 
-      expect(warnSpy).toHaveBeenCalledWith(
-        'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
+      expect(debugSpy).toHaveBeenCalledWith(
+        'Messages provided with an orchestration config reference will be sent as messages_history.'
       );
+    });
+
+    it('routes messages to messages_history when streaming with config reference', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+
+      const debugSpy = jest.spyOn(logger, 'debug');
+
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            messages_history: [{ role: 'user', content: 'test' }]
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream({
+        messages: [{ role: 'user', content: 'test' }]
+      });
+
+      for await (const _ of response.stream) {
+        break;
+      }
+
+      expect(debugSpy).toHaveBeenCalledWith(
+        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      );
+    });
+
+    it('routes messages to messages_history when using a prompt template reference', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: {
+            template_ref: {
+              id: 'test-template-id'
+            }
+          },
+          model: {
+            name: 'gpt-5-mini',
+            params: { max_tokens: 50 }
+          }
+        }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config: {
+              modules: {
+                prompt_templating: {
+                  prompt: { template_ref: { id: 'test-template-id' } },
+                  model: { name: 'gpt-5-mini', params: { max_tokens: 50 } }
+                }
+              }
+            },
+            messages_history: [{ role: 'user', content: 'Hello' }]
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).chatCompletion({
+        messages: [{ role: 'user', content: 'Hello' }]
+      });
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
     });
 
     it('throws error when server returns non-streaming JSON response for config reference without streaming enabled', async () => {
