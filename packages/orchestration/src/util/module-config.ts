@@ -362,7 +362,7 @@ export function constructCompletionPostRequest(
   // (the template lives remotely). Route them to messages_history instead.
   const configs = Array.isArray(config) ? config : [config];
   const routeMessagesToHistory = configs.some(c =>
-    isTemplateRef((c.promptTemplating.prompt as Template | TemplateRef) || {})
+    isTemplateRef(c?.promptTemplating?.prompt || {})
   );
 
   const moduleRequest =
@@ -443,21 +443,19 @@ function buildCompletionModulesConfig(
   };
 }
 
-function isTemplate(
-  templating: Template | TemplateRef
-): templating is Template {
+function isTemplate(templating: unknown): templating is Template {
   return (
-    templating &&
+    !!templating &&
     typeof templating === 'object' &&
     !('template_ref' in templating)
   );
 }
 
-function isTemplateRef(
-  templating: Template | TemplateRef
-): templating is TemplateRef {
+function isTemplateRef(templating: unknown): templating is TemplateRef {
   return (
-    templating && typeof templating === 'object' && 'template_ref' in templating
+    !!templating &&
+    typeof templating === 'object' &&
+    'template_ref' in templating
   );
 }
 
