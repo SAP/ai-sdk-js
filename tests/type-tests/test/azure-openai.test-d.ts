@@ -1,4 +1,4 @@
-import { expectType } from 'tsd';
+import { expectAssignable, expectType } from 'tsd';
 import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
@@ -160,8 +160,8 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
   })
 );
 
-expect<AzureOpenAiChatModel>('custom-model');
-expect<AzureOpenAiChatModel>('gpt-5-mini');
+expectAssignable<AzureOpenAiChatModel>('custom-model');
+expectAssignable<AzureOpenAiChatModel>('gpt-5-mini');
 
 /**
  * Streaming.
