@@ -45,12 +45,11 @@ jobs:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
 
-  prepare-release-notes-and-docs:
-    name: Prepare Release Notes and API Documentation
+  release-notes:
     runs-on: ubuntu-latest
     needs: [bump]
     outputs:
-      pr_url: ${{ steps.open_pr.outputs.pr_url }}
+      pr-url: ${{ steps.open-pr.outputs.pr-url }}
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -68,11 +67,6 @@ jobs:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
 
-      - name: Generate API documentation
-        run: |
-          pnpm generate
-          pnpm doc
-
       - name: Checkout Docs Repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -85,18 +79,8 @@ jobs:
         run: |
           pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
 
-      - name: Copy API documentation to docs repo
-        run: |
-          # Extract major version from full version (e.g., "2.8.0" -> "v2")
-          FULL_VERSION="${{ needs.bump.outputs.version }}"
-          MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
-          VERSION="v${MAJOR_VERSION}"
-
-          # Copy generated docs to versioned folder
-          rsync -avz --delete knowledge-base/api-reference/ "${{ env.DOCS_CHECKOUT_PATH }}/static/api/${VERSION}/"
-
-      - name: Open Release notes and API docs PR
-        id: open_pr
+      - name: Open release notes PR
+        id: open-pr
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
@@ -107,30 +91,25 @@ jobs:
           git config --local user.name "$BOT_NAME"
           BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
           git checkout -b "${BRANCH_NAME}"
-
-          # Stage both release notes and API docs
+          
+          # Stage release notes
           git add docs-js/release-notes.mdx
-          git add static/api/
-
+          
           if git diff --staged --quiet; then
             echo "No changes to commit."
-            # Output an empty pr_url if no changes
-            echo "pr_url=" >> "$GITHUB_OUTPUT"
+            # Output an empty pr-url if no changes
+            echo "pr-url=" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update JS release notes and API documentation for ${{ needs.bump.outputs.version }}"
+            git commit -m "Update JS release notes for ${{ needs.bump.outputs.version }}"
             git push -u origin "${BRANCH_NAME}"
-            PR_BODY="Auto-created by bump workflow.
-
-            This PR includes:
-            - Updated release notes for version ${{ needs.bump.outputs.version }}
-            - Updated API documentation"
-            PR_TITLE="Update JS Release Notes and API Docs for ${{ needs.bump.outputs.version }}"
+            PR_BODY="Auto-created by bump workflow."
+            PR_TITLE="chore: Update JS Release Notes for ${{ needs.bump.outputs.version }}"
             PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
-            echo "Release notes and API docs PR created: $PR_URL"
+            echo "Release notes PR created: $PR_URL"
             if [[ -n "$PR_URL" ]]; then
-              echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+              echo "pr-url=$PR_URL" >> "$GITHUB_OUTPUT"
             else
               echo "Failed to create PR or extract URL."
-              echo "pr_url=" >> "$GITHUB_OUTPUT"
+              echo "pr-url=" >> "$GITHUB_OUTPUT"
             fi
           fi

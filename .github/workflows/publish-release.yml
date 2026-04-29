@@ -4,12 +4,12 @@ on:
   workflow_call:
 
 jobs:
-  check-docs-pr:
-    name: Check Docs PR Status (Release Notes + API Docs)
+  check-release-notes-pr:
+    name: Check Release Notes PR Status
     runs-on: ubuntu-latest
     outputs:
-      docs_branch: ${{ steps.determine-branch-name.outputs.docs_branch }}
-      is_merged: ${{ steps.check_pr_status.outputs.merged }}
+      release-notes-branch: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
+      is-merged: ${{ steps.check-pr-status.outputs.merged }}
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -25,20 +25,20 @@ jobs:
         with:
           package-manager-cache: false
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
-      - name: Determine Docs PR Branch Name
+      - name: Determine Release Notes PR Branch Name
         id: determine-branch-name
         run: |
           VERSION=$(pnpm node -p "require('./package.json').version")
           echo "Using version: $VERSION"
           BRANCH_NAME="update-release-notes-js-$VERSION"
-          echo "docs_branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+          echo "release-notes-branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Check PR Status (Exists, Merged)
-        id: check_pr_status
+        id: check-pr-status
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          BRANCH_NAME="${{ steps.determine-branch-name.outputs.docs_branch }}"
+          BRANCH_NAME="${{ steps.determine-branch-name.outputs.release-notes-branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
           # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
@@ -48,11 +48,11 @@ jobs:
           echo "PR found. Is Merged: $MERGED_OUTPUT"
           echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
 
-      - name: 'Check Whether Docs PR Can Be Merged'
-        if: steps.check_pr_status.outputs.merged == 'false'
+      - name: 'Check Whether Release Notes PR Can Be Merged'
+        if: steps.check-pr-status.outputs.merged == 'false'
         uses: ./.github/actions/pr-is-mergeable
         with:
-          pr-ref: ${{ steps.determine-branch-name.outputs.docs_branch }}
+          pr-ref: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
           repo: SAP/ai-sdk
           token: ${{ steps.app-token.outputs.token }}
           excluded-check-runs: |
@@ -63,7 +63,7 @@ jobs:
   publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    needs: [check-docs-pr]
+    needs: [check-release-notes-pr]
     permissions:
       id-token: write
     steps:
@@ -76,11 +76,11 @@ jobs:
         run: |
           pnpm changeset publish
 
-  merge-docs-pr:
-    name: Merge Docs PR (if needed)
+  merge-release-notes-pr:
+    name: Merge Release Notes PR (if needed)
     runs-on: ubuntu-latest
-    needs: [check-docs-pr, publish-npm]
-    if: needs.check-docs-pr.outputs.is_merged == 'false'
+    needs: [check-release-notes-pr, publish-npm]
+    if: needs.check-release-notes-pr.outputs.is-merged == 'false'
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -92,9 +92,10 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
           permission-pull-requests: write
-      - name: 'Merge Docs PR'
+      - name: 'Merge Release Notes PR'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          echo "Attempting to merge PR for branch: ${{ needs.check-docs-pr.outputs.docs_branch }}"
-          gh pr merge --squash "${{ needs.check-docs-pr.outputs.docs_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+          echo "Attempting to merge PR for branch: ${{ needs.check-release-notes-pr.outputs.release-notes-branch }}"
+          gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release-notes-branch }}" --delete-branch --repo "SAP/ai-sdk"
+
