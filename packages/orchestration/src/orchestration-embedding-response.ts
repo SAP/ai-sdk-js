@@ -3,7 +3,9 @@ import type {
   EmbeddingsPostResponse,
   EmbeddingResult,
   EmbeddingsUsage,
-  ModuleResultsBase
+  ModuleResultsBase,
+  Embedding,
+  EmbeddingMultiFormat
 } from './client/api/schema/index.js';
 import type { EmbeddingData } from './orchestration-types.js';
 
@@ -23,7 +25,7 @@ export class OrchestrationEmbeddingResponse {
    */
   getEmbeddings(): EmbeddingData[] {
     return this._data.final_result.data.map((result: EmbeddingResult) => ({
-      embedding: result.embedding,
+      embedding: result.embedding as Exclude<Embedding, EmbeddingMultiFormat>,
       index: result.index,
       object: 'embedding'
     }));

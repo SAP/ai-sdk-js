@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/ai-api",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -27,6 +27,7 @@
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm update-imports && pnpm lint:fix",
@@ -34,7 +35,7 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.5.1",
-    "@sap-cloud-sdk/util": "^4.5.1"
+    "@sap-cloud-sdk/connectivity": "^4.6.0",
+    "@sap-cloud-sdk/util": "^4.6.0"
   }
 }

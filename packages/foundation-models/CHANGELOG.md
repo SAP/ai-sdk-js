@@ -1,5 +1,22 @@
 # @sap-ai-sdk/foundation-models
 
+## 2.10.0
+
+### Minor Changes
+
+- a722171: [compat] Support for constructing an `AzureOpenAiChatCompletionStreamResponse` without an `HttpResponse` has been deprecated, and will be removed in the next major release.
+  Code directly instantiating this class should be updated to provide an `HttpResponse` object as the first parameter to allow reading from raw HTTP response.
+- a722171: [feat] Add `getRequestId()` method to `AzureOpenAiChatCompletionResponse`, `AzureOpenAiChatCompletionStreamResponse` and `AzureOpenAiEmbeddingResponse`.
+  The new method retrieves the request ID from the `x-aicore-request-id` response header, useful for debugging and tracking requests.
+- a722171: [feat] Add `rawResponse` property to `AzureOpenAiChatCompletionStreamResponse`.
+  The new property exposes the raw HTTP response for advanced use cases such as accessing response headers.
+
+### Patch Changes
+
+- Updated dependencies [8cb466a]
+  - @sap-ai-sdk/core@2.10.0
+  - @sap-ai-sdk/ai-api@2.10.0
+
 ## 2.9.0
 
 ### Patch Changes

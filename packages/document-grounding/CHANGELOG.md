@@ -1,5 +1,34 @@
 # @sap-ai-sdk/document-grounding
 
+## 2.10.0
+
+### Minor Changes
+
+- 029f091: [Compatibility Note] `DocumentKeyValueListPair`, `RetrievalDocumentKeyValueListPair`, `VectorDocumentKeyValueListPair`: the `matchMode` property type was narrowed from an open union (`'ANY' | 'ALL' | any`) to the strict `FilterMatchModeEnum` (`'ANY' | 'ALL'`).
+- 029f091: [Compatibility Note] `CollectionPendingResponse`: fields `Location` and `status` were removed.
+  A new `monitorURL` property was added instead.
+- 029f091: [feat] Update document grounding specification.
+- 94546e6: [compat] `GoogleDrivePipelineCreateRequest`: the `configuration` property is now required (was optional).
+  Code constructing this request without `configuration` must be updated to provide it.
+- 94546e6: [compat] `GoogleDriveFolderDetail` type was removed.
+  Code referencing `GoogleDriveFolderDetail` must be updated to use `GoogleDriveResourceDetail` instead.
+- 029f091: [Compatibility Note] `DataRepositoryType`, `RetrievalSearchSelectOptionEnum`, `VectorSearchSelectOptionEnum`: previously open (`| any`) unions are now strictly typed.
+  Only the specified string literals are accepted.
+- 029f091: [Compatibility Note] `S3PipelineMinimalResponse`, `SFTPPipelineMinimalResponse`: the `configuration` property is now optional.
+- 94546e6: [compat] `GoogleDriveFolder` type was removed and replaced by `GoogleDriveResourceDetail`.
+  The properties `id`, `driveId`, and `driverType` were replaced by `resourceType` and `resourceId`.
+  Code referencing `GoogleDriveFolder` or its properties must be updated to use `GoogleDriveResourceDetail` with the new property names.
+- 029f091: [Compatibility Note] `TextOnlyBaseChunk`: new required field `id: string` added and `metadata` is now optional.
+- 94546e6: [compat] `GoogleDriveConfig`: the `folder` property was removed and replaced by a new required `resourceType: 'SHARED_FOLDER' | 'SHARED_DRIVE'` property, plus optional `resourceId` and `includePaths` properties.
+  Code constructing `GoogleDriveConfig` objects must be updated to use the new shape.
+- 029f091: [Compatibility Note] `BaseDocument` / `DocumentInput`: `chunks` type changed from `TextOnlyBaseChunk[]` to `TextOnlyBaseChunkCreate[]`.
+  The `metadata` property is now optional.
+
+### Patch Changes
+
+- Updated dependencies [8cb466a]
+  - @sap-ai-sdk/core@2.10.0
+
 ## 2.9.0
 
 ### Patch Changes

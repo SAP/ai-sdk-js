@@ -44,7 +44,8 @@ async function cleanupDeployments(): Promise<void> {
   } catch (errorData: any) {
     const apiError = errorData.response.data.error as AiApiError;
     throw new Error(
-      `Deployment cleanup failed: ${apiError.message}. Manual action is required.`
+      `Deployment cleanup failed: ${apiError.message}. Manual action is required.`,
+      { cause: errorData }
     );
   }
 }

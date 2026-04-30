@@ -20,5 +20,7 @@ export type DataRepository = {
    * Default: [].
    */
   metadata?: RetrievalKeyValueListPair[];
+  remoteGroundingName?: string | null;
+  message?: string | null;
   type: DataRepositoryType;
 } & Record<string, any>;

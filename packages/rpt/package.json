@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/rpt",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
   "license": "Apache-2.0",
   "keywords": [
@@ -28,6 +28,7 @@
     "compile": "tsc",
     "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
@@ -39,8 +40,8 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.5.1",
-    "@sap-cloud-sdk/http-client": "^4.5.1",
-    "@sap-cloud-sdk/util": "^4.5.1"
+    "@sap-cloud-sdk/connectivity": "^4.6.0",
+    "@sap-cloud-sdk/http-client": "^4.6.0",
+    "@sap-cloud-sdk/util": "^4.6.0"
   }
 }

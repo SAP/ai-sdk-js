@@ -16,6 +16,7 @@ import {
   isOrchestrationModuleConfigList,
   assertIsOrchestrationModuleConfigList
 } from './orchestration-types.js';
+import type { Xor } from '@sap-cloud-sdk/util';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
@@ -59,16 +60,18 @@ export class OrchestrationClient {
    */
   constructor(
     private config:
-      | OrchestrationModuleConfig
-      | OrchestrationModuleConfigList
       | string
-      | OrchestrationConfigRef,
+      | Xor<
+          OrchestrationConfigRef,
+          OrchestrationModuleConfig | OrchestrationModuleConfigList
+        >,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
     } else if (Array.isArray(config)) {
+      assertIsOrchestrationModuleConfigList(config);
       this.config = this.parseModuleConfigList(config);
     } else if (!isConfigReference(config)) {
       this.config = this.parseTemplatingModule(config);
@@ -259,7 +262,7 @@ export class OrchestrationClient {
     try {
       JSON.parse(config);
     } catch (error) {
-      throw new Error(`Could not parse JSON: ${error}`);
+      throw new Error(`Could not parse JSON: ${error}`, { cause: error });
     }
   }
 
@@ -282,7 +285,7 @@ export class OrchestrationClient {
     try {
       parsedObject = yaml.parse(config.promptTemplating.prompt as string);
     } catch (error) {
-      throw new Error(`Error parsing YAML: ${error}`);
+      throw new Error(`Error parsing YAML: ${error}`, { cause: error });
     }
 
     const result =

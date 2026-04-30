@@ -18,7 +18,12 @@ export function definePackageConfig(name: string) {
         name,
         include: ['src/**/*.test.ts'],
         exclude: ['**/dist/**'],
-        globalSetup: ['../../global-test-setup.mjs']
+        globalSetup: ['../../global-test-setup.mjs'],
+        coverage: {
+          provider: 'v8',
+          reporter: ['lcov', 'html'],
+          reportsDirectory: 'coverage'
+        }
       }
     })
   );
