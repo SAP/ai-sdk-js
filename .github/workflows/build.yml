@@ -22,9 +22,10 @@ jobs:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - run: pnpm test:unit
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
+        if: ${{ env.SONAR_TOKEN != '' }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
       - run: pnpm test:type
 
   checks:
