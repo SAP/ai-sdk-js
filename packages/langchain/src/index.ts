@@ -16,5 +16,6 @@ export type {
   OrchestrationCallOptions,
   LangChainOrchestrationChatModelParams,
   LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList,
   ChatOrchestrationToolType
 } from './orchestration/index.js';

@@ -14,11 +14,14 @@ describe('document grounding', () => {
     const collectionId = await createCollection();
     const timestamp = Date.now();
     await createDocumentsWithTimestamp(collectionId, timestamp);
-    const result = await orchestrationGrounding(
-      'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
-    );
-    expect(result.getContent()).toEqual(timestamp.toString());
-    await deleteCollection(collectionId);
+    try {
+      const result = await orchestrationGrounding(
+        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+      );
+      expect(result.getContent()).toEqual(timestamp.toString());
+    } finally {
+      await deleteCollection(collectionId);
+    }
   });
 
   it('should get the result based on grounding context from `help.sap.com` data respository via orchestration API', async () => {

@@ -46,11 +46,13 @@ export {
 } from './langchain-azure-openai.js';
 export {
   invokeChain as orchestrationInvokeChain,
+  invokeChainWithFallbackConfigs as orchestrationInvokeChainWithFallbackConfigs,
   invokeLangGraphChain,
   invokeDynamicModelAgent,
   invokeLangGraphChainStream,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  streamChain
+  streamChain,
+  streamChainWithFallbackConfigs as orchestrationStreamChainWithFallbackConfigs
 } from './langchain-orchestration.js';
 export {
   getDeployments,

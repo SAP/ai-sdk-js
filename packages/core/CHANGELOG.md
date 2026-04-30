@@ -1,5 +1,11 @@
 # @sap-ai-sdk/core
 
+## 2.10.0
+
+### Minor Changes
+
+- 8cb466a: [Improvement] Remove deprecated models `amazon--titan-embed-image` and `anthropic--claude-4.5-opus`.
+
 ## 2.9.0
 
 ### Minor Changes

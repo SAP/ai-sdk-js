@@ -3,10 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { GoogleDriveFolderDetail } from './google-drive-folder-detail.js';
+import type { GoogleDriveResourceDetail } from './google-drive-resource-detail.js';
 /**
  * Representation of the 'GoogleDriveConfigurationMinimal' schema.
  */
 export type GoogleDriveConfigurationMinimal = {
-  googleDrive: GoogleDriveFolderDetail;
+  googleDrive: GoogleDriveResourceDetail;
 };

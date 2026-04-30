@@ -17,7 +17,8 @@ describe('DeploymentApi', () => {
     });
   });
 
-  it('should create and delete a deployment', async () => {
+  // ToDo: Re-enable after the deployment limits per tenant are either increased or we implement a cleanup strategy for unused deployments.
+  it.skip('should create and delete a deployment', async () => {
     const createResponse = await createDeployment(
       configurationId,
       resourceGroup

@@ -72,8 +72,10 @@ jobs:
       CREATE_PR: ${{ inputs.create-pr }}
       BRANCH: spec-update/${{ inputs.service }}/${{ inputs.ref }}
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          persist-credentials: 'true'
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Checkout or Create Branch'
