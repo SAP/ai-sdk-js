@@ -757,7 +757,7 @@ describe('orchestration service client', () => {
       const primaryConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-4o',
+            name: 'gpt-5.2',
             params: {}
           }
         }
@@ -821,7 +821,7 @@ describe('orchestration service client', () => {
       const primaryConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-4o',
+            name: 'gpt-5.2',
             params: {
               stop: ['PRIMARY_STOP']
             }
