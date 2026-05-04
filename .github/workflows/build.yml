@@ -21,6 +21,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - run: pnpm test:unit
+      - name: Fetch main for SonarQube blame
+        if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
+        run: git fetch --unshallow origin main
       - name: SonarQube Scan
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
