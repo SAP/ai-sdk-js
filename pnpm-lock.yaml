@@ -405,8 +405,8 @@ importers:
         specifier: '=5.2.1'
         version: 5.2.1
       hono:
-        specifier: '=4.12.15'
-        version: 4.12.15
+        specifier: '=4.12.16'
+        version: 4.12.16
       langchain:
         specifier: '=1.3.5'
         version: 1.3.5(@langchain/core@1.1.42(openai@6.35.0(ws@8.20.0)(zod@4.4.0))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.0))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.0))
@@ -2956,8 +2956,8 @@ packages:
     resolution: {integrity: sha512-am5zfg3yu6sqn5yjKBNqhnTX7Cv+m00ox+7jbaKkrLMRJ4rAdldd1xPd/JzbBWspqaQv6RSTrgFN95EsfhC+7w==}
     engines: {node: '>=16.9.0'}
 
-  hono@4.12.15:
-    resolution: {integrity: sha512-qM0jDhFEaCBb4TxoW7f53Qrpv9RBiayUHo0S52JudprkhvpjIrGoU1mnnr29Fvd1U335ZFPZQY1wlkqgfGXyLg==}
+  hono@4.12.16:
+    resolution: {integrity: sha512-jN0ZewiNAWSe5khM3EyCmBb250+b40wWbwNILNfEvq84VREWwOIkuUsFONk/3i3nqkz7Oe1PcpM2mwQEK2L9Kg==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -8159,7 +8159,7 @@ snapshots:
 
   hono@4.12.14: {}
 
-  hono@4.12.15: {}
+  hono@4.12.16: {}
 
   hosted-git-info@2.8.9: {}
 
