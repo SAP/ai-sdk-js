@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@langchain/langgraph": "^1.2.9",
-    "zod": "^4.4.0"
+    "zod": "^4.4.1"
   },
   "peerDependencies": {
     "@langchain/core": "^1.1.16"
