@@ -28,6 +28,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           pnpm-install-args: --lockfile-only
+          skip-build: 'true'
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: 'true'
           token: ${{ steps.app-token.outputs.token }}

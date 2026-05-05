@@ -37,11 +37,11 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.6.0",
     "@sap-cloud-sdk/util": "^4.6.0",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@langchain/langgraph": "^1.2.9",
-    "zod": "^4.3.6"
+    "zod": "^4.4.1"
   },
   "peerDependencies": {
     "@langchain/core": "^1.1.16"
