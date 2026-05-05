@@ -80,6 +80,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
           path: ./ai-sdk-docs
+          persist-credentials: true
       - name: Update release notes file
         id: update-notes
         run: |
@@ -88,12 +89,14 @@ jobs:
       - name: Copy API documentation to docs repo
         run: |
           # Extract major version from full version (e.g., "2.8.0" -> "v2")
-          FULL_VERSION="${{ needs.bump.outputs.version }}"
+          FULL_VERSION="${NEEDS_BUMP_OUTPUTS_VERSION}"
           MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
           VERSION="v${MAJOR_VERSION}"
 
           # Copy generated docs to versioned folder
-          rsync -avz --delete knowledge-base/api-reference/ "${{ env.DOCS_CHECKOUT_PATH }}/static/api/${VERSION}/"
+          rsync -avz --delete knowledge-base/api-reference/ "${DOCS_CHECKOUT_PATH}/static/api/${VERSION}/"
+        env:
+          NEEDS_BUMP_OUTPUTS_VERSION: ${{ needs.bump.outputs.version }}
 
       - name: Open Release notes and API docs PR
         id: open_pr
@@ -101,11 +104,12 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          NEEDS_BUMP_OUTPUTS_VERSION: ${{ needs.bump.outputs.version }}
         working-directory: ./ai-sdk-docs
         run: |
           git config --local user.email "$BOT_EMAIL"
           git config --local user.name "$BOT_NAME"
-          BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
+          BRANCH_NAME="update-release-notes-js-${NEEDS_BUMP_OUTPUTS_VERSION}"
           git checkout -b "${BRANCH_NAME}"
 
           # Stage both release notes and API docs
@@ -117,14 +121,14 @@ jobs:
             # Output an empty pr_url if no changes
             echo "pr_url=" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update JS release notes and API documentation for ${{ needs.bump.outputs.version }}"
+            git commit -m "Update JS release notes and API documentation for ${NEEDS_BUMP_OUTPUTS_VERSION}"
             git push -u origin "${BRANCH_NAME}"
             PR_BODY="Auto-created by bump workflow.
 
             This PR includes:
-            - Updated release notes for version ${{ needs.bump.outputs.version }}
+            - Updated release notes for version ${NEEDS_BUMP_OUTPUTS_VERSION}
             - Updated API documentation"
-            PR_TITLE="Update JS Release Notes and API Docs for ${{ needs.bump.outputs.version }}"
+            PR_TITLE="Update JS Release Notes and API Docs for ${NEEDS_BUMP_OUTPUTS_VERSION}"
             PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
             echo "Release notes and API docs PR created: $PR_URL"
             if [[ -n "$PR_URL" ]]; then

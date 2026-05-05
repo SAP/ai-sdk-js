@@ -37,8 +37,9 @@ jobs:
         id: check_pr_status
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          STEPS_DETERMINE_BRANCH_NAME_OUTPUTS_DOCS_BRANCH: ${{ steps.determine-branch-name.outputs.docs_branch }}
         run: |
-          BRANCH_NAME="${{ steps.determine-branch-name.outputs.docs_branch }}"
+          BRANCH_NAME="${STEPS_DETERMINE_BRANCH_NAME_OUTPUTS_DOCS_BRANCH}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
           # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
@@ -95,6 +96,7 @@ jobs:
       - name: 'Merge Docs PR'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          NEEDS_CHECK_DOCS_PR_OUTPUTS_DOCS_BRANCH: ${{ needs.check-docs-pr.outputs.docs_branch }}
         run: |
-          echo "Attempting to merge PR for branch: ${{ needs.check-docs-pr.outputs.docs_branch }}"
-          gh pr merge --squash "${{ needs.check-docs-pr.outputs.docs_branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+          echo "Attempting to merge PR for branch: ${NEEDS_CHECK_DOCS_PR_OUTPUTS_DOCS_BRANCH}"
+          gh pr merge --squash "${NEEDS_CHECK_DOCS_PR_OUTPUTS_DOCS_BRANCH}" --delete-branch --repo "${DOCS_REPO}"

@@ -36,7 +36,9 @@ jobs:
       - name: publish
         run: |
           date=`date +%Y%m%d%H%M%S`
-          pnpm changeset pre enter ${date}
+          pnpm changeset pre enter "${date}"
           pnpm changeset version
           pnpm changeset pre exit
-          pnpm changeset publish --tag ${{ inputs.tag }}
+          pnpm changeset publish --tag "${INPUTS_TAG}"
+        env:
+          INPUTS_TAG: ${{ inputs.tag }}

@@ -59,13 +59,13 @@ jobs:
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        uses: sap/cloud-sdk-js/.github/actions/check-license@license-checker
+        uses: sap/cloud-sdk-js/.github/actions/check-license@main
       - name: API Doc Check
         run: pnpm doc
 
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ (github.actor == 'dependabot[bot]' || startsWith(github.event.pull_request.title, 'chore(deps')) && github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
     needs: [test, checks]
     permissions:
       pull-requests: write
