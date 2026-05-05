@@ -1,5 +1,5 @@
 name: spec update
-run-name: 'spec update: ${{ inputs.file }}-${{ inputs.file-ref }}'
+run-name: 'spec update: ${{ inputs.service }}-${{ inputs.ref }}'
 
 # Notes:
 # To use this workflow as a service owner:
@@ -248,23 +248,25 @@ jobs:
           PATCH_RESULT: ${{ steps.apply-patches.outputs.patch_result || 'skipped' }}
         run: |
           DIFF_URL="https://github.com/SAP/ai-sdk-js/compare/main...$BRANCH"
-          echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
-
-          echo "**Service:** $SERVICE" >> $GITHUB_STEP_SUMMARY
-          echo "**Ref:** $REF" >> $GITHUB_STEP_SUMMARY
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${STEPS_DOWNLOAD_OUTCOME}" >> $GITHUB_STEP_SUMMARY
-          echo "| Spec File Changes | ${{ steps.check-spec-changes.outputs.spec == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## Workflow Execution Summary"
+            echo "**Service:** $SERVICE"
+            echo "**Ref:** $REF"
+            echo ""
+            echo "| Step | Status |"
+            echo "|------|--------|"
+            echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${STEPS_DOWNLOAD_OUTCOME}"
+            echo "| Spec File Changes | ${{ steps.check-spec-changes.outputs.spec == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
           if ${{ steps.check-spec-changes.outputs.spec == 'true' }}; then
-            echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${STEPS_GENERATE_OUTCOME}" >> $GITHUB_STEP_SUMMARY
-            echo "| Patch Application | ${{ steps.apply-patches.outputs.patch_result == 'success' && '✅' || steps.apply-patches.outputs.patch_result == 'failure' && '❌ (patch needs updating)' || '⏩ skipped' }} ${PATCH_RESULT}" >> $GITHUB_STEP_SUMMARY
-            echo "| Client Changes | ${{ steps.check-generated-changes.outputs.all == 'true' && '🔄 Changes Detected' || '⏹️ No Changes (spec change had no effect on client)' }}" >> $GITHUB_STEP_SUMMARY
-            echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT}" >> $GITHUB_STEP_SUMMARY
-            echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${STEPS_COMPILE_OUTPUTS_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
-            echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || steps.push.outcome == 'skipped' && '⏩ skipped' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
-            echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
+            {
+              echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${STEPS_GENERATE_OUTCOME}"
+              echo "| Patch Application | ${{ steps.apply-patches.outputs.patch_result == 'success' && '✅' || steps.apply-patches.outputs.patch_result == 'failure' && '❌ (patch needs updating)' || '⏩ skipped' }} ${PATCH_RESULT}"
+              echo "| Client Changes | ${{ steps.check-generated-changes.outputs.all == 'true' && '🔄 Changes Detected' || '⏹️ No Changes (spec change had no effect on client)' }}"
+              echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT}"
+              echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${STEPS_COMPILE_OUTPUTS_TEST_RESULT}"
+              echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅' || steps.push.outcome == 'skipped' && '⏩ skipped' || '❌ failure' }} [Branch Link]($DIFF_URL)"
+              echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅' || '' }} [PR Link]($PR_URL)"
+            } >> "$GITHUB_STEP_SUMMARY"
           fi

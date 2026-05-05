@@ -36,9 +36,9 @@ jobs:
         id: check-changes
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "has-changes=true" >> $GITHUB_OUTPUT
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
           else
-            echo "has-changes=false" >> $GITHUB_OUTPUT
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit and Push
@@ -55,7 +55,7 @@ jobs:
           git add pnpm-lock.yaml
           git commit -m "chore: update pnpm transitive dependencies"
           git push --set-upstream origin "$BRANCH_NAME"
-          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "branch-name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
         if: steps.check-changes.outputs.has-changes == 'true'

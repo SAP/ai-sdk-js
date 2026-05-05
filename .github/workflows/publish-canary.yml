@@ -35,7 +35,7 @@ jobs:
 
       - name: publish
         run: |
-          date=`date +%Y%m%d%H%M%S`
+          date=$(date +%Y%m%d%H%M%S)
           pnpm changeset pre enter "${date}"
           pnpm changeset version
           pnpm changeset pre exit
