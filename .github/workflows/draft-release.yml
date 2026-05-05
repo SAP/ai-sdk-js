@@ -18,10 +18,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHANGELOG: ${{ steps.get-changelog.outputs.changelog }}
-          REF_NAME: ${{ github.ref_name }}
         run: |
-          gh release create "$REF_NAME" \
-            --title "$REF_NAME" \
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
             --verify-tag \
             --notes "$CHANGELOG" \
             --draft
