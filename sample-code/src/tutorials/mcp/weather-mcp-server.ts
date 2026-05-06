@@ -4,6 +4,31 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import * as z from 'zod';
 
+function buildGeocodingUrl(city: string): string {
+  const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
+  url.search = new URLSearchParams({
+    name: city,
+    count: '10',
+    language: 'en',
+    format: 'json'
+  }).toString();
+
+  return url.toString();
+}
+
+function buildForecastUrl(latitude: unknown, longitude: unknown): string {
+  const url = new URL('https://api.open-meteo.com/v1/forecast');
+  url.search = new URLSearchParams({
+    latitude: Number(latitude).toString(),
+    longitude: Number(longitude).toString(),
+    hourly:
+      'temperature_2m,precipitation,apparent_temperature,relative_humidity_2m',
+    forecast_days: '1'
+  }).toString();
+
+  return url.toString();
+}
+
 const server = new McpServer({
   name: 'Open-Meteo Weather MCP Server',
   version: '1.0.0'
@@ -21,9 +46,8 @@ server.registerTool(
   },
   async ({ city }) => {
     try {
-      const geoResponse = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=en&format=json`
-      );
+      const geoUrl = buildGeocodingUrl(city);
+      const geoResponse = await fetch(geoUrl);
       const data = await geoResponse.json();
 
       if (!data.results?.length) {
@@ -35,9 +59,8 @@ server.registerTool(
       }
 
       const { latitude, longitude } = data.results[0];
-      const weatherResponse = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation,apparent_temperature,relative_humidity_2m&forecast_days=1`
-      );
+      const weatherUrl = buildForecastUrl(latitude, longitude);
+      const weatherResponse = await fetch(weatherUrl);
 
       const weatherData = await weatherResponse.json();
 
