@@ -35,7 +35,7 @@ runs:
       env:
         MAJOR_VERSION: ${{ steps.version.outputs.major-version }}
       run: |
-        rsync -avz --delete knowledge-base/api-reference/ ai-sdk/static/api/v${MAJOR_VERSION}/
+        rsync -avz --delete knowledge-base/api-reference/ "ai-sdk/static/api/v${MAJOR_VERSION}/"
 
     - name: Check for changes
       id: check-changes
