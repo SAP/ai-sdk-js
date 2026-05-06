@@ -97,5 +97,5 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           echo "Attempting to merge PR for branch: ${{ needs.check-release-notes-pr.outputs.release-notes-branch }}"
-          gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release-notes-branch }}" --delete-branch --repo "SAP/ai-sdk"
+          gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release-notes-branch }}" --delete-branch --auto --repo "SAP/ai-sdk"
 
