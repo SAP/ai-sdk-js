@@ -37,8 +37,8 @@ jobs:
         id: check-pr-status
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH_NAME: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
         run: |
-          BRANCH_NAME="${{ steps.determine-branch-name.outputs.release-notes-branch }}"
           echo "Checking status for PR associated with branch: $BRANCH_NAME"
 
           # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
@@ -95,7 +95,8 @@ jobs:
       - name: 'Merge Release Notes PR'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH_NAME: ${{ needs.check-release-notes-pr.outputs.release-notes-branch }}
         run: |
-          echo "Attempting to merge PR for branch: ${{ needs.check-release-notes-pr.outputs.release-notes-branch }}"
-          gh pr merge --squash "${{ needs.check-release-notes-pr.outputs.release-notes-branch }}" --delete-branch --auto --repo "SAP/ai-sdk"
+          echo "Attempting to merge PR for branch: $BRANCH_NAME"
+          gh pr merge --squash "$BRANCH_NAME" --delete-branch --auto --repo "SAP/ai-sdk"
 

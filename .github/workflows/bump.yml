@@ -85,26 +85,27 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          VERSION: ${{ needs.bump.outputs.version }}
+          BRANCH_NAME: update-release-notes-js-${{ needs.bump.outputs.version }}
         working-directory: ./ai-sdk-docs
         run: |
           git config --local user.email "$BOT_EMAIL"
           git config --local user.name "$BOT_NAME"
-          BRANCH_NAME="update-release-notes-js-${{ needs.bump.outputs.version }}"
-          git checkout -b "${BRANCH_NAME}"
-          
+          git checkout -b "$BRANCH_NAME"
+
           # Stage release notes
           git add docs-js/release-notes.mdx
-          
+
           if git diff --staged --quiet; then
             echo "No changes to commit."
             # Output an empty pr-url if no changes
             echo "pr-url=" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Update JS release notes for ${{ needs.bump.outputs.version }}"
-            git push -u origin "${BRANCH_NAME}"
+            git commit -m "Update JS release notes for $VERSION"
+            git push -u origin "$BRANCH_NAME"
             PR_BODY="Auto-created by bump workflow."
-            PR_TITLE="chore: Update JS Release Notes for ${{ needs.bump.outputs.version }}"
-            PR_URL=$(gh pr create --head "${BRANCH_NAME}" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
+            PR_TITLE="chore: Update JS Release Notes for $VERSION"
+            PR_URL=$(gh pr create --head "$BRANCH_NAME" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
             echo "Release notes PR created: $PR_URL"
             if [[ -n "$PR_URL" ]]; then
               echo "pr-url=$PR_URL" >> "$GITHUB_OUTPUT"
