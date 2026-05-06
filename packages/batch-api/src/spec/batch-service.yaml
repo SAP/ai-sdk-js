@@ -1,16 +1,38 @@
 openapi: 3.0.0
 info:
   title: LLM Batch Service API
-  description: API for managing LLM batch processing jobs
+  description: The LLM Batch Service enables asynchronous, large-scale processing of LLM requests through SAP AI Core. Instead of making individual inference calls, users can submit a batch of requests as a JSONL file stored in an object store, and the service processes them in the background. The batch job will be completed in a 24h time window and the results will be stored in the provided object store.
   version: 0.0.1
+x-sap-shortText: Process large-scale LLM requests asynchronously in batch mode.
+externalDocs:
+  description: SAP AI Core - Generative AI Hub documentation
+  url: https://help.sap.com/docs/sap-ai-core/generative-ai/generative-ai-hub
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod-eu20.westeurope.azure
+          - prod-eu30.europe-west3.gcp
+          - prod.us-east-1.aws
+          - prod-us21.eastus.azure
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1.aws
 
 paths:
-  /batches:
+  /llm-batch-service/v1/batches:
     post:
       summary: Create a new batch job
+      description: Create a new LLM batch processing job. The batch job processes input data from the specified URI and writes results to the output URI.
       operationId: batch_service.controller.batch_controller.create_batch
+      x-sap-cloud-sdk-operation-name: createBatch
       tags:
         - Batches
+      parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
       requestBody:
         required: true
         content:
@@ -24,18 +46,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchCreateResponse'
+              example:
+                id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                created_at: '2026-04-30T10:00:00Z'
+                status: 'PENDING'
+                message: 'Batch job scheduled'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Input URI must point to a .jsonl file'
         '500':
           description: Internal server error
-      security:
-        - {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Internal Server Error'
 
     get:
       summary: List all batches
+      description: Retrieve a list of all batch processing jobs for the current tenant.
       operationId: batch_service.controller.batch_controller.list_batches
+      x-sap-cloud-sdk-operation-name: listBatches
       tags:
         - Batches
+      parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
       responses:
         '200':
           description: List of batches
@@ -43,21 +86,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchListResponse'
+              example:
+                count: 2
+                resources:
+                  - id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                    type: 'llm-native'
+                    provider: 'azure-openai'
+                    created_at: '2026-04-30T10:00:00Z'
+                    status: 'COMPLETED'
+                  - id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901'
+                    type: 'llm-native'
+                    provider: 'azure-openai'
+                    created_at: '2026-04-30T11:00:00Z'
+                    status: 'RUNNING'
         '500':
           description: Internal server error
-      security:
-        - {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Internal Server Error'
 
-  /batches/{batch_id}:
+  /llm-batch-service/v1/batches/{batch_id}:
     get:
       summary: Get Batch job details
+      description: Retrieve the details of a specific batch processing job, including its configuration and current status.
       operationId: batch_service.controller.batch_controller.get_batch_by_id
+      x-sap-cloud-sdk-operation-name: getBatchById
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
+          description: The unique identifier of the batch job.
           schema:
             type: string
             format: uuid
@@ -68,51 +133,110 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchDetailResponse'
+              example:
+                id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                type: 'llm-native'
+                provider: 'azure-openai'
+                created_at: '2026-04-30T10:00:00Z'
+                input:
+                  uri: 'ai://my-object-store/input/batch-input.jsonl'
+                output:
+                  uri: 'ai://my-object-store/output/'
+                spec:
+                  model: 'gpt-4.1-mini'
+                status:
+                  current_status: 'COMPLETED'
+                  target_status: 'COMPLETED'
+                  updated_at: '2026-04-30T12:00:00Z'
+                  message: null
         '404':
           description: Batch job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Batch job not found'
         '500':
           description: Internal server error
-      security:
-        - {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Internal Server Error'
 
     delete:
       summary: Delete a Batch job (only for cancelled, completed, or failed batches)
+      description: Delete a batch processing job. Only batches in a terminal state (cancelled, completed, or failed) can be deleted.
       operationId: batch_service.controller.batch_controller.delete_batch
+      x-sap-cloud-sdk-operation-name: deleteBatch
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
+          description: The unique identifier of the batch job.
           schema:
             type: string
             format: uuid
       responses:
-        '200':
+        '202':
           description: Batch job deleted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchDeleteResponse'
+              example:
+                id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                created_at: '2026-04-30T10:00:00Z'
+                message: 'Batch job deleted successfully'
         '400':
           description: Bad request - Batch job not in deletable state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Batch job can only be deleted when in CANCELLED, COMPLETED, FAILED state. Current status: RUNNING'
         '404':
           description: Batch job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Batch job not found'
         '500':
           description: Internal server error
-      security:
-        - {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Internal Server Error'
 
-  /batches/{batch_id}/status:
+  /llm-batch-service/v1/batches/{batch_id}/status:
     get:
       summary: Get Batch job status
+      description: Retrieve the current status of a specific batch processing job.
       operationId: batch_service.controller.batch_controller.get_batch_status
+      x-sap-cloud-sdk-operation-name: getBatchStatus
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
+          description: The unique identifier of the batch job.
           schema:
             type: string
             format: uuid
@@ -123,23 +247,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchStatusResponse'
+              example:
+                current_status: 'RUNNING'
+                target_status: 'COMPLETED'
+                updated_at: '2026-04-30T11:30:00Z'
+                message: null
         '404':
           description: Batch job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Batch job not found'
         '500':
           description: Internal server error
-      security:
-        - {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Internal Server Error'
 
-  /batches/{batch_id}/cancel:
+  /llm-batch-service/v1/batches/{batch_id}/cancel:
     patch:
       summary: Cancel a batch
+      description: Cancel a batch processing job that is currently in progress. The batch will be scheduled for cancellation.
       operationId: batch_service.controller.batch_controller.cancel_batch
+      x-sap-cloud-sdk-operation-name: cancelBatch
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
+          description: The unique identifier of the batch job.
           schema:
             type: string
             format: uuid
@@ -150,14 +295,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchCancelResponse'
+              example:
+                id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                created_at: '2026-04-30T10:00:00Z'
+                message: 'Batch job scheduled for cancellation'
         '404':
           description: Batch job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Batch job not found'
         '500':
           description: Internal server error
-      security:
-        - {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                request_id: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+                message: 'Internal Server Error'
 
 components:
+  parameters:
+    ResourceGroup:
+      name: AI-Resource-Group
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Specify the resource group to use for the request
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description:
+        OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     BatchCreateRequest:
       type: object
@@ -315,3 +494,18 @@ components:
           format: date-time
         message:
           type: string
+
+    ErrorResponse:
+      type: object
+      required:
+        - request_id
+        - message
+      properties:
+        request_id:
+          type: string
+          description: Unique identifier for the request, used for tracing.
+          example: 'd4a67ea1-2bf9-4df7-8105-d48203ccff76'
+        message:
+          type: string
+          description: A human-readable error message.
+          example: 'Input URI must point to a .jsonl file'

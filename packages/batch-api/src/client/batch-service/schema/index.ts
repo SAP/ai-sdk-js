@@ -10,3 +10,4 @@ export * from './batch-detail-response.js';
 export * from './batch-status-response.js';
 export * from './batch-cancel-response.js';
 export * from './batch-delete-response.js';
+export * from './error-response.js';

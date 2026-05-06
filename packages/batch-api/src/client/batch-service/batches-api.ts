@@ -16,90 +16,119 @@ import type {
 /**
  * Representation of the 'BatchesApi'.
  * This API is part of the 'batch-service' service.
+ * @experimental This API is experimental and may change at any time without prior notice.
  */
 export const BatchesApi = {
   _defaultBasePath: '/llm-batch-service/v1',
   /**
-   * Create a request builder for execution of get requests to the '/batches' endpoint.
+   * Retrieve a list of all batch processing jobs for the current tenant.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerListBatches: () =>
+  listBatches: (headerParameters: { 'AI-Resource-Group': string }) =>
     new OpenApiRequestBuilder<BatchListResponse>(
       'get',
-      '/batches',
-      {},
+      '/llm-batch-service/v1/batches',
+      {
+        headerParameters
+      },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of post requests to the '/batches' endpoint.
+   * Create a new LLM batch processing job. The batch job processes input data from the specified URI and writes results to the output URI.
    * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerCreateBatch: (
-    body: BatchCreateRequest
+  createBatch: (
+    body: BatchCreateRequest,
+    headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<BatchCreateResponse>(
       'post',
-      '/batches',
+      '/llm-batch-service/v1/batches',
       {
         body,
-        headerParameters: { 'content-type': 'application/json' }
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of get requests to the '/batches/{batchId}' endpoint.
-   * @param batchId - Path parameter.
+   * Retrieve the details of a specific batch processing job, including its configuration and current status.
+   * @param batchId - The unique identifier of the batch job.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerGetBatchById: (batchId: string) =>
+  getBatchById: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<BatchDetailResponse>(
       'get',
-      '/batches/{batchId}',
+      '/llm-batch-service/v1/batches/{batchId}',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of delete requests to the '/batches/{batchId}' endpoint.
-   * @param batchId - Path parameter.
+   * Delete a batch processing job. Only batches in a terminal state (cancelled, completed, or failed) can be deleted.
+   * @param batchId - The unique identifier of the batch job.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerDeleteBatch: (batchId: string) =>
+  deleteBatch: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<BatchDeleteResponse>(
       'delete',
-      '/batches/{batchId}',
+      '/llm-batch-service/v1/batches/{batchId}',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of get requests to the '/batches/{batchId}/status' endpoint.
-   * @param batchId - Path parameter.
+   * Retrieve the current status of a specific batch processing job.
+   * @param batchId - The unique identifier of the batch job.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerGetBatchStatus: (batchId: string) =>
+  getBatchStatus: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<BatchStatusResponse>(
       'get',
-      '/batches/{batchId}/status',
+      '/llm-batch-service/v1/batches/{batchId}/status',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of patch requests to the '/batches/{batchId}/cancel' endpoint.
-   * @param batchId - Path parameter.
+   * Cancel a batch processing job that is currently in progress. The batch will be scheduled for cancellation.
+   * @param batchId - The unique identifier of the batch job.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  batchServiceControllerBatchControllerCancelBatch: (batchId: string) =>
+  cancelBatch: (
+    batchId: string,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
     new OpenApiRequestBuilder<BatchCancelResponse>(
       'patch',
-      '/batches/{batchId}/cancel',
+      '/llm-batch-service/v1/batches/{batchId}/cancel',
       {
-        pathParameters: { batchId }
+        pathParameters: { batchId },
+        headerParameters
       },
       BatchesApi._defaultBasePath
     )

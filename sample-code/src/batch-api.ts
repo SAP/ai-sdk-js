@@ -17,9 +17,7 @@ const defaultHeaders = {
  * @returns Batch list response.
  */
 export async function listBatches(): Promise<BatchListResponse> {
-  return BatchesApi.batchServiceControllerBatchControllerListBatches()
-    .addCustomHeaders(defaultHeaders)
-    .execute();
+  return BatchesApi.listBatches(defaultHeaders).execute();
 }
 
 /**
@@ -32,14 +30,15 @@ export async function createBatch(
   inputUri: string,
   outputUri: string
 ): Promise<BatchCreateResponse> {
-  return BatchesApi.batchServiceControllerBatchControllerCreateBatch({
-    type: 'llm-native',
-    input: { uri: inputUri },
-    output: { uri: outputUri },
-    spec: { provider: 'azure-openai', model: 'gpt-4.1' }
-  })
-    .addCustomHeaders(defaultHeaders)
-    .execute();
+  return BatchesApi.createBatch(
+    {
+      type: 'llm-native',
+      input: { uri: inputUri },
+      output: { uri: outputUri },
+      spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+    },
+    defaultHeaders
+  ).execute();
 }
 
 /**
@@ -50,9 +49,7 @@ export async function createBatch(
 export async function getBatchById(
   batchId: string
 ): Promise<BatchDetailResponse> {
-  return BatchesApi.batchServiceControllerBatchControllerGetBatchById(batchId)
-    .addCustomHeaders(defaultHeaders)
-    .execute();
+  return BatchesApi.getBatchById(batchId, defaultHeaders).execute();
 }
 
 /**
@@ -63,9 +60,7 @@ export async function getBatchById(
 export async function getBatchStatus(
   batchId: string
 ): Promise<BatchStatusResponse> {
-  return BatchesApi.batchServiceControllerBatchControllerGetBatchStatus(batchId)
-    .addCustomHeaders(defaultHeaders)
-    .execute();
+  return BatchesApi.getBatchStatus(batchId, defaultHeaders).execute();
 }
 
 /**
@@ -76,9 +71,7 @@ export async function getBatchStatus(
 export async function cancelBatch(
   batchId: string
 ): Promise<BatchCancelResponse> {
-  return BatchesApi.batchServiceControllerBatchControllerCancelBatch(batchId)
-    .addCustomHeaders(defaultHeaders)
-    .execute();
+  return BatchesApi.cancelBatch(batchId, defaultHeaders).execute();
 }
 
 /**
@@ -89,7 +82,5 @@ export async function cancelBatch(
 export async function deleteBatch(
   batchId: string
 ): Promise<BatchDeleteResponse> {
-  return BatchesApi.batchServiceControllerBatchControllerDeleteBatch(batchId)
-    .addCustomHeaders(defaultHeaders)
-    .execute();
+  return BatchesApi.deleteBatch(batchId, defaultHeaders).execute();
 }

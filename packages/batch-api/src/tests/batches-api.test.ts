@@ -34,10 +34,9 @@ describe('batches api', () => {
         'Content-Type': 'application/json'
       });
 
-    const result: BatchListResponse =
-      await BatchesApi.batchServiceControllerBatchControllerListBatches()
-        .addCustomHeaders({ 'AI-Resource-Group': 'ai-sdk-js-e2e' })
-        .execute();
+    const result: BatchListResponse = await BatchesApi.listBatches({
+      'AI-Resource-Group': 'ai-sdk-js-e2e'
+    }).execute();
 
     expect(result).toEqual(expectedResponse);
   });
