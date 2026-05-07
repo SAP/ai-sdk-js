@@ -38,7 +38,7 @@ const defaultJsonConfig = `{
   "module_configurations": {
     "prompt_templating": {
       "model": {
-        "name": "gpt-5-mini",
+        "name": "gpt-5.4-nano",
         "params": {
           "max_tokens": 50
         }
@@ -91,7 +91,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 50 }
         }
       }
@@ -135,7 +135,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 500 }
         },
         prompt: {
@@ -234,7 +234,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 50 }
         },
         prompt: {
@@ -303,7 +303,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 50 }
         },
         prompt: {
@@ -354,7 +354,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 50 }
         },
         prompt: {
@@ -421,7 +421,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 50 }
         }
       }
@@ -477,7 +477,7 @@ describe('orchestration service client', () => {
     const configWithYaml: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 500 }
         },
         prompt: yamlTemplate
@@ -487,7 +487,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 500 }
         },
         prompt: {
@@ -566,7 +566,7 @@ describe('orchestration service client', () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 500 }
         },
         prompt: ''
@@ -586,7 +586,7 @@ describe('orchestration service client', () => {
     const invalidConfigWithYaml: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 500 }
         },
         prompt: `
@@ -624,7 +624,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: {}
         },
         prompt: {
@@ -651,7 +651,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [
@@ -712,7 +712,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: { max_tokens: 50 }
         }
       }
@@ -760,7 +760,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: "What's my name?" }]
@@ -780,7 +780,7 @@ describe('orchestration service client', () => {
 
     mockDeploymentsList(
       { scenarioId: 'orchestration', resourceGroup: 'custom-resource-group' },
-      { id: '1234', model: { name: 'gpt-5-mini', version: 'latest' } }
+      { id: '1234', model: { name: 'gpt-5.4-nano', version: 'latest' } }
     );
 
     mockInference(
@@ -806,7 +806,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: {}
         },
         prompt: {
@@ -912,7 +912,7 @@ describe('orchestration service client', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           params: {}
         },
         prompt: {
@@ -983,7 +983,7 @@ describe('orchestration service client', () => {
       const config: OrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {
@@ -1031,7 +1031,7 @@ describe('orchestration service client', () => {
       const config: OrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {
@@ -1072,7 +1072,7 @@ describe('orchestration service client', () => {
       const config: OrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {
@@ -1263,13 +1263,13 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('warns when messages field is provided with config reference by ID', async () => {
+    it('logs debug and routes messages to messages_history when using config reference by ID', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'
       });
 
-      const warnSpy = vi.spyOn(logger, 'warn');
+      const debugSpy = vi.spyOn(logger, 'debug');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1283,7 +1283,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            messages_history: [{ role: 'user', content: 'test' }]
           }
         },
         {
@@ -1299,9 +1300,111 @@ describe('orchestration service client', () => {
         messages: [{ role: 'user', content: 'test' }]
       });
 
-      expect(warnSpy).toHaveBeenCalledWith(
-        'The messages field in request is not supported when using an orchestration config reference. Messages should be part of the referenced configuration or provided via messagesHistory. The messages field will be ignored.'
+      expect(debugSpy).toHaveBeenCalledWith(
+        'Messages provided with an orchestration config reference will be sent as messages_history.'
       );
+    });
+
+    it('routes messages to messages_history when streaming with config reference', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+
+      const debugSpy = jest.spyOn(logger, 'debug');
+
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            messages_history: [{ role: 'user', content: 'test' }]
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream({
+        messages: [{ role: 'user', content: 'test' }]
+      });
+
+      const initialResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-initial.json'
+      );
+
+      for await (const chunk of response.stream) {
+        expect(chunk._data).toEqual(JSON.parse(initialResponse));
+        break;
+      }
+
+      expect(debugSpy).toHaveBeenCalledWith(
+        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      );
+    });
+
+    it('routes messages to messages_history when using a prompt template reference', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: {
+            template_ref: {
+              id: 'test-template-id'
+            }
+          },
+          model: {
+            name: 'gpt-5-mini',
+            params: { max_tokens: 50 }
+          }
+        }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config: {
+              modules: {
+                prompt_templating: {
+                  prompt: { template_ref: { id: 'test-template-id' } },
+                  model: { name: 'gpt-5-mini', params: { max_tokens: 50 } }
+                }
+              }
+            },
+            messages_history: [{ role: 'user', content: 'Hello' }]
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).chatCompletion({
+        messages: [{ role: 'user', content: 'Hello' }]
+      });
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
     });
 
     it('throws error when server returns non-streaming JSON response for config reference without streaming enabled', async () => {
@@ -1365,7 +1468,7 @@ describe('orchestration service client', () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             timeout: 5,
             params: { max_tokens: 100 }
           },
@@ -1377,7 +1480,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini', params: { max_tokens: 50 } },
+          model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } },
           prompt: {
             template: [{ role: 'user', content: 'Fallback model' }]
           }
@@ -1414,7 +1517,7 @@ describe('orchestration service client', () => {
     it('calls streaming with module fallback configuration array', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Primary model' }]
           }
@@ -1423,7 +1526,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback model' }]
           }
@@ -1477,7 +1580,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Test' }]
           }
@@ -1533,7 +1636,7 @@ describe('orchestration service client', () => {
     it('calls streaming with stream options for module fallback configs', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Primary' }]
           }
@@ -1542,7 +1645,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback' }]
           }
@@ -1594,7 +1697,7 @@ describe('orchestration service client', () => {
     it('calls streaming with array-based overrides', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Primary' }]
           }
@@ -1603,7 +1706,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback' }]
           }
@@ -1656,7 +1759,7 @@ describe('orchestration service client', () => {
     it('warns when override index is out of bounds', async () => {
       const primaryConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Primary' }]
           }
@@ -1665,7 +1768,7 @@ describe('orchestration service client', () => {
 
       const fallbackConfig: OrchestrationModuleConfig = {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: {
             template: [{ role: 'user', content: 'Fallback' }]
           }

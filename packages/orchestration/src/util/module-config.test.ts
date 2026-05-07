@@ -31,7 +31,7 @@ describe('stream util tests', () => {
         ]
       },
       model: {
-        name: 'gpt-5-mini',
+        name: 'gpt-5.4-nano',
         params: { max_tokens: 50 }
       }
     }
@@ -276,7 +276,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
         template: [{ role: 'user', content: 'Hello {{?name}}' }]
       },
       model: {
-        name: 'gpt-5',
+        name: 'gpt-5.4',
         timeout: 5,
         params: { max_tokens: 100 }
       }
@@ -289,7 +289,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
         template: [{ role: 'user', content: 'Hello {{?name}}' }]
       },
       model: {
-        name: 'gpt-5-mini',
+        name: 'gpt-5.4-nano',
         params: { max_tokens: 50 }
       }
     }
@@ -324,8 +324,8 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
     expect(Array.isArray(result.config.modules)).toBe(true);
     const modules = result.config.modules as ModuleConfigs[];
     expect(modules).toHaveLength(2);
-    expect(modules[0].prompt_templating.model.name).toBe('gpt-5');
-    expect(modules[1].prompt_templating.model.name).toBe('gpt-5-mini');
+    expect(modules[0].prompt_templating.model.name).toBe('gpt-5.4');
+    expect(modules[1].prompt_templating.model.name).toBe('gpt-5.4-nano');
   });
 
   it('should apply request messages to each config in the module fallback array', () => {
@@ -387,8 +387,8 @@ describe('addStreamOptions with module fallback configs', () => {
 
   it('should add stream options to array of module configs', () => {
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
 
     const result = addStreamOptions(configs, {
@@ -411,8 +411,8 @@ describe('addStreamOptions with module fallback configs', () => {
 
   it('should apply global stream options to array configs', () => {
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
     const streamOptions: StreamOptions = {
       global: { chunk_size: 100 }
@@ -424,7 +424,7 @@ describe('addStreamOptions with module fallback configs', () => {
   });
 
   it('should throw when overrides are provided for a single module config', () => {
-    const config = createModuleConfig('gpt-5-mini');
+    const config = createModuleConfig('gpt-5.4-nano');
     const streamOptions: StreamOptions = {
       overrides: {
         0: { promptTemplating: { include_usage: true } }
@@ -446,8 +446,8 @@ describe('addStreamOptions with module fallback configs', () => {
     warnSpy.mockClear();
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
     const streamOptions: StreamOptions = {
       outputFiltering: { overlap: 50 }
@@ -472,7 +472,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 100 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 100 } }
       },
       filtering: {
         output: {
@@ -484,7 +484,7 @@ describe('addStreamOptions with module fallback configs', () => {
     };
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5-mini'),
+      createModuleConfig('gpt-5.4-nano'),
       configWithFilter
     ];
     const streamOptions: StreamOptions = {
@@ -510,7 +510,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter1: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 100 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 100 } }
       },
       filtering: {
         output: {
@@ -524,7 +524,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter2: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test2' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 50 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
       },
       filtering: {
         output: {
@@ -547,8 +547,8 @@ describe('addStreamOptions with module fallback configs', () => {
 
   it('should handle structured stream options with overrides', () => {
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
     const streamOptions: StreamOptions = {
       global: { chunk_size: 100 },
@@ -572,8 +572,8 @@ describe('addStreamOptions with module fallback configs', () => {
 
   it('should handle structured stream options with array-based overrides', () => {
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini'),
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano'),
       createModuleConfig('claude-3'),
       createModuleConfig('claude-4')
     ];
@@ -609,8 +609,8 @@ describe('addStreamOptions with module fallback configs', () => {
 
   it('should handle sparse array-based overrides', () => {
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini'),
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano'),
       createModuleConfig('claude-3'),
       createModuleConfig('claude-4')
     ];
@@ -653,7 +653,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 100 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 100 } }
       },
       filtering: {
         output: {
@@ -665,9 +665,9 @@ describe('addStreamOptions with module fallback configs', () => {
     };
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
+      createModuleConfig('gpt-5.4'),
       configWithFilter,
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4-nano')
     ];
     const streamOptions: StreamOptions = {
       outputFiltering: { overlap: 50 }
@@ -692,7 +692,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 100 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 100 } }
       },
       filtering: {
         output: {
@@ -704,7 +704,7 @@ describe('addStreamOptions with module fallback configs', () => {
     };
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5-mini'),
+      createModuleConfig('gpt-5.4-nano'),
       configWithFilter
     ];
 
@@ -734,7 +734,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter1: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 100 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 100 } }
       },
       filtering: {
         output: {
@@ -748,7 +748,7 @@ describe('addStreamOptions with module fallback configs', () => {
     const configWithFilter2: ModuleConfigs = {
       prompt_templating: {
         prompt: { template: [{ role: 'user', content: 'test' }] },
-        model: { name: 'gpt-5-mini', params: { max_tokens: 100 } }
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 100 } }
       },
       filtering: {
         output: {
@@ -782,8 +782,8 @@ describe('addStreamOptions with module fallback configs', () => {
     warnSpy.mockClear();
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
 
     const streamOptions: StreamOptions = {
@@ -810,8 +810,8 @@ describe('addStreamOptions with module fallback configs', () => {
     warnSpy.mockClear();
 
     const configs: ModuleConfigs[] = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
 
     const streamOptions: StreamOptions = {
@@ -846,7 +846,7 @@ describe('warnAboutUnusedOverrides', () => {
     const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
-    const configs = [createModuleConfig('gpt-5-mini')];
+    const configs = [createModuleConfig('gpt-5.4-nano')];
     const streamOptions: StreamOptions = {
       overrides: {
         0: { promptTemplating: { include_usage: true } },
@@ -872,8 +872,8 @@ describe('warnAboutUnusedOverrides', () => {
     debugSpy.mockClear();
 
     const configs = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
     const streamOptions = {
       overrides: {
@@ -894,7 +894,7 @@ describe('warnAboutUnusedOverrides', () => {
     const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
-    const configs = [createModuleConfig('gpt-5-mini')];
+    const configs = [createModuleConfig('gpt-5.4-nano')];
     const streamOptions = {
       overrides: {
         invalid: { promptTemplating: { include_usage: true } }
@@ -914,7 +914,7 @@ describe('warnAboutUnusedOverrides', () => {
     const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
-    const configs = [createModuleConfig('gpt-5-mini')];
+    const configs = [createModuleConfig('gpt-5.4-nano')];
     const streamOptions = {
       overrides: {
         '0.5': { promptTemplating: { include_usage: true } }
@@ -935,8 +935,8 @@ describe('warnAboutUnusedOverrides', () => {
     debugSpy.mockClear();
 
     const configs = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini')
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano')
     ];
     const streamOptions: StreamOptions = {
       overrides: {
@@ -962,8 +962,8 @@ describe('warnAboutUnusedOverrides', () => {
     debugSpy.mockClear();
 
     const configs = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini'),
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano'),
       createModuleConfig('claude-3')
     ];
     const streamOptions: StreamOptions = {
@@ -993,8 +993,8 @@ describe('warnAboutUnusedOverrides', () => {
     debugSpy.mockClear();
 
     const configs = [
-      createModuleConfig('gpt-5'),
-      createModuleConfig('gpt-5-mini'),
+      createModuleConfig('gpt-5.4'),
+      createModuleConfig('gpt-5.4-nano'),
       createModuleConfig('claude-3')
     ];
 

@@ -7,7 +7,7 @@ describe('construct completion post request from JSON', () => {
       "modules": {
         "prompt_templating": {
           "model": {
-            "name": "gpt-5-mini",
+            "name": "gpt-5.4-nano",
             "params": {
               "max_tokens": 50
             }
@@ -40,7 +40,7 @@ describe('construct completion post request from JSON', () => {
       "modules": {
         "prompt_templating": {
           "model": {
-            "name": "gpt-5-mini",
+            "name": "gpt-5.4-nano",
             "params": {
               "max_tokens": 50
             }

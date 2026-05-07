@@ -42,7 +42,7 @@ describe('orchestration service client', () => {
   const config: LangChainOrchestrationModuleConfig = {
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini',
+        name: 'gpt-5.4-nano',
         params: {}
       }
     }
@@ -270,7 +270,7 @@ describe('orchestration service client', () => {
               modules: {
                 prompt_templating: {
                   model: {
-                    name: 'gpt-5-mini',
+                    name: 'gpt-5.4-nano',
                     params: {}
                   },
                   prompt: {
@@ -306,7 +306,7 @@ describe('orchestration service client', () => {
               modules: {
                 prompt_templating: {
                   model: {
-                    name: 'gpt-5-mini',
+                    name: 'gpt-5.4-nano',
                     params: {}
                   },
                   prompt: {
@@ -342,7 +342,7 @@ describe('orchestration service client', () => {
               modules: {
                 prompt_templating: {
                   model: {
-                    name: 'gpt-5-mini',
+                    name: 'gpt-5.4-nano',
                     params: {}
                   },
                   prompt: {
@@ -708,7 +708,7 @@ describe('orchestration service client', () => {
       const primaryConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5',
+            name: 'gpt-5.4',
             params: {}
           }
         }
@@ -716,7 +716,7 @@ describe('orchestration service client', () => {
       const fallbackConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           }
         }
@@ -765,7 +765,7 @@ describe('orchestration service client', () => {
       const primaryConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5.2',
+            name: 'gpt-5.4',
             params: {}
           }
         }
@@ -773,7 +773,7 @@ describe('orchestration service client', () => {
       const fallbackConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           }
         }
@@ -829,7 +829,7 @@ describe('orchestration service client', () => {
       const primaryConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5.2',
+            name: 'gpt-5.4',
             params: {
               stop: ['PRIMARY_STOP']
             }
@@ -839,7 +839,7 @@ describe('orchestration service client', () => {
       const fallbackConfig: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {
               stop: ['FALLBACK_STOP']
             }
@@ -991,7 +991,7 @@ describe('orchestration service client', () => {
       const configWithRef: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {
@@ -1096,7 +1096,7 @@ describe('orchestration service client', () => {
       const configWithTemplate: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {

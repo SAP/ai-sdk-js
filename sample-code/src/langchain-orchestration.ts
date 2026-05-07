@@ -72,7 +72,7 @@ export async function invokeChainWithFallbackConfigs(): Promise<string> {
       // Second configuration with a slow model with a short timeout to trigger fallback
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4-nano',
           timeout: 1, // 1 s timeout to trigger timeout error
           params: {
             reasoning_effort: 'high'
@@ -109,7 +109,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     },
     filtering: {
@@ -138,7 +138,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     },
     filtering: {
@@ -282,7 +282,7 @@ export async function streamChain(
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     }
   };
@@ -363,7 +363,7 @@ export async function invokeChainWithMasking(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     },
     masking: {
@@ -434,7 +434,7 @@ export async function invokeToolChain(): Promise<string> {
   const client = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     }
   });
@@ -504,7 +504,7 @@ export async function invokeDynamicModelAgent(): Promise<string> {
   const basicModel = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       }
     }
   });
@@ -513,7 +513,7 @@ export async function invokeDynamicModelAgent(): Promise<string> {
   const advancedModel = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     }
   });
@@ -553,7 +553,7 @@ export async function invokeMcpToolChain(): Promise<string> {
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5'
+          name: 'gpt-5.4'
         }
       }
     },

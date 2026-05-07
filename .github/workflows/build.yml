@@ -26,11 +26,18 @@ jobs:
       - name: Test with Coverage
         if: ${{ strategy.job-index == 0 }}
         run: pnpm test:coverage
+      - run: pnpm test:unit
+      - name: Fetch main for SonarQube blame
+        # Sonar only runs iff on first job (0) and the token is available (not on forks)
+        if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}
+        env:
+          HAS_SONAR_TOKEN: ${{ secrets.SONAR_TOKEN == '' && 'false' || 'true' }}
+        run: git fetch --unshallow origin main
       - name: SonarQube Scan
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602 # v6.0.0
+        uses: SonarSource/sonarqube-scan-action@59db25f34e16620e48ab4bb9e4a5dce155cb5432 # v8.0.0
       - run: pnpm test:type
 
   checks:
@@ -64,7 +71,7 @@ jobs:
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        uses: sap/cloud-sdk-js/.github/actions/check-license@license-checker
+        uses: sap/cloud-sdk-js/.github/actions/check-license@main
       - name: API Doc Check
         run: pnpm doc
 

@@ -29,7 +29,7 @@ describe('Chat client', () => {
   };
 
   beforeEach(async () => {
-    client = new AzureOpenAiChatClient({ modelName: 'gpt-5-mini' });
+    client = new AzureOpenAiChatClient({ modelName: 'gpt-5.4-nano' });
     mockClientCredentialsGrantCall();
     mockDeploymentsList(
       {
@@ -37,7 +37,7 @@ describe('Chat client', () => {
         resourceGroup: 'default',
         executableId: 'azure-openai'
       },
-      { id: '1234', model: { name: 'gpt-5-mini', version: 'latest' } }
+      { id: '1234', model: { name: 'gpt-5.4-nano', version: 'latest' } }
     );
     mockResponseStream = await parseFileToString(
       'foundation-models',
@@ -457,7 +457,7 @@ describe('Chat client', () => {
 
     it('should handle streaming and disabling streaming flags as expected', async () => {
       let testClient = new AzureOpenAiChatClient({
-        modelName: 'gpt-5-mini',
+        modelName: 'gpt-5.4-nano',
         streaming: true,
         disableStreaming: true
       });
@@ -467,7 +467,7 @@ describe('Chat client', () => {
       expect(testClient.disableStreaming).toBe(true);
 
       testClient = new AzureOpenAiChatClient({
-        modelName: 'gpt-5-mini',
+        modelName: 'gpt-5.4-nano',
         streaming: false
       });
 
@@ -476,7 +476,7 @@ describe('Chat client', () => {
       expect(testClient.disableStreaming).toBe(true);
 
       testClient = new AzureOpenAiChatClient({
-        modelName: 'gpt-5-mini',
+        modelName: 'gpt-5.4-nano',
         streaming: true
       });
 
@@ -485,7 +485,7 @@ describe('Chat client', () => {
       expect(testClient.disableStreaming).toBe(false);
 
       testClient = new AzureOpenAiChatClient({
-        modelName: 'gpt-5-mini'
+        modelName: 'gpt-5.4-nano'
       });
 
       // auto-streaming and disable-streaming should be disabled by default
@@ -591,7 +591,7 @@ describe('Chat client', () => {
       );
       vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
       // Simulate a minimal streaming langgraph-like workflow
-      const llm = new AzureOpenAiChatClient({ modelName: 'gpt-5-mini' });
+      const llm = new AzureOpenAiChatClient({ modelName: 'gpt-5.4-nano' });
 
       // Simulate a node function that calls the model using invoke
       const callModel = async (state: { messages: any }) => {
