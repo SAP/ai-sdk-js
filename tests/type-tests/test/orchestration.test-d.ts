@@ -40,7 +40,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       }
     }
   }).chatCompletion()
@@ -54,7 +54,7 @@ expectType<Promise<OrchestrationResponse>>(
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         }
       }
     },
@@ -67,7 +67,7 @@ expectType<CompletionPostResponse>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           defaults: { name: 'Bob' }
@@ -84,7 +84,7 @@ expectType<string | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -99,7 +99,7 @@ expectType<string | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -114,7 +114,7 @@ expectType<TokenUsage>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -129,7 +129,7 @@ expectType<ChatMessages>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -144,7 +144,7 @@ expectType<MessageToolCalls | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -159,7 +159,7 @@ expectType<string | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -174,7 +174,7 @@ expectType<AssistantChatMessage | undefined>(
     await new OrchestrationClient({
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -189,7 +189,7 @@ expectType<Promise<OrchestrationResponse>>(
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'gpt-5.4-nano'
         },
         prompt: {
           template: [{ role: 'user', content: 'Hello!' }]
@@ -213,7 +213,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini',
+        name: 'gpt-5.4-nano',
         params: { max_tokens: 50 }
       },
       prompt: {
@@ -280,7 +280,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient(`{
     "module_configurations": {
       "llm_module_config": {
-        "model_name": "gpt-5-mini",
+        "model_name": "gpt-5.4-nano",
         "model_params": {
           "max_tokens": 50
         }
@@ -304,7 +304,7 @@ expectError<any>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       },
       prompt: {
         template: [{ role: 'user', content: 'Hello!' }],
@@ -337,7 +337,7 @@ expectError<any>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       },
       prompt: {
         template: [{ role: 'not-exist', content: 'Hello!' }]
@@ -353,7 +353,7 @@ expectError<any>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       },
       prompt: {
         template: [{ role: 'tool', content: 'Hello!' }]
@@ -377,7 +377,7 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini',
+        name: 'gpt-5.4-nano',
         params: {
           max_tokens: 50,
           random_property: 'random - value'
@@ -390,7 +390,7 @@ expectType<Promise<OrchestrationResponse>>(
   }).chatCompletion()
 );
 
-expect<ChatModel>('custom-model');
+expectAssignable<ChatModel>('custom-model');
 
 /**
  * Filtering Util for Azure content safety.
@@ -646,7 +646,7 @@ expectError(
   new OrchestrationClient({
     id: 'test-config-id',
     promptTemplating: {
-      model: { name: 'gpt-5-mini' },
+      model: { name: 'gpt-5.4-nano' },
       prompt: { template: [{ role: 'user', content: 'Hello!' }] }
     }
   }).chatCompletion({
@@ -681,6 +681,20 @@ expectType<
 );
 
 /**
+ * Messages can be passed with a prompt template reference and will be routed to messages_history.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    promptTemplating: {
+      prompt: { template_ref: { id: 'template-id' } },
+      model: { name: 'gpt-5-mini' }
+    }
+  }).chatCompletion({
+    messages: [{ role: 'user', content: 'Hello!' }]
+  })
+);
+
+/**
  * isConfigReference function should be importable as a value (not just a type).
  */
 expectType<boolean>(
@@ -701,7 +715,7 @@ expectType<boolean>(
   isConfigReference({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       }
     }
   })
@@ -713,13 +727,13 @@ expectType<boolean>(
 expectAssignable<OrchestrationModuleConfigList>([
   {
     promptTemplating: {
-      model: { name: 'gpt-5-mini', timeout: 5 },
+      model: { name: 'gpt-5.4-nano', timeout: 5 },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   },
   {
     promptTemplating: {
-      model: { name: 'gpt-5-mini' },
+      model: { name: 'gpt-5.4-nano' },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   }
@@ -734,7 +748,7 @@ expectError<OrchestrationModuleConfigList>([]);
  * Module fallback config array elements must be valid OrchestrationModuleConfig objects.
  */
 expectError<OrchestrationModuleConfigList>([
-  { promptTemplating: { model: { name: 'gpt-5-mini' } } },
+  { promptTemplating: { model: { name: 'gpt-5.4-nano' } } },
   { invalidProperty: 'not-a-valid-config' }
 ]);
 
@@ -745,13 +759,13 @@ expectType<Promise<OrchestrationResponse>>(
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini', timeout: 5 },
+        model: { name: 'gpt-5.4-nano', timeout: 5 },
         prompt: { template: [{ role: 'user', content: 'Try primary model' }] }
       }
     },
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4-nano' },
         prompt: { template: [{ role: 'user', content: 'Fallback model' }] }
       }
     }
@@ -767,13 +781,13 @@ expectType<
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4-nano' },
         prompt: { template: [{ role: 'user', content: 'Primary' }] }
       }
     },
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4-nano' },
         prompt: { template: [{ role: 'user', content: 'Fallback' }] }
       }
     }
@@ -847,7 +861,7 @@ expectType<
 >(
   new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'gpt-5-mini' },
+      model: { name: 'gpt-5.4-nano' },
       prompt: { template: [{ role: 'user', content: 'Hello' }] }
     }
   }).stream({}, undefined, {
@@ -865,13 +879,13 @@ expectType<
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4' },
         prompt: { template: [{ role: 'user', content: 'Primary' }] }
       }
     },
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4-nano' },
         prompt: { template: [{ role: 'user', content: 'Fallback' }] }
       }
     }
@@ -893,13 +907,13 @@ expectType<
   new OrchestrationClient([
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4' },
         prompt: { template: [{ role: 'user', content: 'Primary' }] }
       }
     },
     {
       promptTemplating: {
-        model: { name: 'gpt-5-mini' },
+        model: { name: 'gpt-5.4-nano' },
         prompt: { template: [{ role: 'user', content: 'Fallback' }] }
       }
     }
@@ -920,7 +934,7 @@ expectType<OrchestrationError[] | undefined>(
     await new OrchestrationClient([
       {
         promptTemplating: {
-          model: { name: 'gpt-5-mini' },
+          model: { name: 'gpt-5.4-nano' },
           prompt: { template: [{ role: 'user', content: 'Test' }] }
         }
       }

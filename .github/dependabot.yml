@@ -29,32 +29,6 @@ updates:
         patterns: ['@sap-cloud-sdk/*']
       langchain:
         patterns: ['langchain', '@langchain/*']
-  - package-ecosystem: npm
-    directory: '/'
-    target-branch: 'v1-main'
-    registries:
-      - sap-artifactory
-    schedule:
-      interval: daily
-      time: '01:00'
-      timezone: 'Europe/Berlin'
-    open-pull-requests-limit: 10
-    cooldown:
-      default-days: 4
-      exclude:
-        - '@sap-cloud-sdk/*'
-    ignore:
-      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
-      - dependency-name: '@types/node'
-        update-types: ['version-update:semver-major']
-      # Avoid langchain-v1 release for sdk v1-main
-      - dependency-name: 'langchain'
-        update-types: ['version-update:semver-major']
-      - dependency-name: '@langchain/*'
-        update-types: ['version-update:semver-major']
-    groups:
-      sap-cloud-sdk:
-        patterns: ['@sap-cloud-sdk/*']
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
