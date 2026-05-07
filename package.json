@@ -34,7 +34,7 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests run",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code run",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
-    "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
+    "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,vitest\" --quiet"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
