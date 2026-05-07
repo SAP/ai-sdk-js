@@ -4,13 +4,5 @@
   "filepath": "*.ts",
   "trailingComma": "none",
   "arrowParens": "avoid",
-  "endOfLine": "lf",
-  "overrides": [
-    {
-      "files": "jest.config.mjs",
-      "options": {
-        "trailingComma": "all"
-      }
-    }
-  ]
+  "endOfLine": "lf"
 }

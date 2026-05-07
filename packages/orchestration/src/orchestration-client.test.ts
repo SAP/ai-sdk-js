@@ -1311,7 +1311,7 @@ describe('orchestration service client', () => {
         messageContext: 'orchestration-client'
       });
 
-      const debugSpy = jest.spyOn(logger, 'debug');
+      const debugSpy = vi.spyOn(logger, 'debug');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
