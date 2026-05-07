@@ -31,7 +31,8 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client -s ./src/spec/options-per-service.json",
-    "postgenerate": "pnpm update-imports && pnpm lint:fix",
+    "postgenerate": "pnpm update-imports && pnpm make-batch-api-experimental && pnpm lint:fix",
+    "make-batch-api-experimental": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-batch-api.ts ./src/client/batch-service/batches-api.ts",
     "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/batch-service"
   },
   "dependencies": {

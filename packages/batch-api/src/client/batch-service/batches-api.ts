@@ -19,7 +19,7 @@ import type {
  * @experimental This API is experimental and may change at any time without prior notice.
  */
 export const BatchesApi = {
-  _defaultBasePath: '/llm-batch-service/v1',
+  _defaultBasePath: undefined,
   /**
    * Retrieve a list of all batch processing jobs for the current tenant.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
