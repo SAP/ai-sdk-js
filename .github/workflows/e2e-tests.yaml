@@ -25,7 +25,7 @@ jobs:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Create .env file
         env:
-          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
+          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }} # zizmor: ignore[overprovisioned-secrets]
         run: |
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > sample-code/.env
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > tests/e2e-tests/.env
@@ -49,7 +49,7 @@ jobs:
         run: pnpm test:e2e
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
-        uses: slackapi/slack-github-action@03ea5433c137af7c0495bc0cad1af10403fc800c # v3.0.2
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

@@ -1,4 +1,4 @@
-import { expectType } from 'tsd';
+import { expectAssignable, expectType } from 'tsd';
 import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
@@ -21,7 +21,7 @@ import type {
  * Chat completion.
  */
 expectType<Promise<AzureOpenAiChatCompletionResponse>>(
-  new AzureOpenAiChatClient('gpt-5-mini').run({
+  new AzureOpenAiChatClient('gpt-5.4-nano').run({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
@@ -37,7 +37,7 @@ expectType(
 
 expectType<AzureOpenAiCreateChatCompletionResponse>(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').run({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   )._data
@@ -45,7 +45,7 @@ expectType<AzureOpenAiCreateChatCompletionResponse>(
 
 expectType<string | undefined | null>(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').run({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getContent()
@@ -56,7 +56,7 @@ expectType<
   | undefined
 >(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').run({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getFinishReason()
@@ -64,14 +64,14 @@ expectType<
 
 expectType<AzureOpenAiCompletionUsage | undefined>(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').run({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').run({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getTokenUsage()
 );
 
 expectType<Promise<AzureOpenAiChatCompletionResponse>>(
-  new AzureOpenAiChatClient('gpt-5-mini', {
+  new AzureOpenAiChatClient('gpt-5.4-nano', {
     destinationName: 'destinationName',
     useCache: false
   }).run({
@@ -84,7 +84,7 @@ expectType<Promise<AzureOpenAiChatCompletionResponse>>(
  */
 expectType<Promise<AzureOpenAiChatCompletionResponse>>(
   new AzureOpenAiChatClient({
-    modelName: 'gpt-5-mini',
+    modelName: 'gpt-5.4-nano',
     modelVersion: 'latest'
   }).run(
     {
@@ -160,8 +160,8 @@ expectType<Promise<AzureOpenAiEmbeddingResponse>>(
   })
 );
 
-expect<AzureOpenAiChatModel>('custom-model');
-expect<AzureOpenAiChatModel>('gpt-5-mini');
+expectAssignable<AzureOpenAiChatModel>('custom-model');
+expectAssignable<AzureOpenAiChatModel>('gpt-5.4-nano');
 
 /**
  * Streaming.
@@ -171,7 +171,7 @@ expectType<
     AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   >
 >(
-  new AzureOpenAiChatClient('gpt-5-mini').stream({
+  new AzureOpenAiChatClient('gpt-5.4-nano').stream({
     messages: [{ role: 'user', content: 'test prompt' }]
   })
 );
@@ -180,7 +180,7 @@ expectType<
   AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>
 >(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').stream({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').stream({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).stream
@@ -188,7 +188,7 @@ expectType<
 
 expectType<AzureOpenAiChatCompletionStream<string>>(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').stream({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').stream({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).stream.toContentStream()
@@ -199,7 +199,7 @@ expectType<
   | undefined
 >(
   (
-    await new AzureOpenAiChatClient('gpt-5-mini').stream({
+    await new AzureOpenAiChatClient('gpt-5.4-nano').stream({
       messages: [{ role: 'user', content: 'test prompt' }]
     })
   ).getFinishReason()

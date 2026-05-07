@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Determine Changed Files
         id: changed-files
         env:
@@ -20,7 +22,7 @@ jobs:
           CHANGED_FILES="${ALL_FILES//$'\n'/,}"
 
           echo "[DEBUG] Following files have been changed: $CHANGED_FILES"
-          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "CHANGED_FILES=$CHANGED_FILES" >> "$GITHUB_OUTPUT"
       - name: Vale
         # vale fails if the PR is too large, e.g. when updating API docs
         if: ${{ github.event.pull_request.changed_files < 100 }}

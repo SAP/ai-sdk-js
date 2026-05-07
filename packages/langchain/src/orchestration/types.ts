@@ -82,12 +82,12 @@ export type LangChainOrchestrationModuleConfig = Omit<
  * const fallbackConfig: OrchestrationModuleConfigList = [
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-5', timeout: 5 }
+ *       model: { name: 'gpt-5.4', timeout: 5 }
  *     }
  *   },
  *   {
  *     promptTemplating: {
- *       model: { name: 'gpt-5-mini' }
+ *       model: { name: 'gpt-5.4-nano' }
  *     }
  *   }
  * ];

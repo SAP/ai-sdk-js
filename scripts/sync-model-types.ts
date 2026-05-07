@@ -7,6 +7,7 @@
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import * as prettier from 'prettier';
 import { transformFile } from './util.js';
 
 /** A single row from the SAP Notes model table. */
@@ -221,14 +222,13 @@ async function patchModelTypes(
 ): Promise<boolean> {
   let changed = false;
 
-  await transformFile(MODEL_TYPES_PATH, content => {
+  await transformFile(MODEL_TYPES_PATH, async content => {
     let updated = content;
-
-    for (const [typeName, models] of Object.entries(typeToActiveModels)) {
+    const sorted = Object.entries(typeToActiveModels).sort(([a], [b]) => a.localeCompare(b));
+    for (const [typeName, models] of sorted) {
       if (models.size === 0) {
         continue;
       }
-
       const existingModels = [...extractCurrentModels(content, typeName)];
       const newBlock = buildLiteralUnionBlock(existingModels, models);
       const regex = new RegExp(
@@ -236,7 +236,6 @@ async function patchModelTypes(
         'g'
       );
       const next = updated.replace(regex, `$1${newBlock};`);
-
       if (next !== updated) {
         console.error(`Updated ${typeName}`);
         changed = true;
@@ -245,8 +244,8 @@ async function patchModelTypes(
         console.error(`No change for ${typeName}`);
       }
     }
-
-    return updated;
+    const options = await prettier.resolveConfig(MODEL_TYPES_PATH);
+    return prettier.format(updated, options || undefined);
   });
 
   return changed;

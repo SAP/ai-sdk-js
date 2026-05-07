@@ -14,9 +14,13 @@ jobs:
       - name: Get Changelog
         id: get-changelog
         uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
-        with:
-          draft: true
-          body: ${{ steps.get-changelog.outputs.changelog }}
+      - name: Create Draft Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGELOG: ${{ steps.get-changelog.outputs.changelog }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --verify-tag \
+            --notes "$CHANGELOG" \
+            --draft
