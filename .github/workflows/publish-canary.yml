@@ -34,11 +34,11 @@ jobs:
           EOT
 
       - name: publish
+        env:
+          INPUTS_TAG: ${{ inputs.tag }}
         run: |
-          date=$(date +%Y%m%d%H%M%S)
+          date=`date +%Y%m%d%H%M%S`
           pnpm changeset pre enter "${date}"
           pnpm changeset version
           pnpm changeset pre exit
           pnpm changeset publish --tag "${INPUTS_TAG}"
-        env:
-          INPUTS_TAG: ${{ inputs.tag }}
