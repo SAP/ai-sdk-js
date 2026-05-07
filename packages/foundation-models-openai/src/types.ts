@@ -23,4 +23,12 @@ export interface SapAzureOpenAIOptions {
    * Optional custom destination. Defaults to the `aicore` service binding or `AICORE_SERVICE_KEY` env var.
    */
   destination?: HttpDestinationOrFetchOptions;
+  /**
+   * Azure OpenAI API version. Defaults to `'2024-10-21'`.
+   */
+  apiVersion?: string;
+  /**
+   * Value appended to the `ai-client-type` header. Defaults to `'AI SDK JavaScript'`.
+   */
+  clientType?: string;
 }

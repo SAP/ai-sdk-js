@@ -14,7 +14,8 @@ export default [
             '@langchain/core/**',
             'langchain/**',
             '*/index.js',
-            '*/client/**/index.js'
+            '*/client/**/index.js',
+            'openai/**'
           ]
         }
       ],

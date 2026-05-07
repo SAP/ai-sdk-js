@@ -7,12 +7,13 @@ import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
 import type { SapAzureOpenAIOptions } from './types.js';
 
-const apiVersion = '2024-10-21';
+const defaultApiVersion = '2024-10-21';
 
 /**
  * Creates a configuration object that can be passed directly to `new AzureOpenAI(config)`.
  * Resolves the deployment URL and sets up token-based authentication for SAP AI Core.
- *
+ * @param options - The options for creating the OpenAI configuration.
+ * @returns A promise that resolves to an AzureClientOptions object.
  * @example
  * ```ts
  * import { AzureOpenAI } from 'openai';
@@ -29,7 +30,7 @@ const apiVersion = '2024-10-21';
 export async function createOpenAIConfig(
   options: SapAzureOpenAIOptions
 ): Promise<AzureClientOptions> {
-  const { modelDeployment, destination } = options;
+  const { modelDeployment, destination, apiVersion, clientType } = options;
 
   const deploymentId = await getFoundationModelDeploymentId(
     modelDeployment,
@@ -42,11 +43,13 @@ export async function createOpenAIConfig(
 
   return {
     baseURL,
-    apiVersion,
+    apiVersion: apiVersion ?? defaultApiVersion,
     azureADTokenProvider: createTokenProvider(destination),
     defaultHeaders: {
       'ai-resource-group': resourceGroup,
-      'ai-client-type': 'AI SDK JavaScript'
+      'ai-client-type': ['AI SDK JavaScript', clientType]
+        .filter(c => c)
+        .join(',')
     }
   };
 }
