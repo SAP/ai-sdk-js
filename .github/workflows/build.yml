@@ -56,7 +56,7 @@ jobs:
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
       - name: Set NODE_PATH
-        run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
+        run: echo "NODE_PATH=$(pwd)/node_modules" >> "$GITHUB_ENV"
       - name: Check public API
         uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
         with:
@@ -71,7 +71,7 @@ jobs:
 
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ (github.actor == 'dependabot[bot]' || startsWith(github.event.pull_request.title, 'chore(deps')) && github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
     needs: [test, checks]
     permissions:
       pull-requests: write

@@ -74,6 +74,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
           path: ./ai-sdk-docs
+          persist-credentials: true
       - name: Update release notes file
         id: update-notes
         run: |
