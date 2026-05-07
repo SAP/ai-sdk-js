@@ -192,7 +192,7 @@ app.get('/ai-api/deployment-url', async (req, res) => {
     res.send(
       await resolveDeploymentUrl({
         scenarioId: 'foundation-models',
-        model: { name: 'gpt-5' }
+        model: { name: 'gpt-5.4' }
       })
     );
   } catch (error: any) {

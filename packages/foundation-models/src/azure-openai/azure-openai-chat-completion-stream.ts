@@ -74,7 +74,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
               ._getToolCallsAccumulators()
               .set(choiceIndex, toolCallAccumulators);
           }
-          toolCallsChunks.map(toolCallChunk => {
+          toolCallsChunks.forEach(toolCallChunk => {
             const toolCallId = toolCallChunk.index;
             const toolCallAccumulator = mergeToolCallChunk(
               toolCallChunk,

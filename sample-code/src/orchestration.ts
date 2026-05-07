@@ -548,7 +548,10 @@ export async function orchestrationGrounding(
       // define the language model to be used
       promptTemplating: {
         model: {
-          name: 'anthropic--claude-4.5-haiku'
+          name: 'anthropic--claude-4.5-haiku',
+          params: {
+            temperature: 0
+          }
         }
       },
       grounding: buildDocumentGroundingConfig({
@@ -986,7 +989,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // Second configuration with a slow model with a short timeout to trigger fallback
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4',
           timeout: 1, // 1 s timeout to trigger timeout error
           params: {
             reasoning_effort: 'high'

@@ -15,10 +15,12 @@ jobs:
       id-token: write
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
           pnpm-install-args: ''
+          package-manager-cache: false
+          registry-url: 'https://registry.npmjs.org'
 
       - name: prepare canary changeset
         run: |
@@ -32,9 +34,11 @@ jobs:
           EOT
 
       - name: publish
+        env:
+          INPUTS_TAG: ${{ inputs.tag }}
         run: |
           date=`date +%Y%m%d%H%M%S`
-          pnpm changeset pre enter ${date}
+          pnpm changeset pre enter "${date}"
           pnpm changeset version
           pnpm changeset pre exit
-          pnpm changeset publish --tag ${{ inputs.tag }}
+          pnpm changeset publish --tag "${INPUTS_TAG}"

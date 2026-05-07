@@ -34,7 +34,7 @@ describe('orchestration service client', () => {
   const config: LangChainOrchestrationModuleConfig = {
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini',
+        name: 'gpt-5.4-nano',
         params: {}
       }
     }
@@ -262,7 +262,7 @@ describe('orchestration service client', () => {
               modules: {
                 prompt_templating: {
                   model: {
-                    name: 'gpt-5-mini',
+                    name: 'gpt-5.4-nano',
                     params: {}
                   },
                   prompt: {
@@ -298,7 +298,7 @@ describe('orchestration service client', () => {
               modules: {
                 prompt_templating: {
                   model: {
-                    name: 'gpt-5-mini',
+                    name: 'gpt-5.4-nano',
                     params: {}
                   },
                   prompt: {
@@ -334,7 +334,7 @@ describe('orchestration service client', () => {
               modules: {
                 prompt_templating: {
                   model: {
-                    name: 'gpt-5-mini',
+                    name: 'gpt-5.4-nano',
                     params: {}
                   },
                   prompt: {
@@ -695,6 +695,206 @@ describe('orchestration service client', () => {
     expect(llm._streamResponseChunks).toHaveBeenCalled();
   });
 
+  describe('module fallback configs', () => {
+    it('supports invoke with module fallback configuration list', async () => {
+      const primaryConfig: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4',
+            params: {}
+          }
+        }
+      };
+      const fallbackConfig: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4-nano',
+            params: {}
+          }
+        }
+      };
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [
+              {
+                ...primaryConfig,
+                promptTemplating: {
+                  ...primaryConfig.promptTemplating,
+                  prompt: {
+                    template: messages
+                  }
+                }
+              },
+              {
+                ...fallbackConfig,
+                promptTemplating: {
+                  ...fallbackConfig.promptTemplating,
+                  prompt: {
+                    template: messages
+                  }
+                }
+              }
+            ],
+            { messages: [] }
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        endpoint
+      );
+
+      const client = new OrchestrationClient([primaryConfig, fallbackConfig]);
+      const response = await client.invoke(messages);
+
+      expect(response.content).toContain('Hello');
+    });
+
+    it('supports stream with module fallback configuration list', async () => {
+      const primaryConfig: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4',
+            params: {}
+          }
+        }
+      };
+      const fallbackConfig: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4-nano',
+            params: {}
+          }
+        }
+      };
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [
+              {
+                ...primaryConfig,
+                promptTemplating: {
+                  ...primaryConfig.promptTemplating,
+                  prompt: {
+                    template: messages
+                  }
+                }
+              },
+              {
+                ...fallbackConfig,
+                promptTemplating: {
+                  ...fallbackConfig.promptTemplating,
+                  prompt: {
+                    template: messages
+                  }
+                }
+              }
+            ],
+            { messages: [] },
+            true
+          )
+        },
+        {
+          data: mockResponseStream,
+          status: 200
+        },
+        endpoint
+      );
+
+      const client = new OrchestrationClient([primaryConfig, fallbackConfig]);
+      const stream = await client.stream('Hello!');
+
+      let finalOutput: AIMessageChunk | undefined;
+      for await (const chunk of stream) {
+        finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+      }
+
+      expect(finalOutput).toBeDefined();
+      expect(finalOutput?.content).toBeDefined();
+    });
+
+    it('applies invoke stop options to each fallback module config', async () => {
+      const primaryConfig: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4',
+            params: {
+              stop: ['PRIMARY_STOP']
+            }
+          }
+        }
+      };
+      const fallbackConfig: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4-nano',
+            params: {
+              stop: ['FALLBACK_STOP']
+            }
+          }
+        }
+      };
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(
+            [
+              {
+                ...primaryConfig,
+                promptTemplating: {
+                  ...primaryConfig.promptTemplating,
+                  model: {
+                    ...primaryConfig.promptTemplating.model,
+                    params: {
+                      ...primaryConfig.promptTemplating.model.params,
+                      stop: ['PRIMARY_STOP', 'END']
+                    }
+                  },
+                  prompt: {
+                    template: messages
+                  }
+                }
+              },
+              {
+                ...fallbackConfig,
+                promptTemplating: {
+                  ...fallbackConfig.promptTemplating,
+                  model: {
+                    ...fallbackConfig.promptTemplating.model,
+                    params: {
+                      ...fallbackConfig.promptTemplating.model.params,
+                      stop: ['FALLBACK_STOP', 'END']
+                    }
+                  },
+                  prompt: {
+                    template: messages
+                  }
+                }
+              }
+            ],
+            { messages: [] }
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        endpoint
+      );
+
+      const client = new OrchestrationClient([primaryConfig, fallbackConfig]);
+      const response = await client.invoke(messages, {
+        stop: ['END']
+      });
+
+      expect(response.content).toContain('Hello');
+    });
+  });
+
   describe('withStructuredOutput', () => {
     const jokeSchema = z.object({
       setup: z.string().describe('The setup of the joke'),
@@ -783,7 +983,7 @@ describe('orchestration service client', () => {
       const configWithRef: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {
@@ -888,7 +1088,7 @@ describe('orchestration service client', () => {
       const configWithTemplate: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           model: {
-            name: 'gpt-5-mini',
+            name: 'gpt-5.4-nano',
             params: {}
           },
           prompt: {

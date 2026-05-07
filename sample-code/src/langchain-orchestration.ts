@@ -25,7 +25,10 @@ import { createAgent, createMiddleware } from 'langchain';
 // eslint-disable-next-line import/no-internal-modules
 import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
-import type { LangChainOrchestrationModuleConfig } from '@sap-ai-sdk/langchain';
+import type {
+  LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList
+} from '@sap-ai-sdk/langchain';
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -52,6 +55,52 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
+ * Ask GPT about SAP Cloud SDK using module fallback configurations.
+ * @returns The answer from ChatGPT.
+ */
+export async function invokeChainWithFallbackConfigs(): Promise<string> {
+  const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
+    {
+      // First configuration with a non-existent model to trigger module fallback
+      promptTemplating: {
+        model: {
+          name: 'non-existent-model'
+        }
+      }
+    },
+    {
+      // Second configuration with a slow model with a short timeout to trigger fallback
+      promptTemplating: {
+        model: {
+          name: 'gpt-5.4-nano',
+          timeout: 1, // 1 s timeout to trigger timeout error
+          params: {
+            reasoning_effort: 'high'
+          }
+        }
+      }
+    },
+    {
+      // Third configuration with a valid model that will succeed
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      }
+    }
+  ];
+
+  return new OrchestrationClient(orchestrationConfigs)
+    .pipe(new StringOutputParser())
+    .invoke([
+      {
+        role: 'user',
+        content: 'Tell me about SAP Cloud SDK'
+      }
+    ]);
+}
+
+/**
  * Trigger input content filter.
  * @returns The answer from ChatGPT.
  */
@@ -60,7 +109,7 @@ export async function invokeChainWithInputFilter(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     },
     filtering: {
@@ -89,7 +138,7 @@ export async function invokeChainWithOutputFilter(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     },
     filtering: {
@@ -233,7 +282,7 @@ export async function streamChain(
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     }
   };
@@ -254,6 +303,58 @@ export async function streamChain(
 }
 
 /**
+ * Stream responses using LangChain Orchestration client with module fallback configurations.
+ * @param controller - The abort controller to cancel the request if needed.
+ * @returns The streamed answer aggregated as a string.
+ */
+export async function streamChainWithFallbackConfigs(
+  controller = new AbortController()
+): Promise<string> {
+  const orchestrationConfigs: [
+    LangChainOrchestrationModuleConfig,
+    ...LangChainOrchestrationModuleConfig[]
+  ] = [
+    {
+      promptTemplating: {
+        model: {
+          name: 'non-existing-model'
+        }
+      }
+    },
+    // In the streaming scenario, timeouts will not trigger module fallback.
+    // Therefore, this is not tested in this example.
+    {
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      }
+    }
+  ];
+
+  const client = new OrchestrationClient(orchestrationConfigs);
+  const stream = await client.stream(
+    [
+      {
+        role: 'user',
+        content:
+          'Write a 100 word explanation about SAP Cloud SDK and its capabilities'
+      }
+    ],
+    {
+      signal: controller.signal
+    }
+  );
+
+  let finalOutput: AIMessageChunk | undefined;
+  for await (const chunk of stream) {
+    finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
+  }
+
+  return String(finalOutput?.content ?? '');
+}
+
+/**
  * Trigger masking the input provided to the large language model.
  * @returns The answer from ChatGPT.
  */
@@ -262,7 +363,7 @@ export async function invokeChainWithMasking(): Promise<string> {
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     },
     masking: {
@@ -333,7 +434,7 @@ export async function invokeToolChain(): Promise<string> {
   const client = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     }
   });
@@ -403,7 +504,7 @@ export async function invokeDynamicModelAgent(): Promise<string> {
   const basicModel = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       }
     }
   });
@@ -412,7 +513,7 @@ export async function invokeDynamicModelAgent(): Promise<string> {
   const advancedModel = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5'
+        name: 'gpt-5.4'
       }
     }
   });
@@ -452,7 +553,7 @@ export async function invokeMcpToolChain(): Promise<string> {
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5'
+          name: 'gpt-5.4'
         }
       }
     },

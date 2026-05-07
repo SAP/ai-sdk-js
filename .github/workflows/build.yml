@@ -16,16 +16,30 @@ jobs:
         node-version: [20, 22, 24]
 
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ matrix.node-version }}
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - run: pnpm test:unit
+      - name: Fetch main for SonarQube blame
+        # Sonar only runs iff on first job (0) and the token is available (not on forks)
+        if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}
+        env:
+          HAS_SONAR_TOKEN: ${{ secrets.SONAR_TOKEN == '' && 'false' || 'true' }}
+        run: git fetch --unshallow origin main
+      - name: SonarQube Scan
+        if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: SonarSource/sonarqube-scan-action@59db25f34e16620e48ab4bb9e4a5dce155cb5432 # v8.0.0
       - run: pnpm test:type
 
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: sap/ai-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@676e2d560c9a403aa252096d99fcab3e1132b0f5 # v6.0.0
       - run: pnpm generate
@@ -42,7 +56,7 @@ jobs:
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
       - name: Set NODE_PATH
-        run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
+        run: echo "NODE_PATH=$(pwd)/node_modules" >> "$GITHUB_ENV"
       - name: Check public API
         uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
         with:
@@ -51,13 +65,13 @@ jobs:
       - name: Check dependencies
         run: pnpm check:deps
       - name: License Check
-        uses: sap/cloud-sdk-js/.github/actions/check-license@license-checker
-      - run: pnpm doc
-        name: API Doc Check
+        uses: sap/cloud-sdk-js/.github/actions/check-license@main
+      - name: API Doc Check
+        run: pnpm doc
 
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ (github.actor == 'dependabot[bot]' || startsWith(github.event.pull_request.title, 'chore(deps')) && github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
     needs: [test, checks]
     permissions:
       pull-requests: write
@@ -65,18 +79,18 @@ jobs:
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@ffa630c65fa7e0ecfa0625b5ceda64399aea1b36 # v3.0.0
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Approve a PR
         if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major' }}
-        run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh pr review --approve "$PR_URL"
       - name: Enable auto-merge for Dependabot PRs
         if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major' }}
-        run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: gh pr merge --auto --squash "$PR_URL"
