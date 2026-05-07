@@ -29,6 +29,7 @@ Syncs `packages/core/src/model-types.ts` with the current model table on SAP Not
    ```
    If the output ends with a `⚠ Skipped N model(s)` warning, show the user the listed model names and their `executableId` values and ask whether they want to add a mapping.
    If yes, add the appropriate entry to `EXECUTABLE_ID_TO_TYPE` in `scripts/sync-model-types.ts` and re-run the script before proceeding.
+   The script also checks which synced models are available in your landscape using the foundation-models API. Credentials are loaded automatically from the environment — if unavailable, the landscape check is skipped with a warning.
 
 4. **Check for deprecated model usage** in the codebase:
    - From `scripts/sap-models.json`, collect the names of all models where `deprecated` is `"yes"` or the retirement date is set.

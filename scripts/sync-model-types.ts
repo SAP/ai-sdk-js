@@ -8,6 +8,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import * as prettier from 'prettier';
+import { ScenarioApi } from '@sap-ai-sdk/ai-api';
 import { transformFile } from './util.js';
 
 /** A single row from the SAP Notes model table. */
@@ -304,6 +305,50 @@ async function syncModelTypes(): Promise<void> {
     for (const { model, executableId } of skippedRows) {
       console.error(`  ${model}  (executableId: ${executableId})`);
     }
+  }
+
+  await checkLandscapeAvailability(typeToActiveModels);
+}
+
+async function checkLandscapeAvailability(
+  typeToActiveModels: Record<string, Set<string>>
+): Promise<void> {
+  try {
+    process.loadEnvFile(resolve(import.meta.dirname, '../sample-code/.env'));
+  } catch {
+    // .env not found, AICORE_SERVICE_KEY must be set externally
+  }
+
+  if (!process.env['AICORE_SERVICE_KEY']) {
+    console.error('\n⚠ Skipping landscape check — AICORE_SERVICE_KEY not set.');
+    return;
+  }
+
+  const syncedModels = new Set(
+    Object.values(typeToActiveModels).flatMap(s => [...s])
+  );
+
+  let landscapeModels: Set<string>;
+  try {
+    const result = await ScenarioApi.scenarioQueryModels('foundation-models', {
+      'AI-Resource-Group': 'default'
+    }).execute();
+    landscapeModels = new Set(result.resources.map(r => r.model));
+  } catch (err) {
+    console.error('\n⚠ Landscape check failed:', err);
+    return;
+  }
+
+  const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
+  if (missing.length) {
+    console.error(
+      `\n⚠ ${missing.length} model(s) not available in your landscape:`
+    );
+    for (const m of missing) {
+      console.error(`  ${m}`);
+    }
+  } else {
+    console.log('\n✓ All synced models are available in your landscape.');
   }
 }
 
