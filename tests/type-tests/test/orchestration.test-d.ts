@@ -390,7 +390,7 @@ expectType<Promise<OrchestrationResponse>>(
   }).chatCompletion()
 );
 
-expect<ChatModel>('custom-model');
+expectAssignable<ChatModel>('custom-model');
 
 /**
  * Filtering Util for Azure content safety.
@@ -677,6 +677,20 @@ expectType<
     version: '1.0.0'
   }).stream({
     placeholderValues: { topic: 'AI' }
+  })
+);
+
+/**
+ * Messages can be passed with a prompt template reference and will be routed to messages_history.
+ */
+expectType<Promise<OrchestrationResponse>>(
+  new OrchestrationClient({
+    promptTemplating: {
+      prompt: { template_ref: { id: 'template-id' } },
+      model: { name: 'gpt-5-mini' }
+    }
+  }).chatCompletion({
+    messages: [{ role: 'user', content: 'Hello!' }]
   })
 );
 
