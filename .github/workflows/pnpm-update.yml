@@ -36,9 +36,9 @@ jobs:
         id: check-changes
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "has-changes=true" >> $GITHUB_OUTPUT
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
           else
-            echo "has-changes=false" >> $GITHUB_OUTPUT
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit and Push
@@ -55,21 +55,23 @@ jobs:
           git add pnpm-lock.yaml
           git commit -m "chore: update pnpm transitive dependencies"
           git push --set-upstream origin "$BRANCH_NAME"
-          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "branch-name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
         if: steps.check-changes.outputs.has-changes == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          STEPS_COMMIT_OUTPUTS_BRANCH_NAME: ${{ steps.commit.outputs.branch-name }}
         run: |
           gh pr create \
             --title "chore: Monthly Transitive Dependency Update" \
             --body "This is an automated PR to update pnpm transitive dependencies." \
             --base main \
-            --head "${{ steps.commit.outputs.branch-name }}"
+            --head "${STEPS_COMMIT_OUTPUTS_BRANCH_NAME}"
 
       - name: Enable auto-merge
         if: steps.check-changes.outputs.has-changes == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: gh pr merge --auto --squash "${{ steps.commit.outputs.branch-name }}"
+          STEPS_COMMIT_OUTPUTS_BRANCH_NAME: ${{ steps.commit.outputs.branch-name }}
+        run: gh pr merge --auto --squash "${STEPS_COMMIT_OUTPUTS_BRANCH_NAME}"
