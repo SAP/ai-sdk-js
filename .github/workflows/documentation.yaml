@@ -25,7 +25,7 @@ jobs:
           echo "CHANGED_FILES=$CHANGED_FILES" >> "$GITHUB_OUTPUT"
       - name: Vale
         # vale fails if the PR is too large, e.g. when updating API docs
-        if: ${{ github.event.pull_request.changed_files < 100 }}
+        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.CHANGED_FILES != '' }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         uses: vale-cli/vale-action@d89dee975228ae261d22c15adcd03578634d429c # v2.1.1
