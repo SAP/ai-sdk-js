@@ -1,4 +1,5 @@
 import { BatchesApi } from '@sap-ai-sdk/batch-api';
+import { FileApi } from '@sap-ai-sdk/ai-api';
 import type {
   BatchListResponse,
   BatchCreateResponse,
@@ -83,4 +84,20 @@ export async function deleteBatch(
   batchId: string
 ): Promise<BatchDeleteResponse> {
   return BatchesApi.deleteBatch(batchId, defaultHeaders).execute();
+}
+
+/**
+ * Download the output file of a completed batch job.
+ * The output is written to `{output.uri}{batchId}/output.jsonl`.
+ * @param secretName - The object store secret name used when creating the batch job (e.g. 's3secret').
+ * @param batchId - The ID of the completed batch job.
+ * @returns The output file as a Blob.
+ */
+export async function downloadBatchOutput(
+  secretName: string,
+  batchId: string
+): Promise<Blob> {
+  return FileApi.fileDownload(`${secretName}//${batchId}/output.jsonl`, {
+    'AI-Resource-Group': defaultHeaders['AI-Resource-Group']
+  }).execute();
 }

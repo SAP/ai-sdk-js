@@ -5,7 +5,8 @@ import {
   getBatchById,
   getBatchStatus,
   cancelBatch,
-  deleteBatch
+  deleteBatch,
+  downloadBatchOutput
 } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 
@@ -49,4 +50,32 @@ describe('batch api', () => {
 
     await deleteBatch(id);
   });
+
+  it('should create a batch job, wait for completion, download output, then delete it', async () => {
+    const response = await createBatch(
+      'ai://s3secret/input-batch.jsonl',
+      'ai://s3secret/'
+    );
+    expect(response.id).toBeDefined();
+    const id = response.id!;
+
+    await retry(
+      async () => {
+        const { current_status } = await getBatchStatus(id);
+        if (current_status === 'COMPLETED') {
+          return;
+        }
+        if (['FAILED', 'CANCELLED'].includes(current_status!)) {
+          throw new Error(`Batch job ended unexpectedly: ${current_status}`);
+        }
+        throw new Error(`Waiting for COMPLETED, got: ${current_status}`);
+      },
+      { retries: 20, minTimeout: 10000 }
+    );
+
+    const output = await downloadBatchOutput('s3secret', id);
+    expect(output).toBeInstanceOf(Blob);
+
+    await deleteBatch(id);
+  }, 300000);
 });
