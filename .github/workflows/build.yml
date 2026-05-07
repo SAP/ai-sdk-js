@@ -21,6 +21,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - run: pnpm test:unit
+      - name: Fetch main for SonarQube blame
+        # Sonar only runs iff on first job (0) and the token is available (not on forks)
+        if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}
+        env:
+          HAS_SONAR_TOKEN: ${{ secrets.SONAR_TOKEN == '' && 'false' || 'true' }}
+        run: git fetch --unshallow origin main
       - name: SonarQube Scan
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
