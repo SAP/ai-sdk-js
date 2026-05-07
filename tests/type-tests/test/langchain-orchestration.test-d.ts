@@ -9,7 +9,7 @@ import type {
 const singleConfig: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
     model: {
-      name: 'gpt-5'
+      name: 'gpt-5.4'
     }
   }
 };
@@ -19,7 +19,7 @@ const fallbackConfigs: LangChainOrchestrationModuleConfigList = [
   {
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-5.4-nano'
       }
     }
   }

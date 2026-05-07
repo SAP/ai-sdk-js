@@ -253,7 +253,7 @@
     "availableInOrchestration": "yes",
     "deprecated": "yes",
     "retirementDate": "not earlier than 2026-04-30",
-    "suggestedReplacement": "text-embedding-3-small\ntext-embedding-3-large"
+    "suggestedReplacement": "text-embedding-3-small, text-embedding-3-large"
   },
   {
     "executableId": "azure-openai(Azure)",
@@ -341,6 +341,30 @@
     "availableInOrchestration": "yes",
     "deprecated": "",
     "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.3-codex",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.4",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.4-nano",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
     "suggestedReplacement": ""
   },
   {
