@@ -21,11 +21,12 @@ jobs:
       - name: delete dist tag
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_ACCESS_TOKEN }}
+          INPUTS_TAG: ${{ inputs.tag }}
         run: |
-          npm dist-tag rm @sap-ai-sdk/ai-api ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/foundation-models ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/orchestration ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/core ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/document-grounding ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/langchain ${{ inputs.tag }}
-          npm dist-tag rm @sap-ai-sdk/prompt-registry ${{ inputs.tag }}
+          npm dist-tag rm @sap-ai-sdk/ai-api "${INPUTS_TAG}"
+          npm dist-tag rm @sap-ai-sdk/foundation-models "${INPUTS_TAG}"
+          npm dist-tag rm @sap-ai-sdk/orchestration "${INPUTS_TAG}"
+          npm dist-tag rm @sap-ai-sdk/core "${INPUTS_TAG}"
+          npm dist-tag rm @sap-ai-sdk/document-grounding "${INPUTS_TAG}"
+          npm dist-tag rm @sap-ai-sdk/langchain "${INPUTS_TAG}"
+          npm dist-tag rm @sap-ai-sdk/prompt-registry "${INPUTS_TAG}"
