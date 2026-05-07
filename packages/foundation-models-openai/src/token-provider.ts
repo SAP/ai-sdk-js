@@ -4,6 +4,8 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 /**
  * Creates a token provider function compatible with `AzureOpenAI`'s `azureADTokenProvider` option.
  * On each invocation, resolves the AI Core destination and returns the bearer token.
+ * @param destination - Optional HTTP destination or fetch options for the AI Core service.
+ * @returns A function that returns a promise resolving to the bearer token string.
  */
 export function createTokenProvider(
   destination?: HttpDestinationOrFetchOptions
