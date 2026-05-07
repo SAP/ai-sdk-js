@@ -14,19 +14,45 @@ import type { SapAzureOpenAIOptions } from './types.js';
  * `modelDeployment` option passed at construction.
  *
  * Only the endpoints supported by SAP AI Core are exposed (`chat`, `embeddings`, `responses`).
+ * Unsupported endpoints inherited from `AzureOpenAI` are marked `never`.
  * Use {@link createAzureOpenAIClient} to create an instance.
  */
-export class SapAzureOpenAI {
-  readonly chat: SapChat;
-  readonly embeddings: SapEmbeddings;
-  readonly responses: SapResponses;
+export class SapAzureOpenAI extends AzureOpenAI {
+  // Supported endpoints with SAP-specific wrappers.
+  override chat: SapChat;
+  override embeddings: SapEmbeddings;
+  override responses: SapResponses;
+
+  // Unsupported endpoints — SAP AI Core does not support these operations.
+  override completions: never = null as never;
+  override files: never = null as never;
+  override images: never = null as never;
+  override audio: never = null as never;
+  override moderations: never = null as never;
+  override models: never = null as never;
+  override fineTuning: never = null as never;
+  override graders: never = null as never;
+  override vectorStores: never = null as never;
+  override webhooks: never = null as never;
+  override beta: never = null as never;
+  override batches: never = null as never;
+  override uploads: never = null as never;
+  override admin: never = null as never;
+  override realtime: never = null as never;
+  override conversations: never = null as never;
+  override evals: never = null as never;
+  override containers: never = null as never;
+  override skills: never = null as never;
+  override videos: never = null as never;
 
   /** @internal — use {@link createAzureOpenAIClient} instead */
   constructor(
+    config: ConstructorParameters<typeof AzureOpenAI>[0],
     chat: SapChat,
     embeddings: SapEmbeddings,
     responses: SapResponses
   ) {
+    super(config);
     this.chat = chat;
     this.embeddings = embeddings;
     this.responses = responses;
@@ -62,11 +88,10 @@ export async function createAzureOpenAIClient(
         ? options.modelDeployment.modelName
         : undefined;
 
-  const azureOpenAI = new AzureOpenAI(config);
-
   return new SapAzureOpenAI(
-    new SapChat(azureOpenAI, defaultModel),
-    new SapEmbeddings(azureOpenAI, defaultModel),
-    new SapResponses(azureOpenAI, defaultModel)
+    config,
+    new SapChat(new AzureOpenAI(config), defaultModel),
+    new SapEmbeddings(new AzureOpenAI(config), defaultModel),
+    new SapResponses(new AzureOpenAI(config), defaultModel)
   );
 }

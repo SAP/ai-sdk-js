@@ -9,21 +9,20 @@ import type { WithoutModel } from './completions.js';
 
 type RequestOptions = Parameters<Embeddings['create']>[1];
 
-/** Wraps `Embeddings` exposing only `create`, with `model` pre-filled. */
-export class SapEmbeddings {
-  private readonly openAIEmbeddings: Embeddings;
+/** Subclass of `Embeddings` exposing only `create`, with `model` pre-filled. */
+export class SapEmbeddings extends Embeddings {
   private readonly defaultModel: string | undefined;
 
   constructor(client: OpenAI, defaultModel?: string) {
-    this.openAIEmbeddings = new Embeddings(client);
+    super(client);
     this.defaultModel = defaultModel;
   }
 
-  create(
+  override create(
     body: WithoutModel<EmbeddingCreateParams>,
     options?: RequestOptions
   ): APIPromise<CreateEmbeddingResponse> {
-    return this.openAIEmbeddings.create(
+    return super.create(
       { model: this.defaultModel ?? '', ...body } as EmbeddingCreateParams,
       options
     );

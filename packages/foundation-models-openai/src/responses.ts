@@ -13,13 +13,20 @@ import type { WithoutModel } from './completions.js';
 
 type RequestOptions = Parameters<Responses['create']>[1];
 
-/** Wraps `Responses` exposing only `create`, with `model` pre-filled. */
-export class SapResponses {
-  private readonly openAIResponses: Responses;
+/** Subclass of `Responses` exposing only `create`, with `model` pre-filled. Unsupported methods are marked `never`. */
+export class SapResponses extends Responses {
   private readonly defaultModel: string | undefined;
 
+  // Unsupported endpoints — SAP AI Core does not support these operations.
+  override retrieve: never = null as never;
+  override delete: never = null as never;
+  override parse: never = null as never;
+  override stream: never = null as never;
+  override cancel: never = null as never;
+  override compact: never = null as never;
+
   constructor(client: OpenAI, defaultModel?: string) {
-    this.openAIResponses = new Responses(client);
+    super(client);
     this.defaultModel = defaultModel;
   }
 
@@ -35,11 +42,11 @@ export class SapResponses {
     body: WithoutModel<ResponseCreateParamsBase>,
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>>;
-  create(
+  override create(
     body: WithoutModel<ResponseCreateParamsBase>,
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
-    return this.openAIResponses.create(
+    return super.create(
       { model: this.defaultModel ?? '', ...body } as ResponseCreateParamsBase,
       options
     );
