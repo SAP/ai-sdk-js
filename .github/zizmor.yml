@@ -1,0 +1,24 @@
+rules:
+  # already following SAP policies
+  dependabot-cooldown:
+    config:
+      days: 4
+  # requires more effort to fix
+  secrets-inherit:
+    ignore:
+      - publish.yml
+      - spec-update-cleanup-cron.yaml
+      - spec-update-cron.yaml
+  # requires more effort to fix
+  excessive-permissions:
+    disable: true
+  dangerous-triggers:
+    ignore:
+      - dependabot-pnpm-lock.yml
+      - lint-pr.yml # TODO: investigate if this really needs pull_request_target
+  # allow unpinned references to own repositories
+  unpinned-uses:
+    config:
+      policies:
+        'sap/ai-sdk-js/*': any
+        'sap/cloud-sdk-js/*': any

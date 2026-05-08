@@ -28,7 +28,7 @@ runs:
         repository: SAP/ai-sdk
         path: ai-sdk
         token: ${{ inputs.token }}
-        persist-token: true
+        persist-credentials: true
 
     - name: Copy API docs
       shell: bash

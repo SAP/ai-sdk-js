@@ -24,7 +24,7 @@ const logger = createLogger({
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletion(): Promise<AzureOpenAiChatCompletionResponse> {
-  const response = await new AzureOpenAiChatClient('gpt-5').run({
+  const response = await new AzureOpenAiChatClient('gpt-5.4').run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
 
@@ -44,7 +44,7 @@ export async function chatCompletionStream(
 ): Promise<
   AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
 > {
-  const response = await new AzureOpenAiChatClient('gpt-5').stream(
+  const response = await new AzureOpenAiChatClient('gpt-5.4').stream(
     {
       messages: [
         {
@@ -81,7 +81,7 @@ export async function computeEmbedding(): Promise<AzureOpenAiEmbeddingResponse> 
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionResilient(): Promise<AzureOpenAiChatCompletionResponse> {
-  return new AzureOpenAiChatClient('gpt-5').run(
+  return new AzureOpenAiChatClient('gpt-5.4').run(
     { messages: [{ role: 'user', content: 'What is the capital of France?' }] },
     {
       middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
@@ -94,7 +94,7 @@ export async function chatCompletionResilient(): Promise<AzureOpenAiChatCompleti
  * @returns The response from Azure OpenAI containing the response content.
  */
 export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCompletionResponse> {
-  const response = await new AzureOpenAiChatClient('gpt-5', {
+  const response = await new AzureOpenAiChatClient('gpt-5.4', {
     destinationName: 'e2e-aicore'
   }).run({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
@@ -112,7 +112,7 @@ export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCo
  * Inspired by https://platform.openai.com/docs/guides/function-calling.
  */
 export async function chatCompletionWithFunctionCall(): Promise<AzureOpenAiChatCompletionResponse> {
-  const client = new AzureOpenAiChatClient('gpt-5');
+  const client = new AzureOpenAiChatClient('gpt-5.4');
   const convertTemperatureTool: AzureOpenAiChatCompletionTool = {
     type: 'function',
     function: {

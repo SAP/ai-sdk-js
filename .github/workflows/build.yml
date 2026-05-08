@@ -21,6 +21,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - run: pnpm test:unit
+      - name: Fetch main for SonarQube blame
+        # Sonar only runs iff on first job (0) and the token is available (not on forks)
+        if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}
+        env:
+          HAS_SONAR_TOKEN: ${{ secrets.SONAR_TOKEN == '' && 'false' || 'true' }}
+        run: git fetch --unshallow origin main
       - name: SonarQube Scan
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
@@ -50,7 +56,7 @@ jobs:
       - name: Check CommonJS compatibility
         run: pnpm compile:cjs
       - name: Set NODE_PATH
-        run: echo "NODE_PATH=$(pwd)/node_modules" >> $GITHUB_ENV
+        run: echo "NODE_PATH=$(pwd)/node_modules" >> "$GITHUB_ENV"
       - name: Check public API
         uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
         with:
@@ -65,7 +71,7 @@ jobs:
 
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ (github.actor == 'dependabot[bot]' || startsWith(github.event.pull_request.title, 'chore(deps')) && github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
     needs: [test, checks]
     permissions:
       pull-requests: write
