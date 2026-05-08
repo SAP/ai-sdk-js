@@ -52,7 +52,9 @@ describe('batch api', () => {
           if (['CANCELLED', 'COMPLETED', 'FAILED'].includes(current_status!)) {
             return;
           }
-          throw new Error(`Waiting for terminal status, got: ${current_status}`);
+          throw new Error(
+            `Waiting for terminal status, got: ${current_status}`
+          );
         },
         { retries: 10, minTimeout: 3000 }
       );
