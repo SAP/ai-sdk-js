@@ -87,17 +87,58 @@ export async function deleteBatch(
 }
 
 /**
+ * Upload a JSONL input file for batch processing.
+ * @param secretName - The object store secret name (e.g. 's3secret').
+ * @param fileName - The file name / path within the secret (e.g. 'test-input-123.jsonl').
+ * @returns The object store URI to use as the batch input URI.
+ */
+export async function uploadBatchInput(
+  secretName: string,
+  fileName: string
+): Promise<string> {
+  const content = [
+    '{"custom_id":"request-1","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"What is machine learning?"}],"max_tokens":150}}',
+    '{"custom_id":"request-2","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"Explain neural networks in simple terms"}],"max_tokens":150}}'
+  ].join('\n');
+  const blob = new Blob([content], { type: 'application/octet-stream' });
+  await FileApi.fileUpload(
+    `${secretName}//${fileName}`,
+    blob,
+    { overwrite: true },
+    { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
+  ).execute();
+  return `ai://${secretName}/${fileName}`;
+}
+
+/**
+ * Delete a file from the object store.
+ * @param secretName - The object store secret name (e.g. 's3secret').
+ * @param filePath - The file path within the secret (e.g. 'output/my-id/output.jsonl').
+ */
+export async function deleteFile(
+  secretName: string,
+  filePath: string
+): Promise<void> {
+  await FileApi.fileDelete(`${secretName}//${filePath}`, {
+    'AI-Resource-Group': defaultHeaders['AI-Resource-Group']
+  }).execute();
+}
+
+/**
  * Download the output file of a completed batch job.
- * The output is written to `{output.uri}{batchId}/output.jsonl`.
+ * The output is written to `{outputFolder}{batchId}/output.jsonl`.
  * @param secretName - The object store secret name used when creating the batch job (e.g. 's3secret').
+ * @param outputFolder - The output folder prefix used when creating the batch job (e.g. 'output/').
  * @param batchId - The ID of the completed batch job.
  * @returns The output file as a Blob.
  */
 export async function downloadBatchOutput(
   secretName: string,
+  outputFolder: string,
   batchId: string
 ): Promise<Blob> {
-  return FileApi.fileDownload(`${secretName}//${batchId}/output.jsonl`, {
-    'AI-Resource-Group': defaultHeaders['AI-Resource-Group']
-  }).execute();
+  return FileApi.fileDownload(
+    `${secretName}//${outputFolder}${batchId}/output.jsonl`,
+    { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
+  ).execute();
 }

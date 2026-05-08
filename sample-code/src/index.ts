@@ -95,5 +95,8 @@ export {
   getBatchById,
   getBatchStatus,
   cancelBatch,
-  deleteBatch
+  deleteBatch,
+  downloadBatchOutput,
+  uploadBatchInput,
+  deleteFile
 } from './batch-api.js';
