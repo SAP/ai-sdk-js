@@ -11,7 +11,6 @@ import {
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import type {
