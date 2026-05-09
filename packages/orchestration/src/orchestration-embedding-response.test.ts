@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll } from 'vitest';
 import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';

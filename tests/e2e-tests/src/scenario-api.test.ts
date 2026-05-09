@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { getScenarios, getModelsInScenario } from '@sap-ai-sdk/sample-code';
 import { loadEnv } from './utils/load-env.js';
 import { resourceGroup } from './utils/ai-api-utils.js';

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { buildTranslationConfig } from './translation.js';
 import type {
   SAPDocumentTranslationInput,

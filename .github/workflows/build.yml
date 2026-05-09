@@ -20,6 +20,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      - name: Test
+        if: ${{ strategy.job-index != 0 }}
+        run: pnpm test:unit
+      - name: Test with Coverage
+        if: ${{ strategy.job-index == 0 }}
+        run: pnpm test:coverage
       - run: pnpm test:unit
       - name: Fetch main for SonarQube blame
         # Sonar only runs iff on first job (0) and the token is available (not on forks)

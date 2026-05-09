@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
@@ -54,7 +54,7 @@ describe('AzureOpenAiChatCompletionStreamResponse', () => {
         package: 'foundation-models',
         messageContext: 'azure-openai-chat-completion-stream-response'
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       new AzureOpenAiChatCompletionStreamResponse();
 

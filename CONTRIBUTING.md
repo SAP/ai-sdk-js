@@ -19,19 +19,6 @@ Run `pnpm install` in the root directory instead.
 
 All (new) functionality shall be covered by tests.
 
-### Jest Runner Set-up
-
-If you're using the Jest Runner extension in Visual Studio Code, you'll need to add the following settings to your `settings.json` file before running the tests from VS Code:
-
-```
- "jestrunner.debugOptions": {
-    "runtimeArgs": ["--experimental-vm-modules"]
-  },
-  "jestrunner.jestCommand": "NODE_OPTIONS=--experimental-vm-modules node 'node_modules/jest/bin/jest.js'",
-```
-
-You can run our tests either with the commands covered in the following sections or using the jest runner extension directly from the IDE.
-
 ### Unit Tests
 
 Unit tests test specific modules of a package, units that are tested for behavior.

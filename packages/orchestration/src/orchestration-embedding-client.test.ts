@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -24,7 +24,7 @@ describe('orchestration embedding service client', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     nock.cleanAll();
   });
 

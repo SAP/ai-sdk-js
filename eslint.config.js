@@ -13,6 +13,7 @@ export default [
             '@sap-ai-sdk/*/internal.js',
             '@langchain/core/**',
             'langchain/**',
+            'vitest/config',
             '*/index.js',
             '*/client/**/index.js'
           ]
