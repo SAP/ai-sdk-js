@@ -207,8 +207,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0
       yaml:
-        specifier: ^2.8.3
-        version: 2.8.3
+        specifier: ^2.8.4
+        version: 2.8.4
     devDependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.6.0
@@ -4968,8 +4968,8 @@ packages:
     resolution: {integrity: sha512-vIYeF1u3CjlhAFekPPAk2h/Kv4T3mAkMox5OymRiJQB0spDP10LHvt+K7G9Ny6NuuMAb25/6n1qyUjAcGNf/AA==}
     engines: {node: '>= 6'}
 
-  yaml@2.8.3:
-    resolution: {integrity: sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==}
+  yaml@2.8.4:
+    resolution: {integrity: sha512-ml/JPOj9fOQK8RNnWojA67GbZ0ApXAUlN2UQclwv2eVgTgn7O9gg9o7paZWKMp4g0H3nTLtS9LVzhkpOFIKzog==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -5832,7 +5832,7 @@ snapshots:
       js-yaml: 4.1.1
       jsonpointer: 5.0.1
       openapi-types: 12.1.3
-      yaml: 2.8.3
+      yaml: 2.8.4
       zod: 4.4.2
     optionalDependencies:
       langsmith: 0.5.26(openai@6.35.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
@@ -6183,7 +6183,7 @@ snapshots:
       '@sap-ai-sdk/core': 2.10.1-20260506013733.0
       '@sap-ai-sdk/prompt-registry': 2.10.1-20260506013733.0
       '@sap-cloud-sdk/util': 4.6.0
-      yaml: 2.8.3
+      yaml: 2.8.4
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6327,7 +6327,7 @@ snapshots:
       mustache: 4.2.0
       ws: 8.20.0
       xml-js: 1.6.11
-      yaml: 2.8.3
+      yaml: 2.8.4
     optionalDependencies:
       '@cap-js/sqlite': 2.2.1(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
     transitivePeerDependencies:
@@ -6358,7 +6358,7 @@ snapshots:
       '@sap/cds-compiler': 6.9.0
       '@sap/cds-fiori': 2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
       express: 5.2.1
-      yaml: 2.8.3
+      yaml: 2.8.4
     transitivePeerDependencies:
       - supports-color
 
@@ -6402,7 +6402,7 @@ snapshots:
     dependencies:
       '@scalar/helpers': 0.5.2
       pathe: 2.0.3
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   '@scalar/openapi-parser@0.25.12':
     dependencies:
@@ -6415,7 +6415,7 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.20.0)
       jsonpointer: 5.0.1
       leven: 4.1.0
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   '@scalar/openapi-types@0.8.0': {}
 
@@ -10208,7 +10208,7 @@ snapshots:
       markdown-it: 14.1.1
       minimatch: 10.2.5
       typescript: 6.0.3
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   typescript-eslint@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.3):
     dependencies:
@@ -10431,7 +10431,7 @@ snapshots:
 
   yaml@1.10.3: {}
 
-  yaml@2.8.3: {}
+  yaml@2.8.4: {}
 
   yargs-parser@20.2.9: {}
 
