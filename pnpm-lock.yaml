@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  uuid@^13.0.0: '>=13.0.2'
-
 pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
 
 importers:
@@ -83,8 +80,8 @@ importers:
         specifier: ^14.0.14
         version: 14.0.14
       orval:
-        specifier: ^8.9.0
-        version: 8.9.0(prettier@3.8.3)(typescript@6.0.3)
+        specifier: ^8.9.1
+        version: 8.9.1(prettier@3.8.3)(typescript@6.0.3)
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -104,8 +101,8 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       zod:
-        specifier: ^4.4.2
-        version: 4.4.2
+        specifier: ^4.4.3
+        version: 4.4.3
 
   packages/ai-api:
     dependencies:
@@ -172,13 +169,13 @@ importers:
     devDependencies:
       openai:
         specifier: ^6.36.0
-        version: 6.37.0(ws@8.20.0)(zod@4.4.2)
+        version: 6.37.0(ws@8.20.0)(zod@4.4.3)
 
   packages/langchain:
     dependencies:
       '@langchain/core':
         specifier: ^1.1.16
-        version: 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+        version: 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../ai-api
@@ -202,11 +199,11 @@ importers:
         version: 14.0.0
     devDependencies:
       '@langchain/langgraph':
-        specifier: ^1.2.9
-        version: 1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2)
+        specifier: ^1.3.0
+        version: 1.3.0(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
       zod:
-        specifier: ^4.4.2
-        version: 4.4.2
+        specifier: ^4.4.3
+        version: 4.4.3
 
   packages/orchestration:
     dependencies:
@@ -223,8 +220,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0
       yaml:
-        specifier: ^2.8.3
-        version: 2.8.3
+        specifier: ^2.8.4
+        version: 2.8.4
     devDependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.6.0
@@ -239,8 +236,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       zod:
-        specifier: ^4.4.2
-        version: 4.4.2
+        specifier: ^4.4.3
+        version: 4.4.3
 
   packages/rpt:
     dependencies:
@@ -289,22 +286,22 @@ importers:
     dependencies:
       '@langchain/classic':
         specifier: ^1.0.32
-        version: 1.0.32(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+        version: 1.0.32(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       '@langchain/core':
-        specifier: ^1.1.42
-        version: 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+        specifier: ^1.1.44
+        version: 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       '@langchain/langgraph':
-        specifier: ^1.2.9
-        version: 1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2)
+        specifier: ^1.3.0
+        version: 1.3.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
       '@langchain/mcp-adapters':
         specifier: ^1.1.3
-        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(@langchain/langgraph@1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2))
+        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(@langchain/langgraph@1.3.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3))
       '@langchain/textsplitters':
         specifier: ^1.0.1
-        version: 1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
+        version: 1.0.1(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
-        version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.2)
+        version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -342,14 +339,14 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       langchain:
-        specifier: ^1.3.5
-        version: 1.3.5(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.2))
+        specifier: ^1.4.0
+        version: 1.4.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))
       uuid:
         specifier: ^14.0.0
         version: 14.0.0
       zod:
-        specifier: ^4.4.2
-        version: 4.4.2
+        specifier: ^4.4.3
+        version: 4.4.3
 
   tests/e2e-tests:
     dependencies:
@@ -386,19 +383,19 @@ importers:
     dependencies:
       '@langchain/classic':
         specifier: '=1.0.32'
-        version: 1.0.32(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+        version: 1.0.32(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       '@langchain/core':
-        specifier: '=1.1.42'
-        version: 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+        specifier: '=1.1.44'
+        version: 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       '@langchain/langgraph':
-        specifier: '=1.2.9'
-        version: 1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2)
+        specifier: '=1.3.0'
+        version: 1.3.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
       '@langchain/mcp-adapters':
         specifier: '=1.1.3'
-        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(@langchain/langgraph@1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2))
+        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(@langchain/langgraph@1.3.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3))
       '@langchain/textsplitters':
         specifier: '=1.0.1'
-        version: 1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
+        version: 1.0.1(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
       '@sap-ai-sdk/ai-api':
         specifier: canary
         version: 2.10.1-20260501013816.0
@@ -410,7 +407,7 @@ importers:
         version: 2.10.1-20260501013816.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.10.1-20260501013816.0(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
+        version: 2.10.1-20260501013816.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
       '@sap-ai-sdk/orchestration':
         specifier: canary
         version: 2.10.1-20260501013816.0
@@ -427,17 +424,17 @@ importers:
         specifier: '=5.2.1'
         version: 5.2.1
       hono:
-        specifier: '=4.12.16'
-        version: 4.12.16
+        specifier: '=4.12.18'
+        version: 4.12.18
       langchain:
-        specifier: '=1.3.5'
-        version: 1.3.5(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.2))
+        specifier: '=1.4.0'
+        version: 1.4.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))
       uuid:
         specifier: '=14.0.0'
         version: 14.0.0
       zod:
-        specifier: '=4.4.2'
-        version: 4.4.2
+        specifier: '=4.4.3'
+        version: 4.4.3
     devDependencies:
       '@types/express':
         specifier: '=5.0.6'
@@ -1159,23 +1156,34 @@ packages:
     resolution: {integrity: sha512-d0tN96BrwPMryYyWR9VfyAntSivn7EQrZCe5Kpxum93tcjTXbKKmKvItFec8AluQt88iTcmAJrahUZUNfzGwTA==}
     engines: {node: '>=20'}
 
+  '@langchain/core@1.1.44':
+    resolution: {integrity: sha512-RePW1IjGCHr9ua2vcby3aE8mOOz3EnwDZxMEGbNDT91kf14eqkJqxDXvaZFviGdcN9DTrxM5RPQNAHmwSm4tbg==}
+    engines: {node: '>=20'}
+
+  '@langchain/core@1.1.45':
+    resolution: {integrity: sha512-Y/wvuglLTMKJahkl4QD9dBIdF/z/CxZJWdTfHJF/q2jtlJtoFf6Mb5JpGxZfsi3mBY6NSG941FSLTcqhCKrhBA==}
+    engines: {node: '>=20'}
+
   '@langchain/langgraph-checkpoint@1.0.1':
     resolution: {integrity: sha512-HM0cJLRpIsSlWBQ/xuDC67l52SqZ62Bh2Y61DX+Xorqwoh5e1KxYvfCD7GnSTbWWhjBOutvnR0vPhu4orFkZfw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^1.0.1
 
-  '@langchain/langgraph-sdk@1.8.9':
-    resolution: {integrity: sha512-vpz90auS4iFTNy2X/CFexOEoeFSvaK+MyI7iSmzYs9gGcfzwRjWUJ4MWsuc5ZNRecLStwho0PExVXRgGOXtcRw==}
+  '@langchain/langgraph-checkpoint@1.0.2':
+    resolution: {integrity: sha512-F4E5Tr0nt8FGghgdscJtHw+ABzChOHeI80R7Y1pjIHdiJom6c2ieo76vL+FWiny80JmoGqhrVAEIWrw0cXKPxg==}
+    engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': ^1.1.16
+      '@langchain/core': ^1.1.44
+
+  '@langchain/langgraph-sdk@1.9.1':
+    resolution: {integrity: sha512-pHojybde9HoMz7ZDtyW3pgDdomAN4C0pbdgXASjccFS+S2Cqx75iZBtBUUg1A/CSer5xh9GakdIqyihxZOf7VA==}
+    peerDependencies:
       react: ^18 || ^19
       react-dom: ^18 || ^19
       svelte: ^4.0.0 || ^5.0.0
       vue: ^3.0.0
     peerDependenciesMeta:
-      '@langchain/core':
-        optional: true
       react:
         optional: true
       react-dom:
@@ -1185,11 +1193,11 @@ packages:
       vue:
         optional: true
 
-  '@langchain/langgraph@1.2.9':
-    resolution: {integrity: sha512-3c7BtGycHC2v9p6w/Hv8L7kEl1YnZYOQTDJtmAp3knk6JOedO7d2bYP3y0SRyhv5orUEGf/KGvx8ZsB/ideP7g==}
+  '@langchain/langgraph@1.3.0':
+    resolution: {integrity: sha512-QvhTjiyqFPz81A+y6LHs223w6DTjv5+882DT4mup72bd72rRhNjTYo5fhes5um0swnKArvY/arc7KeFInfHHWw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': ^1.1.40
+      '@langchain/core': ^1.1.44
       zod: ^3.25.32 || ^4.2.0
       zod-to-json-schema: ^3.x
     peerDependenciesMeta:
@@ -1208,6 +1216,9 @@ packages:
     engines: {node: '>=20'}
     peerDependencies:
       '@langchain/core': ^1.1.42
+
+  '@langchain/protocol@0.0.15':
+    resolution: {integrity: sha512-MllvbpMjqHevUm+v94M422mH7XKN+wGCvJRBVROTWBotEDOATYB4Ktk2UheYP859y9o2LlhtPek5t1T9eyfAbQ==}
 
   '@langchain/textsplitters@1.0.1':
     resolution: {integrity: sha512-rheJlB01iVtrOUzttscutRgLybPH9qR79EyzBEbf1u97ljWyuxQfCwIWK+SjoQTM9O8M7GGLLRBSYE26Jmcoww==}
@@ -1259,43 +1270,43 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
-  '@orval/angular@8.9.0':
-    resolution: {integrity: sha512-jYepvb8v4xHeJZskaqi8i+V7zp+rha+sK/A2Inyf10Gt7OoaX0G3P/wa3G6/K6nw4TfiLj5KKdIdG+c4X/luOw==}
+  '@orval/angular@8.9.1':
+    resolution: {integrity: sha512-S4OVIfyCO+lvNQ52tY6OnisYCYK71XiGKvSEP83I38YvQTKkkm1wJvkM5GC5Q9Evthqg169Qo59xSEiXFAftyw==}
 
-  '@orval/axios@8.9.0':
-    resolution: {integrity: sha512-Qumi+SsjwphVtm65I5XW7tf7itvytcz8eW6aZElaybZRBrIIC9i62jTGYIDmY/loI8jSLublxEU6CmaSUyah2A==}
+  '@orval/axios@8.9.1':
+    resolution: {integrity: sha512-OuZ6cY3r+GvL5HTfatoMYFgs3vDJw/my9S4CxwRRuQJF9sfP1Hsy5XYIbzCiDT60iIBQaakJg9CpXqP0yFLLkQ==}
 
-  '@orval/core@8.9.0':
-    resolution: {integrity: sha512-kcwr5ePPSaSqmFKWRI2skPd6MgPSdWk7NIfVaj61CdK5Q5agA173iUypdOwLif1xPF03nVvCdic3FZc77/XsMg==}
+  '@orval/core@8.9.1':
+    resolution: {integrity: sha512-RkMud8bC7f3NZnm79baLFZGkYHR6lDd4DMPYjpJ5EmreM7tTTcVH5Nd6HEB0FVVd0UvcsS0tGWDIYiHxq04sJA==}
     peerDependencies:
       '@faker-js/faker': '>=10'
     peerDependenciesMeta:
       '@faker-js/faker':
         optional: true
 
-  '@orval/fetch@8.9.0':
-    resolution: {integrity: sha512-nFWeKh0iExCgo/yyx8XLr+PBgVteAoePF+GiQdiiqyEuM+Jd+aFg6nzHYoD9C/WYhnxoLHDfM/57EjHBRgpNtQ==}
+  '@orval/fetch@8.9.1':
+    resolution: {integrity: sha512-9SBqq0w6b5maIcHWbcSPYd0ZWg+VzOCTAmaVPsVpdmCR9ss8yZAkkmah1NiV44AAqE9PUtXTPEMZrH0MwUDoeg==}
 
-  '@orval/hono@8.9.0':
-    resolution: {integrity: sha512-HU6xbeG4CYA/gFpBoqT2x6lM81gckzjhQDE2/YP5BESjTOGcHsz/Ngg1kDh0dNyxT5Z0BrW3preqb+7imtb8Lw==}
+  '@orval/hono@8.9.1':
+    resolution: {integrity: sha512-kwLMcxnT5bm5aB7MYDsfFxwOdMDBBNzPcxdDgbVHAjOeNUkgAtCN+92yX9wAK89OjhkGb14V8McvU7eJqHl+nw==}
 
-  '@orval/mcp@8.9.0':
-    resolution: {integrity: sha512-/jNEqnU6tny+9Y2b+rA0RwMqgAZOBEUXN/S18gnelJOe66jydCrEN89GXz9Tropmu0y4LleUwRCx1uo0pBhQ0w==}
+  '@orval/mcp@8.9.1':
+    resolution: {integrity: sha512-2BL0tCclPZM0HIB8aUH3aWFwMqFGG1luoRgg5dLbJqQFpo2tMlIaahgQpNY9USOl1hIjhgY4CmlrcH1gqRXk4A==}
 
-  '@orval/mock@8.9.0':
-    resolution: {integrity: sha512-wJUG3qgORn4LfUJqoZLvMBCYAwXF2zIf+uADv42TF2wxQ80cw1uzlIb+jLTqdBiV6G4jJLGxFarP9RiWLogf8w==}
+  '@orval/mock@8.9.1':
+    resolution: {integrity: sha512-o66CdbPXVJ5GI6TEwH1UagKsfx8abV1aQIQ77vlN+QX9X6/gAeUU3e+6YsuCjANzM9xwcGLJgnHMgIlYNP32cA==}
 
-  '@orval/query@8.9.0':
-    resolution: {integrity: sha512-lwuqA+pwDX8EAc505tOKpDU7ayN+TzzLCgk4J2EXbRPvQvqgh0G8lJVdMYLKFxcDa9wzuxoV05SV50mkd7CsgA==}
+  '@orval/query@8.9.1':
+    resolution: {integrity: sha512-bCe903blfT4ICDR6OjszrLFFCvjfIA5bavyUUW3zxNxRdd65eaHrx9tLHv5fmpj+Rl+d1+t6XmJuAsQ4XJsXVg==}
 
-  '@orval/solid-start@8.9.0':
-    resolution: {integrity: sha512-9BtRFi5ZzB65mYc+/Ip/4NVZ+vonC+v7ikH7wPo1W0SOsvVo8eE7GwoeoGK44yZXdhDn3fKeQZvYOpa38qNI7w==}
+  '@orval/solid-start@8.9.1':
+    resolution: {integrity: sha512-2qWiTBxM3hPOBlUvf3TBVcvDjAnTfztlf57dRpzUeVyS9IglIit/Cedc3tmp9PzkjHzM82SifHVNANYd5F29Xg==}
 
-  '@orval/swr@8.9.0':
-    resolution: {integrity: sha512-z+OwrcibBDw8TEKwQd9DtlX4Ub469fxm1BrouSkkxry3b5zntGEAobOQYnCLkYDn/KUjJEJSc7fJHRWX1lV1sg==}
+  '@orval/swr@8.9.1':
+    resolution: {integrity: sha512-ijP3ERy6MwvPrVaMgS8USDxj/LtbvzXEufeIC9Zm3qNaGDv1dAeE22MegRE8FfXweSD9f+FSrGl0baPe4Ne+fQ==}
 
-  '@orval/zod@8.9.0':
-    resolution: {integrity: sha512-KZ/JSDHIlt//ErwVqzw5DxjxUYoOq4wj1MFfuHMUBTJL9cPlXbyChgWE/rEMYOJI4i1zLjNSJfcQASuQad3zDw==}
+  '@orval/zod@8.9.1':
+    resolution: {integrity: sha512-MV75Xzz28W3ZttloNNmdTPa96AneY8FZExEwxmcySdY7lirJtErsqXt2EHnorETDAVEvSldVszhWG/AXpFBAPg==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -2965,8 +2976,8 @@ packages:
     resolution: {integrity: sha512-qM0jDhFEaCBb4TxoW7f53Qrpv9RBiayUHo0S52JudprkhvpjIrGoU1mnnr29Fvd1U335ZFPZQY1wlkqgfGXyLg==}
     engines: {node: '>=16.9.0'}
 
-  hono@4.12.16:
-    resolution: {integrity: sha512-jN0ZewiNAWSe5khM3EyCmBb250+b40wWbwNILNfEvq84VREWwOIkuUsFONk/3i3nqkz7Oe1PcpM2mwQEK2L9Kg==}
+  hono@4.12.18:
+    resolution: {integrity: sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqn2G0bSdAOBpX+2uDFHV7kdQ==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -3484,11 +3495,11 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  langchain@1.3.5:
-    resolution: {integrity: sha512-QSB8TEo6G1tWupgNt1Osm8ylLLoOMq1lLw5NeijnIwRPI5BqdBjUn4/U8usbjEJJcQnbXSK2qTKgTx7zvblnBw==}
+  langchain@1.4.0:
+    resolution: {integrity: sha512-p3H5U1vfO0T4ri/xxqI6jccRP3LYmOW6KGxaJcwI5mIGVR/G6eNhZyjSZB9d7me6J7an4Pc6zA8tH8Qa6/7xwA==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@langchain/core': ^1.1.42
+      '@langchain/core': ^1.1.44
 
   langsmith@0.5.26:
     resolution: {integrity: sha512-HmmFgeQR2n9x1Kq8NiVaNL/j72ta71qN11hYjbyePJ/QuYEnOMhQjbNv9KeyKB3bOetpIzNalQbhHm+RyKoPRQ==}
@@ -3910,8 +3921,8 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  orval@8.9.0:
-    resolution: {integrity: sha512-KjXCXWHFbKIRouWeP5ZOy/4YO60KHaElyvCcrLO3+JEYNvcpy79IQbF8qV1akdfxFP0+9RXJg1fDVibo95681A==}
+  orval@8.9.1:
+    resolution: {integrity: sha512-o9hgALCr3mCXOWxfct4IrsmlNtURt1iwDx9TecbPT5pwoXZMRpdT6W8/ED78NY0ZNnKs6L00QRNLN1SOArnU+w==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -4832,6 +4843,7 @@ packages:
 
   uuid@10.0.0:
     resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@13.0.2:
@@ -4962,6 +4974,11 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
+  yaml@2.8.4:
+    resolution: {integrity: sha512-ml/JPOj9fOQK8RNnWojA67GbZ0ApXAUlN2UQclwv2eVgTgn7O9gg9o7paZWKMp4g0H3nTLtS9LVzhkpOFIKzog==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
   yargs-parser@20.2.9:
     resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
     engines: {node: '>=10'}
@@ -4999,8 +5016,8 @@ packages:
     peerDependencies:
       zod: ^3.25.28 || ^4
 
-  zod@4.4.2:
-    resolution: {integrity: sha512-IynmDyxsEsb9RKzO3J9+4SxXnl2FTFSzNBaKKaMV6tsSk0rw9gYw9gs+JFCq/qk2LCZ78KDwyj+Z289TijSkUw==}
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
 
@@ -5812,19 +5829,19 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@langchain/classic@1.0.32(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)':
+  '@langchain/classic@1.0.32(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
-      '@langchain/openai': 1.4.5(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(ws@8.20.0)
-      '@langchain/textsplitters': 1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/openai': 1.4.5(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(ws@8.20.0)
+      '@langchain/textsplitters': 1.0.1(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
       handlebars: 4.7.9
       js-yaml: 4.1.1
       jsonpointer: 5.0.1
       openapi-types: 12.1.3
-      yaml: 2.8.3
-      zod: 4.4.2
+      yaml: 2.8.4
+      zod: 4.4.3
     optionalDependencies:
-      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -5832,7 +5849,27 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)':
+  '@langchain/classic@1.0.32(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)':
+    dependencies:
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/openai': 1.4.5(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(ws@8.20.0)
+      '@langchain/textsplitters': 1.0.1(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
+      handlebars: 4.7.9
+      js-yaml: 4.1.1
+      jsonpointer: 5.0.1
+      openapi-types: 12.1.3
+      yaml: 2.8.4
+      zod: 4.4.3
+    optionalDependencies:
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - ws
+
+  '@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       '@standard-schema/spec': 1.1.0
@@ -5840,10 +5877,10 @@ snapshots:
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.21
-      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       mustache: 4.2.0
       p-queue: 6.6.2
-      zod: 4.4.2
+      zod: 4.4.3
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -5851,61 +5888,204 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/langgraph-checkpoint@1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))':
+  '@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+      '@cfworker/json-schema': 4.1.1
+      '@standard-schema/spec': 1.1.0
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.21
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      zod: 4.4.3
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - ws
+
+  '@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)':
+    dependencies:
+      '@cfworker/json-schema': 4.1.1
+      '@standard-schema/spec': 1.1.0
+      ansi-styles: 5.2.0
+      camelcase: 6.3.0
+      decamelize: 1.2.0
+      js-tiktoken: 1.0.21
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      zod: 4.4.3
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - ws
+
+  '@langchain/langgraph-checkpoint@1.0.1(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
+    dependencies:
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       uuid: 10.0.0
 
-  '@langchain/langgraph-sdk@1.8.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))':
+  '@langchain/langgraph-checkpoint@1.0.1(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
     dependencies:
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      uuid: 10.0.0
+
+  '@langchain/langgraph-checkpoint@1.0.2(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
+    dependencies:
+      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      uuid: 10.0.0
+
+  '@langchain/langgraph-checkpoint@1.0.2(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
+    dependencies:
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      uuid: 10.0.0
+
+  '@langchain/langgraph-checkpoint@1.0.2(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
+    dependencies:
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      uuid: 10.0.0
+
+  '@langchain/langgraph-sdk@1.9.1(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)':
+    dependencies:
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/protocol': 0.0.15
       '@types/json-schema': 7.0.15
       p-queue: 9.2.0
       p-retry: 7.1.1
       uuid: 13.0.2
-    optionalDependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - ws
 
-  '@langchain/langgraph@1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2)':
+  '@langchain/langgraph@1.3.0(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
-      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
-      '@langchain/langgraph-sdk': 1.8.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
+      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph-checkpoint': 1.0.2(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
+      '@langchain/langgraph-sdk': 1.9.1(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/protocol': 0.0.15
       '@standard-schema/spec': 1.1.0
       uuid: 10.0.0
-      zod: 4.4.2
+      zod: 4.4.3
     optionalDependencies:
-      zod-to-json-schema: 3.25.2(zod@4.4.2)
+      zod-to-json-schema: 3.25.2(zod@4.4.3)
     transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
       - react
       - react-dom
       - svelte
       - vue
+      - ws
 
-  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(@langchain/langgraph@1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2))':
+  '@langchain/langgraph@1.3.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
-      '@langchain/langgraph': 1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2)
-      '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.2)
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph-checkpoint': 1.0.2(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
+      '@langchain/langgraph-sdk': 1.9.1(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/protocol': 0.0.15
+      '@standard-schema/spec': 1.1.0
+      uuid: 10.0.0
+      zod: 4.4.3
+    optionalDependencies:
+      zod-to-json-schema: 3.25.2(zod@4.4.3)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - react
+      - react-dom
+      - svelte
+      - vue
+      - ws
+
+  '@langchain/langgraph@1.3.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)':
+    dependencies:
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph-checkpoint': 1.0.2(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
+      '@langchain/langgraph-sdk': 1.9.1(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/protocol': 0.0.15
+      '@standard-schema/spec': 1.1.0
+      uuid: 10.0.0
+      zod: 4.4.3
+    optionalDependencies:
+      zod-to-json-schema: 3.25.2(zod@4.4.3)
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - react
+      - react-dom
+      - svelte
+      - vue
+      - ws
+
+  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(@langchain/langgraph@1.3.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3))':
+    dependencies:
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph': 1.3.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
+      '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
       debug: 4.4.3
-      zod: 4.4.2
+      zod: 4.4.3
     optionalDependencies:
       extended-eventsource: 1.7.0
     transitivePeerDependencies:
       - '@cfworker/json-schema'
       - supports-color
 
-  '@langchain/openai@1.4.5(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(ws@8.20.0)':
+  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(@langchain/langgraph@1.3.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3))':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph': 1.3.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
+      '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
+      debug: 4.4.3
+      zod: 4.4.3
+    optionalDependencies:
+      extended-eventsource: 1.7.0
+    transitivePeerDependencies:
+      - '@cfworker/json-schema'
+      - supports-color
+
+  '@langchain/openai@1.4.5(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(ws@8.20.0)':
+    dependencies:
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       js-tiktoken: 1.0.21
-      openai: 6.37.0(ws@8.20.0)(zod@4.4.2)
-      zod: 4.4.2
+      openai: 6.37.0(ws@8.20.0)(zod@4.4.3)
+      zod: 4.4.3
     transitivePeerDependencies:
       - ws
 
-  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))':
+  '@langchain/openai@1.4.5(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(ws@8.20.0)':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      js-tiktoken: 1.0.21
+      openai: 6.37.0(ws@8.20.0)(zod@4.4.3)
+      zod: 4.4.3
+    transitivePeerDependencies:
+      - ws
+
+  '@langchain/protocol@0.0.15': {}
+
+  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
+    dependencies:
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      js-tiktoken: 1.0.21
+
+  '@langchain/textsplitters@1.0.1(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
+    dependencies:
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       js-tiktoken: 1.0.21
 
   '@manypkg/find-root@1.1.0':
@@ -5924,7 +6104,7 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.2)':
+  '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)':
     dependencies:
       '@hono/node-server': 1.19.14(hono@4.12.15)
       ajv: 8.20.0
@@ -5941,8 +6121,8 @@ snapshots:
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
-      zod: 4.4.2
-      zod-to-json-schema: 3.25.2(zod@4.4.2)
+      zod: 4.4.3
+      zod-to-json-schema: 3.25.2(zod@4.4.3)
     optionalDependencies:
       '@cfworker/json-schema': 4.1.1
     transitivePeerDependencies:
@@ -5985,23 +6165,23 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@orval/angular@8.9.0(typescript@6.0.3)':
+  '@orval/angular@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/axios@8.9.0(typescript@6.0.3)':
+  '@orval/axios@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/core@8.9.0(typescript@6.0.3)':
+  '@orval/core@8.9.1(typescript@6.0.3)':
     dependencies:
       '@scalar/openapi-types': 0.8.0
       acorn: 8.16.0
@@ -6018,19 +6198,19 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/fetch@8.9.0(typescript@6.0.3)':
+  '@orval/fetch@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
       '@scalar/openapi-types': 0.8.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/hono@8.9.0(typescript@6.0.3)':
+  '@orval/hono@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
-      '@orval/zod': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
+      '@orval/zod': 8.9.1(typescript@6.0.3)
       fs-extra: 11.3.4
       remeda: 2.33.7
     transitivePeerDependencies:
@@ -6038,56 +6218,56 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/mcp@8.9.0(typescript@6.0.3)':
+  '@orval/mcp@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
-      '@orval/fetch': 8.9.0(typescript@6.0.3)
-      '@orval/zod': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
+      '@orval/fetch': 8.9.1(typescript@6.0.3)
+      '@orval/zod': 8.9.1(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/mock@8.9.0(typescript@6.0.3)':
+  '@orval/mock@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
       remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/query@8.9.0(typescript@6.0.3)':
+  '@orval/query@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
-      '@orval/fetch': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
+      '@orval/fetch': 8.9.1(typescript@6.0.3)
       remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/solid-start@8.9.0(typescript@6.0.3)':
+  '@orval/solid-start@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
       '@scalar/openapi-types': 0.8.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/swr@8.9.0(typescript@6.0.3)':
+  '@orval/swr@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
-      '@orval/fetch': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
+      '@orval/fetch': 8.9.1(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/zod@8.9.0(typescript@6.0.3)':
+  '@orval/zod@8.9.1(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.9.0(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
       remeda: 2.33.7
     transitivePeerDependencies:
       - '@faker-js/faker'
@@ -6138,9 +6318,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.10.1-20260501013816.0(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))':
+  '@sap-ai-sdk/langchain@2.10.1-20260501013816.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))':
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
       '@sap-ai-sdk/ai-api': 2.10.1-20260501013816.0
       '@sap-ai-sdk/core': 2.10.1-20260501013816.0
       '@sap-ai-sdk/foundation-models': 2.10.1-20260501013816.0
@@ -6158,7 +6338,7 @@ snapshots:
       '@sap-ai-sdk/core': 2.10.1-20260501013816.0
       '@sap-ai-sdk/prompt-registry': 2.10.1-20260501013816.0
       '@sap-cloud-sdk/util': 4.6.0
-      yaml: 2.8.3
+      yaml: 2.8.4
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6166,7 +6346,7 @@ snapshots:
   '@sap-ai-sdk/prompt-registry@2.10.1-20260501013816.0':
     dependencies:
       '@sap-ai-sdk/core': 2.10.1-20260501013816.0
-      zod: 4.4.2
+      zod: 4.4.3
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6302,7 +6482,7 @@ snapshots:
       mustache: 4.2.0
       ws: 8.20.0
       xml-js: 1.6.11
-      yaml: 2.8.3
+      yaml: 2.8.4
     optionalDependencies:
       '@cap-js/sqlite': 2.2.1(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
     transitivePeerDependencies:
@@ -6333,7 +6513,7 @@ snapshots:
       '@sap/cds-compiler': 6.9.0
       '@sap/cds-fiori': 2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.6.1))))
       express: 5.2.1
-      yaml: 2.8.3
+      yaml: 2.8.4
     transitivePeerDependencies:
       - supports-color
 
@@ -6377,7 +6557,7 @@ snapshots:
     dependencies:
       '@scalar/helpers': 0.5.2
       pathe: 2.0.3
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   '@scalar/openapi-parser@0.25.12':
     dependencies:
@@ -6390,7 +6570,7 @@ snapshots:
       ajv-formats: 3.0.1(ajv@8.20.0)
       jsonpointer: 5.0.1
       leven: 4.1.0
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   '@scalar/openapi-types@0.8.0': {}
 
@@ -8155,7 +8335,7 @@ snapshots:
 
   hono@4.12.15: {}
 
-  hono@4.12.16: {}
+  hono@4.12.18: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -8833,13 +9013,13 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  langchain@1.3.5(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.2)):
+  langchain@1.4.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3)):
     dependencies:
-      '@langchain/core': 1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
-      '@langchain/langgraph': 1.2.9(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))(zod-to-json-schema@3.25.2(zod@4.4.2))(zod@4.4.2)
-      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.42(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0))
-      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0)
-      zod: 4.4.2
+      '@langchain/core': 1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph': 1.3.0(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
+      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.44(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      zod: 4.4.3
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -8852,11 +9032,30 @@ snapshots:
       - ws
       - zod-to-json-schema
 
-  langsmith@0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.2))(ws@8.20.0):
+  langchain@1.4.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3)):
+    dependencies:
+      '@langchain/core': 1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      '@langchain/langgraph': 1.3.0(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
+      '@langchain/langgraph-checkpoint': 1.0.1(@langchain/core@1.1.45(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
+      langsmith: 0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
+      zod: 4.4.3
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - react
+      - react-dom
+      - svelte
+      - vue
+      - ws
+      - zod-to-json-schema
+
+  langsmith@0.5.26(openai@6.37.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0):
     dependencies:
       p-queue: 6.6.2
     optionalDependencies:
-      openai: 6.37.0(ws@8.20.0)(zod@4.4.2)
+      openai: 6.37.0(ws@8.20.0)(zod@4.4.3)
       ws: 8.20.0
 
   leven@3.1.0: {}
@@ -9237,10 +9436,10 @@ snapshots:
     dependencies:
       mimic-fn: 2.1.0
 
-  openai@6.37.0(ws@8.20.0)(zod@4.4.2):
+  openai@6.37.0(ws@8.20.0)(zod@4.4.3):
     optionalDependencies:
       ws: 8.20.0
-      zod: 4.4.2
+      zod: 4.4.3
 
   openapi-types@12.1.3: {}
 
@@ -9255,20 +9454,20 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@8.9.0(prettier@3.8.3)(typescript@6.0.3):
+  orval@8.9.1(prettier@3.8.3)(typescript@6.0.3):
     dependencies:
       '@commander-js/extra-typings': 14.0.0(commander@14.0.3)
-      '@orval/angular': 8.9.0(typescript@6.0.3)
-      '@orval/axios': 8.9.0(typescript@6.0.3)
-      '@orval/core': 8.9.0(typescript@6.0.3)
-      '@orval/fetch': 8.9.0(typescript@6.0.3)
-      '@orval/hono': 8.9.0(typescript@6.0.3)
-      '@orval/mcp': 8.9.0(typescript@6.0.3)
-      '@orval/mock': 8.9.0(typescript@6.0.3)
-      '@orval/query': 8.9.0(typescript@6.0.3)
-      '@orval/solid-start': 8.9.0(typescript@6.0.3)
-      '@orval/swr': 8.9.0(typescript@6.0.3)
-      '@orval/zod': 8.9.0(typescript@6.0.3)
+      '@orval/angular': 8.9.1(typescript@6.0.3)
+      '@orval/axios': 8.9.1(typescript@6.0.3)
+      '@orval/core': 8.9.1(typescript@6.0.3)
+      '@orval/fetch': 8.9.1(typescript@6.0.3)
+      '@orval/hono': 8.9.1(typescript@6.0.3)
+      '@orval/mcp': 8.9.1(typescript@6.0.3)
+      '@orval/mock': 8.9.1(typescript@6.0.3)
+      '@orval/query': 8.9.1(typescript@6.0.3)
+      '@orval/solid-start': 8.9.1(typescript@6.0.3)
+      '@orval/swr': 8.9.1(typescript@6.0.3)
+      '@orval/zod': 8.9.1(typescript@6.0.3)
       '@scalar/json-magic': 0.12.8
       '@scalar/openapi-parser': 0.25.12
       '@scalar/openapi-types': 0.8.0
@@ -10402,6 +10601,8 @@ snapshots:
 
   yaml@2.8.3: {}
 
+  yaml@2.8.4: {}
+
   yargs-parser@20.2.9: {}
 
   yargs-parser@21.1.1: {}
@@ -10434,8 +10635,8 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zod-to-json-schema@3.25.2(zod@4.4.2):
+  zod-to-json-schema@3.25.2(zod@4.4.3):
     dependencies:
-      zod: 4.4.2
+      zod: 4.4.3
 
-  zod@4.4.2: {}
+  zod@4.4.3: {}
