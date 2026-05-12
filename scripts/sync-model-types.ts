@@ -36,8 +36,15 @@ const MODEL_TYPES_PATH = resolve(
 // Models that should never be added to model-types.ts regardless of table state.
 // Add model names here when a model has been intentionally removed from the type hints.
 const MODEL_EXCLUSION_LIST = new Set<string>([
-  'gpt-4o',      // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4o-mini'  // Same reason
+  'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
+  'gpt-4o-mini',    // Same reason
+  'gpt-realtime',   // WebSocket-based, not a standard chat completion model
+  'gpt-5.3-codex'   // Responses API only, not a standard chat completion model
+]);
+
+// Models that should always be included regardless of retirement date.
+const MODEL_INCLUSION_LIST = new Set<string>([
+  'sap-abap-1' // Only ABAP model available; keep until explicitly removed
 ]);
 
 // Maps executableId prefix (lowercase) to the TypeScript type name it belongs to.
@@ -104,6 +111,9 @@ function isRetiredSoon(retirementDate: string): boolean {
 }
 
 function isRetired(row: ModelRow): boolean {
+  if (MODEL_INCLUSION_LIST.has(row.model)) {
+    return false;
+  }
   // Remove from type hints if:
   // - explicitly deprecated, OR
   // - retirement date (concrete or "not earlier than X") is within the next 2 months
