@@ -11,10 +11,11 @@ export type GoogleDriveConfig = {
   /**
    * @example "SHARED_DRIVE"
    */
-  resourceType: 'SHARED_FOLDER' | 'SHARED_DRIVE';
+  resourceType: 'SHARED_DRIVE' | 'NEW_ENUM_CONSTANT';
   /**
    * @example "0AGVUFpXcXc5Uk9PVA"
    */
   resourceId?: string;
   includePaths?: IncludePathsArray;
+  newRequiredField: string;
 } & Record<string, any>;

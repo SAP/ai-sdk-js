@@ -11,5 +11,5 @@ import type { GoogleDriveConfigurationStruct } from './google-drive-configuratio
 export type GoogleDrivePipelineCreateRequest = {
   type: 'GoogleDrive';
   metadata?: MetaData;
-  configuration: GoogleDriveConfigurationStruct;
+  config?: GoogleDriveConfigurationStruct;
 } & Record<string, any>;
