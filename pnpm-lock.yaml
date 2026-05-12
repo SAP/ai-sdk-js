@@ -266,8 +266,8 @@ importers:
         version: 5.2.1
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.9.0
-        version: 9.9.0(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))
+        specifier: ^9.9.1
+        version: 9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))
 
   sample-code:
     dependencies:
@@ -649,8 +649,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/db-service@2.10.0':
-    resolution: {integrity: sha512-zlwCFg4vd0tXd69e30lxsh7DE4EIU8Lem3Zrg8+ugsXvShyhaxb1YEcsbdFpj5e6BO0aetWD7UJOpeBzD21gmg==}
+  '@cap-js/db-service@2.11.0':
+    resolution: {integrity: sha512-sl33LcxZYAJgMCQZDw4lMGe4kWYq6685Xc6ze4qcoM+rd6aqiyVsSC6C7XH5yerXs7cVHhRC+Dgo8AsaapFzlQ==}
     peerDependencies:
       '@sap/cds': '>=9.8'
 
@@ -659,8 +659,8 @@ packages:
     peerDependencies:
       '@sap/cds': '>=7.6'
 
-  '@cap-js/sqlite@2.2.1':
-    resolution: {integrity: sha512-dNdUcARTSOJePCABlXqYDzB2dKOOGmGnZqXLncBpEnT5TzzGrGPKuR2AjCoYFnXWTIQSSB3jaeeQIsFFnBs1Xw==}
+  '@cap-js/sqlite@2.4.0':
+    resolution: {integrity: sha512-Ao+AzIN6BWHNpLbGxAzF79OezFNHzDG2srwiBABs0FYxIxEGkc2hg6ETo79pTTt66gcWtx7pWh/N9xk2M6SFBQ==}
     peerDependencies:
       '@sap/cds': '>=9.8'
       sql.js: ^1.13.0
@@ -1347,8 +1347,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.9.0':
-    resolution: {integrity: sha512-gl2BOLhkyw9yFlNnX4ukl6dNEYDX7hVg+7QFUqlFTxcBU+tdQlFT8szk3NK77DkJkj1Xe+LZLJSe0crTtA32mw==}
+  '@sap/cds-dk@9.9.1':
+    resolution: {integrity: sha512-cZoHI/ZhEVffmLo2k9Y/HMR5X+aGCpk60PwJJcZgoat8Kwk6dDl3mUDERhZORQUhp9FwOiyWmNujmNCV8YWWCg==}
     hasBin: true
 
   '@sap/cds-fiori@2.3.0':
@@ -3803,8 +3803,8 @@ packages:
     resolution: {integrity: sha512-PKk7tex0O3RRXUZC5XDKJ9yM3rYRPS13myduT85VIIYDBnib42Fpxoe6KxRSzqB4iL2NDxkcJ2yiskZ18hGLEQ==}
     engines: {node: '>=18.20.0 <20 || >=20.12.1'}
 
-  node-abi@3.89.0:
-    resolution: {integrity: sha512-6u9UwL0HlAl21+agMN3YAMXcKByMqwGx+pq+P76vii5f7hTPtKDp08/H9py6DY+cfDw7kQNTGEj/rly3IgbNQA==}
+  node-abi@3.92.0:
+    resolution: {integrity: sha512-KdHvFWZjEKDf0cakgFjebl371GPsISX2oZHcuyKqM7DtogIsHrqKeLTo8wBHxaXRAQlY2PsPlZmfo+9ZCxEREQ==}
     engines: {node: '>=10'}
 
   node-cache@5.1.2:
@@ -5257,7 +5257,7 @@ snapshots:
     dependencies:
       '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))
 
-  '@cap-js/db-service@2.10.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))':
+  '@cap-js/db-service@2.11.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))':
     dependencies:
       '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))
       generic-pool: 3.9.0
@@ -5268,9 +5268,9 @@ snapshots:
       '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.2.1(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))':
+  '@cap-js/sqlite@2.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))':
     dependencies:
-      '@cap-js/db-service': 2.10.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))
+      '@cap-js/db-service': 2.11.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))
       '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))
       better-sqlite3: 12.9.0
     optional: true
@@ -6342,7 +6342,7 @@ snapshots:
 
   '@sap/cds-compiler@6.9.0': {}
 
-  '@sap/cds-dk@9.9.0(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))':
+  '@sap/cds-dk@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0)))':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))
       '@cap-js/openapi': 1.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))
@@ -6357,7 +6357,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.8.4
     optionalDependencies:
-      '@cap-js/sqlite': 2.2.1(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))
+      '@cap-js/sqlite': 2.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@9.39.4(jiti@2.7.0))))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -9163,7 +9163,7 @@ snapshots:
       json-stringify-safe: 5.0.1
       propagate: 2.0.1
 
-  node-abi@3.89.0:
+  node-abi@3.92.0:
     dependencies:
       semver: 7.7.4
     optional: true
@@ -9534,7 +9534,7 @@ snapshots:
       minimist: 1.2.8
       mkdirp-classic: 0.5.3
       napi-build-utils: 2.0.0
-      node-abi: 3.89.0
+      node-abi: 3.92.0
       pump: 3.0.4
       rc: 1.2.8
       simple-get: 4.0.1
