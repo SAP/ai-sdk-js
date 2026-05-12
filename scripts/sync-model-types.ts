@@ -330,23 +330,28 @@ async function checkLandscapeAvailability(
 
   let landscapeModels: Set<string>;
   try {
-    const result = await ScenarioApi.scenarioQueryModels('foundation-models', {
+    const modelList = await ScenarioApi.scenarioQueryModels('foundation-models', {
       'AI-Resource-Group': 'default'
     }).execute();
-    landscapeModels = new Set(result.resources.map(r => r.model));
+
+    if (!modelList.resources) {
+      console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
+      return;
+    }
+
+    landscapeModels = new Set(
+      modelList.resources.flatMap(r => (r.model ? [r.model] : []))
+    );
   } catch (err) {
-    console.error('\n⚠ Landscape check failed:', err);
+    console.error('\n⚠ Landscape check skipped — API request failed:', err);
     return;
   }
 
   const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
   if (missing.length) {
     console.error(
-      `\n⚠ ${missing.length} model(s) not available in your landscape:`
+      `\n⚠ ${missing.length} model(s) not available in your landscape:\n  ${missing.join('\n  ')}`
     );
-    for (const m of missing) {
-      console.error(`  ${m}`);
-    }
   } else {
     console.log('\n✓ All synced models are available in your landscape.');
   }
