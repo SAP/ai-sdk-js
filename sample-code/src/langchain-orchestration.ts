@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
@@ -12,7 +13,6 @@ import {
   StateGraph,
   MemorySaver
 } from '@langchain/langgraph';
-import { randomUUID } from 'node:crypto';
 import { tool } from '@langchain/core/tools';
 import {
   HumanMessage,
