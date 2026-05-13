@@ -12,7 +12,7 @@ import {
   StateGraph,
   MemorySaver
 } from '@langchain/langgraph';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import { tool } from '@langchain/core/tools';
 import {
   HumanMessage,
@@ -200,7 +200,7 @@ function createLangGraphApp() {
 export async function invokeLangGraphChain(): Promise<string> {
   const app = createLangGraphApp();
 
-  const config = { configurable: { thread_id: uuidv4() } };
+  const config = { configurable: { thread_id: randomUUID() } };
   const input = [
     {
       role: 'user',
@@ -231,7 +231,7 @@ export async function invokeLangGraphChainStream(): Promise<string> {
   const app = createLangGraphApp();
 
   const config = {
-    configurable: { thread_id: uuidv4() },
+    configurable: { thread_id: randomUUID() },
     streamMode: 'messages' as const
   };
   const input = [

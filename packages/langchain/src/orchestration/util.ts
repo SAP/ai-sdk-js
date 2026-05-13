@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
@@ -134,7 +134,7 @@ function mapLangChainToolCallToOrchestrationToolCall(
 ): MessageToolCalls | undefined {
   if (toolCalls) {
     return toolCalls.map(toolCall => ({
-      id: toolCall.id || uuidv4(),
+      id: toolCall.id || randomUUID(),
       type: 'function',
       function: {
         name: toolCall.name,

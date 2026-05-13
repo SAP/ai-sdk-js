@@ -31,7 +31,6 @@
     "express": "=5.2.1",
     "hono": "=4.12.18",
     "langchain": "=1.4.0",
-    "uuid": "=14.0.0",
     "zod": "=4.4.3"
   },
   "devDependencies": {
