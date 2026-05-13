@@ -21,10 +21,6 @@ jobs:
           pnpm config set --location=project @sap-ai-sdk:registry https://registry.npmjs.org/
           pnpm config set --location=project @sap-cloud-sdk:registry https://registry.npmjs.org/
           pnpm --filter @sap-ai-sdk/smoke-tests update '@sap-ai-sdk/*' --no-save --ignore-scripts
-      - name: Create deployment
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
-        run: pnpm smoke-tests create-deployment
       - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496 # v3.0.1
         with:
           api: ${{ vars.CF_API_URL }}
@@ -32,8 +28,8 @@ jobs:
           password: ${{ secrets.CF_PASSWORD }}
           org: ${{ vars.CF_ORG }}
           space: ${{ vars.CF_SPACE }}
-      - run: cf push
-        working-directory: tests/smoke-tests
+      - name: Create deployment
+        run: pnpm smoke-tests create-deployment
       - name: smoke test
         run: pnpm test:smoke
       - name: shutdown
