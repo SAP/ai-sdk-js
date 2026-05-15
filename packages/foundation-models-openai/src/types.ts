@@ -28,7 +28,7 @@ export interface SapAzureOpenAIOptions {
    */
   apiVersion?: string;
   /**
-   * Value appended to the `ai-client-type` header. Defaults to `'AI SDK JavaScript'`.
+   * Additional client types appended to the `ai-client-type` header with the preconfigured `AI SDK JavaScript` value.
    */
   clientType?: string;
 }
