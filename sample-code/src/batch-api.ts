@@ -100,13 +100,13 @@ export async function uploadBatchInput(
     '{"custom_id":"request-1","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"What is machine learning?"}],"max_tokens":150}}',
     '{"custom_id":"request-2","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"Explain neural networks in simple terms"}],"max_tokens":150}}'
   ].join('\n');
-  const blob = new Blob([content], { type: 'application/octet-stream' });
+  const blob = new Blob([content], { type: 'text/csv' });
   await FileApi.fileUpload(
     `${secretName}//${fileName}`,
     blob,
     { overwrite: true },
     { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
-  ).execute();
+  ).execute(undefined, { headers: { 'content-type': 'text/csv' } });
   return `ai://${secretName}/${fileName}`;
 }
 
