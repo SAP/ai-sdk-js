@@ -7,7 +7,6 @@ on:
       - '**/package.json'
     branches:
       - main
-      - v1-main
   workflow_dispatch:
 
 jobs:
