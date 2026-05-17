@@ -10,8 +10,8 @@ import type { SapAzureOpenAIOptions } from './types.js';
  * Handles deployment resolution, authentication, and SAP-specific headers automatically.
  *
  * The `model` parameter is removed from `chat.completions.create()`, `chat.completions.parse()`,
- * `embeddings.create()`, and `responses.create()` signatures — it is pre-filled from the
- * `modelDeployment` option passed at construction.
+ * `embeddings.create()`, and `responses.create()` signatures — SAP AI Core routes requests via
+ * the deployment URL, so the `model` field in the request body is not used.
  *
  * Only the endpoints supported by SAP AI Core are exposed (`chat`, `embeddings`, `responses`).
  * Use {@link createAzureOpenAIClient} to create an instance.
@@ -36,8 +36,8 @@ export class SapAzureOpenAI {
 /**
  * Creates a pre-configured {@link SapAzureOpenAI} client for SAP AI Core.
  * Resolves the deployment and sets up authentication automatically.
- * The `model` parameter is hidden from `chat.completions.create()`, `chat.completions.parse()`,
- * `embeddings.create()`, and `responses.create()`.
+ * The `model` parameter is omitted from `chat.completions.create()`, `chat.completions.parse()`,
+ * `embeddings.create()`, and `responses.create()` — SAP AI Core routes requests via the deployment URL.
  * @param options - Options including model deployment, destination, API version, and client type.
  * @returns A promise that resolves to a ready-to-use {@link SapAzureOpenAI} instance.
  * @example
@@ -55,18 +55,11 @@ export async function createAzureOpenAIClient(
 ): Promise<SapAzureOpenAI> {
   const config = await createOpenAIConfig(options);
 
-  const defaultModel =
-    typeof options.modelDeployment === 'string'
-      ? options.modelDeployment
-      : 'modelName' in options.modelDeployment
-        ? options.modelDeployment.modelName
-        : undefined;
-
   const azureOpenAI = new AzureOpenAI(config);
 
   return new SapAzureOpenAI(
-    new SapChat(azureOpenAI, defaultModel),
-    new SapEmbeddings(azureOpenAI, defaultModel),
-    new SapResponses(azureOpenAI, defaultModel)
+    new SapChat(azureOpenAI),
+    new SapEmbeddings(azureOpenAI),
+    new SapResponses(azureOpenAI)
   );
 }

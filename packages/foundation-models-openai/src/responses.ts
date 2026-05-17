@@ -5,22 +5,25 @@ import type {
   ResponseStreamEvent,
   ResponseCreateParamsNonStreaming,
   ResponseCreateParamsStreaming,
-  ResponseCreateParamsBase
+  ResponseCreateParamsBase,
+  ParsedResponse
 } from 'openai/resources/responses/responses';
+import type {
+  ExtractParsedContentFromParams,
+  ResponseCreateParamsWithTools
+} from 'openai/lib/ResponsesParser';
 import type { Stream } from 'openai/streaming';
 import type { APIPromise } from 'openai/api-promise';
 import type { WithoutModel } from './completions.js';
 
 type RequestOptions = Parameters<Responses['create']>[1];
 
-/** Wraps `Responses` exposing only `create`, with `model` pre-filled. */
+/** Wraps `Responses` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL. */
 export class SapResponses {
   private readonly openAIResponses: Responses;
-  private readonly defaultModel: string | undefined;
 
-  constructor(client: OpenAI, defaultModel?: string) {
+  constructor(client: OpenAI) {
     this.openAIResponses = new Responses(client);
-    this.defaultModel = defaultModel;
   }
 
   create(
@@ -40,8 +43,24 @@ export class SapResponses {
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
     return this.openAIResponses.create(
-      { model: this.defaultModel ?? '', ...body } as ResponseCreateParamsBase,
+      { model: '', ...body } as ResponseCreateParamsBase,
       options
     );
+  }
+
+  parse<
+    Params extends WithoutModel<ResponseCreateParamsWithTools>,
+    ParsedT = ExtractParsedContentFromParams<Params & { model: string }>
+  >(
+    body: Params,
+    options?: RequestOptions
+  ): APIPromise<ParsedResponse<ParsedT>> {
+    return this.openAIResponses.parse(
+      {
+        model: '',
+        ...body
+      } as ResponseCreateParamsWithTools,
+      options
+    ) as APIPromise<ParsedResponse<ParsedT>>;
   }
 }

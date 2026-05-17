@@ -9,14 +9,12 @@ import type { WithoutModel } from './completions.js';
 
 type RequestOptions = Parameters<Embeddings['create']>[1];
 
-/** Wraps `Embeddings` exposing only `create`, with `model` pre-filled. */
+/** Wraps `Embeddings` exposing only `create`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL. */
 export class SapEmbeddings {
   private readonly openAIEmbeddings: Embeddings;
-  private readonly defaultModel: string | undefined;
 
-  constructor(client: OpenAI, defaultModel?: string) {
+  constructor(client: OpenAI) {
     this.openAIEmbeddings = new Embeddings(client);
-    this.defaultModel = defaultModel;
   }
 
   create(
@@ -24,7 +22,7 @@ export class SapEmbeddings {
     options?: RequestOptions
   ): APIPromise<CreateEmbeddingResponse> {
     return this.openAIEmbeddings.create(
-      { model: this.defaultModel ?? '', ...body } as EmbeddingCreateParams,
+      { model: '', ...body } as EmbeddingCreateParams,
       options
     );
   }

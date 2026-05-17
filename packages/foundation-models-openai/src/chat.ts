@@ -5,7 +5,7 @@ import type { OpenAI } from 'openai';
 export class SapChat {
   readonly completions: SapCompletions;
 
-  constructor(client: OpenAI, defaultModel?: string) {
-    this.completions = new SapCompletions(client, defaultModel);
+  constructor(client: OpenAI) {
+    this.completions = new SapCompletions(client);
   }
 }

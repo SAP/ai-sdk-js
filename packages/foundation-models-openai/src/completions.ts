@@ -20,14 +20,12 @@ type RequestOptions = Parameters<Completions['create']>[1];
  */
 export type WithoutModel<T> = Omit<T, 'model'>;
 
-/** Wraps `Completions` exposing only `create` and `parse`, with `model` pre-filled. */
+/** Wraps `Completions` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL. */
 export class SapCompletions {
   private readonly openAICompletions: Completions;
-  private readonly defaultModel: string | undefined;
 
-  constructor(client: OpenAI, defaultModel?: string) {
+  constructor(client: OpenAI) {
     this.openAICompletions = new Completions(client);
-    this.defaultModel = defaultModel;
   }
 
   create(
@@ -48,7 +46,7 @@ export class SapCompletions {
   ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>> {
     return this.openAICompletions.create(
       {
-        model: this.defaultModel ?? '',
+        model: '',
         ...body
       } as ChatCompletionCreateParamsBase,
       options
@@ -64,7 +62,7 @@ export class SapCompletions {
   ): APIPromise<ParsedChatCompletion<ParsedT>> {
     return this.openAICompletions.parse(
       {
-        model: this.defaultModel ?? '',
+        model: '',
         ...body
       } as ChatCompletionCreateParamsNonStreaming,
       options
