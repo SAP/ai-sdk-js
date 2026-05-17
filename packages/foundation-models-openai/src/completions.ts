@@ -46,6 +46,7 @@ export class SapCompletions {
   ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>> {
     return this.openAICompletions.create(
       {
+        // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
         model: '',
         ...body
       } as ChatCompletionCreateParamsBase,
@@ -62,6 +63,7 @@ export class SapCompletions {
   ): APIPromise<ParsedChatCompletion<ParsedT>> {
     return this.openAICompletions.parse(
       {
+        // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
         model: '',
         ...body
       } as ChatCompletionCreateParamsNonStreaming,
