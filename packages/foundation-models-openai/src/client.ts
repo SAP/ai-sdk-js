@@ -22,14 +22,10 @@ export class SapAzureOpenAI {
   readonly responses: SapResponses;
 
   /** @internal — use {@link createAzureOpenAIClient} instead */
-  constructor(
-    chat: SapChat,
-    embeddings: SapEmbeddings,
-    responses: SapResponses
-  ) {
-    this.chat = chat;
-    this.embeddings = embeddings;
-    this.responses = responses;
+  constructor(client: AzureOpenAI) {
+    this.chat = new SapChat(client);
+    this.embeddings = new SapEmbeddings(client);
+    this.responses = new SapResponses(client);
   }
 }
 
@@ -54,12 +50,5 @@ export async function createAzureOpenAIClient(
   options: SapAzureOpenAIOptions
 ): Promise<SapAzureOpenAI> {
   const config = await createOpenAIConfig(options);
-
-  const azureOpenAI = new AzureOpenAI(config);
-
-  return new SapAzureOpenAI(
-    new SapChat(azureOpenAI),
-    new SapEmbeddings(azureOpenAI),
-    new SapResponses(azureOpenAI)
-  );
+  return new SapAzureOpenAI(new AzureOpenAI(config));
 }
