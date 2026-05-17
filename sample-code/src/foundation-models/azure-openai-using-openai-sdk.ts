@@ -1,4 +1,6 @@
 import { createAzureOpenAIClient } from '@sap-ai-sdk/foundation-models-openai';
+import { zodResponseFormat } from 'openai/helpers/zod';
+import { z } from 'zod';
 
 /**
  * Ask gpt-4.1 about the capital of France.
@@ -78,4 +80,23 @@ export async function responsesApiStream(): Promise<
     input: 'Give me a short introduction of SAP Cloud SDK.',
     stream: true
   });
+}
+
+const CapitalResponse = z.object({
+  capital: z.string()
+});
+
+/**
+ * Use structured output to parse the capital of France from gpt-4.1.
+ * @returns The parsed capital city.
+ */
+export async function chatCompletionParse(): Promise<string | null> {
+  const client = await createAzureOpenAIClient({ modelDeployment: 'gpt-4.1' });
+
+  const response = await client.chat.completions.parse({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }],
+    response_format: zodResponseFormat(CapitalResponse, 'capital_response')
+  });
+
+  return response.choices[0].message.parsed?.capital ?? null;
 }

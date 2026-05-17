@@ -15,6 +15,7 @@ import {
 import {
   chatCompletion as openAiSdkChatCompletion,
   chatCompletionStream as openAiSdkChatCompletionStream,
+  chatCompletionParse as openAiSdkChatCompletionParse,
   computeEmbedding as openAiSdkComputeEmbedding,
   responsesApi,
   responsesApiStream
@@ -331,6 +332,16 @@ app.get('/azure-openai-sdk/embedding', async (req, res) => {
     res
       .header('Content-Type', 'text/plain')
       .send(`Got embedding vector with ${embedding.length} dimensions.`);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai-sdk/chat-completion-parse', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await openAiSdkChatCompletionParse());
   } catch (error: any) {
     sendError(res, error);
   }
