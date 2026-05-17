@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@langchain/classic": "^1.0.32",
-    "@langchain/core": "^1.1.45",
+    "@langchain/core": "^1.1.46",
     "@langchain/langgraph": "^1.3.0",
     "@langchain/mcp-adapters": "^1.1.3",
     "@langchain/textsplitters": "^1.0.1",
