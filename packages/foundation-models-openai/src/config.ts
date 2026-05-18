@@ -47,7 +47,7 @@ export async function createOpenAIConfig(
     defaultHeaders: {
       'ai-resource-group': resourceGroup,
       'ai-client-type': ['AI SDK JavaScript', clientType]
-        .filter(c => c)
+        .filter(Boolean)
         .join(',')
     }
   };
