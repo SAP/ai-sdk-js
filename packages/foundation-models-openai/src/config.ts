@@ -38,7 +38,7 @@ export async function createOpenAIConfig(
   );
   const resourceGroup = getResourceGroup(modelDeployment) ?? 'default';
   const dest = await getAiCoreDestination(destination);
-  const baseURL = `${dest.url.replace(/\/+$/, '')}/v2/inference/deployments/${deploymentId}`;
+  const baseURL = `${dest.url.replace(/\/$/u, '')}/v2/inference/deployments/${deploymentId}`;
 
   return {
     baseURL,
