@@ -97,7 +97,11 @@ function isRetiredSoon(retirementDate: string): boolean {
     return false;
   }
 
-  // Extract a date from either "YYYY-MM-DD" or "not earlier than YYYY-MM-DD"
+  // "not earlier than X" is a lower bound, not a confirmed retirement date — skip it
+  if (normalized.startsWith('not earlier than')) {
+    return false;
+  }
+
   const match = /(\d{4}-\d{2}-\d{2})/.exec(normalized);
   if (!match) {
     return false;
@@ -116,7 +120,8 @@ function isRetired(row: ModelRow): boolean {
   }
   // Remove from type hints if:
   // - explicitly deprecated, OR
-  // - retirement date (concrete or "not earlier than X") is within the next 2 months
+  // - concrete retirement date is within the next 2 months
+  // "not earlier than X" dates are lower bounds and are not treated as confirmed retirement dates.
   // Users can always pass the model name as a plain string regardless.
   return (
     row.deprecated?.toLowerCase().includes('yes') === true ||
@@ -124,11 +129,22 @@ function isRetired(row: ModelRow): boolean {
   );
 }
 
+function modelPrefix(model: string): string {
+  const vendorSep = model.indexOf('--');
+  if (vendorSep !== -1) {
+    return model.slice(0, vendorSep + 2);
+  }
+  return /^[a-z-]+/.exec(model)?.[0] ?? model;
+}
+
 function buildLiteralUnionBlock(existingModels: string[], activeModels: Set<string>): string {
   // Preserve existing order, remove retired models, append new ones at the end
   const kept = existingModels.filter(m => activeModels.has(m));
   const added = [...activeModels].filter(m => !existingModels.includes(m));
-  const ordered = [...kept, ...added];
+  // Stable sort by prefix to group same-vendor models together.
+  const ordered = [...kept, ...added].sort((a, b) =>
+    modelPrefix(a).localeCompare(modelPrefix(b))
+  );
 
   if (ordered.length === 1) {
     return `LiteralUnion<'${ordered[0]}'>`;
