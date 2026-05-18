@@ -15,7 +15,7 @@ import type { APIPromise } from 'openai/api-promise';
 type RequestOptions = Parameters<Completions['create']>[1];
 
 /**
- * Removes the `model` field from request param types so callers don't need to supply it.
+ * Removes the `model` field from request param types so callers won't be able to supply it.
  * @internal
  */
 export type WithoutModel<T> = Omit<T, 'model'>;
