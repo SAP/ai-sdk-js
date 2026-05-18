@@ -22,7 +22,6 @@ const defaultApiVersion = '2024-10-21';
  * const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
  * const client = new AzureOpenAI(config);
  * await client.chat.completions.create({
- *   model: 'gpt-4.1',
  *   messages: [{ role: 'user', content: 'Hello!' }]
  * });
  * ```
