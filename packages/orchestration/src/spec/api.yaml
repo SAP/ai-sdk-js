@@ -333,7 +333,7 @@ components:
           type: integer
           default: 600
           minimum: 1
-          maximum: 600
+          maximum: 1200
         max_retries:
           description: Maximum number of retries for the Embeddings request. This parameter is currently ignored for Vertex AI models.
           type: integer
@@ -575,6 +575,8 @@ components:
           $ref: '#/components/schemas/ImageContentUrl'
         file:
           $ref: '#/components/schemas/FileContent'
+        cache_control:
+          $ref: '#/components/schemas/CacheControl'
       required:
         - type
     ImageContentUrl:
@@ -702,6 +704,37 @@ components:
           enum: ['text']
         text:
           type: string
+        cache_control:
+          $ref: '#/components/schemas/CacheControl'
+    CacheControl:
+      type: object
+      description: >
+        Cache control directive for Anthropic prompt caching. Only applicable to
+        Anthropic Claude models. When set, marks the content block as a cache breakpoint.
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: ['ephemeral']
+        ttl:
+          type: string
+          description: >
+            Time-to-live for the cache entry. Default is "5m" (5 minutes).
+            "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).
+          enum: ['5m', '1h']
+    CacheCreationTokenDetails:
+      type: object
+      description: Breakdown of cache creation tokens by TTL (Anthropic only).
+      additionalProperties: false
+      properties:
+        ephemeral_5m_input_tokens:
+          type: integer
+          description: Tokens cached with 5-minute TTL.
+        ephemeral_1h_input_tokens:
+          type: integer
+          description: Tokens cached with 1-hour TTL.
     ChatDelta:
       type: object
       required:
@@ -1106,6 +1139,12 @@ components:
             cached_tokens:
               type: integer
               description: Cached tokens present in the prompt.
+            cache_creation_tokens:
+              type: integer
+              description: >
+                Number of tokens written to the cache (Anthropic only).
+            cache_creation_token_details:
+              $ref: '#/components/schemas/CacheCreationTokenDetails'
         completion_tokens_details:
           type: object
           description: Breakdown of tokens used in a completion.
@@ -1183,7 +1222,7 @@ components:
           type: integer
           default: 600
           minimum: 1
-          maximum: 600
+          maximum: 1200
         max_retries:
           description: Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.
           type: integer
@@ -1314,6 +1353,8 @@ components:
           description: The type of the tool. Currently, only `function` is supported.
         function:
           $ref: '#/components/schemas/FunctionObject'
+        cache_control:
+          $ref: '#/components/schemas/CacheControl'
       required:
         - type
         - function
@@ -1635,7 +1676,7 @@ components:
           properties:
             masking_providers:
               deprecated: true
-              description: 'List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead.'
+              description: 'List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'
               type: array
               minItems: 1
               items:
