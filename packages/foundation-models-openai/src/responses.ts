@@ -39,7 +39,7 @@ export class SapResponses {
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
     return this.openAIResponses.create(
       // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-      { model: '', ...body } as ResponseCreateParamsBase,
+      { model: '', ...body } satisfies ResponseCreateParamsBase,
       options
     );
   }
