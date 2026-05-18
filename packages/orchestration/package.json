@@ -32,7 +32,7 @@
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client",
     "postgenerate": "rm ./src/client/api/*.ts && pnpm rename-generated-files && pnpm lint:fix",
-    "rename-generated-files": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-orchestration.ts ./src/client/api"
+    "rename-generated-files": "node --import tsx/esm ../../scripts/postgenerate-orchestration.ts ./src/client/api"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
