@@ -11,7 +11,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 export function createTokenProvider(
   destination?: HttpDestinationOrFetchOptions
 ): () => Promise<string> {
-  return async () => {
+  return async function sapAiCoreTokenProvider() {
     const dest = await getAiCoreDestination(destination);
     const token = dest.authTokens?.[0]?.value;
     if (!token) {
