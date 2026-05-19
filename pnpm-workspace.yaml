@@ -13,10 +13,6 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
-packageConfigs:
-  "@sap-ai-sdk/smoke-tests":
-    "overrides": { "@sap-ai-sdk/ai-api": "canary", "@sap-ai-sdk/document-grounding": "canary", "@sap-ai-sdk/foundation-models": "canary", "@sap-ai-sdk/langchain": "canary", "@sap-ai-sdk/orchestration": "canary", "@sap-ai-sdk/prompt-registry": "canary", "@sap-ai-sdk/rpt": "canary" }
-
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
