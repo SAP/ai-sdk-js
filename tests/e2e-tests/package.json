@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
+    "cleanup-deployments": "node --import tsx/esm ./src/utils/cleanup-deployments.ts",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
