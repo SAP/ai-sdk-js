@@ -38,6 +38,8 @@ export * from './response-chat-message.js';
 export * from './message-tool-calls.js';
 export * from './message-tool-call.js';
 export * from './text-content.js';
+export * from './cache-control.js';
+export * from './cache-creation-token-details.js';
 export * from './chat-delta.js';
 export * from './tool-call-chunk.js';
 export * from './completion-post-response.js';
