@@ -2,6 +2,7 @@ dist
 dist-cjs
 node_modules
 coverage
+generated
 
 # Logs
 logs
