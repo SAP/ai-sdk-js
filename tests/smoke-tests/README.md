@@ -51,4 +51,5 @@ With the `.env` file in place, run:
 pnpm test:smoke
 ```
 
-The test runner automatically starts and stops the local server. Tests requiring CF destination service bindings are skipped automatically when running locally.
+The test runner automatically starts and stops the local server.
+Tests requiring CF destination service bindings are skipped automatically when running locally.
