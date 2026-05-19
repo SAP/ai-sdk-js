@@ -11,7 +11,7 @@ const workspaceRoot = resolve(import.meta.dirname, '..', '..', '..');
 const appDir = resolve(import.meta.dirname, '..');
 const appName = '@sap-ai-sdk/smoke-tests';
 
-async function installDependencies(): Promise<string> {
+async function prepareDeployment(): Promise<string> {
   const tmpDir = await mkdtemp(resolve(tmpdir(), 'cf-deploy-smoke-tests-'));
   const deployDir = resolve(tmpDir, 'deploy');
   console.log(`Temp dir: ${tmpDir}`);
@@ -81,7 +81,7 @@ async function installDependencies(): Promise<string> {
   return tmpDir;
 }
 
-const tempDeployDir = await installDependencies();
+const tempDeployDir = await prepareDeployment();
 console.log(`Running cf push from ${tempDeployDir}...`);
 const cfResult = await pExecFile('cf', ['push'], { cwd: tempDeployDir });
 if (cfResult.stdout) {
