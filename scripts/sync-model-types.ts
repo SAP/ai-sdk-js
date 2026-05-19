@@ -328,23 +328,32 @@ async function checkLandscapeAvailability(
     Object.values(typeToActiveModels).flatMap(s => [...s])
   );
 
-  let landscapeModels: Set<string>;
-  try {
-    const modelList = await ScenarioApi.scenarioQueryModels('foundation-models', {
-      'AI-Resource-Group': 'default'
-    }).execute();
-
-    if (!modelList.resources) {
-      console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
-      return;
-    }
-
-    landscapeModels = new Set(
-      modelList.resources.flatMap(r => (r.model ? [r.model] : []))
-    );
-  } catch (err) {
+  const modelList = await ScenarioApi.scenarioQueryModels('foundation-models', {
+    'AI-Resource-Group': 'default'
+  }).execute().catch((err: unknown) => {
     console.error('\n⚠ Landscape check skipped — API request failed:', err);
+    return null;
+  });
+
+  if (!modelList) return;
+
+  if (!modelList.resources) {
+    console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
     return;
+  }
+
+  const isAzureOrRpt = (model: string) =>
+    typeToActiveModels['AzureOpenAiChatModel']?.has(model) ||
+    typeToActiveModels['AzureOpenAiEmbeddingModel']?.has(model) ||
+    typeToActiveModels['SapRptModel']?.has(model);
+
+  const landscapeModels = new Set<string>();
+  for (const r of modelList.resources) {
+    if (!r.model) continue;
+    const isOrchestrationEnabled = r.allowedScenarios?.some(s => s.scenarioId === 'orchestration');
+    if (isAzureOrRpt(r.model) || isOrchestrationEnabled) {
+      landscapeModels.add(r.model);
+    }
   }
 
   const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
