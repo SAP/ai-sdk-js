@@ -35,14 +35,20 @@ pnpm test:smoke
 
 ## Running the app locally
 
-This is currently not possible.
-We will fix this soon.
-
-<!-- Download a service key for your AI Core service instance from SAP BTP.
-Create a `.env.local` file in the sample-code directory and add the service key under`AICORE_SERVICE_KEY`.
+Download a service key for your AI Core service instance from SAP BTP.
+Create a `.env` file in the `tests/smoke-tests` directory and add the service key under `AICORE_SERVICE_KEY`.
 Run:
 
 ```bash
-pnpm smoke-tests create-deployment
 pnpm smoke-tests local
-``` -->
+```
+
+## Running the tests locally
+
+With the `.env` file in place, run:
+
+```bash
+pnpm test:smoke
+```
+
+The test runner automatically starts and stops the local server. Tests requiring CF destination service bindings are skipped automatically when running locally.

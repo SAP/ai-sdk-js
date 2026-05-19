@@ -7,8 +7,6 @@ settings:
 overrides:
   uuid@^13.0.0: '>=13.0.2'
 
-pnpmfileChecksum: sha256-7lht5Q+T9K1tkr5FYaoHEDBAtJqjkSrAs2jGbKMfTIY=
-
 importers:
 
   .:
@@ -283,6 +281,25 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: '=1.29.0'
         version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
+      '@sap-cloud-sdk/resilience':
+        specifier: '=4.6.0'
+        version: 4.6.0
+      '@sap-cloud-sdk/util':
+        specifier: '=4.6.0'
+        version: 4.6.0
+      '@types/express':
+        specifier: '=5.0.6'
+        version: 5.0.6
+      express:
+        specifier: '=5.2.1'
+        version: 5.2.1
+      langchain:
+        specifier: '=1.4.0'
+        version: 1.4.0(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))
+      zod:
+        specifier: '=4.4.3'
+        version: 4.4.3
+    devDependencies:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
@@ -304,24 +321,6 @@ importers:
       '@sap-ai-sdk/rpt':
         specifier: workspace:^
         version: link:../packages/rpt
-      '@sap-cloud-sdk/resilience':
-        specifier: '=4.6.0'
-        version: 4.6.0
-      '@sap-cloud-sdk/util':
-        specifier: '=4.6.0'
-        version: 4.6.0
-      '@types/express':
-        specifier: '=5.0.6'
-        version: 5.0.6
-      express:
-        specifier: '=5.2.1'
-        version: 5.2.1
-      langchain:
-        specifier: '=1.4.0'
-        version: 1.4.0(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))
-      zod:
-        specifier: '=4.4.3'
-        version: 4.4.3
 
   tests/e2e-tests:
     dependencies:
@@ -356,24 +355,6 @@ importers:
 
   tests/smoke-tests:
     dependencies:
-      '@langchain/classic':
-        specifier: '=1.0.32'
-        version: 1.0.32(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
-      '@langchain/core':
-        specifier: '=1.1.46'
-        version: 1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)
-      '@langchain/langgraph':
-        specifier: '=1.3.0'
-        version: 1.3.0(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3)
-      '@langchain/mcp-adapters':
-        specifier: '=1.1.3'
-        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(@langchain/langgraph@1.3.0(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))(zod@4.4.3))
-      '@langchain/textsplitters':
-        specifier: '=1.0.1'
-        version: 1.0.1(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))
-      '@modelcontextprotocol/sdk':
-        specifier: '=1.29.0'
-        version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
       '@sap-ai-sdk/ai-api':
         specifier: canary
         version: 2.10.1-20260513013919.0
@@ -395,21 +376,9 @@ importers:
       '@sap-ai-sdk/rpt':
         specifier: canary
         version: 2.10.1-20260513013919.0
-      '@sap-cloud-sdk/resilience':
-        specifier: '=4.6.0'
-        version: 4.6.0
-      '@sap-cloud-sdk/util':
-        specifier: '=4.6.0'
-        version: 4.6.0
-      express:
-        specifier: '=5.2.1'
-        version: 5.2.1
-      langchain:
-        specifier: '=1.4.0'
-        version: 1.4.0(@langchain/core@1.1.46(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0))(openai@6.35.0(ws@8.20.0)(zod@4.4.3))(ws@8.20.0)(zod-to-json-schema@3.25.2(zod@4.4.3))
-      zod:
-        specifier: '=4.4.3'
-        version: 4.4.3
+      '@sap-ai-sdk/sample-code':
+        specifier: workspace:^
+        version: link:../../sample-code
     devDependencies:
       '@types/express':
         specifier: '=5.0.6'

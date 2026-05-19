@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { execFile } from 'node:child_process';
-import { cp, copyFile, mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { promisify } from 'node:util';
@@ -38,13 +38,6 @@ async function prepareDeployment(): Promise<string> {
   console.log('Writing .npmrc...');
   await writeFile(resolve(deployDir, '.npmrc'), 'ignore-scripts=true\n');
 
-  console.log('Copying dist from sample-code...');
-  await cp(
-    resolve(workspaceRoot, 'sample-code', 'dist'),
-    resolve(deployDir, 'dist'),
-    { recursive: true }
-  );
-
   console.log('Copying manifest.yml...');
   await copyFile(
     resolve(import.meta.dirname, '..', 'manifest.yml'),
@@ -68,10 +61,7 @@ async function prepareDeployment(): Promise<string> {
         ...appPkg,
         dependencies: {},
         devDependencies: {},
-        scripts: {
-          ...forwardedScripts,
-          start: 'cd deploy && node dist/server.js'
-        }
+        scripts: forwardedScripts
       },
       null,
       2
