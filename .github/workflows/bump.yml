@@ -78,7 +78,7 @@ jobs:
       - name: Update release notes file
         id: update-notes
         run: |
-          pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
+          pnpm node --import tsx/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
 
       - name: Open release notes PR
         id: open-pr

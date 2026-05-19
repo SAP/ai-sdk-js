@@ -12,9 +12,9 @@
     "dist/**/*.d.ts.map"
   ],
   "scripts": {
-    "start": "node --loader ts-node/esm src/server.ts",
-    "local": "node --env-file=.env --loader ts-node/esm src/server.ts",
-    "agent-tutorial": "node --env-file=.env --loader ts-node/esm src/tutorials/travel-itinerary-agent.ts",
+    "start": "node --import tsx/esm src/server.ts",
+    "local": "node --env-file=.env --import tsx/esm src/server.ts",
+    "agent-tutorial": "node --env-file=.env --import tsx/esm src/tutorials/travel-itinerary-agent.ts",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@langchain/classic": "^1.0.32",
-    "@langchain/core": "^1.1.45",
+    "@langchain/core": "^1.1.46",
     "@langchain/langgraph": "^1.3.0",
     "@langchain/mcp-adapters": "^1.1.3",
     "@langchain/textsplitters": "^1.0.1",
