@@ -91,7 +91,7 @@ export async function predictAutomaticParsing(): Promise<PredictResponsePayload>
 
 const parquetFilePath = join(
   import.meta.dirname,
-  '../resources/product_data.parquet'
+  '../resources/product_data_with_placeholders.parquet'
 );
 
 /**
