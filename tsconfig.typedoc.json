@@ -52,6 +52,7 @@
       "packages/foundation-models/src/index.ts",
       "packages/langchain/src/index.ts",
       "packages/orchestration/src/index.ts",
+      "packages/orchestration/src/internal.ts",
       "packages/prompt-registry/src/index.ts",
       "packages/rpt/src/index.ts"
     ],
