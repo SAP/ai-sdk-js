@@ -363,7 +363,7 @@ async function checkLandscapeAvailability(
 
   if (!modelList) return;
 
-  if (!modelList.resources) {
+  if (!modelList.resources?.length) {
     console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
     return;
   }
