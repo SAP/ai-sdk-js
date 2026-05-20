@@ -124,7 +124,7 @@ function mergeWithDefaultRequestConfig(
     'AI SDK JavaScript',
     pickValueIgnoreCase(requestConfig?.headers, 'ai-client-type')
   ]
-    .filter(clientType => clientType)
+    .filter(Boolean)
     .join(', ');
 
   return {

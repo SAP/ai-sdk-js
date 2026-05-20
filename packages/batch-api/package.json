@@ -1,6 +1,10 @@
 {
   "name": "@sap-ai-sdk/batch-api",
   "version": "2.9.0",
+  "publishConfig": {
+    "tag": "beta",
+    "access": "public"
+  },
   "description": "",
   "license": "Apache-2.0",
   "keywords": [

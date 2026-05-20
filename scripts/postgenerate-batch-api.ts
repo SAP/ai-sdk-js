@@ -9,11 +9,14 @@ if (!filePath) {
   process.exit(1);
 }
 
-transformFile(resolve(filePath), file =>
-  file.replace(
-    "* This API is part of the 'batch-service' service.",
-    "* This API is part of the 'batch-service' service.\n * @experimental This API is experimental and may change at any time without prior notice."
-  )
-)
-  .then(() => console.log('File processed successfully.'))
-  .catch(err => console.error('Error processing file:', err));
+try {
+  await transformFile(resolve(filePath), file =>
+    file.replace(
+      "* This API is part of the 'batch-service' service.",
+      "* This API is part of the 'batch-service' service.\n * @experimental This API is experimental and may change at any time without prior notice."
+    )
+  );
+  console.log('File processed successfully.');
+} catch (err) {
+  console.error('Error processing file:', err);
+}
