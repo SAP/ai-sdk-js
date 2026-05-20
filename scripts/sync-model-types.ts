@@ -5,6 +5,7 @@
  */
 /* eslint-disable no-console */
 
+import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import * as prettier from 'prettier';
@@ -339,10 +340,13 @@ async function syncModelTypes(): Promise<void> {
 async function checkLandscapeAvailability(
   typeToActiveModels: Record<string, Set<string>>
 ): Promise<void> {
-  try {
-    process.loadEnvFile(resolve(import.meta.dirname, '../sample-code/.env'));
-  } catch {
-    // .env not found, AICORE_SERVICE_KEY must be set externally
+  const envPath = resolve(import.meta.dirname, '../sample-code/.env');
+  if (existsSync(envPath)) {
+    try {
+      process.loadEnvFile(envPath);
+    } catch (err) {
+      console.error('\n⚠ Found sample-code/.env but failed to load it:', err);
+    }
   }
 
   if (!process.env['AICORE_SERVICE_KEY']) {
@@ -361,24 +365,21 @@ async function checkLandscapeAvailability(
     return null;
   });
 
-  if (!modelList) return;
-
-  if (!modelList.resources?.length) {
+  if (!modelList?.resources?.length) {
     console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
     return;
   }
 
+  // Include Azure OpenAI and RPT models directly; all others require orchestration access
+  const isSdkSupportedModel = (r: (typeof modelList.resources)[number]) =>
+    r.model &&
+    (r.executableId === 'azure-openai' ||
+      r.model.startsWith('sap-rpt-') ||
+      r.allowedScenarios?.some(s => s.scenarioId === 'orchestration'));
+
   const landscapeModels = new Set(
-      modelList.resources
-        .filter(r => r.model)
-        .filter(
-          r =>
-            r.executableId === 'azure-openai' ||
-            r.model.startsWith('sap-rpt-') ||
-            r.allowedScenarios?.some(s => s.scenarioId === 'orchestration')
-        )
-        .map(r => r.model)
-    );
+    modelList.resources.filter(isSdkSupportedModel).map(r => r.model)
+  );
 
   const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
   if (missing.length) {
