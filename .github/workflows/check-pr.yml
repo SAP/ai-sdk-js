@@ -20,6 +20,6 @@ jobs:
         with:
           files: |
             .changeset/**
-      - uses: SAP/cloud-sdk-js/.github/actions/check-pr@9218f7ef29c4c2d40fbdb19e7bd2e90d52c391f5 # main
+      - uses: SAP/cloud-sdk-js/.github/actions/check-pr@main
         with:
           changed-files: ${{ steps.changed-files.outputs.added_files }} ${{ steps.changed-files.outputs.modified_files }}
