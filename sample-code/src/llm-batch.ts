@@ -27,8 +27,8 @@ export async function listBatches(): Promise<BatchListResponse> {
 
 /**
  * Create a new batch job.
- * @param inputUri - Object store URI of the input .jsonl file (e.g. ai://s3secret/input-batch.jsonl).
- * @param outputUri - Object store URI of the output directory (e.g. ai://s3secret/).
+ * @param inputUri - Object store URI of the input .jsonl file (e.g. ai://OBJECT_STORE_SECRET/input-batch.jsonl).
+ * @param outputUri - Object store URI of the output directory (e.g. ai://OBJECT_STORE_SECRET/).
  * @returns Batch create response.
  */
 export async function createBatch(
