@@ -5,9 +5,11 @@
  */
 /* eslint-disable no-console */
 
+import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import * as prettier from 'prettier';
+import { ScenarioApi } from '@sap-ai-sdk/ai-api';
 import { transformFile } from './util.js';
 
 /** A single row from the SAP Notes model table. */
@@ -330,6 +332,62 @@ async function syncModelTypes(): Promise<void> {
     for (const { model, executableId } of skippedRows) {
       console.error(`  ${model}  (executableId: ${executableId})`);
     }
+  }
+
+  await checkLandscapeAvailability(typeToActiveModels);
+}
+
+async function checkLandscapeAvailability(
+  typeToActiveModels: Record<string, Set<string>>
+): Promise<void> {
+  const envPath = resolve(import.meta.dirname, '../sample-code/.env');
+  if (existsSync(envPath)) {
+    try {
+      process.loadEnvFile(envPath);
+    } catch (err) {
+      console.error('\n⚠ Found sample-code/.env but failed to load it:', err);
+    }
+  }
+
+  if (!process.env['AICORE_SERVICE_KEY']) {
+    console.error('\n⚠ Skipping landscape check — AICORE_SERVICE_KEY not set.');
+    return;
+  }
+
+  const syncedModels = new Set(
+    Object.values(typeToActiveModels).flatMap(s => [...s])
+  );
+
+  const modelList = await ScenarioApi.scenarioQueryModels('foundation-models', {
+    'AI-Resource-Group': 'default'
+  }).execute().catch((err: unknown) => {
+    console.error('\n⚠ Landscape check skipped — API request failed:', err);
+    return null;
+  });
+
+  if (!modelList?.resources?.length) {
+    console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
+    return;
+  }
+
+  // Include Azure OpenAI and RPT models directly; all others require orchestration access
+  const isSdkSupportedModel = (r: (typeof modelList.resources)[number]) =>
+    r.model &&
+    (r.executableId === 'azure-openai' ||
+      r.model.startsWith('sap-rpt-') ||
+      r.allowedScenarios?.some(s => s.scenarioId === 'orchestration'));
+
+  const landscapeModels = new Set(
+    modelList.resources.filter(isSdkSupportedModel).map(r => r.model)
+  );
+
+  const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
+  if (missing.length) {
+    console.error(
+      `\n⚠ ${missing.length} model(s) not available in your landscape:\n  ${missing.join('\n  ')}`
+    );
+  } else {
+    console.log('\n✓ All synced models are available in your landscape.');
   }
 }
 
