@@ -114,6 +114,7 @@ export async function uploadBatchInput(
       max_tokens: 150
     }
   ).toBlob();
+  // text/csv is needed to keep the API from type-checking the input
   await FileApi.fileUpload(
     `${secretName}//${fileName}`,
     blob,
