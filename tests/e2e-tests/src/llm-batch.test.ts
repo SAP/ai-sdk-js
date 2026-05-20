@@ -85,7 +85,6 @@ describe('batch api', () => {
     const completedBatch = resources?.find(b => b.status === 'COMPLETED');
 
     if (!completedBatch?.id) {
-      console.log('No completed batch jobs found, skipping download test.');
       return;
     }
 

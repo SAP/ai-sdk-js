@@ -197,6 +197,10 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+    devDependencies:
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@22.19.18)(typescript@6.0.3)
 
   packages/orchestration:
     dependencies:
