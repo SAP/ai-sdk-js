@@ -1,4 +1,4 @@
-import { BatchesApi } from '@sap-ai-sdk/batch-api';
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 import {
   AzureOpenAiBatchInput,
@@ -11,7 +11,7 @@ import type {
   BatchStatusResponse,
   BatchCancelResponse,
   BatchDeleteResponse
-} from '@sap-ai-sdk/batch-api';
+} from '@sap-ai-sdk/llm-batch';
 
 const defaultHeaders = {
   'AI-Resource-Group': 'ai-sdk-js-e2e'

@@ -5,7 +5,7 @@ packages:
   - packages/foundation-models
   - packages/langchain
   - packages/orchestration
-  - packages/batch-api
+  - packages/llm-batch
   - packages/prompt-registry
   - packages/rpt
   - sample-cap

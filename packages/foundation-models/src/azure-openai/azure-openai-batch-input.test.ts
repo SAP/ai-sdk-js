@@ -8,7 +8,9 @@ describe('AzureOpenAiBatchInput', () => {
   };
   const request2: AzureOpenAiCreateChatCompletionRequest = {
     model: 'gpt-4.1',
-    messages: [{ role: 'user', content: 'Explain neural networks in simple terms' }]
+    messages: [
+      { role: 'user', content: 'Explain neural networks in simple terms' }
+    ]
   };
 
   it('should produce a Blob', () => {
@@ -27,7 +29,9 @@ describe('AzureOpenAiBatchInput', () => {
   });
 
   it('should auto-generate sequential custom_ids for multiple requests', async () => {
-    const text = await new AzureOpenAiBatchInput(request1, request2).toBlob().text();
+    const text = await new AzureOpenAiBatchInput(request1, request2)
+      .toBlob()
+      .text();
     const lines = text.split('\n');
 
     expect(lines).toHaveLength(2);
@@ -36,7 +40,9 @@ describe('AzureOpenAiBatchInput', () => {
   });
 
   it('should produce valid JSONL where each line is independent JSON', async () => {
-    const text = await new AzureOpenAiBatchInput(request1, request2).toBlob().text();
+    const text = await new AzureOpenAiBatchInput(request1, request2)
+      .toBlob()
+      .text();
     const lines = text.split('\n');
 
     expect(lines).toHaveLength(2);

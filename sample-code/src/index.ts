@@ -99,4 +99,4 @@ export {
   downloadBatchOutput,
   uploadBatchInput,
   deleteFile
-} from './batch-api.js';
+} from './llm-batch.js';

@@ -73,8 +73,7 @@ describe('AzureOpenAiBatchOutput', () => {
 
   it('should provide typed access to response body', async () => {
     const output = await AzureOpenAiBatchOutput.from(new Blob([successLine]));
-    const content =
-      output.lines[0].response?.body?.choices[0].message.content;
+    const content = output.lines[0].response?.body?.choices[0].message.content;
 
     expect(content).toBe('Machine learning is...');
   });
