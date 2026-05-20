@@ -368,19 +368,17 @@ async function checkLandscapeAvailability(
     return;
   }
 
-  const isAzureOrRpt = (model: string) =>
-    typeToActiveModels['AzureOpenAiChatModel']?.has(model) ||
-    typeToActiveModels['AzureOpenAiEmbeddingModel']?.has(model) ||
-    typeToActiveModels['SapRptModel']?.has(model);
-
-  const landscapeModels = new Set<string>();
-  for (const r of modelList.resources) {
-    if (!r.model) continue;
-    const isOrchestrationEnabled = r.allowedScenarios?.some(s => s.scenarioId === 'orchestration');
-    if (isAzureOrRpt(r.model) || isOrchestrationEnabled) {
-      landscapeModels.add(r.model);
-    }
-  }
+  const landscapeModels = new Set(
+      modelList.resources
+        .filter(r => r.model)
+        .filter(
+          r =>
+            r.executableId === 'azure-openai' ||
+            r.model.startsWith('sap-rpt-') ||
+            r.allowedScenarios?.some(s => s.scenarioId === 'orchestration')
+        )
+        .map(r => r.model)
+    );
 
   const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
   if (missing.length) {
