@@ -89,5 +89,16 @@ export type {
   ChatCompletionTool,
   FunctionObject,
   Error as OrchestrationError,
-  Citation
+  Citation,
+  TextContent,
+  CacheControl,
+  TokenUsage,
+  MessageToolCalls,
+  LlmChoice,
+  ModuleResults,
+  ModuleResultsBase,
+  ModuleResultsStreaming,
+  LlmChoiceStreaming,
+  ToolCallChunk,
+  EmbeddingsUsage
 } from './client/api/schema/index.js';
