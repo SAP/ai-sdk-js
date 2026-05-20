@@ -93,7 +93,7 @@ export async function deleteBatch(
 /**
  * Upload a JSONL input file for batch processing.
  * @param secretName - The object store secret name (e.g. 's3secret').
- * @param fileName - The file name / path within the secret (e.g. 'test-input-123.jsonl').
+ * @param fileName - The file name / path within the object store (e.g. 'test-input-123.jsonl').
  * @returns The object store URI to use as the batch input URI.
  */
 export async function uploadBatchInput(
