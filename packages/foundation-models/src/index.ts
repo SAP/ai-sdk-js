@@ -6,6 +6,16 @@ export type {
 } from './azure-openai/index.js';
 
 export {
+  AzureOpenAiBatchInput,
+  AzureOpenAiBatchOutput
+} from './azure-openai/index.js';
+export type {
+  AzureOpenAiBatchOutputLine,
+  AzureOpenAiBatchOutputError,
+  AzureOpenAiBatchOutputResponse
+} from './azure-openai/index.js';
+
+export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
   AzureOpenAiChatCompletionResponse,

@@ -1,5 +1,9 @@
 import { BatchesApi } from '@sap-ai-sdk/batch-api';
 import { FileApi } from '@sap-ai-sdk/ai-api';
+import {
+  AzureOpenAiBatchInput,
+  AzureOpenAiBatchOutput
+} from '@sap-ai-sdk/foundation-models';
 import type {
   BatchListResponse,
   BatchCreateResponse,
@@ -96,11 +100,20 @@ export async function uploadBatchInput(
   secretName: string,
   fileName: string
 ): Promise<string> {
-  const content = [
-    '{"custom_id":"request-1","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"What is machine learning?"}],"max_tokens":150}}',
-    '{"custom_id":"request-2","method":"POST","url":"/v1/chat/completions","body":{"model":"gpt-4.1","messages":[{"role":"user","content":"Explain neural networks in simple terms"}],"max_tokens":150}}'
-  ].join('\n');
-  const blob = new Blob([content], { type: 'text/csv' });
+  const blob = new AzureOpenAiBatchInput(
+    {
+      model: 'gpt-4.1',
+      messages: [{ role: 'user', content: 'What is machine learning?' }],
+      max_tokens: 150
+    },
+    {
+      model: 'gpt-4.1',
+      messages: [
+        { role: 'user', content: 'Explain neural networks in simple terms' }
+      ],
+      max_tokens: 150
+    }
+  ).toBlob();
   await FileApi.fileUpload(
     `${secretName}//${fileName}`,
     blob,
@@ -130,15 +143,16 @@ export async function deleteFile(
  * @param secretName - The object store secret name used when creating the batch job (e.g. 's3secret').
  * @param outputFolder - The output folder prefix used when creating the batch job (e.g. 'output/').
  * @param batchId - The ID of the completed batch job.
- * @returns The output file as a Blob.
+ * @returns The parsed batch output with typed response lines.
  */
 export async function downloadBatchOutput(
   secretName: string,
   outputFolder: string,
   batchId: string
-): Promise<Blob> {
-  return FileApi.fileDownload(
+): Promise<AzureOpenAiBatchOutput> {
+  const blob = await FileApi.fileDownload(
     `${secretName}//${outputFolder}${batchId}/output.jsonl`,
     { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
   ).execute();
+  return AzureOpenAiBatchOutput.from(blob);
 }
