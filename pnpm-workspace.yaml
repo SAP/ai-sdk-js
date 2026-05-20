@@ -29,3 +29,7 @@ overrides:
 shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 131400 # 3 months
+allowBuilds:
+  better-sqlite3: false
+  esbuild: false
+  unrs-resolver: false
