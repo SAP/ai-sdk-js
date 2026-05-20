@@ -44,7 +44,7 @@ const predictRows = [
 const regularRows = [
   {
     PRODUCT: 'Desktop Computer',
-    PRICE: 921.50,
+    PRICE: 921.5,
     PRODUCTION_DATE: '2024-12-02',
     __row_idx__: '42',
     SALESGROUP: 'Electronics'
@@ -66,8 +66,12 @@ const regularRows = [
 ];
 
 // Combine data based on flag
-const data = includePredictRows ? [...predictRows, ...regularRows] : regularRows;
-const filename = includePredictRows ? 'product_data_with_placeholders.parquet' : 'product_data.parquet';
+const data = includePredictRows
+  ? [...predictRows, ...regularRows]
+  : regularRows;
+const filename = includePredictRows
+  ? 'product_data_with_placeholders.parquet'
+  : 'product_data.parquet';
 
 async function generateParquetFile() {
   const outputPath = path.join(import.meta.dirname, filename);
