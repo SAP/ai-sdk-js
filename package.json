@@ -19,7 +19,7 @@
     "lint:fix": "pnpm -r run lint:fix",
     "generate": "pnpm -r run generate",
     "apply-patches": "pnpm -r run --if-present apply-patches",
-    "doc": "node --import tsx/esm scripts/generate-docs.ts",
+    "doc": "tsx scripts/generate-docs.ts",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api run",
     "core": "pnpm -F=@sap-ai-sdk/core run",
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding run",
