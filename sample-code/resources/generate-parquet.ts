@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /**
  * This script generates a parquet file containing product data.
- * The parquet file is saved to 'sample-code/resources/product_data.parquet'.
  * By default, the generated file includes cells with '[PREDICT]'-placeholders for prediction with SAP RPT.
  * Use the --no-predict flag to exclude rows with '[PREDICT]' placeholders.
  * @example
