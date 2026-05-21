@@ -186,6 +186,12 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
 
+  packages/llm-batch:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+
   packages/orchestration:
     dependencies:
       '@sap-ai-sdk/ai-api':
@@ -295,6 +301,9 @@ importers:
       '@sap-ai-sdk/langchain':
         specifier: workspace:^
         version: link:../packages/langchain
+      '@sap-ai-sdk/llm-batch':
+        specifier: workspace:^
+        version: link:../packages/llm-batch
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../packages/orchestration

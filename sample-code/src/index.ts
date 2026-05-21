@@ -88,3 +88,15 @@ export {
   predictWithSchemaCompressed,
   predictWithSchemaResilient
 } from './rpt.js';
+
+export {
+  listBatches,
+  createBatch,
+  getBatchById,
+  getBatchStatus,
+  cancelBatch,
+  deleteBatch,
+  downloadBatchOutput,
+  uploadBatchInput,
+  deleteFile
+} from './llm-batch.js';
