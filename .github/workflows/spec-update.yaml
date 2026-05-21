@@ -156,7 +156,7 @@ jobs:
         if: steps.check-spec-changes.outputs.spec == 'true'
         continue-on-error: true
         run: |
-          if pnpm "$SERVICE" run --if-present apply-patches; then
+          if pnpm "$SERVICE" --if-present apply-patches; then
             echo "patch_result=success" >> "$GITHUB_OUTPUT"
           else
             echo "patch_result=failure" >> "$GITHUB_OUTPUT"
