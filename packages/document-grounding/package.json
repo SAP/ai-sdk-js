@@ -33,8 +33,8 @@
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client -s ./src/spec/options-per-service.json && pnpm update-imports && pnpm lint:fix",
-    "update-imports": "node --import tsx/esm ../../scripts/update-imports.ts ./src/client/api",
-    "apply-patches": "node --import tsx/esm ../../scripts/apply-patches.ts ."
+    "update-imports": "tsx ../../scripts/update-imports.ts ./src/client/api",
+    "apply-patches": "tsx ../../scripts/apply-patches.ts ."
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^"
