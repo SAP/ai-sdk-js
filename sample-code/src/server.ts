@@ -13,6 +13,15 @@ import {
   // eslint-disable-next-line import/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
+  chatCompletion as openAiSdkChatCompletion,
+  chatCompletionStream as openAiSdkChatCompletionStream,
+  chatCompletionParse as openAiSdkChatCompletionParse,
+  computeEmbedding as openAiSdkComputeEmbedding,
+  responsesApi,
+  responsesApiStream
+  // eslint-disable-next-line import/no-internal-modules
+} from './foundation-models/azure-openai-using-openai-sdk.js';
+import {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationInputFiltering,
@@ -277,6 +286,102 @@ app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
     res.header('Content-Type', 'text/plain').send(response.getContent());
   } catch (error: any) {
     sendError(res, error);
+  }
+});
+
+/* Foundation Models (Azure OpenAI via openai SDK) */
+app.get('/azure-openai-sdk/chat-completion', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await openAiSdkChatCompletion());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai-sdk/chat-completion-stream', async (req, res) => {
+  try {
+    const stream = await openAiSdkChatCompletionStream();
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      connectionAlive = false;
+      res.end();
+    });
+
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk.choices[0]?.delta?.content ?? '');
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get('/azure-openai-sdk/embedding', async (req, res) => {
+  try {
+    const embedding = await openAiSdkComputeEmbedding();
+    res
+      .header('Content-Type', 'text/plain')
+      .send(`Got embedding vector with ${embedding.length} dimensions.`);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai-sdk/chat-completion-parse', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await openAiSdkChatCompletionParse());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai-sdk/responses', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await responsesApi());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/azure-openai-sdk/responses-stream', async (req, res) => {
+  try {
+    const stream = await responsesApiStream();
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      connectionAlive = false;
+      res.end();
+    });
+
+    for await (const event of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      if (event.type === 'response.output_text.delta') {
+        res.write(event.delta);
+      }
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
   }
 });
 

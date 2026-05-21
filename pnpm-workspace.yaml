@@ -3,6 +3,7 @@ packages:
   - packages/core
   - packages/document-grounding
   - packages/foundation-models
+  - packages/foundation-models-openai
   - packages/langchain
   - packages/orchestration
   - packages/prompt-registry
