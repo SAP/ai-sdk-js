@@ -32,15 +32,15 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
-    "update-imports": "node --no-warnings --loader ts-node/esm ../../scripts/update-imports.ts ./src/client/rpt",
-    "make-rpt-internal": "node --no-warnings --loader ts-node/esm ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
-    "pregenerate": "node --no-warnings --loader ts-node/esm ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
+    "update-imports": "tsx ../../scripts/update-imports.ts ./src/client/rpt",
+    "make-rpt-internal": "tsx ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
+    "pregenerate": "tsx ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.6.0",
-    "@sap-cloud-sdk/http-client": "^4.6.0",
-    "@sap-cloud-sdk/util": "^4.6.0"
+    "@sap-cloud-sdk/connectivity": "^4.7.0",
+    "@sap-cloud-sdk/http-client": "^4.7.0",
+    "@sap-cloud-sdk/util": "^4.7.0"
   }
 }
