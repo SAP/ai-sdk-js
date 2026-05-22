@@ -39,22 +39,29 @@ export default async function setup(): Promise<void> {
 
   (globalThis as any).__SMOKE_TEST_SERVER__ = server;
 
-  await new Promise<void>((resolvePromise, reject) => {
-    const timer = setTimeout(
-      () => reject(new Error(`Server did not start within ${timeout}ms`)),
-      timeout
-    );
+  const {
+    promise: serverPromise,
+    resolve: resolvePromise,
+    reject
+  } = Promise.withResolvers<void>();
 
-    server.stdout!.on('data', (data: Buffer) => {
-      if (data.toString().includes('Server running')) {
-        clearTimeout(timer);
-        resolvePromise();
-      }
-    });
+  const timer = setTimeout(
+    () => reject(new Error(`Server did not start within ${timeout}ms`)),
+    timeout
+  );
 
-    server.stderr!.on('data', (data: Buffer) => console.error(data.toString()));
-    server.on('error', reject);
+  server.stdout.on('data', (data: Buffer) => {
+    if (data.toString().includes('Server running')) {
+      clearTimeout(timer);
+      resolvePromise();
+    }
   });
+
+  server.stderr.on('data', (data: Buffer) => console.error(data.toString()));
+  server.on('error', reject);
+
+  // Wait for the server to start before proceeding with the tests
+  await serverPromise;
 
   process.env.SMOKE_TEST_URL = `http://localhost:${port}`;
   console.log(`Smoke test server running at ${process.env.SMOKE_TEST_URL}`);
