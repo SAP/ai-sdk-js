@@ -19,7 +19,7 @@ import {
   computeEmbedding as openAiSdkComputeEmbedding,
   responsesApi,
   responsesApiStream
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai-using-openai-sdk.js';
 import {
   orchestrationChatCompletion,
