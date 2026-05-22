@@ -15,7 +15,7 @@
     "dist/**/*.d.ts.map"
   ],
   "scripts": {
-    "start": "node --import tsx/esm src/server.ts",
+    "start": "tsx src/server.ts",
     "local": "tsx --env-file=.env src/server.ts",
     "agent-tutorial": "tsx --env-file=.env src/tutorials/travel-itinerary-agent.ts",
     "compile": "tsc",
