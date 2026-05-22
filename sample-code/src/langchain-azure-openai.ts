@@ -6,16 +6,15 @@ import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/langchain';
-// eslint-disable-next-line import/no-internal-modules
+// eslint-disable-next-line import-x/no-internal-modules
 import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
-// eslint-disable-next-line import/no-internal-modules
+// eslint-disable-next-line import-x/no-internal-modules
 import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
 import {
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { createAgent } from 'langchain';
 import { tool } from '@langchain/core/tools';
