@@ -66,6 +66,8 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      - name: Fetch full commit history (blobless)
+        run: git fetch --filter=blob:none --unshallow
 
       - name: Checkout Docs Repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
