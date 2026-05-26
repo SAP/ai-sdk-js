@@ -16,14 +16,22 @@ on:
   release:
     types: [published] # Trigger when a GitHub Release is published
 
+permissions: {}
+
 jobs:
   delegate_to_release_job:
     if: ${{ github.event_name == 'release' }}
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/publish-release.yml
     secrets: inherit
 
   delegate_to_canary_job:
     if: ${{ github.event_name != 'release' }}
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/publish-canary.yml
     secrets: inherit
     with:

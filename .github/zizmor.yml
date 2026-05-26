@@ -9,9 +9,6 @@ rules:
       - publish.yml
       - spec-update-cleanup-cron.yaml
       - spec-update-cron.yaml
-  # requires more effort to fix
-  excessive-permissions:
-    disable: true
   dangerous-triggers:
     ignore:
       - dependabot-pnpm-lock.yml

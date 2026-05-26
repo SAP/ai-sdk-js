@@ -3,6 +3,8 @@ name: publish
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   check-release-notes-pr:
     name: Check Release Notes PR Status
@@ -10,6 +12,8 @@ jobs:
     outputs:
       release-notes-branch: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
       is-merged: ${{ steps.check-pr-status.outputs.merged }}
+    permissions:
+      contents: read
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -62,6 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-release-notes-pr]
     permissions:
+      contents: read
       id-token: write
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
