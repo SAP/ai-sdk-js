@@ -89,20 +89,15 @@ describe('batch api', () => {
     }
 
     const id = completedBatch.id;
-    let output;
     try {
-      output = await downloadBatchOutput(secretName, outputFolder, id);
-    } catch {
-      // Output file may have been deleted by a previous test run or created
-      // with a different output path — skip the download assertions.
-      return;
+      const output = await downloadBatchOutput(secretName, outputFolder, id);
+      expect(output.length).toBeGreaterThan(0);
+      expect(
+        output.filter(line => line.error === null).length
+      ).toBeGreaterThan(0);
+      await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`);
+    } finally {
+      await deleteBatch(id);
     }
-    expect(output.length).toBeGreaterThan(0);
-    expect(output.filter(line => line.error === null).length).toBeGreaterThan(
-      0
-    );
-
-    await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`);
-    await deleteBatch(id);
   });
 });
