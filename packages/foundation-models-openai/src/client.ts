@@ -17,17 +17,6 @@ import type { SapAzureOpenAIOptions } from './types.js';
  * Use {@link SapAzureOpenAI.createClient} to create an instance.
  */
 export class SapAzureOpenAI {
-  readonly chat: SapChat;
-  readonly embeddings: SapEmbeddings;
-  readonly responses: SapResponses;
-
-  /** @internal — use {@link SapAzureOpenAI.createClient} instead */
-  constructor(client: AzureOpenAI) {
-    this.chat = new SapChat(client);
-    this.embeddings = new SapEmbeddings(client);
-    this.responses = new SapResponses(client);
-  }
-
   /**
    * Creates a pre-configured {@link SapAzureOpenAI} client for SAP AI Core.
    * Resolves the deployment and sets up authentication automatically.
@@ -50,5 +39,16 @@ export class SapAzureOpenAI {
   ): Promise<SapAzureOpenAI> {
     const config = await createOpenAIConfig(options);
     return new SapAzureOpenAI(new AzureOpenAI(config));
+  }
+
+  readonly chat: SapChat;
+  readonly embeddings: SapEmbeddings;
+  readonly responses: SapResponses;
+
+  /** @internal — use {@link SapAzureOpenAI.createClient} instead */
+  constructor(client: AzureOpenAI) {
+    this.chat = new SapChat(client);
+    this.embeddings = new SapEmbeddings(client);
+    this.responses = new SapResponses(client);
   }
 }
