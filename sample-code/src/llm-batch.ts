@@ -1,9 +1,10 @@
 import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 import {
-  AzureOpenAiBatchInput,
-  AzureOpenAiBatchOutput
+  createAzureOpenAiBatchInput,
+  parseBatchOutput
 } from '@sap-ai-sdk/foundation-models';
+import type { AzureOpenAiBatchOutputLine } from '@sap-ai-sdk/foundation-models';
 import type {
   BatchListResponse,
   BatchCreateResponse,
@@ -100,27 +101,33 @@ export async function uploadBatchInput(
   secretName: string,
   fileName: string
 ): Promise<string> {
-  const blob = new AzureOpenAiBatchInput(
-    {
-      model: 'gpt-4.1',
-      messages: [{ role: 'user', content: 'What is machine learning?' }],
-      max_tokens: 150
-    },
-    {
-      model: 'gpt-4.1',
-      messages: [
-        { role: 'user', content: 'Explain neural networks in simple terms' }
-      ],
-      max_tokens: 150
-    }
-  ).toBlob();
-  // text/csv is needed to keep the API from type-checking the input
+  // text/csv type is required: the AI Core file API rejects application/octet-stream.
+  // Axios uses the Blob's type property as Content-Type, so we set it explicitly.
+  const blob = new Blob(
+    [
+      createAzureOpenAiBatchInput([
+        {
+          model: 'gpt-4.1',
+          messages: [{ role: 'user', content: 'What is machine learning?' }],
+          max_tokens: 150
+        },
+        {
+          model: 'gpt-4.1',
+          messages: [
+            { role: 'user', content: 'Explain neural networks in simple terms' }
+          ],
+          max_tokens: 150
+        }
+      ])
+    ],
+    { type: 'text/csv' }
+  );
   await FileApi.fileUpload(
     `${secretName}//${fileName}`,
     blob,
     { overwrite: true },
     { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
-  ).execute(undefined, { headers: { 'content-type': 'text/csv' } });
+  ).execute();
   return `ai://${secretName}/${fileName}`;
 }
 
@@ -150,10 +157,10 @@ export async function downloadBatchOutput(
   secretName: string,
   outputFolder: string,
   batchId: string
-): Promise<AzureOpenAiBatchOutput> {
+): Promise<AzureOpenAiBatchOutputLine[]> {
   const blob = await FileApi.fileDownload(
     `${secretName}//${outputFolder}${batchId}/output.jsonl`,
     { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
   ).execute();
-  return AzureOpenAiBatchOutput.from(blob);
+  return parseBatchOutput(blob);
 }

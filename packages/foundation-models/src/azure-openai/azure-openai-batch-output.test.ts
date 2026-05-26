@@ -1,6 +1,6 @@
-import { AzureOpenAiBatchOutput } from './azure-openai-batch-output.js';
+import { parseBatchOutput } from './azure-openai-batch-output.js';
 
-describe('AzureOpenAiBatchOutput', () => {
+describe('parseBatchOutput', () => {
   const successLine = JSON.stringify({
     custom_id: 'request-1',
     response: {
@@ -28,52 +28,54 @@ describe('AzureOpenAiBatchOutput', () => {
   });
 
   it('should parse a single successful line', async () => {
-    const output = await AzureOpenAiBatchOutput.from(new Blob([successLine]));
+    const output = await parseBatchOutput(new Blob([successLine]));
 
-    expect(output.lines).toHaveLength(1);
-    expect(output.lines[0].custom_id).toBe('request-1');
-    expect(output.lines[0].error).toBeNull();
-    expect(output.lines[0].response?.status_code).toBe(200);
+    expect(output).toHaveLength(1);
+    expect(output[0].custom_id).toBe('request-1');
+    expect(output[0].error).toBeNull();
+    expect(output[0].response?.status_code).toBe(200);
   });
 
   it('should parse multiple lines', async () => {
-    const output = await AzureOpenAiBatchOutput.from(
+    const output = await parseBatchOutput(
       new Blob([[successLine, errorLine].join('\n')])
     );
 
-    expect(output.lines).toHaveLength(2);
+    expect(output).toHaveLength(2);
   });
 
-  it('should filter successful lines with getSuccessful()', async () => {
-    const output = await AzureOpenAiBatchOutput.from(
+  it('should filter successful lines', async () => {
+    const output = await parseBatchOutput(
       new Blob([[successLine, errorLine].join('\n')])
     );
+    const successful = output.filter(line => line.error === null);
 
-    expect(output.getSuccessful()).toHaveLength(1);
-    expect(output.getSuccessful()[0].custom_id).toBe('request-1');
+    expect(successful).toHaveLength(1);
+    expect(successful[0].custom_id).toBe('request-1');
   });
 
-  it('should filter failed lines with getFailed()', async () => {
-    const output = await AzureOpenAiBatchOutput.from(
+  it('should filter failed lines', async () => {
+    const output = await parseBatchOutput(
       new Blob([[successLine, errorLine].join('\n')])
     );
+    const failed = output.filter(line => line.error !== null);
 
-    expect(output.getFailed()).toHaveLength(1);
-    expect(output.getFailed()[0].custom_id).toBe('error-1');
-    expect(output.getFailed()[0].error?.code).toBe('content_filter');
+    expect(failed).toHaveLength(1);
+    expect(failed[0].custom_id).toBe('error-1');
+    expect(failed[0].error?.code).toBe('content_filter');
   });
 
   it('should handle trailing newlines in JSONL', async () => {
-    const output = await AzureOpenAiBatchOutput.from(
+    const output = await parseBatchOutput(
       new Blob([successLine + '\n'])
     );
 
-    expect(output.lines).toHaveLength(1);
+    expect(output).toHaveLength(1);
   });
 
   it('should provide typed access to response body', async () => {
-    const output = await AzureOpenAiBatchOutput.from(new Blob([successLine]));
-    const content = output.lines[0].response?.body?.choices[0].message.content;
+    const output = await parseBatchOutput(new Blob([successLine]));
+    const content = output[0].response?.body?.choices[0].message.content;
 
     expect(content).toBe('Machine learning is...');
   });

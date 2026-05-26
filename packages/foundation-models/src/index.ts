@@ -6,8 +6,8 @@ export type {
 } from './azure-openai/index.js';
 
 export {
-  AzureOpenAiBatchInput,
-  AzureOpenAiBatchOutput
+  createAzureOpenAiBatchInput,
+  parseBatchOutput
 } from './azure-openai/index.js';
 export type {
   AzureOpenAiBatchOutputLine,

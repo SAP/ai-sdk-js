@@ -35,46 +35,16 @@ export interface AzureOpenAiBatchOutputLine {
 }
 
 /**
- * Convenience class for parsing OpenAI batch output JSONL files.
- * Converts the Blob returned by FileApi into typed output lines.
+ * Parses a batch output Blob (JSONL format) into typed output lines.
+ * @param blob - The Blob returned from FileApi.fileDownload().
+ * @returns A Promise resolving to an array of parsed output lines.
  */
-export class AzureOpenAiBatchOutput {
-  /**
-   * Parses a batch output Blob (JSONL format) into typed output lines.
-   * @param blob - The Blob returned from FileApi.fileDownload().
-   * @returns A Promise resolving to an AzureOpenAiBatchOutput instance.
-   */
-  static async from(blob: Blob): Promise<AzureOpenAiBatchOutput> {
-    const text = await blob.text();
-    const lines = text
-      .split('\n')
-      .filter(line => line.trim().length > 0)
-      .map(line => JSON.parse(line) as AzureOpenAiBatchOutputLine);
-    return new AzureOpenAiBatchOutput(lines);
-  }
-
-  /**
-   * All parsed output lines.
-   */
-  readonly lines: AzureOpenAiBatchOutputLine[];
-
-  private constructor(lines: AzureOpenAiBatchOutputLine[]) {
-    this.lines = lines;
-  }
-
-  /**
-   * Returns only successful output lines (error is null).
-   * @returns Array of output lines where error is null.
-   */
-  getSuccessful(): AzureOpenAiBatchOutputLine[] {
-    return this.lines.filter(line => line.error === null);
-  }
-
-  /**
-   * Returns only failed output lines (error is not null).
-   * @returns Array of output lines where error is not null.
-   */
-  getFailed(): AzureOpenAiBatchOutputLine[] {
-    return this.lines.filter(line => line.error !== null);
-  }
+export async function parseBatchOutput(
+  blob: Blob
+): Promise<AzureOpenAiBatchOutputLine[]> {
+  const text = await blob.text();
+  return text
+    .split('\n')
+    .filter(line => line.trim().length > 0)
+    .map(line => JSON.parse(line) as AzureOpenAiBatchOutputLine);
 }
