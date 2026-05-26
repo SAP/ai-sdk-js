@@ -13,6 +13,11 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
+allowBuilds:
+  better-sqlite3: false
+  esbuild: false
+  unrs-resolver: false
+
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
@@ -29,7 +34,3 @@ overrides:
 shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 131400 # 3 months
-allowBuilds:
-  better-sqlite3: false
-  esbuild: false
-  unrs-resolver: false
