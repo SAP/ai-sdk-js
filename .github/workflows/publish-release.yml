@@ -55,10 +55,7 @@ jobs:
           pr-ref: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
           repo: SAP/ai-sdk
           token: ${{ steps.app-token.outputs.token }}
-          excluded-check-runs: |
-            {
-              \"Build Cloud SDK Documentation\": [\"dependabot\"]
-            }
+          excluded-check-runs: '{"Build Cloud SDK Documentation": ["dependabot"]}'
 
   publish-npm:
     name: Publish to NPM
