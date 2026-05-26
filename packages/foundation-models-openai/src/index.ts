@@ -1,5 +1,5 @@
 export { createOpenAIConfig } from './config.js';
-export { createAzureOpenAIClient, SapAzureOpenAI } from './client.js';
+export { SapAzureOpenAI } from './client.js';
 export { SapChat } from './chat.js';
 export { SapCompletions } from './completions.js';
 export { SapEmbeddings } from './embeddings.js';
