@@ -15,7 +15,7 @@ import type {
 } from './schema/index.js';
 /**
  * Representation of the 'BatchesApi'.
- * This API is part of the 'batch-service' service.
+ * This API is part of the 'llm-batch' service.
  * @experimental This API is experimental and may change at any time without prior notice.
  */
 export const BatchesApi = {
