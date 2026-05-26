@@ -12,7 +12,7 @@ if (!filePath) {
 transformFile(resolve(filePath), file =>
   file.replace(
     "* This API is part of the 'batch-service' service.",
-    "* This API is part of the 'batch-service' service.\n * @experimental This API is experimental and may change at any time without prior notice."
+    "* This API is part of the 'llm-batch' service.\n * @experimental This API is experimental and may change at any time without prior notice."
   )
 )
   .then(() => console.log('File processed successfully.'))
