@@ -1,7 +1,7 @@
-import { createAzureOpenAiBatchInput } from './azure-openai-batch-input.js';
+import { createBatchInput } from './azure-openai-batch-input.js';
 import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 
-describe('createAzureOpenAiBatchInput', () => {
+describe('createBatchInput', () => {
   const request1: AzureOpenAiCreateChatCompletionRequest = {
     model: 'gpt-4.1',
     messages: [{ role: 'user', content: 'What is machine learning?' }]
@@ -14,12 +14,12 @@ describe('createAzureOpenAiBatchInput', () => {
   };
 
   it('should produce a Blob', () => {
-    const blob = createAzureOpenAiBatchInput([request1]);
+    const blob = createBatchInput([request1]);
     expect(blob).toBeInstanceOf(Blob);
   });
 
   it('should generate correct structure for a single request', async () => {
-    const blob = createAzureOpenAiBatchInput([request1]);
+    const blob = createBatchInput([request1]);
     const parsed = JSON.parse(await blob.text());
 
     expect(parsed.custom_id).toBe('request-1');
@@ -29,7 +29,7 @@ describe('createAzureOpenAiBatchInput', () => {
   });
 
   it('should auto-generate sequential custom_ids for multiple requests', async () => {
-    const text = await createAzureOpenAiBatchInput([request1, request2]).text();
+    const text = await createBatchInput([request1, request2]).text();
     const lines = text.split('\n');
 
     expect(lines).toHaveLength(2);
@@ -38,7 +38,7 @@ describe('createAzureOpenAiBatchInput', () => {
   });
 
   it('should produce valid JSONL where each line is independent JSON', async () => {
-    const text = await createAzureOpenAiBatchInput([request1, request2]).text();
+    const text = await createBatchInput([request1, request2]).text();
     const lines = text.split('\n');
 
     expect(lines).toHaveLength(2);

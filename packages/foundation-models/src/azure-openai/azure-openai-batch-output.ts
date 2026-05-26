@@ -2,8 +2,9 @@ import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference
 
 /**
  * Error details for a failed batch request.
+ * @experimental This API is experimental and may change at any time without prior notice.
  */
-export interface AzureOpenAiBatchOutputError {
+export interface BatchOutputError {
   /** Error code, or null if not available. */
   code: string | null;
   /** Error message details. */
@@ -12,8 +13,9 @@ export interface AzureOpenAiBatchOutputError {
 
 /**
  * Response details for a single batch output line.
+ * @experimental This API is experimental and may change at any time without prior notice.
  */
-export interface AzureOpenAiBatchOutputResponse {
+export interface BatchOutputResponse {
   /** HTTP status code of the response. */
   status_code: number;
   /** Request ID assigned by the service. */
@@ -24,27 +26,29 @@ export interface AzureOpenAiBatchOutputResponse {
 
 /**
  * Represents a single parsed line from the batch output JSONL file.
+ * @experimental This API is experimental and may change at any time without prior notice.
  */
-export interface AzureOpenAiBatchOutputLine {
+export interface BatchOutputLine {
   /** Custom identifier for the request. */
   custom_id: string;
   /** Response details, or null if the request failed. */
-  response: AzureOpenAiBatchOutputResponse | null;
+  response: BatchOutputResponse | null;
   /** Error details, or null if the request succeeded. */
-  error: AzureOpenAiBatchOutputError | null;
+  error: BatchOutputError | null;
 }
 
 /**
  * Parses a batch output Blob (JSONL format) into typed output lines.
  * @param blob - The Blob returned from FileApi.fileDownload().
  * @returns A Promise resolving to an array of parsed output lines.
+ * @experimental This API is experimental and may change at any time without prior notice.
  */
 export async function parseBatchOutput(
   blob: Blob
-): Promise<AzureOpenAiBatchOutputLine[]> {
+): Promise<BatchOutputLine[]> {
   const text = await blob.text();
   return text
     .split('\n')
     .filter(line => line.trim().length > 0)
-    .map(line => JSON.parse(line) as AzureOpenAiBatchOutputLine);
+    .map(line => JSON.parse(line) as BatchOutputLine);
 }

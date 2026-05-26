@@ -6,13 +6,13 @@ export type {
 } from './azure-openai/index.js';
 
 export {
-  createAzureOpenAiBatchInput,
+  createBatchInput,
   parseBatchOutput
 } from './azure-openai/index.js';
 export type {
-  AzureOpenAiBatchOutputLine,
-  AzureOpenAiBatchOutputError,
-  AzureOpenAiBatchOutputResponse
+  BatchOutputLine,
+  BatchOutputError,
+  BatchOutputResponse
 } from './azure-openai/index.js';
 
 export {

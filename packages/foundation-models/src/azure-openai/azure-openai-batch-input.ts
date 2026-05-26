@@ -5,8 +5,9 @@ import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/
  * Each request is assigned a sequential custom_id (request-1, request-2, ...).
  * @param requests - Chat completion requests to include in the batch.
  * @returns A Blob containing one JSON object per line.
+ * @experimental This API is experimental and may change at any time without prior notice.
  */
-export function createAzureOpenAiBatchInput(
+export function createBatchInput(
   requests: AzureOpenAiCreateChatCompletionRequest[]
 ): Blob {
   const lines = requests.map((body, i) =>
