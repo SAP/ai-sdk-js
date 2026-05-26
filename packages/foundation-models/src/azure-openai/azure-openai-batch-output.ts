@@ -43,9 +43,7 @@ export interface BatchOutputLine {
  * @returns A Promise resolving to an array of parsed output lines.
  * @experimental This API is experimental and may change at any time without prior notice.
  */
-export async function parseBatchOutput(
-  blob: Blob
-): Promise<BatchOutputLine[]> {
+export async function parseBatchOutput(blob: Blob): Promise<BatchOutputLine[]> {
   const text = await blob.text();
   return text
     .split('\n')
