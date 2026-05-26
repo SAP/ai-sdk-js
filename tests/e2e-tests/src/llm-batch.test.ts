@@ -98,7 +98,9 @@ describe('batch api', () => {
       return;
     }
     expect(output.length).toBeGreaterThan(0);
-    expect(output.filter(line => line.error === null).length).toBeGreaterThan(0);
+    expect(output.filter(line => line.error === null).length).toBeGreaterThan(
+      0
+    );
 
     await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`);
     await deleteBatch(id);

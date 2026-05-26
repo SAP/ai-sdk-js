@@ -66,9 +66,7 @@ describe('parseBatchOutput', () => {
   });
 
   it('should handle trailing newlines in JSONL', async () => {
-    const output = await parseBatchOutput(
-      new Blob([successLine + '\n'])
-    );
+    const output = await parseBatchOutput(new Blob([successLine + '\n']));
 
     expect(output).toHaveLength(1);
   });
