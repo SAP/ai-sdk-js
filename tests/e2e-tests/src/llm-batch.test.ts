@@ -92,9 +92,9 @@ describe('batch api', () => {
     try {
       const output = await downloadBatchOutput(secretName, outputFolder, id);
       expect(output.length).toBeGreaterThan(0);
-      expect(
-        output.filter(line => line.error === null).length
-      ).toBeGreaterThan(0);
+      expect(output.filter(line => line.error === null).length).toBeGreaterThan(
+        0
+      );
       await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`);
     } finally {
       await deleteBatch(id);
