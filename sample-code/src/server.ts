@@ -18,7 +18,8 @@ import {
   chatCompletionParse as openAiSdkChatCompletionParse,
   computeEmbedding as openAiSdkComputeEmbedding,
   responsesApi,
-  responsesApiStream
+  responsesApiStream,
+  responsesApiParse
   // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai-using-openai-sdk.js';
 import {
@@ -382,6 +383,14 @@ app.get('/azure-openai-sdk/responses-stream', async (req, res) => {
     sendError(res, error, false);
   } finally {
     res.end();
+  }
+});
+
+app.get('/azure-openai-sdk/responses-parse', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await responsesApiParse());
+  } catch (error: any) {
+    sendError(res, error);
   }
 });
 

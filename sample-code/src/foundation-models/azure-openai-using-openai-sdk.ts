@@ -1,5 +1,5 @@
 import { SapAzureOpenAI } from '@sap-ai-sdk/foundation-models-openai';
-import { zodResponseFormat } from 'openai/helpers/zod';
+import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
 /**
@@ -109,4 +109,22 @@ export async function chatCompletionParse(): Promise<string | null> {
   });
 
   return response.choices[0].message.parsed?.capital ?? null;
+}
+
+/**
+ * Use structured output to parse the capital of France from the Responses API.
+ * @returns The parsed capital city.
+ */
+export async function responsesApiParse(): Promise<string | null> {
+  const client = await SapAzureOpenAI.createClient({
+    modelDeployment: 'gpt-5.4'
+  });
+
+  const response = await client.responses.parse({
+    instructions: 'You are a helpful assistant.',
+    input: 'What is the capital of France?',
+    text: { format: zodTextFormat(CapitalResponse, 'capital_response') }
+  });
+
+  return response.output_parsed?.capital ?? null;
 }
