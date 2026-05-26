@@ -10,6 +10,8 @@ on:
     - cron: 21 3 1/15 * *
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   get-orchestration-reference:
     runs-on: ubuntu-latest
@@ -52,6 +54,9 @@ jobs:
   #         echo "rpt-tag=$TAG" >> "$GITHUB_OUTPUT"
 
   update-ai-api:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: ai-api
@@ -60,6 +65,9 @@ jobs:
     secrets: inherit
 
   update-document-grounding:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: document-grounding
@@ -68,6 +76,9 @@ jobs:
     secrets: inherit
 
   update-prompt-registry:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: prompt-registry
@@ -77,6 +88,9 @@ jobs:
 
   update-orchestration:
     needs: get-orchestration-reference
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: orchestration

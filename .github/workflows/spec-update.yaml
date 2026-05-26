@@ -59,6 +59,8 @@ on:
         default: true
         type: boolean
 
+permissions: {}
+
 jobs:
   generate:
     name: 'Download, Generate, Compile and Push'

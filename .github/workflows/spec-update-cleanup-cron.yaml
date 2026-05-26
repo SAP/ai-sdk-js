@@ -5,12 +5,16 @@ on:
     - cron: '21 2 * * 1'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   find-stale-branches:
     name: 'Find stale spec-update branches'
     runs-on: ubuntu-latest
     outputs:
       branches: ${{ steps.list.outputs.branches }}
+    permissions:
+      contents: read
     steps:
       - name: 'List spec-update branches older than 90 days'
         id: list
@@ -49,6 +53,8 @@ jobs:
     name: 'Cleanup ${{ matrix.branch }}'
     needs: find-stale-branches
     if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
+    permissions:
+      contents: write
     strategy:
       matrix:
         include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
