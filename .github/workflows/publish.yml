@@ -18,13 +18,13 @@ on:
 
 jobs:
   delegate_to_release_job:
-    if: ${{ github.event_name == 'release' }}
+    # if: ${{ github.event_name == 'release' }}
     uses: ./.github/workflows/publish-release.yml
     secrets: inherit
 
-  delegate_to_canary_job:
-    if: ${{ github.event_name != 'release' }}
-    uses: ./.github/workflows/publish-canary.yml
-    secrets: inherit
-    with:
-      tag: ${{ github.event_name == 'schedule' && github.event.inputs.tag || 'canary' }}
+  # delegate_to_canary_job:
+  #   if: ${{ github.event_name != 'release' }}
+  #   uses: ./.github/workflows/publish-canary.yml
+  #   secrets: inherit
+  #   with:
+  #     tag: ${{ github.event_name == 'schedule' && github.event.inputs.tag || 'canary' }}
