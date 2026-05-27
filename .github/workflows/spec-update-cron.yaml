@@ -54,7 +54,7 @@ jobs:
   #         echo "rpt-tag=$TAG" >> "$GITHUB_OUTPUT"
 
   update-ai-api:
-    permissions:
+    permissions: &spec-update-permissions
       contents: write
       pull-requests: write
     uses: ./.github/workflows/spec-update.yaml
@@ -67,9 +67,7 @@ jobs:
       GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
   update-document-grounding:
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: document-grounding
@@ -78,9 +76,7 @@ jobs:
     secrets: *spec-update-secrets
 
   update-prompt-registry:
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: prompt-registry
@@ -90,9 +86,7 @@ jobs:
 
   update-orchestration:
     needs: get-orchestration-reference
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: orchestration
