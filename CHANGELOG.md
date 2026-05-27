@@ -28,6 +28,23 @@
 
 -
 
+# 2.11.0
+## New Features
+
+- [langchain] Support orchestration prompt module fallbacks. (dc2f5b1)
+- [orchestration] Update orchestration specification to v0.131.3 (f72bb58)
+
+## Fixed Issues
+
+- [orchestration] Route messages to `messages_history` when using an orchestration config reference or prompt template reference. (cbcefb9)
+- [orchestration] Disallow providing both orchestration config reference and config object at the same time. (7db7237)
+
+## Improvements
+
+- [core] Add `gpt-5.4`, `gpt-5.4-nano` to the available model list.
+  Remove deprecated model `o1` (retirement date: 2026-06-18). (c8c0e41)
+- [core] Added `mistralai--mistral-small`, `anthropic--claude-4.7-opus`, `gemini-3.1-flash-lite` to the available model list. (75bb9a9)
+
 # 2.10.0
 ## Compatibility Notes
 
