@@ -62,7 +62,9 @@ jobs:
       service: ai-api
       ref: main
       create-pr: true
-    secrets: inherit
+    secrets: &spec-update-secrets
+      NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
   update-document-grounding:
     permissions:
@@ -73,7 +75,7 @@ jobs:
       service: document-grounding
       ref: main
       create-pr: true
-    secrets: inherit
+    secrets: *spec-update-secrets
 
   update-prompt-registry:
     permissions:
@@ -84,7 +86,7 @@ jobs:
       service: prompt-registry
       ref: main
       create-pr: true
-    secrets: inherit
+    secrets: *spec-update-secrets
 
   update-orchestration:
     needs: get-orchestration-reference
@@ -96,7 +98,7 @@ jobs:
       service: orchestration
       ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
       create-pr: true
-    secrets: inherit
+    secrets: *spec-update-secrets
 
   notify-failure:
     needs:

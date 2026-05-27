@@ -62,4 +62,3 @@ jobs:
     with:
       service: ${{ matrix.service }}
       ref: ${{ matrix.ref }}
-    secrets: inherit
