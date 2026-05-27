@@ -25,6 +25,25 @@ describe('link commit hashes', () => {
     );
   });
 
+  it('leaves commit hash references unchanged when they cannot be resolved', async () => {
+    const changelog = '- [core] Add model support. (029f091)';
+
+    await expect(
+      linkCommitHashes(changelog, async () => null)
+    ).resolves.toEqual(changelog);
+  });
+
+  it('only links trailing commit hash references', async () => {
+    const changelog =
+      '- [core] Keep inline hash reference (029f091) in the sentence.';
+
+    await expect(
+      linkCommitHashes(changelog, async () => {
+        throw new Error('Should not resolve inline references.');
+      })
+    ).resolves.toEqual(changelog);
+  });
+
   it('leaves existing links unchanged', async () => {
     const changelog =
       '- [core] Add model support. ([029f091](https://github.com/SAP/ai-sdk-js/commit/029f091))';

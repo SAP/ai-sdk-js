@@ -4,15 +4,15 @@ import { promisify } from 'util';
 import { getPackageVersion } from './get-package-version.js';
 
 const COMMIT_LINK_PREFIX = 'https://github.com/SAP/ai-sdk-js/commit/';
-const COMMIT_HASH_REFERENCE = /\(([0-9a-f]{7,40})\)/g;
+const COMMIT_HASH_REFERENCE = /\(([0-9a-f]{7,40})\)$/gm;
 const execFileAsync = promisify(execFile);
 
-async function expandCommitHash(commitHash: string): Promise<string> {
+async function expandCommitHash(commitHash: string): Promise<string | null> {
   try {
     const { stdout } = await execFileAsync('git', ['rev-parse', commitHash]);
     return stdout.trim();
   } catch {
-    return commitHash;
+    return null;
   }
 }
 
@@ -27,11 +27,21 @@ export async function linkCommitHashes(
   resolveCommitHash = expandCommitHash
 ): Promise<string> {
   const replacements = await Promise.all(
-    [...changelog.matchAll(COMMIT_HASH_REFERENCE)].map(async match => ({
-      match: match[0],
-      commitHash: match[1],
-      expandedCommitHash: await resolveCommitHash(match[1])
-    }))
+    [...changelog.matchAll(COMMIT_HASH_REFERENCE)].map(async match => {
+      let expandedCommitHash: string | null;
+
+      try {
+        expandedCommitHash = await resolveCommitHash(match[1]);
+      } catch {
+        expandedCommitHash = null;
+      }
+
+      return {
+        match: match[0],
+        commitHash: match[1],
+        expandedCommitHash
+      };
+    })
   );
 
   return changelog.replace(COMMIT_HASH_REFERENCE, () => {
@@ -39,6 +49,10 @@ export async function linkCommitHashes(
     if (!replacement) {
       throw new Error('Could not find replacement for commit hash.');
     }
+    if (!replacement.expandedCommitHash) {
+      return replacement.match;
+    }
+
     return `([${replacement.commitHash}](${COMMIT_LINK_PREFIX}${replacement.expandedCommitHash}))`;
   });
 }
