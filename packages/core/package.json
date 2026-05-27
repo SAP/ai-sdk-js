@@ -15,13 +15,21 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
   "files": [
     "dist/**/*.js",
     "dist/**/*.js.map",
     "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map",
-    "internal.js",
-    "internal.d.ts"
+    "dist/**/*.d.ts.map"
   ],
   "scripts": {
     "compile": "tsc",
