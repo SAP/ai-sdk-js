@@ -13,4 +13,9 @@ export type AssistantChatMessage = {
   content?: ChatMessageContent;
   refusal?: string;
   tool_calls?: MessageToolCalls;
+  /**
+   * Reasoning or thinking content from the model's previous turn. Required when using extended thinking with tool calls for Anthropic Claude Models.
+   *
+   */
+  reasoning_content?: string;
 };
