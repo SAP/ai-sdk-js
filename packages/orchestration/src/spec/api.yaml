@@ -242,6 +242,15 @@ components:
         - $ref: '#/components/schemas/CompletionRequestConfigurationReferenceById'
         - $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersion'
 
+    # test
+    Schnoegelroegel:
+      type: object
+      properties:
+        schnoegel:
+          type: string
+        roegel:
+          type: string
+
     # Embeddings Schemas
     EmbeddingsPostRequest:
       type: object
@@ -936,7 +945,7 @@ components:
         message:
           type: string
           description: Some message created from the module
-          example: Input to LLM is masked successfully.
+          example: Masking module executed successfully on LLM input.
         data:
           type: object
           description: Additional data object from the module
