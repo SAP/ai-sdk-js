@@ -22,19 +22,19 @@ jobs:
           CHANGED_FILES="${ALL_FILES//$'\n'/,}"
 
           echo "[DEBUG] Following files have been changed: $CHANGED_FILES"
-          echo "CHANGED_FILES=$CHANGED_FILES" >> "$GITHUB_OUTPUT"
+          echo "changed-files=$CHANGED_FILES" >> "$GITHUB_OUTPUT"
       - name: Vale
         # vale fails if the PR is too large, e.g. when updating API docs
-        if: ${{ github.event.pull_request.changed_files < 100 }}
+        if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.changed-files != '' }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        uses: vale-cli/vale-action@d89dee975228ae261d22c15adcd03578634d429c # v2.1.1
+        uses: vale-cli/vale-action@85f9f7f2c5f449ac0ae5b66662961bae3f77ca6a # v2.1.2
         with:
           # version of 'vale' to use
           # see https://github.com/vale-cli/vale for all releases
           version: 3.14.1
           # changed files. computed in the step above
-          files: ${{ steps.changed-files.outputs.CHANGED_FILES }}
+          files: ${{ steps.changed-files.outputs.changed-files }}
           # the separator for the file list. we are using a comma (see step above)
           separator: ','
           # let review dog fail if there are errors

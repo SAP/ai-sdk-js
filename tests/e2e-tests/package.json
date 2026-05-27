@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/e2e-tests",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
@@ -17,11 +17,11 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/sample-code": "workspace:^",
-    "@sap-cloud-sdk/util": "^4.6.0"
+    "@sap-cloud-sdk/util": "^4.7.0"
   },
   "scripts": {
-    "test": "vitest run",
-    "cleanup-deployments": "node --loader ts-node/esm ./src/utils/cleanup-deployments.ts",
+    "test": "vitest run",xw
+    "cleanup-deployments": "tsx ./src/utils/cleanup-deployments.ts",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },

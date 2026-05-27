@@ -24,6 +24,14 @@
     "suggestedReplacement": ""
   },
   {
+    "executableId": "aicore-mistralai(SAP-hosted)",
+    "model": "mistralai--mistral-small",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
     "executableId": "aicore-nvidia (SAP-managed)",
     "model": "nvidia--llama-3.2-nv-embedqa-1b",
     "availableInOrchestration": "yes",
@@ -225,6 +233,14 @@
   },
   {
     "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4.7-opus",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
     "model": "anthropic--claude-4.6-sonnet",
     "availableInOrchestration": "yes",
     "deprecated": "",
@@ -368,6 +384,14 @@
     "suggestedReplacement": ""
   },
   {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-realtime",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
     "executableId": "azure-openai(Azure)",
     "model": "o1",
     "availableInOrchestration": "yes",
@@ -433,10 +457,26 @@
   },
   {
     "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-2.5-flash-image",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
     "model": "gemini-2.5-pro",
     "availableInOrchestration": "yes",
     "deprecated": "",
     "retirementDate": "2026-10-16",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-3.1-flash-lite",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
     "suggestedReplacement": ""
   },
   {

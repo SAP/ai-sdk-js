@@ -4,22 +4,26 @@ export default [
   {
     files: ['**/*.ts'],
     rules: {
-      'import/namespace': 'off',
-      'import/no-internal-modules': [
+      'import-x/namespace': 'off',
+      'import-x/no-internal-modules': [
         'error',
         {
           allow: [
             '@sap-cloud-sdk/*/internal.js',
             '@sap-ai-sdk/*/internal.js',
             '@langchain/core/**',
+            '@langchain/langgraph/**',
             'langchain/**',
             'vitest/config',
+            'zod/**',
             '*/index.js',
-            '*/client/**/index.js'
+            '*/client/**/index.js',
+            './client/**/index.js',
+            'client/**/index.js'
           ]
         }
       ],
-      'import/no-useless-path-segments': [
+      'import-x/no-useless-path-segments': [
         'error',
         {
           noUselessIndex: false
@@ -54,7 +58,7 @@ export default [
     ],
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      'import/no-internal-modules': 'off',
+      'import-x/no-internal-modules': 'off',
       'no-unused-expressions': 'off',
       'jsdoc/require-jsdoc': 'off'
     }

@@ -11,7 +11,6 @@ import {
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import type {
@@ -1151,4 +1150,67 @@ export function orchestrationChatCompletionDocxFile(): Promise<OrchestrationResp
  */
 export function orchestrationChatCompletionMp3File(): Promise<OrchestrationResponse> {
   return orchestrationChatCompletionFile('mp3');
+}
+
+/**
+ * Uses Anthropic prompt caching (cache_control) with a 5-minute TTL on a large system prompt.
+ * Makes two sequential requests: the first creates the cache, the second reads from it.
+ * @returns A tuple of [first response, second response].
+ */
+export async function orchestrationCacheControl(): Promise<
+  [OrchestrationResponse, OrchestrationResponse]
+> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      },
+      prompt: {
+        template: [
+          {
+            role: 'system',
+            content: [
+              {
+                type: 'text',
+                // Repeated filler text to exceed Anthropic's minimum cacheable token threshold (4096 tokens for Haiku 4.5).
+                text:
+                  'You are a knowledgeable assistant. ' +
+                  'You have deep expertise in science, technology, history, literature, mathematics, and many other fields. '.repeat(
+                    220
+                  ),
+                cache_control: { type: 'ephemeral', ttl: '5m' }
+              }
+            ]
+          },
+          { role: 'user', content: '{{?question}}' }
+        ]
+      }
+    }
+  });
+
+  const request = {
+    placeholderValues: { question: 'What is the speed of light?' }
+  };
+
+  const first = await orchestrationClient.chatCompletion(request);
+  logger.info('First call (cache write):');
+  logger.info(first.getContent());
+  logger.info(
+    `Cache tokens created: ${first.getTokenUsage().prompt_tokens_details?.cache_creation_tokens ?? 0}`
+  );
+  logger.info(
+    `Cache tokens read: ${first.getTokenUsage().prompt_tokens_details?.cached_tokens ?? 0}`
+  );
+
+  const second = await orchestrationClient.chatCompletion(request);
+  logger.info('Second call (cache read):');
+  logger.info(second.getContent());
+  logger.info(
+    `Cache tokens created: ${second.getTokenUsage().prompt_tokens_details?.cache_creation_tokens ?? 0}`
+  );
+  logger.info(
+    `Cache tokens read: ${second.getTokenUsage().prompt_tokens_details?.cached_tokens ?? 0}`
+  );
+
+  return [first, second];
 }

@@ -1,5 +1,14 @@
 # @sap-ai-sdk/rpt
 
+## 2.11.0
+
+### Patch Changes
+
+- Updated dependencies [c8c0e41]
+- Updated dependencies [75bb9a9]
+  - @sap-ai-sdk/core@2.11.0
+  - @sap-ai-sdk/ai-api@2.11.0
+
 ## 2.10.0
 
 ### Patch Changes

@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
@@ -78,7 +78,7 @@ jobs:
       - name: Update release notes file
         id: update-notes
         run: |
-          pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
+          pnpm tsx --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
 
       - name: Open release notes PR
         id: open-pr
