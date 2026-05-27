@@ -101,8 +101,8 @@ export async function uploadBatchInput(
   secretName: string,
   fileName: string
 ): Promise<string> {
-  // text/csv type is required: the AI Core file API rejects application/octet-stream.
-  // Axios uses the Blob's type property as Content-Type, so we set it explicitly.
+  // text/csv is required: the AI Core file API rejects application/octet-stream.
+  // Axios overrides Content-Type based on Blob.type, so the type must be set on the Blob.
   const blob = new Blob(
     [
       createBatchInput([
@@ -123,7 +123,7 @@ export async function uploadBatchInput(
     { type: 'text/csv' }
   );
   await FileApi.fileUpload(
-    `${secretName}//${fileName}`,
+    `${secretName}/${fileName}`,
     blob,
     { overwrite: true },
     { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
@@ -140,7 +140,7 @@ export async function deleteFile(
   secretName: string,
   filePath: string
 ): Promise<void> {
-  await FileApi.fileDelete(`${secretName}//${filePath}`, {
+  await FileApi.fileDelete(`${secretName}/${filePath}`, {
     'AI-Resource-Group': defaultHeaders['AI-Resource-Group']
   }).execute();
 }
@@ -159,7 +159,7 @@ export async function downloadBatchOutput(
   batchId: string
 ): Promise<BatchOutputLine[]> {
   const blob = await FileApi.fileDownload(
-    `${secretName}//${outputFolder}${batchId}/output.jsonl`,
+    `${secretName}/${outputFolder}${batchId}/output.jsonl`,
     { 'AI-Resource-Group': defaultHeaders['AI-Resource-Group'] }
   ).execute();
   return parseBatchOutput(blob);
