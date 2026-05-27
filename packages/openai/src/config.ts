@@ -19,7 +19,7 @@ const defaultApiVersion = '2024-10-21';
  * @example
  * ```ts
  * import { AzureOpenAI } from 'openai';
- * import { createOpenAIConfig } from '@sap-ai-sdk/foundation-models-openai';
+ * import { createOpenAIConfig } from '@sap-ai-sdk/openai';
  *
  * const config = await createOpenAIConfig({ modelDeployment: 'gpt-5.4' });
  * const client = new AzureOpenAI(config);

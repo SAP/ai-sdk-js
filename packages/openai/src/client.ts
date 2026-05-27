@@ -26,7 +26,7 @@ export class SapAzureOpenAI {
    * @returns A promise that resolves to a ready-to-use {@link SapAzureOpenAI} instance.
    * @example
    * ```ts
-   * import { SapAzureOpenAI } from '@sap-ai-sdk/foundation-models-openai';
+   * import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
    *
    * const client = await SapAzureOpenAI.createClient({ modelDeployment: 'gpt-4.1' });
    * await client.chat.completions.create({

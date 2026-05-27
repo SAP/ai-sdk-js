@@ -1,4 +1,4 @@
-import { SapAzureOpenAI } from '@sap-ai-sdk/foundation-models-openai';
+import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 

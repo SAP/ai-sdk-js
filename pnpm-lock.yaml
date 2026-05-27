@@ -155,22 +155,6 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0
 
-  packages/foundation-models-openai:
-    dependencies:
-      '@sap-ai-sdk/ai-api':
-        specifier: workspace:^
-        version: link:../ai-api
-      '@sap-ai-sdk/core':
-        specifier: workspace:^
-        version: link:../core
-      '@sap-cloud-sdk/connectivity':
-        specifier: ^4.6.0
-        version: 4.7.0
-    devDependencies:
-      openai:
-        specifier: ^6.36.0
-        version: 6.39.0(ws@8.20.1)(zod@4.4.3)
-
   packages/langchain:
     dependencies:
       '@langchain/core':
@@ -201,6 +185,22 @@ importers:
       zod:
         specifier: ^4.4.3
         version: 4.4.3
+
+  packages/openai:
+    dependencies:
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../ai-api
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: ^4.6.0
+        version: 4.7.0
+    devDependencies:
+      openai:
+        specifier: ^6.36.0
+        version: 6.39.0(ws@8.20.1)(zod@4.4.3)
 
   packages/orchestration:
     dependencies:
@@ -308,12 +308,12 @@ importers:
       '@sap-ai-sdk/foundation-models':
         specifier: workspace:^
         version: link:../packages/foundation-models
-      '@sap-ai-sdk/foundation-models-openai':
-        specifier: workspace:^
-        version: link:../packages/foundation-models-openai
       '@sap-ai-sdk/langchain':
         specifier: workspace:^
         version: link:../packages/langchain
+      '@sap-ai-sdk/openai':
+        specifier: workspace:^
+        version: link:../packages/openai
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../packages/orchestration
