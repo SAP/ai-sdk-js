@@ -38,14 +38,14 @@ export const RetrievalApi = {
   /**
    * List data repository by id
    * @param repositoryId - Repository ID
-   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @param queryParameters - Object containing the following keys: remoteName.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   getDataRepositoryById: (
     repositoryId: string,
-    headerParameters: { 'AI-Resource-Group': string },
-    queryParameters: { remoteName?: string }
+    queryParameters: { remoteName?: string },
+    headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<DataRepository>(
       'get',
