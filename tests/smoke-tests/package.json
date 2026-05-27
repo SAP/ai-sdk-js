@@ -29,7 +29,7 @@
     "@sap-ai-sdk/rpt": "canary",
     "@sap-cloud-sdk/util": "=4.7.0",
     "express": "=5.2.1",
-    "hono": "=4.12.19",
+    "hono": "=4.12.22",
     "langchain": "=1.4.2",
     "zod": "=4.4.3"
   },
