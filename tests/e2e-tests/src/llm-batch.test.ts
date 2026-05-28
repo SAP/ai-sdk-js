@@ -26,7 +26,7 @@ describe('batch api', () => {
   });
 
   it('should create a batch job, cancel it, then delete it', async () => {
-    const inputFileName = `test-input-${Date.now()}.jsonl`;
+    const inputFileName = `test-input-to-cancel-${Date.now()}.jsonl`;
     const inputUri = await uploadBatchInput(secretName, inputFileName);
 
     try {
@@ -66,7 +66,7 @@ describe('batch api', () => {
   });
 
   it('should create a batch job and submit it for processing', async () => {
-    const inputFileName = `test-input-${Date.now()}.jsonl`;
+    const inputFileName = `test-input-complete-${Date.now()}.jsonl`;
     const inputUri = await uploadBatchInput(secretName, inputFileName);
 
     try {
