@@ -69,15 +69,13 @@ describe('batch api', () => {
     const inputFileName = `test-input-complete-${Date.now()}.jsonl`;
     const inputUri = await uploadBatchInput(secretName, inputFileName);
 
-    try {
-      const response = await createBatch(
-        inputUri,
-        `ai://${secretName}/${outputFolder}`
-      );
-      expect(response.id).toBeDefined();
-    } finally {
-      await deleteFile(secretName, inputFileName);
-    }
+    const response = await createBatch(
+      inputUri,
+      `ai://${secretName}/${outputFolder}`
+    );
+    expect(response.id).toBeDefined();
+    // Input file is intentionally not deleted here — the batch needs it during PREPARING_INPUT.
+    // Cleanup is handled in the download test after the batch reaches COMPLETED.
   });
 
   it('should download and delete a completed batch job if one exists', async () => {
@@ -89,6 +87,12 @@ describe('batch api', () => {
     }
 
     const id = completedBatch.id;
+    const details = await getBatchById(id);
+    const inputFilePath = details.input?.uri?.replace(
+      `ai://${secretName}/`,
+      ''
+    );
+
     try {
       const output = await downloadBatchOutput(secretName, outputFolder, id);
       expect(output.length).toBeGreaterThan(0);
@@ -96,6 +100,9 @@ describe('batch api', () => {
         0
       );
       await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`);
+      if (inputFilePath) {
+        await deleteFile(secretName, inputFilePath);
+      }
     } finally {
       await deleteBatch(id);
     }
