@@ -18,5 +18,5 @@ export function createBatchInput(
       body
     })
   );
-  return new Blob([lines.join('\n')], { 'type': 'text/csv' });
+  return new Blob([lines.join('\n')], { type: 'text/csv' });
 }
