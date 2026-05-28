@@ -101,8 +101,6 @@ export async function uploadBatchInput(
   secretName: string,
   fileName: string
 ): Promise<string> {
-  // text/csv is required: the AI Core file API rejects application/octet-stream.
-  // Axios overrides Content-Type based on Blob.type, so the type must be set on the Blob.
   const blob = createBatchInput([
     {
       model: 'gpt-4.1',
@@ -117,6 +115,8 @@ export async function uploadBatchInput(
       max_tokens: 150
     }
   ]);
+  // The AI Core file API requires content-type 'text/csv' for batch input files.
+  // createBatchInput() sets this automatically via the Blob type.
   const result = await FileApi.fileUpload(
     `${secretName}/${fileName}`,
     blob,
