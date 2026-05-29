@@ -8,6 +8,8 @@ on:
         type: string
         required: true
 
+permissions: {}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
