@@ -7,9 +7,13 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   docs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:

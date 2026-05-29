@@ -1,5 +1,18 @@
 # @sap-ai-sdk/e2e-tests
 
+## 2.11.0
+
+### Patch Changes
+
+- Updated dependencies [f72bb58]
+- Updated dependencies [cbcefb9]
+- Updated dependencies [7db7237]
+  - @sap-ai-sdk/orchestration@2.11.0
+  - @sap-ai-sdk/ai-api@2.11.0
+  - @sap-ai-sdk/foundation-models@2.11.0
+  - @sap-ai-sdk/rpt@2.11.0
+  - @sap-ai-sdk/sample-code@2.11.0
+
 ## 2.10.0
 
 ### Patch Changes

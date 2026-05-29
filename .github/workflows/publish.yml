@@ -16,15 +16,25 @@ on:
   release:
     types: [published] # Trigger when a GitHub Release is published
 
+permissions: {}
+
 jobs:
   delegate_to_release_job:
     if: ${{ github.event_name == 'release' }}
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/publish-release.yml
-    secrets: inherit
+    secrets:
+      SAP_AI_SDK_BOT_CLIENT_ID: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+      SAP_AI_SDK_BOT_PRIVATE_KEY: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+      NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
 
   delegate_to_canary_job:
     if: ${{ github.event_name != 'release' }}
+    permissions:
+      contents: read
+      id-token: write
     uses: ./.github/workflows/publish-canary.yml
-    secrets: inherit
     with:
       tag: ${{ github.event_name == 'schedule' && github.event.inputs.tag || 'canary' }}
