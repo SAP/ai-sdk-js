@@ -291,7 +291,7 @@ app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
 });
 
 /* Foundation Models (Azure OpenAI via openai SDK) */
-app.get('/azure-openai-sdk/chat-completion', async (req, res) => {
+app.get('/openai/chat-completion', async (req, res) => {
   try {
     res
       .header('Content-Type', 'text/plain')
@@ -301,7 +301,7 @@ app.get('/azure-openai-sdk/chat-completion', async (req, res) => {
   }
 });
 
-app.get('/azure-openai-sdk/chat-completion-stream', async (req, res) => {
+app.get('/openai/chat-completion-stream', async (req, res) => {
   try {
     const stream = await openAiSdkChatCompletionStream();
 
@@ -328,7 +328,7 @@ app.get('/azure-openai-sdk/chat-completion-stream', async (req, res) => {
   }
 });
 
-app.get('/azure-openai-sdk/embedding', async (req, res) => {
+app.get('/openai/embedding', async (req, res) => {
   try {
     const embedding = await openAiSdkComputeEmbedding();
     res
@@ -339,7 +339,7 @@ app.get('/azure-openai-sdk/embedding', async (req, res) => {
   }
 });
 
-app.get('/azure-openai-sdk/chat-completion-parse', async (req, res) => {
+app.get('/openai/chat-completion-parse', async (req, res) => {
   try {
     res
       .header('Content-Type', 'text/plain')
@@ -349,7 +349,7 @@ app.get('/azure-openai-sdk/chat-completion-parse', async (req, res) => {
   }
 });
 
-app.get('/azure-openai-sdk/responses', async (req, res) => {
+app.get('/openai/responses', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await responsesApi());
   } catch (error: any) {
@@ -357,7 +357,7 @@ app.get('/azure-openai-sdk/responses', async (req, res) => {
   }
 });
 
-app.get('/azure-openai-sdk/responses-stream', async (req, res) => {
+app.get('/openai/responses-stream', async (req, res) => {
   try {
     const stream = await responsesApiStream();
 
@@ -386,7 +386,7 @@ app.get('/azure-openai-sdk/responses-stream', async (req, res) => {
   }
 });
 
-app.get('/azure-openai-sdk/responses-parse', async (req, res) => {
+app.get('/openai/responses-parse', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await responsesApiParse());
   } catch (error: any) {
