@@ -20,8 +20,7 @@ import {
   responsesApi,
   responsesApiStream,
   responsesApiParse
-  // eslint-disable-next-line import-x/no-internal-modules
-} from './foundation-models/azure-openai-using-openai-sdk.js';
+} from './openai.js';
 import {
   orchestrationChatCompletion,
   orchestrationTemplating,
