@@ -51,6 +51,15 @@ export async function createOpenAIConfig(
         destination
       });
 
+  if (!baseURL) {
+    const identifier = isDeploymentIdConfig(modelDeployment)
+      ? `ID '${modelDeployment.deploymentId}'`
+      : `model '${translateToFoundationModel(modelDeployment).name}'`;
+    throw new Error(
+      `Deployment for ${identifier} has no deployment URL. Ensure the deployment is running.`
+    );
+  }
+
   return {
     baseURL,
     apiVersion: apiVersion ?? defaultApiVersion,
