@@ -1,5 +1,61 @@
+import { execFile } from 'child_process';
 import { readdir, readFile, writeFile } from 'fs/promises';
+import { promisify } from 'util';
 import { getPackageVersion } from './get-package-version.js';
+
+const COMMIT_LINK_PREFIX = 'https://github.com/SAP/ai-sdk-js/commit/';
+const COMMIT_HASH_REFERENCE = /\(([0-9a-f]{7,40})\)$/gm;
+const execFileAsync = promisify(execFile);
+
+async function expandCommitHash(commitHash: string): Promise<string | null> {
+  try {
+    const { stdout } = await execFileAsync('git', ['rev-parse', commitHash]);
+    return stdout.trim();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Converts changelog commit hash references to GitHub commit links.
+ * @param changelog - Changelog content.
+ * @param resolveCommitHash - Resolver that expands short commit hashes.
+ * @returns Changelog content with linked commit hashes.
+ */
+export async function linkCommitHashes(
+  changelog: string,
+  resolveCommitHash = expandCommitHash
+): Promise<string> {
+  const replacements = await Promise.all(
+    [...changelog.matchAll(COMMIT_HASH_REFERENCE)].map(async match => {
+      let expandedCommitHash: string | null;
+
+      try {
+        expandedCommitHash = await resolveCommitHash(match[1]);
+      } catch {
+        expandedCommitHash = null;
+      }
+
+      return {
+        match: match[0],
+        commitHash: match[1],
+        expandedCommitHash
+      };
+    })
+  );
+
+  return changelog.replace(COMMIT_HASH_REFERENCE, () => {
+    const replacement = replacements.shift();
+    if (!replacement) {
+      throw new Error('Could not find replacement for commit hash.');
+    }
+    if (!replacement.expandedCommitHash) {
+      return replacement.match;
+    }
+
+    return `([${replacement.commitHash}](${COMMIT_LINK_PREFIX}${replacement.expandedCommitHash}))`;
+  });
+}
 
 async function getChangelogWithVersion(v?: string): Promise<string> {
   v = v || (await getPackageVersion());
@@ -19,7 +75,7 @@ async function getChangelogWithVersion(v?: string): Promise<string> {
 
   const headerWithVersion = `\n## ${v} - ${month} ${day}, ${year}`;
 
-  return [headerWithVersion, logs].join('\n');
+  return [headerWithVersion, await linkCommitHashes(logs)].join('\n');
 }
 
 async function getReleaseNotesFilePath(): Promise<string> {
@@ -33,7 +89,6 @@ async function getReleaseNotesFilePath(): Promise<string> {
 
 async function isVersioned(majorVersion: string): Promise<boolean> {
   try {
-    console.log('majorVersion is', majorVersion);
     const versionedInDocusaurus = await readdir(
       './ai-sdk-docs/docs-js_versioned_docs/'
     );
