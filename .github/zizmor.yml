@@ -3,15 +3,6 @@ rules:
   dependabot-cooldown:
     config:
       days: 4
-  # requires more effort to fix
-  secrets-inherit:
-    ignore:
-      - publish.yml
-      - spec-update-cleanup-cron.yaml
-      - spec-update-cron.yaml
-  # requires more effort to fix
-  excessive-permissions:
-    disable: true
   dangerous-triggers:
     ignore:
       - dependabot-pnpm-lock.yml

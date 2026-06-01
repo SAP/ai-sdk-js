@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -59,10 +59,10 @@
     "jsonwebtoken": "^9.0.3",
     "mock-fs": "^5.5.0",
     "nock": "^14.0.15",
-    "orval": "^8.10.0",
+    "orval": "^8.12.3",
     "prettier": "^3.8.3",
-    "ts-jest": "^29.4.9",
-    "tsx": "^4.22.1",
+    "ts-jest": "^29.4.11",
+    "tsx": "^4.22.3",
     "typedoc": "^0.28.19",
     "typescript": "^6.0.3",
     "zod": "^4.4.3"

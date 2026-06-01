@@ -4,9 +4,13 @@ on:
   push:
     tags: ['v*']
 
+permissions: {}
+
 jobs:
   draft-github-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
