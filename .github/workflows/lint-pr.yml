@@ -1,7 +1,7 @@
 name: lint pr
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - edited
@@ -17,5 +17,4 @@ jobs:
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
-        with:
-          subjectPattern: ^[A-Z].+$ # no lowercase letters at the beginning
+
