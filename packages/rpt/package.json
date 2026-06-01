@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/rpt",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
   "license": "Apache-2.0",
   "keywords": [
@@ -16,13 +16,21 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
   "files": [
     "dist/**/*.js",
     "dist/**/*.js.map",
     "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map",
-    "internal.js",
-    "internal.d.ts"
+    "dist/**/*.d.ts.map"
   ],
   "scripts": {
     "compile": "tsc",
@@ -39,8 +47,8 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.6.0",
-    "@sap-cloud-sdk/http-client": "^4.6.0",
-    "@sap-cloud-sdk/util": "^4.6.0"
+    "@sap-cloud-sdk/connectivity": "^4.7.0",
+    "@sap-cloud-sdk/http-client": "^4.7.0",
+    "@sap-cloud-sdk/util": "^4.7.0"
   }
 }

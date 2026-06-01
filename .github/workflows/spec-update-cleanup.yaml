@@ -30,8 +30,12 @@ on:
         default: main
         type: string
 
+permissions: {}
+
 jobs:
   auth:
+    permissions:
+      contents: read
     uses: ./.github/workflows/auth.yaml
   cleanup:
     name: 'Delete Spec Update Branch'
