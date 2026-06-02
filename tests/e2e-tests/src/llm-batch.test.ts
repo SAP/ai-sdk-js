@@ -17,6 +17,20 @@ loadEnv();
 const secretName = 's3secret';
 const outputFolder = 'output/';
 
+function runId() {
+  const timestamp = new Date().toISOString().replace(/[:T]/g, '-');
+  const prRun = process.env.GITHUB_RUN_ID || 'local';
+
+  return `${timestamp}-${prRun}`;
+}
+
+function retrowUnlessNotFound(e: any) {
+  if (e.cause?.response?.status === 404) {
+    return;
+  }
+  throw e;
+}
+
 describe('batch api', () => {
   it('should list existing batch jobs', async () => {
     const result = await listBatches();
@@ -26,7 +40,7 @@ describe('batch api', () => {
   });
 
   it('should create a batch job, cancel it, then delete it', async () => {
-    const inputFileName = `test-input-to-cancel-${Date.now()}.jsonl`;
+    const inputFileName = `test-input-to-cancel-${runId()}.jsonl`;
     const inputUri = await uploadBatchInput(secretName, inputFileName);
 
     try {
@@ -90,28 +104,23 @@ describe('batch api', () => {
     const details = await getBatchById(id);
     const inputFilePath = details.input?.uri?.replace(/^ai:\/\//, '');
 
-    try {
-      const output = await downloadBatchOutput(
-        secretName,
-        outputFolder,
-        id
-      ).catch(retrowUnlessNotFound);
+    const output = await downloadBatchOutput(
+      secretName,
+      outputFolder,
+      id
+    ).catch(retrowUnlessNotFound);
+    if (output) {
       expect(output.length).toBeGreaterThan(0);
       expect(output.filter(line => line.error === null).length).toBeGreaterThan(
         0
       );
-      await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`);
-      if (inputFilePath) {
-        await deleteFile(secretName, inputFilePath);
-      }
-    } catch (e: any) {
-      // A COMPLETED batch may have its output file already deleted from a previous test run.
-      // In that case, skip assertions and proceed to cleanup.
-      if (e.cause?.response?.status !== 404) {
-        throw e;
-      }
-    } finally {
-      await deleteBatch(id);
     }
+    await deleteFile(secretName, `${outputFolder}${id}/output.jsonl`).catch(
+      retrowUnlessNotFound
+    );
+    if (inputFilePath) {
+      await deleteFile(secretName, inputFilePath).catch(retrowUnlessNotFound);
+    }
+    await deleteBatch(id);
   });
 });
