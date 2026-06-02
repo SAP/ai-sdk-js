@@ -47,6 +47,6 @@ export async function parseBatchOutput(blob: Blob): Promise<BatchOutputLine[]> {
   const text = await blob.text();
   return text
     .split('\n')
-    .filter(line => line.trim().length > 0)
+    .filter(line => line.trim().length)
     .map(line => JSON.parse(line) as BatchOutputLine);
 }
