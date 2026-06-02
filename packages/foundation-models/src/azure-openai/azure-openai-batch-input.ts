@@ -18,5 +18,6 @@ export function createBatchInput(
       body
     })
   );
+  // The AI Core file API requires content-type 'text/csv' for batch input files.
   return new Blob([lines.join('\n')], { type: 'text/csv' });
 }
