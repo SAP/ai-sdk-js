@@ -91,7 +91,11 @@ describe('batch api', () => {
     const inputFilePath = details.input?.uri?.replace(/^ai:\/\//, '');
 
     try {
-      const output = await downloadBatchOutput(secretName, outputFolder, id).catch(retrowUnlessNotFound);
+      const output = await downloadBatchOutput(
+        secretName,
+        outputFolder,
+        id
+      ).catch(retrowUnlessNotFound);
       expect(output.length).toBeGreaterThan(0);
       expect(output.filter(line => line.error === null).length).toBeGreaterThan(
         0
