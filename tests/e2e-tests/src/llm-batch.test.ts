@@ -66,7 +66,7 @@ describe('batch api', () => {
   });
 
   it('should create a batch job and submit it for processing', async () => {
-    const inputFileName = `test-input-complete-${Date.now()}.jsonl`;
+    const inputFileName = `test-input-complete-${runId()}.jsonl`;
     const inputUri = await uploadBatchInput(secretName, inputFileName);
 
     const response = await createBatch(
@@ -88,13 +88,10 @@ describe('batch api', () => {
 
     const id = completedBatch.id;
     const details = await getBatchById(id);
-    const inputFilePath = details.input?.uri?.replace(
-      `ai://${secretName}/`,
-      ''
-    );
+    const inputFilePath = details.input?.uri?.replace(/^ai:\/\//, '');
 
     try {
-      const output = await downloadBatchOutput(secretName, outputFolder, id);
+      const output = await downloadBatchOutput(secretName, outputFolder, id).catch(retrowUnlessNotFound);
       expect(output.length).toBeGreaterThan(0);
       expect(output.filter(line => line.error === null).length).toBeGreaterThan(
         0
@@ -106,7 +103,7 @@ describe('batch api', () => {
     } catch (e: any) {
       // A COMPLETED batch may have its output file already deleted from a previous test run.
       // In that case, skip assertions and proceed to cleanup.
-      if (!e.message?.includes('404')) {
+      if (e.cause?.response?.status !== 404) {
         throw e;
       }
     } finally {
