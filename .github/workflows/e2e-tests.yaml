@@ -5,6 +5,8 @@ on:
   schedule:
     - cron: 0 22 * * *
 
+permissions: {}
+
 jobs:
   e2e-tests:
     strategy:
@@ -19,6 +21,8 @@ jobs:
             secret-name: AI_CORE_PRODUCTION
     name: 'Build and Test'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:

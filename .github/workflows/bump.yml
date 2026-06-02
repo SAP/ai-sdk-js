@@ -7,8 +7,12 @@ on:
         description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
         required: false
 
+permissions: {}
+
 jobs:
   auth:
+    permissions:
+      contents: read
     uses: sap/ai-sdk-js/.github/workflows/auth.yaml@main
   bump:
     runs-on: ubuntu-latest
@@ -18,7 +22,7 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
@@ -50,10 +54,12 @@ jobs:
     needs: [bump]
     outputs:
       pr-url: ${{ steps.open-pr.outputs.pr-url }}
+    permissions:
+      contents: read
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
@@ -66,6 +72,8 @@ jobs:
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      - name: Fetch full commit history (blobless)
+        run: git fetch --filter=blob:none --unshallow
 
       - name: Checkout Docs Repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -78,7 +86,7 @@ jobs:
       - name: Update release notes file
         id: update-notes
         run: |
-          pnpm node --loader ts-node/esm -e "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
+          pnpm tsx --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
 
       - name: Open release notes PR
         id: open-pr

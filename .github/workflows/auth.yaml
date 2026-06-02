@@ -4,10 +4,14 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions: {}
+
 jobs:
   check-permission:
     name: 'Check if actor has maintain role'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: 'Check permission'
         env:

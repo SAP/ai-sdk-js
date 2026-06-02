@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
@@ -12,17 +13,15 @@ import {
   StateGraph,
   MemorySaver
 } from '@langchain/langgraph';
-import { v4 as uuidv4 } from 'uuid';
 import { tool } from '@langchain/core/tools';
 import {
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { createAgent, createMiddleware } from 'langchain';
-// eslint-disable-next-line import/no-internal-modules
+// eslint-disable-next-line import-x/no-internal-modules
 import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type {
@@ -200,7 +199,7 @@ function createLangGraphApp() {
 export async function invokeLangGraphChain(): Promise<string> {
   const app = createLangGraphApp();
 
-  const config = { configurable: { thread_id: uuidv4() } };
+  const config = { configurable: { thread_id: randomUUID() } };
   const input = [
     {
       role: 'user',
@@ -231,7 +230,7 @@ export async function invokeLangGraphChainStream(): Promise<string> {
   const app = createLangGraphApp();
 
   const config = {
-    configurable: { thread_id: uuidv4() },
+    configurable: { thread_id: randomUUID() },
     streamMode: 'messages' as const
   };
   const input = [

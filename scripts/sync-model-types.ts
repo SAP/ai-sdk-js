@@ -5,9 +5,11 @@
  */
 /* eslint-disable no-console */
 
+import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import * as prettier from 'prettier';
+import { ScenarioApi } from '@sap-ai-sdk/ai-api';
 import { transformFile } from './util.js';
 
 /** A single row from the SAP Notes model table. */
@@ -36,8 +38,15 @@ const MODEL_TYPES_PATH = resolve(
 // Models that should never be added to model-types.ts regardless of table state.
 // Add model names here when a model has been intentionally removed from the type hints.
 const MODEL_EXCLUSION_LIST = new Set<string>([
-  'gpt-4o',      // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4o-mini'  // Same reason
+  'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
+  'gpt-4o-mini',    // Same reason
+  'gpt-realtime',   // WebSocket-based, not a standard chat completion model
+  'gpt-5.3-codex'   // Responses API only, not a standard chat completion model
+]);
+
+// Models that should always be included regardless of retirement date.
+const MODEL_INCLUSION_LIST = new Set<string>([
+  'sap-abap-1' // Only ABAP model available; keep until explicitly removed
 ]);
 
 // Maps executableId prefix (lowercase) to the TypeScript type name it belongs to.
@@ -90,7 +99,11 @@ function isRetiredSoon(retirementDate: string): boolean {
     return false;
   }
 
-  // Extract a date from either "YYYY-MM-DD" or "not earlier than YYYY-MM-DD"
+  // "not earlier than X" is a lower bound, not a confirmed retirement date — skip it
+  if (normalized.startsWith('not earlier than')) {
+    return false;
+  }
+
   const match = /(\d{4}-\d{2}-\d{2})/.exec(normalized);
   if (!match) {
     return false;
@@ -104,9 +117,13 @@ function isRetiredSoon(retirementDate: string): boolean {
 }
 
 function isRetired(row: ModelRow): boolean {
+  if (MODEL_INCLUSION_LIST.has(row.model)) {
+    return false;
+  }
   // Remove from type hints if:
   // - explicitly deprecated, OR
-  // - retirement date (concrete or "not earlier than X") is within the next 2 months
+  // - concrete retirement date is within the next 2 months
+  // "not earlier than X" dates are lower bounds and are not treated as confirmed retirement dates.
   // Users can always pass the model name as a plain string regardless.
   return (
     row.deprecated?.toLowerCase().includes('yes') === true ||
@@ -114,11 +131,22 @@ function isRetired(row: ModelRow): boolean {
   );
 }
 
+function modelPrefix(model: string): string {
+  const vendorSep = model.indexOf('--');
+  if (vendorSep !== -1) {
+    return model.slice(0, vendorSep + 2);
+  }
+  return /^[a-z-]+/.exec(model)?.[0] ?? model;
+}
+
 function buildLiteralUnionBlock(existingModels: string[], activeModels: Set<string>): string {
   // Preserve existing order, remove retired models, append new ones at the end
   const kept = existingModels.filter(m => activeModels.has(m));
   const added = [...activeModels].filter(m => !existingModels.includes(m));
-  const ordered = [...kept, ...added];
+  // Stable sort by prefix to group same-vendor models together.
+  const ordered = [...kept, ...added].sort((a, b) =>
+    modelPrefix(a).localeCompare(modelPrefix(b))
+  );
 
   if (ordered.length === 1) {
     return `LiteralUnion<'${ordered[0]}'>`;
@@ -304,6 +332,62 @@ async function syncModelTypes(): Promise<void> {
     for (const { model, executableId } of skippedRows) {
       console.error(`  ${model}  (executableId: ${executableId})`);
     }
+  }
+
+  await checkLandscapeAvailability(typeToActiveModels);
+}
+
+async function checkLandscapeAvailability(
+  typeToActiveModels: Record<string, Set<string>>
+): Promise<void> {
+  const envPath = resolve(import.meta.dirname, '../sample-code/.env');
+  if (existsSync(envPath)) {
+    try {
+      process.loadEnvFile(envPath);
+    } catch (err) {
+      console.error('\n⚠ Found sample-code/.env but failed to load it:', err);
+    }
+  }
+
+  if (!process.env['AICORE_SERVICE_KEY']) {
+    console.error('\n⚠ Skipping landscape check — AICORE_SERVICE_KEY not set.');
+    return;
+  }
+
+  const syncedModels = new Set(
+    Object.values(typeToActiveModels).flatMap(s => [...s])
+  );
+
+  const modelList = await ScenarioApi.scenarioQueryModels('foundation-models', {
+    'AI-Resource-Group': 'default'
+  }).execute().catch((err: unknown) => {
+    console.error('\n⚠ Landscape check skipped — API request failed:', err);
+    return null;
+  });
+
+  if (!modelList?.resources?.length) {
+    console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
+    return;
+  }
+
+  // Include Azure OpenAI and RPT models directly; all others require orchestration access
+  const isSdkSupportedModel = (r: (typeof modelList.resources)[number]) =>
+    r.model &&
+    (r.executableId === 'azure-openai' ||
+      r.model.startsWith('sap-rpt-') ||
+      r.allowedScenarios?.some(s => s.scenarioId === 'orchestration'));
+
+  const landscapeModels = new Set(
+    modelList.resources.filter(isSdkSupportedModel).map(r => r.model)
+  );
+
+  const missing = [...syncedModels].filter(m => !landscapeModels.has(m));
+  if (missing.length) {
+    console.error(
+      `\n⚠ ${missing.length} model(s) not available in your landscape:\n  ${missing.join('\n  ')}`
+    );
+  } else {
+    console.log('\n✓ All synced models are available in your landscape.');
   }
 }
 

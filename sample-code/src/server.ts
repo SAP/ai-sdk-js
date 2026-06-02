@@ -10,7 +10,7 @@ import {
   chatCompletionWithDestination,
   computeEmbedding,
   chatCompletionWithFunctionCall
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
   orchestrationChatCompletion,
@@ -33,7 +33,8 @@ import {
   orchestrationEmbeddingWithMasking,
   orchestrationSapAbapChatCompletion,
   orchestrationWithFallbackConfigs,
-  orchestrationSonarWithCitations
+  orchestrationSonarWithCitations,
+  orchestrationCacheControl
 } from './orchestration.js';
 import {
   getDeployments,
@@ -41,12 +42,12 @@ import {
   createDeployment,
   stopDeployments,
   deleteDeployments
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/deployment-api.js';
 import {
   getScenarios,
   getModelsInScenario
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/scenario-api.js';
 import {
   invokeChain,
@@ -313,7 +314,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       embeddingWithMasking: orchestrationEmbeddingWithMasking,
       sapAbap: orchestrationSapAbapChatCompletion,
       fallbackModules: orchestrationWithFallbackConfigs,
-      sonarWithCitations: orchestrationSonarWithCitations
+      sonarWithCitations: orchestrationSonarWithCitations,
+      cacheControl: orchestrationCacheControl
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -374,6 +376,25 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
         response += 'No citations found in the response.\n';
       }
       res.header('Content-Type', 'text/plain').send(response);
+    } else if (sampleCase === 'cacheControl') {
+      const [first, second] = result as [
+        OrchestrationResponse,
+        OrchestrationResponse
+      ];
+      const firstUsage = first.getTokenUsage();
+      const secondUsage = second.getTokenUsage();
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          '--- First call (cache write) ---\n' +
+            `Response: ${first.getContent()}\n` +
+            `Cache tokens created: ${firstUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
+            `Cache tokens read: ${firstUsage.prompt_tokens_details?.cached_tokens ?? 0}\n\n` +
+            '--- Second call (cache read) ---\n' +
+            `Response: ${second.getContent()}\n` +
+            `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
+            `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
+        );
     } else {
       res
         .header('Content-Type', 'text/plain')
