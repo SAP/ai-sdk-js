@@ -6,7 +6,6 @@ rules:
   dangerous-triggers:
     ignore:
       - dependabot-pnpm-lock.yml
-      - lint-pr.yml # TODO: investigate if this really needs pull_request_target
   # allow unpinned references to own repositories
   unpinned-uses:
     config:
