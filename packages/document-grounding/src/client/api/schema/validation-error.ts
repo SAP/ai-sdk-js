@@ -8,7 +8,9 @@
  * Representation of the 'ValidationError' schema.
  */
 export type ValidationError = {
-  loc: string[];
+  loc: (string | number)[];
   msg: string;
   type: string;
+  input?: any;
+  ctx?: Record<string, any>;
 } & Record<string, any>;

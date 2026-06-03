@@ -6,6 +6,5 @@
 
 /**
  * Representation of the 'VectorSearchSelectOptionEnum' schema.
- * Default: "ignoreIfKeyAbsent".
  */
-export type VectorSearchSelectOptionEnum = 'ignoreIfKeyAbsent' | any;
+export type VectorSearchSelectOptionEnum = 'ignoreIfKeyAbsent';

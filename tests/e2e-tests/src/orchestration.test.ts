@@ -187,7 +187,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'anthropic--claude-4.5-haiku',
           params: {}
         }
       }
@@ -220,7 +220,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'anthropic--claude-4.5-haiku',
           params: {}
         },
         prompt: {

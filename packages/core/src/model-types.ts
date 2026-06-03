@@ -7,14 +7,15 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-4.1'
   | 'gpt-4.1-mini'
   | 'gpt-4.1-nano'
-  | 'o1'
-  | 'o3'
-  | 'o3-mini'
-  | 'o4-mini'
   | 'gpt-5'
   | 'gpt-5-mini'
   | 'gpt-5-nano'
   | 'gpt-5.2'
+  | 'gpt-5.4'
+  | 'gpt-5.4-nano'
+  | 'o3'
+  | 'o3-mini'
+  | 'o4-mini'
 >;
 
 /**
@@ -28,13 +29,20 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  'gemini-2.5-flash' | 'gemini-2.5-flash-lite' | 'gemini-2.5-pro'
+  | 'gemini-2.5-flash'
+  | 'gemini-2.5-flash-lite'
+  | 'gemini-2.5-pro'
+  | 'gemini-3.1-flash-lite'
 >;
 
 /**
  * AWS Bedrock models for chat completion.
  */
 export type AwsBedrockChatModel = LiteralUnion<
+  | 'amazon--nova-pro'
+  | 'amazon--nova-lite'
+  | 'amazon--nova-micro'
+  | 'amazon--nova-premier'
   | 'anthropic--claude-3-haiku'
   | 'anthropic--claude-4.5-haiku'
   | 'anthropic--claude-4-opus'
@@ -42,10 +50,7 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-4-sonnet'
   | 'anthropic--claude-4.5-sonnet'
   | 'anthropic--claude-4.6-sonnet'
-  | 'amazon--nova-pro'
-  | 'amazon--nova-lite'
-  | 'amazon--nova-micro'
-  | 'amazon--nova-premier'
+  | 'anthropic--claude-4.7-opus'
 >;
 
 /**
@@ -63,9 +68,10 @@ export type PerplexityChatModel = LiteralUnion<'sonar' | 'sonar-pro'>;
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'cohere--command-a-reasoning'
+  | 'mistralai--mistral-small'
   | 'mistralai--mistral-large-instruct'
-  | 'mistralai--mistral-medium-instruct'
   | 'mistralai--mistral-small-instruct'
+  | 'mistralai--mistral-medium-instruct'
   | 'sap-abap-1'
 >;
 

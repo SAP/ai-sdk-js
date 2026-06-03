@@ -1,5 +1,37 @@
 # @sap-ai-sdk/langchain
 
+## 2.11.0
+
+### Minor Changes
+
+- dc2f5b1: [feat] Support orchestration prompt module fallbacks.
+
+### Patch Changes
+
+- Updated dependencies [f72bb58]
+- Updated dependencies [cbcefb9]
+- Updated dependencies [c8c0e41]
+- Updated dependencies [75bb9a9]
+- Updated dependencies [7db7237]
+  - @sap-ai-sdk/orchestration@2.11.0
+  - @sap-ai-sdk/core@2.11.0
+  - @sap-ai-sdk/ai-api@2.11.0
+  - @sap-ai-sdk/foundation-models@2.11.0
+
+## 2.10.0
+
+### Patch Changes
+
+- Updated dependencies [a722171]
+- Updated dependencies [a722171]
+- Updated dependencies [a722171]
+- Updated dependencies [8cb466a]
+- Updated dependencies [cf767a9]
+  - @sap-ai-sdk/foundation-models@2.10.0
+  - @sap-ai-sdk/core@2.10.0
+  - @sap-ai-sdk/orchestration@2.10.0
+  - @sap-ai-sdk/ai-api@2.10.0
+
 ## 2.9.0
 
 ### Patch Changes

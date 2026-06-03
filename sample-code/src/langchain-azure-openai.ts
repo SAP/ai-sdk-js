@@ -6,16 +6,15 @@ import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/langchain';
-// eslint-disable-next-line import/no-internal-modules
+// eslint-disable-next-line import-x/no-internal-modules
 import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
-// eslint-disable-next-line import/no-internal-modules
+// eslint-disable-next-line import-x/no-internal-modules
 import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
 import {
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { createAgent } from 'langchain';
 import { tool } from '@langchain/core/tools';
@@ -28,7 +27,7 @@ import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 export async function invoke(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-5',
+    modelName: 'gpt-5.4',
     max_tokens: 1000
   });
 
@@ -49,7 +48,7 @@ export async function invoke(): Promise<string> {
 export async function invokeReasoningWithMaxTokens(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-5',
+    modelName: 'gpt-5.4',
     max_tokens: 1000
   });
 
@@ -75,7 +74,7 @@ export async function invokeReasoningWithMaxTokens(): Promise<string> {
  */
 export async function invokeChain(): Promise<string> {
   // initialize the client
-  const client = new AzureOpenAiChatClient({ modelName: 'gpt-5' });
+  const client = new AzureOpenAiChatClient({ modelName: 'gpt-5.4' });
 
   // create a prompt template
   const promptTemplate = ChatPromptTemplate.fromMessages([
@@ -148,7 +147,7 @@ export async function invokeRagChain(): Promise<string> {
 
   // Initialize the chat client
   const chatClient = new AzureOpenAiChatClient({
-    modelName: 'gpt-5',
+    modelName: 'gpt-5.4',
     max_tokens: 1000
   });
 
@@ -171,7 +170,10 @@ export async function invokeRagChain(): Promise<string> {
 
   const agentInputs = { messages: [{ role: 'user', content: inputMessage }] };
   const result = await agent.invoke(agentInputs);
-  return result.messages.at(-1)!.content as string;
+  const lastMessage = [...result.messages]
+    .reverse()
+    .find(msg => typeof msg.content === 'string' && msg.content.length);
+  return (lastMessage?.content as string) ?? '';
 }
 
 /**
@@ -181,7 +183,7 @@ export async function invokeRagChain(): Promise<string> {
 export async function invokeToolChain(): Promise<string> {
   // initialize client with options
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-5',
+    modelName: 'gpt-5.4-nano',
     max_tokens: 1000
   });
 
@@ -250,7 +252,7 @@ export async function streamChain(
   controller = new AbortController()
 ): Promise<AsyncIterable<AIMessageChunk>> {
   const client = new AzureOpenAiChatClient({
-    modelName: 'gpt-5'
+    modelName: 'gpt-5.4'
   });
   return client.stream(
     [
@@ -277,7 +279,7 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<{
 }> {
   // initialize client with options
   const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-5'
+    modelName: 'gpt-5.4'
   });
 
   const joke = z.object({
@@ -317,7 +319,7 @@ export async function invokeWithStructuredOutputJsonSchema(): Promise<{
 export async function invokeWithStructuredOutputToolCalling(): Promise<string> {
   // initialize client with options
   const llm = new AzureOpenAiChatClient({
-    modelName: 'gpt-5'
+    modelName: 'gpt-5.4'
   });
 
   const joke = z.object({

@@ -1,0 +1,22 @@
+diff --git a/packages/document-grounding/src/client/api/retrieval-api.ts b/packages/document-grounding/src/client/api/retrieval-api.ts
+index 034d0d9d..28734db9 100644
+--- a/packages/document-grounding/src/client/api/retrieval-api.ts
++++ b/packages/document-grounding/src/client/api/retrieval-api.ts
+@@ -38,14 +38,14 @@ export const RetrievalApi = {
+   /**
+    * List data repository by id
+    * @param repositoryId - Repository ID
+-   * @param queryParameters - Object containing the following keys: remoteName.
+    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
++   * @param queryParameters - Object containing the following keys: remoteName.
+    * @returns The request builder, use the `execute()` method to trigger the request.
+    */
+   getDataRepositoryById: (
+     repositoryId: string,
+-    queryParameters: { remoteName?: string },
+-    headerParameters: { 'AI-Resource-Group': string }
++    headerParameters: { 'AI-Resource-Group': string },
++    queryParameters: { remoteName?: string }
+   ) =>
+     new OpenApiRequestBuilder<DataRepository>(
+       'get',

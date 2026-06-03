@@ -10,6 +10,8 @@ on:
     - cron: 21 3 1/15 * *
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   get-orchestration-reference:
     runs-on: ubuntu-latest
@@ -18,6 +20,8 @@ jobs:
     steps:
       - name: 'Get orchestration version'
         id: orch-version
+        env:
+          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
           ORCH_VERSION=$(curl --fail --silent --request GET \
             --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
@@ -29,10 +33,9 @@ jobs:
               exit 1
           fi
           echo "Orchestration version: $ORCH_VERSION"
+          # shellcheck disable=SC2001
           ORCH_VERSION="$(echo "$ORCH_VERSION" | sed 's/-.*//')"
           echo "orchestration-branch=rel-$ORCH_VERSION" >> "$GITHUB_OUTPUT"
-        env:
-          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
   # get-rpt-reference:
   #   runs-on: ubuntu-latest
@@ -51,37 +54,45 @@ jobs:
   #         echo "rpt-tag=$TAG" >> "$GITHUB_OUTPUT"
 
   update-ai-api:
+    permissions: &spec-update-permissions
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: ai-api
       ref: main
       create-pr: true
-    secrets: inherit
+    secrets: &spec-update-secrets
+      NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
   update-document-grounding:
+    permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: document-grounding
       ref: main
       create-pr: true
-    secrets: inherit
+    secrets: *spec-update-secrets
 
   update-prompt-registry:
+    permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: prompt-registry
       ref: main
       create-pr: true
-    secrets: inherit
+    secrets: *spec-update-secrets
 
   update-orchestration:
     needs: get-orchestration-reference
+    permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
     with:
       service: orchestration
       ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
       create-pr: true
-    secrets: inherit
+    secrets: *spec-update-secrets
 
   notify-failure:
     needs:
@@ -94,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Slack Notification'
-        uses: slackapi/slack-github-action@v3.0.1
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

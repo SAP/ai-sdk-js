@@ -1,5 +1,7 @@
 import {
   orchestrationInvokeChain,
+  orchestrationInvokeChainWithFallbackConfigs,
+  orchestrationStreamChainWithFallbackConfigs,
   invokeLangGraphChain,
   invokeLangGraphChainStream,
   orchestrationInvokeWithStructuredOutput,
@@ -15,6 +17,11 @@ describe('Orchestration LangChain client', () => {
     expect(result).toContain('SAP Cloud SDK');
   });
 
+  it('executes invoke with fallback configs as part of a chain', async () => {
+    const result = await orchestrationInvokeChainWithFallbackConfigs();
+    expect(result).toContain('SAP Cloud SDK');
+  });
+
   it('executes an invoke with LangGraph', async () => {
     const result = await invokeLangGraphChain();
     expect(result).toContain('SAP Cloud SDK');
@@ -27,6 +34,11 @@ describe('Orchestration LangChain client', () => {
 
   it('executes a stream with LangGraph', async () => {
     const result = await invokeLangGraphChainStream();
+    expect(result).toContain('SAP Cloud SDK');
+  });
+
+  it('executes a stream with fallback configs', async () => {
+    const result = await orchestrationStreamChainWithFallbackConfigs();
     expect(result).toContain('SAP Cloud SDK');
   });
 

@@ -5,7 +5,7 @@ export {
   computeEmbedding,
   chatCompletionWithDestination,
   chatCompletionWithFunctionCall
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai.js';
 export {
   orchestrationChatCompletion,
@@ -46,11 +46,13 @@ export {
 } from './langchain-azure-openai.js';
 export {
   invokeChain as orchestrationInvokeChain,
+  invokeChainWithFallbackConfigs as orchestrationInvokeChainWithFallbackConfigs,
   invokeLangGraphChain,
   invokeDynamicModelAgent,
   invokeLangGraphChainStream,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  streamChain
+  streamChain,
+  streamChainWithFallbackConfigs as orchestrationStreamChainWithFallbackConfigs
 } from './langchain-orchestration.js';
 export {
   getDeployments,
@@ -58,12 +60,12 @@ export {
   createDeployment,
   stopDeployments,
   deleteDeployments
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/deployment-api.js';
 export {
   getScenarios,
   getModelsInScenario
-  // eslint-disable-next-line import/no-internal-modules
+  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/scenario-api.js';
 
 export {

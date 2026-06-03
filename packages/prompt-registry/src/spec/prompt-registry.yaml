@@ -107,11 +107,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: includeSpec
-          in: query
-          schema:
-            type: boolean
-            default: false
       responses:
         '200':
           description: Successful response

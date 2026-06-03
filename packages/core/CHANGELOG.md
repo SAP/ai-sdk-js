@@ -1,5 +1,19 @@
 # @sap-ai-sdk/core
 
+## 2.11.0
+
+### Minor Changes
+
+- c8c0e41: [Improvement] Add `gpt-5.4`, `gpt-5.4-nano` to the available model list.
+  Remove deprecated model `o1` (retirement date: 2026-06-18).
+- 75bb9a9: [Improvement] Added `mistralai--mistral-small`, `anthropic--claude-4.7-opus`, `gemini-3.1-flash-lite` to the available model list.
+
+## 2.10.0
+
+### Minor Changes
+
+- 8cb466a: [Improvement] Remove deprecated models `amazon--titan-embed-image` and `anthropic--claude-4.5-opus`.
+
 ## 2.9.0
 
 ### Minor Changes

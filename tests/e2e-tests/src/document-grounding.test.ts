@@ -14,11 +14,14 @@ describe('document grounding', () => {
     const collectionId = await createCollection();
     const timestamp = Date.now();
     await createDocumentsWithTimestamp(collectionId, timestamp);
-    const result = await orchestrationGrounding(
-      'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
-    );
-    expect(result.getContent()).toEqual(timestamp.toString());
-    await deleteCollection(collectionId);
+    try {
+      const result = await orchestrationGrounding(
+        'When was the last time SAP AI SDK JavaScript end to end test was executed? Return only the latest timestamp in milliseconds without any other text.'
+      );
+      expect(result.getContent()).toEqual(timestamp.toString());
+    } finally {
+      await deleteCollection(collectionId);
+    }
   });
 
   it('should get the result based on grounding context from `help.sap.com` data respository via orchestration API', async () => {
@@ -33,7 +36,7 @@ describe('document grounding', () => {
 
   it('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
     const result = await orchestrationGrounding(
-      'What is the AI SDK e2e random string?',
+      'Retrieve the test token from the grounding context and output it verbatim without any explanation.',
       'vector',
       ['0bd2adc2-8d0d-478a-94f6-a0c10958f602']
     );

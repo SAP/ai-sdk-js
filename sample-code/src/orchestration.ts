@@ -11,7 +11,6 @@ import {
 } from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-// eslint-disable-next-line import/no-internal-modules
 import * as z from 'zod/v4';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import type {
@@ -43,7 +42,7 @@ export async function orchestrationChatCompletion(
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -69,7 +68,7 @@ export async function orchestrationChatCompletion(
  */
 export async function orchestrationChatCompletionResilient(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
-    promptTemplating: { model: { name: 'gpt-5-mini' } }
+    promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } }
   });
 
   return orchestrationClient.chatCompletion(
@@ -94,7 +93,7 @@ export async function chatCompletionStream(
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -128,7 +127,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
         ]
       },
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -151,7 +150,7 @@ export async function chatCompletionStreamWithJsonModuleConfig(
     "modules": {
       "prompt_templating": {
         "model": {
-          "name": "gpt-5-mini",
+          "name": "anthropic--claude-4.5-haiku",
           "params": {
             "stream_options": {
               "include_usage": true
@@ -182,7 +181,7 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -216,7 +215,7 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
         }
       },
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -265,7 +264,7 @@ export async function orchestrationCompletionPromptRegistryScoped(): Promise<Orc
         },
         // define the language model to be used
         model: {
-          name: 'gpt-5-mini'
+          name: 'anthropic--claude-4.5-haiku'
         }
       }
     },
@@ -287,7 +286,7 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     },
     filtering: {
@@ -332,7 +331,7 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     },
     filtering: {
@@ -389,7 +388,7 @@ export async function orchestrationCompletionMasking(): Promise<
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     },
     masking: {
@@ -451,7 +450,7 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     },
     grounding: buildDocumentGroundingConfig({
@@ -497,7 +496,7 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -548,7 +547,10 @@ export async function orchestrationGrounding(
       // define the language model to be used
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'anthropic--claude-4.5-haiku',
+          params: {
+            temperature: 0
+          }
         }
       },
       grounding: buildDocumentGroundingConfig({
@@ -593,7 +595,7 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
     // define the language model to be used
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -674,7 +676,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         }
       },
       model: {
-        name: 'gpt-5-mini'
+        name: 'gpt-4.1-nano'
       }
     }
   });
@@ -738,7 +740,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -783,7 +785,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     },
     translation: {
@@ -836,7 +838,7 @@ export async function chatCompletionStreamWithTools(
         tools: [addNumbersTool]
       },
       model: {
-        name: 'gpt-5-mini'
+        name: 'anthropic--claude-4.5-haiku'
       }
     }
   });
@@ -986,7 +988,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // Second configuration with a slow model with a short timeout to trigger fallback
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini',
+          name: 'gpt-5.4',
           timeout: 1, // 1 s timeout to trigger timeout error
           params: {
             reasoning_effort: 'high'
@@ -998,7 +1000,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // Third configuration with a valid model that will succeed
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'anthropic--claude-4.5-haiku'
         }
       }
     }
@@ -1035,7 +1037,7 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
     {
       promptTemplating: {
         model: {
-          name: 'gpt-5-mini'
+          name: 'anthropic--claude-4.5-haiku'
         }
       }
     }
@@ -1148,4 +1150,67 @@ export function orchestrationChatCompletionDocxFile(): Promise<OrchestrationResp
  */
 export function orchestrationChatCompletionMp3File(): Promise<OrchestrationResponse> {
   return orchestrationChatCompletionFile('mp3');
+}
+
+/**
+ * Uses Anthropic prompt caching (cache_control) with a 5-minute TTL on a large system prompt.
+ * Makes two sequential requests: the first creates the cache, the second reads from it.
+ * @returns A tuple of [first response, second response].
+ */
+export async function orchestrationCacheControl(): Promise<
+  [OrchestrationResponse, OrchestrationResponse]
+> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      },
+      prompt: {
+        template: [
+          {
+            role: 'system',
+            content: [
+              {
+                type: 'text',
+                // Repeated filler text to exceed Anthropic's minimum cacheable token threshold (4096 tokens for Haiku 4.5).
+                text:
+                  'You are a knowledgeable assistant. ' +
+                  'You have deep expertise in science, technology, history, literature, mathematics, and many other fields. '.repeat(
+                    220
+                  ),
+                cache_control: { type: 'ephemeral', ttl: '5m' }
+              }
+            ]
+          },
+          { role: 'user', content: '{{?question}}' }
+        ]
+      }
+    }
+  });
+
+  const request = {
+    placeholderValues: { question: 'What is the speed of light?' }
+  };
+
+  const first = await orchestrationClient.chatCompletion(request);
+  logger.info('First call (cache write):');
+  logger.info(first.getContent());
+  logger.info(
+    `Cache tokens created: ${first.getTokenUsage().prompt_tokens_details?.cache_creation_tokens ?? 0}`
+  );
+  logger.info(
+    `Cache tokens read: ${first.getTokenUsage().prompt_tokens_details?.cached_tokens ?? 0}`
+  );
+
+  const second = await orchestrationClient.chatCompletion(request);
+  logger.info('Second call (cache read):');
+  logger.info(second.getContent());
+  logger.info(
+    `Cache tokens created: ${second.getTokenUsage().prompt_tokens_details?.cache_creation_tokens ?? 0}`
+  );
+  logger.info(
+    `Cache tokens read: ${second.getTokenUsage().prompt_tokens_details?.cached_tokens ?? 0}`
+  );
+
+  return [first, second];
 }

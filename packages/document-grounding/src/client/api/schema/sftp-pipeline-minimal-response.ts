@@ -10,7 +10,7 @@ import type { SFTPConfigurationMinimal } from './sftp-configuration-minimal.js';
  */
 export type SFTPPipelineMinimalResponse = BasePipelineMinimalResponse & {
   type: 'SFTP';
-  configuration: SFTPConfigurationMinimal;
+  configuration?: SFTPConfigurationMinimal;
   /**
    * @example true
    */
