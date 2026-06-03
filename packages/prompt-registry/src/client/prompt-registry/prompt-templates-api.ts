@@ -84,7 +84,6 @@ export const PromptTemplatesApi = {
     scenario: string,
     version: string,
     name: string,
-    queryParameters?: { includeSpec?: boolean },
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
