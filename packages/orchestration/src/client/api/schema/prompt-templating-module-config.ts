@@ -11,7 +11,7 @@ import type { LLMModelDetails } from './llm-model-details.js';
  */
 export type PromptTemplatingModuleConfig = {
   /**
-   * The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+   * The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.
    *
    */
   prompt?: Template | TemplateRef;
