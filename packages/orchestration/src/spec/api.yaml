@@ -936,7 +936,7 @@ components:
         message:
           type: string
           description: Some message created from the module
-          example: Input to LLM is masked successfully.
+          example: Masking module executed successfully on LLM input.
         data:
           type: object
           description: Additional data object from the module
@@ -1177,7 +1177,6 @@ components:
     PromptTemplatingModuleConfig:
       type: object
       required:
-        - prompt
         - model
       additionalProperties: false
       properties:
