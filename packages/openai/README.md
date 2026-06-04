@@ -52,7 +52,9 @@ import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
 // Chat completions
-const chatClient = await SapAzureOpenAI.createClient({ modelDeployment: 'gpt-5.4' });
+const chatClient = await SapAzureOpenAI.createClient({
+  modelDeployment: 'gpt-5.4'
+});
 const response = await chatClient.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
@@ -73,7 +75,9 @@ const embedding = await embeddingClient.embeddings.create({
 });
 
 // Responses API
-const responsesClient = await SapAzureOpenAI.createClient({ modelDeployment: 'gpt-5.4' });
+const responsesClient = await SapAzureOpenAI.createClient({
+  modelDeployment: 'gpt-5.4'
+});
 const resp = await responsesClient.responses.create({
   instructions: 'You are a helpful assistant.',
   input: 'What is the capital of France?'
