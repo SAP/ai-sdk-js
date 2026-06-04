@@ -2,37 +2,16 @@ import nock from 'nock';
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import {
   mockClientCredentialsGrantCall,
-  aiCoreDestination
+  aiCoreDestination,
+  mockDeploymentsList
 } from '../../../test-util/mock-http.js';
 import { createOpenAIConfig } from './config.js';
 
-function mockDeploymentWithUrl(
-  opts: { scenarioId: string; executableId: string; resourceGroup?: string },
-  deployment: { id: string; model: { name: string; version: string } }
-): void {
-  nock(aiCoreDestination.url, {
-    reqheaders: { 'ai-resource-group': opts.resourceGroup ?? 'default' }
-  })
-    .get('/v2/lm/deployments')
-    .query({
-      status: 'RUNNING',
-      scenarioId: opts.scenarioId,
-      executableIds: opts.executableId
-    })
-    .reply(200, {
-      resources: [
-        {
-          id: deployment.id,
-          deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/${deployment.id}`,
-          details: {
-            resources: {
-              backendDetails: { model: deployment.model }
-            }
-          }
-        }
-      ]
-    });
-}
+const defaultDeployment = {
+  id: 'dep-001',
+  model: { name: 'gpt-4.1', version: 'latest' },
+  deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001`
+};
 
 describe('createOpenAIConfig', () => {
   beforeEach(() => {
@@ -45,9 +24,9 @@ describe('createOpenAIConfig', () => {
 
   describe('baseURL resolution', () => {
     it('resolves URL via model name', async () => {
-      mockDeploymentWithUrl(
+      mockDeploymentsList(
         { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-        { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' } }
+        defaultDeployment
       );
 
       const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
@@ -85,9 +64,9 @@ describe('createOpenAIConfig', () => {
 
   describe('apiVersion', () => {
     beforeEach(() => {
-      mockDeploymentWithUrl(
+      mockDeploymentsList(
         { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-        { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' } }
+        defaultDeployment
       );
     });
 
@@ -107,9 +86,9 @@ describe('createOpenAIConfig', () => {
 
   describe('resource group header', () => {
     it("defaults to 'default'", async () => {
-      mockDeploymentWithUrl(
+      mockDeploymentsList(
         { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-        { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' } }
+        defaultDeployment
       );
 
       const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
@@ -120,13 +99,17 @@ describe('createOpenAIConfig', () => {
     });
 
     it('uses the provided resource group', async () => {
-      mockDeploymentWithUrl(
+      mockDeploymentsList(
         {
           scenarioId: 'foundation-models',
           executableId: 'azure-openai',
           resourceGroup: 'custom-rg'
         },
-        { id: 'dep-002', model: { name: 'gpt-4.1', version: 'latest' } }
+        {
+          id: 'dep-002',
+          model: { name: 'gpt-4.1', version: 'latest' },
+          deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-002`
+        }
       );
 
       const config = await createOpenAIConfig({
@@ -141,9 +124,9 @@ describe('createOpenAIConfig', () => {
 
   describe('ai-client-type header', () => {
     beforeEach(() => {
-      mockDeploymentWithUrl(
+      mockDeploymentsList(
         { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-        { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' } }
+        defaultDeployment
       );
     });
 
@@ -166,9 +149,9 @@ describe('createOpenAIConfig', () => {
   });
 
   it('wires up azureADTokenProvider as a function', async () => {
-    mockDeploymentWithUrl(
+    mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-      { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' } }
+      defaultDeployment
     );
 
     const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
