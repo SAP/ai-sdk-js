@@ -6,6 +6,7 @@ packages:
   - packages/openai
   - packages/langchain
   - packages/orchestration
+  - packages/llm-batch
   - packages/prompt-registry
   - packages/rpt
   - sample-cap
