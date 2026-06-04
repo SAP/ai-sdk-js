@@ -1,5 +1,5 @@
 import config from '../../jest.config.mjs';
 export default {
   ...config,
-  displayName: 'foundation-models-openai',
+  displayName: 'openai',
 };
