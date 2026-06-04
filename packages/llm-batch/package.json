@@ -1,0 +1,53 @@
+{
+  "name": "@sap-ai-sdk/llm-batch",
+  "version": "2.9.0",
+  "publishConfig": {
+    "tag": "beta",
+    "access": "public"
+  },
+  "description": "",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "ai-api",
+    "llm-batch"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/llm-batch"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "compile:cjs": "tsc -p tsconfig.cjs.json",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
+    "postgenerate": "pnpm update-imports && pnpm make-llm-batch-experimental && pnpm lint:fix",
+    "make-llm-batch-experimental": "tsx ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",
+    "update-imports": "tsx ../../scripts/update-imports.ts ./src/client/batch-service"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/core": "workspace:^"
+  }
+}

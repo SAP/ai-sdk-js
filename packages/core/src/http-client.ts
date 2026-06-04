@@ -68,7 +68,10 @@ export async function executeRequest(
 
   const mergedRequestConfig = {
     ...mergeWithDefaultRequestConfig(apiVersion, resourceGroup, requestConfig),
-    data: data instanceof FormData ? data : JSON.stringify(data)
+    data:
+      data instanceof FormData || data instanceof Blob
+        ? data
+        : JSON.stringify(data)
   };
 
   try {
@@ -121,7 +124,7 @@ function mergeWithDefaultRequestConfig(
     'AI SDK JavaScript',
     pickValueIgnoreCase(requestConfig?.headers, 'ai-client-type')
   ]
-    .filter(clientType => clientType)
+    .filter(Boolean)
     .join(', ');
 
   return {
