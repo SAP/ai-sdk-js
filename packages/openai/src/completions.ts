@@ -20,7 +20,9 @@ type RequestOptions = Parameters<Completions['create']>[1];
  */
 export type WithoutModel<T> = Omit<T, 'model'>;
 
-/** Wraps `Completions` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL. */
+/** Wraps `Completions` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL.
+ * @experimental This class is experimental and may change at any time without prior notice.
+ */
 export class SapCompletions {
   private readonly openAICompletions: Completions;
 

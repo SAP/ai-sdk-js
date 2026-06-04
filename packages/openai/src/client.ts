@@ -15,6 +15,7 @@ import type { SapAzureOpenAIOptions } from './types.js';
  *
  * Only the endpoints supported by SAP AI Core are exposed (`chat`, `embeddings`, `responses`).
  * Use {@link SapAzureOpenAI.createClient} to create an instance.
+ * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class SapAzureOpenAI {
   /**

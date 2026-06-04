@@ -16,6 +16,7 @@ const defaultApiVersion = '2024-10-21';
  * Resolves the deployment URL and sets up token-based authentication for SAP AI Core.
  * @param options - The options for creating the OpenAI configuration.
  * @returns A promise that resolves to an AzureClientOptions object.
+ * @experimental This function is experimental and may change at any time without prior notice.
  * @example
  * ```ts
  * import { AzureOpenAI } from 'openai';

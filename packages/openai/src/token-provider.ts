@@ -7,6 +7,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
  * @param destination - Optional HTTP destination or fetch options for the AI Core service.
  * If omitted, falls back to the `aicore` service binding or the `AICORE_SERVICE_KEY` environment variable (local testing only).
  * @returns A function that returns a promise resolving to the bearer token string.
+ * @experimental This function is experimental and may change at any time without prior notice.
  */
 export function createTokenProvider(
   destination?: HttpDestinationOrFetchOptions

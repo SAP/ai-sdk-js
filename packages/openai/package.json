@@ -1,6 +1,10 @@
 {
   "name": "@sap-ai-sdk/openai",
   "version": "2.10.0",
+  "publishConfig": {
+    "tag": "beta",
+    "access": "public"
+  },
   "description": "SAP AI SDK integration with the official OpenAI npm package for Azure OpenAI on SAP AI Core",
   "license": "Apache-2.0",
   "keywords": [

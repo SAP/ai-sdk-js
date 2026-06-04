@@ -9,7 +9,9 @@ import type { WithoutModel } from './completions.js';
 
 type RequestOptions = Parameters<Embeddings['create']>[1];
 
-/** Wraps `Embeddings` exposing only `create`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL. */
+/** Wraps `Embeddings` exposing only `create`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL.
+ * @experimental This class is experimental and may change at any time without prior notice.
+ */
 export class SapEmbeddings {
   private readonly openAIEmbeddings: Embeddings;
 
