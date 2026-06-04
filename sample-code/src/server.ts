@@ -19,7 +19,9 @@ import {
   computeEmbedding as openAiSdkComputeEmbedding,
   responsesApi,
   responsesApiStream,
-  responsesApiParse
+  responsesApiParse,
+  responsesApiStateful,
+  responsesApiMultiTurn
 } from './openai.js';
 import {
   orchestrationChatCompletion,
@@ -396,6 +398,26 @@ app.get('/openai/responses-stream', async (req, res) => {
 app.get('/openai/responses-parse', async (req, res) => {
   try {
     res.header('Content-Type', 'text/plain').send(await responsesApiParse());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/responses-stateful', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await responsesApiStateful());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/responses-multi-turn', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await responsesApiMultiTurn());
   } catch (error: any) {
     sendError(res, error);
   }

@@ -90,6 +90,51 @@ export async function responsesApiStream(): Promise<
   });
 }
 
+/**
+ * Use the Responses API in a stateful multi-turn conversation using previous_response_id.
+ * @returns The follow-up response text, continuing from the first response.
+ */
+export async function responsesApiStateful(): Promise<string | undefined> {
+  const client = await SapAzureOpenAI.createClient({
+    modelDeployment: 'gpt-5.4'
+  });
+
+  const first = await client.responses.create({
+    instructions: 'You are a helpful assistant.',
+    input: 'What is the capital of France?'
+  });
+
+  const second = await client.responses.create({
+    previous_response_id: first.id,
+    input: 'What is the population of that city?'
+  });
+
+  return second.output_text;
+}
+
+/**
+ * Use the Responses API in a multi-turn conversation by manually managing context.
+ * @returns The follow-up response text.
+ */
+export async function responsesApiMultiTurn(): Promise<string | undefined> {
+  const client = await SapAzureOpenAI.createClient({
+    modelDeployment: 'gpt-5.4'
+  });
+
+  let context: any[] = [
+    { role: 'user', content: 'What is the capital of France?' }
+  ];
+
+  const first = await client.responses.create({ input: context });
+
+  context = context.concat(first.output);
+  context.push({ role: 'user', content: 'What is the population of that city?' });
+
+  const second = await client.responses.create({ input: context });
+
+  return second.output_text;
+}
+
 const CapitalResponse = z.object({
   capital: z.string()
 });
