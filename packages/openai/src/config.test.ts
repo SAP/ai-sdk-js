@@ -50,7 +50,9 @@ describe('createOpenAIConfig', () => {
 
       await expect(
         createOpenAIConfig({ modelDeployment: { deploymentId: 'no-url-dep' } })
-      ).rejects.toThrow("Deployment with ID 'no-url-dep' has no deployment URL.");
+      ).rejects.toThrow(
+        "Deployment with ID 'no-url-dep' has no deployment URL."
+      );
     });
   });
 
@@ -85,7 +87,9 @@ describe('createOpenAIConfig', () => {
 
       const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
 
-      expect((config.defaultHeaders as Record<string, string>)['ai-resource-group']).toBe('default');
+      expect(
+        (config.defaultHeaders as Record<string, string>)['ai-resource-group']
+      ).toBe('default');
     });
 
     it('uses the provided resource group', async () => {
@@ -102,7 +106,9 @@ describe('createOpenAIConfig', () => {
         modelDeployment: { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' }
       });
 
-      expect((config.defaultHeaders as Record<string, string>)['ai-resource-group']).toBe('custom-rg');
+      expect(
+        (config.defaultHeaders as Record<string, string>)['ai-resource-group']
+      ).toBe('custom-rg');
     });
   });
 
@@ -116,7 +122,9 @@ describe('createOpenAIConfig', () => {
 
     it("sets 'AI SDK JavaScript' when no clientType is given", async () => {
       const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
-      expect((config.defaultHeaders as Record<string, string>)['ai-client-type']).toBe('AI SDK JavaScript');
+      expect(
+        (config.defaultHeaders as Record<string, string>)['ai-client-type']
+      ).toBe('AI SDK JavaScript');
     });
 
     it('appends clientType to the header', async () => {
@@ -124,7 +132,9 @@ describe('createOpenAIConfig', () => {
         modelDeployment: 'gpt-4.1',
         clientType: 'MyApp'
       });
-      expect((config.defaultHeaders as Record<string, string>)['ai-client-type']).toBe('AI SDK JavaScript,MyApp');
+      expect(
+        (config.defaultHeaders as Record<string, string>)['ai-client-type']
+      ).toBe('AI SDK JavaScript,MyApp');
     });
   });
 
