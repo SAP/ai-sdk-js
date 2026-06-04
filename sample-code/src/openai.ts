@@ -128,7 +128,10 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
   const first = await client.responses.create({ input: context });
 
   context = context.concat(first.output);
-  context.push({ role: 'user', content: 'What is the population of that city?' });
+  context.push({
+    role: 'user',
+    content: 'What is the population of that city?'
+  });
 
   const second = await client.responses.create({ input: context });
 

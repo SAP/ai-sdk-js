@@ -405,9 +405,7 @@ app.get('/openai/responses-parse', async (req, res) => {
 
 app.get('/openai/responses-stateful', async (req, res) => {
   try {
-    res
-      .header('Content-Type', 'text/plain')
-      .send(await responsesApiStateful());
+    res.header('Content-Type', 'text/plain').send(await responsesApiStateful());
   } catch (error: any) {
     sendError(res, error);
   }
