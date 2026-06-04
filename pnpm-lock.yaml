@@ -83,8 +83,8 @@ importers:
         specifier: ^14.0.15
         version: 14.0.15
       orval:
-        specifier: ^8.12.3
-        version: 8.13.0(prettier@3.8.3)(typescript@6.0.3)
+        specifier: ^8.14.0
+        version: 8.14.0(prettier@3.8.3)(typescript@6.0.3)
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
@@ -282,8 +282,8 @@ importers:
         version: 5.2.1
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^9.9.1
-        version: 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+        specifier: ^9.9.2
+        version: 9.9.2(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
 
   sample-code:
     dependencies:
@@ -404,25 +404,25 @@ importers:
         version: 1.0.1(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.11.1-20260527125731.0
+        version: 2.11.1-20260530013912.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.11.1-20260527125731.0
+        version: 2.11.1-20260530013912.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.11.1-20260527125731.0
+        version: 2.11.1-20260530013912.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.11.1-20260527125731.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
+        version: 2.11.1-20260530013912.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.11.1-20260527125731.0
+        version: 2.11.1-20260530013912.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.11.1-20260527125731.0
+        version: 2.11.1-20260530013912.0
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.11.1-20260527125731.0
+        version: 2.11.1-20260530013912.0
       '@sap-cloud-sdk/util':
         specifier: '=4.7.0'
         version: 4.7.0
@@ -1255,43 +1255,46 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
-  '@orval/angular@8.13.0':
-    resolution: {integrity: sha512-fZ91YvDOcKMHLF92mMJ+dGxsmGEz6QHqsQuc/RjF5XPCXraYxu4ItDmpSF6nM4Fv3Q0F8nNGorOTECThr7F3qg==}
+  '@orval/angular@8.14.0':
+    resolution: {integrity: sha512-Rq/C7yZRSx/7xL+chsW3v3B3WPf/dnN2SExBghtve/xUWOMODRA9bLLPy1sGJaBIztSXmRHPOAujCzzqHCzn3Q==}
 
-  '@orval/axios@8.13.0':
-    resolution: {integrity: sha512-6aUwhQ8HmoOlMFQ6sJhjOTUmlQFIFqoETeavDmmxnmsWte2ge2yG+Q1WKsXuusnRG7wbIXpVfeQhcny5jC9New==}
+  '@orval/axios@8.14.0':
+    resolution: {integrity: sha512-IJogr/ugdCJHoY/0F5cr7tXLk/j0BjgA9CrWKzuBUsSlvefof7UvBB8fyPcIuAj4DePqc84J3IHPvZsfgLXtLQ==}
 
-  '@orval/core@8.13.0':
-    resolution: {integrity: sha512-ckWI+cErC7WPAVHo/OQvybcYzc1QlrkZvXtoUZEJIKxakqdwhR4DwmQ29k948Hc64UdL1s4s23FVSNK2Y50eAw==}
+  '@orval/core@8.14.0':
+    resolution: {integrity: sha512-uijqeGeXxX8/+xeix+fd9WmLFH9i4smiiw6TwhDRYoQuU/9WXQd9NwmLXKAu6x6cUH+MzUiEiwWm4TsXkwfCHg==}
     peerDependencies:
       '@faker-js/faker': '>=10'
     peerDependenciesMeta:
       '@faker-js/faker':
         optional: true
 
-  '@orval/fetch@8.13.0':
-    resolution: {integrity: sha512-oqw3tdjJy0HGGwEk6/SDkl+1WCwM67mPaEIu/0MIn7flyM84ePpNXhCM5R+EPOLJAGZcfYU51JIxhaannqvIfw==}
+  '@orval/effect@8.14.0':
+    resolution: {integrity: sha512-mZNfZnObxIzvMGrG96zRw6rhGMqUACfrU7fPNMPiUC0YvGEP2K+32u0yeDy9JZo1/fiBRUtmw8w+NXaup1tZxQ==}
 
-  '@orval/hono@8.13.0':
-    resolution: {integrity: sha512-EEaWAW4PCirypP3x8qR9tYAXu4d0KCQbHabx210mc75y6Fr14vQX/eZ/V96s+i90hKoSximRzp1/MbtKTAlNJg==}
+  '@orval/fetch@8.14.0':
+    resolution: {integrity: sha512-OYN9hEqX4dAzVMTBdX8dVdlfxjM6dMOrZZTPgnSfnOWK97dgWV45RK3G/egBzOGl9SPaEK4Iauhe3rVdNHXlVg==}
 
-  '@orval/mcp@8.13.0':
-    resolution: {integrity: sha512-a7qpvRfSRlR/3VhO+1eLm5OgMZUyi69KiZ4yjI0WlsrCDHght563zuVho6+t9c08swmCUUnvktLER7xymErxfQ==}
+  '@orval/hono@8.14.0':
+    resolution: {integrity: sha512-OTw9uyFxiypAG10a1U4DYz+nhYT8pS1e8ueynuKn8QjeGzbJmY1LuLZRtSm3+eULq41/7Ba+YLTBb21uFqTYaQ==}
 
-  '@orval/mock@8.13.0':
-    resolution: {integrity: sha512-wbqdozlRORzBwJK0ttJx3lhMcojfKNeMUyAXLIgum7yz4/N3VRhTKszxwunXajPyzy4zDGKyyAm0KMCpYkX/zQ==}
+  '@orval/mcp@8.14.0':
+    resolution: {integrity: sha512-wPYRhxnh3BUyoqxkrXDS0JsvLVH43i8uFfQv9BgHcZfn92IQW4cF+CmIfIrdnVjqEbNjwUHgSNcelijHMSv5tQ==}
 
-  '@orval/query@8.13.0':
-    resolution: {integrity: sha512-kCq0I5e0IjjV+ZFRKQYSl0F2lH5ZIMDZ5tKdEuX24GI+lvYPVXBbQMJOihZhKfvf/OU6GbNVhy/L8U/ZvjI9fA==}
+  '@orval/mock@8.14.0':
+    resolution: {integrity: sha512-qrP3XuEEsKRYEmWm6InEXKGtHeFVn08oYN322a9Txvmi6OTF1n2dDAcWFukoQelsdcMgx+6REQuRwQ0T50qu0Q==}
 
-  '@orval/solid-start@8.13.0':
-    resolution: {integrity: sha512-9fEXjcK9G1xKlaRsCJZ4OOROMazV5zVLqCj3AjysNbuHtm5I0QLCMr9oW+gXJnGRgXwmNv1Hst0R77O36KDjsw==}
+  '@orval/query@8.14.0':
+    resolution: {integrity: sha512-uUAYpbOMy7FErOjUE51lGTmWhwx63wYyC3w4kGDYJIV10PLVtk7qSzKuriwIyh6Bhrs+ZKb16LRw4LMsnOX9KA==}
 
-  '@orval/swr@8.13.0':
-    resolution: {integrity: sha512-Q7eaXX9Pep5cVmJTUbfVRe31/8b6yuDLDsmCymuw0lWOKckC8QVdEnA2M+XIv2WsEkp+ZXBZEu5DVmU5nn5cYg==}
+  '@orval/solid-start@8.14.0':
+    resolution: {integrity: sha512-fB4GN24QAX17RxAnqJF0m94okb3IFnQm+1Gb49SBj0qoDYhi9ZrbyflJhlt9NC+xj8tdLOYbCuR3RwFek+GfkQ==}
 
-  '@orval/zod@8.13.0':
-    resolution: {integrity: sha512-5hRLsnZUYA5IH0t30nuK2OlHET2yDi1TW1enJw+ziWAJDJ3xlNIiwDiDy7sD25lFlGnYGnhMT8ULzX8HkwOLHA==}
+  '@orval/swr@8.14.0':
+    resolution: {integrity: sha512-5B9Dz2WB/v23/66Pvf3VihuycNMnbL/paWy+9do3KXSYLLBoNkLs3AMJAcEf1gOp/Bcr4+o0wi55m+aZ9Gznyg==}
+
+  '@orval/zod@8.14.0':
+    resolution: {integrity: sha512-5QJsVZcyQQixAwJU3S3qy+8mJK3n9SoqsoJ4svSLLib8IaOFm0d3Kf2NL5yecwuocwZVL8JGkWNTSWWJ9gFKgg==}
 
   '@package-json/types@0.0.12':
     resolution: {integrity: sha512-uu43FGU34B5VM9mCNjXCwLaGHYjXdNincqKLaraaCW+7S2+SmiBg1Nv8bPnmschrIfZmfKNY9f3fC376MRrObw==}
@@ -1307,31 +1310,31 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-6F7HIbY2ll8+wOXjVjlzWFBPp19ixrAJ8b+LeJJRjuX1wCaXbFCekRvt+GKCoMcjQ2MRUyfifD1XynOF9oBqKw==}
+  '@sap-ai-sdk/ai-api@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-8LJvtU8euZtVTPuQNJ7UF6qq6qlQQPJWImJPnD9zSQjp4tcmglrqHcjNSDOGcCIochPYi5yh0Yq3DVlHy1mH1g==}
 
-  '@sap-ai-sdk/core@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-eYfMh6zBAc0Xt3/GqcKEQAvqPugrDBnviM1HkSDhKqxVCaadwLha+K9m1vQqrXvsRtvd7E+7VYMi1OoP4+7cXw==}
+  '@sap-ai-sdk/core@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-pD2iak/alkgCZw1/gq4WzU37wnUVLS6GTW+DkPR/gQ1TxqAHgBbfGzc12BC7MvCk2PJpRsIFLu6czR5TITQ/5w==}
 
-  '@sap-ai-sdk/document-grounding@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-bRmUunEkSie+LJzLNxXwYW3OaDVInSc2S1G+GGnaOPUnnV9vR7OkyyUbVJbucdS6cNBvwZxQlF7nQ5r+f+0XXw==}
+  '@sap-ai-sdk/document-grounding@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-tvoevSf+LIBWAaV8+7XJM0RVunVh5np9k8CCUZ9FGjb+0/tWlciAd9NBb4Bi+Pzk5MgXoRE6nA3V9GpBUQc2eg==}
 
-  '@sap-ai-sdk/foundation-models@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-3z0dWFr3DgJo8JATc7ffg6Pj7RLFxJaU/BOWrTDLpRhK1a2Mj7om5kY5NYRnx0nO1TymcNxlK4nnSuKCpEPucA==}
+  '@sap-ai-sdk/foundation-models@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-XM8fnwNv6kD1+RfhOqnfyKg/A5Y3cJPV29i+lQR6vVsyj24Dnlzk6Emns6HRxO2wPpX8Y0v3uEAZQjppbYikWA==}
 
-  '@sap-ai-sdk/langchain@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-Ih4R5dKVohufCYMxB7QdPekC10tyT2NL4Py+Faiqz1qTftjlf0cUIhEj/JA8h5xA/n0xI67yEuCCnNRNrFsruQ==}
+  '@sap-ai-sdk/langchain@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-WZwianeZvINf4VqtUBEUc91IJMBVtgLnCkaq3xVS6oZyzh2IL+/0L7keI/H7xbZAchxEyaCjKdHSO3yaYfa9AQ==}
     peerDependencies:
       '@langchain/core': ^1.1.16
 
-  '@sap-ai-sdk/orchestration@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-KXkPkg7UdapCNRCt91a2OY4ycTOLhbsm/KUGC5SiVoWA0xePdfFW3OXAC8O/H2+HfngApnO9po9L/fx+MKWVCg==}
+  '@sap-ai-sdk/orchestration@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-u3E79z7l6oZIaXw4zncFTis0lx3iEYd/zdQJaMxH/0in90foIzfnhqnbB+0F3a6jzsmeX7U69wRlyPjCD/5X6w==}
 
-  '@sap-ai-sdk/prompt-registry@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-1GySz00nKzzja+1g+BEeQFb5kiAGQp1c9/2TnCgmbMBzPwfM2TmJmfGnGJWeZNu4Kdh3a8IzQ/E8D99Whc3rSw==}
+  '@sap-ai-sdk/prompt-registry@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-GqdrvOmiDtcOlpkXvyCG2yvCYEX5ZVxgO0c3OdGEzUfhmiYMPmJNCiCnSz+K2BlpnQznOMMZ+LSuXFN5zKo1gw==}
 
-  '@sap-ai-sdk/rpt@2.11.1-20260527125731.0':
-    resolution: {integrity: sha512-K8df8fRAJwrypsF7o6gWvNyQDjqPICoRbOxa4NiXpUArQbO7XMCgSK++cZCZ63c6KwKw/55labWUV7eMOiRJmA==}
+  '@sap-ai-sdk/rpt@2.11.1-20260530013912.0':
+    resolution: {integrity: sha512-ASH60SfiZ+gXa82e4zA9f4Js8znz3df+dPVVwwU9iLamSjUVScUZxPgqMps19UFjUzMFG/FGXN2DMYEJneDczw==}
 
   '@sap-cloud-sdk/connectivity@4.7.0':
     resolution: {integrity: sha512-+EgdTpGi3ZomPuv/ab+bWQIxUfJvownW2MzdYSvX7hkEkmKJfod0O6ja2OqC+OJBLm1TE0JpbJ6AcCkqeZYuOg==}
@@ -1365,8 +1368,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@sap/cds-dk@9.9.1':
-    resolution: {integrity: sha512-cZoHI/ZhEVffmLo2k9Y/HMR5X+aGCpk60PwJJcZgoat8Kwk6dDl3mUDERhZORQUhp9FwOiyWmNujmNCV8YWWCg==}
+  '@sap/cds-dk@9.9.2':
+    resolution: {integrity: sha512-cngXMULAuueITOLymme51fBuUKRaqofXDzwyJtnEQ2BLZBz/t6s+rXZV7nY2xJyqU3y0rbB023R9218D25evuw==}
     hasBin: true
 
   '@sap/cds-fiori@2.3.0':
@@ -2511,8 +2514,8 @@ packages:
       eslint-plugin-import-x:
         optional: true
 
-  eslint-module-utils@2.12.1:
-    resolution: {integrity: sha512-L8jSWTze7K2mTg0vos/RuLRS5soomksDPoJLXIslC7c8Wmut3bx7CPpJijDcBZtxQ5lrbUdM+s0OlNbz0DCDNw==}
+  eslint-module-utils@2.13.0:
+    resolution: {integrity: sha512-bLohSkT6469rRs8czj0tLTD8vaeIS/whvPRJVjDr7IuoTT1k5DYDERlNycjDj/HkOlvQdYurmfZ/g3fG5bgeLQ==}
     engines: {node: '>=4'}
     peerDependencies:
       '@typescript-eslint/parser': '*'
@@ -2985,6 +2988,10 @@ packages:
 
   hasown@2.0.3:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
+    engines: {node: '>= 0.4'}
+
+  hasown@2.0.4:
+    resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
 
   hdb@2.27.1:
@@ -3939,8 +3946,8 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  orval@8.13.0:
-    resolution: {integrity: sha512-C9m2sVk5UKiTCRu//e6Nv2GIombd34NEsWRjmMk8SSYen44jNRoHZ3vkS/UTp74ktktpaClrAMNtCossDiuaZQ==}
+  orval@8.14.0:
+    resolution: {integrity: sha512-ZMOzZuaa+d5szRMShSptVCR6r28Md02Rd3g2BuPBx9QZ2QnlPu+UXF6fCUrcE9A1rhL/aC7nh9B8A4MW8hy+wg==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -4757,8 +4764,8 @@ packages:
     resolution: {integrity: sha512-bTlAFB/FBYMcuX81gbL4OcpH5PmlFHqlCCpAl8AlEzMz5k53oNDvN8p1PNOWLEmI2x4orp3raOFB51tv9X+MFQ==}
     engines: {node: '>= 0.4'}
 
-  typed-array-length@1.0.7:
-    resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
+  typed-array-length@1.0.8:
+    resolution: {integrity: sha512-phPGCwqr2+Qo0fwniCE8e4pKnGu/yFb5nD5Y8bf0EEeiI5GklnACYA9GFy/DrAeRrKHXvHn+1SUsOWgJp6RO+g==}
     engines: {node: '>= 0.4'}
 
   typedoc-plugin-coverage@4.0.3:
@@ -5980,23 +5987,23 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@orval/angular@8.13.0(typescript@6.0.3)':
+  '@orval/angular@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/axios@8.13.0(typescript@6.0.3)':
+  '@orval/axios@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/core@8.13.0(typescript@6.0.3)':
+  '@orval/core@8.14.0(typescript@6.0.3)':
     dependencies:
       '@scalar/openapi-types': 0.8.0
       acorn: 8.16.0
@@ -6013,19 +6020,28 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/fetch@8.13.0(typescript@6.0.3)':
+  '@orval/effect@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
+      remeda: 2.37.0
+    transitivePeerDependencies:
+      - '@faker-js/faker'
+      - supports-color
+      - typescript
+
+  '@orval/fetch@8.14.0(typescript@6.0.3)':
+    dependencies:
+      '@orval/core': 8.14.0(typescript@6.0.3)
       '@scalar/openapi-types': 0.8.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/hono@8.13.0(typescript@6.0.3)':
+  '@orval/hono@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
-      '@orval/zod': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
+      '@orval/zod': 8.14.0(typescript@6.0.3)
       fs-extra: 11.3.5
       remeda: 2.37.0
     transitivePeerDependencies:
@@ -6033,56 +6049,56 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/mcp@8.13.0(typescript@6.0.3)':
+  '@orval/mcp@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
-      '@orval/fetch': 8.13.0(typescript@6.0.3)
-      '@orval/zod': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
+      '@orval/fetch': 8.14.0(typescript@6.0.3)
+      '@orval/zod': 8.14.0(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/mock@8.13.0(typescript@6.0.3)':
+  '@orval/mock@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
       remeda: 2.37.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/query@8.13.0(typescript@6.0.3)':
+  '@orval/query@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
-      '@orval/fetch': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
+      '@orval/fetch': 8.14.0(typescript@6.0.3)
       remeda: 2.37.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/solid-start@8.13.0(typescript@6.0.3)':
+  '@orval/solid-start@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
       '@scalar/openapi-types': 0.8.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/swr@8.13.0(typescript@6.0.3)':
+  '@orval/swr@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
-      '@orval/fetch': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
+      '@orval/fetch': 8.14.0(typescript@6.0.3)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/zod@8.13.0(typescript@6.0.3)':
+  '@orval/zod@8.14.0(typescript@6.0.3)':
     dependencies:
-      '@orval/core': 8.13.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
       remeda: 2.37.0
     transitivePeerDependencies:
       - '@faker-js/faker'
@@ -6099,16 +6115,16 @@ snapshots:
   '@rtsao/scc@1.1.0':
     optional: true
 
-  '@sap-ai-sdk/ai-api@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/ai-api@2.11.1-20260530013912.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/core@2.11.1-20260530013912.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/http-client': 4.7.0
@@ -6118,17 +6134,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/document-grounding@2.11.1-20260530013912.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/foundation-models@2.11.1-20260530013912.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/http-client': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
@@ -6136,42 +6152,42 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.11.1-20260527125731.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))':
+  '@sap-ai-sdk/langchain@2.11.1-20260530013912.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))':
     dependencies:
       '@langchain/core': 1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
-      '@sap-ai-sdk/ai-api': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/foundation-models': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/orchestration': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/foundation-models': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/orchestration': 2.11.1-20260530013912.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/orchestration@2.11.1-20260530013912.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/prompt-registry': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/prompt-registry': 2.11.1-20260530013912.0
       '@sap-cloud-sdk/util': 4.7.0
       yaml: 2.9.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/prompt-registry@2.11.1-20260530013912.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
       zod: 4.4.3
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.11.1-20260527125731.0':
+  '@sap-ai-sdk/rpt@2.11.1-20260530013912.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.11.1-20260527125731.0
-      '@sap-ai-sdk/core': 2.11.1-20260527125731.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/http-client': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
@@ -6289,7 +6305,7 @@ snapshots:
 
   '@sap/cds-compiler@6.9.2': {}
 
-  '@sap/cds-dk@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))':
+  '@sap/cds-dk@9.9.2(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))':
     dependencies:
       '@cap-js/asyncapi': 1.0.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
       '@cap-js/openapi': 1.4.2(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
@@ -7474,7 +7490,7 @@ snapshots:
       has-property-descriptors: 1.0.2
       has-proto: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.3
+      hasown: 2.0.4
       internal-slot: 1.1.0
       is-array-buffer: 3.0.5
       is-callable: 1.2.7
@@ -7503,7 +7519,7 @@ snapshots:
       typed-array-buffer: 1.0.3
       typed-array-byte-length: 1.0.3
       typed-array-byte-offset: 1.0.4
-      typed-array-length: 1.0.7
+      typed-array-length: 1.0.8
       unbox-primitive: 1.1.0
       which-typed-array: 1.1.21
     optional: true
@@ -7525,7 +7541,7 @@ snapshots:
 
   es-shim-unscopables@1.1.0:
     dependencies:
-      hasown: 2.0.3
+      hasown: 2.0.4
     optional: true
 
   es-to-primitive@1.3.0:
@@ -7621,7 +7637,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0)):
+  eslint-module-utils@2.13.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -7662,8 +7678,8 @@ snapshots:
       doctrine: 2.1.0
       eslint: 10.4.0(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0))
-      hasown: 2.0.3
+      eslint-module-utils: 2.13.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0))
+      hasown: 2.0.4
       is-core-module: 2.16.2
       is-glob: 4.0.3
       minimatch: 3.1.5
@@ -8053,7 +8069,7 @@ snapshots:
       call-bound: 1.0.4
       define-properties: 1.2.1
       functions-have-names: 1.2.3
-      hasown: 2.0.3
+      hasown: 2.0.4
       is-callable: 1.2.7
     optional: true
 
@@ -8212,6 +8228,11 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  hasown@2.0.4:
+    dependencies:
+      function-bind: 1.1.2
+    optional: true
+
   hdb@2.27.1:
     dependencies:
       iconv-lite: 0.7.0
@@ -8298,7 +8319,7 @@ snapshots:
   internal-slot@1.1.0:
     dependencies:
       es-errors: 1.3.0
-      hasown: 2.0.3
+      hasown: 2.0.4
       side-channel: 1.1.0
     optional: true
 
@@ -8414,7 +8435,7 @@ snapshots:
       call-bound: 1.0.4
       gopd: 1.2.0
       has-tostringtag: 1.0.2
-      hasown: 2.0.3
+      hasown: 2.0.4
     optional: true
 
   is-set@2.0.3:
@@ -9357,20 +9378,21 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@8.13.0(prettier@3.8.3)(typescript@6.0.3):
+  orval@8.14.0(prettier@3.8.3)(typescript@6.0.3):
     dependencies:
       '@commander-js/extra-typings': 14.0.0(commander@14.0.3)
-      '@orval/angular': 8.13.0(typescript@6.0.3)
-      '@orval/axios': 8.13.0(typescript@6.0.3)
-      '@orval/core': 8.13.0(typescript@6.0.3)
-      '@orval/fetch': 8.13.0(typescript@6.0.3)
-      '@orval/hono': 8.13.0(typescript@6.0.3)
-      '@orval/mcp': 8.13.0(typescript@6.0.3)
-      '@orval/mock': 8.13.0(typescript@6.0.3)
-      '@orval/query': 8.13.0(typescript@6.0.3)
-      '@orval/solid-start': 8.13.0(typescript@6.0.3)
-      '@orval/swr': 8.13.0(typescript@6.0.3)
-      '@orval/zod': 8.13.0(typescript@6.0.3)
+      '@orval/angular': 8.14.0(typescript@6.0.3)
+      '@orval/axios': 8.14.0(typescript@6.0.3)
+      '@orval/core': 8.14.0(typescript@6.0.3)
+      '@orval/effect': 8.14.0(typescript@6.0.3)
+      '@orval/fetch': 8.14.0(typescript@6.0.3)
+      '@orval/hono': 8.14.0(typescript@6.0.3)
+      '@orval/mcp': 8.14.0(typescript@6.0.3)
+      '@orval/mock': 8.14.0(typescript@6.0.3)
+      '@orval/query': 8.14.0(typescript@6.0.3)
+      '@orval/solid-start': 8.14.0(typescript@6.0.3)
+      '@orval/swr': 8.14.0(typescript@6.0.3)
+      '@orval/zod': 8.14.0(typescript@6.0.3)
       '@scalar/json-magic': 0.12.14
       '@scalar/openapi-parser': 0.28.5
       '@scalar/openapi-types': 0.8.0
@@ -10269,7 +10291,7 @@ snapshots:
       reflect.getprototypeof: 1.0.10
     optional: true
 
-  typed-array-length@1.0.7:
+  typed-array-length@1.0.8:
     dependencies:
       call-bind: 1.0.9
       for-each: 0.3.5
