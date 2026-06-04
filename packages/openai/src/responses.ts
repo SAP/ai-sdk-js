@@ -18,7 +18,8 @@ import type { WithoutModel } from './completions.js';
 
 type RequestOptions = Parameters<Responses['create']>[1];
 
-/** Wraps `Responses` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL.
+/**
+ * Wraps `Responses` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class SapResponses {
