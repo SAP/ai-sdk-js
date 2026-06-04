@@ -9,6 +9,8 @@ on:
       - main
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   update-lockfile:
     runs-on: ubuntu-latest

@@ -8,10 +8,14 @@ on:
         type: string
         required: false
         default: 'canary'
+
+permissions: {}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: write
 
     steps:
