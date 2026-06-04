@@ -1,13 +1,10 @@
 import nock from 'nock';
+import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { registerDestination } from '@sap-cloud-sdk/connectivity';
 import {
-  jest,
-  describe,
-  it,
-  expect,
-  beforeEach,
-  afterEach
-} from '@jest/globals';
-import { mockClientCredentialsGrantCall } from '../../../test-util/mock-http.js';
+  mockClientCredentialsGrantCall,
+  createDestinationTokens
+} from '../../../test-util/mock-http.js';
 import { createTokenProvider } from './token-provider.js';
 
 describe('createTokenProvider', () => {
@@ -31,38 +28,27 @@ describe('createTokenProvider', () => {
   });
 
   it('throws when no auth tokens are available on the destination', async () => {
-    const coreMod = await import('@sap-ai-sdk/core');
-    const spy = jest.spyOn(coreMod, 'getAiCoreDestination');
-    spy.mockResolvedValueOnce({
-      url: 'https://api.ai.ml.hana.ondemand.com'
-    } as any);
+    registerDestination({ name: 'no-token-dest', url: 'https://api.ai.ml.hana.ondemand.com' });
 
-    await expect(createTokenProvider()()).rejects.toThrow(
+    await expect(
+      createTokenProvider({ destinationName: 'no-token-dest', useCache: false })()
+    ).rejects.toThrow(
       'Could not retrieve authentication token from AI Core destination.'
     );
-    spy.mockRestore();
   });
 
   it('passes the destination to getAiCoreDestination', async () => {
-    const coreMod = await import('@sap-ai-sdk/core');
-    const spy = jest.spyOn(coreMod, 'getAiCoreDestination');
-    spy.mockResolvedValueOnce({
+    const customToken = 'custom-token-value';
+    registerDestination({
+      name: 'custom-dest',
       url: 'https://custom.example.com',
-      authTokens: [
-        {
-          value: 'custom-token',
-          type: 'bearer',
-          http_header: { key: 'authorization', value: 'Bearer custom-token' },
-          error: null
-        }
-      ]
-    } as any);
+      ...createDestinationTokens(customToken)
+    });
 
-    const destination = { url: 'https://custom.example.com' };
-    const token = await createTokenProvider(destination)();
+    const token = await createTokenProvider({
+      destinationName: 'custom-dest'
+    })();
 
-    expect(token).toBe('custom-token');
-    expect(spy).toHaveBeenCalledWith(destination);
-    spy.mockRestore();
+    expect(token).toBe(customToken);
   });
 });
