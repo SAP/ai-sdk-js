@@ -3,13 +3,11 @@ import { Embeddings } from 'openai/resources/embeddings';
 import { SapEmbeddings } from './embeddings.js';
 import type { OpenAI } from 'openai';
 
-const mockCreate = jest
-  .fn<any>()
-  .mockResolvedValue({
-    data: [],
-    model: '',
-    usage: { prompt_tokens: 0, total_tokens: 0 }
-  });
+const mockCreate = jest.fn<any>().mockResolvedValue({
+  data: [],
+  model: '',
+  usage: { prompt_tokens: 0, total_tokens: 0 }
+});
 
 jest
   .spyOn(Embeddings.prototype, 'create')
