@@ -28,10 +28,16 @@ describe('createTokenProvider', () => {
   });
 
   it('throws when no auth tokens are available on the destination', async () => {
-    registerDestination({ name: 'no-token-dest', url: 'https://api.ai.ml.hana.ondemand.com' });
+    registerDestination({
+      name: 'no-token-dest',
+      url: 'https://api.ai.ml.hana.ondemand.com'
+    });
 
     await expect(
-      createTokenProvider({ destinationName: 'no-token-dest', useCache: false })()
+      createTokenProvider({
+        destinationName: 'no-token-dest',
+        useCache: false
+      })()
     ).rejects.toThrow(
       'Could not retrieve authentication token from AI Core destination.'
     );
