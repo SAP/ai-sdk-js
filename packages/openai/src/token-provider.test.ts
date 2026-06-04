@@ -1,5 +1,12 @@
 import nock from 'nock';
-import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import {
+  jest,
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach
+} from '@jest/globals';
 import { mockClientCredentialsGrantCall } from '../../../test-util/mock-http.js';
 import { createTokenProvider } from './token-provider.js';
 
@@ -26,7 +33,9 @@ describe('createTokenProvider', () => {
   it('throws when no auth tokens are available on the destination', async () => {
     const coreMod = await import('@sap-ai-sdk/core');
     const spy = jest.spyOn(coreMod, 'getAiCoreDestination');
-    spy.mockResolvedValueOnce({ url: 'https://api.ai.ml.hana.ondemand.com' } as any);
+    spy.mockResolvedValueOnce({
+      url: 'https://api.ai.ml.hana.ondemand.com'
+    } as any);
 
     await expect(createTokenProvider()()).rejects.toThrow(
       'Could not retrieve authentication token from AI Core destination.'

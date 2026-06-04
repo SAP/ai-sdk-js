@@ -6,7 +6,9 @@ import type { OpenAI } from 'openai';
 const mockCreate = jest.fn<any>().mockResolvedValue({ choices: [] });
 const mockParse = jest.fn<any>().mockResolvedValue({ choices: [] });
 
-jest.spyOn(Completions.prototype, 'create').mockImplementation(mockCreate as any);
+jest
+  .spyOn(Completions.prototype, 'create')
+  .mockImplementation(mockCreate as any);
 jest.spyOn(Completions.prototype, 'parse').mockImplementation(mockParse as any);
 
 const fakeClient = {} as OpenAI;
@@ -19,7 +21,10 @@ describe('SapCompletions', () => {
         messages: [{ role: 'user', content: 'Hello' }]
       });
       expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '', messages: [{ role: 'user', content: 'Hello' }] }),
+        expect.objectContaining({
+          model: '',
+          messages: [{ role: 'user', content: 'Hello' }]
+        }),
         undefined
       );
     });
@@ -43,7 +48,10 @@ describe('SapCompletions', () => {
         messages: [{ role: 'user', content: 'Hello' }]
       });
       expect(mockParse).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '', messages: [{ role: 'user', content: 'Hello' }] }),
+        expect.objectContaining({
+          model: '',
+          messages: [{ role: 'user', content: 'Hello' }]
+        }),
         undefined
       );
     });
