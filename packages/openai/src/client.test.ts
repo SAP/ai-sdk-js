@@ -5,7 +5,7 @@ import {
   aiCoreDestination,
   mockDeploymentsList
 } from '../../../test-util/mock-http.js';
-import { SapAzureOpenAI } from './client.js';
+import { SapOpenAi } from './client.js';
 import { SapChat } from './chat.js';
 import { SapEmbeddings } from './embeddings.js';
 import { SapResponses } from './responses.js';
@@ -16,7 +16,7 @@ const defaultDeployment = {
   deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001`
 };
 
-describe('SapAzureOpenAI', () => {
+describe('SapOpenAi', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
     mockDeploymentsList(
@@ -31,7 +31,7 @@ describe('SapAzureOpenAI', () => {
 
   describe('createClient', () => {
     it('exposes chat, embeddings and responses namespaces', async () => {
-      const client = await SapAzureOpenAI.createClient({
+      const client = await SapOpenAi.createClient({
         deployment: 'gpt-4.1'
       });
 
@@ -41,7 +41,7 @@ describe('SapAzureOpenAI', () => {
     });
 
     it('accepts a bare model name string', async () => {
-      const client = await SapAzureOpenAI.createClient('gpt-4.1');
+      const client = await SapOpenAi.createClient('gpt-4.1');
 
       expect(client.chat).toBeInstanceOf(SapChat);
     });
@@ -62,7 +62,7 @@ describe('SapAzureOpenAI', () => {
         }
       );
 
-      const client = await SapAzureOpenAI.createClient({
+      const client = await SapOpenAi.createClient({
         deployment: { modelName: 'gpt-4.1', resourceGroup: 'my-rg' }
       });
 

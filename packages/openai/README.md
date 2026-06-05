@@ -43,17 +43,17 @@ $ npm install openai
 
 ### High-level client
 
-`SapAzureOpenAI` is the recommended entry point.
+`SapOpenAi` is the recommended entry point.
 It wraps `AzureOpenAI` from the `openai` package and exposes only the endpoints supported by SAP AI Core: `chat`, `embeddings`, and `responses`.
 
 ```ts
-import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
+import { SapOpenAi } from '@sap-ai-sdk/openai';
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
 // Chat completions
-const chatClient = await SapAzureOpenAI.createClient('gpt-5.4');
-// or const chatClient = await SapAzureOpenAI.createClient({ deployment: 'gpt-5.4' });
+const chatClient = await SapOpenAi.createClient('gpt-5.4');
+// or const chatClient = await SapOpenAi.createClient({ deployment: 'gpt-5.4' });
 const response = await chatClient.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
@@ -66,7 +66,7 @@ const parsed = await chatClient.chat.completions.parse({
 });
 
 // Embeddings
-const embeddingClient = await SapAzureOpenAI.createClient(
+const embeddingClient = await SapOpenAi.createClient(
   'text-embedding-3-small'
 );
 const embedding = await embeddingClient.embeddings.create({
@@ -74,7 +74,7 @@ const embedding = await embeddingClient.embeddings.create({
 });
 
 // Responses API
-const responsesClient = await SapAzureOpenAI.createClient('gpt-5.4');
+const responsesClient = await SapOpenAi.createClient('gpt-5.4');
 const resp = await responsesClient.responses.create({
   instructions: 'You are a helpful assistant.',
   input: 'What is the capital of France?'
@@ -86,19 +86,19 @@ An optional `resourceGroup` can be included in the object form.
 
 ```ts
 // By model name and version
-const client = await SapAzureOpenAI.createClient({
+const client = await SapOpenAi.createClient({
   deployment: { modelName: 'gpt-5.4', modelVersion: '2025-04-14' }
 });
 
 // By deployment ID
-const client = await SapAzureOpenAI.createClient({
+const client = await SapOpenAi.createClient({
   deployment: { deploymentId: 'd1234567890abcdef' }
 });
 ```
 
 ### Low-level config
 
-Use `createOpenAIConfig` if you need to instantiate `AzureOpenAI` directly (e.g. to access endpoints not exposed by `SapAzureOpenAI`):
+Use `createOpenAIConfig` if you need to instantiate `AzureOpenAI` directly (e.g. to access endpoints not exposed by `SapOpenAi`):
 
 ```ts
 import { AzureOpenAI } from 'openai';

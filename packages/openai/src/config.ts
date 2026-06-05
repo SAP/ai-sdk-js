@@ -7,7 +7,7 @@ import {
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
-import type { SapAzureOpenAIInput, SapAzureOpenAIOptions } from './types.js';
+import type { SapOpenAiInput, SapOpenAiOptions } from './types.js';
 
 const defaultApiVersion = '2024-10-21';
 
@@ -30,9 +30,9 @@ const defaultApiVersion = '2024-10-21';
  * ```
  */
 export async function createOpenAIConfig(
-  options: SapAzureOpenAIInput
+  options: SapOpenAiInput
 ): Promise<AzureClientOptions> {
-  const opts: SapAzureOpenAIOptions =
+  const opts: SapOpenAiOptions =
     typeof options === 'string' ? { deployment: options } : options;
   const { deployment, destination, apiVersion, clientType } = opts;
 

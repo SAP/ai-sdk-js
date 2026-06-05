@@ -1,4 +1,4 @@
-import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
+import { SapOpenAi } from '@sap-ai-sdk/openai';
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
@@ -7,7 +7,7 @@ import { z } from 'zod';
  * @returns The content of the response message.
  */
 export async function chatCompletion(): Promise<string | null> {
-  const client = await SapAzureOpenAI.createClient({
+  const client = await SapOpenAi.createClient({
     deployment: 'gpt-5.4'
   });
   const response = await client.chat.completions.create({
@@ -24,7 +24,7 @@ export async function chatCompletion(): Promise<string | null> {
 export async function chatCompletionStream(): Promise<
   AsyncIterable<{ choices: { delta: { content?: string | null } }[] }>
 > {
-  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
+  const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
   return client.chat.completions.create({
     messages: [
@@ -42,7 +42,7 @@ export async function chatCompletionStream(): Promise<
  * @returns The embedding vector for the input text.
  */
 export async function computeEmbedding(): Promise<number[]> {
-  const client = await SapAzureOpenAI.createClient({
+  const client = await SapOpenAi.createClient({
     deployment: 'text-embedding-3-small'
   });
 
@@ -58,7 +58,7 @@ export async function computeEmbedding(): Promise<number[]> {
  * @returns The output text from the response.
  */
 export async function responsesApi(): Promise<string | undefined> {
-  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
+  const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
   const response = await client.responses.create({
     instructions: 'You are a helpful assistant.',
@@ -75,7 +75,7 @@ export async function responsesApi(): Promise<string | undefined> {
 export async function responsesApiStream(): Promise<
   AsyncIterable<{ type: string; delta?: string }>
 > {
-  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
+  const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
   return client.responses.create({
     instructions: 'You are a helpful assistant.',
@@ -89,7 +89,7 @@ export async function responsesApiStream(): Promise<
  * @returns The follow-up response text, continuing from the first response.
  */
 export async function responsesApiStateful(): Promise<string | undefined> {
-  const client = await SapAzureOpenAI.createClient({
+  const client = await SapOpenAi.createClient({
     deployment: 'gpt-5.4-nano'
   });
 
@@ -111,7 +111,7 @@ export async function responsesApiStateful(): Promise<string | undefined> {
  * @returns The follow-up response text.
  */
 export async function responsesApiMultiTurn(): Promise<string | undefined> {
-  const client = await SapAzureOpenAI.createClient({
+  const client = await SapOpenAi.createClient({
     deployment: 'gpt-5.4-nano'
   });
 
@@ -141,7 +141,7 @@ const CapitalResponse = z.object({
  * @returns The parsed capital city.
  */
 export async function chatCompletionParse(): Promise<string | null> {
-  const client = await SapAzureOpenAI.createClient({
+  const client = await SapOpenAi.createClient({
     deployment: 'gpt-5.4-nano'
   });
 
@@ -158,7 +158,7 @@ export async function chatCompletionParse(): Promise<string | null> {
  * @returns The parsed capital city.
  */
 export async function responsesApiParse(): Promise<string | null> {
-  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
+  const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
   const response = await client.responses.parse({
     instructions: 'You are a helpful assistant.',

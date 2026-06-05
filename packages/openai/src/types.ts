@@ -17,7 +17,7 @@ export type SapModelName =
 /**
  * Options for creating a pre-configured Azure OpenAI client or config for SAP AI Core.
  */
-export interface SapAzureOpenAIOptions {
+export interface SapOpenAiOptions {
   /**
    * Model deployment: a model name string, `{ modelName, modelVersion? }`, or `{ deploymentId }`.
    * An optional `resourceGroup` can be included in the object form.
@@ -41,4 +41,4 @@ export interface SapAzureOpenAIOptions {
  * Options or a model name string for creating a pre-configured Azure OpenAI client or config.
  * Passing a string is shorthand for `{ deployment: modelName }`.
  */
-export type SapAzureOpenAIInput = SapAzureOpenAIOptions | SapModelName;
+export type SapOpenAiInput = SapOpenAiOptions | SapModelName;
