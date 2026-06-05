@@ -35,9 +35,7 @@ export class SapOpenAi {
    * });
    * ```
    */
-  static async createClient(
-    options: SapOpenAiInput
-  ): Promise<SapOpenAi> {
+  static async createClient(options: SapOpenAiInput): Promise<SapOpenAi> {
     const config = await createOpenAIConfig(options);
     return new SapOpenAi(new AzureOpenAI(config));
   }

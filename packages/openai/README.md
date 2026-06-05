@@ -66,9 +66,7 @@ const parsed = await chatClient.chat.completions.parse({
 });
 
 // Embeddings
-const embeddingClient = await SapOpenAi.createClient(
-  'text-embedding-3-small'
-);
+const embeddingClient = await SapOpenAi.createClient('text-embedding-3-small');
 const embedding = await embeddingClient.embeddings.create({
   input: 'Hello, world!'
 });
