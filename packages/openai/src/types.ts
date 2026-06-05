@@ -22,7 +22,7 @@ export interface SapAzureOpenAIOptions {
    * Model deployment: a model name string, `{ modelName, modelVersion? }`, or `{ deploymentId }`.
    * An optional `resourceGroup` can be included in the object form.
    */
-  modelDeployment: ModelDeployment<SapModelName>;
+  deployment: ModelDeployment<SapModelName>;
   /**
    * Optional custom destination. Defaults to the `aicore` service binding or `AICORE_SERVICE_KEY` env var.
    */
@@ -36,3 +36,9 @@ export interface SapAzureOpenAIOptions {
    */
   clientType?: string;
 }
+
+/**
+ * Options or a model name string for creating a pre-configured Azure OpenAI client or config.
+ * Passing a string is shorthand for `{ deployment: modelName }`.
+ */
+export type SapAzureOpenAIInput = SapAzureOpenAIOptions | SapModelName;

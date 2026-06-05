@@ -32,12 +32,18 @@ describe('SapAzureOpenAI', () => {
   describe('createClient', () => {
     it('exposes chat, embeddings and responses namespaces', async () => {
       const client = await SapAzureOpenAI.createClient({
-        modelDeployment: 'gpt-4.1'
+        deployment: 'gpt-4.1'
       });
 
       expect(client.chat).toBeInstanceOf(SapChat);
       expect(client.embeddings).toBeInstanceOf(SapEmbeddings);
       expect(client.responses).toBeInstanceOf(SapResponses);
+    });
+
+    it('accepts a bare model name string', async () => {
+      const client = await SapAzureOpenAI.createClient('gpt-4.1');
+
+      expect(client.chat).toBeInstanceOf(SapChat);
     });
 
     it('resolves with a custom resource group', async () => {
@@ -57,7 +63,7 @@ describe('SapAzureOpenAI', () => {
       );
 
       const client = await SapAzureOpenAI.createClient({
-        modelDeployment: { modelName: 'gpt-4.1', resourceGroup: 'my-rg' }
+        deployment: { modelName: 'gpt-4.1', resourceGroup: 'my-rg' }
       });
 
       expect(client.chat).toBeInstanceOf(SapChat);

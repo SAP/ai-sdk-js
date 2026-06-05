@@ -7,7 +7,7 @@ import {
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
-import type { SapAzureOpenAIOptions } from './types.js';
+import type { SapAzureOpenAIInput, SapAzureOpenAIOptions } from './types.js';
 
 const defaultApiVersion = '2024-10-21';
 
@@ -22,7 +22,7 @@ const defaultApiVersion = '2024-10-21';
  * import { AzureOpenAI } from 'openai';
  * import { createOpenAIConfig } from '@sap-ai-sdk/openai';
  *
- * const config = await createOpenAIConfig({ modelDeployment: 'gpt-5.4' });
+ * const config = await createOpenAIConfig('gpt-5.4');
  * const client = new AzureOpenAI(config);
  * await client.chat.completions.create({
  *   messages: [{ role: 'user', content: 'Hello!' }]
@@ -30,16 +30,18 @@ const defaultApiVersion = '2024-10-21';
  * ```
  */
 export async function createOpenAIConfig(
-  options: SapAzureOpenAIOptions
+  options: SapAzureOpenAIInput
 ): Promise<AzureClientOptions> {
-  const { modelDeployment, destination, apiVersion, clientType } = options;
+  const opts: SapAzureOpenAIOptions =
+    typeof options === 'string' ? { deployment: options } : options;
+  const { deployment, destination, apiVersion, clientType } = opts;
 
-  const resourceGroup = getResourceGroup(modelDeployment) ?? 'default';
+  const resourceGroup = getResourceGroup(deployment) ?? 'default';
 
-  const baseURL = isDeploymentIdConfig(modelDeployment)
+  const baseURL = isDeploymentIdConfig(deployment)
     ? (
         await DeploymentApi.deploymentGet(
-          modelDeployment.deploymentId,
+          deployment.deploymentId,
           {},
           { 'AI-Resource-Group': resourceGroup }
         ).execute(destination)
@@ -47,15 +49,15 @@ export async function createOpenAIConfig(
     : await resolveDeploymentUrl({
         scenarioId: 'foundation-models',
         executableId: 'azure-openai',
-        model: translateToFoundationModel(modelDeployment),
+        model: translateToFoundationModel(deployment),
         resourceGroup,
         destination
       });
 
   if (!baseURL) {
-    const identifier = isDeploymentIdConfig(modelDeployment)
-      ? `ID '${modelDeployment.deploymentId}'`
-      : `model '${translateToFoundationModel(modelDeployment).name}'`;
+    const identifier = isDeploymentIdConfig(deployment)
+      ? `ID '${deployment.deploymentId}'`
+      : `model '${translateToFoundationModel(deployment).name}'`;
     throw new Error(
       `Deployment for ${identifier} has no deployment URL. Ensure the deployment is running.`
     );

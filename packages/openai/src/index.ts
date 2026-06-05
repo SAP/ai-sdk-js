@@ -5,4 +5,8 @@ export { SapCompletions } from './completions.js';
 export { SapEmbeddings } from './embeddings.js';
 export { SapResponses } from './responses.js';
 export { createTokenProvider } from './token-provider.js';
-export type { SapAzureOpenAIOptions, SapModelName } from './types.js';
+export type {
+  SapAzureOpenAIOptions,
+  SapAzureOpenAIInput,
+  SapModelName
+} from './types.js';

@@ -29,7 +29,18 @@ describe('createOpenAIConfig', () => {
         defaultDeployment
       );
 
-      const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
+      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
+
+      expect(config.baseURL).toContain('inference/deployments/dep-001');
+    });
+
+    it('accepts a bare model name string', async () => {
+      mockDeploymentsList(
+        { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+        defaultDeployment
+      );
+
+      const config = await createOpenAIConfig('gpt-4.1');
 
       expect(config.baseURL).toContain('inference/deployments/dep-001');
     });
@@ -43,7 +54,7 @@ describe('createOpenAIConfig', () => {
         });
 
       const config = await createOpenAIConfig({
-        modelDeployment: { deploymentId: 'dep-123' }
+        deployment: { deploymentId: 'dep-123' }
       });
 
       expect(config.baseURL).toContain('dep-123');
@@ -55,7 +66,7 @@ describe('createOpenAIConfig', () => {
         .reply(200, { id: 'no-url-dep' });
 
       await expect(
-        createOpenAIConfig({ modelDeployment: { deploymentId: 'no-url-dep' } })
+        createOpenAIConfig({ deployment: { deploymentId: 'no-url-dep' } })
       ).rejects.toThrow(
         "Deployment for ID 'no-url-dep' has no deployment URL. Ensure the deployment is running."
       );
@@ -71,13 +82,13 @@ describe('createOpenAIConfig', () => {
     });
 
     it("defaults to '2024-10-21'", async () => {
-      const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
+      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
       expect(config.apiVersion).toBe('2024-10-21');
     });
 
     it('uses provided apiVersion', async () => {
       const config = await createOpenAIConfig({
-        modelDeployment: 'gpt-4.1',
+        deployment: 'gpt-4.1',
         apiVersion: '2025-01-01'
       });
       expect(config.apiVersion).toBe('2025-01-01');
@@ -91,7 +102,7 @@ describe('createOpenAIConfig', () => {
         defaultDeployment
       );
 
-      const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
+      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
 
       expect(
         (config.defaultHeaders as Record<string, string>)['ai-resource-group']
@@ -113,7 +124,7 @@ describe('createOpenAIConfig', () => {
       );
 
       const config = await createOpenAIConfig({
-        modelDeployment: { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' }
+        deployment: { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' }
       });
 
       expect(
@@ -131,7 +142,7 @@ describe('createOpenAIConfig', () => {
     });
 
     it("sets 'AI SDK JavaScript' when no clientType is given", async () => {
-      const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
+      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
       expect(
         (config.defaultHeaders as Record<string, string>)['ai-client-type']
       ).toBe('AI SDK JavaScript');
@@ -139,7 +150,7 @@ describe('createOpenAIConfig', () => {
 
     it('appends clientType to the header', async () => {
       const config = await createOpenAIConfig({
-        modelDeployment: 'gpt-4.1',
+        deployment: 'gpt-4.1',
         clientType: 'MyApp'
       });
       expect(
@@ -154,7 +165,7 @@ describe('createOpenAIConfig', () => {
       defaultDeployment
     );
 
-    const config = await createOpenAIConfig({ modelDeployment: 'gpt-4.1' });
+    const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
 
     expect(typeof config.azureADTokenProvider).toBe('function');
   });

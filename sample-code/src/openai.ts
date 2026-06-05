@@ -1,7 +1,6 @@
 import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
-import type { ResponseInput } from 'openai';
 
 /**
  * Ask gpt-5.4 about the capital of France.
@@ -9,7 +8,7 @@ import type { ResponseInput } from 'openai';
  */
 export async function chatCompletion(): Promise<string | null> {
   const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
+    deployment: 'gpt-5.4'
   });
   const response = await client.chat.completions.create({
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
@@ -25,9 +24,7 @@ export async function chatCompletion(): Promise<string | null> {
 export async function chatCompletionStream(): Promise<
   AsyncIterable<{ choices: { delta: { content?: string | null } }[] }>
 > {
-  const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
-  });
+  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
 
   return client.chat.completions.create({
     messages: [
@@ -46,7 +43,7 @@ export async function chatCompletionStream(): Promise<
  */
 export async function computeEmbedding(): Promise<number[]> {
   const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'text-embedding-3-small'
+    deployment: 'text-embedding-3-small'
   });
 
   const response = await client.embeddings.create({
@@ -61,9 +58,7 @@ export async function computeEmbedding(): Promise<number[]> {
  * @returns The output text from the response.
  */
 export async function responsesApi(): Promise<string | undefined> {
-  const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
-  });
+  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
 
   const response = await client.responses.create({
     instructions: 'You are a helpful assistant.',
@@ -80,9 +75,7 @@ export async function responsesApi(): Promise<string | undefined> {
 export async function responsesApiStream(): Promise<
   AsyncIterable<{ type: string; delta?: string }>
 > {
-  const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
-  });
+  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
 
   return client.responses.create({
     instructions: 'You are a helpful assistant.',
@@ -97,7 +90,7 @@ export async function responsesApiStream(): Promise<
  */
 export async function responsesApiStateful(): Promise<string | undefined> {
   const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
+    deployment: 'gpt-5.4-nano'
   });
 
   const first = await client.responses.create({
@@ -119,10 +112,10 @@ export async function responsesApiStateful(): Promise<string | undefined> {
  */
 export async function responsesApiMultiTurn(): Promise<string | undefined> {
   const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
+    deployment: 'gpt-5.4-nano'
   });
 
-  let context: ResponseInput = [
+  let context: any[] = [
     { role: 'user', content: 'What is the capital of France?' }
   ];
 
@@ -149,7 +142,7 @@ const CapitalResponse = z.object({
  */
 export async function chatCompletionParse(): Promise<string | null> {
   const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
+    deployment: 'gpt-5.4-nano'
   });
 
   const response = await client.chat.completions.parse({
@@ -165,9 +158,7 @@ export async function chatCompletionParse(): Promise<string | null> {
  * @returns The parsed capital city.
  */
 export async function responsesApiParse(): Promise<string | null> {
-  const client = await SapAzureOpenAI.createClient({
-    modelDeployment: 'gpt-5.4'
-  });
+  const client = await SapAzureOpenAI.createClient('gpt-5.4-nano');
 
   const response = await client.responses.parse({
     instructions: 'You are a helpful assistant.',

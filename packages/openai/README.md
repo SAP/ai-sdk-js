@@ -52,9 +52,8 @@ import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
 // Chat completions
-const chatClient = await SapAzureOpenAI.createClient({
-  modelDeployment: 'gpt-5.4'
-});
+const chatClient = await SapAzureOpenAI.createClient('gpt-5.4');
+// or const chatClient = await SapAzureOpenAI.createClient({ deployment: 'gpt-5.4' });
 const response = await chatClient.chat.completions.create({
   messages: [{ role: 'user', content: 'What is the capital of France?' }]
 });
@@ -67,35 +66,33 @@ const parsed = await chatClient.chat.completions.parse({
 });
 
 // Embeddings
-const embeddingClient = await SapAzureOpenAI.createClient({
-  modelDeployment: 'text-embedding-3-small'
-});
+const embeddingClient = await SapAzureOpenAI.createClient(
+  'text-embedding-3-small'
+);
 const embedding = await embeddingClient.embeddings.create({
   input: 'Hello, world!'
 });
 
 // Responses API
-const responsesClient = await SapAzureOpenAI.createClient({
-  modelDeployment: 'gpt-5.4'
-});
+const responsesClient = await SapAzureOpenAI.createClient('gpt-5.4');
 const resp = await responsesClient.responses.create({
   instructions: 'You are a helpful assistant.',
   input: 'What is the capital of France?'
 });
 ```
 
-`modelDeployment` accepts a model name string, `{ modelName, modelVersion? }`, or `{ deploymentId }`.
+`deployment` accepts a model name string, `{ modelName, modelVersion? }`, or `{ deploymentId }`.
 An optional `resourceGroup` can be included in the object form.
 
 ```ts
 // By model name and version
 const client = await SapAzureOpenAI.createClient({
-  modelDeployment: { modelName: 'gpt-5.4', modelVersion: '2025-04-14' }
+  deployment: { modelName: 'gpt-5.4', modelVersion: '2025-04-14' }
 });
 
 // By deployment ID
 const client = await SapAzureOpenAI.createClient({
-  modelDeployment: { deploymentId: 'd1234567890abcdef' }
+  deployment: { deploymentId: 'd1234567890abcdef' }
 });
 ```
 
@@ -107,7 +104,7 @@ Use `createOpenAIConfig` if you need to instantiate `AzureOpenAI` directly (e.g.
 import { AzureOpenAI } from 'openai';
 import { createOpenAIConfig } from '@sap-ai-sdk/openai';
 
-const config = await createOpenAIConfig({ modelDeployment: 'gpt-5.4' });
+const config = await createOpenAIConfig('gpt-5.4');
 const client = new AzureOpenAI(config);
 ```
 

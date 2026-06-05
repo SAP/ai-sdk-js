@@ -3,7 +3,7 @@ import { createOpenAIConfig } from './config.js';
 import { SapChat } from './chat.js';
 import { SapEmbeddings } from './embeddings.js';
 import { SapResponses } from './responses.js';
-import type { SapAzureOpenAIOptions } from './types.js';
+import type { SapAzureOpenAIInput } from './types.js';
 
 /**
  * A pre-configured client for SAP AI Core backed by the official `openai` package.
@@ -23,20 +23,20 @@ export class SapAzureOpenAI {
    * Resolves the deployment and sets up authentication automatically.
    * The `model` parameter is omitted from `chat.completions.create()`, `chat.completions.parse()`,
    * `embeddings.create()`, and `responses.create()` — SAP AI Core routes requests via the deployment URL.
-   * @param options - Options including model deployment, destination, API version, and client type.
+   * @param options - Options including model deployment, destination, API version, and client type. A plain model name string is accepted as shorthand for `{ deployment: modelName }`.
    * @returns A promise that resolves to a ready-to-use {@link SapAzureOpenAI} instance.
    * @example
    * ```ts
    * import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
    *
-   * const client = await SapAzureOpenAI.createClient({ modelDeployment: 'gpt-4.1' });
+   * const client = await SapAzureOpenAI.createClient('gpt-4.1');
    * await client.chat.completions.create({
    *   messages: [{ role: 'user', content: 'Hello!' }]
    * });
    * ```
    */
   static async createClient(
-    options: SapAzureOpenAIOptions
+    options: SapAzureOpenAIInput
   ): Promise<SapAzureOpenAI> {
     const config = await createOpenAIConfig(options);
     return new SapAzureOpenAI(new AzureOpenAI(config));
