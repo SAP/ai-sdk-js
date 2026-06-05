@@ -1,4 +1,5 @@
 import { getAiCoreDestination } from '@sap-ai-sdk/core';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
@@ -14,11 +15,14 @@ export function createTokenProvider(
 ): () => Promise<string> {
   return async function sapAiCoreTokenProvider() {
     const dest = await getAiCoreDestination(destination);
-    const token = dest.authTokens?.[0]?.value;
-    if (!token) {
-      throw new Error(
-        'Could not retrieve authentication token from AI Core destination. Ensure the destination, service binding, or AICORE_SERVICE_KEY (local testing only) is configured correctly.'
-      );
+    const authTokenFirst = dest.authTokens?.[0];
+    const token = authTokenFirst?.value;
+    const error = authTokenFirst?.error;
+    if (!token || error) {
+      const msg =
+        'Could not retrieve authentication token from AI Core destination. Ensure the destination, service binding, or AICORE_SERVICE_KEY (local testing only) is configured correctly.';
+
+      throw error ? new ErrorWithCause(msg, new Error(error)) : new Error(msg);
     }
     return token;
   };

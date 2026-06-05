@@ -1,6 +1,7 @@
 import { SapAzureOpenAI } from '@sap-ai-sdk/openai';
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
+import type { ResponseInput } from 'openai';
 
 /**
  * Ask gpt-5.4 about the capital of France.
@@ -121,7 +122,7 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
     modelDeployment: 'gpt-5.4'
   });
 
-  let context: any[] = [
+  let context: ResponseInput = [
     { role: 'user', content: 'What is the capital of France?' }
   ];
 
