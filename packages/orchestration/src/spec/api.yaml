@@ -936,7 +936,7 @@ components:
         message:
           type: string
           description: Some message created from the module
-          example: Input to LLM is masked successfully.
+          example: Masking module executed successfully on LLM input.
         data:
           type: object
           description: Additional data object from the module
@@ -1177,13 +1177,13 @@ components:
     PromptTemplatingModuleConfig:
       type: object
       required:
-        - prompt
         - model
       additionalProperties: false
       properties:
         prompt:
           description: >
             The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+            If omitted, messages_history must be provided in the request body.
           oneOf:
             - $ref: '#/components/schemas/Template'
             - $ref: '#/components/schemas/TemplateRef'
@@ -2293,6 +2293,8 @@ components:
       properties:
         config_ref:
           $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByIdConfigRef'
+        config:
+          $ref: '#/components/schemas/OrchestrationConfig'
         placeholder_values:
           type: object
           example:
@@ -2324,6 +2326,8 @@ components:
       properties:
         config_ref:
           $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef'
+        config:
+          $ref: '#/components/schemas/OrchestrationConfig'
         placeholder_values:
           type: object
           example:
