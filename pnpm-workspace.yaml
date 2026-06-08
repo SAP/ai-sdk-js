@@ -5,6 +5,7 @@ packages:
   - packages/foundation-models
   - packages/langchain
   - packages/orchestration
+  - packages/llm-batch
   - packages/prompt-registry
   - packages/rpt
   - sample-cap
@@ -21,6 +22,7 @@ allowBuilds:
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
+  - '@sap-ai-sdk/*'
   - '@sap-cloud-sdk/*'
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0

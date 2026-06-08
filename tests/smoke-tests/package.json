@@ -19,6 +19,7 @@
     "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
+    "@sap-ai-sdk/llm-batch": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-ai-sdk/rpt": "canary",

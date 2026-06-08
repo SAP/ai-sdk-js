@@ -1,3 +1,5 @@
+export * from './azure-openai-batch-input.js';
+export * from './azure-openai-batch-output.js';
 export * from './azure-openai-chat-client.js';
 export * from './azure-openai-chat-completion-response.js';
 export * from './azure-openai-chat-completion-stream-chunk-response.js';
