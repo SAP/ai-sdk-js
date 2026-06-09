@@ -2306,6 +2306,8 @@ components:
       properties:
         config_ref:
           $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByIdConfigRef'
+        config:
+          $ref: '#/components/schemas/OrchestrationConfig'
         placeholder_values:
           type: object
           example:
@@ -2337,6 +2339,8 @@ components:
       properties:
         config_ref:
           $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef'
+        config:
+          $ref: '#/components/schemas/OrchestrationConfig'
         placeholder_values:
           type: object
           example:
