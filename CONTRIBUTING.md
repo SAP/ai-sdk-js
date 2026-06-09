@@ -10,7 +10,19 @@ The owners of the repository will review your changes as soon as possible.
 
 ## Prerequisites
 
-Node.js 22 or 24 (LTS) is required. Node 20 reached end-of-life on 2026-04-30 and is no longer supported.
+Node.js 22 or 24 (LTS) is required.
+Node 20 reached end-of-life on 2026-04-30 and is no longer supported.
+
+### Using the SDK in a CommonJS project (experimental)
+
+This SDK is published as ESM. On Node 22+, CommonJS projects can load it directly with synchronous `require()` — no dynamic `import()` needed:
+
+```js
+const { AzureOpenAiChatClient } = require('@sap-ai-sdk/foundation-models');
+```
+
+> **Note:** This relies on Node 22's built-in `require(ESM)` support and is considered experimental.
+> On Node 20, use `await import('@sap-ai-sdk/foundation-models')` instead.
 
 ## Project Structure
 
