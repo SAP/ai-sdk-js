@@ -5,6 +5,13 @@ export type {
   AzureOpenAiEmbeddingParameters
 } from './azure-openai/index.js';
 
+export { createBatchInput, parseBatchOutput } from './azure-openai/index.js';
+export type {
+  BatchOutputLine,
+  BatchOutputError,
+  BatchOutputResponse
+} from './azure-openai/index.js';
+
 export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient,
