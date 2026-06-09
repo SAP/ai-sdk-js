@@ -9,7 +9,7 @@ const timeout = 30_000;
 const envFile = resolve(import.meta.dirname, '..', '.env');
 
 export default async function setup(): Promise<void> {
-  if (process.env.VCAP_SERVICES || process.env.CI) {
+  if (process.env.SMOKE_TEST_URL || process.env.CI) {
     return;
   }
 
