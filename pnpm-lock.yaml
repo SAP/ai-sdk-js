@@ -36,7 +36,7 @@ importers:
         version: 4.7.0
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.7.0
-        version: 4.7.0(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0)))(eslint@10.4.0(jiti@2.7.0))(prettier@3.8.3)(typescript@6.0.3)
+        version: 4.7.0(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0)))(eslint@10.4.1(jiti@2.7.0))(prettier@3.8.3)(typescript@6.0.3)
       '@sap-cloud-sdk/generator-common':
         specifier: ^4.7.0
         version: 4.7.0
@@ -65,8 +65,8 @@ importers:
         specifier: ^1.4.7
         version: 1.4.7
       eslint:
-        specifier: ^10.4.0
-        version: 10.4.0(jiti@2.7.0)
+        specifier: ^10.4.1
+        version: 10.4.1(jiti@2.7.0)
       glob:
         specifier: ^13.0.6
         version: 13.0.6
@@ -257,7 +257,7 @@ importers:
         version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^9.9.1
-        version: 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+        version: 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
       '@sap/xssec':
         specifier: ^4.13.0
         version: 4.13.0
@@ -267,7 +267,7 @@ importers:
     devDependencies:
       '@sap/cds-dk':
         specifier: ^9.9.2
-        version: 9.9.2(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+        version: 9.9.2(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
 
   sample-code:
     dependencies:
@@ -382,28 +382,28 @@ importers:
         version: 1.0.1(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.11.1-20260530013912.0
+        version: 2.11.1-20260605014653.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.11.1-20260530013912.0
+        version: 2.11.1-20260605014653.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.11.1-20260530013912.0
+        version: 2.11.1-20260605014653.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.11.1-20260530013912.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
+        version: 2.11.1-20260605014653.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
       '@sap-ai-sdk/llm-batch':
         specifier: canary
-        version: 2.11.1-20260608015029.0
+        version: 2.11.1-20260605014653.0
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.11.1-20260530013912.0
+        version: 2.11.1-20260605014653.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.11.1-20260530013912.0
+        version: 2.11.1-20260605014653.0
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.11.1-20260530013912.0
+        version: 2.11.1-20260605014653.0
       '@sap-cloud-sdk/util':
         specifier: '=4.7.0'
         version: 4.7.0
@@ -950,8 +950,8 @@ packages:
     resolution: {integrity: sha512-vqTaUEgxzm+YDSdElad6PiRoX4t8VGDjCtt05zn4nU810UIx/uNEV7/lZJ6KwFThKZOzOxzXy48da+No7HZaMw==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@eslint/plugin-kit@0.7.1':
-    resolution: {integrity: sha512-rZAP3aVgB9ds9KOeUSL+zZ21hPmo8dh6fnIFwRQj5EAZl9gzR7wxYbYXYysAM8CTqGmUGyp2S4kUdV17MnGuWQ==}
+  '@eslint/plugin-kit@0.7.2':
+    resolution: {integrity: sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
   '@exodus/schemasafe@1.3.0':
@@ -1291,37 +1291,37 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
-  '@sap-ai-sdk/ai-api@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-8LJvtU8euZtVTPuQNJ7UF6qq6qlQQPJWImJPnD9zSQjp4tcmglrqHcjNSDOGcCIochPYi5yh0Yq3DVlHy1mH1g==}
+  '@sap-ai-sdk/ai-api@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-pY6s2OMELYyDClbAOJP8AjXvs1Xghu3ma+8+lMxU2sWlpSSeGCDjgpIfEa+9PoXuQ5atS3afuVaRmA4b4E46+g==}
 
-  '@sap-ai-sdk/core@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-pD2iak/alkgCZw1/gq4WzU37wnUVLS6GTW+DkPR/gQ1TxqAHgBbfGzc12BC7MvCk2PJpRsIFLu6czR5TITQ/5w==}
+  '@sap-ai-sdk/core@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-pG+YbNHqF0nX0o2DNJHLiEJr1ZFKstHPP6A5ZMyZ7FnGdRwVMXOsfTt+X+UfGyr61tlx5yj2Hhz2V0O+EvJOLA==}
 
   '@sap-ai-sdk/core@2.11.1-20260608015029.0':
     resolution: {integrity: sha512-txeV8B11mYedPb9SicaKzh6sz4YvSU3XTcb7lzuX8fe6VVdx5ejAX9afZ19wGbduRkFVl2PYHrsBFz95acK1CA==}
 
-  '@sap-ai-sdk/document-grounding@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-tvoevSf+LIBWAaV8+7XJM0RVunVh5np9k8CCUZ9FGjb+0/tWlciAd9NBb4Bi+Pzk5MgXoRE6nA3V9GpBUQc2eg==}
+  '@sap-ai-sdk/document-grounding@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-Pl7xGv4iM+OzJzDdKTASrROiP8CimDib/OvEsI2KWEkP8wxQ7ZvJb12l7BkA0RE9gecisEMLp6weuRBflQRcqQ==}
 
-  '@sap-ai-sdk/foundation-models@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-XM8fnwNv6kD1+RfhOqnfyKg/A5Y3cJPV29i+lQR6vVsyj24Dnlzk6Emns6HRxO2wPpX8Y0v3uEAZQjppbYikWA==}
+  '@sap-ai-sdk/foundation-models@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-Yzy/uvZEK8z/ZgpOdApbESfufa6dBDpC++ijYlmADfSA+RFONYndMhMGbvvVOehehARwbLCCxp6y6Io1yGbV6A==}
 
-  '@sap-ai-sdk/langchain@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-WZwianeZvINf4VqtUBEUc91IJMBVtgLnCkaq3xVS6oZyzh2IL+/0L7keI/H7xbZAchxEyaCjKdHSO3yaYfa9AQ==}
+  '@sap-ai-sdk/langchain@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-FjdgQLk+YcqNUVExYg/JQO+4Kt2mZ5AdgH4qf5w43Na4N52oFWzul2Hpmif3uIClGmV7opMICQTdpYrhwGm2YA==}
     peerDependencies:
       '@langchain/core': ^1.1.16
 
-  '@sap-ai-sdk/llm-batch@2.11.1-20260608015029.0':
-    resolution: {integrity: sha512-c2pMhpjNuroKT1+ItL5D6fORRzjNF9NN/PK0omeWtnSusuXTDeUYvTuHvmZGiWtEKTo8gPPNpGvkxtfQfUSUqw==}
+  '@sap-ai-sdk/llm-batch@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-Su+xE32irpm2cPMm5TGCZOBkKq97H0W4FBxZquGdjNmQX1s0gxQgl/AdjgrStQBv37J98kuiyMFzAVSjhuymHw==}
 
-  '@sap-ai-sdk/orchestration@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-u3E79z7l6oZIaXw4zncFTis0lx3iEYd/zdQJaMxH/0in90foIzfnhqnbB+0F3a6jzsmeX7U69wRlyPjCD/5X6w==}
+  '@sap-ai-sdk/orchestration@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-a8qUpywjZz30hWLIJKBFv9r0ADhmYyTrUMu9T/Oe4GCpUSU/gDbN4egSX7BiFtXKQMzFY9QCF1QVc1TpWF7cCg==}
 
-  '@sap-ai-sdk/prompt-registry@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-GqdrvOmiDtcOlpkXvyCG2yvCYEX5ZVxgO0c3OdGEzUfhmiYMPmJNCiCnSz+K2BlpnQznOMMZ+LSuXFN5zKo1gw==}
+  '@sap-ai-sdk/prompt-registry@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-gsL7M0OY+H3Ny9Pzgbzhrk1pS7kvDDe0Vq10vLZbHBhKfeeiBulxVCkopBapeVKfKjdRLE8TeZujc+bWAr3dag==}
 
-  '@sap-ai-sdk/rpt@2.11.1-20260530013912.0':
-    resolution: {integrity: sha512-ASH60SfiZ+gXa82e4zA9f4Js8znz3df+dPVVwwU9iLamSjUVScUZxPgqMps19UFjUzMFG/FGXN2DMYEJneDczw==}
+  '@sap-ai-sdk/rpt@2.11.1-20260605014653.0':
+    resolution: {integrity: sha512-ucgDadwszWkhfsvB/GHL23pfVGVrqvK1WOum5dnKDPvjOGISQGYJNq+hWoMb6iAZvGi/HkjLlSzLCgrzYwitYQ==}
 
   '@sap-cloud-sdk/connectivity@4.7.0':
     resolution: {integrity: sha512-+EgdTpGi3ZomPuv/ab+bWQIxUfJvownW2MzdYSvX7hkEkmKJfod0O6ja2OqC+OJBLm1TE0JpbJ6AcCkqeZYuOg==}
@@ -2603,8 +2603,8 @@ packages:
     resolution: {integrity: sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  eslint@10.4.0:
-    resolution: {integrity: sha512-loXy6bWOoP3EP6JA7jo6p5jMpBJmHmsNZM5SFRHLdh1MGOPurMnNBj4ZlAbaqUAaQWbCr7jHV4P7gzAyryZWkQ==}
+  eslint@10.4.1:
+    resolution: {integrity: sha512-AyIKhnOBuOAdueD7RB3xB+YeAWScb9jHsJBgH2Hcde8InP5JYhqrRR6iTMHyTEwgENK54Cp44e4v8BwNhsuHuw==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     hasBin: true
     peerDependencies:
@@ -4229,8 +4229,8 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-is@19.2.6:
-    resolution: {integrity: sha512-XjBR15BhXuylgWGuslhDKqlSayuqvqBX91BP8pauG8kd1zY8kotkNWbXksTCNRarse4kuGbe2kIY05ARtwNIvw==}
+  react-is@19.2.7:
+    resolution: {integrity: sha512-kZFnouyVv7eP/Phmrlo9FK+zcAdriZJvzxXHF1Sl1P377WSGe2G/JxVolhTrB/jeV47lKImhNUsijjHAAbcl/A==}
 
   read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
@@ -5226,25 +5226,25 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@cap-js/asyncapi@1.0.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))':
+  '@cap-js/asyncapi@1.0.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))':
     dependencies:
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
 
-  '@cap-js/db-service@2.11.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))':
+  '@cap-js/db-service@2.11.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))':
     dependencies:
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
       generic-pool: 3.9.0
     optional: true
 
-  '@cap-js/openapi@1.4.2(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))':
+  '@cap-js/openapi@1.4.2(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))':
     dependencies:
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
       pluralize: 8.0.0
 
-  '@cap-js/sqlite@2.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))':
+  '@cap-js/sqlite@2.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))':
     dependencies:
-      '@cap-js/db-service': 2.11.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+      '@cap-js/db-service': 2.11.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
       better-sqlite3: 12.10.0
     optional: true
 
@@ -5514,9 +5514,9 @@ snapshots:
   '@esbuild/win32-x64@0.28.0':
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.1(eslint@10.4.0(jiti@2.7.0))':
+  '@eslint-community/eslint-utils@4.9.1(eslint@10.4.1(jiti@2.7.0))':
     dependencies:
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
@@ -5537,13 +5537,13 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
 
-  '@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))':
+  '@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))':
     optionalDependencies:
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
 
   '@eslint/object-schema@3.0.5': {}
 
-  '@eslint/plugin-kit@0.7.1':
+  '@eslint/plugin-kit@0.7.2':
     dependencies:
       '@eslint/core': 1.2.1
       levn: 0.4.1
@@ -6112,16 +6112,16 @@ snapshots:
   '@rtsao/scc@1.1.0':
     optional: true
 
-  '@sap-ai-sdk/ai-api@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/ai-api@2.11.1-20260605014653.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/core@2.11.1-20260605014653.0':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/http-client': 4.7.0
@@ -6141,17 +6141,17 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/document-grounding@2.11.1-20260605014653.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/foundation-models@2.11.1-20260605014653.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/http-client': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
@@ -6159,49 +6159,49 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.11.1-20260530013912.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))':
+  '@sap-ai-sdk/langchain@2.11.1-20260605014653.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))':
     dependencies:
       '@langchain/core': 1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
-      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/foundation-models': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/orchestration': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/foundation-models': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/orchestration': 2.11.1-20260605014653.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/llm-batch@2.11.1-20260608015029.0':
+  '@sap-ai-sdk/llm-batch@2.11.1-20260605014653.0':
     dependencies:
       '@sap-ai-sdk/core': 2.11.1-20260608015029.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/orchestration@2.11.1-20260605014653.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/prompt-registry': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/prompt-registry': 2.11.1-20260605014653.0
       '@sap-cloud-sdk/util': 4.7.0
       yaml: 2.9.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/prompt-registry@2.11.1-20260605014653.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
       zod: 4.4.3
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.11.1-20260530013912.0':
+  '@sap-ai-sdk/rpt@2.11.1-20260605014653.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.11.1-20260530013912.0
-      '@sap-ai-sdk/core': 2.11.1-20260530013912.0
+      '@sap-ai-sdk/ai-api': 2.11.1-20260605014653.0
+      '@sap-ai-sdk/core': 2.11.1-20260605014653.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/http-client': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
@@ -6224,19 +6224,19 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.7.0(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0)))(eslint@10.4.0(jiti@2.7.0))(prettier@3.8.3)(typescript@6.0.3)':
+  '@sap-cloud-sdk/eslint-config@4.7.0(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0)))(eslint@10.4.1(jiti@2.7.0))(prettier@3.8.3)(typescript@6.0.3)':
     dependencies:
-      '@eslint/js': 10.0.1(eslint@10.4.0(jiti@2.7.0))
-      '@stylistic/eslint-plugin': 3.1.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      '@typescript-eslint/parser': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      eslint: 10.4.0(jiti@2.7.0)
-      eslint-config-prettier: 10.1.8(eslint@10.4.0(jiti@2.7.0))
-      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0)))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0)))(eslint@10.4.0(jiti@2.7.0))
-      eslint-plugin-import-x: 4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0))
-      eslint-plugin-jsdoc: 62.9.0(eslint@10.4.0(jiti@2.7.0))
-      eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@10.4.0(jiti@2.7.0)))(eslint@10.4.0(jiti@2.7.0))(prettier@3.8.3)
-      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))
-      typescript-eslint: 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@eslint/js': 10.0.1(eslint@10.4.1(jiti@2.7.0))
+      '@stylistic/eslint-plugin': 3.1.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      eslint: 10.4.1(jiti@2.7.0)
+      eslint-config-prettier: 10.1.8(eslint@10.4.1(jiti@2.7.0))
+      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0)))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0)))(eslint@10.4.1(jiti@2.7.0))
+      eslint-plugin-import-x: 4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0))
+      eslint-plugin-jsdoc: 62.9.0(eslint@10.4.1(jiti@2.7.0))
+      eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@10.4.1(jiti@2.7.0)))(eslint@10.4.1(jiti@2.7.0))(prettier@3.8.3)
+      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))
+      typescript-eslint: 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
     transitivePeerDependencies:
       - '@types/eslint'
       - '@typescript-eslint/eslint-plugin'
@@ -6319,12 +6319,12 @@ snapshots:
 
   '@sap/cds-compiler@6.9.2': {}
 
-  '@sap/cds-dk@9.9.2(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))':
+  '@sap/cds-dk@9.9.2(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))':
     dependencies:
-      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
-      '@cap-js/openapi': 1.4.2(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
-      '@sap/cds-mtxs': 3.9.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))(hdb@2.27.1)
+      '@cap-js/asyncapi': 1.0.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))
+      '@cap-js/openapi': 1.4.2(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
+      '@sap/cds-mtxs': 3.9.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))(hdb@2.27.1)
       '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
       express: 5.2.1
       hdb: 2.27.1
@@ -6334,7 +6334,7 @@ snapshots:
       xml-js: 1.6.11
       yaml: 2.9.0
     optionalDependencies:
-      '@cap-js/sqlite': 2.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
+      '@cap-js/sqlite': 2.4.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))
     transitivePeerDependencies:
       - '@eslint/js'
       - '@sap/hana-client'
@@ -6344,24 +6344,24 @@ snapshots:
       - tar
       - utf-8-validate
 
-  '@sap/cds-fiori@2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))':
+  '@sap/cds-fiori@2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))':
     dependencies:
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
 
-  '@sap/cds-mtxs@3.9.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))(hdb@2.27.1)':
+  '@sap/cds-mtxs@3.9.3(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))(hdb@2.27.1)':
     dependencies:
-      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))
+      '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))
       '@sap/hdi-deploy': 5.6.1(hdb@2.27.1)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
       - supports-color
 
-  '@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0)))':
+  '@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0)))':
     dependencies:
-      '@eslint/js': 10.0.1(eslint@10.4.0(jiti@2.7.0))
+      '@eslint/js': 10.0.1(eslint@10.4.1(jiti@2.7.0))
       '@sap/cds-compiler': 6.9.2
-      '@sap/cds-fiori': 2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.0(jiti@2.7.0))))
+      '@sap/cds-fiori': 2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.4.1(jiti@2.7.0))))
       express: 5.2.1
       yaml: 2.9.0
     transitivePeerDependencies:
@@ -6475,10 +6475,10 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stylistic/eslint-plugin@3.1.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)':
+  '@stylistic/eslint-plugin@3.1.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/utils': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      eslint: 10.4.0(jiti@2.7.0)
+      '@typescript-eslint/utils': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      eslint: 10.4.1(jiti@2.7.0)
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
@@ -6644,15 +6644,15 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)':
+  '@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
       '@typescript-eslint/scope-manager': 8.60.0
-      '@typescript-eslint/type-utils': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/type-utils': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
       '@typescript-eslint/visitor-keys': 8.60.0
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       ignore: 7.0.5
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(typescript@6.0.3)
@@ -6660,14 +6660,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)':
+  '@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.60.0
       '@typescript-eslint/types': 8.60.0
       '@typescript-eslint/typescript-estree': 8.60.0(typescript@6.0.3)
       '@typescript-eslint/visitor-keys': 8.60.0
       debug: 4.4.3
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
@@ -6690,13 +6690,13 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  '@typescript-eslint/type-utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)':
+  '@typescript-eslint/type-utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/types': 8.60.0
       '@typescript-eslint/typescript-estree': 8.60.0(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
       debug: 4.4.3
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -6719,13 +6719,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)':
+  '@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.0(jiti@2.7.0))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.1(jiti@2.7.0))
       '@typescript-eslint/scope-manager': 8.60.0
       '@typescript-eslint/types': 8.60.0
       '@typescript-eslint/typescript-estree': 8.60.0(typescript@6.0.3)
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
@@ -7604,9 +7604,9 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-prettier@10.1.8(eslint@10.4.0(jiti@2.7.0)):
+  eslint-config-prettier@10.1.8(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
 
   eslint-formatter-pretty@4.1.0:
     dependencies:
@@ -7635,10 +7635,10 @@ snapshots:
       - supports-color
     optional: true
 
-  eslint-import-resolver-typescript@4.4.4(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0)))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0)))(eslint@10.4.0(jiti@2.7.0)):
+  eslint-import-resolver-typescript@4.4.4(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0)))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0)))(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       debug: 4.4.3
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       eslint-import-context: 0.1.9(unrs-resolver@1.12.2)
       get-tsconfig: 4.14.0
       is-bun-module: 2.0.0
@@ -7646,29 +7646,29 @@ snapshots:
       tinyglobby: 0.2.16
       unrs-resolver: 1.12.2
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))
-      eslint-plugin-import-x: 4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))
+      eslint-plugin-import-x: 4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.13.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0)):
+  eslint-module-utils@2.13.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      eslint: 10.4.0(jiti@2.7.0)
+      '@typescript-eslint/parser': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      eslint: 10.4.1(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
     transitivePeerDependencies:
       - supports-color
     optional: true
 
-  eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0)):
+  eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       '@package-json/types': 0.0.12
       '@typescript-eslint/types': 8.60.0
       comment-parser: 1.4.7
       debug: 4.4.3
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       eslint-import-context: 0.1.9(unrs-resolver@1.12.2)
       is-glob: 4.0.3
       minimatch: 10.2.5
@@ -7676,12 +7676,12 @@ snapshots:
       stable-hash-x: 0.2.0
       unrs-resolver: 1.12.2
     optionalDependencies:
-      '@typescript-eslint/utils': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
       eslint-import-resolver-node: 0.3.10
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -7690,9 +7690,9 @@ snapshots:
       array.prototype.flatmap: 1.3.3
       debug: 3.2.7
       doctrine: 2.1.0
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.13.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.0(jiti@2.7.0))
+      eslint-module-utils: 2.13.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@10.4.1(jiti@2.7.0))
       hasown: 2.0.4
       is-core-module: 2.16.2
       is-glob: 4.0.3
@@ -7704,14 +7704,14 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
     optional: true
 
-  eslint-plugin-jsdoc@62.9.0(eslint@10.4.0(jiti@2.7.0)):
+  eslint-plugin-jsdoc@62.9.0(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
       '@es-joy/jsdoccomment': 0.86.0
       '@es-joy/resolve.exports': 1.2.0
@@ -7719,7 +7719,7 @@ snapshots:
       comment-parser: 1.4.6
       debug: 4.4.3
       escape-string-regexp: 4.0.0
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       espree: 11.2.0
       esquery: 1.7.0
       html-entities: 2.6.0
@@ -7731,20 +7731,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@10.4.0(jiti@2.7.0)))(eslint@10.4.0(jiti@2.7.0))(prettier@3.8.3):
+  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@10.4.1(jiti@2.7.0)))(eslint@10.4.1(jiti@2.7.0))(prettier@3.8.3):
     dependencies:
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
       prettier: 3.8.3
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.12
     optionalDependencies:
-      eslint-config-prettier: 10.1.8(eslint@10.4.0(jiti@2.7.0))
+      eslint-config-prettier: 10.1.8(eslint@10.4.1(jiti@2.7.0))
 
-  eslint-plugin-unused-imports@4.4.1(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0)):
+  eslint-plugin-unused-imports@4.4.1(@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0)):
     dependencies:
-      eslint: 10.4.0(jiti@2.7.0)
+      eslint: 10.4.1(jiti@2.7.0)
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/eslint-plugin': 8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
 
   eslint-rule-docs@1.1.235: {}
 
@@ -7761,14 +7761,14 @@ snapshots:
 
   eslint-visitor-keys@5.0.1: {}
 
-  eslint@10.4.0(jiti@2.7.0):
+  eslint@10.4.1(jiti@2.7.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.0(jiti@2.7.0))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.1(jiti@2.7.0))
       '@eslint-community/regexpp': 4.12.2
       '@eslint/config-array': 0.23.5
       '@eslint/config-helpers': 0.6.0
       '@eslint/core': 1.2.1
-      '@eslint/plugin-kit': 0.7.1
+      '@eslint/plugin-kit': 0.7.2
       '@humanfs/node': 0.16.8
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.4.3
@@ -9623,7 +9623,7 @@ snapshots:
       '@jest/schemas': 30.4.1
       ansi-styles: 5.2.0
       react-is-18: react-is@18.3.1
-      react-is-19: react-is@19.2.6
+      react-is-19: react-is@19.2.7
 
   pretty-ms@9.3.0:
     dependencies:
@@ -9679,7 +9679,7 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-is@19.2.6: {}
+  react-is@19.2.7: {}
 
   read-pkg-up@7.0.1:
     dependencies:
@@ -10332,13 +10332,13 @@ snapshots:
       typescript: 6.0.3
       yaml: 2.9.0
 
-  typescript-eslint@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3):
+  typescript-eslint@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      '@typescript-eslint/parser': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/eslint-plugin': 8.60.0(@typescript-eslint/parser@8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3))(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
       '@typescript-eslint/typescript-estree': 8.60.0(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.60.0(eslint@10.4.0(jiti@2.7.0))(typescript@6.0.3)
-      eslint: 10.4.0(jiti@2.7.0)
+      '@typescript-eslint/utils': 8.60.0(eslint@10.4.1(jiti@2.7.0))(typescript@6.0.3)
+      eslint: 10.4.1(jiti@2.7.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
