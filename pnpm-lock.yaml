@@ -392,6 +392,9 @@ importers:
       '@sap-ai-sdk/langchain':
         specifier: canary
         version: 2.11.1-20260530013912.0(@langchain/core@1.1.48(openai@6.39.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
+      '@sap-ai-sdk/llm-batch':
+        specifier: canary
+        version: 2.11.1-20260608015029.0
       '@sap-ai-sdk/orchestration':
         specifier: canary
         version: 2.11.1-20260530013912.0
@@ -1294,6 +1297,9 @@ packages:
   '@sap-ai-sdk/core@2.11.1-20260530013912.0':
     resolution: {integrity: sha512-pD2iak/alkgCZw1/gq4WzU37wnUVLS6GTW+DkPR/gQ1TxqAHgBbfGzc12BC7MvCk2PJpRsIFLu6czR5TITQ/5w==}
 
+  '@sap-ai-sdk/core@2.11.1-20260608015029.0':
+    resolution: {integrity: sha512-txeV8B11mYedPb9SicaKzh6sz4YvSU3XTcb7lzuX8fe6VVdx5ejAX9afZ19wGbduRkFVl2PYHrsBFz95acK1CA==}
+
   '@sap-ai-sdk/document-grounding@2.11.1-20260530013912.0':
     resolution: {integrity: sha512-tvoevSf+LIBWAaV8+7XJM0RVunVh5np9k8CCUZ9FGjb+0/tWlciAd9NBb4Bi+Pzk5MgXoRE6nA3V9GpBUQc2eg==}
 
@@ -1304,6 +1310,9 @@ packages:
     resolution: {integrity: sha512-WZwianeZvINf4VqtUBEUc91IJMBVtgLnCkaq3xVS6oZyzh2IL+/0L7keI/H7xbZAchxEyaCjKdHSO3yaYfa9AQ==}
     peerDependencies:
       '@langchain/core': ^1.1.16
+
+  '@sap-ai-sdk/llm-batch@2.11.1-20260608015029.0':
+    resolution: {integrity: sha512-c2pMhpjNuroKT1+ItL5D6fORRzjNF9NN/PK0omeWtnSusuXTDeUYvTuHvmZGiWtEKTo8gPPNpGvkxtfQfUSUqw==}
 
   '@sap-ai-sdk/orchestration@2.11.1-20260530013912.0':
     resolution: {integrity: sha512-u3E79z7l6oZIaXw4zncFTis0lx3iEYd/zdQJaMxH/0in90foIzfnhqnbB+0F3a6jzsmeX7U69wRlyPjCD/5X6w==}
@@ -6122,6 +6131,16 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-ai-sdk/core@2.11.1-20260608015029.0':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 4.7.0
+      '@sap-cloud-sdk/http-client': 4.7.0
+      '@sap-cloud-sdk/openapi': 4.7.0
+      '@sap-cloud-sdk/util': 4.7.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@sap-ai-sdk/document-grounding@2.11.1-20260530013912.0':
     dependencies:
       '@sap-ai-sdk/core': 2.11.1-20260530013912.0
@@ -6149,6 +6168,13 @@ snapshots:
       '@sap-ai-sdk/orchestration': 2.11.1-20260530013912.0
       '@sap-cloud-sdk/connectivity': 4.7.0
       '@sap-cloud-sdk/util': 4.7.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/llm-batch@2.11.1-20260608015029.0':
+    dependencies:
+      '@sap-ai-sdk/core': 2.11.1-20260608015029.0
     transitivePeerDependencies:
       - debug
       - supports-color
