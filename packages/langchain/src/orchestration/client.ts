@@ -462,31 +462,28 @@ export class OrchestrationClient extends BaseChatModel<
     };
 
     if (tools.length) {
-      config.promptTemplating.prompt ??= Object.create(null);
+      config.promptTemplating.prompt ??= {};
       if (
         typeof config.promptTemplating.prompt === 'object' &&
         !isTemplateRef(config.promptTemplating.prompt)
       ) {
         // Copy before mutating
-        config.promptTemplating.prompt = Object.assign(
-          Object.create(null),
-          config.promptTemplating.prompt,
-          {
-            tools: [
-              // Preserve existing tools configured in the templating module
-              ...(config.promptTemplating.prompt.tools || []),
-              // Add new tools set with LangChain `bindTools()` or `invoke()` methods
-              ...tools.map(t => mapToolToChatCompletionTool(t))
-            ]
-          }
-        );
+        config.promptTemplating.prompt = {
+          ...config.promptTemplating.prompt,
+          tools: [
+            // Preserve existing tools configured in the templating module
+            ...(config.promptTemplating.prompt.tools || []),
+            // Add new tools set with LangChain `bindTools()` or `invoke()` methods
+            ...tools.map(t => mapToolToChatCompletionTool(t))
+          ]
+        };
       }
     }
 
     // Handle responseFormat for structured output
     if (responseFormat) {
       // Ensure prompt object exists
-      config.promptTemplating.prompt ??= Object.create(null);
+      config.promptTemplating.prompt ??= {};
 
       // Check if prompt is a TemplateRef
       if (
@@ -502,13 +499,10 @@ export class OrchestrationClient extends BaseChatModel<
       // Add responseFormat to prompt
       if (typeof config.promptTemplating.prompt === 'object') {
         // Copy before mutating
-        config.promptTemplating.prompt = Object.assign(
-          Object.create(null),
-          config.promptTemplating.prompt,
-          {
-            response_format: responseFormat
-          }
-        );
+        config.promptTemplating.prompt = {
+          ...config.promptTemplating.prompt,
+          response_format: responseFormat
+        };
       }
     }
 
