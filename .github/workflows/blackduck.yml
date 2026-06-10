@@ -62,8 +62,8 @@ jobs:
           BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
           BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
           DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
-          DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
-          DETECT_PIP_ONLY_PROJECT_TREE: 'true'
+          # DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
+          # DETECT_PIP_ONLY_PROJECT_TREE: 'true'
         run: |
           bash ./detect.sh \
             --blackduck.url="https://${BLACKDUCK_SERVER}" \
