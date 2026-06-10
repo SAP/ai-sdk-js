@@ -42,7 +42,6 @@ const { AzureOpenAiChatClient } = require('@sap-ai-sdk/foundation-models');
 ```
 
 > **Note:** This relies on Node 22's built-in `require(ESM)` support and is considered experimental.
-> On Node 20, use `await import('@sap-ai-sdk/foundation-models')` instead.
 
 ## Documentation
 
