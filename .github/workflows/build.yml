@@ -108,10 +108,16 @@ jobs:
             echo "Commit author='$LAST_AUTHOR' verified='$VERIFIED': skipping auto-merge"
             exit 0
           fi
+          MERGED=false
           for i in $(seq 1 3); do
             echo "Attempt $i: enabling auto-merge for $GITHUB_SHA"
             if gh pr merge --auto --squash --match-head-commit "$GITHUB_SHA" "$PR_URL"; then
+              MERGED=true
               break
             fi
             sleep 30
           done
+          if [[ "$MERGED" != "true" ]]; then
+            echo "All attempts to enable auto-merge failed"
+            exit 1
+          fi
