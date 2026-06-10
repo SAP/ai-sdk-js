@@ -1,0 +1,99 @@
+name: blackduck-scan
+
+# Required configuration (set in repo/org "Secrets and variables → Actions"):
+#
+#   Variables (vars):
+#     - BLACKDUCK_SERVER          e.g. sap.blackducksoftware.com
+#     - BLACKDUCK_DISTRIBUTION    e.g. SaaS
+#     - BLACKDUCK_PROJECT_NAME    e.g. sap-ai-sdk-js / sap-ai-sdk-java / sap-ai-sdk-python
+#     - BLACKDUCK_PROJECT_GROUP   e.g. "SAP Cloud SDK for AI (JS)"
+#
+#   Secrets:
+#     - BLACKDUCK_API_TOKEN
+#     - SLACK_WEBHOOK             (optional, for failure notifications)
+
+on:
+  schedule:
+    # Daily nightly scan of the main branch at 03:00 UTC.
+    - cron: '0 3 * * *'
+  # Manual runs: use the "Run workflow" UI to pick the branch (via the
+  # standard GitHub branch selector). The selected branch is checked out
+  # and used as the project version unless an explicit version is provided.
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to scan (defaults to main).'
+        required: false
+        type: string
+
+permissions: {}
+
+jobs:
+  blackduck-scan:
+    name: Black Duck Detect Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 15
+
+    steps:
+      - name: Determine project version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.branch }}" ]; then
+            VERSION="${{ github.event.inputs.branch }}"
+          else
+            VERSION="main"
+          fi
+          echo "Black Duck project version: $VERSION"
+          echo "project_version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository at project version
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ steps.version.outputs.project_version }}
+
+      - name: Download Black Duck Detect script
+        run: curl --silent --fail -O https://detect.blackduck.com/detect.sh
+
+      - name: Run Black Duck Detect scan
+        env:
+          BLACKDUCK_SERVER: ${{ vars.BLACKDUCK_SERVER }}
+          BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
+          BLACKDUCK_DISTRIBUTION: ${{ vars.BLACKDUCK_DISTRIBUTION }}
+          BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
+          BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
+          BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
+          # Exclude non-production / test dependencies from the scan.
+          # These DETECT_* env vars are picked up by detect.sh automatically
+          # and are safe no-ops if the corresponding detector is not used,
+          # which keeps this workflow generic across JS / Java / Python repos.
+          DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
+          DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
+          DETECT_PIP_ONLY_PROJECT_TREE: 'true'
+        run: |
+          bash ./detect.sh \
+            --blackduck.url="https://${BLACKDUCK_SERVER}" \
+            --blackduck.api.token="${BLACKDUCK_API_TOKEN}" \
+            --detect.project.version.distribution="${BLACKDUCK_DISTRIBUTION}" \
+            --detect.blackduck.signature.scanner.memory=4096 \
+            --detect.timeout=6000 \
+            --detect.project.user.groups="${BLACKDUCK_PROJECT_GROUP}" \
+            --detect.project.name="${BLACKDUCK_PROJECT_NAME}" \
+            --detect.project.version.name="${BLACKDUCK_PROJECT_VERSION}" \
+            --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
+            --detect.source.path=. \
+            --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage'
+
+      - name: Slack notification on failure
+        if: ${{ failure() || cancelled() }}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: AI SDK Pipeline Bot
+          SLACK_TITLE: 'Black Duck scan ${{ job.status }}'
+          SLACK_MESSAGE: 'Black Duck scan failed for ${{ github.repository }} (version ${{ steps.version.outputs.project_version }}).'
+          MSG_MINIMAL: event,actions url
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MSG_AUTHOR: ' '
+          SLACK_ICON: https://sap.github.io/cloud-sdk/img/logo.png
+        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
