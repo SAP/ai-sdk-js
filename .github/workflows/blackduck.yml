@@ -61,10 +61,11 @@ jobs:
           BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
           BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
           BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
-          # DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
-          # DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
-          # DETECT_PIP_ONLY_PROJECT_TREE: 'true'
+          DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
+          DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
+          DETECT_PIP_ONLY_PROJECT_TREE: 'true'
         run: |
+          mkdir -p ./blackduck-output
           bash ./detect.sh \
             --blackduck.url="https://${BLACKDUCK_SERVER}" \
             --blackduck.api.token="${BLACKDUCK_API_TOKEN}" \
@@ -76,15 +77,31 @@ jobs:
             --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
             --detect.source.path=. \
             --detect.sarif.report.enabled=true \
-            --detect.scan.output.path=./blackduck-output \
+            --detect.sarif.report.output.dir=./blackduck-output \
             --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0"
             # --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage' \
 
-      - name: Upload SARIF report to GitHub Security
+      - name: Locate SARIF report
         if: ${{ !cancelled() }}
+        id: sarif
+        run: |
+          echo "Listing SARIF output directory:"
+          ls -la ./blackduck-output || true
+          SARIF_FILE=$(find ./blackduck-output -type f -name '*.sarif*' | head -n 1)
+          if [ -z "$SARIF_FILE" ]; then
+            echo "No SARIF file produced by Black Duck Detect."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found SARIF file: $SARIF_FILE"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "file=$SARIF_FILE" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload SARIF report to GitHub Security
+        if: ${{ !cancelled() && steps.sarif.outputs.found == 'true' }}
         uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
-          sarif_file: ./blackduck-output
+          sarif_file: ${{ steps.sarif.outputs.file }}
           category: blackduck
       - name: Slack notification on failure
         if: ${{ failure() || cancelled() }}
