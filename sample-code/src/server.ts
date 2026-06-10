@@ -107,8 +107,9 @@ const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-server.on('error', error => {
-  throw error;
+server.on('error', (error: Error) => {
+  console.error(`Failed to start server on port ${port}`, error);
+  process.exit(1);
 });
 
 app.get(['/', '/health'], (req, res) => {
