@@ -61,7 +61,7 @@ jobs:
           BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
           BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
           BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
-          DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
+          # DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
           # DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
           # DETECT_PIP_ONLY_PROJECT_TREE: 'true'
         run: |
@@ -73,11 +73,11 @@ jobs:
             --detect.project.user.groups="${BLACKDUCK_PROJECT_GROUP}" \
             --detect.project.name="${BLACKDUCK_PROJECT_NAME}" \
             --detect.project.version.name="${BLACKDUCK_PROJECT_VERSION}" \
-            --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
-            --detect.source.path=. \
-            --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage' \
-            --detect.sarif.report.enabled=true \
-            --detect.scan.output.path=./blackduck-output
+            --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}"
+            # --detect.source.path=. \
+            # --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage' \
+            # --detect.sarif.report.enabled=true \
+            # --detect.scan.output.path=./blackduck-output
       - name: Upload SARIF report to GitHub Security
         if: ${{ !cancelled() }}
         uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
