@@ -12,11 +12,11 @@ name: blackduck-scan
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: "0 3 * * *"
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to scan (defaults to main).'
+        description: "Branch to scan (defaults to main)."
         required: false
         type: string
 
@@ -28,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      # Required to upload the Black Duck SARIF report to the GitHub
+      # Advanced Security "Code scanning" tab.
+      security-events: write
     timeout-minutes: 15
 
     steps:
@@ -50,30 +53,32 @@ jobs:
           ref: ${{ steps.version.outputs.project_version }}
           persist-credentials: false
 
-      - name: Download Black Duck Detect script
-        run: curl --silent --fail -O https://detect.blackduck.com/detect.sh
-
-      - name: Run Black Duck Detect scan
+      - name: Run Black Duck SCA scan
+        uses: blackduck-inc/black-duck-security-scan@659a0742e793a093377fab3117b0d90f23b04bfa # v2.9.0
         env:
-          BLACKDUCK_SERVER: sap.blackducksoftware.com
-          BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
-          BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
-          BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
-          BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
           DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
           DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
-          DETECT_PIP_ONLY_PROJECT_TREE: 'true'
-        run: |
-          bash ./detect.sh \
-            --blackduck.url="https://${BLACKDUCK_SERVER}" \
-            --blackduck.api.token="${BLACKDUCK_API_TOKEN}" \
-            --detect.blackduck.signature.scanner.memory=4096 \
-            --detect.timeout=6000 \
-            --detect.project.user.groups="${BLACKDUCK_PROJECT_GROUP}" \
-            --detect.project.name="${BLACKDUCK_PROJECT_NAME}" \
-            --detect.project.version.name="${BLACKDUCK_PROJECT_VERSION}" \
-            --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
-            --detect.source.path=. \
+          DETECT_PIP_ONLY_PROJECT_TREE: "true"
+        with:
+          blackducksca_url: https://sap.blackducksoftware.com
+          blackducksca_token: ${{ secrets.BLACKDUCK_API_TOKEN }}
+          blackducksca_scan_full: true
+          blackducksca_scan_failure_severities: 'BLOCKER,CRITICAL'
+          # Generate a SARIF report and upload it to GitHub Advanced Security
+          # so findings appear in the repo "Code scanning" tab.
+          blackducksca_reports_sarif_create: true
+          blackducksca_reports_sarif_severities: 'CRITICAL,HIGH'
+          blackducksca_reports_sarif_groupSCAIssues: true
+          blackducksca_upload_sarif_report: true
+          # Required by the action for SARIF upload to the GitHub API.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          detect_args: >-
+            --detect.project.name="${{ vars.BLACKDUCK_PROJECT_NAME }}"
+            --detect.project.version.name="${{ steps.version.outputs.project_version }}"
+            --detect.project.user.groups="${{ vars.BLACKDUCK_PROJECT_GROUP }}"
+            --detect.code.location.name="${{ vars.BLACKDUCK_PROJECT_NAME }}/${{ steps.version.outputs.project_version }}"
+            --detect.blackduck.signature.scanner.memory=4096
+            --detect.timeout=6000
             --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage'
 
       - name: Slack notification on failure
@@ -81,10 +86,10 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: AI SDK Pipeline Bot
-          SLACK_TITLE: 'Black Duck scan ${{ job.status }}'
-          SLACK_MESSAGE: 'Black Duck scan failed for ${{ github.repository }} (version ${{ steps.version.outputs.project_version }}).'
+          SLACK_TITLE: "Black Duck scan ${{ job.status }}"
+          SLACK_MESSAGE: "Black Duck scan failed for ${{ github.repository }} (version ${{ steps.version.outputs.project_version }})."
           MSG_MINIMAL: event,actions url
           SLACK_COLOR: ${{ job.status }}
-          SLACK_MSG_AUTHOR: ' '
+          SLACK_MSG_AUTHOR: " "
           SLACK_ICON: https://sap.github.io/cloud-sdk/img/logo.png
         uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
