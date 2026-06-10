@@ -81,6 +81,14 @@ import {
   deletePromptTemplate
 } from './prompt-registry.js';
 import {
+  listBatches,
+  createBatch,
+  getBatchById,
+  getBatchStatus,
+  cancelBatch,
+  deleteBatch
+} from './llm-batch.js';
+import {
   predictAutomaticParsing,
   predictWithSchema,
   predictParquetBlob
@@ -95,8 +103,13 @@ import type {
 const app = express();
 const port = 8080;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+
+server.on('error', (error: Error) => {
+  console.error(`Failed to start server on port ${port}`, error);
+  process.exit(1);
 });
 
 app.get(['/', '/health'], (req, res) => {
@@ -892,6 +905,55 @@ app.get('/prompt-registry/template', async (req, res) => {
     res.write(`Prompt template deleted: ${response.message}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/llm-batch/batches', async (req, res) => {
+  try {
+    res.send(await listBatches());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.post('/llm-batch/batches', express.json(), async (req, res) => {
+  try {
+    const { inputUri, outputUri } = req.body;
+    res.send(await createBatch(inputUri, outputUri));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/llm-batch/batches/:batchId', async (req, res) => {
+  try {
+    res.send(await getBatchById(req.params.batchId));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/llm-batch/batches/:batchId/status', async (req, res) => {
+  try {
+    res.send(await getBatchStatus(req.params.batchId));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.patch('/llm-batch/batches/:batchId/cancel', async (req, res) => {
+  try {
+    res.send(await cancelBatch(req.params.batchId));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.delete('/llm-batch/batches/:batchId', async (req, res) => {
+  try {
+    res.send(await deleteBatch(req.params.batchId));
   } catch (error: any) {
     sendError(res, error);
   }

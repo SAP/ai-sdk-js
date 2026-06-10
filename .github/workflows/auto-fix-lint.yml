@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+permissions: {}
+
 jobs:
   fix-lint:
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}

@@ -5,6 +5,8 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+permissions: {}
+
 jobs:
   security-checks:
     runs-on: ubuntu-latest

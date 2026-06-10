@@ -411,6 +411,8 @@ export const RegistryControllerPromptControllerExportPromptTemplateHeader = zod.
   "AI-Resource-Group-Scope": zod.enum(['true', 'True', 'false', 'False']).optional().describe('Specify whether the resource group scope is to be used')
 })
 
+export const RegistryControllerPromptControllerExportPromptTemplateResponse = zod.unknown()
+
 
 /**
  * Parse prompt template by ID
@@ -3473,3 +3475,5 @@ export const RegistryControllerOrchestrationConfigControllerExportOrchestrationC
 export const RegistryControllerOrchestrationConfigControllerExportOrchestrationConfigHeader = zod.object({
   "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use')
 })
+
+export const RegistryControllerOrchestrationConfigControllerExportOrchestrationConfigResponse = zod.unknown()

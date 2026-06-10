@@ -167,6 +167,33 @@ describe('http-client', () => {
     expect(res.data).toEqual({ status: 'uploaded' });
   });
 
+  it('should pass Blob without stringifying', async () => {
+    const blob = new Blob(['line1\nline2'], { type: 'text/csv' });
+
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default',
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .put(
+        '/v2/upload/endpoint',
+        body => typeof body === 'string' && body === 'line1\nline2'
+      )
+      .query({ 'api-version': 'mock-api-version' })
+      .reply(200, { status: 'uploaded' });
+
+    const res = await executeRequest(
+      { url: '/upload/endpoint', apiVersion: 'mock-api-version' },
+      blob,
+      { headers: { 'content-type': 'text/csv' }, method: 'put' }
+    );
+
+    expect(scope.isDone()).toBe(true);
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual({ status: 'uploaded' });
+  });
+
   it('should stringify non-FormData objects', async () => {
     const jsonData = { key: 'value', nested: { prop: 'data' } };
 

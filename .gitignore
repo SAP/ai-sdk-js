@@ -69,3 +69,6 @@ build/Release
 knowledge-base/api-reference/
 /.claude
 /.playwright-mcp
+
+# Local config files with credentials
+packages/llm-batch/config.json
