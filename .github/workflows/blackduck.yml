@@ -61,9 +61,9 @@ jobs:
           BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
           BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
           BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
-          DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
-          DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
-          DETECT_PIP_ONLY_PROJECT_TREE: 'true'
+          # DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
+          # DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
+          # DETECT_PIP_ONLY_PROJECT_TREE: 'true'
         run: |
           mkdir -p ./blackduck-output
           bash ./detect.sh \
@@ -78,8 +78,8 @@ jobs:
             --detect.source.path=. \
             --detect.sarif.report.enabled=true \
             --detect.sarif.report.output.dir=./blackduck-output \
-            --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0"
-            # --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage' \
+            --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0" \
+            --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage'
 
       - name: Locate SARIF report
         if: ${{ !cancelled() }}
