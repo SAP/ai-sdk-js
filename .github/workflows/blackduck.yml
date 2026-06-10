@@ -3,8 +3,6 @@ name: blackduck-scan
 # Required configuration (set in repo/org "Secrets and variables → Actions"):
 #
 #   Variables (vars):
-#     - BLACKDUCK_SERVER          e.g. sap.blackducksoftware.com
-#     - BLACKDUCK_DISTRIBUTION    e.g. SaaS
 #     - BLACKDUCK_PROJECT_NAME    e.g. sap-ai-sdk-js / sap-ai-sdk-java / sap-ai-sdk-python
 #     - BLACKDUCK_PROJECT_GROUP   e.g. "SAP Cloud SDK for AI (JS)"
 #
