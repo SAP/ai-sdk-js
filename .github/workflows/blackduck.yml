@@ -39,9 +39,11 @@ jobs:
     steps:
       - name: Determine project version
         id: version
+        env:
+          INPUT_BRANCH: ${{ github.event.inputs.branch }}
         run: |
-          if [ -n "${{ github.event.inputs.branch }}" ]; then
-            VERSION="${{ github.event.inputs.branch }}"
+          if [ -n "$INPUT_BRANCH" ]; then
+            VERSION="$INPUT_BRANCH"
           else
             VERSION="main"
           fi
@@ -52,22 +54,18 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ steps.version.outputs.project_version }}
+          persist-credentials: false
 
       - name: Download Black Duck Detect script
         run: curl --silent --fail -O https://detect.blackduck.com/detect.sh
 
       - name: Run Black Duck Detect scan
         env:
-          BLACKDUCK_SERVER: ${{ vars.BLACKDUCK_SERVER }}
+          BLACKDUCK_SERVER: sap.blackducksoftware.com
           BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
-          BLACKDUCK_DISTRIBUTION: ${{ vars.BLACKDUCK_DISTRIBUTION }}
           BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
           BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
           BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
-          # Exclude non-production / test dependencies from the scan.
-          # These DETECT_* env vars are picked up by detect.sh automatically
-          # and are safe no-ops if the corresponding detector is not used,
-          # which keeps this workflow generic across JS / Java / Python repos.
           DETECT_PNPM_DEPENDENCY_TYPES_EXCLUDED: NON_PRODUCTION
           DETECT_MAVEN_INCLUDED_SCOPES: compile,runtime
           DETECT_PIP_ONLY_PROJECT_TREE: 'true'
@@ -75,7 +73,6 @@ jobs:
           bash ./detect.sh \
             --blackduck.url="https://${BLACKDUCK_SERVER}" \
             --blackduck.api.token="${BLACKDUCK_API_TOKEN}" \
-            --detect.project.version.distribution="${BLACKDUCK_DISTRIBUTION}" \
             --detect.blackduck.signature.scanner.memory=4096 \
             --detect.timeout=6000 \
             --detect.project.user.groups="${BLACKDUCK_PROJECT_GROUP}" \
