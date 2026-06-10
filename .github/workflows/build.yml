@@ -100,24 +100,19 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           REPO: ${{github.repository}}
+          PR_HEAD_SHA: ${{github.event.pull_request.head.sha}}
         run: |
-          COMMIT=$(gh api "repos/$REPO/commits/$GITHUB_SHA" --jq '{author: .author.login, verified: .commit.verification.verified}')
+          COMMIT=$(gh api "repos/$REPO/commits/$PR_HEAD_SHA" --jq '{author: .author.login, verified: .commit.verification.verified}')
           LAST_AUTHOR=$(echo "$COMMIT" | jq -r '.author')
           VERIFIED=$(echo "$COMMIT" | jq -r '.verified')
           if [[ "$LAST_AUTHOR" != "dependabot[bot]" || "$VERIFIED" != "true" ]]; then
             echo "Commit author='$LAST_AUTHOR' verified='$VERIFIED': skipping auto-merge"
             exit 0
           fi
-          MERGED=false
-          for i in $(seq 1 3); do
-            echo "Attempt $i: enabling auto-merge for $GITHUB_SHA"
-            if gh pr merge --auto --squash --match-head-commit "$GITHUB_SHA" "$PR_URL"; then
-              MERGED=true
-              break
-            fi
-            sleep 30
+          gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL" && exit 0
+          for _ in $(seq 1 5); do
+            sleep 15
+            gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL" && exit 0
           done
-          if [[ "$MERGED" != "true" ]]; then
-            echo "All attempts to enable auto-merge failed"
-            exit 1
-          fi
+          echo "All attempts to enable auto-merge failed"
+          exit 1
