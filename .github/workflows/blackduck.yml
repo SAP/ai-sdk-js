@@ -1,0 +1,114 @@
+name: blackduck-scan
+
+# Required configuration (set in repo/org "Secrets and variables → Actions"):
+#
+#   Variables (vars):
+#     - BLACKDUCK_PROJECT_NAME    e.g. sap-ai-sdk-js / sap-ai-sdk-java / sap-ai-sdk-python
+#     - BLACKDUCK_PROJECT_GROUP   e.g. "SAP Cloud SDK for AI (JS)"
+#
+#   Secrets:
+#     - BLACKDUCK_API_TOKEN
+#     - SLACK_WEBHOOK             (optional, for failure notifications)
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to scan (defaults to main).'
+        required: false
+        type: string
+
+permissions: {}
+
+jobs:
+  blackduck-scan:
+    name: Black Duck Detect Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    timeout-minutes: 15
+
+    steps:
+      - name: Determine project version
+        id: version
+        env:
+          INPUT_BRANCH: ${{ github.event.inputs.branch }}
+        run: |
+          if [ -n "$INPUT_BRANCH" ]; then
+            VERSION="$INPUT_BRANCH"
+          else
+            VERSION="main"
+          fi
+          echo "Black Duck project version: $VERSION"
+          echo "project_version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository at project version
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ steps.version.outputs.project_version }}
+          persist-credentials: false
+
+      - name: Download Black Duck Detect script
+        run: curl --silent --fail -O https://detect.blackduck.com/detect.sh
+
+      - name: Run Black Duck Detect scan
+        env:
+          BLACKDUCK_SERVER: sap.blackducksoftware.com
+          BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
+          BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
+          BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
+          BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
+        run: |
+          mkdir -p ./blackduck-output
+          bash ./detect.sh \
+            --blackduck.url="https://${BLACKDUCK_SERVER}" \
+            --blackduck.api.token="${BLACKDUCK_API_TOKEN}" \
+            --detect.blackduck.signature.scanner.memory=4096 \
+            --detect.timeout=6000 \
+            --detect.project.user.groups="${BLACKDUCK_PROJECT_GROUP}" \
+            --detect.project.name="${BLACKDUCK_PROJECT_NAME}" \
+            --detect.project.version.name="${BLACKDUCK_PROJECT_VERSION}" \
+            --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
+            --detect.source.path=. \
+            --detect.sarif.report.enabled=true \
+            --detect.sarif.report.output.dir=./blackduck-output \
+            --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0" \
+            --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage'
+
+      - name: Locate SARIF report
+        if: ${{ !cancelled() }}
+        id: sarif
+        run: |
+          echo "Listing SARIF output directory:"
+          ls -la ./blackduck-output || true
+          SARIF_FILE=$(find ./blackduck-output -type f -name '*.sarif*' | head -n 1)
+          if [ -z "$SARIF_FILE" ]; then
+            echo "No SARIF file produced by Black Duck Detect."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found SARIF file: $SARIF_FILE"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "file=$SARIF_FILE" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload SARIF report to GitHub Security
+        if: ${{ !cancelled() && steps.sarif.outputs.found == 'true' }}
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          sarif_file: ${{ steps.sarif.outputs.file }}
+          category: blackduck
+      - name: Slack notification on failure
+        if: ${{ failure() || cancelled() }}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: AI SDK Pipeline Bot
+          SLACK_TITLE: 'Black Duck scan ${{ job.status }}'
+          SLACK_MESSAGE: 'Black Duck scan failed for ${{ github.repository }} (version ${{ steps.version.outputs.project_version }}).'
+          MSG_MINIMAL: event,actions url
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MSG_AUTHOR: ' '
+          SLACK_ICON: https://sap.github.io/cloud-sdk/img/logo.png
+        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
