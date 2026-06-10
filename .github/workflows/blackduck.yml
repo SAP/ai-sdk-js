@@ -12,11 +12,7 @@ name: blackduck-scan
 
 on:
   schedule:
-    # Daily nightly scan of the main branch at 03:00 UTC.
     - cron: '0 3 * * *'
-  # Manual runs: use the "Run workflow" UI to pick the branch (via the
-  # standard GitHub branch selector). The selected branch is checked out
-  # and used as the project version unless an explicit version is provided.
   workflow_dispatch:
     inputs:
       branch:
