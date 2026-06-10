@@ -76,7 +76,8 @@ jobs:
             --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
             --detect.source.path=. \
             --detect.sarif.report.enabled=true \
-            --detect.scan.output.path=./blackduck-output
+            --detect.scan.output.path=./blackduck-output \
+            --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0"
             # --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage' \
 
       - name: Upload SARIF report to GitHub Security
