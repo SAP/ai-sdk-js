@@ -462,13 +462,14 @@ export class OrchestrationClient extends BaseChatModel<
     };
 
     if (tools.length) {
-      if (!config.promptTemplating.prompt) {
-        config.promptTemplating.prompt = {};
-      }
+      config.promptTemplating.prompt ??= Object.create(null);
       if (
         typeof config.promptTemplating.prompt === 'object' &&
         !isTemplateRef(config.promptTemplating.prompt)
       ) {
+        config.promptTemplating.prompt = {
+          ...config.promptTemplating.prompt
+        };
         config.promptTemplating.prompt.tools = [
           // Preserve existing tools configured in the templating module
           ...(config.promptTemplating.prompt.tools || []),
@@ -481,9 +482,7 @@ export class OrchestrationClient extends BaseChatModel<
     // Handle responseFormat for structured output
     if (responseFormat) {
       // Ensure prompt object exists
-      if (!config.promptTemplating.prompt) {
-        config.promptTemplating.prompt = {};
-      }
+      config.promptTemplating.prompt ??= Object.create(null);
 
       // Check if prompt is a TemplateRef
       if (
@@ -498,7 +497,13 @@ export class OrchestrationClient extends BaseChatModel<
 
       // Add responseFormat to prompt
       if (typeof config.promptTemplating.prompt === 'object') {
-        config.promptTemplating.prompt.response_format = responseFormat;
+        config.promptTemplating.prompt = Object.assign(
+          Object.create(null),
+          config.promptTemplating.prompt,
+          {
+            response_format: responseFormat
+          }
+        );
       }
     }
 
