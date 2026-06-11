@@ -832,6 +832,18 @@ components:
             - $ref: '#/components/schemas/ModuleConfigsList'
         stream:
           $ref: '#/components/schemas/GlobalStreamOptions'
+    PartialOrchestrationConfig:
+      description: >
+        Partial orchestration configuration for use with config_ref overrides. All fields are
+        optional so that only the parts that should be overridden need to be specified. The
+        remaining configuration is taken from the referenced orchestration config.
+      type: object
+      additionalProperties: false
+      properties:
+        modules:
+          $ref: '#/components/schemas/PartialModuleConfigs'
+        stream:
+          $ref: '#/components/schemas/GlobalStreamOptions'
     ModuleConfigs:
       type: object
       required:
@@ -840,6 +852,24 @@ components:
       properties:
         prompt_templating:
           $ref: '#/components/schemas/PromptTemplatingModuleConfig'
+        filtering:
+          $ref: '#/components/schemas/FilteringModuleConfig'
+        masking:
+          $ref: '#/components/schemas/MaskingModuleConfig'
+        grounding:
+          $ref: '#/components/schemas/GroundingModuleConfig'
+        translation:
+          $ref: '#/components/schemas/TranslationModuleConfig'
+    PartialModuleConfigs:
+      description: >
+        Partial module configuration for use with config_ref overrides. All fields are optional
+        so that only the modules that should be overridden need to be specified. The remaining
+        configuration is taken from the referenced orchestration config.
+      type: object
+      additionalProperties: false
+      properties:
+        prompt_templating:
+          $ref: '#/components/schemas/PartialPromptTemplatingModuleConfig'
         filtering:
           $ref: '#/components/schemas/FilteringModuleConfig'
         masking:
@@ -1177,13 +1207,29 @@ components:
     PromptTemplatingModuleConfig:
       type: object
       required:
-        - prompt
         - model
       additionalProperties: false
       properties:
         prompt:
           description: >
             The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+            If omitted, messages_history must be provided in the request body.
+          oneOf:
+            - $ref: '#/components/schemas/Template'
+            - $ref: '#/components/schemas/TemplateRef'
+        model:
+          $ref: '#/components/schemas/LLMModelDetails'
+    PartialPromptTemplatingModuleConfig:
+      description: >
+        Partial prompt templating configuration for use with config_ref overrides. model is
+        optional so that only the prompt can be overridden without repeating the model config.
+      type: object
+      additionalProperties: false
+      properties:
+        prompt:
+          description: >
+            The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.
+            If omitted, messages_history must be provided in the request body.
           oneOf:
             - $ref: '#/components/schemas/Template'
             - $ref: '#/components/schemas/TemplateRef'
@@ -2293,6 +2339,8 @@ components:
       properties:
         config_ref:
           $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByIdConfigRef'
+        config:
+          $ref: '#/components/schemas/PartialOrchestrationConfig'
         placeholder_values:
           type: object
           example:
@@ -2324,6 +2372,8 @@ components:
       properties:
         config_ref:
           $ref: '#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef'
+        config:
+          $ref: '#/components/schemas/PartialOrchestrationConfig'
         placeholder_values:
           type: object
           example:
