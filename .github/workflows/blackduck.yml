@@ -51,57 +51,30 @@ jobs:
           ref: ${{ steps.version.outputs.project_version }}
           persist-credentials: false
 
-      - name: Download Black Duck Detect script
-        run: curl --silent --fail -O https://detect.blackduck.com/detect.sh
-
-      - name: Run Black Duck Detect scan
-        env:
-          BLACKDUCK_SERVER: sap.blackducksoftware.com
-          BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
-          BLACKDUCK_PROJECT_NAME: ${{ vars.BLACKDUCK_PROJECT_NAME }}
-          BLACKDUCK_PROJECT_GROUP: ${{ vars.BLACKDUCK_PROJECT_GROUP }}
-          BLACKDUCK_PROJECT_VERSION: ${{ steps.version.outputs.project_version }}
-        run: |
-          mkdir -p ./blackduck-output
-          bash ./detect.sh \
-            --blackduck.url="https://${BLACKDUCK_SERVER}" \
-            --blackduck.api.token="${BLACKDUCK_API_TOKEN}" \
-            --detect.blackduck.signature.scanner.memory=4096 \
-            --detect.timeout=6000 \
-            --detect.project.user.groups="${BLACKDUCK_PROJECT_GROUP}" \
-            --detect.project.name="${BLACKDUCK_PROJECT_NAME}" \
-            --detect.project.version.name="${BLACKDUCK_PROJECT_VERSION}" \
-            --detect.code.location.name="${BLACKDUCK_PROJECT_NAME}/${BLACKDUCK_PROJECT_VERSION}" \
-            --detect.source.path=. \
-            --detect.sarif.report.enabled=true \
-            --detect.sarif.report.output.dir=./blackduck-output \
-            --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0" \
+      - name: Run Black Duck SCA scan
+        uses: blackduck-inc/black-duck-security-scan@3fe94e4b3c3947bd21ba46b7da255d6d3638b325 # v2.10.0
+        with:
+          blackducksca_url: https://sap.blackducksoftware.com
+          blackducksca_token: ${{ secrets.BLACKDUCK_API_TOKEN }}
+          blackducksca_scan_full: true
+          blackducksca_scan_failure_severities: 'BLOCKER,CRITICAL'
+          blackducksca_reports_sarif_create: true
+          blackducksca_reports_sarif_severities: 'BLOCKER,CRITICAL'
+          blackducksca_reports_sarif_groupSCAIssues: true
+          blackducksca_upload_sarif_report: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          detect_args: >-
+            --detect.project.name="${{ vars.BLACKDUCK_PROJECT_NAME }}"
+            --detect.project.version.name="${{ steps.version.outputs.project_version }}"
+            --detect.project.user.groups="${{ vars.BLACKDUCK_PROJECT_GROUP }}"
+            --detect.code.location.name="${{ vars.BLACKDUCK_PROJECT_NAME }}/${{ steps.version.outputs.project_version }}"
+            --detect.blackduck.signature.scanner.memory=4096
+            --detect.timeout=6000
+            --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0"
             --detect.excluded.directories='**/node_modules,**/dist,**/test,**/tests,**/__tests__,**/test-packages,**/coverage'
 
-      - name: Locate SARIF report
-        if: ${{ !cancelled() }}
-        id: sarif
-        run: |
-          echo "Listing SARIF output directory:"
-          ls -la ./blackduck-output || true
-          SARIF_FILE=$(find ./blackduck-output -type f -name '*.sarif*' | head -n 1)
-          if [ -z "$SARIF_FILE" ]; then
-            echo "No SARIF file produced by Black Duck Detect."
-            echo "found=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "Found SARIF file: $SARIF_FILE"
-            echo "found=true" >> "$GITHUB_OUTPUT"
-            echo "file=$SARIF_FILE" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Upload SARIF report to GitHub Security
-        if: ${{ !cancelled() && steps.sarif.outputs.found == 'true' }}
-        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
-        with:
-          sarif_file: ${{ steps.sarif.outputs.file }}
-          category: blackduck
       - name: Slack notification on failure
-        if: ${{ failure() || cancelled() }}
+        if: ${{ github.event_name == 'schedule' && (failure() || cancelled()) }}
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: AI SDK Pipeline Bot
