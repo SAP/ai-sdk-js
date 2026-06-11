@@ -51,9 +51,13 @@ export async function parseBatchOutput(
     text = data;
   } else if (Buffer.isBuffer(data)) {
     text = data.toString('utf-8');
-  } else {
-    // Blob case
+  } else if (data instanceof Blob) {
     text = await data.text();
+  } else {
+    // typeguard - all cases handled
+  	data satisfies never;
+  	// let if fail in a natural way
+  	text = data as any;
   }
   return text
     .split('\n')
