@@ -38,13 +38,27 @@ export interface BatchOutputLine {
 }
 
 /**
- * Parses a batch output Blob (JSONL format) into typed output lines.
- * @param blob - The Blob returned from FileApi.fileDownload().
+ * Parses a batch output JSONL payload into typed output lines.
+ * @param data - The data returned from FileApi.fileDownload(), as a Blob, Buffer, or string.
  * @returns A Promise resolving to an array of parsed output lines.
  * @experimental This API is experimental and may change at any time without prior notice.
  */
-export async function parseBatchOutput(blob: Blob): Promise<BatchOutputLine[]> {
-  const text = await blob.text();
+export async function parseBatchOutput(
+  data: Blob | Buffer | string
+): Promise<BatchOutputLine[]> {
+  let text: string;
+  if (typeof data === 'string') {
+    text = data;
+  } else if (Buffer.isBuffer(data)) {
+    text = data.toString('utf-8');
+  } else if (data instanceof Blob) {
+    text = await data.text();
+  } else {
+    // typeguard - all cases handled
+    data satisfies never;
+    // let if fail in a natural way
+    text = data as any;
+  }
   return text
     .split('\n')
     .filter(line => line.trim().length)
