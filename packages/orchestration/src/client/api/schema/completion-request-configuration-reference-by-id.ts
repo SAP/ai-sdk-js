@@ -4,14 +4,14 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { CompletionRequestConfigurationReferenceByIdConfigRef } from './completion-request-configuration-reference-by-id-config-ref.js';
-import type { OrchestrationConfig } from './orchestration-config.js';
+import type { PartialOrchestrationConfig } from './partial-orchestration-config.js';
 import type { ChatMessages } from './chat-messages.js';
 /**
  * Representation of the 'CompletionRequestConfigurationReferenceById' schema.
  */
 export type CompletionRequestConfigurationReferenceById = {
   config_ref: CompletionRequestConfigurationReferenceByIdConfigRef;
-  config?: OrchestrationConfig;
+  config?: PartialOrchestrationConfig;
   /**
    * @example {
    *   "groundingInput": "What is SAP Joule?",
