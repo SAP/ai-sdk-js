@@ -22,6 +22,7 @@ allowBuilds:
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
+  - '@sap-ai-sdk/*'
   - '@sap-cloud-sdk/*'
   - '@sap-ai-sdk/*'
   # Add minimum age exceptions for audit issues here
