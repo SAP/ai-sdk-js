@@ -10,6 +10,7 @@ import {
   uploadBatchInput,
   deleteFile
 } from '@sap-ai-sdk/sample-code';
+import { describe, it, expect } from 'vitest';
 import { loadEnv } from './utils/load-env.js';
 
 loadEnv();

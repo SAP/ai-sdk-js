@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { constructCompletionPostRequestFromJsonModuleConfig } from './util/module-config.js';
 
 describe('construct completion post request from JSON', () => {

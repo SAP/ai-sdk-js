@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { buildDocumentGroundingConfig } from './grounding.js';
 import type { DocumentGroundingServiceConfig } from '../orchestration-types.js';
 

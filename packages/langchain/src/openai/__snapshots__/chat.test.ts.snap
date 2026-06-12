@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Chat client streaming supports disabling auto-streaming via disableStreaming flag 1`] = `
+exports[`Chat client > streaming > supports disabling auto-streaming via disableStreaming flag 1`] = `
 {
   "id": [
     "langchain_core",
@@ -42,7 +42,7 @@ exports[`Chat client streaming supports disabling auto-streaming via disableStre
 }
 `;
 
-exports[`Chat client streaming supports streaming responses 1`] = `
+exports[`Chat client > streaming > supports streaming responses 1`] = `
 {
   "id": [
     "langchain_core",
@@ -84,7 +84,7 @@ exports[`Chat client streaming supports streaming responses 1`] = `
 }
 `;
 
-exports[`Chat client streaming supports streaming responses with tool calls 1`] = `
+exports[`Chat client > streaming > supports streaming responses with tool calls 1`] = `
 {
   "id": [
     "langchain_core",
