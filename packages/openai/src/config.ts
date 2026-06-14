@@ -38,7 +38,7 @@ export async function createOpenAiConfig(
 
   const resourceGroup = getResourceGroup(deployment) ?? 'default';
 
-  const baseURL = isDeploymentIdConfig(deployment)
+  const baseUrl = isDeploymentIdConfig(deployment)
     ? (
         await DeploymentApi.deploymentGet(
           deployment.deploymentId,
