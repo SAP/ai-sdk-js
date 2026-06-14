@@ -23,7 +23,7 @@ type RequestOptions = Parameters<Responses['create']>[1];
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class SapResponses {
-  private readonly openAIResponses: Responses;
+  private readonly openAiResponses: Responses;
 
   constructor(client: OpenAI) {
     this.openAIResponses = new Responses(client);
