@@ -1,4 +1,4 @@
-export { createOpenAIConfig } from './config.js';
+export { createOpenAiConfig } from './config.js';
 export { SapOpenAi } from './client.js';
 export { SapChat } from './chat.js';
 export { SapCompletions } from './completions.js';

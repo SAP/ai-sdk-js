@@ -1,5 +1,5 @@
 import { AzureOpenAI } from 'openai';
-import { createOpenAIConfig } from './config.js';
+import { createOpenAiConfig } from './config.js';
 import { SapChat } from './chat.js';
 import { SapEmbeddings } from './embeddings.js';
 import { SapResponses } from './responses.js';
@@ -36,7 +36,7 @@ export class SapOpenAi {
    * ```
    */
   static async createClient(options: SapOpenAiInput): Promise<SapOpenAi> {
-    const config = await createOpenAIConfig(options);
+    const config = await createOpenAiConfig(options);
     return new SapOpenAi(new AzureOpenAI(config));
   }
 

@@ -26,7 +26,7 @@ export class SapResponses {
   private readonly openAiResponses: Responses;
 
   constructor(client: OpenAI) {
-    this.openAIResponses = new Responses(client);
+    this.openAiResponses = new Responses(client);
   }
 
   create(
@@ -45,7 +45,7 @@ export class SapResponses {
     body: WithoutModel<ResponseCreateParamsBase>,
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
-    return this.openAIResponses.create(
+    return this.openAiResponses.create(
       // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
       { model: '', ...body } satisfies ResponseCreateParamsBase,
       options
@@ -59,7 +59,7 @@ export class SapResponses {
     body: Params,
     options?: RequestOptions
   ): APIPromise<ParsedResponse<ParsedT>> {
-    return this.openAIResponses.parse(
+    return this.openAiResponses.parse(
       {
         // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
         model: '',

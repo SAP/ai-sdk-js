@@ -54,7 +54,7 @@ export async function createOpenAiConfig(
         destination
       });
 
-  if (!baseURL) {
+  if (!baseUrl) {
     const identifier = isDeploymentIdConfig(deployment)
       ? `ID '${deployment.deploymentId}'`
       : `model '${translateToFoundationModel(deployment).name}'`;
@@ -64,7 +64,7 @@ export async function createOpenAiConfig(
   }
 
   return {
-    baseURL,
+    baseURL: baseUrl,
     apiVersion: apiVersion ?? defaultApiVersion,
     azureADTokenProvider: createTokenProvider(destination),
     defaultHeaders: {
