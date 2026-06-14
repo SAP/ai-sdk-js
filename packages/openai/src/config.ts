@@ -29,7 +29,7 @@ const defaultApiVersion = '2024-10-21';
  * });
  * ```
  */
-export async function createOpenAIConfig(
+export async function createOpenAiConfig(
   options: SapOpenAiInput
 ): Promise<AzureClientOptions> {
   const opts: SapOpenAiOptions =
