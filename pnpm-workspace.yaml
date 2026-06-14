@@ -3,6 +3,7 @@ packages:
   - packages/core
   - packages/document-grounding
   - packages/foundation-models
+  - packages/openai
   - packages/langchain
   - packages/orchestration
   - packages/llm-batch

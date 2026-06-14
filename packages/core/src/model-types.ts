@@ -19,6 +19,12 @@ export type AzureOpenAiChatModel = LiteralUnion<
 >;
 
 /**
+ * Azure OpenAI models that exclusively support the Responses API.
+ * Models that support both chat completions and the Responses API (e.g. gpt-5.4) are listed under {@link AzureOpenAiChatModel}.
+ */
+export type AzureOpenAiResponsesModel = LiteralUnion<'gpt-5.3-codex'>;
+
+/**
  * Azure OpenAI models for embedding.
  */
 export type AzureOpenAiEmbeddingModel = LiteralUnion<

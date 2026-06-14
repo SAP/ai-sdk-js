@@ -145,3 +145,4 @@ CDS
 SDKs
 
 JSDoc
+[Oo]pen[Aa][Ii]
