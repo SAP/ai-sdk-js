@@ -25,10 +25,17 @@ type RequestOptions = Parameters<Responses['create']>[1];
 export class SapResponses {
   private readonly openAiResponses: Responses;
 
+  /** @internal */
   constructor(client: OpenAI) {
     this.openAiResponses = new Responses(client);
   }
 
+  /**
+   * Creates a model response request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
+   * @param body - Response request parameters, without `model`.
+   * @param options - Optional request options.
+   * @returns A promise resolving to a {@link Response}, or a {@link Stream} of {@link ResponseStreamEvent} when `stream: true` is set.
+   */
   create(
     body: WithoutModel<ResponseCreateParamsNonStreaming>,
     options?: RequestOptions
@@ -52,6 +59,13 @@ export class SapResponses {
     );
   }
 
+  /**
+   * Creates a model response request and parses the output into the provided schema.
+   * The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
+   * @param body - Response request parameters including tool or schema definitions, without `model`.
+   * @param options - Optional request options.
+   * @returns A promise resolving to a {@link ParsedResponse} with the parsed output.
+   */
   parse<
     Params extends WithoutModel<ResponseCreateParamsWithTools>,
     ParsedT = ExtractParsedContentFromParams<Params & { model: string }>

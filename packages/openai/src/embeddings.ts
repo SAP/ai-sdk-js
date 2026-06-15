@@ -16,10 +16,17 @@ type RequestOptions = Parameters<Embeddings['create']>[1];
 export class SapEmbeddings {
   private readonly openAIEmbeddings: Embeddings;
 
+  /** @internal */
   constructor(client: OpenAI) {
     this.openAIEmbeddings = new Embeddings(client);
   }
 
+  /**
+   * Creates an embedding request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
+   * @param body - Embedding request parameters, without `model`.
+   * @param options - Optional request options.
+   * @returns A promise resolving to a {@link CreateEmbeddingResponse}.
+   */
   create(
     body: WithoutModel<EmbeddingCreateParams>,
     options?: RequestOptions

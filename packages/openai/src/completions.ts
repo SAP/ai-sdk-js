@@ -27,10 +27,17 @@ export type WithoutModel<T> = Omit<T, 'model'>;
 export class SapCompletions {
   private readonly openAICompletions: Completions;
 
+  /** @internal */
   constructor(client: OpenAI) {
     this.openAICompletions = new Completions(client);
   }
 
+  /**
+   * Creates a chat completion request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
+   * @param body - Chat completion request parameters, without `model`.
+   * @param options - Optional request options.
+   * @returns A promise resolving to a {@link ChatCompletion}, or a {@link Stream} of {@link ChatCompletionChunk} when `stream: true` is set.
+   */
   create(
     body: WithoutModel<ChatCompletionCreateParamsNonStreaming>,
     options?: RequestOptions
@@ -57,6 +64,13 @@ export class SapCompletions {
     );
   }
 
+  /**
+   * Creates a chat completion and parses the response content into the provided `response_format` schema.
+   * The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
+   * @param body - Chat completion request parameters including a `response_format` schema, without `model`.
+   * @param options - Optional request options.
+   * @returns A promise resolving to a {@link ParsedChatCompletion} with the parsed response content.
+   */
   parse<
     Params extends WithoutModel<ChatCompletionCreateParamsNonStreaming>,
     ParsedT = ExtractParsedContentFromParams<Params & { model: string }>
