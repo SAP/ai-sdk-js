@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { OrchestrationConfig } from './orchestration-config.js';
+import type { PromptRegistryOrchestrationConfig } from './prompt-registry-orchestration-config.js';
 /**
  * Representation of the 'OrchestrationConfigPostRequest' schema.
  */
@@ -23,5 +23,5 @@ export type OrchestrationConfigPostRequest = {
    * Pattern: "^[a-zA-Z0-9_-]+$".
    */
   scenario: string;
-  spec: OrchestrationConfig;
+  spec: PromptRegistryOrchestrationConfig;
 } & Record<string, any>;
