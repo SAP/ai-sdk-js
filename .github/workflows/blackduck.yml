@@ -1,4 +1,4 @@
-name: blackduck-scan
+name: blackduck
 
 # Required configuration (set in repo/org "Secrets and variables → Actions"):
 #
