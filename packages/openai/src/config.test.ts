@@ -5,7 +5,7 @@ import {
   aiCoreDestination,
   mockDeploymentsList
 } from '../../../test-util/mock-http.js';
-import { createOpenAIConfig } from './config.js';
+import { createOpenAiConfig } from './config.js';
 
 const defaultDeployment = {
   id: 'dep-001',
@@ -13,7 +13,7 @@ const defaultDeployment = {
   deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001`
 };
 
-describe('createOpenAIConfig', () => {
+describe('createOpenAiConfig', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
   });
@@ -29,7 +29,7 @@ describe('createOpenAIConfig', () => {
         defaultDeployment
       );
 
-      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
+      const config = await createOpenAiConfig({ deployment: 'gpt-4.1' });
 
       expect(config.baseURL).toContain('inference/deployments/dep-001');
     });
@@ -40,7 +40,7 @@ describe('createOpenAIConfig', () => {
         defaultDeployment
       );
 
-      const config = await createOpenAIConfig('gpt-4.1');
+      const config = await createOpenAiConfig('gpt-4.1');
 
       expect(config.baseURL).toContain('inference/deployments/dep-001');
     });
@@ -53,7 +53,7 @@ describe('createOpenAIConfig', () => {
           deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-123`
         });
 
-      const config = await createOpenAIConfig({
+      const config = await createOpenAiConfig({
         deployment: { deploymentId: 'dep-123' }
       });
 
@@ -66,7 +66,7 @@ describe('createOpenAIConfig', () => {
         .reply(200, { id: 'no-url-dep' });
 
       await expect(
-        createOpenAIConfig({ deployment: { deploymentId: 'no-url-dep' } })
+        createOpenAiConfig({ deployment: { deploymentId: 'no-url-dep' } })
       ).rejects.toThrow(
         "Deployment for ID 'no-url-dep' has no deployment URL. Ensure the deployment is running."
       );
@@ -82,12 +82,12 @@ describe('createOpenAIConfig', () => {
     });
 
     it("defaults to '2024-10-21'", async () => {
-      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
+      const config = await createOpenAiConfig({ deployment: 'gpt-4.1' });
       expect(config.apiVersion).toBe('2024-10-21');
     });
 
     it('uses provided apiVersion', async () => {
-      const config = await createOpenAIConfig({
+      const config = await createOpenAiConfig({
         deployment: 'gpt-4.1',
         apiVersion: '2025-01-01'
       });
@@ -102,7 +102,7 @@ describe('createOpenAIConfig', () => {
         defaultDeployment
       );
 
-      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
+      const config = await createOpenAiConfig({ deployment: 'gpt-4.1' });
 
       expect(
         (config.defaultHeaders as Record<string, string>)['ai-resource-group']
@@ -123,7 +123,7 @@ describe('createOpenAIConfig', () => {
         }
       );
 
-      const config = await createOpenAIConfig({
+      const config = await createOpenAiConfig({
         deployment: { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' }
       });
 
@@ -142,14 +142,14 @@ describe('createOpenAIConfig', () => {
     });
 
     it("sets 'AI SDK JavaScript' when no clientType is given", async () => {
-      const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
+      const config = await createOpenAiConfig({ deployment: 'gpt-4.1' });
       expect(
         (config.defaultHeaders as Record<string, string>)['ai-client-type']
       ).toBe('AI SDK JavaScript');
     });
 
     it('appends clientType to the header', async () => {
-      const config = await createOpenAIConfig({
+      const config = await createOpenAiConfig({
         deployment: 'gpt-4.1',
         clientType: 'MyApp'
       });
@@ -165,7 +165,7 @@ describe('createOpenAIConfig', () => {
       defaultDeployment
     );
 
-    const config = await createOpenAIConfig({ deployment: 'gpt-4.1' });
+    const config = await createOpenAiConfig({ deployment: 'gpt-4.1' });
 
     expect(typeof config.azureADTokenProvider).toBe('function');
   });
