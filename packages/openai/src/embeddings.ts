@@ -14,11 +14,11 @@ type RequestOptions = Parameters<Embeddings['create']>[1];
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class SapEmbeddings {
-  private readonly openAIEmbeddings: Embeddings;
+  private readonly openAiEmbeddings: Embeddings;
 
   /** @internal */
   constructor(client: OpenAI) {
-    this.openAIEmbeddings = new Embeddings(client);
+    this.openAiEmbeddings = new Embeddings(client);
   }
 
   /**
@@ -31,7 +31,7 @@ export class SapEmbeddings {
     body: WithoutModel<EmbeddingCreateParams>,
     options?: RequestOptions
   ): APIPromise<CreateEmbeddingResponse> {
-    return this.openAIEmbeddings.create(
+    return this.openAiEmbeddings.create(
       // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
       { model: '', ...body } satisfies EmbeddingCreateParams,
       options

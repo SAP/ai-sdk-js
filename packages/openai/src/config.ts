@@ -20,9 +20,9 @@ const defaultApiVersion = '2024-10-21';
  * @example
  * ```ts
  * import { AzureOpenAI } from 'openai';
- * import { createOpenAIConfig } from '@sap-ai-sdk/openai';
+ * import { createOpenAiConfig } from '@sap-ai-sdk/openai';
  *
- * const config = await createOpenAIConfig('gpt-5.4');
+ * const config = await createOpenAiConfig('gpt-5.4');
  * const client = new AzureOpenAI(config);
  * await client.chat.completions.create({
  *   messages: [{ role: 'user', content: 'Hello!' }]

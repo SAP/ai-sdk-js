@@ -25,11 +25,11 @@ export type WithoutModel<T> = Omit<T, 'model'>;
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class SapCompletions {
-  private readonly openAICompletions: Completions;
+  private readonly openAiCompletions: Completions;
 
   /** @internal */
   constructor(client: OpenAI) {
-    this.openAICompletions = new Completions(client);
+    this.openAiCompletions = new Completions(client);
   }
 
   /**
@@ -54,7 +54,7 @@ export class SapCompletions {
     body: WithoutModel<ChatCompletionCreateParamsBase>,
     options?: RequestOptions
   ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>> {
-    return this.openAICompletions.create(
+    return this.openAiCompletions.create(
       {
         // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
         model: '',
@@ -78,7 +78,7 @@ export class SapCompletions {
     body: Params,
     options?: RequestOptions
   ): APIPromise<ParsedChatCompletion<ParsedT>> {
-    return this.openAICompletions.parse(
+    return this.openAiCompletions.parse(
       {
         // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
         model: '',

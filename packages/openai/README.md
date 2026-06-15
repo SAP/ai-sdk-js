@@ -96,20 +96,20 @@ const client = await SapOpenAi.createClient({
 
 ### Low-level config
 
-Use `createOpenAIConfig` if you need to instantiate `AzureOpenAI` directly (e.g. to access endpoints not exposed by `SapOpenAi`):
+Use `createOpenAiConfig` if you need to instantiate `AzureOpenAI` directly (e.g. to access endpoints not exposed by `SapOpenAi`):
 
 ```ts
 import { AzureOpenAI } from 'openai';
-import { createOpenAIConfig } from '@sap-ai-sdk/openai';
+import { createOpenAiConfig } from '@sap-ai-sdk/openai';
 
-const config = await createOpenAIConfig('gpt-5.4');
+const config = await createOpenAiConfig('gpt-5.4');
 const client = new AzureOpenAI(config);
 ```
 
 ### Token provider
 
 `createTokenProvider` returns an `azureADTokenProvider`-compatible function that resolves the bearer token from the AI Core destination on each call.
-It is used internally by `createOpenAIConfig`.
+It is used internally by `createOpenAiConfig`.
 
 ## Documentation
 
