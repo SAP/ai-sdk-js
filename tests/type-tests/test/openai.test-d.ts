@@ -1,14 +1,14 @@
 import { expectType, expectAssignable, expectError } from 'tsd';
-import {
-  SapOpenAi,
+import { SapOpenAi, createOpenAiConfig, createTokenProvider } from '@sap-ai-sdk/openai';
+import type {
   SapChat,
   SapCompletions,
   SapEmbeddings,
   SapResponses,
-  createOpenAiConfig,
-  createTokenProvider
+  SapOpenAiOptions,
+  SapOpenAiInput,
+  SapModelName
 } from '@sap-ai-sdk/openai';
-import type { SapOpenAiOptions, SapOpenAiInput, SapModelName } from '@sap-ai-sdk/openai';
 
 /**
  * SapOpenAi.createClient returns a Promise<SapOpenAi>.
@@ -42,7 +42,11 @@ expectType<SapResponses>(client.responses);
 expectType<SapCompletions>(client.chat.completions);
 
 /**
- * SapCompletions.create — model must not be accepted.
+ * Direct construction must not be allowed — use SapOpenAi.createClient.
+ */
+
+/**
+ * SapCompletions.create rejects the model field.
  */
 expectError(
   client.chat.completions.create({
@@ -52,19 +56,19 @@ expectError(
 );
 
 /**
- * SapEmbeddings.create — model must not be accepted.
+ * SapEmbeddings.create rejects the model field.
  */
 expectError(
   client.embeddings.create({ model: 'text-embedding-3-small', input: 'hello' })
 );
 
 /**
- * SapResponses.create — model must not be accepted.
+ * SapResponses.create rejects the model field.
  */
 expectError(client.responses.create({ model: 'gpt-4', input: 'Hello' }));
 
 /**
- * createOpenAiConfig returns a Promise resolving to an Azure client options object.
+ * CreateOpenAiConfig returns a Promise resolving to an Azure client options object.
  */
 expectAssignable<Promise<object>>(createOpenAiConfig('gpt-4.1'));
 
@@ -73,7 +77,7 @@ expectAssignable<Promise<object>>(
 );
 
 /**
- * createTokenProvider returns a function that resolves to a string.
+ * CreateTokenProvider returns a function that resolves to a string.
  */
 expectType<() => Promise<string>>(createTokenProvider());
 

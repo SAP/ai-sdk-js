@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  uuid@^13.0.0: '>=13.0.2'
+  uuid@^13.0.0: '>=13.0.2'  
 
 importers:
 
@@ -435,6 +435,9 @@ importers:
       '@sap-ai-sdk/langchain':
         specifier: workspace:^
         version: link:../../packages/langchain
+      '@sap-ai-sdk/openai':
+        specifier: workspace:^
+        version: link:../../packages/openai
       '@sap-ai-sdk/orchestration':
         specifier: workspace:^
         version: link:../../packages/orchestration

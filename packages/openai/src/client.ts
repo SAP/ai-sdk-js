@@ -45,7 +45,7 @@ export class SapOpenAi {
   readonly responses: SapResponses;
 
   /** @internal — use {@link SapOpenAi.createClient} instead */
-  constructor(client: AzureOpenAI) {
+  private constructor(client: AzureOpenAI) {
     this.chat = new SapChat(client);
     this.embeddings = new SapEmbeddings(client);
     this.responses = new SapResponses(client);
