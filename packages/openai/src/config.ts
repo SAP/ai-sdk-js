@@ -34,7 +34,7 @@ export async function createOpenAiConfig(
 ): Promise<AzureClientOptions> {
   const opts: SapOpenAiOptions =
     typeof options === 'string' ? { deployment: options } : options;
-  const { deployment, destination, apiVersion, clientType } = opts;
+  const { deployment, destination, apiVersion = defaultApiVersion, clientType } = opts;
 
   const resourceGroup = getResourceGroup(deployment) ?? 'default';
 
