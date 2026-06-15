@@ -462,28 +462,28 @@ export class OrchestrationClient extends BaseChatModel<
     };
 
     if (tools.length) {
-      if (!config.promptTemplating.prompt) {
-        config.promptTemplating.prompt = {};
-      }
+      config.promptTemplating.prompt ??= {};
       if (
         typeof config.promptTemplating.prompt === 'object' &&
         !isTemplateRef(config.promptTemplating.prompt)
       ) {
-        config.promptTemplating.prompt.tools = [
-          // Preserve existing tools configured in the templating module
-          ...(config.promptTemplating.prompt.tools || []),
-          // Add new tools set with LangChain `bindTools()` or `invoke()` methods
-          ...tools.map(t => mapToolToChatCompletionTool(t))
-        ];
+        // Copy before mutating
+        config.promptTemplating.prompt = {
+          ...config.promptTemplating.prompt,
+          tools: [
+            // Preserve existing tools configured in the templating module
+            ...(config.promptTemplating.prompt.tools || []),
+            // Add new tools set with LangChain `bindTools()` or `invoke()` methods
+            ...tools.map(t => mapToolToChatCompletionTool(t))
+          ]
+        };
       }
     }
 
     // Handle responseFormat for structured output
     if (responseFormat) {
       // Ensure prompt object exists
-      if (!config.promptTemplating.prompt) {
-        config.promptTemplating.prompt = {};
-      }
+      config.promptTemplating.prompt ??= {};
 
       // Check if prompt is a TemplateRef
       if (
@@ -498,7 +498,11 @@ export class OrchestrationClient extends BaseChatModel<
 
       // Add responseFormat to prompt
       if (typeof config.promptTemplating.prompt === 'object') {
-        config.promptTemplating.prompt.response_format = responseFormat;
+        // Copy before mutating
+        config.promptTemplating.prompt = {
+          ...config.promptTemplating.prompt,
+          response_format: responseFormat
+        };
       }
     }
 
