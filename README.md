@@ -29,13 +29,12 @@ Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 
 ## Prerequisites
 
-Node.js 22 or 24 (LTS) is required.
-Node 20 reached end-of-life on 2026-04-30 and is no longer supported.
+Only Node.js LTS and Active LTS are supported.
 
-### Using the SDK in a CommonJS project (experimental)
+### Using the SDK in a CommonJS project
 
-This SDK is published as ESM.
-On Node 22+, CommonJS projects can load it directly with synchronous `require()` — no dynamic `import()` needed:
+This SDK is published as ESM-only.
+CommonJS projects can load it with the synchronous `require()` function (experimental) or asynchronous `import()` function:
 
 ```js
 const { AzureOpenAiChatClient } = require('@sap-ai-sdk/foundation-models');

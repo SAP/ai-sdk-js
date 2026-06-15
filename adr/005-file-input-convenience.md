@@ -238,7 +238,7 @@ This would be a best-effort heuristic and would require a fallback (e.g. default
 Extend `file_data` to accept a `File` or `Blob` in addition to a plain string.
 The SDK encodes the binary data to base64 and assembles the data URI internally.
 
-`File` and `Blob` are globally available in Node 22+ (the minimum supported LTS) and natively in all modern browsers.
+`File` and `Blob` are globally available in Node and natively in all modern browsers.
 
 ```ts
 // Hypothetical usage
