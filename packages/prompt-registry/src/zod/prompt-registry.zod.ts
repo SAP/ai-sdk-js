@@ -662,119 +662,179 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioRegExp = new RegExp('^[a-zA-Z0-9_-]+$');
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
 
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelMaxRetriesMax = 5;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
-
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
 
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault = 100;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneStreamChunkSizeMax = 10000;
+
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+
+
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoStreamChunkSizeMax = 10000;
 
 
 
@@ -783,7 +843,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyNameRegExp),
   "version": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyVersionMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyVersionRegExp),
   "scenario": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioRegExp),
-  "spec": zod.object({
+  "spec": zod.union([zod.object({
   "modules": zod.union([zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
@@ -791,7 +851,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -799,19 +863,27 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -827,13 +899,21 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -845,37 +925,41 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -887,7 +971,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -917,7 +1001,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -939,7 +1023,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -964,7 +1048,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -989,10 +1073,10 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1000,23 +1084,23 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -1029,7 +1113,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -1059,7 +1143,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -1067,19 +1155,27 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -1095,13 +1191,21 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -1113,37 +1217,41 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -1155,7 +1263,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -1185,7 +1293,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -1207,7 +1315,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -1232,7 +1340,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -1257,10 +1365,10 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1268,23 +1376,23 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -1297,7 +1405,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -1322,11 +1430,310 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 }).optional().describe('Configuration for translation module')
 })).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
   "stream": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
-  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecOneStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
   "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
 }).optional().describe('Options for streaming. Will be ignored if enabled is false.')
+}),zod.object({
+  "modules": zod.object({
+  "prompt_templating": zod.object({
+  "prompt": zod.union([zod.object({
+  "template": zod.array(zod.union([zod.object({
+  "role": zod.enum(['system']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text', 'image_url', 'file']),
+  "text": zod.string().optional(),
+  "image_url": zod.object({
+  "url": zod.string(),
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]),
+  "role": zod.enum(['user'])
+}),zod.object({
+  "role": zod.enum(['assistant']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]).optional(),
+  "refusal": zod.string().optional(),
+  "tool_calls": zod.array(zod.object({
+  "id": zod.string().describe('The ID of the tool call.'),
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "name": zod.string().describe('The name of the function to call.'),
+  "arguments": zod.string().describe('The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.')
+}).describe('The function that the model called.')
+})).optional().describe('The tool calls generated by the model, such as function calls.')
+}),zod.object({
+  "role": zod.enum(['tool']),
+  "tool_call_id": zod.string(),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "role": zod.enum(['developer']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+})])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
+  "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
+  "response_format": zod.union([zod.object({
+  "type": zod.enum(['text']).describe('The type of response format being defined: `text`')
+}),zod.object({
+  "type": zod.enum(['json_object']).describe('The type of response format being defined: `json_object`')
+}),zod.object({
+  "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
+  "json_schema": zod.object({
+  "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
+})]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
+  "tools": zod.array(zod.object({
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
+}),zod.object({
+  "template_ref": zod.union([zod.object({
+  "id": zod.string().describe('ID of the template in prompt registry'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+}),zod.object({
+  "scenario": zod.string().describe('Scenario name'),
+  "name": zod.string().describe('Name of the template'),
+  "version": zod.string().describe('Version of the template'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+})]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
+  "model": zod.object({
+  "name": zod.string().describe('Name of the model as in LLM Access configuration'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
+  "filtering": zod.object({
+  "input": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).')
+}).optional().describe('List of provider type and filters'),
+  "output": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
+  "stream_options": zod.object({
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+}).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
+}).optional().describe('List of provider type and filters')
+}).optional(),
+  "masking": zod.union([zod.object({
+  "providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers')
+}),zod.object({
+  "masking_providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
+})]).optional(),
+  "grounding": zod.object({
+  "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
+  "config": zod.object({
+  "filters": zod.array(zod.object({
+  "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
+  "search_config": zod.object({
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+}).optional(),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
+  "data_repository_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+})).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
+  "document_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
+})).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
+  "chunk_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+})).optional().describe('Restrict chunks considered during search to those with the given metadata.')
+})).optional().describe('Document grounding service filters to be used'),
+  "placeholders": zod.object({
+  "input": zod.array(zod.string()).min(1).describe('Contains the input parameters used for grounding input questions'),
+  "output": zod.string().describe('Placeholder name for grounding output')
+}).describe('Placeholders to be used for grounding input questions and output'),
+  "metadata_params": zod.array(zod.string()).optional().describe('Parameter name used for specifying metadata parameters')
+})
+}).optional(),
+  "translation": zod.object({
+  "input": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "apply_to": zod.array(zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')).min(1).optional(),
+  "target_language": zod.string().describe('Language to which the text should be translated.')
+}).describe('Configuration for `sap_document_translation` translation provider.')
+}).optional().describe('Configuration for input translation'),
+  "output": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Configuration for `sap_document_translation` translation provider.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "target_language": zod.union([zod.string().describe('Language to which the text should be translated.'),zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')])
+})
+}).optional().describe('Configuration for output translation')
+}).optional().describe('Configuration for translation module')
+}).optional().describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),
+  "stream": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecTwoStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
+}).optional().describe('Options for streaming. Will be ignored if enabled is false.')
+}).describe('Partial orchestration configuration for use with config_ref overrides. All fields are optional so that only the parts that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n')])
 })
 
 export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigResponse = zod.object({
@@ -1361,119 +1768,179 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMax = 5;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
-
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
 
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault = 100;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneStreamChunkSizeMax = 10000;
+
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+
+
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoStreamChunkSizeMax = 10000;
 
 
 
@@ -1489,7 +1956,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "managed_by": zod.string().optional(),
   "is_version_head": zod.boolean().optional(),
   "resource_group_id": zod.string().optional(),
-  "spec": zod.object({
+  "spec": zod.union([zod.object({
   "modules": zod.union([zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
@@ -1497,7 +1964,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -1505,19 +1976,27 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -1533,13 +2012,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -1551,37 +2038,41 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -1593,7 +2084,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -1623,7 +2114,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -1645,7 +2136,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -1670,7 +2161,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -1695,10 +2186,10 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1706,23 +2197,23 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -1735,7 +2226,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -1765,7 +2256,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -1773,19 +2268,27 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -1801,13 +2304,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -1819,37 +2330,41 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -1861,7 +2376,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -1891,7 +2406,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -1913,7 +2428,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -1938,7 +2453,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -1963,10 +2478,10 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1974,23 +2489,23 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -2003,7 +2518,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -2028,11 +2543,310 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).optional().describe('Configuration for translation module')
 })).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
   "stream": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
-  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecOneStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
   "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
 }).optional().describe('Options for streaming. Will be ignored if enabled is false.')
-}).optional()
+}),zod.object({
+  "modules": zod.object({
+  "prompt_templating": zod.object({
+  "prompt": zod.union([zod.object({
+  "template": zod.array(zod.union([zod.object({
+  "role": zod.enum(['system']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text', 'image_url', 'file']),
+  "text": zod.string().optional(),
+  "image_url": zod.object({
+  "url": zod.string(),
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]),
+  "role": zod.enum(['user'])
+}),zod.object({
+  "role": zod.enum(['assistant']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]).optional(),
+  "refusal": zod.string().optional(),
+  "tool_calls": zod.array(zod.object({
+  "id": zod.string().describe('The ID of the tool call.'),
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "name": zod.string().describe('The name of the function to call.'),
+  "arguments": zod.string().describe('The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.')
+}).describe('The function that the model called.')
+})).optional().describe('The tool calls generated by the model, such as function calls.')
+}),zod.object({
+  "role": zod.enum(['tool']),
+  "tool_call_id": zod.string(),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "role": zod.enum(['developer']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+})])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
+  "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
+  "response_format": zod.union([zod.object({
+  "type": zod.enum(['text']).describe('The type of response format being defined: `text`')
+}),zod.object({
+  "type": zod.enum(['json_object']).describe('The type of response format being defined: `json_object`')
+}),zod.object({
+  "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
+  "json_schema": zod.object({
+  "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+})
+})]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
+  "tools": zod.array(zod.object({
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
+}),zod.object({
+  "template_ref": zod.union([zod.object({
+  "id": zod.string().describe('ID of the template in prompt registry'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+}),zod.object({
+  "scenario": zod.string().describe('Scenario name'),
+  "name": zod.string().describe('Name of the template'),
+  "version": zod.string().describe('Version of the template'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+})]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
+  "model": zod.object({
+  "name": zod.string().describe('Name of the model as in LLM Access configuration'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
+  "filtering": zod.object({
+  "input": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).')
+}).optional().describe('List of provider type and filters'),
+  "output": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
+  "stream_options": zod.object({
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+}).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
+}).optional().describe('List of provider type and filters')
+}).optional(),
+  "masking": zod.union([zod.object({
+  "providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers')
+}),zod.object({
+  "masking_providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
+})]).optional(),
+  "grounding": zod.object({
+  "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
+  "config": zod.object({
+  "filters": zod.array(zod.object({
+  "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
+  "search_config": zod.object({
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+}).optional(),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
+  "data_repository_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+})).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
+  "document_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
+})).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
+  "chunk_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+})).optional().describe('Restrict chunks considered during search to those with the given metadata.')
+})).optional().describe('Document grounding service filters to be used'),
+  "placeholders": zod.object({
+  "input": zod.array(zod.string()).min(1).describe('Contains the input parameters used for grounding input questions'),
+  "output": zod.string().describe('Placeholder name for grounding output')
+}).describe('Placeholders to be used for grounding input questions and output'),
+  "metadata_params": zod.array(zod.string()).optional().describe('Parameter name used for specifying metadata parameters')
+})
+}).optional(),
+  "translation": zod.object({
+  "input": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "apply_to": zod.array(zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')).min(1).optional(),
+  "target_language": zod.string().describe('Language to which the text should be translated.')
+}).describe('Configuration for `sap_document_translation` translation provider.')
+}).optional().describe('Configuration for input translation'),
+  "output": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Configuration for `sap_document_translation` translation provider.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "target_language": zod.union([zod.string().describe('Language to which the text should be translated.'),zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')])
+})
+}).optional().describe('Configuration for output translation')
+}).optional().describe('Configuration for translation module')
+}).optional().describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),
+  "stream": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecTwoStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
+}).optional().describe('Options for streaming. Will be ignored if enabled is false.')
+}).describe('Partial orchestration configuration for use with config_ref overrides. All fields are optional so that only the parts that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n')]).optional()
 }))
 })
 
@@ -2061,119 +2875,179 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMax = 5;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
-
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
 
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault = 100;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneStreamChunkSizeMax = 10000;
+
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+
+
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoStreamChunkSizeMax = 10000;
 
 
 
@@ -2189,7 +3063,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "managed_by": zod.string().optional(),
   "is_version_head": zod.boolean().optional(),
   "resource_group_id": zod.string().optional(),
-  "spec": zod.object({
+  "spec": zod.union([zod.object({
   "modules": zod.union([zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
@@ -2197,7 +3071,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -2205,19 +3083,27 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -2233,13 +3119,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -2251,37 +3145,41 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -2293,7 +3191,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -2323,7 +3221,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -2345,7 +3243,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -2370,7 +3268,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -2395,10 +3293,10 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -2406,23 +3304,23 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -2435,7 +3333,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -2465,7 +3363,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -2473,19 +3375,27 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -2501,13 +3411,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -2519,37 +3437,41 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -2561,7 +3483,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -2591,7 +3513,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -2613,7 +3535,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -2638,7 +3560,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -2663,10 +3585,10 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -2674,23 +3596,23 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -2703,7 +3625,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -2728,11 +3650,310 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).optional().describe('Configuration for translation module')
 })).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
   "stream": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
-  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecOneStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
   "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
 }).optional().describe('Options for streaming. Will be ignored if enabled is false.')
-}).optional()
+}),zod.object({
+  "modules": zod.object({
+  "prompt_templating": zod.object({
+  "prompt": zod.union([zod.object({
+  "template": zod.array(zod.union([zod.object({
+  "role": zod.enum(['system']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text', 'image_url', 'file']),
+  "text": zod.string().optional(),
+  "image_url": zod.object({
+  "url": zod.string(),
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]),
+  "role": zod.enum(['user'])
+}),zod.object({
+  "role": zod.enum(['assistant']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]).optional(),
+  "refusal": zod.string().optional(),
+  "tool_calls": zod.array(zod.object({
+  "id": zod.string().describe('The ID of the tool call.'),
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "name": zod.string().describe('The name of the function to call.'),
+  "arguments": zod.string().describe('The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.')
+}).describe('The function that the model called.')
+})).optional().describe('The tool calls generated by the model, such as function calls.')
+}),zod.object({
+  "role": zod.enum(['tool']),
+  "tool_call_id": zod.string(),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "role": zod.enum(['developer']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+})])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
+  "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
+  "response_format": zod.union([zod.object({
+  "type": zod.enum(['text']).describe('The type of response format being defined: `text`')
+}),zod.object({
+  "type": zod.enum(['json_object']).describe('The type of response format being defined: `json_object`')
+}),zod.object({
+  "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
+  "json_schema": zod.object({
+  "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+})
+})]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
+  "tools": zod.array(zod.object({
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
+}),zod.object({
+  "template_ref": zod.union([zod.object({
+  "id": zod.string().describe('ID of the template in prompt registry'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+}),zod.object({
+  "scenario": zod.string().describe('Scenario name'),
+  "name": zod.string().describe('Name of the template'),
+  "version": zod.string().describe('Version of the template'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+})]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
+  "model": zod.object({
+  "name": zod.string().describe('Name of the model as in LLM Access configuration'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
+  "filtering": zod.object({
+  "input": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).')
+}).optional().describe('List of provider type and filters'),
+  "output": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
+  "stream_options": zod.object({
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+}).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
+}).optional().describe('List of provider type and filters')
+}).optional(),
+  "masking": zod.union([zod.object({
+  "providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers')
+}),zod.object({
+  "masking_providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
+})]).optional(),
+  "grounding": zod.object({
+  "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
+  "config": zod.object({
+  "filters": zod.array(zod.object({
+  "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
+  "search_config": zod.object({
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+}).optional(),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
+  "data_repository_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+})).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
+  "document_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
+})).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
+  "chunk_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+})).optional().describe('Restrict chunks considered during search to those with the given metadata.')
+})).optional().describe('Document grounding service filters to be used'),
+  "placeholders": zod.object({
+  "input": zod.array(zod.string()).min(1).describe('Contains the input parameters used for grounding input questions'),
+  "output": zod.string().describe('Placeholder name for grounding output')
+}).describe('Placeholders to be used for grounding input questions and output'),
+  "metadata_params": zod.array(zod.string()).optional().describe('Parameter name used for specifying metadata parameters')
+})
+}).optional(),
+  "translation": zod.object({
+  "input": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "apply_to": zod.array(zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')).min(1).optional(),
+  "target_language": zod.string().describe('Language to which the text should be translated.')
+}).describe('Configuration for `sap_document_translation` translation provider.')
+}).optional().describe('Configuration for input translation'),
+  "output": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Configuration for `sap_document_translation` translation provider.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "target_language": zod.union([zod.string().describe('Language to which the text should be translated.'),zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')])
+})
+}).optional().describe('Configuration for output translation')
+}).optional().describe('Configuration for translation module')
+}).optional().describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),
+  "stream": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecTwoStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
+}).optional().describe('Options for streaming. Will be ignored if enabled is false.')
+}).describe('Partial orchestration configuration for use with config_ref overrides. All fields are optional so that only the parts that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n')]).optional()
 }))
 })
 
@@ -2756,119 +3977,179 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMax = 5;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelMaxRetriesMax = 5;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
-
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
 
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
-
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
 
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
 
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault = false;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault = 100;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax = 10000;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneStreamChunkSizeMax = 10000;
+
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+
+
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax = 64;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp = new RegExp('^[a-zA-Z0-9-_]+$');
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelVersionDefault = `latest`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelTimeoutMax = 1200;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelMaxRetriesDefault = 2;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelMaxRetriesMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelMaxRetriesMax = 5;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin = 0;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax = 10000;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault = [`*`];
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax = 1024;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
+
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoStreamEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoStreamChunkSizeMax = 10000;
 
 
 
@@ -2882,7 +4163,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "managed_by": zod.string().optional(),
   "is_version_head": zod.boolean().optional(),
   "resource_group_id": zod.string().optional(),
-  "spec": zod.object({
+  "spec": zod.union([zod.object({
   "modules": zod.union([zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
@@ -2890,7 +4171,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -2898,19 +4183,27 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -2926,13 +4219,21 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -2944,37 +4245,41 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -2986,7 +4291,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -3016,7 +4321,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -3038,7 +4343,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -3063,7 +4368,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -3088,10 +4393,10 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -3099,23 +4404,23 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -3128,7 +4433,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesOneTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -3158,7 +4463,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -3166,19 +4475,27 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "text": zod.string().optional(),
   "image_url": zod.object({
   "url": zod.string(),
-  "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
 }).optional(),
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -3194,13 +4511,21 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -3212,37 +4537,41 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
   "json_schema": zod.object({
   "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
 })
 })]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
   "tools": zod.array(zod.object({
   "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
   "function": zod.object({
   "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
-  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
-  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
   "id": zod.string().describe('ID of the template in prompt registry'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 }),zod.object({
   "scenario": zod.string().describe('Scenario name'),
   "name": zod.string().describe('Name of the template'),
   "version": zod.string().describe('Version of the template'),
-  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
-  "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
-  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
-  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
 }).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
 }),
   "filtering": zod.object({
@@ -3254,7 +4583,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -3284,7 +4613,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
   "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
-  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
 }).optional().describe('Filter configuration for Azure Content Safety')
 }),zod.object({
   "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
@@ -3306,7 +4635,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 }).describe('Filter configuration for Llama Guard 3 8B')
 })])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
   "stream_options": zod.object({
-  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
 }).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
 }).optional().describe('List of provider type and filters')
 }).optional(),
@@ -3331,7 +4660,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
 })).min(1).describe('List of masking service providers')
@@ -3356,10 +4685,10 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })])).min(1).describe('List of entities to be masked'),
   "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
   "mask_grounding_input": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -3367,23 +4696,23 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "filters": zod.array(zod.object({
   "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
   "search_config": zod.object({
-  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
-  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
 }).optional(),
-  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
   "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
   "data_repository_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
 })).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
   "document_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
   "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
 })).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
   "chunk_metadata": zod.array(zod.object({
-  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
-  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
 })).optional().describe('Restrict chunks considered during search to those with the given metadata.')
 })).optional().describe('Document grounding service filters to be used'),
   "placeholders": zod.object({
@@ -3396,7 +4725,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "translation": zod.object({
   "input": zod.object({
   "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
-  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
   "config": zod.object({
   "source_language": zod.string().optional().describe('Language of the text to be translated.'),
   "apply_to": zod.array(zod.object({
@@ -3421,11 +4750,310 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 }).optional().describe('Configuration for translation module')
 })).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
   "stream": zod.object({
-  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
-  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecOneStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
   "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
 }).optional().describe('Options for streaming. Will be ignored if enabled is false.')
-}).optional()
+}),zod.object({
+  "modules": zod.object({
+  "prompt_templating": zod.object({
+  "prompt": zod.union([zod.object({
+  "template": zod.array(zod.union([zod.object({
+  "role": zod.enum(['system']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text', 'image_url', 'file']),
+  "text": zod.string().optional(),
+  "image_url": zod.object({
+  "url": zod.string(),
+  "detail": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault)
+}).optional(),
+  "file": zod.object({
+  "file_data": zod.string().describe('Base64 encoded file content or file URL'),
+  "filename": zod.string().optional().describe('Name of the file')
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]),
+  "role": zod.enum(['user'])
+}),zod.object({
+  "role": zod.enum(['assistant']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)]).optional(),
+  "refusal": zod.string().optional(),
+  "tool_calls": zod.array(zod.object({
+  "id": zod.string().describe('The ID of the tool call.'),
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "name": zod.string().describe('The name of the function to call.'),
+  "arguments": zod.string().describe('The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.')
+}).describe('The function that the model called.')
+})).optional().describe('The tool calls generated by the model, such as function calls.')
+}),zod.object({
+  "role": zod.enum(['tool']),
+  "tool_call_id": zod.string(),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+}),zod.object({
+  "role": zod.enum(['developer']),
+  "content": zod.union([zod.string(),zod.array(zod.object({
+  "type": zod.enum(['text']),
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).min(1)])
+})])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
+  "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
+  "response_format": zod.union([zod.object({
+  "type": zod.enum(['text']).describe('The type of response format being defined: `text`')
+}),zod.object({
+  "type": zod.enum(['json_object']).describe('The type of response format being defined: `json_object`')
+}),zod.object({
+  "type": zod.enum(['json_schema']).describe('The type of response format being defined: `json_schema`'),
+  "json_schema": zod.object({
+  "description": zod.string().optional().describe('A description of what the response format is for, used by the model to determine how to respond in the format.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameRegExp).describe('The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "schema": zod.record(zod.string(), zod.unknown()).optional().describe('The schema for the response format, described as a JSON Schema object.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneResponseFormatThreeJsonSchemaStrictDefault).describe('Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the `schema` field. Only a subset of JSON Schema is supported when `strict` is `true`. To learn more, read the [Structured Outputs guide](https:\/\/platform.openai.com\/docs\/guides\/structured-outputs).')
+})
+})]).optional().describe('Response format that the model output should adhere to. This is the same as the OpenAI definition.\n'),
+  "tools": zod.array(zod.object({
+  "type": zod.enum(['function']).describe('The type of the tool. Currently, only `function` is supported.'),
+  "function": zod.object({
+  "description": zod.string().optional().describe('A description of what the function does, used by the model to choose when and how to call the function.'),
+  "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
+  "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
+  "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
+})).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
+}),zod.object({
+  "template_ref": zod.union([zod.object({
+  "id": zod.string().describe('ID of the template in prompt registry'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptTwoTemplateRefOneScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+}),zod.object({
+  "scenario": zod.string().describe('Scenario name'),
+  "name": zod.string().describe('Name of the template'),
+  "version": zod.string().describe('Version of the template'),
+  "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
+})]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
+  "model": zod.object({
+  "name": zod.string().describe('Name of the model as in LLM Access configuration'),
+  "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
+  "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
+  "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
+  "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesPromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
+  "filtering": zod.object({
+  "input": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "prompt_shield": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringInputOneFiltersItemOneConfigPromptShieldDefault).describe('Filter prompts for harmful content such as jailbreaks and prompt injections.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).')
+}).optional().describe('List of provider type and filters'),
+  "output": zod.object({
+  "filters": zod.array(zod.union([zod.object({
+  "type": zod.enum(['azure_content_safety']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "hate": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "self_harm": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "sexual": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "violence": zod.union([zod.literal(0),zod.literal(2),zod.literal(4),zod.literal(6)]).optional(),
+  "protected_material_code": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault).describe('Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.')
+}).optional().describe('Filter configuration for Azure Content Safety')
+}),zod.object({
+  "type": zod.enum(['llama_guard_3_8b']).describe('Name of the filter provider type'),
+  "config": zod.object({
+  "violent_crimes": zod.boolean().optional(),
+  "non_violent_crimes": zod.boolean().optional(),
+  "sex_crimes": zod.boolean().optional(),
+  "child_exploitation": zod.boolean().optional(),
+  "defamation": zod.boolean().optional(),
+  "specialized_advice": zod.boolean().optional(),
+  "privacy": zod.boolean().optional(),
+  "intellectual_property": zod.boolean().optional(),
+  "indiscriminate_weapons": zod.boolean().optional(),
+  "hate": zod.boolean().optional(),
+  "self_harm": zod.boolean().optional(),
+  "sexual_content": zod.boolean().optional(),
+  "elections": zod.boolean().optional(),
+  "code_interpreter_abuse": zod.boolean().optional()
+}).describe('Filter configuration for Llama Guard 3 8B')
+})])).min(1).describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).'),
+  "stream_options": zod.object({
+  "overlap": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneStreamOptionsOverlapMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesFilteringOutputOneStreamOptionsOverlapDefault).describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.')
+}).optional().describe('Stream options for output filtering. Will be ignored if stream is false.')
+}).optional().describe('List of provider type and filters')
+}).optional(),
+  "masking": zod.union([zod.object({
+  "providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers')
+}),zod.object({
+  "masking_providers": zod.array(zod.object({
+  "type": zod.enum(['sap_data_privacy_integration']).describe('Type of masking service provider'),
+  "method": zod.enum(['anonymization', 'pseudonymization']).describe('Type of masking method to be used'),
+  "entities": zod.array(zod.union([zod.object({
+  "type": zod.enum(['profile-person', 'profile-org', 'profile-university', 'profile-location', 'profile-email', 'profile-phone', 'profile-address', 'profile-sapids-internal', 'profile-sapids-public', 'profile-url', 'profile-username-password', 'profile-nationalid', 'profile-iban', 'profile-ssn', 'profile-credit-card-number', 'profile-passport', 'profile-driverlicense', 'profile-nationality', 'profile-religious-group', 'profile-political-group', 'profile-pronouns-gender', 'profile-ethnicity', 'profile-gender', 'profile-sexual-orientation', 'profile-trade-union', 'profile-sensitive-data']).describe('Default entities supported by data privacy and integration service'),
+  "replacement_strategy": zod.union([zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number'),zod.object({
+  "method": zod.enum(['fabricated_data'])
+}).describe('Replaces the entity with a randomly generated value appropriate to its type.')]).optional().describe('Replacement strategy to be used for the entity')
+}),zod.object({
+  "regex": zod.string().describe('Regular expression to match the entity'),
+  "replacement_strategy": zod.object({
+  "method": zod.enum(['constant']),
+  "value": zod.string().describe('Value to be used for replacement')
+}).describe('Replaces the entity with the specified value followed by an incrementing number').describe('Replacement strategy to be used for the entity')
+})])).min(1).describe('List of entities to be masked'),
+  "allowlist": zod.array(zod.string()).optional().describe('List of strings that should not be masked'),
+  "mask_grounding_input": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
+}).optional(),
+  "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
+})]).optional(),
+  "grounding": zod.object({
+  "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
+  "config": zod.object({
+  "filters": zod.array(zod.object({
+  "id": zod.string().optional().describe('Identifier of this SearchFilter - unique per request.'),
+  "search_config": zod.object({
+  "max_chunk_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin).optional().describe('Maximum number of chunks to be returned. Cannot be used with \'maxDocumentCount\'.'),
+  "max_document_count": zod.number().gt(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin).optional().describe('[Only supports \'vector\' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with \'maxChunkCount\'. If maxDocumentCount is given, then only one chunk per document is returned.')
+}).optional(),
+  "data_repositories": zod.array(zod.string()).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoriesDefault).describe('Specify [\'\*\'] to search across all DataRepositories or give a specific list of DataRepository ids.'),
+  "data_repository_type": zod.enum(['vector', 'help.sap.com']).describe('Only include DataRepositories with the given type.'),
+  "data_repository_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDataRepositoryMetadataItemValueItemMax))
+})).optional().describe('Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=[\'\*\']'),
+  "document_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneDocumentMetadataItemValueItemMax)),
+  "select_mode": zod.array(zod.enum(['ignoreIfKeyAbsent'])).optional().describe('Select mode for search filters')
+})).optional().describe('Restrict documents considered during search to those annotated with the given metadata.'),
+  "chunk_metadata": zod.array(zod.object({
+  "key": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemKeyMax),
+  "value": zod.array(zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax))
+})).optional().describe('Restrict chunks considered during search to those with the given metadata.')
+})).optional().describe('Document grounding service filters to be used'),
+  "placeholders": zod.object({
+  "input": zod.array(zod.string()).min(1).describe('Contains the input parameters used for grounding input questions'),
+  "output": zod.string().describe('Placeholder name for grounding output')
+}).describe('Placeholders to be used for grounding input questions and output'),
+  "metadata_params": zod.array(zod.string()).optional().describe('Parameter name used for specifying metadata parameters')
+})
+}).optional(),
+  "translation": zod.object({
+  "input": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Type of document translation provider'),
+  "translate_messages_history": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoModulesTranslationInputOneTranslateMessagesHistoryDefault).describe('If true, the messages history will be translated as well.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "apply_to": zod.array(zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')).min(1).optional(),
+  "target_language": zod.string().describe('Language to which the text should be translated.')
+}).describe('Configuration for `sap_document_translation` translation provider.')
+}).optional().describe('Configuration for input translation'),
+  "output": zod.object({
+  "type": zod.enum(['sap_document_translation']).describe('Configuration for `sap_document_translation` translation provider.'),
+  "config": zod.object({
+  "source_language": zod.string().optional().describe('Language of the text to be translated.'),
+  "target_language": zod.union([zod.string().describe('Language to which the text should be translated.'),zod.object({
+  "category": zod.enum(['placeholders', 'template_roles']).describe('Category to apply translation to.'),
+  "items": zod.array(zod.string()).describe('List of placeholders or roles to apply translation to'),
+  "source_language": zod.string().optional().describe('Language of the text to be translated.')
+}).describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{\"category\": \"placeholders\", \"items\": [\"user_input\"], \"source_language\": \"de-DE\"}` targets the value of \"user_input\" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n')])
+})
+}).optional().describe('Configuration for output translation')
+}).optional().describe('Configuration for translation module')
+}).optional().describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),
+  "stream": zod.object({
+  "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
+  "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecTwoStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
+  "delimiters": zod.array(zod.string()).min(1).optional().describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.')
+}).optional().describe('Options for streaming. Will be ignored if enabled is false.')
+}).describe('Partial orchestration configuration for use with config_ref overrides. All fields are optional so that only the parts that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n')]).optional()
 })
 
 

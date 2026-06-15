@@ -3,8 +3,8 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { TextContent } from './text-content.js';
+import type { SchemasTextContent } from './schemas-text-content.js';
 /**
  * Representation of the 'ChatMessageContent' schema.
  */
-export type ChatMessageContent = string | TextContent[];
+export type ChatMessageContent = string | SchemasTextContent[];
