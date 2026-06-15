@@ -1,5 +1,9 @@
 import { expectType, expectAssignable, expectError } from 'tsd';
-import { SapOpenAi, createOpenAiConfig, createTokenProvider } from '@sap-ai-sdk/openai';
+import {
+  SapOpenAi,
+  createOpenAiConfig,
+  createTokenProvider
+} from '@sap-ai-sdk/openai';
 import type {
   SapChat,
   SapCompletions,
@@ -95,4 +99,6 @@ expectAssignable<SapModelName>('text-embedding-3-small');
  * SapOpenAiInput accepts a plain string or SapOpenAiOptions.
  */
 expectAssignable<SapOpenAiInput>('gpt-4.1');
-expectAssignable<SapOpenAiInput>({ deployment: 'gpt-4.1' } satisfies SapOpenAiOptions);
+expectAssignable<SapOpenAiInput>({
+  deployment: 'gpt-4.1'
+} satisfies SapOpenAiOptions);
