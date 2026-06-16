@@ -68,6 +68,7 @@ jobs:
             --detect.project.version.name="${{ steps.version.outputs.project_version }}"
             --detect.project.user.groups="${{ vars.BLACKDUCK_PROJECT_GROUP }}"
             --detect.code.location.name="${{ vars.BLACKDUCK_PROJECT_NAME }}/${{ steps.version.outputs.project_version }}"
+            --detect.pnpm.dependency.types.excluded=DEV,OPTIONAL
             --detect.blackduck.signature.scanner.memory=4096
             --detect.timeout=6000
             --detect.blackduck.signature.scanner.arguments="--min-scan-interval=0"
