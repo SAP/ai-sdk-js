@@ -67,7 +67,7 @@ describe('createOpenAiConfig', () => {
 
       await expect(
         createOpenAiConfig({ deployment: { deploymentId: 'missing-dep' } })
-      ).rejects.toThrow('Fetching deployment for ID \'missing-dep\' failed.');
+      ).rejects.toThrow("Fetching deployment for ID 'missing-dep' failed.");
     });
 
     it('throws when deployment ID resolves to no URL', async () => {
