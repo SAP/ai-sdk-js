@@ -681,7 +681,7 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
@@ -736,7 +736,7 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
@@ -791,7 +791,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -804,14 +808,22 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -827,13 +839,21 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -857,7 +877,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -869,7 +893,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -992,7 +1016,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1059,7 +1083,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -1072,14 +1100,22 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -1095,13 +1131,21 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -1125,7 +1169,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": zod.string().max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -1137,7 +1185,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -1260,7 +1308,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1380,7 +1428,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
@@ -1435,7 +1483,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
@@ -1497,7 +1545,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -1510,14 +1562,22 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -1533,13 +1593,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -1563,7 +1631,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -1575,7 +1647,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -1698,7 +1770,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -1765,7 +1837,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -1778,14 +1854,22 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -1801,13 +1885,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -1831,7 +1923,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -1843,7 +1939,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -1966,7 +2062,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -2080,7 +2176,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
@@ -2135,7 +2231,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
@@ -2197,7 +2293,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -2210,14 +2310,22 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -2233,13 +2341,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -2263,7 +2379,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -2275,7 +2395,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -2398,7 +2518,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -2465,7 +2585,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -2478,14 +2602,22 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -2501,13 +2633,21 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -2531,7 +2671,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": zod.string().max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -2543,7 +2687,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -2666,7 +2810,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -2775,7 +2919,7 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMin = 0;
@@ -2830,7 +2974,7 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
-export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin = 0;
@@ -2890,7 +3034,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -2903,14 +3051,22 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -2926,13 +3082,21 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -2956,7 +3120,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -2968,7 +3136,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -3091,7 +3259,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
@@ -3158,7 +3326,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "role": zod.enum(['system']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "content": zod.union([zod.string(),zod.array(zod.object({
@@ -3171,14 +3343,22 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "file": zod.object({
   "file_data": zod.string().describe('Base64 encoded file content or file URL'),
   "filename": zod.string().optional().describe('Name of the file')
-}).optional()
+}).optional(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]),
   "role": zod.enum(['user'])
 }),zod.object({
   "role": zod.enum(['assistant']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)]).optional(),
   "refusal": zod.string().optional(),
   "tool_calls": zod.array(zod.object({
@@ -3194,13 +3374,21 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "tool_call_id": zod.string(),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 }),zod.object({
   "role": zod.enum(['developer']),
   "content": zod.union([zod.string(),zod.array(zod.object({
   "type": zod.enum(['text']),
-  "text": zod.string()
+  "text": zod.string(),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).min(1)])
 })])).min(1).describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.'),
   "defaults": zod.record(zod.string(), zod.string()).optional().describe('Optional default values for the template. If a parameter has no default it is required.'),
@@ -3224,7 +3412,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "name": zod.string().max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameMax).regex(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionNameRegExp).describe('The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.'),
   "parameters": zod.record(zod.string(), zod.unknown()).optional().describe('The parameters the functions accepts, described as a JSON Schema object. See the [guide](https:\/\/platform.openai.com\/docs\/guides\/function-calling) for examples, and the [JSON Schema reference](https:\/\/json-schema.org\/understanding-json-schema\/) for documentation about the format.  Omitting `parameters` defines a function with an empty parameter list.'),
   "strict": zod.boolean().nullish().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneToolsItemFunctionStrictDefault).describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs\/guides\/function-calling).')
-})
+}),
+  "cache_control": zod.object({
+  "type": zod.enum(['ephemeral']),
+  "ttl": zod.enum(['5m', '1h']).optional().describe('Time-to-live for the cache entry. Default is \"5m\" (5 minutes). \"1h\" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n')
+}).optional().describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n')
 })).optional().describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n')
 }),zod.object({
   "template_ref": zod.union([zod.object({
@@ -3236,7 +3428,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "version": zod.string().describe('Version of the template'),
   "scope": zod.enum(['resource_group', 'tenant']).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault).describe('Defines the scope that is searched for the referenced template.  \'tenant\' indicates the template is shared across all resource groups within the tenant,  while \'resource_group\' indicates the template is only accessible within the specific resource group.\n')
 })]).describe('Reference to a template in the prompt registry by ID or by scenario, name and version')
-})]).describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry.\n'),
+})]).optional().describe('The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.\n'),
   "model": zod.object({
   "name": zod.string().describe('Name of the model as in LLM Access configuration'),
   "version": zod.string().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault).describe('Version of the model to be used'),
@@ -3359,7 +3551,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module')
 }).optional(),
   "mask_file_input_method": zod.enum(['anonymization', 'skip']).optional().describe('Type of masking method to be used for file inputs. Required if file inputs are provided.')
-})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed Sept 15, 2026. Use `providers` property instead.')
+})).min(1).describe('List of masking service providers. \*\*DEPRECATED\*\*:  will be removed March 20, 2027. Use `providers` property instead.')
 })]).optional(),
   "grounding": zod.object({
   "type": zod.union([zod.enum(['document_grounding_service']),zod.unknown()]),
