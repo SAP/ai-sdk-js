@@ -14,7 +14,8 @@ import {
   mockDeploymentsList,
   mockInference,
   parseMockResponse,
-  parseFileToString
+  parseFileToString,
+  aiCoreDestination
 } from '../../../../test-util/mock-http.js';
 import { addNumbersTool } from '../../../../test-util/tools.js';
 import { OrchestrationClient } from './client.js';
@@ -358,6 +359,43 @@ describe('orchestration service client', () => {
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+    });
+
+    it('should not accumulate duplicate tools on repeated invocations (issue #1898)', async () => {
+      const configWithPrompt: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4-nano',
+            params: {}
+          },
+          prompt: {
+            template: [{ role: 'user', content: 'What is 1 + 2?' }]
+          }
+        }
+      };
+
+      const clientWithPrompt = new OrchestrationClient(configWithPrompt, {
+        maxRetries: 0
+      });
+
+      const capturedToolCounts: number[] = [];
+
+      nock(aiCoreDestination.url)
+        .post(/.*/, body => {
+          const tools = body?.config?.modules?.prompt_templating?.prompt?.tools;
+          capturedToolCounts.push(tools?.length ?? 0);
+          return true;
+        })
+        .times(2)
+        .reply(200, toolResponse.data);
+
+      const boundClient = clientWithPrompt.bindTools([addNumbersTool]);
+      await boundClient.invoke('What is 1 + 2?');
+      await boundClient.invoke('What is 1 + 2?');
+
+      expect(capturedToolCounts).toHaveLength(2);
+      expect(capturedToolCounts[0]).toBe(1);
+      expect(capturedToolCounts[1]).toBe(1);
     });
   });
 

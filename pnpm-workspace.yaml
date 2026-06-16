@@ -22,17 +22,14 @@ allowBuilds:
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
+  - '@sap-ai-sdk/*'
   - '@sap-cloud-sdk/*'
   - '@sap-ai-sdk/*'
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
-  - 'uuid@13.0.2'
-  - ip-address@10.1.1
-  - hono@4.12.16
-  - fast-uri@3.1.2
-  - hono@4.12.18
-overrides:
-  uuid@^13.0.0: '>=13.0.2'
+  - esbuild@0.28.1
+  - form-data@4.0.6
+  - js-yaml@4.1.2
 shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 131400 # 3 months

@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
 
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
@@ -99,4 +99,20 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh pr merge --auto --squash "$PR_URL"
+          REPO: ${{github.repository}}
+          PR_HEAD_SHA: ${{github.event.pull_request.head.sha}}
+        run: |
+          COMMIT=$(gh api "repos/$REPO/commits/$PR_HEAD_SHA" --jq '{author: .author.login, verified: .commit.verification.verified}')
+          LAST_AUTHOR=$(echo "$COMMIT" | jq -r '.author')
+          VERIFIED=$(echo "$COMMIT" | jq -r '.verified')
+          if [[ "$LAST_AUTHOR" != "dependabot[bot]" || "$VERIFIED" != "true" ]]; then
+            echo "Commit author='$LAST_AUTHOR' verified='$VERIFIED': skipping auto-merge"
+            exit 0
+          fi
+          gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL" && exit 0
+          for _ in $(seq 1 5); do
+            sleep 15
+            gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL" && exit 0
+          done
+          echo "All attempts to enable auto-merge failed"
+          exit 1

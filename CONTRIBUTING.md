@@ -8,6 +8,10 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 Once you are ready to make a change, please test it appropriately, create a pull request and describe your change in the pull request.
 The owners of the repository will review your changes as soon as possible.
 
+## Prerequisites
+
+See the [Prerequisites](README.md#prerequisites) section in the README.
+
 ## Project Structure
 
 This project contains multiple packages, that are managed using pnpm workspaces.
