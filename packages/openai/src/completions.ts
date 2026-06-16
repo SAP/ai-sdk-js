@@ -6,6 +6,7 @@ import type {
   ChatCompletionCreateParamsNonStreaming,
   ChatCompletionCreateParamsStreaming,
   ChatCompletionCreateParamsBase,
+  ChatCompletionParseParams,
   ParsedChatCompletion
 } from 'openai/resources/chat/completions/completions';
 import type { ExtractParsedContentFromParams } from 'openai/lib/parser';
@@ -72,7 +73,7 @@ export class SapCompletions {
    * @returns A promise resolving to a {@link ParsedChatCompletion} with the parsed response content.
    */
   parse<
-    Params extends WithoutModel<ChatCompletionCreateParamsNonStreaming>,
+    Params extends WithoutModel<ChatCompletionParseParams>,
     ParsedT = ExtractParsedContentFromParams<Params & { model: string }>
   >(
     body: Params,
@@ -80,9 +81,8 @@ export class SapCompletions {
   ): APIPromise<ParsedChatCompletion<ParsedT>> {
     return this.openAiCompletions.parse(
       {
-        // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-        model: '',
-        ...body
+        ...body,
+        model: ''
       } satisfies ChatCompletionCreateParamsNonStreaming,
       options
     ) as APIPromise<ParsedChatCompletion<ParsedT>>;

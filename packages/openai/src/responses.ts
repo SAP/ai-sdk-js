@@ -76,8 +76,8 @@ export class SapResponses {
     return this.openAiResponses.parse(
       {
         // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-        model: '',
-        ...body
+        ...body,
+        model: ''
       } satisfies ResponseCreateParamsWithTools,
       options
     ) as APIPromise<ParsedResponse<ParsedT>>;

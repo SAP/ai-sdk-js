@@ -32,6 +32,13 @@ expectType<Promise<SapOpenAi>>(
 );
 
 /**
+ * SapOpenAi.createClient accepts deployment by ID.
+ */
+expectType<Promise<SapOpenAi>>(
+  SapOpenAi.createClient({ deployment: { deploymentId: 'd123' } })
+);
+
+/**
  * SapOpenAi instance exposes chat, embeddings, responses.
  */
 declare const client: SapOpenAi;
@@ -46,15 +53,20 @@ expectType<SapResponses>(client.responses);
 expectType<SapCompletions>(client.chat.completions);
 
 /**
- * Direct construction must not be allowed — use SapOpenAi.createClient.
- */
-
-/**
  * SapCompletions.create rejects the model field.
  */
 expectError(
   client.chat.completions.create({
     model: 'gpt-4',
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.parse accepts valid params without model.
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.parse({
     messages: [{ role: 'user', content: 'Hello' }]
   })
 );
@@ -72,12 +84,26 @@ expectError(
 expectError(client.responses.create({ model: 'gpt-4', input: 'Hello' }));
 
 /**
- * CreateOpenAiConfig returns a Promise resolving to an Azure client options object.
+ * SapResponses.parse accepts valid params without model.
  */
-expectAssignable<Promise<object>>(createOpenAiConfig('gpt-4.1'));
+expectAssignable<Promise<unknown>>(
+  client.responses.parse({ input: 'Hello' })
+);
 
-expectAssignable<Promise<object>>(
+/**
+ * CreateOpenAiConfig returns a Promise resolving to an Azure client options object.
+ * Using a structural subset to avoid importing AzureClientOptions from the openai package.
+ */
+expectAssignable<Promise<{ baseURL?: string | null; apiVersion?: string; azureADTokenProvider?: () => Promise<string> }>>(
+  createOpenAiConfig('gpt-4.1')
+);
+
+expectAssignable<Promise<{ baseURL?: string | null; apiVersion?: string; azureADTokenProvider?: () => Promise<string> }>>(
   createOpenAiConfig({ deployment: 'gpt-4.1' })
+);
+
+expectAssignable<Promise<{ baseURL?: string | null; apiVersion?: string; azureADTokenProvider?: () => Promise<string> }>>(
+  createOpenAiConfig({ deployment: { deploymentId: 'd123' } })
 );
 
 /**
@@ -90,10 +116,11 @@ expectType<() => Promise<string>>(
 );
 
 /**
- * SapModelName is assignable from known model names.
+ * SapModelName is assignable from known model names and any string.
  */
 expectAssignable<SapModelName>('gpt-4.1');
 expectAssignable<SapModelName>('text-embedding-3-small');
+expectAssignable<SapModelName>('unlisted-model');
 
 /**
  * SapOpenAiInput accepts a plain string or SapOpenAiOptions.
@@ -102,3 +129,8 @@ expectAssignable<SapOpenAiInput>('gpt-4.1');
 expectAssignable<SapOpenAiInput>({
   deployment: 'gpt-4.1'
 } satisfies SapOpenAiOptions);
+
+/**
+ * SapOpenAiInput rejects objects missing deployment.
+ */
+expectError(((_: SapOpenAiInput) => {})({ apiVersion: '2024-10-21' }));
