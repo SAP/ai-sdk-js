@@ -943,7 +943,7 @@ components:
         resource_group_id:
           type: string
         spec:
-          $ref: '#/components/schemas/OrchestrationConfig'
+          $ref: '#/components/schemas/PromptRegistryOrchestrationConfig'
     OrchestrationConfigListResponse:
       type: object
       required:
@@ -956,6 +956,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrchestrationConfigGetResponse'
+    PromptRegistryOrchestrationConfig:
+      type: object
+      additionalProperties: false
+      properties:
+        modules:
+          oneOf:
+            - $ref: '#/components/schemas/PartialModuleConfigs'
+            - $ref: '#/components/schemas/ModuleConfigsList'
+        stream:
+          $ref: '#/components/schemas/GlobalStreamOptions'
     OrchestrationConfigPostRequest:
       type: object
       required:
@@ -977,7 +987,7 @@ components:
           maxLength: 120
           pattern: ^[a-zA-Z0-9_-]+$
         spec:
-          $ref: '#/components/schemas/OrchestrationConfig'
+          $ref: '#/components/schemas/PromptRegistryOrchestrationConfig'
     OrchestrationConfigPostResponse:
       type: object
       required:
@@ -1020,7 +1030,7 @@ components:
         resource_group_id:
           type: string
         spec:
-          $ref: '#/components/schemas/OrchestrationConfig'
+          $ref: '#/components/schemas/PromptRegistryOrchestrationConfig'
     OrchestrationConfigDeleteResponse:
       type: object
       required:
@@ -1045,7 +1055,7 @@ components:
             scenario:
               type: string
         spec:
-          $ref: '#/components/schemas/OrchestrationConfig'
+          $ref: '#/components/schemas/PromptRegistryOrchestrationConfig'
     CacheControl:
       type: object
       description: |
@@ -1401,10 +1411,10 @@ components:
           default: 2
           minimum: 0
           maximum: 5
-    PromptTemplatingModuleConfig:
+    PartialPromptTemplatingModuleConfig:
+      description: |
+        Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.
       type: object
-      required:
-        - model
       additionalProperties: false
       properties:
         prompt:
@@ -2030,6 +2040,36 @@ components:
           description: Configuration for output translation
           oneOf:
             - $ref: '#/components/schemas/SAPDocumentTranslationOutput'
+    PartialModuleConfigs:
+      description: |
+        Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.
+      type: object
+      additionalProperties: false
+      properties:
+        prompt_templating:
+          $ref: '#/components/schemas/PartialPromptTemplatingModuleConfig'
+        filtering:
+          $ref: '#/components/schemas/FilteringModuleConfig'
+        masking:
+          $ref: '#/components/schemas/MaskingModuleConfig'
+        grounding:
+          $ref: '#/components/schemas/GroundingModuleConfig'
+        translation:
+          $ref: '#/components/schemas/TranslationModuleConfig'
+    PromptTemplatingModuleConfig:
+      type: object
+      required:
+        - model
+      additionalProperties: false
+      properties:
+        prompt:
+          description: |
+            The prompt template to be used. Can be either a user defined template or a reference to a template in the prompt registry. If omitted, messages_history must be provided in the request body.
+          oneOf:
+            - $ref: '#/components/schemas/Template'
+            - $ref: '#/components/schemas/TemplateRef'
+        model:
+          $ref: '#/components/schemas/LLMModelDetails'
     ModuleConfigs:
       type: object
       required:
@@ -2080,18 +2120,6 @@ components:
             - .
             - '?'
             - '!'
-    OrchestrationConfig:
-      type: object
-      required:
-        - modules
-      additionalProperties: false
-      properties:
-        modules:
-          oneOf:
-            - $ref: '#/components/schemas/ModuleConfigs'
-            - $ref: '#/components/schemas/ModuleConfigsList'
-        stream:
-          $ref: '#/components/schemas/GlobalStreamOptions'
   responses:
     BadRequest:
       description: Bad Request

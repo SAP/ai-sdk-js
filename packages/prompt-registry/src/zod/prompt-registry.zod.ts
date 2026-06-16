@@ -900,8 +900,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
   "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
   "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
-}).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
-}),
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
   "filtering": zod.object({
   "input": zod.object({
   "filters": zod.array(zod.union([zod.object({
@@ -1076,7 +1076,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-}),zod.array(zod.object({
+}).describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),zod.array(zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
   "template": zod.array(zod.union([zod.object({
@@ -1368,7 +1368,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
+})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]).optional(),
   "stream": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
   "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
@@ -1654,8 +1654,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
   "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
   "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
-}).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
-}),
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
   "filtering": zod.object({
   "input": zod.object({
   "filters": zod.array(zod.union([zod.object({
@@ -1830,7 +1830,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-}),zod.array(zod.object({
+}).describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),zod.array(zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
   "template": zod.array(zod.union([zod.object({
@@ -2122,7 +2122,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
+})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]).optional(),
   "stream": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
   "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
@@ -2402,8 +2402,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
   "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
   "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
-}).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
-}),
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
   "filtering": zod.object({
   "input": zod.object({
   "filters": zod.array(zod.union([zod.object({
@@ -2578,7 +2578,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-}),zod.array(zod.object({
+}).describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),zod.array(zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
   "template": zod.array(zod.union([zod.object({
@@ -2870,7 +2870,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
+})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]).optional(),
   "stream": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
   "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
@@ -3143,8 +3143,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "params": zod.record(zod.string(), zod.unknown()).optional().describe('Additional parameters for the model. Default values are used for mandatory parameters.'),
   "timeout": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault).describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.'),
   "max_retries": zod.number().min(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMin).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault).describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')
-}).describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
-}),
+}).optional().describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n')
+}).optional().describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n'),
   "filtering": zod.object({
   "input": zod.object({
   "filters": zod.array(zod.union([zod.object({
@@ -3319,7 +3319,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-}),zod.array(zod.object({
+}).describe('Partial module configuration for use with config_ref overrides. All fields are optional so that only the modules that should be overridden need to be specified. The remaining configuration is taken from the referenced orchestration config.\n'),zod.array(zod.object({
   "prompt_templating": zod.object({
   "prompt": zod.union([zod.object({
   "template": zod.array(zod.union([zod.object({
@@ -3611,7 +3611,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })
 }).optional().describe('Configuration for output translation')
 }).optional().describe('Configuration for translation module')
-})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]),
+})).min(1).describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n')]).optional(),
   "stream": zod.object({
   "enabled": zod.boolean().default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault).describe('If true, the response will be streamed back to the client'),
   "chunk_size": zod.number().min(1).max(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax).default(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault).describe('Minimum number of characters per chunk that post-LLM modules operate on.'),
