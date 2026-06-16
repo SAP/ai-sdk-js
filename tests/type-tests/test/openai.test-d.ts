@@ -86,25 +86,35 @@ expectError(client.responses.create({ model: 'gpt-4', input: 'Hello' }));
 /**
  * SapResponses.parse accepts valid params without model.
  */
-expectAssignable<Promise<unknown>>(
-  client.responses.parse({ input: 'Hello' })
-);
+expectAssignable<Promise<unknown>>(client.responses.parse({ input: 'Hello' }));
 
 /**
  * CreateOpenAiConfig returns a Promise resolving to an Azure client options object.
  * Using a structural subset to avoid importing AzureClientOptions from the openai package.
  */
-expectAssignable<Promise<{ baseURL?: string | null; apiVersion?: string; azureADTokenProvider?: () => Promise<string> }>>(
-  createOpenAiConfig('gpt-4.1')
-);
+expectAssignable<
+  Promise<{
+    baseURL?: string | null;
+    apiVersion?: string;
+    azureADTokenProvider?: () => Promise<string>;
+  }>
+>(createOpenAiConfig('gpt-4.1'));
 
-expectAssignable<Promise<{ baseURL?: string | null; apiVersion?: string; azureADTokenProvider?: () => Promise<string> }>>(
-  createOpenAiConfig({ deployment: 'gpt-4.1' })
-);
+expectAssignable<
+  Promise<{
+    baseURL?: string | null;
+    apiVersion?: string;
+    azureADTokenProvider?: () => Promise<string>;
+  }>
+>(createOpenAiConfig({ deployment: 'gpt-4.1' }));
 
-expectAssignable<Promise<{ baseURL?: string | null; apiVersion?: string; azureADTokenProvider?: () => Promise<string> }>>(
-  createOpenAiConfig({ deployment: { deploymentId: 'd123' } })
-);
+expectAssignable<
+  Promise<{
+    baseURL?: string | null;
+    apiVersion?: string;
+    azureADTokenProvider?: () => Promise<string>;
+  }>
+>(createOpenAiConfig({ deployment: { deploymentId: 'd123' } }));
 
 /**
  * CreateTokenProvider returns a function that resolves to a string.
