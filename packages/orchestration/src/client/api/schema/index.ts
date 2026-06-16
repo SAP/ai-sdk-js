@@ -123,3 +123,4 @@ export * from './completion-request-configuration-reference-by-id.js';
 export * from './completion-request-configuration-reference-by-id-config-ref.js';
 export * from './completion-request-configuration-reference-by-name-scenario-version.js';
 export * from './completion-request-configuration-reference-by-name-scenario-version-config-ref.js';
+export * from './reasoning-block.js';
