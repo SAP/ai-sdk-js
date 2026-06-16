@@ -5,6 +5,7 @@ import {
   isDeploymentIdConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
 import type { SapOpenAiInput, SapOpenAiOptions } from './types.js';
@@ -49,7 +50,14 @@ export async function createOpenAiConfig(
           deployment.deploymentId,
           {},
           { 'AI-Resource-Group': resourceGroup }
-        ).execute(destination)
+        )
+          .execute(destination)
+          .catch((err: any) => {
+            throw new ErrorWithCause(
+              `Fetching deployment for ID '${deployment.deploymentId}' failed.`,
+              err
+            );
+          })
       ).deploymentUrl
     : await resolveDeploymentUrl({
         scenarioId: 'foundation-models',

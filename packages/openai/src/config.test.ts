@@ -60,6 +60,16 @@ describe('createOpenAiConfig', () => {
       expect(config.baseURL).toContain('dep-123');
     });
 
+    it('throws when deploymentGet returns a 404', async () => {
+      nock(aiCoreDestination.url)
+        .get('/v2/lm/deployments/missing-dep')
+        .reply(404, { message: 'Not Found' });
+
+      await expect(
+        createOpenAiConfig({ deployment: { deploymentId: 'missing-dep' } })
+      ).rejects.toThrow('Fetching deployment for ID \'missing-dep\' failed.');
+    });
+
     it('throws when deployment ID resolves to no URL', async () => {
       nock(aiCoreDestination.url)
         .get('/v2/lm/deployments/no-url-dep')
