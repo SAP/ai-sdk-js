@@ -33,7 +33,10 @@ import type {
 } from './client/api/schema/index.js';
 
 /**
- * Chat completion request configuration.
+ * Per-request inputs for a chat completion call.
+ * Only `messages`, `messagesHistory`, and `placeholderValues` are accepted here.
+ * Model parameters (`temperature`, `max_tokens`, etc.), `tools`, and `response_format`
+ * must be configured in the {@link OrchestrationModuleConfig} passed to the constructor.
  */
 export interface ChatCompletionRequest {
   /**
@@ -154,7 +157,14 @@ export interface TranslationModule {
 export type OrchestrationErrorResponse = ErrorResponse;
 
 /**
- * Model Parameters for LLM module configuration.
+ * Model parameters for the LLM module configuration.
+ * These are set once at client construction and apply to every request made by this client.
+ * To use different parameters for a request, create a new {@link OrchestrationClient} instance.
+ * @example
+ * params: { temperature: 0.7, max_tokens: 512 }
+ * @example
+ * // Model-specific parameters not in the standard set can be passed via the index signature.
+ * params: { reasoning_effort: 'high' }
  */
 export type LlmModelParams = {
   max_tokens?: number;
@@ -167,6 +177,11 @@ export type LlmModelParams = {
 
 /**
  * Representation of the 'Template' schema.
+ * Includes `tools` and `response_format` inherited from the base template type.
+ * @remarks
+ * `tool_choice` is not supported by the Orchestration Service.
+ * These fields are fixed at construction time; create a new {@link OrchestrationClient}
+ * to use different tools or response format for a request.
  */
 export type PromptTemplate = Omit<Template, 'template'> & {
   /**
