@@ -160,6 +160,8 @@ export type OrchestrationErrorResponse = ErrorResponse;
  * Model parameters for the LLM module configuration.
  * These are set once at client construction and apply to every request made by this client.
  * To use different parameters for a request, create a new {@link OrchestrationClient} instance.
+ * Model-specific parameters not in the standard set (e.g. `tool_choice`, `reasoning_effort`)
+ * can be passed via the index signature, but behavior depends on the underlying model provider.
  * @example
  * params: { temperature: 0.7, max_tokens: 512 }
  * @example
@@ -179,9 +181,10 @@ export type LlmModelParams = {
  * Representation of the 'Template' schema.
  * Includes `tools` and `response_format` inherited from the base template type.
  * @remarks
- * `tool_choice` is not supported by the Orchestration Service.
- * These fields are fixed at construction time; create a new {@link OrchestrationClient}
+ * `tools` and `response_format` are fixed at construction time; create a new {@link OrchestrationClient}
  * to use different tools or response format for a request.
+ * `tool_choice` is not part of the Orchestration Service template schema.
+ * It may be passed via {@link LlmModelParams} using the index signature, but behavior depends on the underlying model provider.
  */
 export type PromptTemplate = Omit<Template, 'template'> & {
   /**
