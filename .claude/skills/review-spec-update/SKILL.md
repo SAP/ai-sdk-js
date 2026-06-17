@@ -24,7 +24,10 @@ git diff main...HEAD --name-only | grep 'packages/'
 git diff main...HEAD -- packages/<pkg>/src/client/
 ```
 
-Focus on `src/client/api/` (generated files). Hand-written code in `src/` outside `client/` is NOT in scope unless you find it affected by a type change.
+If the diff is empty, confirm that `pnpm <pkg> generate` was actually executed and commit. If confirmed, output a summary stating no generated-client changes were detected and stop; no further steps are required.
+
+Focus on `src/client/api/` (generated files). Hand-written code in `src/` outside `client/` is NOT in scope unless it directly imports a type that was renamed, removed, or had its shape changed in this diff.
+In that case, note the affected file but do not modify it; record it as a follow-up task.
 
 ## Step 2 — Classify changes
 
@@ -51,7 +54,7 @@ Work through the diff methodically. For each changed type/function, decide:
 | Field removed from a response type | **YES** | Code reading that field will get `undefined` |
 | Field renamed | **YES** | Old name no longer exists |
 | Type narrowed on a response field | **YES** | Code relying on broader type breaks |
-| Type widened on a response field | borderline | Note it but usually no changeset needed |
+| Type widened on a response field | no, unless it newly introduces `undefined` or `null` | Widening is safe unless consumers must now handle absence that was impossible before |
 | New optional field on a response type | no | Safe addition |
 
 ### Schema / enum changes
@@ -62,17 +65,14 @@ Work through the diff methodically. For each changed type/function, decide:
 | Strict union → open (`| any`) | no |
 | New enum member added | no |
 | Enum member removed | **YES** |
-| Type renamed | **YES** (if exported) — also check the new type's shape: a rename often comes with property changes (`id` → `resourceId`, removed fields, etc.).<br>Document each property-level breaking change in its own `[compat]` entry, don't just note the rename. |
+| Type renamed | **YES** (if exported) — also check the new type's shape: a rename often comes with property changes (`id` → `resourceId`, removed fields, etc.).<br>Document each property-level breaking change in its own `[compat]` entry, don't just note the rename.<br>If the old type is entirely deleted and replaced by a structurally different new type with no shared name, treat it as a deletion of the old type plus introduction of a new type. Create one `[compat]` entry for the deletion and list the migration target type by name if identifiable from the diff. |
 | Type deleted | **YES** (if exported) |
 
 ## Step 3 — Check for parameter-order regressions
 
-**Important**: always test patches against freshly-generated code, not hand-edited files.
-If the working tree has manual edits, regenerate first:
-
 ```bash
 pnpm <pkg> generate
-pnpm <pkg> run apply-patches   # run existing patches so the tree is in the "released" state
+pnpm <pkg> run apply-patches
 ```
 
 Then for every function where positional parameters reordered:
@@ -81,15 +81,9 @@ Then for every function where positional parameters reordered:
    ```bash
    ls packages/<pkg>/patches/
    ```
-2. If a patch exists, test whether it still applies cleanly. **Do not test against the working tree** — `pnpm apply-patches` may have already been run (it is idempotent via `--reverse --check`), making the working tree look correct even though the patch is still needed. Regenerate to get the raw pre-patch state before checking:
-   ```bash
-   pnpm <pkg> generate           # restores raw generated output
-   git apply --check packages/<pkg>/patches/<patch-file>.patch
-   ```
-3. **Patch applies cleanly** → nothing to do for this function.
-4. **Patch fails** → the context lines around the reorder changed (e.g. new parameters added nearby). The generator always emits `headerParameters` before `queryParameters` (or vice versa) based on spec order — this does not self-correct. Update the patch context to match the new generated output (see §Updating a patch below). Do NOT delete a parameter-order patch just because the working tree already shows the correct order.
-   - A patch is only truly obsolete if the function no longer has both `headerParameters` and `queryParameters` (i.e., one was removed from the spec), making the ordering moot.
-5. **No patch exists** → create one (see §Creating a patch below).
+2. **Patch exists** → leave it alone unless `pnpm <pkg> run apply-patches` reported that patch file as failing. If it failed, the context lines around the reorder changed (e.g. new parameters added nearby). Update the patch context to match the new generated output (see §Updating a patch below). Do NOT delete a parameter-order patch just because the working tree already looks correct.
+3. **No patch exists** → create one (see §Creating a patch below).
+4. **Patch is truly obsolete** → delete it only if the function no longer has both `headerParameters` and `queryParameters` (i.e., one was removed from the spec), making the ordering moot.
 
 ### Detecting parameter-order changes
 
@@ -130,12 +124,13 @@ git diff main...HEAD -- packages/<pkg>/src/client/api/<api-file>.ts
 # Open the patch file, update the context lines (the unchanged lines around the @@)
 # to match the new generated code, keeping the - / + lines intact
 # Then verify:
-git apply --check packages/<pkg>/patches/<patch-file>.patch
+pnpm <pkg> generate
+pnpm <pkg> run apply-patches
 ```
 
 ## Step 4 — Maintain apply-patches support
 
-If you deleted a patch in Step 3, remove the patches directory if now empty and remove the `apply-patches` script from `package.json`.
+If you deleted a patch in Step 3 because it was truly obsolete, remove the patches directory if now empty and remove the `apply-patches` script from `package.json`.
 
 Check whether the package has an `apply-patches` script:
 
@@ -143,13 +138,14 @@ Check whether the package has an `apply-patches` script:
 cat packages/<pkg>/package.json | grep apply-patches
 ```
 
-If missing, add it. All packages use a shared script at `scripts/apply-patches.ts` that iterates over all `*.patch` files in the package's `patches/` directory and applies each one (skips if already applied). Just add to `package.json` scripts:
+If missing, add it. The migration target is a shared script at `scripts/apply-patches.ts` that takes the package root directory as its argument, resolves `<rootDir>/patches`, refuses to touch patch directories outside the repository root, skips patches that are already applied via `git apply --reverse --check`, applies the remaining `*.patch` files, and exits non-zero listing any patch files that failed. For packages moved to the shared runner, add this to `package.json` scripts:
 
 ```json
 "apply-patches": "tsx ../../scripts/apply-patches.ts ."
 ```
 
-The `.` argument tells the script to look for a `patches/` subdirectory relative to the current package directory.
+The `.` argument passes the current package directory as `rootDir`, so the script looks for a `patches/` subdirectory at `./patches`.
+When the root `apply-patches` command runs, it invokes each package's `apply-patches` script via pnpm recursion, so this package script is the entry point the repository-wide command will call.
 No need to list individual patch files — the script picks them up automatically.
 Adding a new patch is as simple as dropping a `.patch` file into `patches/`.
 
@@ -214,11 +210,14 @@ The `metadata` property is now optional.
 
 These get rolled into the `[feat]` changeset that should already exist for the spec update.
 
+If no `[feat]` changeset exists yet for this spec update, create one with `pnpm changeset --empty` and label it `[feat] <package-name>: updated generated client to latest spec` before rolling in non-breaking changes.
+
 ## Step 6 — Verify
 
 ```bash
-# All patches apply cleanly
-git apply --check packages/<pkg>/patches/*.patch
+# Recreate raw generated output, then verify the shared patch runner succeeds
+pnpm <pkg> generate
+pnpm <pkg> run apply-patches
 
 # TypeScript compiles
 pnpm <pkg> compile
@@ -230,12 +229,16 @@ pnpm <pkg> test
 ls .changeset/
 ```
 
+If `pnpm <pkg> run apply-patches` fails, return to Step 3 §Updating a patch for each failing patch file. Do not proceed to compile or test until all patches apply cleanly. List each failing patch file by name in your output.
+
+If compilation fails, inspect the error output to determine whether the failure is caused by a breaking change not yet covered by a `[compat]` changeset or patch. If so, return to Step 2 or Step 3. If the failure is unrelated to this spec update, note it as a pre-existing issue and do not block the review. If tests fail, apply the same triage: attribute failures to this spec update or flag them as pre-existing.
+
 ## Quick checklist
 
 - [ ] Diffed `src/client/` against main
 - [ ] Every breaking request-side change has a `[compat]` changeset
 - [ ] Every breaking response-side removal/rename/narrowing has a `[compat]` changeset
 - [ ] Parameter-order regressions have patches (new or updated)
-- [ ] All patches apply cleanly (`git apply --check`)
+- [ ] All patches apply cleanly (`pnpm <pkg> apply-patches` from fresh generated output)
 - [ ] Package has `apply-patches` script (added if missing)
 - [ ] TypeScript compiles, tests pass
