@@ -33,7 +33,7 @@ export class SapEmbeddings {
   ): APIPromise<CreateEmbeddingResponse> {
     return this.openAiEmbeddings.create(
       // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-      { model: '', ...body } satisfies EmbeddingCreateParams,
+      { ...body, model: '' } satisfies EmbeddingCreateParams,
       options
     );
   }
