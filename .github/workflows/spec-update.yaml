@@ -82,7 +82,7 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
-          persist-credentials: 'true'
+          persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Checkout or Create Branch'

@@ -36,7 +36,7 @@
     "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.30.0",
+    "@changesets/cli": "^2.31.0",
     "@jest/globals": "^30.4.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
@@ -59,7 +59,7 @@
     "jsonwebtoken": "^9.0.3",
     "mock-fs": "^5.5.0",
     "nock": "^14.0.15",
-    "orval": "^8.16.0",
+    "orval": "^8.17.0",
     "prettier": "^3.8.4",
     "ts-jest": "^29.4.11",
     "tsx": "^4.22.4",
