@@ -4,7 +4,7 @@
     "model": "mistralai--mistral-large-instruct",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-07-30",
     "suggestedReplacement": ""
   },
   {
@@ -12,7 +12,7 @@
     "model": "mistralai--mistral-small-instruct",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-07-30",
     "suggestedReplacement": ""
   },
   {
@@ -20,7 +20,7 @@
     "model": "mistralai--mistral-medium-instruct",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-08-30",
     "suggestedReplacement": ""
   },
   {
@@ -28,7 +28,7 @@
     "model": "mistralai--mistral-small",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "",
+    "retirementDate": "not earlier than 2026-12-31",
     "suggestedReplacement": ""
   },
   {
@@ -36,7 +36,7 @@
     "model": "nvidia--llama-3.2-nv-embedqa-1b",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-07-30",
     "suggestedReplacement": ""
   },
   {
@@ -44,7 +44,7 @@
     "model": "cohere--command-a-reasoning",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-07-30",
     "suggestedReplacement": ""
   },
   {
@@ -52,7 +52,7 @@
     "model": "cohere-reranker",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-07-30",
     "suggestedReplacement": ""
   },
   {
@@ -60,7 +60,7 @@
     "model": "sap-rpt-1-small",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-08-30",
     "suggestedReplacement": ""
   },
   {
@@ -68,7 +68,7 @@
     "model": "sap-rpt-1-large",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-08-30",
     "suggestedReplacement": ""
   },
   {
@@ -76,7 +76,7 @@
     "model": "sap-abap-1",
     "availableInOrchestration": "yes(orchestration-only)",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-06-30",
+    "retirementDate": "not earlier than 2026-08-30",
     "suggestedReplacement": ""
   },
   {
@@ -252,7 +252,7 @@
     "model": "text-embedding-3-large",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-04-30",
+    "retirementDate": "not earlier than 2027-04-15",
     "suggestedReplacement": ""
   },
   {
@@ -260,7 +260,7 @@
     "model": "text-embedding-3-small",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than2026-04-30",
+    "retirementDate": "not earlier than2027-04-15",
     "suggestedReplacement": ""
   },
   {
@@ -268,7 +268,7 @@
     "model": "text-embedding-ada-002",
     "availableInOrchestration": "yes",
     "deprecated": "yes",
-    "retirementDate": "not earlier than 2026-04-30",
+    "retirementDate": "not earlier than 2027-04-15",
     "suggestedReplacement": "text-embedding-3-small, text-embedding-3-large"
   },
   {
@@ -385,6 +385,14 @@
   },
   {
     "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.5",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
     "model": "gpt-realtime",
     "availableInOrchestration": "",
     "deprecated": "",
@@ -396,7 +404,7 @@
     "model": "o1",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "2026-06-18",
+    "retirementDate": "2026-07-15",
     "suggestedReplacement": ""
   },
   {
