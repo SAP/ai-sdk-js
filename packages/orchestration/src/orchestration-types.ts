@@ -160,8 +160,7 @@ export type OrchestrationErrorResponse = ErrorResponse;
  * Model parameters for the LLM module configuration.
  * These are set once at client construction and apply to every request made by this client.
  * To use different parameters for a request, create a new {@link OrchestrationClient} instance.
- * Model-specific parameters not in the standard set (e.g. `tool_choice`, `reasoning_effort`)
- * can be passed via the index signature, but behavior depends on the underlying model provider.
+ * You can pass model-specific parameters, that are not specified in `LlmModelParams` (e.g. `tool_choice`, `reasoning_effort`), but behavior depends on the underlying model provider.
  * @example
  * params: { temperature: 0.7, max_tokens: 512 }
  * @example
