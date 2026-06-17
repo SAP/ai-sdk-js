@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { readdir } from 'node:fs/promises';
+import { readdir, realpath } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
@@ -21,14 +21,23 @@ if (!rootDir) {
   process.exit(1);
 }
 
-const patchDir = join(rootDir, 'patches');
+const baseDir = (await realpath(join(import.meta.dirname, '..'))) + sep;
+const canonicalPatchDir = await realpath(join(rootDir, 'patches')).catch(
+  () => undefined
+);
+if (!canonicalPatchDir || !canonicalPatchDir.startsWith(baseDir)) {
+  console.error(
+    'Access denied: patch directory is outside the repository root.'
+  );
+  process.exit(1);
+}
 
-const files = await readdir(patchDir).catch(() => []);
+const files = await readdir(canonicalPatchDir).catch(() => []);
 const patches = files.filter(f => f.endsWith('.patch'));
 const failedPatches: string[] = [];
 
 for (const file of patches) {
-  const patch = join(patchDir, file);
+  const patch = join(canonicalPatchDir, file);
   const alreadyApplied = await execCheckSuccess('git', [
     'apply',
     '--reverse',
