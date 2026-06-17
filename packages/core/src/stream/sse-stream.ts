@@ -40,7 +40,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
             data = JSON.parse(sse.data);
           } catch (e: any) {
             throw new ErrorWithCause(
-              `Server sent an unexpected non-JSON response: ${sse.data.slice(0, 256)}...`,
+              `Server sent an unexpected non-JSON response: ${sse.data.length > 256 ? `${sse.data.slice(0, 256)}...` : sse.data}`,
               e
             );
           }
