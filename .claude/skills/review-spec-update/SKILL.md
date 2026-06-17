@@ -9,9 +9,13 @@ description: >
   what a spec update broke for downstream consumers.
 ---
 
+<!-- vale Vale.Spelling = NO -->
+
 # Review Spec Update
 
+<!-- vale Vale.Terms = NO -->
 You are reviewing a spec-update branch for a generated OpenAPI client package.
+<!-- vale Vale.Terms = YES -->
 Your goal: identify every change that breaks existing consumer code, create a `[compat]` changeset for each one, fix broken patches, and create new patches for parameter-order regressions.
 
 ## Step 1 — Establish the diff
@@ -24,14 +28,17 @@ git diff main...HEAD --name-only | grep 'packages/'
 git diff main...HEAD -- packages/<pkg>/src/client/
 ```
 
-If the diff is empty, confirm that `pnpm <pkg> generate` was actually executed and commit. If confirmed, output a summary stating no generated-client changes were detected and stop; no further steps are required.
+If the diff is empty, confirm that `pnpm <pkg> generate` was actually executed and commit.
+If confirmed, output a summary stating no generated-client changes were detected and stop; no further steps are required.
 
-Focus on `src/client/api/` (generated files). Hand-written code in `src/` outside `client/` is NOT in scope unless it directly imports a type that was renamed, removed, or had its shape changed in this diff.
+Focus on `src/client/api/` (generated files).
+Hand-written code in `src/` outside `client/` is NOT in scope unless it directly imports a type that was renamed, removed, or had its shape changed in this diff.
 In that case, note the affected file but do not modify it; record it as a follow-up task.
 
 ## Step 2 — Classify changes
 
-Work through the diff methodically. For each changed type/function, decide:
+Work through the diff methodically.
+For each changed type/function, decide:
 
 ### Request-side changes (consumer sends this → almost always breaking)
 
@@ -59,14 +66,16 @@ Work through the diff methodically. For each changed type/function, decide:
 
 ### Schema / enum changes
 
+<!-- vale SAP.Sentences = NO -->
 | Change | Breaking? |
 |--------|-----------|
 | Open union `'A'\|'B'\|any` → strict `'A'\|'B'` | **YES** — previously-passing `any` values now rejected by TypeScript |
 | Strict union → open (`| any`) | no |
 | New enum member added | no |
 | Enum member removed | **YES** |
-| Type renamed | **YES** (if exported) — also check the new type's shape: a rename often comes with property changes (`id` → `resourceId`, removed fields, etc.).<br>Document each property-level breaking change in its own `[compat]` entry, don't just note the rename.<br>If the old type is entirely deleted and replaced by a structurally different new type with no shared name, treat it as a deletion of the old type plus introduction of a new type. Create one `[compat]` entry for the deletion and list the migration target type by name if identifiable from the diff. |
+| Type renamed | **YES** (if exported) — also check the new type's shape: a rename often comes with property changes (`id` → `resourceId`, removed fields, etc.).<br>Document each property-level breaking change in its own `[compat]` entry; do not just note the rename.<br>If the old type is entirely deleted and replaced by a structurally different new type with no shared name, treat it as a deletion of the old type plus introduction of a new type.<br>Create one `[compat]` entry for the deletion and list the migration target type by name if identifiable from the diff. |
 | Type deleted | **YES** (if exported) |
+<!-- vale SAP.Sentences = YES -->
 
 ## Step 3 — Check for parameter-order regressions
 
@@ -81,7 +90,10 @@ Then for every function where positional parameters reordered:
    ```bash
    ls packages/<pkg>/patches/
    ```
-2. **Patch exists** → leave it alone unless `pnpm <pkg> run apply-patches` reported that patch file as failing. If it failed, the context lines around the reorder changed (e.g. new parameters added nearby). Update the patch context to match the new generated output (see §Updating a patch below). Do NOT delete a parameter-order patch just because the working tree already looks correct.
+2. **Patch exists** → leave it alone unless `pnpm <pkg> run apply-patches` reported that patch file as failing.
+    If it failed, the context lines around the reorder changed (e.g. new parameters added nearby).
+    Update the patch context to match the new generated output (see §Updating a patch below).
+    Do NOT delete a parameter-order patch just because the working tree already looks correct.
 3. **No patch exists** → create one (see §Creating a patch below).
 4. **Patch is truly obsolete** → delete it only if the function no longer has both `headerParameters` and `queryParameters` (i.e., one was removed from the spec), making the ordering moot.
 
@@ -95,7 +107,9 @@ functionName: (
   ...
 ) => new OpenApiRequestBuilder(...)
 ```
+<!-- vale SAP.Sentences = NO -->
 If the spec reordered `headerParameters` vs `queryParameters`, the generator will flip their positions.
+<!-- vale SAP.Sentences = YES -->
 The old signature was the correct consumer-facing order; restore it via a patch.
 
 ### Creating a patch
@@ -138,7 +152,13 @@ Check whether the package has an `apply-patches` script:
 cat packages/<pkg>/package.json | grep apply-patches
 ```
 
-If missing, add it. The migration target is a shared script at `scripts/apply-patches.ts` that takes the package root directory as its argument, resolves `<rootDir>/patches`, refuses to touch patch directories outside the repository root, skips patches that are already applied via `git apply --reverse --check`, applies the remaining `*.patch` files, and exits non-zero listing any patch files that failed. For packages moved to the shared runner, add this to `package.json` scripts:
+If missing, add it.
+The migration target is a shared script at `scripts/apply-patches.ts`.
+It takes the package root directory as its argument and resolves `<rootDir>/patches`.
+It refuses to touch patch directories outside the repository root.
+It skips patches that are already applied via `git apply --reverse --check`.
+It applies the remaining `*.patch` files and exits non-zero listing any patch files that failed.
+For packages moved to the shared runner, add this to `package.json` scripts:
 
 ```json
 "apply-patches": "tsx ../../scripts/apply-patches.ts ."
@@ -210,7 +230,8 @@ The `metadata` property is now optional.
 
 These get rolled into the `[feat]` changeset that should already exist for the spec update.
 
-If no `[feat]` changeset exists yet for this spec update, create one with `pnpm changeset --empty` and label it `[feat] <package-name>: updated generated client to latest spec` before rolling in non-breaking changes.
+If no `[feat]` changeset exists yet for this spec update, create one with `pnpm changeset --empty`.
+Label it `[feat] <package-name>: updated generated client to latest spec` before rolling in non-breaking changes.
 
 ## Step 6 — Verify
 
@@ -229,9 +250,14 @@ pnpm <pkg> test
 ls .changeset/
 ```
 
-If `pnpm <pkg> run apply-patches` fails, return to Step 3 §Updating a patch for each failing patch file. Do not proceed to compile or test until all patches apply cleanly. List each failing patch file by name in your output.
+If `pnpm <pkg> run apply-patches` fails, return to Step 3 §Updating a patch for each failing patch file.
+Do not proceed to compile or test until all patches apply cleanly.
+List each failing patch file by name in your output.
 
-If compilation fails, inspect the error output to determine whether the failure is caused by a breaking change not yet covered by a `[compat]` changeset or patch. If so, return to Step 2 or Step 3. If the failure is unrelated to this spec update, note it as a pre-existing issue and do not block the review. If tests fail, apply the same triage: attribute failures to this spec update or flag them as pre-existing.
+If compilation fails, inspect the error output to determine whether the failure is caused by a breaking change not yet covered by a `[compat]` changeset or patch.
+If so, return to Step 2 or Step 3.
+If the failure is unrelated to this spec update, note it as a pre-existing issue and do not block the review.
+If tests fail, apply the same triage: attribute failures to this spec update or flag them as pre-existing.
 
 ## Quick checklist
 
