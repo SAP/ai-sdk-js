@@ -28,7 +28,7 @@ const data: PredictionData<typeof schema> = {
       SALESGROUP: '[PREDICT]'
     },
     {
-      PRODUCT: 'Office chair',
+      PRODUCT: 'Office Chair',
       PRICE: 142.99,
       PRODUCTION_DATE: '2025-07-13',
       __row_idx__: '571',
@@ -36,24 +36,24 @@ const data: PredictionData<typeof schema> = {
     },
     {
       PRODUCT: 'Desktop Computer',
-      PRICE: 750.5,
+      PRICE: 921.5,
       PRODUCTION_DATE: '2024-12-02',
       __row_idx__: '42',
-      SALESGROUP: 'Enterprise Solutions'
+      SALESGROUP: 'Electronics'
     },
     {
       PRODUCT: 'Macbook',
-      PRICE: 750.5,
+      PRICE: 1220.99,
       PRODUCTION_DATE: '2026-01-31',
       __row_idx__: '99',
-      SALESGROUP: 'Enterprise Solutions'
+      SALESGROUP: 'Electronics'
     },
     {
-      PRODUCT: 'Chromebook',
+      PRODUCT: 'Office Desk',
       PRICE: 750.5,
       PRODUCTION_DATE: '2024-12-05',
       __row_idx__: '689',
-      SALESGROUP: 'Enterprise Solutions'
+      SALESGROUP: 'Furniture'
     }
   ]
 };
