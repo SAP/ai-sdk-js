@@ -164,7 +164,6 @@ export type OrchestrationErrorResponse = ErrorResponse;
  * @example
  * params: { temperature: 0.7, max_tokens: 512 }
  * @example
- * // Model-specific parameters not in the standard set can be passed via the index signature.
  * params: { reasoning_effort: 'high' }
  */
 export type LlmModelParams = {
@@ -183,7 +182,7 @@ export type LlmModelParams = {
  * `tools` and `response_format` are fixed at construction time; create a new {@link OrchestrationClient}
  * to use different tools or response format for a request.
  * `tool_choice` is not part of the Orchestration Service template schema.
- * It may be passed via {@link LlmModelParams} using the index signature, but behavior depends on the underlying model provider.
+ * You can pass it as a model-specific parameter not specified in `LlmModelParams`, but behavior depends on the underlying model provider.
  */
 export type PromptTemplate = Omit<Template, 'template'> & {
   /**
