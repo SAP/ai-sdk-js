@@ -22,6 +22,9 @@ on:
 
 permissions: {}
 
+env:
+  BLACKDUCK_SKIP_PHONE_HOME: true
+
 jobs:
   blackduck-scan:
     name: Black Duck Detect Scan
