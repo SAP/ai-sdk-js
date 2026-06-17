@@ -56,11 +56,8 @@ export class SapCompletions {
     options?: RequestOptions
   ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>> {
     return this.openAiCompletions.create(
-      {
-        // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-        model: '',
-        ...body
-      } satisfies ChatCompletionCreateParamsBase,
+      // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
+      { ...body, model: '' } satisfies ChatCompletionCreateParamsBase,
       options
     );
   }
