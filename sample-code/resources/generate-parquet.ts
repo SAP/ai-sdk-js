@@ -9,7 +9,7 @@
  */
 /* eslint-disable no-console */
 
-import { join } from 'path';
+import { join } from 'node:path';
 import { parquetWriteFile } from 'hyparquet-writer';
 
 // Parse command line arguments
