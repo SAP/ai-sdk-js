@@ -136,7 +136,7 @@ export function mockInference(
  */
 export function mockDeploymentsList(
   opts: DeploymentResolutionOptions,
-  ...deployments: { id: string; model?: FoundationModel }[]
+  ...deployments: { id: string; model?: FoundationModel; deploymentUrl?: string }[]
 ): nock.Scope {
   const nockOpts = {
     reqheaders: {
@@ -152,8 +152,9 @@ export function mockDeploymentsList(
     .get('/v2/lm/deployments')
     .query(query)
     .reply(200, {
-      resources: deployments.map(({ id, model }) => ({
+      resources: deployments.map(({ id, model, deploymentUrl }) => ({
         id,
+        ...(deploymentUrl && { deploymentUrl }),
         details: { resources: { backendDetails: { model } } }
       }))
     });

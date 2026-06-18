@@ -1,0 +1,59 @@
+{
+  "name": "@sap-ai-sdk/openai",
+  "version": "2.10.0",
+  "publishConfig": {
+    "tag": "beta",
+    "access": "public"
+  },
+  "description": "SAP AI SDK integration with the official OpenAI npm package for Azure OpenAI on SAP AI Core",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "openai",
+    "azure-openai",
+    "foundation-models"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/openai"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "compile:cjs": "tsc -p tsconfig.cjs.json",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "^4.7.0",
+    "@sap-cloud-sdk/util": "^4.7.0"
+  },
+  "peerDependencies": {
+    "openai": "^6.36.0"
+  },
+  "devDependencies": {
+    "openai": "^6.36.0"
+  }
+}
