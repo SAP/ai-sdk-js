@@ -12,14 +12,19 @@
 import { join } from 'node:path';
 import { parquetWriteFile } from 'hyparquet-writer';
 import type { ColumnSource } from 'hyparquet-writer';
+import type {
+  ColumnType,
+  SchemaFieldConfig
+} from '@sap-ai-sdk/rpt/internal.js';
+import type { RowType } from '@sap-ai-sdk/rpt';
 
-type ColumnType = ColumnSource['type'];
-type RowData = Record<string, unknown>;
+type DataSchema = readonly ({ name: string } & SchemaFieldConfig)[];
 
-interface ColumnSchema<T extends RowData> {
-  name: keyof T & string;
-  type: ColumnType;
-}
+const rptToParquetType: Record<ColumnType, ColumnSource['type']> = {
+  string: 'STRING',
+  numeric: 'DOUBLE',
+  date: 'STRING'
+};
 
 /**
  * Converts an array of row objects into the column-oriented format expected by {@link parquetWriteFile}.
@@ -27,14 +32,14 @@ interface ColumnSchema<T extends RowData> {
  * @param schema - Column definitions describing the name and parquet type of each column.
  * @returns Column data in the format expected by {@link parquetWriteFile}.
  */
-function rowsToColumnData<T extends RowData>(
-  rows: T[],
-  schema: ColumnSchema<T>[]
+function rowsToColumnData<T extends DataSchema>(
+  rows: RowType<T>[],
+  schema: T
 ): ColumnSource[] {
-  return schema.map(({ name, type }) => ({
+  return schema.map(({ name, dtype }) => ({
     name,
-    data: rows.map(r => r[name]),
-    type
+    data: rows.map(r => r[name as keyof RowType<T>]),
+    type: rptToParquetType[dtype]
   }));
 }
 
@@ -44,34 +49,25 @@ function rowsToColumnData<T extends RowData>(
  * @param rows - The row data to write.
  * @param schema - Column definitions describing the name and parquet type of each column.
  */
-export function writeRowsToParquet<T extends RowData>(
+export function writeRowsToParquet<T extends DataSchema>(
   filename: string,
-  rows: T[],
-  schema: ColumnSchema<T>[]
+  rows: RowType<T>[],
+  schema: T
 ): void {
   parquetWriteFile({ filename, columnData: rowsToColumnData(rows, schema) });
 }
 
 // ----- Data -----
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type ProductRow = {
-  PRODUCT: string;
-  PRICE: number;
-  PRODUCTION_DATE: string;
-  __row_idx__: string;
-  SALESGROUP: string;
-};
+const predictSchema = [
+  { name: 'PRODUCT', dtype: 'string' },
+  { name: 'PRICE', dtype: 'numeric' },
+  { name: 'PRODUCTION_DATE', dtype: 'date' },
+  { name: '__row_idx__', dtype: 'string' },
+  { name: 'SALESGROUP', dtype: 'string' }
+] as const satisfies DataSchema;
 
-const predictSchema: ColumnSchema<ProductRow>[] = [
-  { name: 'PRODUCT', type: 'STRING' },
-  { name: 'PRICE', type: 'DOUBLE' },
-  { name: 'PRODUCTION_DATE', type: 'STRING' },
-  { name: '__row_idx__', type: 'STRING' },
-  { name: 'SALESGROUP', type: 'STRING' }
-];
-
-const predictRows: ProductRow[] = [
+const predictRows: RowType<typeof predictSchema>[] = [
   {
     PRODUCT: 'Laptop',
     PRICE: 999.99,
@@ -88,7 +84,7 @@ const predictRows: ProductRow[] = [
   }
 ];
 
-const regularRows: ProductRow[] = [
+const regularRows: RowType<typeof predictSchema>[] = [
   {
     PRODUCT: 'Desktop Computer',
     PRICE: 921.5,
