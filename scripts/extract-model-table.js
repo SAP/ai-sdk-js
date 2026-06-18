@@ -1,9 +1,13 @@
 /**
- * Browser-side extraction script for the SAP Notes model table.
+ * Browser-side extraction script for the SAP Notes model tables.
  * Run via playwright-mcp evaluate_script on https://me.sap.com/notes/3437766.
- * Returns a JSON-serializable array of model rows.
+ * Returns { active: ModelRow[], retired: RetiredModelRow[] } or { error: '...' }.
  */
 (() => {
+  const clean = s => (s ?? '').trim().replace(/\u00a0/g, '').replace(/ /g, ' ').trim();
+
+  // --- Active models table ---
+
   function findModelTable() {
     return (
       document.querySelector('table.col-resizeable') ||
@@ -40,8 +44,7 @@
     };
   }
 
-  function extractRows(allRows, cols) {
-    const clean = s => (s ?? '').trim().replace(/\u00a0/g, '');
+  function extractActiveRows(allRows, cols) {
     return allRows.slice(2).reduce((rows, row) => {
       const cells = Array.from(row.querySelectorAll('td')).map(td => td.textContent);
       const model = clean(cells[cols.modelCol]);
@@ -58,10 +61,48 @@
     }, []);
   }
 
-  const table = findModelTable();
-  if (!table) return { error: 'model table not found' };
+  // --- Recently Retired Models table ---
+  // Identified by having "suggested replacement" in its header row (4 columns, no orchestration col).
 
-  const allRows = Array.from(table.querySelectorAll('tbody tr'));
-  const cols = buildColumnIndex(allRows[0]);
-  return extractRows(allRows, cols);
+  function findRetiredTable() {
+    return Array.from(document.querySelectorAll('table')).find(t => {
+      const headerCells = Array.from(t.querySelectorAll('tbody tr:first-child td')).map(
+        c => c.textContent.trim().toLowerCase()
+      );
+      return (
+        headerCells.some(h => h.includes('suggested replacement')) &&
+        !headerCells.some(h => h.includes('orchestration'))
+      );
+    });
+  }
+
+  function extractRetiredRows(allRows) {
+    // First row is header; skip it.
+    return allRows.slice(1).reduce((rows, row) => {
+      const cells = Array.from(row.querySelectorAll('td')).map(td => clean(td.textContent));
+      // Columns: executableId(0), model(1), version(2), suggestedReplacement(3)
+      const model = cells[1];
+      if (!model) return rows;
+      rows.push({
+        executableId: cells[0].split('\n')[0].trim(),
+        model,
+        suggestedReplacement: cells[3] ?? ''
+      });
+      return rows;
+    }, []);
+  }
+
+  const activeTable = findModelTable();
+  if (!activeTable) return { error: 'model table not found' };
+
+  const activeRows = Array.from(activeTable.querySelectorAll('tbody tr'));
+  const cols = buildColumnIndex(activeRows[0]);
+  const active = extractActiveRows(activeRows, cols);
+
+  const retiredTable = findRetiredTable();
+  const retired = retiredTable
+    ? extractRetiredRows(Array.from(retiredTable.querySelectorAll('tbody tr')))
+    : [];
+
+  return { active, retired };
 })()
