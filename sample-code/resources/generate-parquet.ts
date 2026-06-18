@@ -11,12 +11,67 @@
 
 import { join } from 'node:path';
 import { parquetWriteFile } from 'hyparquet-writer';
+import type { ColumnSource } from 'hyparquet-writer';
 
-// Parse command line arguments
-const includePredictRows = !process.argv.includes('--no-predict');
+type ColumnType = ColumnSource['type'];
+type RowData = Record<string, unknown>;
 
-// Rows with [PREDICT] placeholders (for SAP RPT prediction)
-const predictRows = [
+interface ColumnSchema<T extends RowData> {
+  name: keyof T & string;
+  type: ColumnType;
+}
+
+/**
+ * Converts an array of row objects into the column-oriented format expected by {@link parquetWriteFile}.
+ * @param rows - The row data to write.
+ * @param schema - Column definitions describing the name and parquet type of each column.
+ * @returns Column data in the format expected by {@link parquetWriteFile}.
+ */
+function rowsToColumnData<T extends RowData>(
+  rows: T[],
+  schema: ColumnSchema<T>[]
+): ColumnSource[] {
+  return schema.map(({ name, type }) => ({
+    name,
+    data: rows.map(r => r[name]),
+    type
+  }));
+}
+
+/**
+ * Writes an array of row objects to a parquet file.
+ * @param filename - Absolute path of the output file.
+ * @param rows - The row data to write.
+ * @param schema - Column definitions describing the name and parquet type of each column.
+ */
+export function writeRowsToParquet<T extends RowData>(
+  filename: string,
+  rows: T[],
+  schema: ColumnSchema<T>[]
+): void {
+  parquetWriteFile({ filename, columnData: rowsToColumnData(rows, schema) });
+}
+
+// ----- Data -----
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+type ProductRow = {
+  PRODUCT: string;
+  PRICE: number;
+  PRODUCTION_DATE: string;
+  __row_idx__: string;
+  SALESGROUP: string;
+};
+
+const predictSchema: ColumnSchema<ProductRow>[] = [
+  { name: 'PRODUCT', type: 'STRING' },
+  { name: 'PRICE', type: 'DOUBLE' },
+  { name: 'PRODUCTION_DATE', type: 'STRING' },
+  { name: '__row_idx__', type: 'STRING' },
+  { name: 'SALESGROUP', type: 'STRING' }
+];
+
+const predictRows: ProductRow[] = [
   {
     PRODUCT: 'Laptop',
     PRICE: 999.99,
@@ -33,8 +88,7 @@ const predictRows = [
   }
 ];
 
-// Rows with actual SALESGROUP values
-const regularRows = [
+const regularRows: ProductRow[] = [
   {
     PRODUCT: 'Desktop Computer',
     PRICE: 921.5,
@@ -58,31 +112,23 @@ const regularRows = [
   }
 ];
 
-// Combine data based on flag
-const rows = includePredictRows
-  ? [...predictRows, ...regularRows]
-  : regularRows;
-const filename = includePredictRows
-  ? 'product_data.parquet'
-  : 'product_data_no_predict.parquet';
+// ----- Script entry point -----
+function run(): void {
+  const includePredictRows = !process.argv.includes('--no-predict');
+  const data = includePredictRows
+    ? [...predictRows, ...regularRows]
+    : regularRows;
+  const filename = includePredictRows
+    ? 'product_data.parquet'
+    : 'product_data_no_predict.parquet';
 
-const outputPath = join(import.meta.dirname, filename);
+  const outputPath = join(import.meta.dirname, filename);
 
-parquetWriteFile({
-  filename: outputPath,
-  columnData: [
-    { name: 'PRODUCT', data: rows.map(r => r.PRODUCT), type: 'STRING' },
-    { name: 'PRICE', data: rows.map(r => r.PRICE), type: 'DOUBLE' },
-    {
-      name: 'PRODUCTION_DATE',
-      data: rows.map(r => r.PRODUCTION_DATE),
-      type: 'STRING'
-    },
-    { name: '__row_idx__', data: rows.map(r => r.__row_idx__), type: 'STRING' },
-    { name: 'SALESGROUP', data: rows.map(r => r.SALESGROUP), type: 'STRING' }
-  ]
-});
+  writeRowsToParquet(outputPath, data, predictSchema);
 
-console.log(
-  `Successfully exported ${rows.length} rows to ${outputPath}${includePredictRows ? ' (including [PREDICT] rows)' : ' (excluding [PREDICT] rows)'}`
-);
+  console.log(
+    `Successfully exported ${data.length} rows to ${outputPath}${includePredictRows ? ' (including [PREDICT] rows)' : ' (excluding [PREDICT] rows)'}`
+  );
+}
+
+run();
