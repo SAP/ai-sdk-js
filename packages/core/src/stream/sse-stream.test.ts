@@ -1,8 +1,18 @@
 import assert from 'assert';
 import {
+  SseStream,
   _iterSseMessages,
   _decodeChunks as decodeChunks
 } from './sse-stream.js';
+
+class TestSseStream<Item> extends SseStream<Item> {
+  static create<Item>(response: any): TestSseStream<Item> {
+    return SseStream.transformToSseStream<Item>(
+      response,
+      new AbortController()
+    ) as TestSseStream<Item>;
+  }
+}
 
 describe('line decoder', () => {
   test('basic', () => {
@@ -317,6 +327,28 @@ describe('streaming decoding', () => {
 
     expect(stream.next()).rejects.toThrow(
       'Invalid SSE payload: {"error":"Something went wrong"}'
+    );
+  });
+});
+
+describe('SseStream JSON parsing error handling', () => {
+  test('includes raw payload in error when SSE data is not valid JSON', async () => {
+    async function* body(): AsyncGenerator<Buffer> {
+      yield Buffer.from('data: {"content": "hello"}\n');
+      yield Buffer.from('\n');
+      yield Buffer.from('data: Error in L\n');
+      yield Buffer.from('\n');
+    }
+
+    const stream = TestSseStream.create<any>({ data: body() });
+
+    const iter = stream[Symbol.asyncIterator]();
+    await iter.next();
+
+    const error = await iter.next().catch(e => e);
+    expect(error).toBeInstanceOf(Error);
+    expect(error.cause?.message).toContain(
+      'Server sent an unexpected non-JSON response: Error in L'
     );
   });
 });
