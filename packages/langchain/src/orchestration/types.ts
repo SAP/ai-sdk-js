@@ -25,6 +25,12 @@ import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 export type ChatOrchestrationToolType = ChatCompletionTool | BindToolsInput;
 
 /**
+ * Reasoning effort options for LangChain Orchestration client.
+ * May not be supported by all models, especially those without reasoning capabilities.
+ */
+export type OrchestrationReasoningEffort = 'minimal' | 'low' | 'medium' | 'high' | 'disable' | (string & Record<never, never>);
+
+/**
  * Langchain parameters for {@link OrchestrationClient} constructor `langchainOptions` argument.
  */
 export type LangChainOrchestrationChatModelParams = BaseChatModelParams & {
@@ -49,11 +55,13 @@ export type OrchestrationCallOptions = Pick<
   | 'runId'
   | 'runName'
   | 'tags'
+  | 'tool_choice'
   | 'ls_structured_output_format'
 > & {
   customRequestConfig?: CustomRequestConfig;
   strict?: boolean;
   tools?: ChatOrchestrationToolType[];
+  reasoningEffort?: OrchestrationReasoningEffort;
   promptIndex?: number;
   placeholderValues?: Record<string, string>;
   streamOptions?: StreamOptions;

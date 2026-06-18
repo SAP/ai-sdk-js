@@ -259,7 +259,6 @@ export class OrchestrationClient extends BaseChatModel<
         })
       });
       llm = this.withConfig({
-        // TODO: Set `tool_choice` if it becomes supported in Orchestration
         tools: [
           {
             type: 'function' as const,
@@ -271,6 +270,12 @@ export class OrchestrationClient extends BaseChatModel<
             }
           }
         ],
+        tool_choice: {
+          type: 'function' as const,
+          function: {
+            name
+          }
+        },
         ...lsStructuredOutputFormat
       } satisfies Partial<OrchestrationCallOptions>);
     } else if (method === 'jsonMode') {
@@ -440,7 +445,13 @@ export class OrchestrationClient extends BaseChatModel<
     orchestrationConfig: LangChainOrchestrationModuleConfig,
     options: typeof this.ParsedCallOptions
   ): LangChainOrchestrationModuleConfig {
-    const { tools = [], stop = [], responseFormat } = options;
+    const {
+      tools = [],
+      stop = [],
+      responseFormat,
+      tool_choice,
+      reasoningEffort
+    } = options;
     const config: LangChainOrchestrationModuleConfig = {
       ...orchestrationConfig,
       promptTemplating: {
@@ -449,6 +460,8 @@ export class OrchestrationClient extends BaseChatModel<
           ...orchestrationConfig.promptTemplating.model,
           params: {
             ...orchestrationConfig.promptTemplating.model.params,
+            ...(tool_choice && { tool_choice }),
+            ...(reasoningEffort && { reasoning_effort: reasoningEffort }),
             ...(stop.length && {
               stop: [
                 ...(orchestrationConfig.promptTemplating.model.params?.stop ||
