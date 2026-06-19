@@ -100,3 +100,15 @@ export {
   uploadBatchInput,
   deleteFile
 } from './llm-batch.js';
+
+export {
+  chatCompletion as openAiChatCompletion,
+  chatCompletionStream as openAiChatCompletionStream,
+  chatCompletionParse as openAiChatCompletionParse,
+  computeEmbedding as openAiComputeEmbedding,
+  responsesApi,
+  responsesApiStream,
+  responsesApiParse,
+  responsesApiStateful,
+  responsesApiMultiTurn
+} from './openai.js';
