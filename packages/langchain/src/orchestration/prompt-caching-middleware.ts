@@ -49,10 +49,8 @@ class OrchestrationPromptCachingMiddlewareError extends Error {
  * Basic usage with default settings
  * ```typescript
  * import { createAgent } from 'langchain';
- * import {
- *   OrchestrationClient,
- *   orchestrationPromptCachingMiddleware
- * } from '@sap-ai-sdk/langchain';
+ * import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+ * import { orchestrationPromptCachingMiddleware } from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
  *
  * const agent = createAgent({
  *   model: new OrchestrationClient({
