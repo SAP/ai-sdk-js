@@ -5,6 +5,7 @@ export { OpenApiRequestBuilder } from './openapi-request-builder.js';
 export type {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
+  AzureOpenAiResponsesModel,
   GcpVertexAiChatModel,
   AwsBedrockChatModel,
   AiCoreOpenSourceChatModel,

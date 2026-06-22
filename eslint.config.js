@@ -18,7 +18,8 @@ export default [
             '*/index.js',
             '*/client/**/index.js',
             './client/**/index.js',
-            'client/**/index.js'
+            'client/**/index.js',
+            'openai/**'
           ]
         }
       ],
