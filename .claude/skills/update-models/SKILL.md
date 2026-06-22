@@ -20,11 +20,17 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
    - The script returns either `{ active: [...], retired: [...] }` (success) or `{ error: '...' }` (failure).
     - If the result is an error or `result.active` is empty, the session has expired — tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
     - On success, **sync models into `scripts/sap-models.json`**:
-       - For each model in `result.active`: update the existing entry matched by `model` field (update all fields), or append it if not already present.
+       - **Remove duplicate scraped rows, keeping the latest version first**: both tables include a `Version` column.
+         When `result.active` or `result.retired` contains multiple rows for the same `model` name, compare their `version` strings and keep only the row with the **latest version** (use your judgment — versions may be date-like `2024-11-20`, semantic `1.2`, or arbitrary strings; pick the one a human would call newest).
+         Discard the older-versioned rows entirely.
+       - **Status is determined by the latest version only**: if the latest-versioned row of a model is active (not deprecated/retired), treat the model as active even if older-versioned rows are marked deprecated or retired.
+         Conversely, only treat a model as deprecated/retired when its latest version carries that status.
+       - For each de-duplicated model in `result.active`: update the existing entry matched by `model` field (update all fields including `version`), or append it if not already present.
          **Clear** the `retired` field (set to `""`) if it was previously set.
-       - For each model in `result.retired`: if already present in `sap-models.json`, set `retired: "yes"` and update `suggestedReplacement` from `result.retired`. If not present at all, **append** a new entry with `retired: "yes"` and the fields from `result.retired` (set `availableInOrchestration: ""`, `deprecated: ""`, `retirementDate: ""`).
+       - For each de-duplicated model in `result.retired`: if already present in `sap-models.json`, set `retired: "yes"` and update `suggestedReplacement` and `version` from `result.retired`. If not present at all, **append** a new entry with `retired: "yes"` and the fields from `result.retired` (set `availableInOrchestration: ""`, `deprecated: ""`, `retirementDate: ""`).
        - **Do not remove** any entries from `sap-models.json` — retired models stay in the file with `retired: "yes"`.
-       - If both `result.active` and `result.retired` list a model, treat it as retired.
+       - If both `result.active` and `result.retired` list a model (after per-table de-duplication), treat it as retired.
+       - After merging, **verify no duplicate `model` values exist** in `sap-models.json`. If any remain, remove the older/less-complete entry and report the duplicate removal to the user.
    - **Close the browser tab** using `browser_close` to avoid stale session issues on future runs.
 
 3. **Patch model-types.ts** by running the sync script:

@@ -18,6 +18,8 @@ export interface ModelRow {
   executableId: string;
   /** The model name. */
   model: string;
+  /** The model version string (e.g. "2024-11-20"). */
+  version: string;
   /** Whether the model is available in Orchestration ('yes'/'no'). */
   availableInOrchestration: string;
   /** Whether the model is deprecated ('yes'/'no'). */

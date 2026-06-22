@@ -37,6 +37,7 @@
       modelCol: Object.entries(colIndex).find(
         ([k]) => k.includes('model') && !k.includes('token')
       )?.[1] ?? 1,
+      versionCol: col('version', 2),
       orchestrationCol: col('orchestration', 7),
       deprecatedCol: col('deprecat', 8),
       retirementCol: col('retirement', 10),
@@ -52,6 +53,7 @@
       rows.push({
         executableId: clean(cells[cols.executableIdCol]).split('\n')[0].trim(),
         model,
+        version: clean(cells[cols.versionCol]),
         availableInOrchestration: clean(cells[cols.orchestrationCol]),
         deprecated: clean(cells[cols.deprecatedCol]),
         retirementDate: clean(cells[cols.retirementCol]),
@@ -86,6 +88,7 @@
       rows.push({
         executableId: cells[0].split('\n')[0].trim(),
         model,
+        version: cells[2] ?? '',
         suggestedReplacement: cells[3] ?? ''
       });
       return rows;
