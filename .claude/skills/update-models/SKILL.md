@@ -20,7 +20,8 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
    - The script returns either `{ active: [...], retired: [...] }` (success) or `{ error: '...' }` (failure).
     - If the result is an error or `result.active` is empty, the session has expired — tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
     - On success, **sync models into `scripts/sap-models.json`**:
-       - For each model in `result.active`: update the existing entry matched by `model` field (update all fields), or append it if not already present. **Clear** the `retired` field (set to `""`) if it was previously set.
+       - For each model in `result.active`: update the existing entry matched by `model` field (update all fields), or append it if not already present.
+         **Clear** the `retired` field (set to `""`) if it was previously set.
        - For each model in `result.retired`: if already present in `sap-models.json`, set `retired: "yes"` and update `suggestedReplacement` from `result.retired`. If not present at all, **append** a new entry with `retired: "yes"` and the fields from `result.retired` (set `availableInOrchestration: ""`, `deprecated: ""`, `retirementDate: ""`).
        - **Do not remove** any entries from `sap-models.json` — retired models stay in the file with `retired: "yes"`.
        - If both `result.active` and `result.retired` list a model, treat it as retired.
@@ -34,9 +35,9 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
    If yes, add the appropriate entry to `EXECUTABLE_ID_TO_TYPE` in `scripts/sync-model-types.ts` and re-run the script before proceeding.
    The script also checks which synced models are available in your landscape using the foundation-models API.
 
-4. **Sync the deprecated models table in `docs-js/overview.mdx` (SAP/ai-sdk repo):**
+4. **Sync the deprecated models table in `docs-js/overview.mdx` (SAP/ai-sdk repository):**
 
-   a. Clone the SAP/ai-sdk repo into a temp directory:
+   a. Clone the SAP/ai-sdk repository into a temp directory:
       ```bash
       DOCS_DIR=$(mktemp -d)
       git clone --depth=1 https://github.com/SAP/ai-sdk "$DOCS_DIR"
@@ -50,7 +51,7 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
       - **Append** rows for newly deprecated models (not yet in the table) to the bottom, one per line.
       Preserve existing row order — new entries go at the end.
 
-   c. Use the Edit tool to replace the entire markdown table (header row through last data row) in `$DOCS_DIR/docs-js/overview.mdx`. Write unpadded rows — `lint:fix` will normalize column widths.
+   c. Use the Edit tool to replace the entire markdown table (header row through last data row) in `$DOCS_DIR/docs-js/overview.mdx`. Write rows without padding — `lint:fix` will normalize column widths.
 
    d. Run install, lint fix, and build to verify:
       ```bash
@@ -76,7 +77,7 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
 
 7. **Ask the user** if they want to open PRs with these changes.
 
-8. If yes, **create branches and open PRs** — one per repo:
+8. If yes, **create branches and open PRs** — one per repository:
 
    **ai-sdk-js** (model types):
    ```bash
