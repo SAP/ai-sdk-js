@@ -4,7 +4,7 @@
  * Returns { active: ModelRow[], retired: RetiredModelRow[] } or { error: '...' }.
  */
 (() => {
-  const clean = s => (s ?? '').trim().replace(/\u00a0/g, '').replace(/ /g, ' ').trim();
+  const clean = s => (s ?? '').trim().replaceAll('\u00a0', ' ').replaceAll(/ +/g, ' ').trim();
 
   // --- Active models table ---
 
