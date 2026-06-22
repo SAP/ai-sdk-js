@@ -4,7 +4,7 @@
  * Returns { active: ModelRow[], retired: RetiredModelRow[] } or { error: '...' }.
  */
 (() => {
-  const clean = s => (s ?? '').trim().replaceAll('\u00a0', ' ').replaceAll(/ +/g, ' ').trim();
+  const clean = s => (s ?? '').trim().replace(/\s+/g, ' ').trim();
 
   // --- Active models table ---
 
@@ -25,7 +25,7 @@
       const text = (cell.querySelector('strong')?.textContent ?? '')
         .trim()
         .toLowerCase()
-        .replace(/\s+/g, ' ');
+        .replaceAll(/\s+/g, ' ');
       colIndex[text] = i;
     });
 
@@ -51,13 +51,13 @@
       const model = clean(cells[cols.modelCol]);
       if (!model) return rows;
       rows.push({
-        executableId: clean(cells[cols.executableIdCol]).split('\n')[0].trim(),
+        executableId: clean(cells[cols.executableIdCol].split('\n')[0]),
         model,
         version: clean(cells[cols.versionCol]),
         availableInOrchestration: clean(cells[cols.orchestrationCol]),
         deprecated: clean(cells[cols.deprecatedCol]),
         retirementDate: clean(cells[cols.retirementCol]),
-        suggestedReplacement: clean(cells[cols.replacementCol]).split('\n').map(clean).filter(Boolean).join(', ')
+        suggestedReplacement: cells[cols.replacementCol].split('\n').map(clean).filter(Boolean).join(', ')
       });
       return rows;
     }, []);
@@ -81,15 +81,16 @@
   function extractRetiredRows(allRows) {
     // First row is header; skip it.
     return allRows.slice(1).reduce((rows, row) => {
-      const cells = Array.from(row.querySelectorAll('td')).map(td => clean(td.textContent));
+      const rawCells = Array.from(row.querySelectorAll('td')).map(td => td.textContent);
+      const cells = rawCells.map(clean);
       // Columns: executableId(0), model(1), version(2), suggestedReplacement(3)
       const model = cells[1];
       if (!model) return rows;
       rows.push({
-        executableId: cells[0].split('\n')[0].trim(),
+        executableId: clean(rawCells[0].split('\n')[0]),
         model,
         version: cells[2] ?? '',
-        suggestedReplacement: cells[3] ?? ''
+        suggestedReplacement: rawCells[3].split('\n').map(clean).filter(Boolean).join(', ')
       });
       return rows;
     }, []);
