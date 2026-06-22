@@ -136,6 +136,14 @@
     "suggestedReplacement": ""
   },
   {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "amazon--nova-lite",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": ""
+  },
+  {
     "executableId": "aws-bedrock(AWS)",
     "model": "amazon--nova-micro",
     "availableInOrchestration": "yes",
@@ -160,40 +168,8 @@
     "suggestedReplacement": ""
   },
   {
-    "executableId": "aws-bedrock(AWS)",
-    "model": "anthropic--claude-3.5-sonnet",
-    "availableInOrchestration": "yes",
-    "deprecated": "yes",
-    "retirementDate": "2026-03-01",
-    "suggestedReplacement": ""
-  },
-  {
-    "executableId": "aws-bedrock(AWS)",
-    "model": "anthropic--claude-3.5-sonnet",
-    "availableInOrchestration": "yes",
-    "deprecated": "yes",
-    "retirementDate": "2026-03-01",
-    "suggestedReplacement": ""
-  },
-  {
-    "executableId": "aws-bedrock(AWS)",
-    "model": "anthropic--claude-3.7-sonnet",
-    "availableInOrchestration": "yes",
-    "deprecated": "yes",
-    "retirementDate": "2026-04-28",
-    "suggestedReplacement": ""
-  },
-  {
     "executableId": "aws-bedrock (AWS)",
     "model": "anthropic--claude-4-sonnet",
-    "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": ""
-  },
-  {
-    "executableId": "aws-bedrock (AWS)",
-    "model": "anthropic--claude-4-opus",
     "availableInOrchestration": "yes",
     "deprecated": "",
     "retirementDate": "No current plans for retirement",
@@ -432,22 +408,6 @@
     "suggestedReplacement": ""
   },
   {
-    "executableId": "gcp-vertexai(Google)",
-    "model": "gemini-2.0-flash",
-    "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "2026-06-01",
-    "suggestedReplacement": ""
-  },
-  {
-    "executableId": "gcp-vertexai(Google)",
-    "model": "gemini-2.0-flash-lite",
-    "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "2026-06-01",
-    "suggestedReplacement": ""
-  },
-  {
     "executableId": "gcp-vertexai (Google)",
     "model": "gemini-2.5-flash",
     "availableInOrchestration": "yes",
@@ -496,11 +456,264 @@
     "suggestedReplacement": ""
   },
   {
+    "executableId": "aicore-opensource(self-hosted)",
+    "model": "tiiuae--falcon-40b-instruct",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "meta--llama3.1-70b-instruct\nmistralai--mistral-small-instruct"
+  },
+  {
+    "executableId": "aicore-opensource",
+    "model": "mistralai--mixtral-8x7b-instruct-v01",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "mistralai--mistral-small-instruct"
+  },
+  {
+    "executableId": "azure-openai(Azure)",
+    "model": "gpt-35-turbo",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o-mini"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-35-turbo-16k",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o, gpt-4.1"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-4-32k",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o, gpt-4.1"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-4",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o, gpt-4.1"
+  },
+  {
+    "executableId": "aicore-opensource(SAP-managed)",
+    "model": "meta--llama3-70b-instruct",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "meta--llama3.1-70b-instruct"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "textembedding-gecko",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-embedding"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "textembedding-gecko-multilingual",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-embedding"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "text-bison",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-2.5-flash"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-1.0-pro",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-2.5-flash"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "chat-bison",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-2.5-flash"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-1.5-flash",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-2.5-flash"
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-1.5-pro",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-2.5-pro"
+  },
+  {
+    "executableId": "gcp-vertexai(Google)",
+    "model": "gemini-2.0-flash",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-06-01",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-3.5-flash"
+  },
+  {
+    "executableId": "gcp-vertexai(Google)",
+    "model": "gemini-2.0-flash-lite",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "2026-06-01",
+    "retired": "yes",
+    "suggestedReplacement": "gemini-3.1-flash-lite"
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "amazon--titan-text-lite",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "amazon--nova-premier"
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-3-sonnet",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "anthropic--claude-4.5-sonnet"
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-3-opus",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "anthropic--claude-4.5-opus"
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-3.5-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-03-01",
+    "retired": "yes",
+    "suggestedReplacement": "anthropic--claude-4.6-sonnet"
+  },
+  {
+    "executableId": "aws-bedrock(AWS)",
+    "model": "anthropic--claude-3.7-sonnet",
+    "availableInOrchestration": "yes",
+    "deprecated": "yes",
+    "retirementDate": "2026-04-28",
+    "retired": "yes",
+    "suggestedReplacement": "anthropic--claude-4.6-sonnet"
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "anthropic--claude-4-opus",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "anthropic--claude-4.7-opus"
+  },
+  {
+    "executableId": "aicore-alephalpha(SAP-hosted)",
+    "model": "alephalpha-pharia-1-7b-control",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "mistralai--mistral-small-instruct"
+  },
+  {
+    "executableId": "aicore-ibm(SAP-managed)",
+    "model": "ibm--granite-13b-chat",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "mistralai--mistral-small-instruct"
+  },
+  {
+    "executableId": "aicore-opensource(SAP-managed)",
+    "model": "meta--llama3.1-70b-instruct",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "mistralai--mistral-small-instruct"
+  },
+  {
     "executableId": "aicore-opensource (SAP-hosted)",
     "model": "deepseek-ai--deepseek-r1",
     "availableInOrchestration": "yes(orchestration-only)",
     "deprecated": "yes",
     "retirementDate": "2026-03-31",
-    "suggestedReplacement": ""
+    "retired": "yes",
+    "suggestedReplacement": "mistralai--mistral-medium-instruct"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-35-turbo",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o, gpt-4.1, gpt-5"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-35-turbo-0125",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o, gpt-4.1, gpt-5"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-4",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "retired": "yes",
+    "suggestedReplacement": "gpt-4o, gpt-4.1, gpt-5"
   }
 ]
