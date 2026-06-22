@@ -2,6 +2,10 @@ import { randomUUID } from 'node:crypto';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
+  orchestrationPromptCachingMiddleware
+  // eslint-disable-next-line import-x/no-internal-modules
+} from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
+import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
   buildLlamaGuard38BFilter
@@ -23,11 +27,21 @@ import * as z from 'zod/v4';
 import { createAgent, createMiddleware } from 'langchain';
 // eslint-disable-next-line import-x/no-internal-modules
 import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
-import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
+import type {
+  BaseMessage,
+  AIMessageChunk,
+  AIMessage
+} from '@langchain/core/messages';
 import type {
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationModuleConfigList
 } from '@sap-ai-sdk/langchain';
+
+interface PromptCachingInvocationResult {
+  content: string;
+  cacheCreationTokens: number;
+  cachedTokens: number;
+}
 
 /**
  * Ask GPT about an introduction to SAP Cloud SDK.
@@ -541,6 +555,70 @@ export async function invokeDynamicModelAgent(): Promise<string> {
   const result = await agent.invoke(agentInputs);
 
   return result.messages.at(-1)!.content as string;
+}
+
+/**
+ * Uses LangChain middleware to enable orchestration prompt caching.
+ * Makes two sequential agent calls so the second request can read from cache.
+ * @returns The last message content from the first and second agent call.
+ */
+export async function invokePromptCachingAgent(): Promise<
+  [PromptCachingInvocationResult, PromptCachingInvocationResult]
+> {
+  const repeatedSystemText =
+    'You are a knowledgeable assistant. ' +
+    'You have deep expertise in science, technology, history, literature, mathematics, and many other fields. '.repeat(
+      220
+    );
+
+  const model = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      }
+    }
+  });
+
+  const agent = createAgent({
+    model,
+    middleware: [
+      orchestrationPromptCachingMiddleware({
+        ttl: '5m',
+        minMessagesToCache: 2
+      })
+    ],
+    systemPrompt: repeatedSystemText
+  });
+
+  const question = 'What is the speed of light?';
+  const firstResult = await agent.invoke({
+    messages: [{ role: 'user', content: question }]
+  });
+  const secondResult = await agent.invoke({
+    messages: [{ role: 'user', content: question }]
+  });
+
+  const firstMessage = firstResult.messages.at(-1)! as AIMessage;
+  const secondMessage = secondResult.messages.at(-1)! as AIMessage;
+  const firstPromptTokensDetails = (
+    firstMessage.response_metadata?.tokenUsage as any
+  )?.prompt_tokens_details;
+  const secondPromptTokensDetails = (
+    secondMessage.response_metadata?.tokenUsage as any
+  )?.prompt_tokens_details;
+  return [
+    {
+      content: String(firstMessage.content),
+      cacheCreationTokens: firstPromptTokensDetails?.cache_creation_tokens ?? 0,
+      cachedTokens: firstPromptTokensDetails?.cached_tokens ?? 0
+    },
+    {
+      content: String(secondMessage.content),
+      cacheCreationTokens:
+        secondPromptTokensDetails?.cache_creation_tokens ?? 0,
+      cachedTokens: secondPromptTokensDetails?.cached_tokens ?? 0
+    }
+  ];
 }
 
 /**

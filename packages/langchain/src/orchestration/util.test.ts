@@ -16,11 +16,14 @@ import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapOrchestrationChunkToLangChainMessageChunk,
-  mapToolToOrchestrationFunction
+  mapToolToOrchestrationFunction,
+  applyCacheControlToLastMessage
 } from './util.js';
 import type { OrchestrationMessage } from './orchestration-message.js';
 import type { ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
+  CacheControl,
+  ChatMessage,
   CompletionPostResponse,
   MessageToolCall,
   ToolCallChunk as OrchestrationToolCallChunk,
@@ -275,6 +278,45 @@ describe('mapOutputToChatResult', () => {
       }
     ]);
   });
+
+  it('should preserve prompt token details in response metadata', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'Test content',
+              role: 'assistant'
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 10,
+          prompt_tokens: 20,
+          total_tokens: 30,
+          prompt_tokens_details: {
+            cached_tokens: 15,
+            cache_creation_tokens: 5
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.response_metadata).toEqual({
+      tokenUsage: completionResponse.final_result.usage
+    });
+  });
 });
 
 describe('mapToolToOrchestrationFunction', () => {
@@ -431,5 +473,172 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     };
     expect(result.tool_call_chunks?.[0]).toEqual(expectedToolCallChunk);
     expect(result).toMatchSnapshot('AIMessageChunk with tool call chunks');
+  });
+});
+
+describe('applyCacheControlToLastMessage', () => {
+  const cacheControl: CacheControl = { type: 'ephemeral', ttl: '5m' };
+
+  it('wraps a string user message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [{ role: 'user', content: 'Hello' }];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'user',
+      content: [{ type: 'text', text: 'Hello', cache_control: cacheControl }]
+    });
+  });
+
+  it('wraps a string system message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [
+      { role: 'system', content: 'You are helpful.' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'system',
+      content: [
+        {
+          type: 'text',
+          text: 'You are helpful.',
+          cache_control: cacheControl
+        }
+      ]
+    });
+  });
+
+  it('wraps a string tool message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [
+      { role: 'tool', content: 'Tool result.', tool_call_id: 'call-1' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'tool',
+      tool_call_id: 'call-1',
+      content: [
+        {
+          type: 'text',
+          text: 'Tool result.',
+          cache_control: cacheControl
+        }
+      ]
+    });
+  });
+
+  it('attaches cache_control to the last text block of an array content', () => {
+    const messages: ChatMessage[] = [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'First part.' },
+          { type: 'text', text: 'Second part.' }
+        ]
+      }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0].content).toEqual([
+      { type: 'text', text: 'First part.' },
+      { type: 'text', text: 'Second part.', cache_control: cacheControl }
+    ]);
+  });
+
+  it('moves the breakpoint to the last cacheable block when an earlier one already has cache_control', () => {
+    const existingCacheControl: CacheControl = {
+      type: 'ephemeral',
+      ttl: '1h'
+    };
+    const messages: ChatMessage[] = [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'First part.',
+            cache_control: existingCacheControl
+          },
+          { type: 'text', text: 'Second part.' }
+        ]
+      }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0].content).toEqual([
+      {
+        type: 'text',
+        text: 'First part.',
+        cache_control: existingCacheControl
+      },
+      { type: 'text', text: 'Second part.', cache_control: cacheControl }
+    ]);
+  });
+
+  it('attaches cache_control only to the last message when multiple are present', () => {
+    const messages: ChatMessage[] = [
+      { role: 'system', content: 'You are helpful.' },
+      { role: 'user', content: 'Hi.' },
+      { role: 'assistant', content: 'Hello!' },
+      { role: 'user', content: 'How are you?' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'system',
+      content: 'You are helpful.'
+    });
+    expect(messages[1]).toEqual({ role: 'user', content: 'Hi.' });
+    expect(messages[2]).toEqual({ role: 'assistant', content: 'Hello!' });
+    expect(messages[3]).toEqual({
+      role: 'user',
+      content: [
+        { type: 'text', text: 'How are you?', cache_control: cacheControl }
+      ]
+    });
+  });
+
+  it('falls back to image_url/file blocks for user messages without trailing text', () => {
+    const messages: ChatMessage[] = [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'See the image:' },
+          { type: 'image_url', image_url: { url: 'https://example.com/x.png' } }
+        ]
+      }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0].content).toEqual([
+      { type: 'text', text: 'See the image:' },
+      {
+        type: 'image_url',
+        image_url: { url: 'https://example.com/x.png' },
+        cache_control: cacheControl
+      }
+    ]);
+  });
+
+  it('does not mutate assistant messages with string content', () => {
+    const messages: ChatMessage[] = [{ role: 'assistant', content: 'Hello!' }];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({ role: 'assistant', content: 'Hello!' });
+  });
+
+  it('does not throw on an empty message list', () => {
+    const messages: ChatMessage[] = [];
+    expect(() =>
+      applyCacheControlToLastMessage(messages, cacheControl)
+    ).not.toThrow();
+    expect(messages).toEqual([]);
   });
 });

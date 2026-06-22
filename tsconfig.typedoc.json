@@ -51,6 +51,7 @@
       "packages/document-grounding/src/index.ts",
       "packages/foundation-models/src/index.ts",
       "packages/langchain/src/index.ts",
+      "packages/langchain/src/orchestration/prompt-caching-middleware.ts",
       "packages/orchestration/src/index.ts",
       "packages/prompt-registry/src/index.ts",
       "packages/rpt/src/index.ts"

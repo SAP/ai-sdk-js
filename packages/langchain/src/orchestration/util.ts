@@ -12,6 +12,7 @@ import type {
 } from '@sap-ai-sdk/orchestration';
 import type {
   AssistantChatMessage,
+  CacheControl,
   ChatCompletionTool,
   ChatMessage,
   ChatMessageContent,
@@ -229,6 +230,86 @@ export function mapLangChainMessagesToOrchestrationMessages(
 }
 
 /**
+ * Applies a cache breakpoint to the last cacheable text block of the last
+ * message in place, mirroring the upstream Anthropic/Bedrock behavior of
+ * automatically advancing the breakpoint as the conversation grows.
+ *
+ * Only the last message is touched (rather than tools or system content),
+ * because tool-level `cache_control` is supported only by Anthropic Claude
+ * and the underlying model is opaque at this layer. Targeting the last
+ * cacheable user/tool message works across Anthropic Claude and Amazon Nova
+ * model families served through orchestration.
+ * @param messages - The orchestration messages to mutate.
+ * @param cacheControl - The cache control directive to apply.
+ * @internal
+ */
+export function applyCacheControlToLastMessage(
+  messages: ChatMessage[],
+  cacheControl: CacheControl
+): void {
+  const lastMessage = messages[messages.length - 1];
+  if (!lastMessage) {
+    return;
+  }
+
+  // String content: replace with a single text block carrying cache_control.
+  if (typeof lastMessage.content === 'string') {
+    if (lastMessage.role === 'system' || lastMessage.role === 'tool') {
+      // System and tool messages only accept string-or-text content; wrap into a
+      // single text block so we can attach the breakpoint.
+      (lastMessage as SystemChatMessage | ToolChatMessage).content = [
+        {
+          type: 'text',
+          text: lastMessage.content,
+          cache_control: cacheControl
+        }
+      ];
+      return;
+    }
+
+    if (lastMessage.role === 'user') {
+      (lastMessage as UserChatMessage).content = [
+        {
+          type: 'text',
+          text: lastMessage.content,
+          cache_control: cacheControl
+        }
+      ];
+      return;
+    }
+
+    // Assistant messages don't currently carry cache_control on content
+    // blocks in the orchestration spec, so leave them untouched.
+    return;
+  }
+
+  if (!Array.isArray(lastMessage.content)) {
+    return;
+  }
+
+  // Walk the content array backwards and attach to the last block that
+  // accepts cache_control. For user messages that's text/image_url/file;
+  // for everything else only text blocks are cacheable.
+  for (let i = lastMessage.content.length - 1; i >= 0; i--) {
+    const block = lastMessage.content[i];
+    if (!block || typeof block !== 'object') {
+      continue;
+    }
+    if (block.type === 'text') {
+      (block as { cache_control?: CacheControl }).cache_control = cacheControl;
+      return;
+    }
+    if (
+      lastMessage.role === 'user' &&
+      (block.type === 'image_url' || block.type === 'file')
+    ) {
+      (block as { cache_control?: CacheControl }).cache_control = cacheControl;
+      return;
+    }
+  }
+}
+
+/**
  * Maps {@link MessageToolCalls} to LangChain's {@link ToolCall}.
  * @param toolCalls - The {@link MessageToolCalls} response.
  * @returns The LangChain {@link ToolCall}.
@@ -283,6 +364,9 @@ export function mapOutputToChatResult(
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
+        response_metadata: {
+          tokenUsage: usage
+        },
         usage_metadata: {
           input_tokens: usage?.prompt_tokens ?? 0,
           output_tokens: usage?.completion_tokens ?? 0,
