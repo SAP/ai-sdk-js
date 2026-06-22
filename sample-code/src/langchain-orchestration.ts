@@ -600,23 +600,20 @@ export async function invokePromptCachingAgent(): Promise<
 
   const firstMessage = firstResult.messages.at(-1)! as AIMessage;
   const secondMessage = secondResult.messages.at(-1)! as AIMessage;
-  const firstPromptTokensDetails = (
-    firstMessage.response_metadata?.tokenUsage as any
-  )?.prompt_tokens_details;
-  const secondPromptTokensDetails = (
-    secondMessage.response_metadata?.tokenUsage as any
-  )?.prompt_tokens_details;
+  const firstInputTokenDetails =
+    firstMessage.usage_metadata?.input_token_details;
+  const secondInputTokenDetails =
+    secondMessage.usage_metadata?.input_token_details;
   return [
     {
       content: String(firstMessage.content),
-      cacheCreationTokens: firstPromptTokensDetails?.cache_creation_tokens ?? 0,
-      cachedTokens: firstPromptTokensDetails?.cached_tokens ?? 0
+      cacheCreationTokens: firstInputTokenDetails?.cache_creation ?? 0,
+      cachedTokens: firstInputTokenDetails?.cache_read ?? 0
     },
     {
       content: String(secondMessage.content),
-      cacheCreationTokens:
-        secondPromptTokensDetails?.cache_creation_tokens ?? 0,
-      cachedTokens: secondPromptTokensDetails?.cached_tokens ?? 0
+      cacheCreationTokens: secondInputTokenDetails?.cache_creation ?? 0,
+      cachedTokens: secondInputTokenDetails?.cache_read ?? 0
     }
   ];
 }

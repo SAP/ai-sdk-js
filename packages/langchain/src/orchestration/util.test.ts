@@ -314,7 +314,21 @@ describe('mapOutputToChatResult', () => {
     const message = result.generations[0].message as AIMessage;
 
     expect(message.response_metadata).toEqual({
-      tokenUsage: completionResponse.final_result.usage
+      tokenUsage: {
+        completionTokens: 10,
+        promptTokens: 20,
+        totalTokens: 30
+      }
+    });
+
+    expect(message.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 10,
+      total_tokens: 30,
+      input_token_details: {
+        cache_read: 15,
+        cache_creation: 5
+      }
     });
   });
 });

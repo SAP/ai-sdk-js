@@ -365,12 +365,28 @@ export function mapOutputToChatResult(
           choice.message.tool_calls
         ),
         response_metadata: {
-          tokenUsage: usage
+          tokenUsage: {
+            completionTokens: usage?.completion_tokens ?? 0,
+            promptTokens: usage?.prompt_tokens ?? 0,
+            totalTokens: usage?.total_tokens ?? 0
+          }
         },
         usage_metadata: {
           input_tokens: usage?.prompt_tokens ?? 0,
           output_tokens: usage?.completion_tokens ?? 0,
-          total_tokens: usage?.total_tokens ?? 0
+          total_tokens: usage?.total_tokens ?? 0,
+          ...(usage?.prompt_tokens_details && {
+            input_token_details: {
+              cache_read: usage.prompt_tokens_details.cached_tokens ?? 0,
+              cache_creation:
+                usage.prompt_tokens_details.cache_creation_tokens ?? 0
+            }
+          }),
+          ...(usage?.completion_tokens_details && {
+            output_token_details: {
+              reasoning: usage.completion_tokens_details.reasoning_tokens ?? 0
+            }
+          })
         }
       }),
       additional_kwargs: {
