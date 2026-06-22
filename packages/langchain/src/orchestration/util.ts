@@ -247,7 +247,7 @@ export function applyCacheControlToLastMessage(
   messages: ChatMessage[],
   cacheControl: CacheControl
 ): void {
-  const lastMessage = messages[messages.length - 1];
+  const lastMessage = messages.at(-1);
   if (!lastMessage) {
     return;
   }
@@ -290,22 +290,16 @@ export function applyCacheControlToLastMessage(
   // Walk the content array backwards and attach to the last block that
   // accepts cache_control. For user messages that's text/image_url/file;
   // for everything else only text blocks are cacheable.
-  for (let i = lastMessage.content.length - 1; i >= 0; i--) {
-    const block = lastMessage.content[i];
-    if (!block || typeof block !== 'object') {
-      continue;
-    }
-    if (block.type === 'text') {
-      (block as { cache_control?: CacheControl }).cache_control = cacheControl;
-      return;
-    }
-    if (
-      lastMessage.role === 'user' &&
-      (block.type === 'image_url' || block.type === 'file')
-    ) {
-      (block as { cache_control?: CacheControl }).cache_control = cacheControl;
-      return;
-    }
+  const isUserMessage = lastMessage.role === 'user';
+  const block = lastMessage.content.findLast(
+    b =>
+      b &&
+      typeof b === 'object' &&
+      (b.type === 'text' ||
+        (isUserMessage && (b.type === 'image_url' || b.type === 'file')))
+  );
+  if (block) {
+    (block as { cache_control?: CacheControl }).cache_control = cacheControl;
   }
 }
 
