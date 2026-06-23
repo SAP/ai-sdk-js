@@ -12,35 +12,27 @@ Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 
 ### Table of Contents
 
-- [Documentation](#documentation)
-- [Prerequisites](#prerequisites)
-- [Packages](#packages)
-  - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
-  - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
-  - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
-  - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
-  - [@sap-ai-sdk/document-grounding](#sap-ai-sdkdocument-grounding)
-  - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
-- [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
-- [Support, Feedback, Contribution](#support-feedback-contribution)
-- [Security / Disclosure](#security--disclosure)
-- [Code of Conduct](#code-of-conduct)
-- [Licensing](#licensing)
-
-## Prerequisites
-
-Only Node.js LTS and Active LTS are supported.
-
-### Using the SDK in a CommonJS project
-
-This SDK is published as ESM-only.
-CommonJS projects can load it with the synchronous `require()` function (experimental) or asynchronous `import()` function:
-
-```js
-const { AzureOpenAiChatClient } = require('@sap-ai-sdk/foundation-models');
-```
-
-> **Note:** This relies on Node 22's built-in `require(ESM)` support and is considered experimental.
+- [SAP Cloud SDK for AI](#sap-cloud-sdk-for-ai)
+    - [Table of Contents](#table-of-contents)
+  - [Documentation](#documentation)
+  - [Packages](#packages)
+    - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
+      - [Installation](#installation)
+    - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
+      - [Installation](#installation-1)
+    - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
+      - [Installation](#installation-2)
+    - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
+      - [Installation](#installation-3)
+    - [@sap-ai-sdk/document-grounding](#sap-ai-sdkdocument-grounding)
+      - [Installation](#installation-4)
+    - [@sap-ai-sdk/prompt-registry](#sap-ai-sdkprompt-registry)
+      - [Installation](#installation-5)
+  - [SAP Cloud SDK for AI Sample Project](#sap-cloud-sdk-for-ai-sample-project)
+  - [Support, Feedback, Contribution](#support-feedback-contribution)
+  - [Security / Disclosure](#security--disclosure)
+  - [Code of Conduct](#code-of-conduct)
+  - [Licensing](#licensing)
 
 ## Documentation
 
