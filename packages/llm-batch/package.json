@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/llm-batch",
-  "version": "2.9.0",
+  "version": "2.11.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
