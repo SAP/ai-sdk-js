@@ -36,7 +36,7 @@ export type LLMModelDetails = {
   /**
    * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
    * Default: 600.
-   * Maximum: 600.
+   * Maximum: 1200.
    * Minimum: 1.
    */
   timeout?: number;
