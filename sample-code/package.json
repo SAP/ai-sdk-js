@@ -47,7 +47,8 @@
     "@sap-ai-sdk/llm-batch": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
-    "@sap-ai-sdk/rpt": "workspace:^"
+    "@sap-ai-sdk/rpt": "workspace:^",
+    "hyparquet-writer": "0.15.6"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
