@@ -118,7 +118,7 @@ jobs:
             [orchestration.url]="repos/AI/llm-orchestration/contents/src/spec/v2.yaml"
             [orchestration.path]="packages/orchestration/src/spec/api.yaml"
 
-            [prompt-registry.url]="repos/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml"
+            [prompt-registry.url]="repos/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml"
             [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
 
             # [rpt.url]="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json"
