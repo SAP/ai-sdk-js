@@ -20,16 +20,17 @@
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/llm-batch": "canary",
+    "@sap-ai-sdk/openai": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-ai-sdk/rpt": "canary",
     "@sap-ai-sdk/sample-code": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "=24.12.4",
+    "@types/node": "=22.19.21",
     "dotenv-cli": "=11.0.0"
   },
   "engines": {
-    "node": "20.x || 22.x || 24.x"
+    "node": "22.x || 24.x"
   }
 }

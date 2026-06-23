@@ -71,6 +71,12 @@ paths:
       tags:
         - Pipelines
       parameters:
+        - name: metadataConfigId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter pipelines based on metadataConfigId
         - in: header
           name: AI-Resource-Group
           required: true
@@ -494,6 +500,207 @@ paths:
               schema:
                 type: string
                 format: uri
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  '/pipelines/metadata/configurations':
+    post:
+      tags:
+        - Metadata Configurations
+      summary: Create a metadata configuration
+      description: Creates a new metadata configuration.
+      operationId: metadata_management.v1.metadata_endpoints.create_metadata_configuration
+      x-sap-cloud-sdk-operation-name: createMetadataConfiguration
+      requestBody:
+        required: true
+        x-body-name: config_payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetadataConfigurationRequest'
+      responses:
+        '202':
+          description: Accepted - Document enumeration in progress
+          headers:
+            Location:
+              description: URI of the created metadata configuration resource
+              schema:
+                type: string
+                example: /metadata/configurations/7e2b1111-aaaa-bbbb-cccc-123456789abc
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    get:
+      tags:
+        - Metadata Configurations
+      summary: List metadata configurations
+      description: List all metadata configurations
+      operationId: metadata_management.v1.metadata_endpoints.list_metadata_configurations
+      x-sap-cloud-sdk-operation-name: listMetadataConfigurations
+      parameters:
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Paginated list of configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMetadataConfigurations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/pipelines/metadata/configurations/{metadataConfigId}':
+    get:
+      tags:
+        - Metadata Configurations
+      summary: Get a configuration by ID
+      description: Get the details of a configuration by ID
+      operationId: metadata_management.v1.metadata_endpoints.get_metadata_configuration_by_id
+      x-sap-cloud-sdk-operation-name: getMetadataConfigurationById
+      parameters:
+        - name: metadataConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Metadata Configuration ID
+      responses:
+        '200':
+          description: Configuration found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataConfigurationResponse'
+        '404':
+          description: Configuration not found
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    delete:
+      tags:
+        - Metadata Configurations
+      summary: Delete a configuration by ID
+      description: Delete a metadata configuration by ID
+      operationId: metadata_management.v1.metadata_endpoints.delete_metadata_configuration_by_id
+      x-sap-cloud-sdk-operation-name: deleteMetadataConfigurationById
+      parameters:
+        - name: metadataConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Metadata Configuration ID
+      responses:
+        '202':
+          description: Configuration deletion initiated
+        '404':
+          description: Configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error during deletion of configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Pipelines exists for this configuration. Delete the pipelines before deleting the configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/pipelines/metadata/configurations/{metadataConfigId}/documents':
+    get:
+      tags:
+        - Metadata Configurations
+      summary: List documents of a configuration
+      description: List the documents for a configuration
+      operationId: metadata_management.v1.metadata_endpoints.list_metadata_configuration_documents
+      x-sap-cloud-sdk-operation-name: listMetadataConfigurationDocuments
+      parameters:
+        - name: metadataConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Metadata Configuration ID
+        - in: query
+          name: absolutePath
+          schema:
+            type: string
+          description: >
+            Absolute path of the resource. Supports wildcard values (e.g., `/folder/*`).
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListConfigurationDocuments'
+    patch:
+      tags:
+        - Metadata Configurations
+      summary: Batch update metadata for multiple documents
+      description: Patch the documents of a configuration in batch
+      operationId: metadata_management.v1.metadata_endpoints.batch_update_documents_metadata
+      x-sap-cloud-sdk-operation-name: batchUpdateDocumentsMetadata
+      parameters:
+        - name: metadataConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Metadata Configuration ID
+      requestBody:
+        required: true
+        x-body-name: documents_metadata_payload
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/DocumentMetadataBatchRequest'
+      responses:
+        '200':
+          description: Batch patch applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchUpdateDocumentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/pipelines/metadata/configurations/{metadataConfigId}/documents/{documentId}':
+    get:
+      tags:
+        - Metadata Configurations
+      summary: Get document details
+      description: Get the details of a document by document id
+      operationId: metadata_management.v1.metadata_endpoints.get_document_details
+      x-sap-cloud-sdk-operation-name: getMetadataDocumentDetails
+      parameters:
+        - name: metadataConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Metadata Configuration ID
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Document ID
+      responses:
+        '200':
+          description: Document details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationDocument'
+        '404':
+          description: Document or configuration not found
         '400':
           $ref: '#/components/responses/BadRequest'
 
@@ -4121,6 +4328,291 @@ components:
         message:
           description: Plaintext error description
           type: string
+
+    # Metadata Management Schemas
+    MetadataConfigurationRequest:
+      type: object
+      required:
+        - destinationName
+        - dataRepositoryType
+      properties:
+        id:
+          type: string
+          description: If provided, must be a valid UUID. If not provided, a new UUID will be generated.
+        name:
+          type: string
+          description: If provided, must be a valid string. If not provided, will be same as id.
+        destinationName:
+          type: string
+          description: Contains destination name containing credentials to access the data repository.
+        dataRepositoryType:
+          type: string
+          enum: [MSSharePoint, S3, SFTP]
+          example: MSSharePoint
+          description: The data repository type for which this configuration is being created.
+        includePaths:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          example: ['/site/documents', '/shared/team']
+        labels:
+          type: array
+          items:
+            type: object
+            required: [key, value]
+            properties:
+              key:
+                type: string
+                example: 'department'
+              value:
+                type: string
+                example: 'finance'
+
+    ListMetadataConfigurations:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+          description: Total number of metadata configurations returned.
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataConfigurationResponse'
+          description: List of metadata configuration objects. It will be empty array if no records found.
+
+    MetadataConfigurationResponse:
+      allOf:
+        - $ref: '#/components/schemas/MetadataConfigurationRequest'
+        - type: object
+          properties:
+            enumerationStatus:
+              anyOf:
+                - enum: [NEW, IN_PROGRESS, COMPLETED, ERROR]
+                - {}
+              example: 'IN_PROGRESS'
+              description: Status of metadata enumeration for the configuration.
+
+    ListConfigurationDocuments:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+          description: Total number of documents returned.
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationDocument'
+          description: List of document objects. It will be empty array if no records found.
+
+    ListConfigurationDocumentsFullDetails:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+          description: Total number of documents returned.
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationDocumentFullDetails'
+          description: List of document objects. It will be empty array if no records found.
+
+    ConfigurationDocument:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 3cba7512-b07a-58e6-a442-c83996a0b3bb
+          description: Unique identifier for the document.
+        title:
+          type: string
+          example: 'Quarterly Report'
+          description: Title of the document.
+        absoluteFilePath:
+          type: string
+          example: '/sites/team/finance/Q1/report.pdf'
+          description: Absolute file path of the document in the repository.
+        createdTimestamp:
+          type: string
+          format: date-time
+          description: UTC timestamp when the document was created (RFC 3339 format, e.g., 2025-08-28T06:15:30Z)
+          example: '2025-08-28T06:15:30Z'
+        type:
+          anyOf:
+            - enum: [FOLDER, DOCUMENT]
+            - {}
+          example: 'FOLDER'
+          description: Type of the resource. Can be FOLDER, DOCUMENT.
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentMetadata'
+          description: Metadata key-value pairs associated with the document.
+
+    ConfigurationDocumentFullDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 3cba7512-b07a-58e6-a442-c83996a0b3bb
+          description: Unique identifier for the document.
+        title:
+          type: string
+          example: 'Quarterly Report'
+          description: Title of the document.
+        absoluteFilePath:
+          type: string
+          example: '/sites/team/finance/Q1/report.pdf'
+          description: Absolute file path of the document in the repository.
+        createdTimestamp:
+          type: string
+          format: date-time
+          description: UTC timestamp when the document was created (RFC 3339 format, e.g., 2025-08-28T06:15:30Z)
+          example: '2025-08-28T06:15:30Z'
+        resourceUri:
+          type: string
+          example: 'https://example.com/resource/123'
+          description: URI of the resource.
+        webUrl:
+          type: string
+          example: 'https://example.com/web/123'
+          description: Web URL of the document.
+        documentEtag:
+          type: string
+          example: 'abc123etag'
+          description: ETag of the document.
+        fileSuffix:
+          type: string
+          example: '.pdf'
+          description: File suffix of the document.
+        viewLocation:
+          type: string
+          example: 'https://example.com/view/123'
+          description: View location of the document.
+        downloadLocation:
+          type: string
+          example: 'https://example.com/download/123'
+          description: Download location of the document.
+        mimeType:
+          type: string
+          example: 'application/pdf'
+          description: MIME type of the document.
+        fileSizeMb:
+          type: string
+          example: '1.5'
+          description: File size of the document in megabytes.
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentMetadata'
+          description: Metadata key-value pairs associated with the document.
+
+    DocumentMetadata:
+      type: object
+      required: [key, value]
+      properties:
+        key:
+          type: string
+          example: contentObjectId
+          description: Metadata key name.
+        value:
+          type: array
+          items:
+            type: string
+            example: some-id
+          nullable: true
+          description: An array of string values associated with the metadata key. If the key already exists, its values will be overwritten. Setting the value to null will delete the metadata key-value pair.
+        matchMode:
+          anyOf:
+            - enum: [ANY, ALL]
+            - {}
+          example: ANY
+          description: Match mode for the metadata key (ANY or ALL).
+
+    DocumentMetadataUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the document to update.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentMetadata'
+          description: Metadata updates for this document.
+          maxItems: 10
+      required:
+        - id
+        - metadata
+
+    DocumentMetadataBatchRequest:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentMetadataUpdate'
+          maxItems: 1000
+          description: List of document metadata updates to be applied in batch.
+
+    BatchUpdateDocumentSuccess:
+      type: object
+      required: [id, metadata]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the document.
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentMetadata'
+          description: Metadata updates for this document.
+
+    DocumentMetadataUpdateError:
+      type: object
+      required: [target, code, message]
+      properties:
+        target:
+          type: string
+          description: Document ID that caused the error.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        code:
+          type: integer
+          description: HTTP error status code.
+          example: 500
+        message:
+          type: string
+          description: Error message.
+          example: Some unexpected error occurred.
+
+    BatchUpdateDocumentsResponse:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/DocumentMetadataUpdate'
+          - $ref: '#/components/schemas/DocumentMetadataUpdateError'
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Tenant onboarding request accepted
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Error occurred during tenant onboarding
 
   ### ***  *****************************************************  *** ###
   ### ***  ***              Start of responses               ***  *** ###
