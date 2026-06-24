@@ -48,11 +48,8 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'amazon--nova-pro'
   | 'amazon--nova-lite'
   | 'amazon--nova-micro'
-  | 'amazon--nova-premier'
-  | 'anthropic--claude-3-haiku'
   | 'anthropic--claude-4.5-haiku'
   | 'anthropic--claude-4.6-opus'
-  | 'anthropic--claude-4-sonnet'
   | 'anthropic--claude-4.5-sonnet'
   | 'anthropic--claude-4.6-sonnet'
   | 'anthropic--claude-4.7-opus'
@@ -73,10 +70,9 @@ export type PerplexityChatModel = LiteralUnion<'sonar' | 'sonar-pro'>;
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'cohere--command-a-reasoning'
-  | 'mistralai--mistral-small'
   | 'mistralai--mistral-large-instruct'
-  | 'mistralai--mistral-small-instruct'
   | 'mistralai--mistral-medium-instruct'
+  | 'mistralai--mistral-small'
   | 'sap-abap-1'
 >;
 

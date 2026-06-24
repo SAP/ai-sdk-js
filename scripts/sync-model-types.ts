@@ -45,7 +45,8 @@ const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
   'gpt-4o-mini',    // Same reason
   'gpt-realtime',   // WebSocket-based, not a standard chat completion model
-  'gpt-5.3-codex'   // Responses API only, not a standard chat completion model
+  'gpt-5.3-codex',  // Responses API only, not a standard chat completion model
+  'cohere-reranker' // Re-ranker model, not a chat/embedding model
 ]);
 
 // Models that should always be included regardless of retirement date.
@@ -76,6 +77,13 @@ const EMBEDDING_TYPE_MAP: Record<string, string> = {
   AwsBedrockChatModel: 'AwsBedrockEmbeddingModel'
 };
 
+// Per-model type overrides for models whose executableId is missing in SAP Notes.
+const MODEL_NAME_TO_TYPE: Record<string, string> = {
+  'mistralai--mistral-medium-instruct': 'AiCoreOpenSourceChatModel',
+  'mistralai--mistral-small': 'AiCoreOpenSourceChatModel',
+  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel'
+};
+
 function resolveTypeName(row: ModelRow): string | null {
   // RPT models share the aicore-sap executableId with sap-abap-1 — distinguish by name.
   if (row.model.toLowerCase().startsWith('sap-rpt-')) {
@@ -94,7 +102,7 @@ function resolveTypeName(row: ModelRow): string | null {
     }
   }
 
-  return null;
+  return MODEL_NAME_TO_TYPE[row.model] ?? null;
 }
 
 function isRetiredSoon(retirementDate: string): boolean {
@@ -241,6 +249,11 @@ function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
       continue;
     }
 
+    if (MODEL_EXCLUSION_LIST.has(row.model)) {
+      console.error(`Skipping excluded model: ${row.model}`);
+      continue;
+    }
+
     const typeName = resolveTypeName(row);
     if (!typeName) {
       skippedRows.push({ model: row.model, executableId: row.executableId });
@@ -252,11 +265,6 @@ function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
     const isSapRpt = typeName === 'SapRptModel';
 
     if (!isOrchestration && !isAzureOpenAi && !isSapRpt) {
-      continue;
-    }
-
-    if (MODEL_EXCLUSION_LIST.has(row.model)) {
-      console.error(`Skipping excluded model: ${row.model}`);
       continue;
     }
 
