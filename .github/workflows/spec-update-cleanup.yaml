@@ -36,7 +36,7 @@ jobs:
   auth:
     permissions:
       contents: read
-    uses: ./.github/workflows/auth.yaml
+    uses: ./.github/workflows/auth.yml
   cleanup:
     name: 'Delete Spec Update Branch'
     needs: [auth]

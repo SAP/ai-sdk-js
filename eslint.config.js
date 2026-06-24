@@ -19,7 +19,8 @@ export default [
             '*/index.js',
             '*/client/**/index.js',
             './client/**/index.js',
-            'client/**/index.js'
+            'client/**/index.js',
+            'openai/**'
           ]
         }
       ],
@@ -54,7 +55,8 @@ export default [
       '**/test-util/**/*',
       '**/*.test.ts',
       '**/*.spec.ts',
-      '**/dist-cjs/**/*'
+      '**/dist-cjs/**/*',
+      '**/scripts/*'
     ],
     rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off',

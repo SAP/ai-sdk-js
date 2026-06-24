@@ -6,8 +6,9 @@ export default mergeConfig(
   defineProject({
     test: {
       name: 'smoke-tests',
-      include: ['**/*.test.ts'],
-      exclude: ['**/dist/**']
+      include: ['test/**/*.test.ts'],
+      exclude: ['**/dist/**', '**/node_modules/**'],
+      globalSetup: ['./scripts/global-setup.ts']
     }
   })
 );

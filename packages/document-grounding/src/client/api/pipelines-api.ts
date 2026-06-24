@@ -27,12 +27,17 @@ export const PipelinesApi = {
   _defaultBasePath: '/lm/document-grounding',
   /**
    * Get all pipelines
-   * @param queryParameters - Object containing the following keys: $top, $skip, $count.
+   * @param queryParameters - Object containing the following keys: metadataConfigId, $top, $skip, $count.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   getAllPipelines: (
-    queryParameters: { $top?: number; $skip?: number; $count?: boolean },
+    queryParameters: {
+      metadataConfigId?: string;
+      $top?: number;
+      $skip?: number;
+      $count?: boolean;
+    },
     headerParameters: { 'AI-Resource-Group': string }
   ) =>
     new OpenApiRequestBuilder<GetPipelines>(

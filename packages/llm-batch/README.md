@@ -1,8 +1,7 @@
 # @sap-ai-sdk/llm-batch
 
-> [!CAUTION]
-> This package is currently experimental and subject to change.
-> Do not use in production.
+> [!warning]
+> This package is still in **beta** and is subject to breaking changes. Use it with caution.
 
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 

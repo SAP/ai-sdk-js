@@ -3,7 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { OrchestrationConfig } from './orchestration-config.js';
+import type { PromptRegistryOrchestrationConfig } from './prompt-registry-orchestration-config.js';
 /**
  * Representation of the 'RuntimeOrchestrationConfigFile' schema.
  */
@@ -15,5 +15,5 @@ export type RuntimeOrchestrationConfigFile = {
     version?: string;
     scenario?: string;
   } & Record<string, any>;
-  spec?: OrchestrationConfig;
+  spec?: PromptRegistryOrchestrationConfig;
 } & Record<string, any>;
