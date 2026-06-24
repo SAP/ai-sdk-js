@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.10.0",
+  "version": "2.12.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -39,7 +39,6 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "compile:cjs": "tsc -p tsconfig.cjs.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
@@ -51,9 +50,9 @@
     "@sap-cloud-sdk/util": "^4.7.0"
   },
   "peerDependencies": {
-    "openai": "^6.36.0"
+    "openai": "^6.44.0"
   },
   "devDependencies": {
-    "openai": "^6.36.0"
+    "openai": "^6.44.0"
   }
 }

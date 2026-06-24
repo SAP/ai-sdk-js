@@ -5,6 +5,7 @@
  */
 import type { ImageContentUrl } from './image-content-url.js';
 import type { FileContent } from './file-content.js';
+import type { CacheControl } from './cache-control.js';
 /**
  * Representation of the 'UserChatMessageContentItem' schema.
  */
@@ -13,4 +14,5 @@ export type UserChatMessageContentItem = {
   text?: string;
   image_url?: ImageContentUrl;
   file?: FileContent;
+  cache_control?: CacheControl;
 };
