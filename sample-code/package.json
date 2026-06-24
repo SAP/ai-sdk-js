@@ -42,22 +42,12 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
-    "@sap-ai-sdk/openai": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
     "@sap-ai-sdk/llm-batch": "workspace:^",
+    "@sap-ai-sdk/openai": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
     "hyparquet-writer": "0.15.6"
-  },
-  "peerDependencies": {
-    "@sap-ai-sdk/ai-api": "*",
-    "@sap-ai-sdk/document-grounding": "*",
-    "@sap-ai-sdk/foundation-models": "*",
-    "@sap-ai-sdk/langchain": "*",
-    "@sap-ai-sdk/llm-batch": "*",
-    "@sap-ai-sdk/orchestration": "*",
-    "@sap-ai-sdk/prompt-registry": "*",
-    "@sap-ai-sdk/rpt": "*"
   }
 }
