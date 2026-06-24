@@ -49,5 +49,16 @@
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
     "hyparquet-writer": "0.15.6"
+  },
+  "peerDependencies": {
+    "@sap-ai-sdk/ai-api": "*",
+    "@sap-ai-sdk/document-grounding": "*",
+    "@sap-ai-sdk/foundation-models": "*",
+    "@sap-ai-sdk/langchain": "*",
+    "@sap-ai-sdk/llm-batch": "*",
+    "@sap-ai-sdk/openai": "*",
+    "@sap-ai-sdk/orchestration": "*",
+    "@sap-ai-sdk/prompt-registry": "*",
+    "@sap-ai-sdk/rpt": "*"
   }
 }
