@@ -416,11 +416,6 @@ export class OrchestrationClient extends BaseChatModel<
       const tokenUsage = chunk.getTokenUsage();
       if (tokenUsage) {
         generationInfo.token_usage = tokenUsage;
-        messageChunk.usage_metadata = {
-          input_tokens: tokenUsage.prompt_tokens,
-          output_tokens: tokenUsage.completion_tokens,
-          total_tokens: tokenUsage.total_tokens
-        };
       }
 
       const content = chunk.getDeltaContent() ?? '';

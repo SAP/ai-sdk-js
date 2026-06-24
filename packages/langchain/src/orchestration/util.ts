@@ -20,6 +20,7 @@ import type {
   FunctionObject,
   MessageToolCalls,
   SystemChatMessage,
+  TokenUsage,
   ToolChatMessage,
   UserChatMessage,
   TemplateRef,
@@ -230,15 +231,7 @@ export function mapLangChainMessagesToOrchestrationMessages(
 }
 
 /**
- * Applies a cache breakpoint to the last cacheable text block of the last
- * message in place, mirroring the upstream Anthropic/Bedrock behavior of
- * automatically advancing the breakpoint as the conversation grows.
- *
- * Only the last message is touched (rather than tools or system content),
- * because tool-level `cache_control` is supported only by Anthropic Claude
- * and the underlying model is opaque at this layer. Targeting the last
- * cacheable user/tool message works across Anthropic Claude and Amazon Nova
- * model families served through orchestration.
+ * Applies a cache breakpoint to the last cacheable block of the last message in place.
  * @param messages - The orchestration messages to mutate.
  * @param cacheControl - The cache control directive to apply.
  * @internal
@@ -252,11 +245,8 @@ export function applyCacheControlToLastMessage(
     return;
   }
 
-  // String content: replace with a single text block carrying cache_control.
   if (typeof lastMessage.content === 'string') {
     if (lastMessage.role === 'system' || lastMessage.role === 'tool') {
-      // System and tool messages only accept string-or-text content; wrap into a
-      // single text block so we can attach the breakpoint.
       (lastMessage as SystemChatMessage | ToolChatMessage).content = [
         {
           type: 'text',
@@ -275,11 +265,8 @@ export function applyCacheControlToLastMessage(
           cache_control: cacheControl
         }
       ];
-      return;
     }
-
-    // Assistant messages don't currently carry cache_control on content
-    // blocks in the orchestration spec, so leave them untouched.
+    // Assistant string content has no cacheable block; leave untouched.
     return;
   }
 
@@ -287,9 +274,6 @@ export function applyCacheControlToLastMessage(
     return;
   }
 
-  // Walk the content array backwards and attach to the last block that
-  // accepts cache_control. For user messages that's text/image_url/file;
-  // for everything else only text blocks are cacheable.
   const isUserMessage = lastMessage.role === 'user';
   const block = lastMessage.content.findLast(
     b =>
@@ -339,6 +323,36 @@ function mapOrchestrationToLangChainToolCallChunk(
 }
 
 /**
+ * Builds the LangChain `usage_metadata` shape from an orchestration {@link TokenUsage}.
+ * @param usage - The orchestration token usage.
+ * @returns The LangChain `usage_metadata` object.
+ */
+function buildUsageMetadata(usage: TokenUsage): {
+  input_tokens: number;
+  output_tokens: number;
+  total_tokens: number;
+  input_token_details?: { cache_read: number; cache_creation: number };
+  output_token_details?: { reasoning: number };
+} {
+  return {
+    input_tokens: usage.prompt_tokens,
+    output_tokens: usage.completion_tokens,
+    total_tokens: usage.total_tokens,
+    ...(usage.prompt_tokens_details && {
+      input_token_details: {
+        cache_read: usage.prompt_tokens_details.cached_tokens ?? 0,
+        cache_creation: usage.prompt_tokens_details.cache_creation_tokens ?? 0
+      }
+    }),
+    ...(usage.completion_tokens_details && {
+      output_token_details: {
+        reasoning: usage.completion_tokens_details.reasoning_tokens ?? 0
+      }
+    })
+  };
+}
+
+/**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
  * @returns The mapped {@link ChatResult}.
@@ -350,6 +364,11 @@ export function mapOutputToChatResult(
   const { final_result, intermediate_results, request_id } = completionResponse;
   const { choices, created, id, model, object, usage, system_fingerprint } =
     final_result;
+  const tokenUsage = {
+    completionTokens: usage?.completion_tokens ?? 0,
+    promptTokens: usage?.prompt_tokens ?? 0,
+    totalTokens: usage?.total_tokens ?? 0
+  };
   return {
     generations: choices.map(choice => ({
       text: choice.message.content ?? '',
@@ -358,30 +377,10 @@ export function mapOutputToChatResult(
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
-        response_metadata: {
-          tokenUsage: {
-            completionTokens: usage?.completion_tokens ?? 0,
-            promptTokens: usage?.prompt_tokens ?? 0,
-            totalTokens: usage?.total_tokens ?? 0
-          }
-        },
-        usage_metadata: {
-          input_tokens: usage?.prompt_tokens ?? 0,
-          output_tokens: usage?.completion_tokens ?? 0,
-          total_tokens: usage?.total_tokens ?? 0,
-          ...(usage?.prompt_tokens_details && {
-            input_token_details: {
-              cache_read: usage.prompt_tokens_details.cached_tokens ?? 0,
-              cache_creation:
-                usage.prompt_tokens_details.cache_creation_tokens ?? 0
-            }
-          }),
-          ...(usage?.completion_tokens_details && {
-            output_token_details: {
-              reasoning: usage.completion_tokens_details.reasoning_tokens ?? 0
-            }
-          })
-        }
+        response_metadata: { tokenUsage },
+        usage_metadata: usage
+          ? buildUsageMetadata(usage)
+          : { input_tokens: 0, output_tokens: 0, total_tokens: 0 }
       }),
       additional_kwargs: {
         tool_calls: choice.message.tool_calls,
@@ -400,11 +399,7 @@ export function mapOutputToChatResult(
       model,
       object,
       system_fingerprint,
-      tokenUsage: {
-        completionTokens: usage?.completion_tokens ?? 0,
-        promptTokens: usage?.prompt_tokens ?? 0,
-        totalTokens: usage?.total_tokens ?? 0
-      }
+      tokenUsage
     }
   };
 }
@@ -428,7 +423,7 @@ export function isToolDefinitionLike(
 /**
  * Converts orchestration stream chunk to a LangChain message chunk.
  * @param chunk - The orchestration stream chunk.
- * @returns An {@link AIMessageChunk}
+ * @returns An {@link AIMessageChunk}.
  * @internal
  */
 export function mapOrchestrationChunkToLangChainMessageChunk(
@@ -437,6 +432,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
+  const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
     content,
     additional_kwargs: {
@@ -445,6 +441,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)
-    })
+    }),
+    ...(usage && { usage_metadata: buildUsageMetadata(usage) })
   });
 }

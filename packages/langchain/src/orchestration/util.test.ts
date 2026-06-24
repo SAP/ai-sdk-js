@@ -28,7 +28,8 @@ import type {
   MessageToolCall,
   ToolCallChunk as OrchestrationToolCallChunk,
   CompletionPostResponseStreaming,
-  FunctionObject
+  FunctionObject,
+  TokenUsage
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
@@ -331,6 +332,136 @@ describe('mapOutputToChatResult', () => {
       }
     });
   });
+
+  it('should map reasoning tokens to output_token_details', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'Test content',
+              role: 'assistant'
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 42,
+          prompt_tokens: 20,
+          total_tokens: 62,
+          completion_tokens_details: {
+            reasoning_tokens: 7
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 42,
+      total_tokens: 62,
+      output_token_details: {
+        reasoning: 7
+      }
+    });
+  });
+
+  it('should map cache and reasoning token details together', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'Test content',
+              role: 'assistant'
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 42,
+          prompt_tokens: 20,
+          total_tokens: 62,
+          prompt_tokens_details: {
+            cached_tokens: 12,
+            cache_creation_tokens: 3
+          },
+          completion_tokens_details: {
+            reasoning_tokens: 4
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 42,
+      total_tokens: 62,
+      input_token_details: {
+        cache_read: 12,
+        cache_creation: 3
+      },
+      output_token_details: {
+        reasoning: 4
+      }
+    });
+  });
+
+  it('should default missing reasoning_tokens to 0 when completion_tokens_details is present', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: { content: 'Test content', role: 'assistant' },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 5,
+          prompt_tokens: 5,
+          total_tokens: 10,
+          // Sibling field present, reasoning_tokens omitted.
+          completion_tokens_details: {
+            accepted_prediction_tokens: 2
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.usage_metadata?.output_token_details).toEqual({
+      reasoning: 0
+    });
+  });
 });
 
 describe('mapToolToOrchestrationFunction', () => {
@@ -392,11 +523,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     content?: string,
     toolCallChunks?: OrchestrationToolCallChunk[],
     finishReason?: string,
-    tokenUsage?: {
-      completion_tokens: number;
-      prompt_tokens: number;
-      total_tokens: number;
-    }
+    tokenUsage?: TokenUsage
   ): OrchestrationStreamChunkResponse {
     const mockData: CompletionPostResponseStreaming = {
       request_id: 'req-123',
@@ -487,6 +614,76 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     };
     expect(result.tool_call_chunks?.[0]).toEqual(expectedToolCallChunk);
     expect(result).toMatchSnapshot('AIMessageChunk with tool call chunks');
+  });
+
+  it('omits usage_metadata when the chunk carries no token usage', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk('partial')
+    );
+
+    expect(result.usage_metadata).toBeUndefined();
+  });
+
+  it('maps token usage on the chunk to usage_metadata', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk(undefined, undefined, 'stop', {
+        completion_tokens: 271,
+        prompt_tokens: 17,
+        total_tokens: 288
+      })
+    );
+
+    expect(result.usage_metadata).toEqual({
+      input_tokens: 17,
+      output_tokens: 271,
+      total_tokens: 288
+    });
+  });
+
+  it('maps prompt cache token details to input_token_details on the chunk', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk(undefined, undefined, 'stop', {
+        completion_tokens: 10,
+        prompt_tokens: 20,
+        total_tokens: 30,
+        prompt_tokens_details: {
+          cached_tokens: 15,
+          cache_creation_tokens: 5
+        }
+      })
+    );
+
+    expect(result.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 10,
+      total_tokens: 30,
+      input_token_details: {
+        cache_read: 15,
+        cache_creation: 5
+      }
+    });
+  });
+
+  it('maps reasoning tokens to output_token_details on the chunk', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk(undefined, undefined, 'stop', {
+        completion_tokens: 42,
+        prompt_tokens: 20,
+        total_tokens: 62,
+        completion_tokens_details: {
+          reasoning_tokens: 7
+        }
+      })
+    );
+
+    expect(result.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 42,
+      total_tokens: 62,
+      output_token_details: {
+        reasoning: 7
+      }
+    });
   });
 });
 
