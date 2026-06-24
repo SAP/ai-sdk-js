@@ -28,6 +28,7 @@ jobs:
         with:
           files: |
             .changeset/**
+            !.changeset/config.json
       - uses: sap/cloud-sdk-js/.github/actions/check-pr@main
         with:
           changed-files: ${{ steps.changed-files.outputs.added_files }} ${{ steps.changed-files.outputs.modified_files }}
