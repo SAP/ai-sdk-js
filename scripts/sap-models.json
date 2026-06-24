@@ -5,7 +5,7 @@
     "version": "2407 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -14,9 +14,9 @@
     "model": "mistralai--mistral-small-instruct",
     "version": "2503 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "not earlier than 2026-09-30",
+    "suggestedReplacement": "mistralai--mistral-small",
     "retired": ""
   },
   {
@@ -25,7 +25,7 @@
     "version": "2505 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-08-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -45,7 +45,7 @@
     "version": "2 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -55,7 +55,7 @@
     "version": "2508 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-08-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -65,7 +65,7 @@
     "version": "3.5 (latest)",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -75,7 +75,7 @@
     "version": "1 (latest)",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-08-30",
+    "retirementDate": "not earlier than 2026-12-31",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -85,7 +85,7 @@
     "version": "1 (latest)",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-08-30",
+    "retirementDate": "not earlier than 2026-12-31",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -174,9 +174,9 @@
     "model": "amazon--nova-premier",
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-09-10",
+    "suggestedReplacement": "amazon--nova-lite 2",
     "retired": ""
   },
   {
@@ -184,9 +184,9 @@
     "model": "anthropic--claude-3-haiku",
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-09-10",
+    "suggestedReplacement": "anthropic--claude-4.5-haiku",
     "retired": ""
   },
   {
@@ -194,9 +194,9 @@
     "model": "anthropic--claude-4-sonnet",
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-10-14",
+    "suggestedReplacement": "anthropic--claude-4.5-sonnet",
     "retired": ""
   },
   {
