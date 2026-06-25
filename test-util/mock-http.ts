@@ -91,9 +91,7 @@ export function mockClientCredentialsGrantCall(
 }
 
 export function mockInference(
-  request: {
-    data: any;
-  },
+  request: { data: any } | ((body: any) => boolean),
   response: {
     data: any;
     status?: number;
@@ -113,7 +111,10 @@ export function mockInference(
     }
   });
 
-  let interceptor = scope.post(`/v2/${url}`, request.data).query(apiVersion ? { 'api-version': apiVersion } : {});
+  const bodyMatcher =
+    typeof request === 'function' ? request : request.data;
+
+  let interceptor = scope.post(`/v2/${url}`, bodyMatcher).query(apiVersion ? { 'api-version': apiVersion } : {});
 
   if (resilienceOptions?.retry) {
     interceptor = interceptor.times(resilienceOptions.retry);
@@ -121,7 +122,7 @@ export function mockInference(
       interceptor = interceptor.delay(resilienceOptions.delay);
     }
     interceptor.reply(500);
-    interceptor = scope.post(`/v2/${url}`, request.data).query(apiVersion ? { 'api-version': apiVersion } : {});
+    interceptor = scope.post(`/v2/${url}`, bodyMatcher).query(apiVersion ? { 'api-version': apiVersion } : {});
   }
 
   if (!resilienceOptions?.retry && resilienceOptions?.delay) {

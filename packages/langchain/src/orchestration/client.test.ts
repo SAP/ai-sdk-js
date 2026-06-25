@@ -1063,10 +1063,8 @@ describe('orchestration service client', () => {
       };
 
       mockInference(
-        () => ({
-          orchestrationConfig: expect.anything(),
-          params: expect.anything()
-        }),
+        // match any body — this test verifies the response parsing, not the request shape
+        (_body: any) => true,
         { data: mockStructuredResponse, status: 200 },
         endpoint
       );
@@ -1100,10 +1098,8 @@ describe('orchestration service client', () => {
       };
 
       mockInference(
-        () => ({
-          orchestrationConfig: expect.anything(),
-          params: expect.anything()
-        }),
+        // match any body — this test verifies the response parsing, not the request shape
+        (_body: any) => true,
         { data: mockStructuredResponse, status: 200 },
         endpoint
       );
@@ -1155,15 +1151,12 @@ describe('orchestration service client', () => {
       };
 
       mockInference(
-        req => {
-          const parsedReq = JSON.parse(req.body as string);
+        (body: any) => {
           expect(
-            parsedReq.orchestration_config.templating_module_config.prompt
-              .response_format
+            body.config.modules.prompt_templating.prompt.response_format
           ).toBeDefined();
           expect(
-            parsedReq.orchestration_config.templating_module_config.prompt
-              .response_format.type
+            body.config.modules.prompt_templating.prompt.response_format.type
           ).toBe('json_schema');
           return true;
         },
@@ -1281,11 +1274,10 @@ describe('orchestration service client', () => {
       it('should throw immediately when input filter error occurs with jsonSchema method', async () => {
         // Mock should only be called once - no retries on input filter error
         mockInference(
-          (req: any) => {
-            const body = JSON.parse(req.body as string);
+          (body: any) => {
             // Verify it has json_schema response_format
             return (
-              body.orchestration_config.templating_module_config.prompt
+              body.config.modules.prompt_templating.prompt
                 ?.response_format?.type === 'json_schema'
             );
           },
@@ -1310,15 +1302,13 @@ describe('orchestration service client', () => {
 
       it('should throw immediately when input filter error occurs with functionCalling method', async () => {
         mockInference(
-          (req: any) => {
-            const body = JSON.parse(req.body as string);
+          (body: any) => {
             // Verify it has tools configured
             return (
               Array.isArray(
-                body.orchestration_config.templating_module_config.prompt?.tools
+                body.config.modules.prompt_templating.prompt?.tools
               ) &&
-              body.orchestration_config.templating_module_config.prompt.tools
-                .length > 0
+              body.config.modules.prompt_templating.prompt.tools.length > 0
             );
           },
           {
@@ -1342,11 +1332,10 @@ describe('orchestration service client', () => {
 
       it('should throw immediately when input filter error occurs with jsonMode method', async () => {
         mockInference(
-          (req: any) => {
-            const body = JSON.parse(req.body as string);
+          (body: any) => {
             // Verify it has json_object response_format
             return (
-              body.orchestration_config.templating_module_config.prompt
+              body.config.modules.prompt_templating.prompt
                 ?.response_format?.type === 'json_object'
             );
           },
@@ -1388,10 +1377,8 @@ describe('orchestration service client', () => {
         };
 
         mockInference(
-          () => ({
-            orchestrationConfig: expect.anything(),
-            params: expect.anything()
-          }),
+          // match any body — this test verifies the fallback parsing behavior, not the request shape
+          (_body: any) => true,
           { data: mockInvalidJsonResponse, status: 200 },
           endpoint
         );
