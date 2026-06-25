@@ -14,6 +14,7 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-5.4'
   | 'gpt-5.4-nano'
   | 'gpt-5.5'
+  | 'gpt-5.1'
   | 'o3'
   | 'o4-mini'
 >;

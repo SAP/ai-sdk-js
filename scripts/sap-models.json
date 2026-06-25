@@ -351,6 +351,16 @@
   },
   {
     "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.1",
+    "version": "2025-11-13 (latest)",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
     "model": "gpt-5-mini",
     "version": "2025-08-07",
     "availableInOrchestration": "yes",
@@ -476,6 +486,16 @@
     "availableInOrchestration": "yes",
     "deprecated": "",
     "retirementDate": "2026-10-16",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-3.5-flash",
+    "version": "001 (latest)",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
     "suggestedReplacement": "",
     "retired": ""
   },
