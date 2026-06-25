@@ -1,5 +1,18 @@
 # @sap-ai-sdk/core
 
+## 2.12.0
+
+### Minor Changes
+
+- 0f10482: [feat] Add `AzureOpenAiResponsesModel` type for Azure OpenAI models that exclusively support the Responses API.
+- e944aa1: [Improvement] Added `gpt-5.5` to the available model list.
+  Remove retired model `anthropic--claude-4-opus` — use `anthropic--claude-4.7-opus` instead.
+  Remove deprecated model `o3-mini` (retirement date: 2026-08-02).
+
+### Patch Changes
+
+- 2faf4a8: [fix] Improve error message when server sends a non-JSON response during streaming.
+
 ## 2.11.0
 
 ### Minor Changes

@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
 
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
@@ -35,7 +35,7 @@ jobs:
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 # v8.1.0
+        uses: SonarSource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e # v8.2.0
       - run: pnpm test:type
 
   checks:
@@ -59,8 +59,6 @@ jobs:
             exit 1
           fi
       - run: pnpm lint
-      - name: Check CommonJS compatibility
-        run: pnpm compile:cjs
       - name: Set NODE_PATH
         run: echo "NODE_PATH=$(pwd)/node_modules" >> "$GITHUB_ENV"
       - name: Check public API
@@ -99,4 +97,20 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh pr merge --auto --squash "$PR_URL"
+          REPO: ${{github.repository}}
+          PR_HEAD_SHA: ${{github.event.pull_request.head.sha}}
+        run: |
+          COMMIT=$(gh api "repos/$REPO/commits/$PR_HEAD_SHA" --jq '{author: .author.login, verified: .commit.verification.verified}')
+          LAST_AUTHOR=$(echo "$COMMIT" | jq -r '.author')
+          VERIFIED=$(echo "$COMMIT" | jq -r '.verified')
+          if [[ "$LAST_AUTHOR" != "dependabot[bot]" || "$VERIFIED" != "true" ]]; then
+            echo "Commit author='$LAST_AUTHOR' verified='$VERIFIED': skipping auto-merge"
+            exit 0
+          fi
+          gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL" && exit 0
+          for _ in $(seq 1 5); do
+            sleep 15
+            gh pr merge --auto --squash --match-head-commit "$PR_HEAD_SHA" "$PR_URL" && exit 0
+          done
+          echo "All attempts to enable auto-merge failed"
+          exit 1

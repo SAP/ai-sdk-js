@@ -13,6 +13,17 @@ import {
   // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
+  chatCompletion as openAiSdkChatCompletion,
+  chatCompletionStream as openAiSdkChatCompletionStream,
+  chatCompletionParse as openAiSdkChatCompletionParse,
+  computeEmbedding as openAiSdkComputeEmbedding,
+  responsesApi,
+  responsesApiStream,
+  responsesApiParse,
+  responsesApiStateful,
+  responsesApiMultiTurn
+} from './openai.js';
+import {
   orchestrationChatCompletion,
   orchestrationTemplating,
   orchestrationInputFiltering,
@@ -103,8 +114,13 @@ import type {
 const app = express();
 const port = 8080;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+
+server.on('error', (error: Error) => {
+  console.error(`Failed to start server on port ${port}`, error);
+  process.exit(1);
 });
 
 app.get(['/', '/health'], (req, res) => {
@@ -283,6 +299,128 @@ app.get('/azure-openai/invoke-tool-chain', async (req, res) => {
   try {
     const response = await chatCompletionWithFunctionCall();
     res.header('Content-Type', 'text/plain').send(response.getContent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+/* Foundation Models (Azure OpenAI via openai SDK) */
+app.get('/openai/chat-completion', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await openAiSdkChatCompletion());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/chat-completion-stream', async (req, res) => {
+  try {
+    const stream = await openAiSdkChatCompletionStream();
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      connectionAlive = false;
+      res.end();
+    });
+
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk.choices[0]?.delta?.content ?? '');
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get('/openai/embedding', async (req, res) => {
+  try {
+    const embedding = await openAiSdkComputeEmbedding();
+    res
+      .header('Content-Type', 'text/plain')
+      .send(`Got embedding vector with ${embedding.length} dimensions.`);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/chat-completion-parse', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await openAiSdkChatCompletionParse());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/responses', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await responsesApi());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/responses-stream', async (req, res) => {
+  try {
+    const stream = await responsesApiStream();
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      connectionAlive = false;
+      res.end();
+    });
+
+    for await (const event of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      if (event.type === 'response.output_text.delta') {
+        res.write(event.delta);
+      }
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get('/openai/responses-parse', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await responsesApiParse());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/responses-stateful', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await responsesApiStateful());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/responses-multi-turn', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await responsesApiMultiTurn());
   } catch (error: any) {
     sendError(res, error);
   }

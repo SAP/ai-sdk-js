@@ -1,45 +1,36 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "true",
   "scripts": {
-    "start": "node dist/server.js",
-    "local": "node --env-file=.env dist/server.js",
-    "create-deployment": "./scripts/create-deployment.sh",
+    "start": "sap-ai-sdk-sample-server",
+    "local": "node --env-file=.env node_modules/.bin/sap-ai-sdk-sample-server",
+    "create-deployment": "tsx scripts/create-deployment.ts",
     "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
-    "@langchain/classic": "=1.0.34",
-    "@langchain/core": "=1.1.48",
-    "@langchain/langgraph": "=1.3.5",
-    "@langchain/mcp-adapters": "=1.1.3",
-    "@langchain/textsplitters": "=1.0.1",
     "@sap-ai-sdk/ai-api": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
     "@sap-ai-sdk/llm-batch": "canary",
+    "@sap-ai-sdk/openai": "canary",
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-ai-sdk/rpt": "canary",
-    "@sap-cloud-sdk/util": "=4.7.0",
-    "express": "=5.2.1",
-    "hono": "=4.12.23",
-    "langchain": "=1.4.4",
-    "zod": "=4.4.3"
+    "@sap-ai-sdk/sample-code": "workspace:^"
   },
   "devDependencies": {
-    "@types/express": "=5.0.6",
-    "dotenv": "=17.4.2",
+    "@types/node": "=22.19.21",
     "dotenv-cli": "=11.0.0"
   },
   "engines": {
-    "node": "20.x || 22.x || 24.x"
+    "node": "22.x || 24.x"
   }
 }

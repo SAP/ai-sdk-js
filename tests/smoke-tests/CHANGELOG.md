@@ -1,5 +1,11 @@
 # @sap-ai-sdk/smoke-tests
 
+## 2.12.0
+
+### Patch Changes
+
+- @sap-ai-sdk/sample-code@2.12.0
+
 ## 2.11.0
 
 ## 2.10.0

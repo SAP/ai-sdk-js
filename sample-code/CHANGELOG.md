@@ -1,5 +1,7 @@
 # @sap-ai-sdk/sample-code
 
+## 2.12.0
+
 ## 2.11.0
 
 ### Patch Changes

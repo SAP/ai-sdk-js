@@ -1,6 +1,6 @@
 # E2E Test
 
-![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yaml/badge.svg)
+![e2e-test](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yml/badge.svg)
 
 End-to-end tests for the SAP Cloud SDK for AI.
 
@@ -22,4 +22,4 @@ End-to-end tests for the SAP Cloud SDK for AI.
 
 ## Remote Testing
 
-Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yaml).
+Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-js/actions/workflows/e2e-tests.yml).

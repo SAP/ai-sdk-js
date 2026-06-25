@@ -1,5 +1,6 @@
 # For trusted publishing releases, it is required to start all releases from a single workflow file.
 # This workflow delegates to the appropriate release workflow based on the event that triggered it.
+name: publish
 
 on:
   # Triggers for canary releases
