@@ -43,11 +43,21 @@ export class OrchestrationStreamChunkResponse {
 
   /**
    * Parses the chunk response and returns the delta content.
+   * Handles both plain string deltas (most models) and Anthropic-style
+   * content-block arrays (`Array<{type,text}>`).
    * @param choiceIndex - The index of the choice to parse.
    * @returns The message delta content.
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
-    return this.findChoiceByIndex(choiceIndex)?.delta.content;
+    const content = this.findChoiceByIndex(choiceIndex)?.delta.content;
+    if (Array.isArray(content)) {
+      const text = content
+        .filter(block => block.type === 'text')
+        .map(block => block.text ?? '')
+        .join('');
+      return text || undefined;
+    }
+    return content;
   }
 
   /**

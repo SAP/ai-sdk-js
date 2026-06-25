@@ -81,6 +81,52 @@ describe('Orchestration chat completion stream chunk response', () => {
     );
   });
 
+  it('should extract text from Anthropic content-block array delta', () => {
+    const chunk = new OrchestrationStreamChunkResponse({
+      request_id: 'test',
+      final_result: {
+        id: 'test',
+        object: 'chat.completion.chunk',
+        created: 0,
+        model: 'claude-3-5-sonnet',
+        choices: [
+          {
+            index: 0,
+            delta: {
+              content: [
+                { type: 'text', text: 'Hello ' },
+                { type: 'tool_use', id: 'x', name: 'search' },
+                { type: 'text', text: 'world' }
+              ]
+            },
+            finish_reason: null
+          }
+        ]
+      }
+    } as any);
+    expect(chunk.getDeltaContent()).toBe('Hello world');
+  });
+
+  it('should return undefined for empty content-block array delta', () => {
+    const chunk = new OrchestrationStreamChunkResponse({
+      request_id: 'test',
+      final_result: {
+        id: 'test',
+        object: 'chat.completion.chunk',
+        created: 0,
+        model: 'claude-3-5-sonnet',
+        choices: [
+          {
+            index: 0,
+            delta: { content: [] },
+            finish_reason: null
+          }
+        ]
+      }
+    } as any);
+    expect(chunk.getDeltaContent()).toBeUndefined();
+  });
+
   it('should return delta tool call chunks with default index 0', () => {
     const toolCallChunks =
       orchestrationStreamChunkResponses.deltaToolCallResponse.getDeltaToolCalls();

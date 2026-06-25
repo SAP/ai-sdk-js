@@ -162,6 +162,17 @@ function mergeLlmChoices(
   return mergedChoices;
 }
 
+function getDeltaText(content: ChatDelta['content'] | undefined): string {
+  if (!content) return '';
+  if (Array.isArray(content)) {
+    return content
+      .filter(block => block.type === 'text')
+      .map(block => block.text ?? '')
+      .join('');
+  }
+  return content;
+}
+
 function mergeMessage(
   existing: ResponseChatMessage,
   incoming: ChatDelta | undefined
@@ -171,7 +182,7 @@ function mergeMessage(
   }
   return {
     role: existing.role,
-    content: existing.content + (incoming.content ?? ''),
+    content: (existing.content ?? '') + getDeltaText(incoming.content),
     tool_calls: mergeToolCalls(existing.tool_calls, incoming.tool_calls),
     refusal: incoming.refusal ?? existing.refusal
   };
@@ -262,7 +273,7 @@ function transformStreamingChoice(choice: LlmChoiceStreaming): LlmChoice {
     index: choice.index,
     message: {
       role: 'assistant',
-      content: choice.delta.content,
+      content: getDeltaText(choice.delta.content) || undefined,
       tool_calls: transformStreamingToolCalls(choice.delta.tool_calls),
       refusal: choice.delta.refusal
     },
