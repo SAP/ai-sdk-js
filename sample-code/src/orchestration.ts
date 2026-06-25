@@ -781,6 +781,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 /**
  * Verify that tool results containing {{?...}} syntax in messages are automatically
  * routed to messages_history by the SDK, bypassing prompt templating.
+ * @returns The orchestration service response.
  */
 export async function orchestrationToolResultInMessages(): Promise<OrchestrationResponse> {
   const client = new OrchestrationClient({
@@ -821,6 +822,7 @@ export async function orchestrationToolResultInMessages(): Promise<Orchestration
 /**
  * Verify whether masking is applied to tool results automatically routed to messages_history.
  * This confirms that auto-routing does not bypass anonymisation.
+ * @returns The orchestration service response.
  */
 export async function orchestrationToolResultMaskingInMessagesHistory(): Promise<OrchestrationResponse> {
   const client = new OrchestrationClient({

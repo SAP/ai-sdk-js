@@ -376,9 +376,7 @@ export function constructCompletionPostRequest(
     (last, msg, i) => (msg.role === 'tool' ? i : last),
     -1
   );
-  const splitIndex = usesTemplateRef
-    ? messages.length
-    : lastToolIndex + 1;
+  const splitIndex = usesTemplateRef ? messages.length : lastToolIndex + 1;
 
   const moduleRequest =
     splitIndex > 0 && request
