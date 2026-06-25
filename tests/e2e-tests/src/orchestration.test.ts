@@ -24,7 +24,9 @@ import {
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
-  orchestrationStreamWithFallbackConfigs
+  orchestrationStreamWithFallbackConfigs,
+  orchestrationToolResultInMessages,
+  orchestrationToolResultMaskingInMessagesHistory
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -331,5 +333,18 @@ describe('orchestration', () => {
     if (citations) {
       expect(Array.isArray(citations)).toBe(true);
     }
+  });
+
+  describe('tool result prompt templating interference', () => {
+    it('should succeed when tool result containing {{?...}} syntax is sent via messages', async () => {
+      const response = await orchestrationToolResultInMessages();
+      expect(response.getContent()).toEqual(expect.any(String));
+    });
+
+    it('should apply masking to tool results automatically routed to messages_history', async () => {
+      const response = await orchestrationToolResultMaskingInMessagesHistory();
+      expect(response.getIntermediateResults().input_masking).toBeDefined();
+      expect(response.getContent()).toEqual(expect.any(String));
+    });
   });
 });

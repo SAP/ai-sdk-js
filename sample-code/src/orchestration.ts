@@ -22,7 +22,8 @@ import type {
   OrchestrationErrorResponse,
   ChatCompletionTool,
   ToolChatMessage,
-  PromptTemplatingModule
+  PromptTemplatingModule,
+  AssistantChatMessage
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -774,6 +775,91 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   return orchestrationClient.chatCompletion({
     messages: [toolMessage],
     messagesHistory: allMessages
+  });
+}
+
+/**
+ * Verify that tool results containing {{?...}} syntax in messages are automatically
+ * routed to messages_history by the SDK, bypassing prompt templating.
+ */
+export async function orchestrationToolResultInMessages(): Promise<OrchestrationResponse> {
+  const client = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'anthropic--claude-4.5-haiku' },
+      prompt: { template: [{ role: 'system', content: 'You are helpful.' }] }
+    }
+  });
+
+  const assistantMessage: AssistantChatMessage = {
+    role: 'assistant',
+    tool_calls: [
+      {
+        id: 'call_abc123',
+        type: 'function',
+        function: { name: 'search', arguments: '{"query":"test"}' }
+      }
+    ]
+  };
+
+  const toolMessage: ToolChatMessage = {
+    role: 'tool',
+    // Simulates a tool result from an external system that happens to contain
+    // prompt templating syntax — the SDK must route this to messages_history.
+    content: 'Search result: the user asked {{?question}}',
+    tool_call_id: 'call_abc123'
+  };
+
+  return client.chatCompletion({
+    messages: [
+      assistantMessage,
+      toolMessage,
+      { role: 'user', content: 'Summarize the tool output.' }
+    ]
+  });
+}
+
+/**
+ * Verify whether masking is applied to tool results automatically routed to messages_history.
+ * This confirms that auto-routing does not bypass anonymisation.
+ */
+export async function orchestrationToolResultMaskingInMessagesHistory(): Promise<OrchestrationResponse> {
+  const client = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'anthropic--claude-4.5-haiku' }
+    },
+    masking: {
+      masking_providers: [
+        buildDpiMaskingProvider({
+          method: 'pseudonymization',
+          entities: ['profile-email']
+        })
+      ]
+    }
+  });
+
+  const assistantMessage: AssistantChatMessage = {
+    role: 'assistant',
+    tool_calls: [
+      {
+        id: 'call_abc123',
+        type: 'function',
+        function: { name: 'fetch_customer', arguments: '{"id":"42"}' }
+      }
+    ]
+  };
+
+  const toolMessage: ToolChatMessage = {
+    role: 'tool',
+    content: 'Customer email is john.doe@example.com',
+    tool_call_id: 'call_abc123'
+  };
+
+  return client.chatCompletion({
+    messages: [
+      assistantMessage,
+      toolMessage,
+      { role: 'user', content: 'Summarize the customer data.' }
+    ]
   });
 }
 

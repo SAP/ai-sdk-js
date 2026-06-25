@@ -337,4 +337,62 @@ describe('construct completion post request', () => {
       );
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
+
+  describe('tool message auto-routing', () => {
+    const toolCallId = 'call_abc123';
+    const assistantMessage = {
+      role: 'assistant' as const,
+      tool_calls: [
+        {
+          id: toolCallId,
+          type: 'function' as const,
+          function: { name: 'search', arguments: '{"query":"test"}' }
+        }
+      ]
+    };
+    const toolMessage = {
+      role: 'tool' as const,
+      content: 'Result: {{?question}}',
+      tool_call_id: toolCallId
+    };
+    const userMessage = { role: 'user' as const, content: 'Summarize.' };
+
+    it('should route tool messages from messages to messages_history', () => {
+      const result = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage, toolMessage]
+      });
+
+      expect(result.messages_history).toEqual([userMessage, toolMessage]);
+      expect(
+        (result.config.modules as any).prompt_templating.prompt.template
+      ).not.toContainEqual(toolMessage);
+      expect(
+        (result.config.modules as any).prompt_templating.prompt.template
+      ).not.toContainEqual(userMessage);
+    });
+
+    it('should preserve existing messagesHistory when appending tool messages', () => {
+      const result = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage, toolMessage],
+        messagesHistory: [assistantMessage]
+      });
+
+      expect(result.messages_history).toEqual([
+        assistantMessage,
+        userMessage,
+        toolMessage
+      ]);
+    });
+
+    it('should not affect non-tool messages', () => {
+      const result = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage]
+      });
+
+      expect(result.messages_history).toBeUndefined();
+      expect(
+        (result.config.modules as any).prompt_templating.prompt.template
+      ).toContainEqual(userMessage);
+    });
+  });
 });

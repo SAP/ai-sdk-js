@@ -358,16 +358,31 @@ export function constructCompletionPostRequest(
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
 
-  // When any config uses a TemplateRef, messages cannot be merged into prompt.template
-  // (the template lives remotely). Route them to messages_history instead.
+  // Determine where to split request.messages: everything before splitIndex is routed
+  // to messages_history (bypassing prompt templating); everything from splitIndex onward
+  // stays in messages and is merged into prompt.template.
+  //
+  // Two cases route messages out of templating:
+  // 1. TemplateRef configs — the template lives remotely, so messages cannot be merged in.
+  // 2. Tool results — their content comes from external systems and may contain {{?...}}
+  //    patterns that are not user-defined placeholders. We route through the last tool
+  //    message so the assistant+tool pair stays together for tool_call_id validation.
   const configs = Array.isArray(config) ? config : [config];
-  const routeMessagesToHistory = configs.some(c =>
+  const usesTemplateRef = configs.some(c =>
     isTemplateRef(c?.promptTemplating?.prompt || {})
   );
+  const messages = request?.messages || [];
+  const lastToolIndex = messages.reduce(
+    (last, msg, i) => (msg.role === 'tool' ? i : last),
+    -1
+  );
+  const splitIndex = usesTemplateRef
+    ? messages.length
+    : lastToolIndex + 1;
 
   const moduleRequest =
-    routeMessagesToHistory && request
-      ? { ...request, messages: undefined }
+    splitIndex > 0 && request
+      ? { ...request, messages: messages.slice(splitIndex) }
       : request;
 
   /**
@@ -389,18 +404,17 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
-  // When routing messages to history, append request.messages after messagesHistory
-  const messagesHistory =
-    routeMessagesToHistory && request?.messages?.length
-      ? [...(request.messagesHistory || []), ...request.messages]
-      : request?.messagesHistory;
+  const messagesHistory = [
+    ...(request?.messagesHistory || []),
+    ...messages.slice(0, splitIndex)
+  ];
 
   return {
     config: configWithStream,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory && {
+    ...(messagesHistory.length && {
       messages_history: messagesHistory
     })
   };
