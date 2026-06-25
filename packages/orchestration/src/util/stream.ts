@@ -163,7 +163,9 @@ function mergeLlmChoices(
 }
 
 function getDeltaText(content: ChatDelta['content'] | undefined): string {
-  if (!content) return '';
+  if (!content) {
+    return '';
+  }
   if (Array.isArray(content)) {
     return content
       .filter(block => block.type === 'text')
