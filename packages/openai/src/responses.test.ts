@@ -1,13 +1,13 @@
-import { jest, describe, it, expect } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 import { Responses } from 'openai/resources/responses/responses';
 import { SapResponses } from './responses.js';
 import type { OpenAI } from 'openai';
 
-const mockCreate = jest.fn<any>().mockResolvedValue({ output: [] });
-const mockParse = jest.fn<any>().mockResolvedValue({ output: [] });
+const mockCreate = vi.fn<any>().mockResolvedValue({ output: [] });
+const mockParse = vi.fn<any>().mockResolvedValue({ output: [] });
 
-jest.spyOn(Responses.prototype, 'create').mockImplementation(mockCreate as any);
-jest.spyOn(Responses.prototype, 'parse').mockImplementation(mockParse as any);
+vi.spyOn(Responses.prototype, 'create').mockImplementation(mockCreate as any);
+vi.spyOn(Responses.prototype, 'parse').mockImplementation(mockParse as any);
 
 const fakeClient = {} as OpenAI;
 const responses = new SapResponses(fakeClient);

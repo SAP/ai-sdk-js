@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Orchestration chat completion stream should transform the original stream to string stream 1`] = `
+exports[`Orchestration chat completion stream > should transform the original stream to string stream 1`] = `
 "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
 
 Key features of the SAP Cloud SDK include:
@@ -18,7 +18,7 @@ Key features of the SAP Cloud SDK include:
 Overall, the SAP Cloud SDK is an essential tool for developers looking to build cloud-native applications and extensions that seamlessly integrate with SAP's enterprise solutions."
 `;
 
-exports[`Orchestration chat completion stream should wrap the raw chunk 1`] = `
+exports[`Orchestration chat completion stream > should wrap the raw chunk 1`] = `
 "The SAP Cloud SDK is a comprehensive development toolkit designed to simplify and accelerate the creation of applications that integrate with SAP solutions, particularly those built on the SAP Business Technology Platform (BTP). It provides developers with libraries, tools, and best practices that streamline the process of connecting to SAP systems, such as S/4HANA and other services available on the SAP Cloud Platform.
 
 Key features of the SAP Cloud SDK include:

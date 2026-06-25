@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { buildDpiMaskingProvider } from './masking.js';
 import type { DpiConfig } from '../client/api/schema/index.js';
 

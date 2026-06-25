@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import nock from 'nock';
 import { ArtifactApi } from '../client/AI_CORE_API';
 import {

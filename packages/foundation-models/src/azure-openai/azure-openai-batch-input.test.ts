@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { createBatchInput } from './azure-openai-batch-input.js';
 import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
 

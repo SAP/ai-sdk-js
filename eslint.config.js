@@ -14,6 +14,7 @@ export default [
             '@langchain/core/**',
             '@langchain/langgraph/**',
             'langchain/**',
+            'vitest/config',
             'zod/**',
             '*/index.js',
             '*/client/**/index.js',

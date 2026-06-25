@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 const smokeTestRoute =
   process.env.SMOKE_TEST_URL ??
   'https://smoke-test-app.cfapps.eu12-001.hana.ondemand.com';

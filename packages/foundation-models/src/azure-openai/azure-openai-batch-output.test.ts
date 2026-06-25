@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { parseBatchOutput } from './azure-openai-batch-output.js';
 
 describe('parseBatchOutput', () => {

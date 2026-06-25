@@ -2,14 +2,14 @@ import {
   resolveDeploymentId,
   getOrchestrationDeploymentId
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { jest } from '@jest/globals';
+import { describe, it, expect, vi } from 'vitest';
 
 describe('OrchestrationClient deploymentId behavior', () => {
   it('does not call resolveDeployment when deploymentId is provided', async () => {
     const deploymentConfig = { deploymentId: 'test-deployment-id' };
 
     // Spy on the resolveDeployment function
-    const spy = jest.spyOn({ resolveDeploymentId }, 'resolveDeploymentId');
+    const spy = vi.spyOn({ resolveDeploymentId }, 'resolveDeploymentId');
 
     // Call getOrchestrationDeploymentId
     const result = await getOrchestrationDeploymentId(deploymentConfig);
