@@ -1274,13 +1274,10 @@ describe('orchestration service client', () => {
       it('should throw immediately when input filter error occurs with jsonSchema method', async () => {
         // Mock should only be called once - no retries on input filter error
         mockInference(
-          (body: any) => {
+          (body: any) =>
             // Verify it has json_schema response_format
-            return (
-              body.config.modules.prompt_templating.prompt
-                ?.response_format?.type === 'json_schema'
-            );
-          },
+            body.config.modules.prompt_templating.prompt?.response_format
+              ?.type === 'json_schema',
           {
             data: mockResponseInputFilterError,
             status: 400
@@ -1302,15 +1299,11 @@ describe('orchestration service client', () => {
 
       it('should throw immediately when input filter error occurs with functionCalling method', async () => {
         mockInference(
-          (body: any) => {
+          (body: any) =>
             // Verify it has tools configured
-            return (
-              Array.isArray(
-                body.config.modules.prompt_templating.prompt?.tools
-              ) &&
-              body.config.modules.prompt_templating.prompt.tools.length > 0
-            );
-          },
+            Array.isArray(
+              body.config.modules.prompt_templating.prompt?.tools
+            ) && body.config.modules.prompt_templating.prompt.tools.length > 0,
           {
             data: mockResponseInputFilterError,
             status: 400
@@ -1332,13 +1325,10 @@ describe('orchestration service client', () => {
 
       it('should throw immediately when input filter error occurs with jsonMode method', async () => {
         mockInference(
-          (body: any) => {
+          (body: any) =>
             // Verify it has json_object response_format
-            return (
-              body.config.modules.prompt_templating.prompt
-                ?.response_format?.type === 'json_object'
-            );
-          },
+            body.config.modules.prompt_templating.prompt?.response_format
+              ?.type === 'json_object',
           {
             data: mockResponseInputFilterError,
             status: 400
