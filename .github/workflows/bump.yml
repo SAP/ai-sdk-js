@@ -16,6 +16,7 @@ jobs:
     uses: sap/ai-sdk-js/.github/workflows/auth.yml@main
   bump:
     runs-on: ubuntu-latest
+    environment: release
     needs: [auth]
     outputs:
       version: ${{ steps.bump.outputs.version }}
@@ -51,6 +52,7 @@ jobs:
 
   release-notes:
     runs-on: ubuntu-latest
+    environment: release
     needs: [bump]
     outputs:
       pr-url: ${{ steps.open-pr.outputs.pr-url }}
