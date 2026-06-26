@@ -54,7 +54,10 @@ describe('mapLangChainMessagesToOrchestrationMessages', () => {
 
   it('should throw error for unsupported message types', () => {
     const langchainMessages = [
-      new FunctionMessage('Function message content', 'function_name')
+      new FunctionMessage({
+        content: 'Function message content',
+        name: 'function_name'
+      })
     ];
 
     expect(() =>
@@ -152,18 +155,16 @@ describe('mapBaseMessageToChatMessage', () => {
   });
 
   it('should throw error when mapping ToolMessage with unsupported content type like `image_url`', () => {
-    const toolMessage = new ToolMessage(
-      {
-        content: [
-          { type: 'text', text: 'System text' },
-          {
-            type: 'image_url',
-            image_url: { url: 'https://example.com/image.jpg' }
-          }
-        ]
-      },
-      'tool_call_id'
-    );
+    const toolMessage = new ToolMessage({
+      content: [
+        { type: 'text', text: 'System text' },
+        {
+          type: 'image_url',
+          image_url: { url: 'https://example.com/image.jpg' }
+        }
+      ],
+      tool_call_id: 'tool_call_id'
+    } as any);
 
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages([toolMessage])
