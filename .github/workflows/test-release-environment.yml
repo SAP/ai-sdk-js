@@ -1,0 +1,31 @@
+name: test-release-environment
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  verify-environment:
+    name: Verify Release Environment Gate
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+    steps:
+      - name: Print context
+        run: |
+          echo "Actor:       $GITHUB_ACTOR"
+          echo "Ref:         $GITHUB_REF"
+          echo "Ref name:    $GITHUB_REF_NAME"
+          echo "Event:       $GITHUB_EVENT_NAME"
+          echo "Environment: $GITHUB_ENVIRONMENT"
+          echo "Workflow:    $GITHUB_WORKFLOW"
+
+      - name: Verify running on main
+        run: |
+          if [ "$GITHUB_REF_NAME" != "main" ]; then
+            echo "ERROR: This job must run on main, got: $GITHUB_REF_NAME"
+            exit 1
+          fi
+          echo "OK: Running on main branch."
