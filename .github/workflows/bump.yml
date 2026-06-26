@@ -10,14 +10,9 @@ on:
 permissions: {}
 
 jobs:
-  auth:
-    permissions:
-      contents: read
-    uses: sap/ai-sdk-js/.github/workflows/auth.yml@main
   bump:
     runs-on: ubuntu-latest
     environment: release
-    needs: [auth]
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
