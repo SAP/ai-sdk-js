@@ -29,3 +29,18 @@ jobs:
             exit 1
           fi
           echo "OK: Running on main branch."
+
+      - name: Verify environment secrets are accessible
+        env:
+          CLIENT_ID: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          PRIVATE_KEY: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+        run: |
+          if [ -z "$CLIENT_ID" ]; then
+            echo "ERROR: SAP_AI_SDK_BOT_CLIENT_ID is empty — secret not accessible."
+            exit 1
+          fi
+          if [ -z "$PRIVATE_KEY" ]; then
+            echo "ERROR: SAP_AI_SDK_BOT_PRIVATE_KEY is empty — secret not accessible."
+            exit 1
+          fi
+          echo "OK: Both secrets are accessible from the release environment."
