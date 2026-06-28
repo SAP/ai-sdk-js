@@ -353,8 +353,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/rpt
       hyparquet-writer:
-        specifier: 0.15.6
-        version: 0.15.6
+        specifier: 0.16.1
+        version: 0.16.1
 
   tests/e2e-tests:
     dependencies:
@@ -2852,11 +2852,11 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  hyparquet-writer@0.15.6:
-    resolution: {integrity: sha512-fRjEEePceAwowCTX8p/CTDdsAzLFbfDhCAoLK5s1H+V54RGcQMuscfH/MFMy7S3bXRdkGsbe3fqImG/mdlz9cg==}
+  hyparquet-writer@0.16.1:
+    resolution: {integrity: sha512-vb87T2ub06kbEKZOQoHTbVwN0kXQPM5mnMuyTNqQPsOzf85qYBzyFG6R83CnXNhrlncdpRtXeKrbF3ZoLj26pg==}
 
-  hyparquet@1.26.0:
-    resolution: {integrity: sha512-yxUiViPZ+z5h+xdX4rA1G+k30jXoEsG9I2xEpjaM84imGznbKjZzxuZFsdzqg6C4LxNnnAlDFvzpk4uxQWTbTQ==}
+  hyparquet@1.26.1:
+    resolution: {integrity: sha512-Me2psKksCqJGR8+TbalUYUyK4Ao+ReA6XmMSiOVPhOBswULbl3ojT06PQajyTafbNPW1vD0tCA7H6dXJAC1TPw==}
 
   iconv-lite@0.7.0:
     resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
@@ -7527,11 +7527,11 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  hyparquet-writer@0.15.6:
+  hyparquet-writer@0.16.1:
     dependencies:
-      hyparquet: 1.26.0
+      hyparquet: 1.26.1
 
-  hyparquet@1.26.0: {}
+  hyparquet@1.26.1: {}
 
   iconv-lite@0.7.0:
     dependencies:
