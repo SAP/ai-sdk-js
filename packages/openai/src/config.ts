@@ -1,11 +1,7 @@
 import {
-  resolveDeploymentUrl,
-  getResourceGroup,
-  translateToFoundationModel,
-  isDeploymentIdConfig
+  resolveDeploymentUrlForModel,
+  getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { DeploymentApi } from '@sap-ai-sdk/ai-api';
-import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
 import type { SapOpenAiInput, SapOpenAiOptions } from './types.js';
@@ -43,38 +39,12 @@ export async function createOpenAiConfig(
   } = opts;
 
   const resourceGroup = getResourceGroup(deployment) ?? 'default';
-
-  const baseUrl = isDeploymentIdConfig(deployment)
-    ? (
-        await DeploymentApi.deploymentGet(
-          deployment.deploymentId,
-          {},
-          { 'AI-Resource-Group': resourceGroup }
-        )
-          .execute(destination)
-          .catch((err: any) => {
-            throw new ErrorWithCause(
-              `Fetching deployment for ID '${deployment.deploymentId}' failed.`,
-              err
-            );
-          })
-      ).deploymentUrl
-    : await resolveDeploymentUrl({
-        scenarioId: 'foundation-models',
-        executableId: 'azure-openai',
-        model: translateToFoundationModel(deployment),
-        resourceGroup,
-        destination
-      });
-
-  if (!baseUrl) {
-    const identifier = isDeploymentIdConfig(deployment)
-      ? `ID '${deployment.deploymentId}'`
-      : `model '${translateToFoundationModel(deployment).name}'`;
-    throw new Error(
-      `Deployment for ${identifier} has no deployment URL. Ensure the deployment is running.`
-    );
-  }
+  const baseUrl = await resolveDeploymentUrlForModel(deployment, {
+    scenarioId: 'foundation-models',
+    executableId: 'azure-openai',
+    resourceGroup,
+    destination
+  });
 
   return {
     baseURL: baseUrl,
