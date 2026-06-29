@@ -18,6 +18,8 @@ export interface ModelRow {
   executableId: string;
   /** The model name. */
   model: string;
+  /** The model version string (e.g. "2024-11-20"). */
+  version: string;
   /** Whether the model is available in Orchestration ('yes'/'no'). */
   availableInOrchestration: string;
   /** Whether the model is deprecated ('yes'/'no'). */
@@ -26,6 +28,8 @@ export interface ModelRow {
   retirementDate: string;
   /** Suggested replacement model if deprecated, empty string otherwise. */
   suggestedReplacement: string;
+  /** Whether the model has been retired ('yes' when retired). */
+  retired?: string;
 }
 
 const SAP_MODELS_PATH = resolve(import.meta.dirname, 'sap-models.json');
@@ -41,7 +45,8 @@ const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
   'gpt-4o-mini',    // Same reason
   'gpt-realtime',   // WebSocket-based, not a standard chat completion model
-  'gpt-5.3-codex'   // Responses API only, not a standard chat completion model
+  'gpt-5.3-codex',  // Responses API only, not a standard chat completion model
+  'cohere-reranker' // Re-ranker model, not a chat/embedding model
 ]);
 
 // Models that should always be included regardless of retirement date.
@@ -72,6 +77,13 @@ const EMBEDDING_TYPE_MAP: Record<string, string> = {
   AwsBedrockChatModel: 'AwsBedrockEmbeddingModel'
 };
 
+// Per-model type overrides for models whose executableId is missing in SAP Notes.
+const MODEL_NAME_TO_TYPE: Record<string, string> = {
+  'mistralai--mistral-medium-instruct': 'AiCoreOpenSourceChatModel',
+  'mistralai--mistral-small': 'AiCoreOpenSourceChatModel',
+  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel'
+};
+
 function resolveTypeName(row: ModelRow): string | null {
   // RPT models share the aicore-sap executableId with sap-abap-1 — distinguish by name.
   if (row.model.toLowerCase().startsWith('sap-rpt-')) {
@@ -90,7 +102,7 @@ function resolveTypeName(row: ModelRow): string | null {
     }
   }
 
-  return null;
+  return MODEL_NAME_TO_TYPE[row.model] ?? null;
 }
 
 function isRetiredSoon(retirementDate: string): boolean {
@@ -121,11 +133,13 @@ function isRetired(row: ModelRow): boolean {
     return false;
   }
   // Remove from type hints if:
+  // - explicitly retired (moved to retired models table), OR
   // - explicitly deprecated, OR
   // - concrete retirement date is within the next 2 months
   // "not earlier than X" dates are lower bounds and are not treated as confirmed retirement dates.
   // Users can always pass the model name as a plain string regardless.
   return (
+    row.retired?.toLowerCase().includes('yes') === true ||
     row.deprecated?.toLowerCase().includes('yes') === true ||
     isRetiredSoon(row.retirementDate ?? '')
   );
@@ -171,7 +185,7 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
 
 function buildReleaseNote(
   added: string[],
-  removed: { model: string; replacement: string; retirementDate: string }[]
+  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[]
 ): string {
   const parts: string[] = [];
 
@@ -180,8 +194,17 @@ function buildReleaseNote(
     parts.push(`Added ${names} to the available model list.`);
   }
 
-  if (removed.length) {
-    const descriptions = removed.map(r => {
+  const retired = removed.filter(r => r.isRetiredFromTable);
+  const deprecated = removed.filter(r => !r.isRetiredFromTable);
+
+  for (const group of [
+    { items: retired, label: 'retired' },
+    { items: deprecated, label: 'deprecated' }
+  ]) {
+    if (!group.items.length) {
+      continue;
+    }
+    const descriptions = group.items.map(r => {
       let desc = `\`${r.model}\``;
       if (r.retirementDate) {
         desc += ` (retirement date: ${r.retirementDate})`;
@@ -193,7 +216,7 @@ function buildReleaseNote(
     });
     const last = descriptions.pop();
     const joined = descriptions.length ? `${descriptions.join(', ')} and ${last}` : last;
-    parts.push(`Remove deprecated model${removed.length > 1 ? 's' : ''} ${joined}.`);
+    parts.push(`Remove ${group.label} model${group.items.length > 1 ? 's' : ''} ${joined}.`);
   }
 
   return parts.join(' ');
@@ -201,7 +224,7 @@ function buildReleaseNote(
 
 interface ActiveModelMap {
   typeToActiveModels: Record<string, Set<string>>;
-  retiredInfo: Record<string, { replacement: string; retirementDate: string }>;
+  retiredInfo: Record<string, { replacement: string; retirementDate: string; isRetiredFromTable: boolean }>;
   skippedRows: { model: string; executableId: string }[];
 }
 
@@ -210,12 +233,24 @@ function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
   const retiredInfo = Object.fromEntries(
     rows
       .filter(isRetired)
-      .map(r => [r.model, { replacement: r.suggestedReplacement, retirementDate: r.retirementDate }])
+      .map(r => [
+        r.model,
+        {
+          replacement: r.suggestedReplacement,
+          retirementDate: r.retirementDate,
+          isRetiredFromTable: r.retired?.toLowerCase().includes('yes') === true
+        }
+      ])
   );
   const skippedRows: { model: string; executableId: string }[] = [];
 
   for (const row of rows) {
     if (isRetired(row)) {
+      continue;
+    }
+
+    if (MODEL_EXCLUSION_LIST.has(row.model)) {
+      console.error(`Skipping excluded model: ${row.model}`);
       continue;
     }
 
@@ -230,11 +265,6 @@ function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
     const isSapRpt = typeName === 'SapRptModel';
 
     if (!isOrchestration && !isAzureOpenAi && !isSapRpt) {
-      continue;
-    }
-
-    if (MODEL_EXCLUSION_LIST.has(row.model)) {
-      console.error(`Skipping excluded model: ${row.model}`);
       continue;
     }
 
@@ -304,7 +334,8 @@ async function syncModelTypes(): Promise<void> {
       .map(m => ({
         model: m,
         replacement: retiredInfo[m]?.replacement ?? '',
-        retirementDate: retiredInfo[m]?.retirementDate ?? ''
+        retirementDate: retiredInfo[m]?.retirementDate ?? '',
+        isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
       }));
   });
 
@@ -335,6 +366,15 @@ async function syncModelTypes(): Promise<void> {
   }
 
   await checkLandscapeAvailability(typeToActiveModels);
+
+  const retiredModels = rows.filter(r => r.retired === 'yes');
+  if (retiredModels.length) {
+    console.error(`\n--- Retired Models (${retiredModels.length}) ---`);
+    for (const r of retiredModels) {
+      const note = r.suggestedReplacement ? ` → ${r.suggestedReplacement}` : '';
+      console.error(`  ${r.model}${note}`);
+    }
+  }
 }
 
 async function checkLandscapeAvailability(

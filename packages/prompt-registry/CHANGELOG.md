@@ -1,5 +1,18 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.12.0
+
+### Minor Changes
+
+- d946bcb: [feat] Update document grounding specification.
+
+### Patch Changes
+
+- Updated dependencies [0f10482]
+- Updated dependencies [e944aa1]
+- Updated dependencies [2faf4a8]
+  - @sap-ai-sdk/core@2.12.0
+
 ## 2.11.0
 
 ### Patch Changes

@@ -39,7 +39,10 @@ export class SseStream<Item> implements AsyncIterable<Item> {
           try {
             data = JSON.parse(sse.data);
           } catch (e: any) {
-            throw new ErrorWithCause('Could not parse message into JSON', e);
+            throw new ErrorWithCause(
+              `Server sent an unexpected non-JSON response: ${sse.data.length > 256 ? sse.data.slice(0, 256) + '...' : sse.data}`,
+              e
+            );
           }
 
           if (data?.error) {
@@ -80,6 +83,49 @@ export class SseStream<Item> implements AsyncIterable<Item> {
 
   [Symbol.asyncIterator](): AsyncIterator<Item> {
     return this.iterator();
+  }
+
+  /**
+   * Converts this stream to a newline-delimited JSON ReadableStream.
+   * @returns A ReadableStream of UTF-8 encoded NDJSON bytes.
+   */
+  toReadableStream(): ReadableStream<Uint8Array> {
+    let iter: AsyncIterator<Item>;
+    const encoder = new TextEncoder();
+    const { controller: abortController } = this;
+    const getIterator = () => this[Symbol.asyncIterator]();
+
+    async function cleanup() {
+      try {
+        await iter.return?.();
+      } catch {
+        // Best-effort: ignore errors during iterator teardown.
+      } finally {
+        abortController.abort();
+      }
+    }
+
+    return new ReadableStream<Uint8Array>({
+      async start() {
+        iter = getIterator();
+      },
+      async pull(controller) {
+        try {
+          const { value, done } = await iter.next();
+          if (done) {
+            controller.close();
+            return;
+          }
+          controller.enqueue(encoder.encode(JSON.stringify(value) + '\n'));
+        } catch (err) {
+          await cleanup();
+          controller.error(err);
+        }
+      },
+      async cancel() {
+        await cleanup();
+      }
+    });
   }
 }
 

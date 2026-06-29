@@ -118,7 +118,7 @@ jobs:
             [orchestration.url]="repos/AI/llm-orchestration/contents/src/spec/v2.yaml"
             [orchestration.path]="packages/orchestration/src/spec/api.yaml"
 
-            [prompt-registry.url]="repos/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml"
+            [prompt-registry.url]="repos/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml"
             [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
 
             # [rpt.url]="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json"
@@ -163,7 +163,7 @@ jobs:
         if: steps.check-spec-changes.outputs.spec == 'true'
         continue-on-error: true
         run: |
-          if pnpm "$SERVICE" run --if-present apply-patches; then
+          if pnpm "$SERVICE" --if-present apply-patches; then
             echo "patch_result=success" >> "$GITHUB_OUTPUT"
           else
             echo "patch_result=failure" >> "$GITHUB_OUTPUT"

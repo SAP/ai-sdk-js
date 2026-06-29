@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -33,7 +33,6 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "compile:cjs": "mv package.json package.json.bak && echo '{ \"type\": \"commonjs\" }' > package.json && tsc -p tsconfig.cjs.json && mv package.json.bak package.json",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
@@ -47,11 +46,11 @@
     "@sap-cloud-sdk/util": "^4.7.0"
   },
   "devDependencies": {
-    "@langchain/core": "^1.1.16",
-    "@langchain/langgraph": "^1.4.1",
+    "@langchain/core": "^1.2.1",
+    "@langchain/langgraph": "^1.4.5",
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@langchain/core": "^1.1.16"
+    "@langchain/core": "^1.2.1"
   }
 }

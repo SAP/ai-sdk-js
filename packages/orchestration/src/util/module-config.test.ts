@@ -14,6 +14,7 @@ import type {
   OrchestrationConfig,
   PromptTemplatingModuleConfig
 } from '../client/api/schema/index.js';
+import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.js';
 import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
@@ -162,7 +163,7 @@ describe('stream util tests', () => {
     expect(warnSpy).toHaveBeenCalledWith(
       'Output filter stream options are not applied because no module configuration has output filtering enabled.'
     );
-    expect(config.modules.filtering).toBeUndefined();
+    expect((config.modules as ModuleConfigs).filtering).toBeUndefined();
   });
 });
 
@@ -300,10 +301,13 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
       placeholderValues: { name: 'World' }
     };
 
-    const result = constructCompletionPostRequest(primaryConfig, request);
-
-    // Single config should produce single ModuleConfigs, not an array
-    expect(isOrchestrationModuleConfigList(result.config.modules)).toBe(false);
+    const result = constructCompletionPostRequest(
+      primaryConfig,
+      request
+    ) as CompletionRequestConfiguration;
+    expect(isOrchestrationModuleConfigList(result.config.modules as any)).toBe(
+      false
+    );
     expect(
       (result.config.modules as ModuleConfigs).prompt_templating
     ).toBeDefined();
@@ -318,7 +322,10 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
       placeholderValues: { name: 'World' }
     };
 
-    const result = constructCompletionPostRequest(fallbackList, request);
+    const result = constructCompletionPostRequest(
+      fallbackList,
+      request
+    ) as CompletionRequestConfiguration;
 
     // Array config should produce ModuleConfigs[]
     expect(Array.isArray(result.config.modules)).toBe(true);
@@ -337,15 +344,21 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
       messages: [{ role: 'user', content: 'Additional message' }]
     };
 
-    const result = constructCompletionPostRequest(fallbackList, request);
+    const result = constructCompletionPostRequest(
+      fallbackList,
+      request
+    ) as CompletionRequestConfiguration;
 
     const modules = result.config.modules as ModuleConfigs[];
-    // Each config should have the request messages appended
-    expect(modules[0].prompt_templating.prompt.template).toContainEqual({
+    expect(
+      (modules[0].prompt_templating.prompt as any).template
+    ).toContainEqual({
       role: 'user',
       content: 'Additional message'
     });
-    expect(modules[1].prompt_templating.prompt.template).toContainEqual({
+    expect(
+      (modules[1].prompt_templating.prompt as any).template
+    ).toContainEqual({
       role: 'user',
       content: 'Additional message'
     });
@@ -361,7 +374,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
       fallbackList,
       undefined,
       true
-    );
+    ) as CompletionRequestConfiguration;
 
     expect(result.config.stream?.enabled).toBe(true);
     const modules = result.config.modules as ModuleConfigs[];

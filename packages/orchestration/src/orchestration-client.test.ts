@@ -1626,7 +1626,7 @@ describe('orchestration service client', () => {
     });
 
     it('should throw when provided empty config array', () => {
-      expect(() => new OrchestrationClient([])).toThrow(
+      expect(() => new OrchestrationClient([] as any)).toThrow(
         'Configuration array must not be empty.'
       );
     });

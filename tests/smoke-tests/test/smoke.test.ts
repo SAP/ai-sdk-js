@@ -39,4 +39,10 @@ describe('Smoke Test', () => {
       ).resolves.toHaveProperty('status', 200);
     }
   );
+
+  it('openai client retrieves completion results', async () => {
+    await expect(
+      fetch(`${smokeTestRoute}/openai/chat-completion`)
+    ).resolves.toHaveProperty('status', 200);
+  });
 });
