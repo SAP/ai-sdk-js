@@ -10,13 +10,9 @@ on:
 permissions: {}
 
 jobs:
-  auth:
-    permissions:
-      contents: read
-    uses: sap/ai-sdk-js/.github/workflows/auth.yml@main
   bump:
     runs-on: ubuntu-latest
-    needs: [auth]
+    environment: release
     outputs:
       version: ${{ steps.bump.outputs.version }}
     steps:
@@ -51,6 +47,7 @@ jobs:
 
   release-notes:
     runs-on: ubuntu-latest
+    environment: release
     needs: [bump]
     outputs:
       pr-url: ${{ steps.open-pr.outputs.pr-url }}
