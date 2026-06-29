@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "lib": ["es2023", "dom"],
     "module": "Node16",
     "declaration": true,
     "declarationMap": true,

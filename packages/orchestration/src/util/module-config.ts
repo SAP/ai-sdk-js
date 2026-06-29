@@ -372,10 +372,7 @@ export function constructCompletionPostRequest(
     isTemplateRef(c?.promptTemplating?.prompt || {})
   );
   const messages = request?.messages || [];
-  const lastToolIndex = messages.reduce(
-    (last, msg, i) => (msg.role === 'tool' ? i : last),
-    -1
-  );
+  const lastToolIndex = messages.findLastIndex(msg => msg.role === 'tool');
   const splitIndex = usesTemplateRef ? messages.length : lastToolIndex + 1;
 
   const moduleRequest =
