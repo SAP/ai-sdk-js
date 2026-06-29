@@ -358,16 +358,16 @@ describe('construct completion post request', () => {
     const userMessage = { role: 'user' as const, content: 'Summarize.' };
 
     it('should route tool messages from messages to messages_history', () => {
-      const result = constructCompletionPostRequest(defaultConfig, {
+      const result: any = constructCompletionPostRequest(defaultConfig, {
         messages: [userMessage, toolMessage]
       });
 
       expect(result.messages_history).toEqual([userMessage, toolMessage]);
       expect(
-        (result.config.modules as any).prompt_templating.prompt.template
+        result.config.modules.prompt_templating.prompt.template
       ).not.toContainEqual(toolMessage);
       expect(
-        (result.config.modules as any).prompt_templating.prompt.template
+        result.config.modules.prompt_templating.prompt.template
       ).not.toContainEqual(userMessage);
     });
 
@@ -385,13 +385,13 @@ describe('construct completion post request', () => {
     });
 
     it('should not affect non-tool messages', () => {
-      const result = constructCompletionPostRequest(defaultConfig, {
+      const result: any = constructCompletionPostRequest(defaultConfig, {
         messages: [userMessage]
       });
 
       expect(result.messages_history).toBeUndefined();
       expect(
-        (result.config.modules as any).prompt_templating.prompt.template
+        result.config.modules.prompt_templating.prompt.template
       ).toContainEqual(userMessage);
     });
   });
