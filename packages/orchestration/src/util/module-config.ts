@@ -412,7 +412,7 @@ export function constructCompletionPostRequest(
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory.length && {
+    ...((request?.messagesHistory || messagesHistory.length) && {
       messages_history: messagesHistory
     })
   };
