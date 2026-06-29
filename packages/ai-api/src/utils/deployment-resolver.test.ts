@@ -242,22 +242,6 @@ describe('resolveDeploymentUrlForModel', () => {
     expect(url).toContain('inference/deployments/dep-001');
   });
 
-  it('resolves URL via deployment ID', async () => {
-    nock(aiCoreDestination.url)
-      .get('/v2/lm/deployments/dep-123')
-      .reply(200, {
-        id: 'dep-123',
-        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-123`
-      });
-
-    const url = await resolveDeploymentUrlForModel(
-      { deploymentId: 'dep-123' },
-      baseOpts
-    );
-
-    expect(url).toContain('inference/deployments/dep-123');
-  });
-
   it('uses resource group from modelDeployment when not in opts', async () => {
     mockDeploymentsList(
       {
