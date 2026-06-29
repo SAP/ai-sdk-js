@@ -55,12 +55,12 @@ describe('deployment resolver', () => {
     });
 
     it('should retrieve deployment from cache if available', async () => {
-      const opts = {
+      const options = {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-5-mini', version: '0613' }
       };
-      deploymentCache.set(opts, { id: '1' } as AiDeployment);
-      const id = await resolveDeploymentId(opts);
+      deploymentCache.set(options, { id: '1' } as AiDeployment);
+      const id = await resolveDeploymentId(options);
       expect(id).toEqual('1');
       expect(nock.isDone()).toEqual(false);
     });
@@ -213,7 +213,7 @@ describe('resolveDeploymentUrlById', () => {
 });
 
 describe('resolveDeploymentUrlForModel', () => {
-  const baseOpts = {
+  const baseoptions = {
     scenarioId: 'foundation-models',
     executableId: 'azure-openai'
   };
@@ -237,12 +237,12 @@ describe('resolveDeploymentUrlForModel', () => {
       }
     );
 
-    const url = await resolveDeploymentUrlForModel('gpt-4.1', baseOpts);
+    const url = await resolveDeploymentUrlForModel('gpt-4.1', baseoptions);
 
     expect(url).toContain('inference/deployments/dep-001');
   });
 
-  it('uses resource group from modelDeployment when not in opts', async () => {
+  it('uses resource group from modelDeployment when not in options', async () => {
     mockDeploymentsList(
       {
         scenarioId: 'foundation-models',
@@ -258,7 +258,7 @@ describe('resolveDeploymentUrlForModel', () => {
 
     const url = await resolveDeploymentUrlForModel(
       { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' },
-      baseOpts
+      baseoptions
     );
 
     expect(url).toContain('inference/deployments/dep-rg');
@@ -271,7 +271,7 @@ describe('resolveDeploymentUrlForModel', () => {
     );
 
     await expect(
-      resolveDeploymentUrlForModel('gpt-4.1', baseOpts)
+      resolveDeploymentUrlForModel('gpt-4.1', baseoptions)
     ).rejects.toThrow(
       "Deployment for model 'gpt-4.1' has no deployment URL. Ensure the deployment is running."
     );
