@@ -42,3 +42,12 @@ export interface SapOpenAiOptions {
  * Passing a string is shorthand for `{ deployment: modelName }`.
  */
 export type SapOpenAiInput = SapOpenAiOptions | SapModelName;
+
+/**
+ * Makes the `model` field optional in request param types, with an optional type constraint.
+ * @internal
+ */
+export type WithOptionalModel<T, TModel extends string = string> = Omit<
+  T,
+  'model'
+> & { model?: TModel };
