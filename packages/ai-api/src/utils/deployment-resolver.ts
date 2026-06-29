@@ -243,25 +243,25 @@ export async function getAllDeployments(
  * If given a deployment ID, fetches the URL for that specific deployment.
  * If given a model name, looks up a running deployment for that model.
  * @param modelDeployment - Deployment identified by model name/version or by ID.
- * @param opts - Base resolution options (scenarioId, executableId, etc.) without `model` — that is derived from `modelDeployment`.
+ * @param options - Base resolution options (scenarioId, executableId, etc.) without `model` — that is derived from `modelDeployment`.
  * @returns A promise of the deployment URL.
  * @internal
  */
 export async function resolveDeploymentUrlForModel(
   modelDeployment: ModelDeployment,
-  opts: Omit<DeploymentResolutionOptions, 'model'>
+  options: Omit<DeploymentResolutionOptions, 'model'>
 ): Promise<string> {
   const resourceGroup =
-    opts.resourceGroup ?? getResourceGroup(modelDeployment) ?? 'default';
+    options.resourceGroup ?? getResourceGroup(modelDeployment) ?? 'default';
   if (isDeploymentIdConfig(modelDeployment)) {
     return resolveDeploymentUrlById(
       modelDeployment.deploymentId,
       resourceGroup,
-      opts.destination
+      options.destination
     );
   }
   const model = translateToFoundationModel(modelDeployment);
-  const url = await resolveDeploymentUrl({ ...opts, resourceGroup, model });
+  const url = await resolveDeploymentUrl({ ...options, resourceGroup, model });
   if (!url) {
     throw new Error(
       `Deployment for model '${model.name}' has no deployment URL. Ensure the deployment is running.`
