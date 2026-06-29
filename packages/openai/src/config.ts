@@ -4,10 +4,7 @@ import {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
-import type {
-  SapOpenAiInput,
-  SapOpenAiOptions
-} from './types.js';
+import type { SapOpenAiInput, SapOpenAiOptions } from './types.js';
 
 const defaultApiVersion = '2024-10-21';
 

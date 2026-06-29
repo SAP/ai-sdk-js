@@ -213,7 +213,10 @@ describe('resolveDeploymentUrlById', () => {
 });
 
 describe('resolveDeploymentUrlForModel', () => {
-  const baseOpts = { scenarioId: 'foundation-models', executableId: 'azure-openai' };
+  const baseOpts = {
+    scenarioId: 'foundation-models',
+    executableId: 'azure-openai'
+  };
 
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -227,7 +230,11 @@ describe('resolveDeploymentUrlForModel', () => {
   it('resolves URL via model name', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-      { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' }, deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001` }
+      {
+        id: 'dep-001',
+        model: { name: 'gpt-4.1', version: 'latest' },
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001`
+      }
     );
 
     const url = await resolveDeploymentUrlForModel('gpt-4.1', baseOpts);
@@ -243,15 +250,26 @@ describe('resolveDeploymentUrlForModel', () => {
         deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-123`
       });
 
-    const url = await resolveDeploymentUrlForModel({ deploymentId: 'dep-123' }, baseOpts);
+    const url = await resolveDeploymentUrlForModel(
+      { deploymentId: 'dep-123' },
+      baseOpts
+    );
 
     expect(url).toContain('inference/deployments/dep-123');
   });
 
   it('uses resource group from modelDeployment when not in opts', async () => {
     mockDeploymentsList(
-      { scenarioId: 'foundation-models', executableId: 'azure-openai', resourceGroup: 'custom-rg' },
-      { id: 'dep-rg', model: { name: 'gpt-4.1', version: 'latest' }, deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-rg` }
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'azure-openai',
+        resourceGroup: 'custom-rg'
+      },
+      {
+        id: 'dep-rg',
+        model: { name: 'gpt-4.1', version: 'latest' },
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-rg`
+      }
     );
 
     const url = await resolveDeploymentUrlForModel(
