@@ -55,12 +55,12 @@ describe('deployment resolver', () => {
     });
 
     it('should retrieve deployment from cache if available', async () => {
-      const options = {
+      const opts = {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-5-mini', version: '0613' }
       };
-      deploymentCache.set(options, { id: '1' } as AiDeployment);
-      const id = await resolveDeploymentId(options);
+      deploymentCache.set(opts, { id: '1' } as AiDeployment);
+      const id = await resolveDeploymentId(opts);
       expect(id).toEqual('1');
       expect(nock.isDone()).toEqual(false);
     });
@@ -213,10 +213,7 @@ describe('resolveDeploymentUrlById', () => {
 });
 
 describe('resolveDeploymentUrlForModel', () => {
-  const baseoptions = {
-    scenarioId: 'foundation-models',
-    executableId: 'azure-openai'
-  };
+  const baseOpts = { scenarioId: 'foundation-models', executableId: 'azure-openai' };
 
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -230,35 +227,36 @@ describe('resolveDeploymentUrlForModel', () => {
   it('resolves URL via model name', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-      {
-        id: 'dep-001',
-        model: { name: 'gpt-4.1', version: 'latest' },
-        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001`
-      }
+      { id: 'dep-001', model: { name: 'gpt-4.1', version: 'latest' }, deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001` }
     );
 
-    const url = await resolveDeploymentUrlForModel('gpt-4.1', baseoptions);
+    const url = await resolveDeploymentUrlForModel('gpt-4.1', baseOpts);
 
     expect(url).toContain('inference/deployments/dep-001');
   });
 
-  it('uses resource group from modelDeployment when not in options', async () => {
+  it('resolves URL via deployment ID', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/dep-123')
+      .reply(200, {
+        id: 'dep-123',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-123`
+      });
+
+    const url = await resolveDeploymentUrlForModel({ deploymentId: 'dep-123' }, baseOpts);
+
+    expect(url).toContain('inference/deployments/dep-123');
+  });
+
+  it('uses resource group from modelDeployment when not in opts', async () => {
     mockDeploymentsList(
-      {
-        scenarioId: 'foundation-models',
-        executableId: 'azure-openai',
-        resourceGroup: 'custom-rg'
-      },
-      {
-        id: 'dep-rg',
-        model: { name: 'gpt-4.1', version: 'latest' },
-        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-rg`
-      }
+      { scenarioId: 'foundation-models', executableId: 'azure-openai', resourceGroup: 'custom-rg' },
+      { id: 'dep-rg', model: { name: 'gpt-4.1', version: 'latest' }, deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-rg` }
     );
 
     const url = await resolveDeploymentUrlForModel(
       { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' },
-      baseoptions
+      baseOpts
     );
 
     expect(url).toContain('inference/deployments/dep-rg');
@@ -271,7 +269,7 @@ describe('resolveDeploymentUrlForModel', () => {
     );
 
     await expect(
-      resolveDeploymentUrlForModel('gpt-4.1', baseoptions)
+      resolveDeploymentUrlForModel('gpt-4.1', baseOpts)
     ).rejects.toThrow(
       "Deployment for model 'gpt-4.1' has no deployment URL. Ensure the deployment is running."
     );
