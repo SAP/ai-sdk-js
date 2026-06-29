@@ -38,8 +38,12 @@ jobs:
       - name: 'Start Sample App'
         id: sample-app
         working-directory: ./sample-code
-        background: true
-        run: pnpm local
+        # TODO: use background: true
+        shell: bash
+        run: |
+          pnpm local &
+          JOB_ID=$!
+          echo "JOB_ID=$JOB_ID" >> "$GITHUB_OUTPUT"
       - name: 'Wait For Sample App To Be Ready'
         working-directory: ./sample-code
         run: |
@@ -56,8 +60,14 @@ jobs:
       - name: 'Execute E2E Tests'
         run: pnpm test:e2e
       - name: 'Stop Sample App'
-        if: always()
-        cancel: sample-app
+        if: always() && env.JOB_ID != ''
+        # TODO: use cancel: sample-app
+        # cancel: sample-app
+        env:
+          JOB_ID: ${{ steps.sample-app.outputs.JOB_ID }}
+        run: |
+          echo "Stopping Sample App with PID $JOB_ID"
+          kill $JOB_ID || true
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
