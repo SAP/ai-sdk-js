@@ -21,6 +21,7 @@ jobs:
             secret-name: AI_CORE_PRODUCTION
     name: 'Build and Test'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
@@ -67,7 +68,8 @@ jobs:
           JOB_ID: ${{ steps.sample-app.outputs.JOB_ID }}
         run: |
           echo "Stopping Sample App with PID $JOB_ID"
-          kill $JOB_ID || true
+          kill -TERM "$JOB_ID" 2>/dev/null || true
+          timeout 10 tail --pid="$JOB_ID" -f /dev/null 2>/dev/null || kill -KILL "$JOB_ID" 2>/dev/null || true
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
