@@ -251,7 +251,8 @@ export async function resolveDeploymentUrlForModel(
   modelDeployment: ModelDeployment,
   opts: Omit<DeploymentResolutionOptions, 'model'>
 ): Promise<string> {
-  const resourceGroup = opts.resourceGroup ?? getResourceGroup(modelDeployment) ?? 'default';
+  const resourceGroup =
+    opts.resourceGroup ?? getResourceGroup(modelDeployment) ?? 'default';
   if (isDeploymentIdConfig(modelDeployment)) {
     return resolveDeploymentUrlById(
       modelDeployment.deploymentId,
