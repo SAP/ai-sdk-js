@@ -7,7 +7,9 @@ import {
 import { type AiDeployment } from '../client/AI_CORE_API/index.js';
 import {
   getAllDeployments,
-  resolveDeploymentId
+  resolveDeploymentId,
+  resolveDeploymentUrlById,
+  resolveDeploymentUrlForModel
 } from './deployment-resolver.js';
 import { deploymentCache } from './deployment-cache.js';
 
@@ -53,12 +55,12 @@ describe('deployment resolver', () => {
     });
 
     it('should retrieve deployment from cache if available', async () => {
-      const opts = {
+      const options = {
         scenarioId: 'foundation-models',
         model: { name: 'gpt-5-mini', version: '0613' }
       };
-      deploymentCache.set(opts, { id: '1' } as AiDeployment);
-      const id = await resolveDeploymentId(opts);
+      deploymentCache.set(options, { id: '1' } as AiDeployment);
+      const id = await resolveDeploymentId(options);
       expect(id).toEqual('1');
       expect(nock.isDone()).toEqual(false);
     });
@@ -164,3 +166,114 @@ function mockResponse() {
     { id: '2', model: { name: 'gpt-5-mini', version: '0613' } }
   );
 }
+
+describe('resolveDeploymentUrlById', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('returns the deployment URL for a known ID', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/dep-123')
+      .reply(200, {
+        id: 'dep-123',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-123`
+      });
+
+    const url = await resolveDeploymentUrlById('dep-123', 'default');
+
+    expect(url).toContain('dep-123');
+  });
+
+  it('throws when the deployment request fails', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/missing-dep')
+      .reply(404, { message: 'Not Found' });
+
+    await expect(
+      resolveDeploymentUrlById('missing-dep', 'default')
+    ).rejects.toThrow("Fetching deployment for ID 'missing-dep' failed.");
+  });
+
+  it('throws when the deployment has no URL', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/no-url-dep')
+      .reply(200, { id: 'no-url-dep' });
+
+    await expect(
+      resolveDeploymentUrlById('no-url-dep', 'default')
+    ).rejects.toThrow(
+      "Deployment for ID 'no-url-dep' has no deployment URL. Ensure the deployment is running."
+    );
+  });
+});
+
+describe('resolveDeploymentUrlForModel', () => {
+  const baseoptions = {
+    scenarioId: 'foundation-models',
+    executableId: 'azure-openai'
+  };
+
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('resolves URL via model name', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      {
+        id: 'dep-001',
+        model: { name: 'gpt-4.1', version: 'latest' },
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-001`
+      }
+    );
+
+    const url = await resolveDeploymentUrlForModel('gpt-4.1', baseoptions);
+
+    expect(url).toContain('inference/deployments/dep-001');
+  });
+
+  it('uses resource group from modelDeployment when not in options', async () => {
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'azure-openai',
+        resourceGroup: 'custom-rg'
+      },
+      {
+        id: 'dep-rg',
+        model: { name: 'gpt-4.1', version: 'latest' },
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-rg`
+      }
+    );
+
+    const url = await resolveDeploymentUrlForModel(
+      { modelName: 'gpt-4.1', resourceGroup: 'custom-rg' },
+      baseoptions
+    );
+
+    expect(url).toContain('inference/deployments/dep-rg');
+  });
+
+  it('throws when model deployment has no URL', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      { id: 'dep-no-url', model: { name: 'gpt-4.1', version: 'latest' } }
+    );
+
+    await expect(
+      resolveDeploymentUrlForModel('gpt-4.1', baseoptions)
+    ).rejects.toThrow(
+      "Deployment for model 'gpt-4.1' has no deployment URL. Ensure the deployment is running."
+    );
+  });
+});
