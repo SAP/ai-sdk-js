@@ -375,10 +375,14 @@ export function constructCompletionPostRequest(
   const lastToolIndex = messages.findLastIndex(msg => msg.role === 'tool');
   const splitIndex = usesTemplateRef ? messages.length : lastToolIndex + 1;
 
-  const moduleRequest =
-    splitIndex > 0 && request
-      ? { ...request, messages: messages.slice(splitIndex) }
-      : request;
+  const remainingMessages = messages.slice(splitIndex);
+  let moduleRequest = request;
+  if (splitIndex > 0 && request) {
+    moduleRequest = {
+      ...request,
+      messages: remainingMessages.length ? remainingMessages : undefined
+    };
+  }
 
   /**
    * Module configurations for the orchestration request.
@@ -399,17 +403,17 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
-  const messagesHistory = [
-    ...(request?.messagesHistory || []),
-    ...messages.slice(0, splitIndex)
-  ];
+  const messagesHistory =
+    splitIndex > 0 || request?.messagesHistory?.length
+      ? [...(request?.messagesHistory || []), ...messages.slice(0, splitIndex)]
+      : undefined;
 
   return {
     config: configWithStream,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...((request?.messagesHistory || messagesHistory.length) && {
+    ...(messagesHistory && {
       messages_history: messagesHistory
     })
   };
