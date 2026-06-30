@@ -31,15 +31,7 @@ export class SapAzureOpenAi extends AzureOpenAI {
     url: string;
     timeout: number;
   }> {
-    if (
-      _deployments_endpoints.has(options.path) &&
-      options.method === 'post' &&
-      options.body !== undefined
-    ) {
-      if (!isObj(options.body)) {
-        throw new Error('Expected request body to be an object');
-      }
-
+    if (isObj(options.body) && 'model' in options.body) {
       const { model } = options.body;
       if (isModelDeployment(model)) {
         const resourceGroup = getResourceGroup(model) ?? this.resourceGroup;
@@ -60,21 +52,12 @@ function isModelDeployment(value: unknown): value is ModelDeployment {
   if (value && typeof value === 'string') {
     return true;
   }
-  if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+  if (isObj(value)) {
     return 'modelName' in value || 'deploymentId' in value;
   }
   return false;
 }
 
-// Implementation copied from https://github.com/openai/openai-node/blob/71d2347c59007124e7b317db0205b98a69d747ee/src/internal/utils/values.ts#L36-L38
 function isObj(obj: unknown): obj is Record<string, unknown> {
   return obj != null && typeof obj === 'object' && !Array.isArray(obj);
 }
-
-// Implementation copied and modified based on https://github.com/openai/openai-node/blob/71d2347c59007124e7b317db0205b98a69d747ee/src/azure.ts#L156
-const _deployments_endpoints = new Set([
-  '/completions',
-  '/chat/completions',
-  '/embeddings',
-  '/responses'
-]);
