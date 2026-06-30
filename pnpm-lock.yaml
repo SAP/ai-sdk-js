@@ -270,8 +270,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/orchestration
       '@sap/cds':
-        specifier: ^9.9.1
-        version: 9.9.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))
+        specifier: ^10.0.1
+        version: 10.0.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))
       '@sap/xssec':
         specifier: ^4.13.0
         version: 4.13.0
@@ -1354,6 +1354,11 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
+  '@sap/cds-compiler@7.0.1':
+    resolution: {integrity: sha512-Qwk9jitwSSwPB9FTB/Q6gYPxFsJxswhfsO9Ux77HTxjIhse8O/Hlq2XzkpVSTyaAVr8Lo7wLfpytHwKQScZTwQ==, tarball: https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/@sap/cds-compiler/-/@sap/cds-compiler-7.0.1.tgz}
+    engines: {node: '>=22'}
+    hasBin: true
+
   '@sap/cds-dk@9.9.2':
     resolution: {integrity: sha512-cngXMULAuueITOLymme51fBuUKRaqofXDzwyJtnEQ2BLZBz/t6s+rXZV7nY2xJyqU3y0rbB023R9218D25evuw==, tarball: https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/@sap/cds-dk/-/@sap/cds-dk-9.9.2.tgz}
     hasBin: true
@@ -1368,6 +1373,17 @@ packages:
     hasBin: true
     peerDependencies:
       '@sap/cds': '>=9'
+
+  '@sap/cds@10.0.1':
+    resolution: {integrity: sha512-63NCoACtozbKxnSyv0n+5oMqXFUEjnSFkey1ZzhE4ny8rl1L+N2HoNDuG7ydC1agBI3ndXUIFD56XsM2QcjQkg==, tarball: https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/@sap/cds/-/@sap/cds-10.0.1.tgz}
+    engines: {node: '>=22'}
+    hasBin: true
+    peerDependencies:
+      '@eslint/js': ^9 || ^10
+      tar: ^7.5.6
+    peerDependenciesMeta:
+      tar:
+        optional: true
 
   '@sap/cds@9.9.1':
     resolution: {integrity: sha512-GqdsBsRkZThhpOyzj8ihf/jDmf/2zprZFgaun6ZymUw4/ahzjK/bbdd6eQ8txDuv88pnUl2HPFjvUVq3O/6hCA==, tarball: https://common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/@sap/cds/-/@sap/cds-9.9.1.tgz}
@@ -5882,6 +5898,8 @@ snapshots:
 
   '@sap/cds-compiler@6.9.3': {}
 
+  '@sap/cds-compiler@7.0.1': {}
+
   '@sap/cds-dk@9.9.2(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))':
     dependencies:
       '@cap-js/asyncapi': 1.1.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0))))
@@ -5907,6 +5925,10 @@ snapshots:
       - tar
       - utf-8-validate
 
+  '@sap/cds-fiori@2.3.0(@sap/cds@10.0.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0))))':
+    dependencies:
+      '@sap/cds': 10.0.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))
+
   '@sap/cds-fiori@2.3.0(@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0))))':
     dependencies:
       '@sap/cds': 9.9.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))
@@ -5918,6 +5940,16 @@ snapshots:
     transitivePeerDependencies:
       - '@sap/hana-client'
       - hdb
+      - supports-color
+
+  '@sap/cds@10.0.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))':
+    dependencies:
+      '@eslint/js': 10.0.1(eslint@10.6.0(jiti@2.7.0))
+      '@sap/cds-compiler': 7.0.1
+      '@sap/cds-fiori': 2.3.0(@sap/cds@10.0.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0))))
+      express: 5.2.1
+      yaml: 2.9.0
+    transitivePeerDependencies:
       - supports-color
 
   '@sap/cds@9.9.1(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))':
