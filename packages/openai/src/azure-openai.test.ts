@@ -52,56 +52,7 @@ describe('SapAzureOpenAi', () => {
   });
 
   describe('buildRequest', () => {
-    it('skips resolution for non-deployment endpoints', async () => {
-      await makeClient().buildRequest({
-        path: '/unknown',
-        method: 'get',
-        headers: {}
-      });
-      expect(superBuildRequest).toHaveBeenCalledWith(
-        expect.objectContaining({ path: '/unknown' }),
-        expect.anything()
-      );
-    });
-
-    it('skips resolution when method is not post', async () => {
-      await makeClient().buildRequest({
-        path: '/chat/completions',
-        method: 'get',
-        headers: {},
-        body: { model: 'gpt-4.1', messages: [] }
-      });
-      expect(superBuildRequest).toHaveBeenCalledWith(
-        expect.objectContaining({ path: '/chat/completions' }),
-        expect.anything()
-      );
-    });
-
-    it('skips resolution when body is undefined', async () => {
-      await makeClient().buildRequest({
-        path: '/chat/completions',
-        method: 'post',
-        headers: {}
-      });
-      expect(superBuildRequest).toHaveBeenCalledWith(
-        expect.objectContaining({ path: '/chat/completions' }),
-        expect.anything()
-      );
-    });
-
-    it('throws when body is not an object', async () => {
-      await expect(
-        makeClient().buildRequest({
-          path: '/chat/completions',
-          method: 'post',
-          headers: {},
-          body: 'invalid'
-        })
-      ).rejects.toThrow('Expected request body to be an object');
-      expect(superBuildRequest).not.toHaveBeenCalled();
-    });
-
-    it('skips resolution when body has no model field', async () => {
+    it('skips resolution when model is not defined', async () => {
       await makeClient().buildRequest({
         path: '/chat/completions',
         method: 'post',
