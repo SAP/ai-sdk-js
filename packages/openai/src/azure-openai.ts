@@ -1,4 +1,7 @@
-import { getResourceGroup, resolveDeploymentUrlForModel } from '@sap-ai-sdk/ai-api/internal.js';
+import {
+  getResourceGroup,
+  resolveDeploymentUrlForModel
+} from '@sap-ai-sdk/ai-api/internal.js';
 import { AzureOpenAI } from 'openai';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
@@ -54,7 +57,7 @@ export class SapAzureOpenAi extends AzureOpenAI {
 }
 
 function isModelDeployment(value: unknown): value is ModelDeployment {
-  if (typeof value === 'string') {
+  if (value && typeof value === 'string') {
     return true;
   }
   if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
@@ -72,5 +75,6 @@ function isObj(obj: unknown): obj is Record<string, unknown> {
 const _deployments_endpoints = new Set([
   '/completions',
   '/chat/completions',
-  '/embeddings'
+  '/embeddings',
+  '/responses'
 ]);

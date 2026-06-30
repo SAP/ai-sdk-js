@@ -38,6 +38,39 @@ export async function chatCompletionStream(): Promise<
 }
 
 /**
+ * Use structured output to parse the capital of France from gpt-5.4.
+ * @returns The parsed capital city.
+ */
+export async function chatCompletionParse(): Promise<string | null> {
+  const client = await SapOpenAi.createClient({
+    deployment: 'gpt-5.4-nano'
+  });
+
+  const response = await client.chat.completions.parse({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }],
+    response_format: zodResponseFormat(CapitalResponse, 'capital_response')
+  });
+
+  return response.choices[0].message.parsed?.capital ?? null;
+}
+
+/**
+ * Ask gpt-5.4 about the capital of France.
+ * @returns The content of the response message.
+ */
+export async function chatCompletionPerRequestModel(): Promise<string | null> {
+  const client = await SapOpenAi.createClient({
+    deployment: 'gpt-5.4'
+  });
+  const response = await client.chat.completions.create({
+    model: 'gpt-5.4-nano',
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
+
+  return response.choices[0].message.content;
+}
+
+/**
  * Embed 'Hello, world!' using text-embedding-3-small.
  * @returns The embedding vector for the input text.
  */
@@ -135,23 +168,6 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
 const CapitalResponse = z.object({
   capital: z.string()
 });
-
-/**
- * Use structured output to parse the capital of France from gpt-5.4.
- * @returns The parsed capital city.
- */
-export async function chatCompletionParse(): Promise<string | null> {
-  const client = await SapOpenAi.createClient({
-    deployment: 'gpt-5.4-nano'
-  });
-
-  const response = await client.chat.completions.parse({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }],
-    response_format: zodResponseFormat(CapitalResponse, 'capital_response')
-  });
-
-  return response.choices[0].message.parsed?.capital ?? null;
-}
 
 /**
  * Use structured output to parse the capital of France from the Responses API.
