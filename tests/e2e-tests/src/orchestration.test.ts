@@ -358,7 +358,9 @@ describe('orchestration', () => {
       expect(templating).toBeDefined();
       const roles = templating!.map(m => m.role);
       expect(roles).toContain('tool');
-      expect(roles.lastIndexOf('user')).toBeGreaterThan(roles.lastIndexOf('tool'));
+      expect(roles.lastIndexOf('user')).toBeGreaterThan(
+        roles.lastIndexOf('tool')
+      );
     });
   });
 });
