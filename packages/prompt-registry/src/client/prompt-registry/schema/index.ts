@@ -45,6 +45,7 @@ export * from './user-chat-message-content.js';
 export * from './user-chat-message.js';
 export * from './message-tool-call.js';
 export * from './message-tool-calls.js';
+export * from './reasoning-block.js';
 export * from './assistant-chat-message.js';
 export * from './tool-chat-message.js';
 export * from './developer-chat-message.js';
