@@ -4,7 +4,11 @@ import {
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { createTokenProvider } from './token-provider.js';
 import type { AzureClientOptions } from 'openai/azure';
-import type { SapOpenAiInput, SapOpenAiOptions } from './types.js';
+import type {
+  SapOpenAiContext,
+  SapOpenAiInput,
+  SapOpenAiOptions
+} from './types.js';
 
 const defaultApiVersion = '2024-10-21';
 
@@ -29,6 +33,19 @@ const defaultApiVersion = '2024-10-21';
 export async function createOpenAiConfig(
   options: SapOpenAiInput
 ): Promise<AzureClientOptions> {
+  return (await createSapOpenAiContext(options)).azureOptions;
+}
+
+/**
+ * Resolves the deployment URL, destination, and resource group for SAP AI Core.
+ * Use this when you need access to the resolved context beyond just the Azure client options.
+ * @param options - Options including model deployment, destination, API version, and client type. A plain model name string is accepted as shorthand for `{ deployment: modelName }`.
+ * @returns A promise that resolves to a {@link SapOpenAiContext} containing the Azure client options, destination, and resource group.
+ * @internal
+ */
+export async function createSapOpenAiContext(
+  options: SapOpenAiInput
+): Promise<SapOpenAiContext> {
   const opts: SapOpenAiOptions =
     typeof options === 'string' ? { deployment: options } : options;
   const {
@@ -47,14 +64,19 @@ export async function createOpenAiConfig(
   });
 
   return {
-    baseURL: baseUrl,
-    apiVersion: apiVersion ?? defaultApiVersion,
-    azureADTokenProvider: createTokenProvider(destination),
-    defaultHeaders: {
-      'ai-resource-group': resourceGroup,
-      'ai-client-type': ['AI SDK JavaScript', clientType]
-        .filter(Boolean)
-        .join(',')
-    }
+    azureOptions: {
+      baseURL: baseUrl,
+      apiVersion: apiVersion ?? defaultApiVersion,
+      azureADTokenProvider: createTokenProvider(destination),
+      defaultHeaders: {
+        'ai-resource-group': resourceGroup,
+        'ai-client-type': ['AI SDK JavaScript', clientType]
+          .filter(Boolean)
+          .join(',')
+      }
+    },
+    deployment,
+    destination,
+    resourceGroup
   };
 }
