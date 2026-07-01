@@ -57,17 +57,9 @@ export class SapResponses {
       AzureOpenAiResponsesModel
     >,
     options?: RequestOptions
-  ): APIPromise<Response | Stream<ResponseStreamEvent>>;
-  create(
-    body: WithOptionalModel<
-      ResponseCreateParamsBase,
-      AzureOpenAiResponsesModel
-    >,
-    options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
     return this.openAiResponses.create(
-      // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
-      { ...body, model: body.model || '' } satisfies ResponseCreateParamsBase,
+      body satisfies ResponseCreateParamsBase,
       options
     );
   }

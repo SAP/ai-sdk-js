@@ -55,13 +55,6 @@ export class SapCompletions {
       AzureOpenAiChatModel
     >,
     options?: RequestOptions
-  ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>>;
-  create(
-    body: WithOptionalModel<
-      ChatCompletionCreateParamsBase,
-      AzureOpenAiChatModel
-    >,
-    options?: RequestOptions
   ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>> {
     return this.openAiCompletions.create(
       {
