@@ -242,13 +242,13 @@ export async function getAllDeployments(
  * Resolve the deployment URL for a model deployment.
  * If given a deployment ID, fetches the URL for that specific deployment.
  * If given a model name, looks up a running deployment for that model.
- * @param modelDeployment - Deployment identified by model name/version or by ID.
+ * @param modelDeployment - Deployment identified by model name/version or by ID. Resource group should be passed through the resolution options and will be ignored here.
  * @param options - Base resolution options (scenarioId, executableId, etc.) without `model` — that is derived from `modelDeployment`.
  * @returns A promise of the deployment URL.
  * @internal
  */
 export async function resolveDeploymentUrlForModel(
-  modelDeployment: ModelDeployment,
+  modelDeployment: string | (DeploymentIdConfig | ModelConfig),
   options: Omit<DeploymentResolutionOptions, 'model'> & {
     resourceGroup: string;
   }
