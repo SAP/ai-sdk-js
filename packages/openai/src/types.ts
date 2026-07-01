@@ -1,3 +1,4 @@
+import type { AzureClientOptions } from 'openai/azure';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type {
   AzureOpenAiChatModel,
@@ -40,6 +41,18 @@ export interface SapOpenAiOptions {
  * Passing a string is shorthand for `{ deployment: modelName }`.
  */
 export type SapOpenAiInput = SapOpenAiOptions | SapModelName;
+
+/** @internal */
+export interface SapOpenAiContext {
+  /** Azure client options ready to pass to `new AzureOpenAI()`. */
+  azureOptions: AzureClientOptions;
+  /** The model deployment as provided by the caller. */
+  deployment: ModelDeployment<SapModelName>;
+  /** The resolved destination, forwarded to the token provider and deployment API. */
+  destination: HttpDestinationOrFetchOptions | undefined;
+  /** The resolved AI resource group. */
+  resourceGroup: string;
+}
 
 /**
  * Makes the `model` field optional in request param types, with an optional type constraint.
