@@ -215,7 +215,8 @@ describe('resolveDeploymentUrlById', () => {
 describe('resolveDeploymentUrlForModel', () => {
   const baseoptions = {
     scenarioId: 'foundation-models',
-    executableId: 'azure-openai'
+    executableId: 'azure-openai',
+    resourceGroup: 'default'
   };
 
   beforeEach(() => {
