@@ -249,19 +249,23 @@ export async function getAllDeployments(
  */
 export async function resolveDeploymentUrlForModel(
   modelDeployment: ModelDeployment,
-  options: Omit<DeploymentResolutionOptions, 'model'>
+  options: Omit<DeploymentResolutionOptions, 'model'> & {
+    resourceGroup: string;
+  }
 ): Promise<string> {
-  const resourceGroup =
-    options.resourceGroup ?? getResourceGroup(modelDeployment) ?? 'default';
   if (isDeploymentIdConfig(modelDeployment)) {
     return resolveDeploymentUrlById(
       modelDeployment.deploymentId,
-      resourceGroup,
+      options.resourceGroup,
       options.destination
     );
   }
   const model = translateToFoundationModel(modelDeployment);
-  const url = await resolveDeploymentUrl({ ...options, resourceGroup, model });
+  const url = await resolveDeploymentUrl({
+    ...options,
+    resourceGroup: options.resourceGroup,
+    model
+  });
   if (!url) {
     throw new Error(
       `Deployment for model '${model.name}' has no deployment URL. Ensure the deployment is running.`

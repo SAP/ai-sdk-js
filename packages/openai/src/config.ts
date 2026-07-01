@@ -3,24 +3,14 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { createTokenProvider } from './token-provider.js';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { AzureClientOptions } from 'openai/azure';
 import type {
+  SapOpenAiContext,
   SapOpenAiInput,
   SapOpenAiOptions
 } from './types.js';
 
 const defaultApiVersion = '2024-10-21';
-
-/** @internal */
-export interface SapOpenAiContext {
-  /** Azure client options ready to pass to `new AzureOpenAI()`. */
-  azureOptions: AzureClientOptions;
-  /** The resolved destination, forwarded to the token provider and deployment API. */
-  destination: HttpDestinationOrFetchOptions | undefined;
-  /** The resolved AI resource group. */
-  resourceGroup: string;
-}
 
 /**
  * Creates a configuration object that can be passed directly to `new AzureOpenAI(config)`.
@@ -85,6 +75,7 @@ export async function createSapOpenAiContext(
           .join(',')
       }
     },
+    deployment,
     destination,
     resourceGroup
   };
