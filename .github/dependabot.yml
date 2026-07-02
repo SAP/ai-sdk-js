@@ -30,7 +30,10 @@ updates:
       langchain:
         patterns: ['langchain', '@langchain/*']
   - package-ecosystem: 'github-actions'
-    directory: '/'
+    directories:
+      - '/'
+      - '/.github/actions/create-api-docs-pr'
+      - '/.github/actions/pr-is-mergeable'
     schedule:
       interval: 'weekly'
       time: '01:00'
