@@ -39,7 +39,7 @@ jobs:
       - name: 'Start Sample App'
         id: sample-app
         working-directory: ./sample-code
-        # TODO: use background:  true
+        # TODO: use background: true
         shell: bash
         run: |
           pnpm local &
