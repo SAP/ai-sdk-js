@@ -337,4 +337,92 @@ describe('construct completion post request', () => {
       );
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
+
+  describe('tool message auto-routing', () => {
+    const toolCallId = 'call_abc123';
+    const assistantMessage = {
+      role: 'assistant' as const,
+      tool_calls: [
+        {
+          id: toolCallId,
+          type: 'function' as const,
+          function: { name: 'search', arguments: '{"query":"test"}' }
+        }
+      ]
+    };
+    const toolMessage = {
+      role: 'tool' as const,
+      content: 'Result: {{?question}}',
+      tool_call_id: toolCallId
+    };
+    const userMessage = { role: 'user' as const, content: 'Summarize.' };
+
+    it('should route tool messages from messages to messages_history', () => {
+      const result: any = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage, toolMessage]
+      });
+
+      expect(result.messages_history).toEqual([userMessage, toolMessage]);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).not.toContainEqual(toolMessage);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).not.toContainEqual(userMessage);
+    });
+
+    it('should preserve existing messagesHistory when appending tool messages', () => {
+      const result = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage, toolMessage],
+        messagesHistory: [assistantMessage]
+      });
+
+      expect(result.messages_history).toEqual([
+        assistantMessage,
+        userMessage,
+        toolMessage
+      ]);
+    });
+
+    it('should not affect non-tool messages', () => {
+      const result: any = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage]
+      });
+
+      expect(result.messages_history).toBeUndefined();
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toContainEqual(userMessage);
+    });
+
+    it('should preserve chronological message order across the split', () => {
+      const followUpUser = { role: 'user' as const, content: 'Follow up.' };
+      const result: any = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage, assistantMessage, toolMessage, followUpUser]
+      });
+
+      // messages before and including last tool go to messages_history in order
+      expect(result.messages_history).toEqual([
+        userMessage,
+        assistantMessage,
+        toolMessage
+      ]);
+      // only messages after the last tool stay in prompt.template
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toContainEqual(followUpUser);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).not.toContainEqual(toolMessage);
+    });
+
+    it('should emit messages_history when only messagesHistory is provided (no tool messages)', () => {
+      const result = constructCompletionPostRequest(defaultConfig, {
+        messages: [userMessage],
+        messagesHistory: [assistantMessage]
+      });
+
+      expect(result.messages_history).toEqual([assistantMessage]);
+    });
+  });
 });

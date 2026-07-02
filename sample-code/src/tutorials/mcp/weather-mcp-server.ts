@@ -48,7 +48,9 @@ server.registerTool(
     try {
       const geoUrl = buildGeocodingUrl(city);
       const geoResponse = await fetch(geoUrl);
-      const data = await geoResponse.json();
+      const data = (await geoResponse.json()) as {
+        results?: { latitude: number; longitude: number }[];
+      };
 
       if (!data.results?.length) {
         return {
