@@ -9,6 +9,5 @@ import type { DocumentMetadataUpdateError } from './document-metadata-update-err
  * Representation of the 'BatchUpdateDocumentsResponse' schema.
  */
 export type BatchUpdateDocumentsResponse = (
-  | DocumentMetadataUpdate
-  | DocumentMetadataUpdateError
+  DocumentMetadataUpdate | DocumentMetadataUpdateError
 )[];

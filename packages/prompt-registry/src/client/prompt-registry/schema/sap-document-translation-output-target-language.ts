@@ -8,5 +8,4 @@ import type { SAPDocumentTranslationApplyToSelector } from './sap-document-trans
  * Representation of the 'SAPDocumentTranslationOutputTargetLanguage' schema.
  */
 export type SAPDocumentTranslationOutputTargetLanguage =
-  | string
-  | SAPDocumentTranslationApplyToSelector;
+  string | SAPDocumentTranslationApplyToSelector;

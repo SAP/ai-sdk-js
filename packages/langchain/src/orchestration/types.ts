@@ -58,9 +58,7 @@ export type OrchestrationCallOptions = Pick<
   placeholderValues?: Record<string, string>;
   streamOptions?: StreamOptions;
   responseFormat?:
-    | ResponseFormatText
-    | ResponseFormatJsonObject
-    | ResponseFormatJsonSchema;
+    ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema;
 };
 
 /**

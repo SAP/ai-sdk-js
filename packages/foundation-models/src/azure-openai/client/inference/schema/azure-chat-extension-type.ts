@@ -10,5 +10,4 @@
  *   The use of this configuration is compatible only with Azure OpenAI.
  */
 export type AzureOpenAiAzureChatExtensionType =
-  | 'azure_search'
-  | 'azure_cosmos_db';
+  'azure_search' | 'azure_cosmos_db';
