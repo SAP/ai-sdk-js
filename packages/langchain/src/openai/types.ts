@@ -49,8 +49,7 @@ export type AzureOpenAiChatModelParams = Pick<
  * Tool type for LangChain Azure OpenAI client.
  */
 export type ChatAzureOpenAIToolType =
-  | AzureOpenAiChatCompletionTool
-  | BindToolsInput;
+  AzureOpenAiChatCompletionTool | BindToolsInput;
 
 /**
  * Call options for the {@link AzureOpenAiChatClient}.
