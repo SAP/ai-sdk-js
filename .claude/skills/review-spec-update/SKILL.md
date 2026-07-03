@@ -40,6 +40,8 @@ In that case, note the affected file but do not modify it; record it as a follow
 Work through the diff methodically.
 For each changed type/function, decide:
 
+> **Perspective**: The spec-driven development guidelines distinguish between changes that break **end users** (their previously-correct code stops working) and changes that cause **SDK effort** (regeneration, migration work) without breaking existing user code. Only the former require `[compat]` changesets.
+
 ### Request-side changes (consumer sends this → almost always breaking)
 
 | Change | Breaking? | Why |
@@ -52,6 +54,7 @@ For each changed type/function, decide:
 | New **optional** parameter on a function | no | Existing calls still valid |
 | Required request body field becomes optional | no | Less strict |
 | Optional request body field becomes required | **YES** | Existing objects now invalid |
+| `additionalProperties: false` added to a request object | **YES** | Rejects previously-valid extra fields |
 
 ### Response-side changes (consumer receives this → usually not breaking)
 
@@ -63,6 +66,7 @@ For each changed type/function, decide:
 | Type narrowed on a response field | **YES** | Code relying on broader type breaks |
 | Type widened on a response field | no, unless it newly introduces `undefined` or `null` | Widening is safe unless consumers must now handle absence that was impossible before |
 | New optional field on a response type | no | Safe addition |
+| Change to an **under-specified** response object (`{}` or no constraints) | no | Spec-driven dev guidelines explicitly allow service teams to keep flexibility here; clients must not rely on its structure |
 
 ### Schema / enum changes
 
@@ -75,7 +79,18 @@ For each changed type/function, decide:
 | Enum member removed | **YES** |
 | Type renamed | **YES** (if exported) — also check the new type's shape: a rename often comes with property changes (`id` → `resourceId`, removed fields, etc.).<br>Document each property-level breaking change in its own `[compat]` entry; do not just note the rename.<br>If the old type is entirely deleted and replaced by a structurally different new type with no shared name, treat it as a deletion of the old type plus introduction of a new type.<br>Create one `[compat]` entry for the deletion and list the migration target type by name if identifiable from the diff. |
 | Type deleted | **YES** (if exported) |
+| Shared schema **split** into distinct schemas (e.g. `FooConfig` → `FooConfigInput` + `FooConfigOutput`) | SDK-effort only — not a user breaking change **unless** the old type was directly exported and consumers referenced it by name. If exported, treat as a type rename/deletion and create a `[compat]` entry. |
 <!-- vale SAP.Sentences = YES -->
+
+### Schema-split impact check
+
+When a previously shared schema is split into two or more distinct schemas, assess the downstream impact carefully:
+
+1. Was the old schema name exported from `src/index.ts` or `src/internal.ts`? If yes → breaking; create a `[compat]` entry.
+2. Does the new split introduce structural differences (new required fields, removed fields, type changes)? Document each property-level change in its own `[compat]` entry.
+3. If the split only renames without structural change and the old name is unexported → no action needed.
+
+Example: `SAPDocumentTranslation` split into `SAPDocumentTranslationInput` (adds `bar`) + `SAPDocumentTranslationOutput` → if old type was exported, create a `[compat]` for the deletion of `SAPDocumentTranslation` and for the new required `bar` field on the input variant.
 
 ## Step 3 — Check for parameter-order regressions
 
@@ -264,6 +279,9 @@ If tests fail, apply the same triage: attribute failures to this spec update or 
 - [ ] Diffed `src/client/` against main
 - [ ] Every breaking request-side change has a `[compat]` changeset
 - [ ] Every breaking response-side removal/rename/narrowing has a `[compat]` changeset
+- [ ] `additionalProperties: false` added to any request object → `[compat]` changeset created
+- [ ] Schema splits checked: exported old names → `[compat]`; unexported without structural change → no action needed
+- [ ] Under-specified response changes (`{}` bodies) confirmed as non-breaking and omitted from `[compat]`
 - [ ] Parameter-order regressions have patches (new or updated)
 - [ ] All patches apply cleanly (`pnpm <pkg> apply-patches` from fresh generated output)
 - [ ] Package has `apply-patches` script (added if missing)
