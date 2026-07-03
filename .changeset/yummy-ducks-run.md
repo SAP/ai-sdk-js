@@ -2,4 +2,4 @@
 '@sap-ai-sdk/orchestration': patch
 ---
 
-[Fix] Route `role: "tool"` messages from `messages` to `messages_history` automatically.
+[Fix] Route messages preceding tool messages from the `promptTemplating` section `messages` property to `messages_history` automatically if  no templating placeholder values are provided.
