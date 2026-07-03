@@ -1,5 +1,19 @@
 # @sap-ai-sdk/langchain
 
+## 2.12.0
+
+### Patch Changes
+
+- 311dc08: [Fixed Issue] Fixed duplicate tools accumulating in LangChain orchestration client in some configurations on repeated invocations.
+- Updated dependencies [0f10482]
+- Updated dependencies [e944aa1]
+- Updated dependencies [0b41bea]
+- Updated dependencies [2faf4a8]
+  - @sap-ai-sdk/core@2.12.0
+  - @sap-ai-sdk/foundation-models@2.12.0
+  - @sap-ai-sdk/ai-api@2.12.0
+  - @sap-ai-sdk/orchestration@2.12.0
+
 ## 2.11.0
 
 ### Minor Changes

@@ -28,6 +28,27 @@
 
 -
 
+# 2.12.0
+## New Features
+
+- [core] Add `AzureOpenAiResponsesModel` type for Azure OpenAI models that exclusively support the Responses API. (0f10482)
+- [document-grounding, prompt-registry] Update document grounding specification. (d984914)
+- [foundation-models] Add `createBatchInput()` and `parseBatchOutput()` helpers for building and parsing LLM batch requests and responses. (0b41bea)
+- [llm-batch] Add new experimental `@sap-ai-sdk/llm-batch` package for asynchronous batch processing of LLM requests via SAP AI Core LLM Batch Service. (0b41bea)
+- [openai] Add new experimental `@sap-ai-sdk/openai` package with a SAP AI Core-aware OpenAI client.
+  The client wraps the OpenAI SDK and handles authentication and deployment resolution against SAP AI Core. (0f10482)
+
+## Fixed Issues
+
+- [core] Improve error message when server sends a non-JSON response during streaming. (2faf4a8)
+- [langchain] Fixed duplicate tools accumulating in LangChain orchestration client in some configurations on repeated invocations. (311dc08)
+
+## Improvements
+
+- [core] Added `gpt-5.5` to the available model list.
+  Remove retired model `anthropic--claude-4-opus` — use `anthropic--claude-4.7-opus` instead.
+  Remove deprecated model `o3-mini` (retirement date: 2026-08-02). (e944aa1)
+
 # 2.11.0
 ## New Features
 

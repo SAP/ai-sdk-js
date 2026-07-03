@@ -16,6 +16,7 @@ jobs:
   check-release-notes-pr:
     name: Check Release Notes PR Status
     runs-on: ubuntu-latest
+    environment: release
     outputs:
       release-notes-branch: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
       is-merged: ${{ steps.check-pr-status.outputs.merged }}
@@ -71,6 +72,7 @@ jobs:
   publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
+    environment: release
     needs: [check-release-notes-pr]
     permissions:
       contents: read
@@ -88,6 +90,7 @@ jobs:
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
     runs-on: ubuntu-latest
+    environment: release
     needs: [check-release-notes-pr, publish-npm]
     if: needs.check-release-notes-pr.outputs.is-merged == 'false'
     steps:

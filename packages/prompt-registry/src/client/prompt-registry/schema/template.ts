@@ -7,7 +7,7 @@ import type { TemplatingChatMessage } from './templating-chat-message.js';
 import type { ResponseFormatText } from './response-format-text.js';
 import type { ResponseFormatJsonObject } from './response-format-json-object.js';
 import type { ResponseFormatJsonSchema } from './response-format-json-schema.js';
-import type { ChatCompletionTool } from './chat-completion-tool.js';
+import type { SchemasChatCompletionTool } from './schemas-chat-completion-tool.js';
 /**
  * Representation of the 'Template' schema.
  * @example {
@@ -36,12 +36,10 @@ export type Template = {
    *
    */
   response_format?:
-    | ResponseFormatText
-    | ResponseFormatJsonObject
-    | ResponseFormatJsonSchema;
+    ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema;
   /**
    * A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.
    *
    */
-  tools?: ChatCompletionTool[];
+  tools?: SchemasChatCompletionTool[];
 };
