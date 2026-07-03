@@ -341,12 +341,8 @@ describe('orchestration', () => {
       expect(response.getContent()).toEqual(expect.any(String));
 
       const templating = response.getIntermediateResults().templating;
-      expect(templating).toBeDefined();
       const roles = templating!.map(m => m.role);
-      const toolIdx = roles.lastIndexOf('tool');
-      const userIdx = roles.lastIndexOf('user');
-      expect(toolIdx).toBeGreaterThan(-1);
-      expect(userIdx).toBeGreaterThan(toolIdx);
+      expect(roles).toEqual(['assistant', 'tool', 'user']);
     });
 
     it('should apply masking to tool results automatically routed to messages_history', async () => {
