@@ -41,7 +41,7 @@ export async function createBatch(
       type: 'llm-native',
       input: { uri: inputUri },
       output: { uri: outputUri },
-      spec: { provider: 'azure-openai', model: 'gpt-4.1' }
+      spec: { provider: 'azure-openai', model: 'gpt-5' }
     },
     defaultHeaders
   ).execute();
@@ -103,12 +103,12 @@ export async function uploadBatchInput(
 ): Promise<string> {
   const blob = createBatchInput([
     {
-      model: 'gpt-4.1',
+      model: 'gpt-5',
       messages: [{ role: 'user', content: 'What is machine learning?' }],
       max_tokens: 150
     },
     {
-      model: 'gpt-4.1',
+      model: 'gpt-5',
       messages: [
         { role: 'user', content: 'Explain neural networks in simple terms' }
       ],

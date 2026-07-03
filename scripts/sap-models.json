@@ -175,7 +175,7 @@
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "Yes",
-    "retirementDate": "2026-09-10",
+    "retirementDate": "2026-09-14",
     "suggestedReplacement": "amazon--nova-lite 2",
     "retired": ""
   },
@@ -294,7 +294,7 @@
     "model": "gpt-4o",
     "version": "2024-11-20",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-01",
     "suggestedReplacement": "gpt-5",
     "retired": ""
@@ -314,7 +314,7 @@
     "model": "gpt-4.1",
     "version": "2025-04-14",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-14",
     "suggestedReplacement": "",
     "retired": ""
@@ -324,7 +324,7 @@
     "model": "gpt-4.1-mini",
     "version": "2025-04-14",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-14",
     "suggestedReplacement": "",
     "retired": ""
@@ -444,7 +444,7 @@
     "model": "o1",
     "version": "2024-12-17",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-07-15",
     "suggestedReplacement": "",
     "retired": ""
@@ -454,7 +454,7 @@
     "model": "o3-mini",
     "version": "2025-01-31",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-08-02",
     "suggestedReplacement": "",
     "retired": ""
@@ -464,7 +464,7 @@
     "model": "o3",
     "version": "2025-04-16",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-16",
     "suggestedReplacement": "",
     "retired": ""
@@ -474,7 +474,7 @@
     "model": "o4-mini",
     "version": "2025-04-16",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-16",
     "suggestedReplacement": "",
     "retired": ""
@@ -514,8 +514,8 @@
     "model": "gemini-2.5-flash-image",
     "version": "001",
     "availableInOrchestration": "",
-    "deprecated": "",
-    "retirementDate": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-10-02",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -567,6 +567,16 @@
     "deprecated": "",
     "retirementDate": "",
     "suggestedReplacement": "mistralai--mistral-small-instruct",
+    "retired": "yes"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-35-turbo",
+    "version": "0613",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "gpt-4o-mini",
     "retired": "yes"
   },
   {
@@ -717,6 +727,16 @@
     "deprecated": "",
     "retirementDate": "",
     "suggestedReplacement": "amazon--nova-premier",
+    "retired": "yes"
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "amazon--titan-image-generator",
+    "version": "2",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
     "retired": "yes"
   },
   {
