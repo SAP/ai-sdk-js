@@ -786,8 +786,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 export async function orchestrationToolResultInMessages(): Promise<OrchestrationResponse> {
   const client = new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'anthropic--claude-4.5-haiku' },
-      prompt: { template: [{ role: 'system', content: 'You are helpful.' }] }
+      model: { name: 'anthropic--claude-4.5-haiku' }
     }
   });
 

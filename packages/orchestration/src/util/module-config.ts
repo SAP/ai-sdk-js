@@ -367,12 +367,20 @@ export function constructCompletionPostRequest(
   // 2. Tool results — their content comes from external systems and may contain {{?...}}
   //    patterns that are not user-defined placeholders. We route through the last tool
   //    message so the assistant+tool pair stays together for tool_call_id validation.
+  //    Auto-routing is skipped when any config has a non-empty prompt.template, because
+  //    in that case the user has opted into templating and the service handles it correctly.
   const configs = Array.isArray(config) ? config : [config];
   const usesTemplateRef = configs.some(c =>
     isTemplateRef(c?.promptTemplating?.prompt || {})
   );
+  const hasStaticTemplate = configs.some(c => {
+    const prompt = c?.promptTemplating?.prompt;
+    return isTemplate(prompt) && prompt.template?.length;
+  });
   const messages = request?.messages || [];
-  const lastToolIndex = messages.findLastIndex(msg => msg.role === 'tool');
+  const lastToolIndex = hasStaticTemplate
+    ? -1
+    : messages.findLastIndex(msg => msg.role === 'tool');
   const splitIndex = usesTemplateRef ? messages.length : lastToolIndex + 1;
 
   const remainingMessages = messages.slice(splitIndex);
