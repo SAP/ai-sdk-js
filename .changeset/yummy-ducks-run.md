@@ -2,4 +2,4 @@
 '@sap-ai-sdk/orchestration': patch
 ---
 
-[Fix] Route messages preceding tool messages from the `promptTemplating` section `messages` property to `messages_history` automatically if  no templating placeholder values are provided.
+[Fix] Automatically route `role: 'tool'` messages (and all preceding messages) from `messages` to `messages_history` to bypass prompt templating, unless placeholder values are provided.

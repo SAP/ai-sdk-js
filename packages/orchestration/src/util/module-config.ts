@@ -11,6 +11,7 @@ import {
   type EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
+  ChatMessage,
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
@@ -358,37 +359,16 @@ export function constructCompletionPostRequest(
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
 
-  // Determine where to split request.messages: everything before splitIndex is routed
-  // to messages_history (bypassing prompt templating); everything from splitIndex onward
-  // stays in messages and is merged into prompt.template.
-  //
-  // Two cases route messages out of templating:
-  // 1. TemplateRef configs — the template lives remotely, so messages cannot be merged in.
-  // 2. Tool results — their content comes from external systems and may contain {{?...}}
-  //    patterns that are not user-defined placeholders. We route through the last tool
-  //    message so the assistant+tool pair stays together for tool_call_id validation.
-  //    Auto-routing is skipped when any config has a non-empty prompt.template or prompt.tools,
-  //    because in that case the user has opted into templating and the service handles it correctly.
   const configs = Array.isArray(config) ? config : [config];
-  const usesTemplateRef = configs.some(c =>
-    isTemplateRef(c?.promptTemplating?.prompt || {})
-  );
-  const hasStaticPrompt = configs.some(c => {
-    const prompt = c?.promptTemplating?.prompt;
-    return isTemplate(prompt) && (prompt.template?.length || prompt.tools?.length);
-  });
   const messages = request?.messages || [];
-  const lastToolIndex = hasStaticPrompt
-    ? -1
-    : messages.findLastIndex(msg => msg.role === 'tool');
-  const splitIndex = usesTemplateRef ? messages.length : lastToolIndex + 1;
+  const splitIndex = getMessageSplitIndex(configs, messages, request);
 
-  const remainingMessages = messages.slice(splitIndex);
   let moduleRequest = request;
   if (splitIndex > 0 && request) {
+    const remaining = messages.slice(splitIndex);
     moduleRequest = {
       ...request,
-      messages: remainingMessages.length ? remainingMessages : undefined
+      messages: remaining.length ? remaining : undefined
     };
   }
 
@@ -462,6 +442,47 @@ function buildCompletionModulesConfig(
     ...(grounding && Object.keys(grounding).length && { grounding }),
     ...(translation && Object.keys(translation).length && { translation })
   };
+}
+
+/**
+ * Determines the split index for routing messages to messages_history.
+ * Messages before splitIndex bypass prompt templating; messages from splitIndex onward
+ * stay in prompt.template.
+ *
+ * Routing is skipped when:
+ * - placeholder values are set (user has opted into templating)
+ * - any config has a non-empty static prompt.template or prompt.tools
+ *
+ * When a TemplateRef is used, all messages are routed (splitIndex = messages.length).
+ */
+function getMessageSplitIndex(
+  configs: OrchestrationModuleConfig[],
+  messages: ChatMessage[],
+  request?: ChatCompletionRequest
+): number {
+  const usesTemplateRef = configs.some(c =>
+    isTemplateRef(c?.promptTemplating?.prompt || {})
+  );
+  if (usesTemplateRef) {
+    return messages.length;
+  }
+
+  const hasPlaceholderValues =
+    !!request?.placeholderValues &&
+    Object.keys(request.placeholderValues).length > 0;
+  if (hasPlaceholderValues) {
+    return 0;
+  }
+
+  const hasStaticPrompt = configs.some(c => {
+    const prompt = c?.promptTemplating?.prompt;
+    return isTemplate(prompt) && (prompt.template?.length || prompt.tools?.length);
+  });
+  if (hasStaticPrompt) {
+    return 0;
+  }
+
+  return messages.findLastIndex(msg => msg.role === 'tool') + 1;
 }
 
 function isTemplate(templating: unknown): templating is Template {
