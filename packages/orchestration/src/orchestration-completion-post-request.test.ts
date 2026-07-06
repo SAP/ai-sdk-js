@@ -446,5 +446,22 @@ describe('construct completion post request', () => {
         result.config.modules.prompt_templating.prompt.template
       ).toContainEqual(toolMessage);
     });
+
+    it('should not auto-route when config has prompt.tools (no template)', () => {
+      const toolsConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-5.4-nano' },
+          prompt: { tools: [{ type: 'function', function: { name: 'search', description: 'search', parameters: {} } }] }
+        }
+      };
+      const result: any = constructCompletionPostRequest(toolsConfig, {
+        messages: [assistantMessage, toolMessage, userMessage]
+      });
+
+      expect(result.messages_history).toBeUndefined();
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toContainEqual(toolMessage);
+    });
   });
 });
