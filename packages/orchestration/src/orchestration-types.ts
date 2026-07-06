@@ -29,7 +29,8 @@ import type {
   SAPDocumentTranslationOutput,
   Embedding,
   EmbeddingMultiFormat,
-  EncodingFormat
+  EncodingFormat,
+  PartialOrchestrationConfig
 } from './client/api/schema/index.js';
 
 /**
@@ -292,7 +293,12 @@ export type OrchestrationConfigRef = Xor<
     /** Configuration version. */
     version: string;
   }
->;
+> & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: PartialOrchestrationConfig;
+};
 
 /**
  * Type guard to check if config is a config reference.

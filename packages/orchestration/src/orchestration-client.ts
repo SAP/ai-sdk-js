@@ -143,7 +143,7 @@ export class OrchestrationClient {
       if (isConfigReference(this.config)) {
         if (options) {
           logger.warn(
-            'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+            'Request-level stream options (promptTemplating, outputFiltering, global, and overrides) are ignored when using an orchestration config reference. Configure supported streaming settings via OrchestrationConfigRef.config or in the stored orchestration configuration. Per-fallback stream overrides are not supported for config references.'
           );
         }
         if (request?.messages?.length) {
@@ -181,7 +181,8 @@ export class OrchestrationClient {
         : isConfigReference(this.config)
           ? constructCompletionPostRequestFromConfigReference(
               this.config,
-              request
+              request,
+              stream
             )
           : isOrchestrationModuleConfigList(this.config)
             ? constructCompletionPostRequest(

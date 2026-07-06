@@ -18,6 +18,7 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
+  PartialOrchestrationConfig,
   Template,
   PromptTemplatingModuleConfig,
   TemplateRef,
@@ -63,7 +64,8 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
  */
 export function constructCompletionPostRequestFromConfigReference(
   configRef: OrchestrationConfigRef,
-  request?: ChatCompletionRequest
+  request?: ChatCompletionRequest,
+  stream?: boolean
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
@@ -73,8 +75,26 @@ export function constructCompletionPostRequestFromConfigReference(
     ? [...(request.messagesHistory || []), ...request.messages]
     : request?.messagesHistory;
 
+  const { overrideConfig, ...configReference } = configRef;
+  let partialConfig: PartialOrchestrationConfig | undefined;
+
+  if (overrideConfig) {
+    partialConfig = {
+      ...overrideConfig,
+      ...(stream && {
+        stream: {
+          ...overrideConfig.stream,
+          enabled: true
+        }
+      })
+    };
+  } else if (stream) {
+    partialConfig = { stream: { enabled: true } };
+  }
+
   return {
-    config_ref: configRef,
+    config_ref: configReference,
+    ...(partialConfig && { config: partialConfig }),
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),

@@ -268,6 +268,87 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
       messages_history: [{ role: 'user', content: 'test message' }]
     });
   });
+
+  it('passes config to the request', () => {
+    const configRef: OrchestrationConfigRef = {
+      id: 'test-id',
+      overrideConfig: {
+        modules: {
+          prompt_templating: {
+            model: {
+              name: 'gpt-5.4-nano',
+              version: '1',
+              params: {}
+            }
+          }
+        }
+      }
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(configRef);
+
+    expect(result).toEqual({
+      config_ref: { id: 'test-id' },
+      config: {
+        modules: {
+          prompt_templating: {
+            model: {
+              name: 'gpt-5.4-nano',
+              version: '1',
+              params: {}
+            }
+          }
+        }
+      }
+    });
+  });
+
+  it('enables streaming when stream=true, no config', () => {
+    const configRef: OrchestrationConfigRef = { id: 'test-id' };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      undefined,
+      true
+    );
+
+    expect(result).toEqual({
+      config_ref: { id: 'test-id' },
+      config: { stream: { enabled: true } }
+    });
+  });
+
+  it('enables streaming and merges with existing config stream field', () => {
+    const configRef: OrchestrationConfigRef = {
+      id: 'test-id',
+      overrideConfig: {
+        stream: { chunk_size: 50 }
+      }
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      undefined,
+      true
+    );
+
+    expect(result).toEqual({
+      config_ref: { id: 'test-id' },
+      config: { stream: { chunk_size: 50, enabled: true } }
+    });
+  });
+
+  it('does not add config field when stream=false and no config', () => {
+    const configRef: OrchestrationConfigRef = { id: 'test-id' };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      undefined,
+      false
+    );
+
+    expect(result).toEqual({ config_ref: { id: 'test-id' } });
+  });
 });
 
 describe('constructCompletionPostRequest with module fallback configs', () => {
