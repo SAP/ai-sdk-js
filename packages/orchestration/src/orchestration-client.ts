@@ -45,7 +45,11 @@ const logger = createLogger({
 });
 
 /**
- * Get the orchestration client.
+ * Client for the SAP AI Core Orchestration Service.
+ * @remarks
+ * The configuration (model, parameters, tools, etc.) is fixed at construction time.
+ * To use different model parameters or tools for a specific request,
+ * create a new `OrchestrationClient` instance with the desired configuration.
  */
 export class OrchestrationClient {
   /**
