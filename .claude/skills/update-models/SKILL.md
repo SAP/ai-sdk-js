@@ -105,6 +105,8 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
      --body "Sync of the deprecated models table in \`docs-js/overview.mdx\` from [SAP Notes 3437766](https://me.sap.com/notes/3437766).\n\n## Changes\n\n- Added newly deprecated models\n- Removed retired models (no longer listed in SAP Notes)\n- Updated replacement suggestions\n\n## Definition of Done\n- [ ] Table entries are correct\n- [ ] Retired models removed\n- [ ] Replacement suggestions accurate"
    ```
 
+9. **Optionally sync to models.dev:** Run `/update-models-dev` to push model changes to the [anomalyco/models.dev](https://github.com/anomalyco/models.dev) provider catalog.
+
 ## Prerequisites
 
 - `playwright@claude-plugins-official` must be enabled as a Claude Code plugin — install it via `/plugin` in Claude Code

@@ -72,3 +72,4 @@ knowledge-base/api-reference/
 
 # Local config files with credentials
 packages/llm-batch/config.json
+sap-model-costs.json
