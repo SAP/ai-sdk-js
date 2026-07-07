@@ -367,7 +367,11 @@ describe('construct completion post request', () => {
 
     it('should route tool messages from messages to messages_history', () => {
       const result: any = constructCompletionPostRequest(noTemplateConfig, {
-        messages: [userMessage, toolMessage, { role: 'user' as const, content: 'Follow up.' }]
+        messages: [
+          userMessage,
+          toolMessage,
+          { role: 'user' as const, content: 'Follow up.' }
+        ]
       });
 
       expect(result.messages_history).toContainEqual(userMessage);
@@ -451,7 +455,18 @@ describe('construct completion post request', () => {
       const toolsConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: { name: 'gpt-5.4-nano' },
-          prompt: { tools: [{ type: 'function', function: { name: 'search', description: 'search', parameters: {} } }] }
+          prompt: {
+            tools: [
+              {
+                type: 'function',
+                function: {
+                  name: 'search',
+                  description: 'search',
+                  parameters: {}
+                }
+              }
+            ]
+          }
         }
       };
       const result: any = constructCompletionPostRequest(toolsConfig, {

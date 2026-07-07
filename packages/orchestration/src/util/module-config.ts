@@ -451,9 +451,13 @@ function buildCompletionModulesConfig(
  *
  * Routing is skipped when:
  * - placeholder values are set (user has opted into templating)
- * - any config has a non-empty static prompt.template or prompt.tools
+ * - any config has a non-empty static prompt.template or prompt.tools.
  *
  * When a TemplateRef is used, all messages are routed (splitIndex = messages.length).
+ * @param configs - The orchestration module configurations.
+ * @param messages - The chat messages to evaluate.
+ * @param request - The optional chat completion request containing placeholder values.
+ * @returns The index at which to split messages between messages_history and prompt.template.
  */
 function getMessageSplitIndex(
   configs: OrchestrationModuleConfig[],
@@ -476,7 +480,9 @@ function getMessageSplitIndex(
 
   const hasStaticPrompt = configs.some(c => {
     const prompt = c?.promptTemplating?.prompt;
-    return isTemplate(prompt) && (prompt.template?.length || prompt.tools?.length);
+    return (
+      isTemplate(prompt) && (prompt.template?.length || prompt.tools?.length)
+    );
   });
   if (hasStaticPrompt) {
     return 0;
