@@ -1,4 +1,5 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import nock from 'nock';
 import {
@@ -1383,6 +1384,103 @@ describe('orchestration service client', () => {
         expect(result).toHaveProperty('parsed');
         expect(result.parsed).toBeNull(); // Parser fallback should return null
       });
+    });
+  });
+
+  describe('template_ref warnings', () => {
+    const configWithTemplateRef: LangChainOrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: {} },
+        prompt: {
+          template_ref: { name: 'my-template', version: '1', scenario: 'test' }
+        }
+      }
+    };
+
+    it('warns in _generate when template_ref config is used with messages', async () => {
+      mockInference(
+        () => true,
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const logger = createLogger({
+        package: 'langchain',
+        messageContext: 'orchestration-client'
+      });
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const client = new OrchestrationClient(configWithTemplateRef);
+      await client.invoke([{ role: 'user', content: 'Hello!' }]);
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('template_ref')
+      );
+    });
+
+    it('does not warn in _generate when template_ref config is used without messages', async () => {
+      mockInference(
+        () => true,
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const logger = createLogger({
+        package: 'langchain',
+        messageContext: 'orchestration-client'
+      });
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const client = new OrchestrationClient(configWithTemplateRef);
+      await client.invoke([]);
+
+      expect(warnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('template_ref')
+      );
+    });
+
+    it('warns in _streamResponseChunks when template_ref config is used with messages', async () => {
+      mockInference(
+        () => true,
+        { data: mockResponseStream, status: 200 },
+        endpoint
+      );
+
+      const logger = createLogger({
+        package: 'langchain',
+        messageContext: 'orchestration-client'
+      });
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const client = new OrchestrationClient(configWithTemplateRef);
+      const stream = await client.stream([{ role: 'user', content: 'Hello!' }]);
+      for await (const _ of stream) { /* noop */ }
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('template_ref')
+      );
+    });
+
+    it('does not warn in _streamResponseChunks when template_ref config is used without messages', async () => {
+      mockInference(
+        () => true,
+        { data: mockResponseStream, status: 200 },
+        endpoint
+      );
+
+      const logger = createLogger({
+        package: 'langchain',
+        messageContext: 'orchestration-client'
+      });
+      const warnSpy = jest.spyOn(logger, 'warn');
+
+      const client = new OrchestrationClient(configWithTemplateRef);
+      const stream = await client.stream([]);
+      for await (const _ of stream) { /* noop */ }
+
+      expect(warnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('template_ref')
+      );
     });
   });
 });
