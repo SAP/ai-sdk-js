@@ -10,6 +10,7 @@
     "strict": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "lib": ["ES2024"],
     "types": ["node"]
   }
 }
