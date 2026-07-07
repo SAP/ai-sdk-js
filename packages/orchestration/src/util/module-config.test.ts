@@ -176,7 +176,8 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
     const result = constructCompletionPostRequestFromConfigReference(configRef);
 
     expect(result).toEqual({
-      config_ref: { id: 'test-config-id' }
+      config_ref: { id: 'test-config-id' },
+      config: { stream: { enabled: false } }
     });
   });
 
@@ -195,6 +196,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
 
     expect(result).toEqual({
       config_ref: { id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479' },
+      config: { stream: { enabled: false } },
       placeholder_values: { topic: 'AI', context: 'technology' }
     });
   });
@@ -213,7 +215,8 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
         scenario: 'foundation-models',
         name: 'my-orchestration-config',
         version: '1.0.0'
-      }
+      },
+      config: { stream: { enabled: false } }
     });
   });
 
@@ -241,6 +244,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
         name: 'example-config',
         version: '0.0.1'
       },
+      config: { stream: { enabled: false } },
       messages_history: [
         { role: 'user', content: 'Previous question' },
         { role: 'assistant', content: 'Previous answer' }
@@ -264,12 +268,13 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
 
     expect(result).toEqual({
       config_ref: { id: 'test-id' },
+      config: { stream: { enabled: false } },
       placeholder_values: { key: 'value' },
       messages_history: [{ role: 'user', content: 'test message' }]
     });
   });
 
-  it('passes config to the request', () => {
+  it('passes config to the request with stream.enabled=false', () => {
     const configRef: OrchestrationConfigRef = {
       id: 'test-id',
       overrideConfig: {
@@ -298,7 +303,8 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
               params: {}
             }
           }
-        }
+        },
+        stream: { enabled: false }
       }
     });
   });
@@ -338,7 +344,7 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
     });
   });
 
-  it('does not add config field when stream=false and no config', () => {
+  it('sets stream.enabled=false when stream=false and no config', () => {
     const configRef: OrchestrationConfigRef = { id: 'test-id' };
 
     const result = constructCompletionPostRequestFromConfigReference(
@@ -347,7 +353,30 @@ describe('constructCompletionPostRequestFromConfigReference', () => {
       false
     );
 
-    expect(result).toEqual({ config_ref: { id: 'test-id' } });
+    expect(result).toEqual({
+      config_ref: { id: 'test-id' },
+      config: { stream: { enabled: false } }
+    });
+  });
+
+  it('sets stream.enabled=false and preserves overrideConfig when stream=false', () => {
+    const configRef: OrchestrationConfigRef = {
+      id: 'test-id',
+      overrideConfig: {
+        stream: { chunk_size: 50 }
+      }
+    };
+
+    const result = constructCompletionPostRequestFromConfigReference(
+      configRef,
+      undefined,
+      false
+    );
+
+    expect(result).toEqual({
+      config_ref: { id: 'test-id' },
+      config: { stream: { chunk_size: 50, enabled: false } }
+    });
   });
 });
 

@@ -76,25 +76,17 @@ export function constructCompletionPostRequestFromConfigReference(
     : request?.messagesHistory;
 
   const { overrideConfig, ...configReference } = configRef;
-  let partialConfig: PartialOrchestrationConfig | undefined;
-
-  if (overrideConfig) {
-    partialConfig = {
-      ...overrideConfig,
-      ...(stream && {
-        stream: {
-          ...overrideConfig.stream,
-          enabled: true
-        }
-      })
-    };
-  } else if (stream) {
-    partialConfig = { stream: { enabled: true } };
-  }
+  const partialConfig: PartialOrchestrationConfig = {
+    ...overrideConfig,
+    stream: {
+      ...overrideConfig?.stream,
+      enabled: stream === true
+    }
+  };
 
   return {
     config_ref: configReference,
-    ...(partialConfig && { config: partialConfig }),
+    config: partialConfig,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),

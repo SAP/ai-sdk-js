@@ -86,6 +86,19 @@ describe('orchestration', () => {
     assertContent(response);
   });
 
+  it('should complete a non-streaming chat with orchestration config reference', async () => {
+    const response = await new OrchestrationClient(
+      configReference
+    ).chatCompletion({
+      placeholderValues: {
+        phrase: 'Happy New Year!',
+        number: '3'
+      }
+    });
+
+    assertContent(response);
+  });
+
   it('should stream a chat with orchestration config reference', async () => {
     const response = await new OrchestrationClient(configReference).stream({
       placeholderValues: {
