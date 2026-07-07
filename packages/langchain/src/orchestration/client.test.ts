@@ -1398,11 +1398,7 @@ describe('orchestration service client', () => {
     };
 
     it('warns in _generate when template_ref config is used with messages', async () => {
-      mockInference(
-        () => true,
-        { data: mockResponse, status: 200 },
-        endpoint
-      );
+      mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
 
       const logger = createLogger({
         package: 'langchain',
@@ -1419,11 +1415,7 @@ describe('orchestration service client', () => {
     });
 
     it('does not warn in _generate when template_ref config is used without messages', async () => {
-      mockInference(
-        () => true,
-        { data: mockResponse, status: 200 },
-        endpoint
-      );
+      mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
 
       const logger = createLogger({
         package: 'langchain',
@@ -1454,7 +1446,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(configWithTemplateRef);
       const stream = await client.stream([{ role: 'user', content: 'Hello!' }]);
-      for await (const _ of stream) { /* noop */ }
+      for await (const _ of stream) {
+        /* noop */
+      }
 
       expect(warnSpy).toHaveBeenCalledWith(
         expect.stringContaining('template_ref')
@@ -1476,7 +1470,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(configWithTemplateRef);
       const stream = await client.stream([]);
-      for await (const _ of stream) { /* noop */ }
+      for await (const _ of stream) {
+        /* noop */
+      }
 
       expect(warnSpy).not.toHaveBeenCalledWith(
         expect.stringContaining('template_ref')
