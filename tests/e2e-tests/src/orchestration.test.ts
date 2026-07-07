@@ -20,7 +20,7 @@ import {
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  OrchestrationConfigRef,
+  OrchestrationConfigRef as orchestrationConfigRefSample,
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
@@ -28,6 +28,7 @@ import {
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
+  type OrchestrationConfigRef as OrchestrationConfigReference,
   type OrchestrationModuleConfig,
   type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
@@ -37,6 +38,10 @@ import { loadEnv } from './utils/load-env.js';
 loadEnv();
 
 describe('orchestration', () => {
+  const configReference: OrchestrationConfigReference = {
+    id: '62e8638a-ae87-4bd5-9027-a0bc67db1609'
+  };
+
   const assertContent = (response: OrchestrationResponse) => {
     expect(response.getIntermediateResults()).toBeDefined();
     expect(response.getIntermediateResults().templating).not.toHaveLength(0);
@@ -76,9 +81,38 @@ describe('orchestration', () => {
   });
 
   it('should complete a chat with orchestration config reference', async () => {
-    const response = await OrchestrationConfigRef();
+    const response = await orchestrationConfigRefSample();
 
     assertContent(response);
+  });
+
+  it('should complete a non-streaming chat with orchestration config reference', async () => {
+    const response = await new OrchestrationClient(
+      configReference
+    ).chatCompletion({
+      placeholderValues: {
+        phrase: 'Happy New Year!',
+        number: '3'
+      }
+    });
+
+    assertContent(response);
+  });
+
+  it('should stream a chat with orchestration config reference', async () => {
+    const response = await new OrchestrationClient(configReference).stream({
+      placeholderValues: {
+        phrase: 'Happy New Year!',
+        number: '3'
+      }
+    });
+
+    for await (const chunk of response.stream) {
+      expect(chunk).toBeDefined();
+    }
+
+    expect(response.getFinishReason()).toEqual('stop');
+    expect(response.getTokenUsage()).toBeDefined();
   });
 
   it('should trigger an input filter', async () => {
