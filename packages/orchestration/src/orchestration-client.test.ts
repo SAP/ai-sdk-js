@@ -1117,6 +1117,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
             placeholder_values: prompt.placeholderValues
           }
         },
@@ -1162,6 +1163,7 @@ describe('orchestration service client', () => {
               name: configRef.name,
               version: configRef.version
             },
+            config: { stream: { enabled: false } },
             placeholder_values: prompt.placeholderValues,
             messages_history: prompt.messagesHistory
           }
@@ -1360,7 +1362,10 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
-            config: configRef.overrideConfig
+            config: {
+              ...configRef.overrideConfig,
+              stream: { enabled: false }
+            }
           }
         },
         {
@@ -1399,6 +1404,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
             messages_history: [{ role: 'user', content: 'test' }]
           }
         },
