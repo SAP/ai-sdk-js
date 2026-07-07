@@ -366,9 +366,10 @@ export function constructCompletionPostRequest(
   let moduleRequest = request;
   if (splitIndex > 0 && request) {
     const remaining = messages.slice(splitIndex);
+    const { messages: _messages, ...rest } = request;
     moduleRequest = {
-      ...request,
-      messages: remaining.length ? remaining : undefined
+      ...rest,
+      ...(remaining.length && { messages: remaining })
     };
   }
 
