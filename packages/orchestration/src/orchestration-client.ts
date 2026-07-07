@@ -97,8 +97,8 @@ export class OrchestrationClient {
   ): Promise<OrchestrationResponse> {
     requestConfig?.signal?.throwIfAborted();
     if (isConfigReference(this.config) && request?.messages?.length) {
-      logger.debug(
-        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      logger.warn(
+        'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
       );
     }
     const response = await this.executeRequest({
@@ -147,8 +147,8 @@ export class OrchestrationClient {
           );
         }
         if (request?.messages?.length) {
-          logger.debug(
-            'Messages provided with an orchestration config reference will be sent as messages_history.'
+          logger.warn(
+            'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
           );
         }
       }

@@ -1,3 +1,4 @@
+import { createLogger } from '@sap-cloud-sdk/util';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
 import {
@@ -50,6 +51,11 @@ function isInputFilteringError(error: any): boolean {
     error.cause?.response?.data?.location?.includes('Input Filter')
   );
 }
+
+const logger = createLogger({
+  package: 'langchain',
+  messageContext: 'orchestration-client'
+});
 
 /**
  * The Orchestration client.
@@ -141,6 +147,22 @@ export class OrchestrationClient extends BaseChatModel<
     const { placeholderValues, customRequestConfig } = options;
     const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
     const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
+
+    const configs = Array.isArray(mergedOrchestrationConfig)
+      ? mergedOrchestrationConfig
+      : [mergedOrchestrationConfig];
+    const hasTemplateRef = configs.some(
+      c =>
+        typeof c.promptTemplating.prompt === 'object' &&
+        isTemplateRef(c.promptTemplating.prompt)
+    );
+    if (hasTemplateRef && allMessages.length) {
+      logger.warn(
+        'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
+          'The prompt template is defined remotely and cannot be extended inline. ' +
+          'In LangGraph workflows, consider using two separate clients: one with template_ref for the first node, and one without for subsequent conversational nodes.'
+      );
+    }
 
     const res = await this.caller.callWithOptions(
       {
@@ -353,6 +375,22 @@ export class OrchestrationClient extends BaseChatModel<
 
     const { placeholderValues, customRequestConfig } = options;
     const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
+
+    const configs = Array.isArray(mergedOrchestrationConfig)
+      ? mergedOrchestrationConfig
+      : [mergedOrchestrationConfig];
+    const hasTemplateRef = configs.some(
+      c =>
+        typeof c.promptTemplating.prompt === 'object' &&
+        isTemplateRef(c.promptTemplating.prompt)
+    );
+    if (hasTemplateRef && orchestrationMessages.length) {
+      logger.warn(
+        'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
+          'The prompt template is defined remotely and cannot be extended inline. ' +
+          'In LangGraph workflows, consider using two separate clients: one with template_ref for the first node, and one without for subsequent conversational nodes.'
+      );
+    }
 
     const orchestrationClient = new OrchestrationClientBase(
       mergedOrchestrationConfig,

@@ -1263,13 +1263,13 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('logs debug and routes messages to messages_history when using config reference by ID', async () => {
+    it('logs warn and routes messages to messages_history when using config reference by ID', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'
       });
 
-      const debugSpy = jest.spyOn(logger, 'debug');
+      const warnSpy = jest.spyOn(logger, 'warn');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1300,8 +1300,8 @@ describe('orchestration service client', () => {
         messages: [{ role: 'user', content: 'test' }]
       });
 
-      expect(debugSpy).toHaveBeenCalledWith(
-        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      expect(warnSpy).toHaveBeenCalledWith(
+        'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
       );
     });
 
@@ -1311,7 +1311,7 @@ describe('orchestration service client', () => {
         messageContext: 'orchestration-client'
       });
 
-      const debugSpy = jest.spyOn(logger, 'debug');
+      const warnSpy = jest.spyOn(logger, 'warn');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1352,8 +1352,8 @@ describe('orchestration service client', () => {
         break;
       }
 
-      expect(debugSpy).toHaveBeenCalledWith(
-        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      expect(warnSpy).toHaveBeenCalledWith(
+        'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
       );
     });
 

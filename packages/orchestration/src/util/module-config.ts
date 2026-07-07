@@ -365,6 +365,13 @@ export function constructCompletionPostRequest(
     isTemplateRef(c?.promptTemplating?.prompt || {})
   );
 
+  if (routeMessagesToHistory && request?.messages?.length) {
+    logger.warn(
+      'Messages passed alongside a template_ref are sent as messages_history, not as part of the prompt template. ' +
+        'The prompt template is defined remotely and cannot be extended inline.'
+    );
+  }
+
   const moduleRequest =
     routeMessagesToHistory && request
       ? { ...request, messages: undefined }
@@ -424,6 +431,13 @@ function buildCompletionModulesConfig(
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !request?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
+    }
+    if (prompt.template?.length && request?.messages?.length) {
+      logger.warn(
+        'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
+          'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
+          'To avoid duplication, use two separate clients: one with the template for the first turn, and one without for subsequent turns.'
+      );
     }
     prompt.template = [
       ...(prompt.template || []),
