@@ -29,7 +29,7 @@ export class SapOpenAi {
    * ```ts
    * import { SapOpenAi } from '@sap-ai-sdk/openai';
    *
-   * const client = await SapOpenAi.createClient('gpt-4.1');
+   * const client = await SapOpenAi.createClient('gpt-5.4');
    * await client.chat.completions.create({
    *   messages: [{ role: 'user', content: 'Hello!' }]
    * });
