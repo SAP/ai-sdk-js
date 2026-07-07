@@ -33,7 +33,10 @@ import type {
 } from './client/api/schema/index.js';
 
 /**
- * Chat completion request configuration.
+ * Per-request inputs for a chat completion call.
+ * Only `messages`, `messagesHistory`, and `placeholderValues` are accepted here.
+ * Model parameters (`temperature`, `max_tokens`, etc.), `tools`, and `response_format`
+ * must be configured in the {@link OrchestrationModuleConfig} passed to the constructor.
  */
 export interface ChatCompletionRequest {
   /**
@@ -159,7 +162,14 @@ export interface TranslationModule {
 export type OrchestrationErrorResponse = ErrorResponse;
 
 /**
- * Model Parameters for LLM module configuration.
+ * Model parameters for the LLM module configuration.
+ * These are set once at client construction and apply to every request made by this client.
+ * To use different parameters for a request, create a new {@link OrchestrationClient} instance.
+ * You can pass model-specific parameters, that are not specified in `LlmModelParams` (e.g. `tool_choice`, `reasoning_effort`), but behavior depends on the underlying model provider.
+ * @example
+ * params: { temperature: 0.7, max_tokens: 512 }
+ * @example
+ * params: { reasoning_effort: 'high' }
  */
 export type LlmModelParams = {
   max_tokens?: number;
@@ -172,6 +182,12 @@ export type LlmModelParams = {
 
 /**
  * Representation of the 'Template' schema.
+ * Includes `tools` and `response_format` inherited from the base template type.
+ * @remarks
+ * `tools` and `response_format` are fixed at construction time; create a new {@link OrchestrationClient}
+ * to use different tools or response format for a request.
+ * `tool_choice` is not part of the Orchestration Service template schema.
+ * You can pass it as a model-specific parameter not specified in `LlmModelParams`, but behavior depends on the underlying model provider.
  */
 export type PromptTemplate = Omit<Template, 'template'> & {
   /**
@@ -665,8 +681,7 @@ export interface DocumentTranslationApplyToSelector {
  * Target language for translation, either a language code or a selector configuration.
  */
 export type TranslationTargetLanguage =
-  | string
-  | DocumentTranslationApplyToSelector;
+  string | DocumentTranslationApplyToSelector;
 
 /**
  * Input parameters for translation configuration.

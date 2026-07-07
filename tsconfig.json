@@ -1,16 +1,10 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["es2023"],
-    "module": "Node16",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "types": ["node"]
-  }
+    "rootDir": ".",
+    "noEmit": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["packages/**/*.ts", "test-util/**/*.ts"],
+  "exclude": ["dist/**/*", "node_modules/**/*"]
 }

@@ -10,9 +10,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
  * Union of all supported Azure OpenAI model names.
  */
 export type SapModelName =
-  | AzureOpenAiChatModel
-  | AzureOpenAiEmbeddingModel
-  | AzureOpenAiResponsesModel;
+  AzureOpenAiChatModel | AzureOpenAiEmbeddingModel | AzureOpenAiResponsesModel;
 
 /**
  * Options for creating a pre-configured Azure OpenAI client or config for SAP AI Core.
