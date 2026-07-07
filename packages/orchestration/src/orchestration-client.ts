@@ -264,17 +264,17 @@ export class OrchestrationClient {
   }
 
   /**
-   * Validate if a string is valid JSON.
-   * @param config - The JSON string to validate.
+   * Warn if an inline template is reused across multiple calls.
+   * @param request - The chat completion request to check.
    */
   private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
     if (this.callCount <= 1 || !request?.messages?.length) {
       return;
     }
-    const configs = Array.isArray(this.config)
-      ? this.config
+    const configs: OrchestrationModuleConfig[] = Array.isArray(this.config)
+      ? (this.config as OrchestrationModuleConfig[])
       : !isConfigReference(this.config) && typeof this.config !== 'string'
-        ? [this.config]
+        ? [this.config as OrchestrationModuleConfig]
         : [];
     const hasInlineTemplate = configs.some(
       c =>

@@ -407,7 +407,11 @@ export class OrchestrationClient extends BaseChatModel<
     const configs = Array.isArray(mergedOrchestrationConfig)
       ? mergedOrchestrationConfig
       : [mergedOrchestrationConfig];
-    warnTemplateUsage(configs, orchestrationMessages.length > 0, this.callCount);
+    warnTemplateUsage(
+      configs,
+      orchestrationMessages.length > 0,
+      this.callCount
+    );
 
     const orchestrationClient = new OrchestrationClientBase(
       mergedOrchestrationConfig,
