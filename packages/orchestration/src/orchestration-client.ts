@@ -52,6 +52,7 @@ const logger = createLogger({
  * create a new `OrchestrationClient` instance with the desired configuration.
  */
 export class OrchestrationClient {
+  private callCount: number = 0;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration configuration. Can be:
@@ -96,11 +97,13 @@ export class OrchestrationClient {
     }
   ): Promise<OrchestrationResponse> {
     requestConfig?.signal?.throwIfAborted();
+    this.callCount++;
     if (isConfigReference(this.config) && request?.messages?.length) {
       logger.warn(
         'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
       );
     }
+    this.warnInlineTemplateOnReuse(request);
     const response = await this.executeRequest({
       request,
       requestConfig,
@@ -134,6 +137,7 @@ export class OrchestrationClient {
       });
     }
 
+    this.callCount++;
     try {
       if (typeof this.config === 'string' && options) {
         logger.warn(
@@ -152,6 +156,7 @@ export class OrchestrationClient {
           );
         }
       }
+      this.warnInlineTemplateOnReuse(request);
 
       return await this.createStreamResponse(
         {
@@ -262,6 +267,32 @@ export class OrchestrationClient {
    * Validate if a string is valid JSON.
    * @param config - The JSON string to validate.
    */
+  private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
+    if (this.callCount <= 1 || !request?.messages?.length) {
+      return;
+    }
+    const configs = Array.isArray(this.config)
+      ? this.config
+      : !isConfigReference(this.config) && typeof this.config !== 'string'
+        ? [this.config]
+        : [];
+    const hasInlineTemplate = configs.some(
+      c =>
+        c.promptTemplating.prompt &&
+        typeof c.promptTemplating.prompt === 'object' &&
+        !('template_ref' in c.promptTemplating.prompt) &&
+        Array.isArray((c.promptTemplating.prompt as any).template) &&
+        (c.promptTemplating.prompt as any).template.length > 0
+    );
+    if (hasInlineTemplate) {
+      logger.warn(
+        'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
+          'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
+          'To avoid duplication, use two separate clients: one with the template for the first turn, and one without for subsequent turns.'
+      );
+    }
+  }
+
   private validateJsonConfig(config: string): void {
     try {
       JSON.parse(config);

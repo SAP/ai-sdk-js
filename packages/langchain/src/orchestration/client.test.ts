@@ -1387,7 +1387,7 @@ describe('orchestration service client', () => {
     });
   });
 
-  describe('template_ref warnings', () => {
+  describe('template warnings', () => {
     const configWithTemplateRef: LangChainOrchestrationModuleConfig = {
       promptTemplating: {
         model: { name: 'gpt-5.4-nano', params: {} },
@@ -1397,90 +1397,146 @@ describe('orchestration service client', () => {
       }
     };
 
-    it('warns in _generate when template_ref config is used with messages', async () => {
-      mockInference(
-        () => true,
-        { data: mockResponse, status: 200 },
-        endpoint
-      );
+    const configWithInlineTemplate: LangChainOrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: {} },
+        prompt: {
+          template: [{ role: 'system', content: 'You are a helpful assistant.' }]
+        }
+      }
+    };
 
+    function getWarnSpy() {
       const logger = createLogger({
         package: 'langchain',
         messageContext: 'orchestration-client'
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
+      return jest.spyOn(logger, 'warn');
+    }
 
-      const client = new OrchestrationClient(configWithTemplateRef);
-      await client.invoke([{ role: 'user', content: 'Hello!' }]);
+    describe('template_ref', () => {
+      it('warns in _generate when used with messages', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
 
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('template_ref')
-      );
+        await new OrchestrationClient(configWithTemplateRef).invoke([
+          { role: 'user', content: 'Hello!' }
+        ]);
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('does not warn in _generate when used without messages', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        await new OrchestrationClient(configWithTemplateRef).invoke([]);
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('warns in _streamResponseChunks when used with messages', async () => {
+        mockInference(() => true, { data: mockResponseStream, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        const stream = await new OrchestrationClient(configWithTemplateRef).stream([
+          { role: 'user', content: 'Hello!' }
+        ]);
+        for await (const _ of stream) { /* noop */ }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('does not warn in _streamResponseChunks when used without messages', async () => {
+        mockInference(() => true, { data: mockResponseStream, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        const stream = await new OrchestrationClient(configWithTemplateRef).stream([]);
+        for await (const _ of stream) { /* noop */ }
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
     });
 
-    it('does not warn in _generate when template_ref config is used without messages', async () => {
-      mockInference(
-        () => true,
-        { data: mockResponse, status: 200 },
-        endpoint
-      );
+    describe('inline template', () => {
+      it('does not warn on first call in _generate', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
 
-      const logger = createLogger({
-        package: 'langchain',
-        messageContext: 'orchestration-client'
+        await new OrchestrationClient(configWithInlineTemplate).invoke([
+          { role: 'user', content: 'Hello!' }
+        ]);
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
 
-      const client = new OrchestrationClient(configWithTemplateRef);
-      await client.invoke([]);
+      it('warns on second call in _generate when reusing the same client', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
 
-      expect(warnSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining('template_ref')
-      );
-    });
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.invoke([{ role: 'user', content: 'First message' }]);
+        await client.invoke([{ role: 'user', content: 'Second message' }]);
 
-    it('warns in _streamResponseChunks when template_ref config is used with messages', async () => {
-      mockInference(
-        () => true,
-        { data: mockResponseStream, status: 200 },
-        endpoint
-      );
-
-      const logger = createLogger({
-        package: 'langchain',
-        messageContext: 'orchestration-client'
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
 
-      const client = new OrchestrationClient(configWithTemplateRef);
-      const stream = await client.stream([{ role: 'user', content: 'Hello!' }]);
-      for await (const _ of stream) { /* noop */ }
+      it('does not warn in _generate when used without messages', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
 
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('template_ref')
-      );
-    });
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.invoke([]);
+        await client.invoke([]);
 
-    it('does not warn in _streamResponseChunks when template_ref config is used without messages', async () => {
-      mockInference(
-        () => true,
-        { data: mockResponseStream, status: 200 },
-        endpoint
-      );
-
-      const logger = createLogger({
-        package: 'langchain',
-        messageContext: 'orchestration-client'
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
 
-      const client = new OrchestrationClient(configWithTemplateRef);
-      const stream = await client.stream([]);
-      for await (const _ of stream) { /* noop */ }
+      it('does not warn on first call in _streamResponseChunks', async () => {
+        mockInference(() => true, { data: mockResponseStream, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
 
-      expect(warnSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining('template_ref')
-      );
+        const stream = await new OrchestrationClient(configWithInlineTemplate).stream([
+          { role: 'user', content: 'Hello!' }
+        ]);
+        for await (const _ of stream) { /* noop */ }
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('warns on second call in _streamResponseChunks when reusing the same client', async () => {
+        mockInference(() => true, { data: mockResponseStream, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponseStream, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        const stream1 = await client.stream([{ role: 'user', content: 'First' }]);
+        for await (const _ of stream1) { /* noop */ }
+        const stream2 = await client.stream([{ role: 'user', content: 'Second' }]);
+        for await (const _ of stream2) { /* noop */ }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
     });
   });
 });
