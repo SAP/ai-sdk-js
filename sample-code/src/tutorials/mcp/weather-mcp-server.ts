@@ -29,6 +29,13 @@ function buildForecastUrl(latitude: unknown, longitude: unknown): string {
   return url.toString();
 }
 
+interface GeocodingResponse {
+  results?: {
+    latitude: number;
+    longitude: number;
+  }[];
+}
+
 const server = new McpServer({
   name: 'Open-Meteo Weather MCP Server',
   version: '1.0.0'
@@ -48,7 +55,7 @@ server.registerTool(
     try {
       const geoUrl = buildGeocodingUrl(city);
       const geoResponse = await fetch(geoUrl);
-      const data = await geoResponse.json();
+      const data = (await geoResponse.json()) as GeocodingResponse;
 
       if (!data.results?.length) {
         return {

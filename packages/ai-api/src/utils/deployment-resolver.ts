@@ -172,6 +172,40 @@ export async function resolveDeploymentUrl(
 }
 
 /**
+ * Fetch a deployment by ID and return its URL.
+ * Throws if the request fails or the deployment has no URL.
+ * @param deploymentId - The ID of the deployment.
+ * @param resourceGroup - The resource group of the deployment.
+ * @param destination - The destination to use for the request.
+ * @returns A promise of the deployment URL.
+ * @internal
+ */
+export async function resolveDeploymentUrlById(
+  deploymentId: string,
+  resourceGroup: string,
+  destination?: HttpDestinationOrFetchOptions
+): Promise<string> {
+  const { deploymentUrl } = await DeploymentApi.deploymentGet(
+    deploymentId,
+    {},
+    { 'AI-Resource-Group': resourceGroup }
+  )
+    .execute(destination)
+    .catch((err: any) => {
+      throw new ErrorWithCause(
+        `Fetching deployment for ID '${deploymentId}' failed.`,
+        err
+      );
+    });
+  if (!deploymentUrl) {
+    throw new Error(
+      `Deployment for ID '${deploymentId}' has no deployment URL. Ensure the deployment is running.`
+    );
+  }
+  return deploymentUrl;
+}
+
+/**
  * Get all deployments that match the given criteria.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of an array of deployments.
@@ -202,6 +236,38 @@ export async function getAllDeployments(
   } catch (error: any) {
     throw new ErrorWithCause('Failed to fetch the list of deployments.', error);
   }
+}
+
+/**
+ * Resolve the deployment URL for a model deployment.
+ * If given a deployment ID, fetches the URL for that specific deployment.
+ * If given a model name, looks up a running deployment for that model.
+ * @param modelDeployment - Deployment identified by model name/version or by ID.
+ * @param options - Base resolution options (scenarioId, executableId, etc.) without `model` — that is derived from `modelDeployment`.
+ * @returns A promise of the deployment URL.
+ * @internal
+ */
+export async function resolveDeploymentUrlForModel(
+  modelDeployment: ModelDeployment,
+  options: Omit<DeploymentResolutionOptions, 'model'>
+): Promise<string> {
+  const resourceGroup =
+    options.resourceGroup ?? getResourceGroup(modelDeployment) ?? 'default';
+  if (isDeploymentIdConfig(modelDeployment)) {
+    return resolveDeploymentUrlById(
+      modelDeployment.deploymentId,
+      resourceGroup,
+      options.destination
+    );
+  }
+  const model = translateToFoundationModel(modelDeployment);
+  const url = await resolveDeploymentUrl({ ...options, resourceGroup, model });
+  if (!url) {
+    throw new Error(
+      `Deployment for model '${model.name}' has no deployment URL. Ensure the deployment is running.`
+    );
+  }
+  return url;
 }
 
 /**

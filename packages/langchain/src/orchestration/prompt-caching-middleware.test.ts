@@ -11,8 +11,7 @@ function getBindToolsOptions(
 ): Record<string, unknown> | undefined {
   const bindToolsMock = (model as any).bindTools as jest.Mock;
   return bindToolsMock.mock.calls.at(-1)?.[1] as
-    | Record<string, unknown>
-    | undefined;
+    Record<string, unknown> | undefined;
 }
 
 function stubModel<T extends LanguageModelLike>(model: T): T {

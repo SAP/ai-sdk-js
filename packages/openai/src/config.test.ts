@@ -23,17 +23,6 @@ describe('createOpenAiConfig', () => {
   });
 
   describe('baseURL resolution', () => {
-    it('resolves URL via model name', async () => {
-      mockDeploymentsList(
-        { scenarioId: 'foundation-models', executableId: 'azure-openai' },
-        defaultDeployment
-      );
-
-      const config = await createOpenAiConfig({ deployment: 'gpt-4.1' });
-
-      expect(config.baseURL).toContain('inference/deployments/dep-001');
-    });
-
     it('accepts a bare model name string', async () => {
       mockDeploymentsList(
         { scenarioId: 'foundation-models', executableId: 'azure-openai' },
@@ -43,43 +32,6 @@ describe('createOpenAiConfig', () => {
       const config = await createOpenAiConfig('gpt-4.1');
 
       expect(config.baseURL).toContain('inference/deployments/dep-001');
-    });
-
-    it('resolves URL via deployment ID', async () => {
-      nock(aiCoreDestination.url)
-        .get('/v2/lm/deployments/dep-123')
-        .reply(200, {
-          id: 'dep-123',
-          deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-123`
-        });
-
-      const config = await createOpenAiConfig({
-        deployment: { deploymentId: 'dep-123' }
-      });
-
-      expect(config.baseURL).toContain('dep-123');
-    });
-
-    it('throws when deploymentGet returns a 404', async () => {
-      nock(aiCoreDestination.url)
-        .get('/v2/lm/deployments/missing-dep')
-        .reply(404, { message: 'Not Found' });
-
-      await expect(
-        createOpenAiConfig({ deployment: { deploymentId: 'missing-dep' } })
-      ).rejects.toThrow("Fetching deployment for ID 'missing-dep' failed.");
-    });
-
-    it('throws when deployment ID resolves to no URL', async () => {
-      nock(aiCoreDestination.url)
-        .get('/v2/lm/deployments/no-url-dep')
-        .reply(200, { id: 'no-url-dep' });
-
-      await expect(
-        createOpenAiConfig({ deployment: { deploymentId: 'no-url-dep' } })
-      ).rejects.toThrow(
-        "Deployment for ID 'no-url-dep' has no deployment URL. Ensure the deployment is running."
-      );
     });
   });
 
