@@ -479,7 +479,6 @@ function getMessageSplitIndex(
     return 0;
   }
 
-
   return messages.findLastIndex(msg => msg.role === 'tool') + 1;
 }
 
