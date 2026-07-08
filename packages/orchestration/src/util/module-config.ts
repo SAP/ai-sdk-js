@@ -421,7 +421,11 @@ function buildCompletionModulesConfig(
     : { template: [] };
 
   if (isTemplate(prompt)) {
-    if (!prompt.template?.length && !request?.messages?.length) {
+    if (
+      promptTemplating.prompt &&
+      !prompt.template?.length &&
+      !request?.messages?.length
+    ) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     prompt.template = [
@@ -466,6 +470,14 @@ function getMessageSplitIndex(
     c?.promptTemplating?.hasOwnProperty('prompt')
   );
   if (!usesTemplate) {
+    return messages.length;
+  }
+
+  const usesTemplateRef = configs.some(c => {
+    const p = c?.promptTemplating?.prompt;
+    return !!p && typeof p === 'object' && 'template_ref' in p;
+  });
+  if (usesTemplateRef) {
     return messages.length;
   }
 
