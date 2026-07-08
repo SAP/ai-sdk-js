@@ -77,11 +77,16 @@ describe('orchestration service client', () => {
       delay?: number;
     },
     status: number = 200,
-    isStream?: boolean
+    isStream?: boolean,
+    inputMessages = messages
   ) {
     mockInference(
       {
-        data: constructCompletionPostRequest(config, { messages }, isStream)
+        data: constructCompletionPostRequest(
+          config,
+          { messages: inputMessages },
+          isStream
+        )
       },
       {
         data: response,
@@ -157,7 +162,8 @@ describe('orchestration service client', () => {
         mockResponseStream,
         { delay: 2000 },
         200,
-        true
+        true,
+        []
       );
 
       let finalOutput: AIMessageChunk | undefined;
