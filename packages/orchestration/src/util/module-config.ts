@@ -449,7 +449,7 @@ function buildCompletionModulesConfig(
  *
  * Routing is skipped when:
  * - placeholder values are set (user has opted into templating)
- * - any config has a `prompt` property (Template or TemplateRef)
+ * - any config has a `prompt` property (Template or TemplateRef).
  *
  * When no config has a `prompt` property, all messages are routed (splitIndex = messages.length).
  * @param configs - The orchestration module configurations.
