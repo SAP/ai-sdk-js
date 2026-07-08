@@ -479,15 +479,6 @@ function getMessageSplitIndex(
     return 0;
   }
 
-  const hasStaticPrompt = configs.some(c => {
-    const prompt = c?.promptTemplating?.prompt;
-    return (
-      isTemplate(prompt) && (prompt.template?.length || prompt.tools?.length)
-    );
-  });
-  if (hasStaticPrompt) {
-    return 0;
-  }
 
   return messages.findLastIndex(msg => msg.role === 'tool') + 1;
 }
