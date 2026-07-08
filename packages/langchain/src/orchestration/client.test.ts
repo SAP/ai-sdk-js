@@ -81,19 +81,7 @@ describe('orchestration service client', () => {
   ) {
     mockInference(
       {
-        data: constructCompletionPostRequest(
-          {
-            ...config,
-            promptTemplating: {
-              ...config.promptTemplating,
-              prompt: {
-                template: messages
-              }
-            }
-          },
-          { messages: [] },
-          isStream
-        )
+        data: constructCompletionPostRequest(config, { messages }, isStream)
       },
       {
         data: response,
@@ -403,19 +391,7 @@ describe('orchestration service client', () => {
     it('supports streaming responses', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -437,19 +413,7 @@ describe('orchestration service client', () => {
     it('supports auto-streaming responses', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -476,19 +440,7 @@ describe('orchestration service client', () => {
     it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            false
-          )
+          data: constructCompletionPostRequest(config, { messages }, false)
         },
         {
           data: mockResponse,
@@ -552,19 +504,7 @@ describe('orchestration service client', () => {
     it('streams and aborts with a signal', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -588,19 +528,7 @@ describe('orchestration service client', () => {
     it('streams with a callback', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -636,19 +564,7 @@ describe('orchestration service client', () => {
     it('supports streaming responses with tool calls', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStreamToolCalls,
@@ -677,19 +593,7 @@ describe('orchestration service client', () => {
   it('streams when invoked in a streaming langgraph', async () => {
     mockInference(
       {
-        data: constructCompletionPostRequest(
-          {
-            ...config,
-            promptTemplating: {
-              ...config.promptTemplating,
-              prompt: {
-                template: messages
-              }
-            }
-          },
-          { messages: [] },
-          true
-        )
+        data: constructCompletionPostRequest(config, { messages }, true)
       },
       {
         data: mockResponseStream,
@@ -755,27 +659,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: constructCompletionPostRequest(
-            [
-              {
-                ...primaryConfig,
-                promptTemplating: {
-                  ...primaryConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              },
-              {
-                ...fallbackConfig,
-                promptTemplating: {
-                  ...fallbackConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              }
-            ],
-            { messages: [] }
+            [primaryConfig, fallbackConfig],
+            { messages }
           )
         },
         {
@@ -812,27 +697,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: constructCompletionPostRequest(
-            [
-              {
-                ...primaryConfig,
-                promptTemplating: {
-                  ...primaryConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              },
-              {
-                ...fallbackConfig,
-                promptTemplating: {
-                  ...fallbackConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              }
-            ],
-            { messages: [] },
+            [primaryConfig, fallbackConfig],
+            { messages },
             true
           )
         },
@@ -891,9 +757,6 @@ describe('orchestration service client', () => {
                       ...primaryConfig.promptTemplating.model.params,
                       stop: ['PRIMARY_STOP', 'END']
                     }
-                  },
-                  prompt: {
-                    template: messages
                   }
                 }
               },
@@ -907,14 +770,11 @@ describe('orchestration service client', () => {
                       ...fallbackConfig.promptTemplating.model.params,
                       stop: ['FALLBACK_STOP', 'END']
                     }
-                  },
-                  prompt: {
-                    template: messages
                   }
                 }
               }
             ],
-            { messages: [] }
+            { messages }
           )
         },
         {
