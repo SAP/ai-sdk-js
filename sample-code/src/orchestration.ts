@@ -865,6 +865,44 @@ export async function orchestrationToolResultMaskingInMessagesHistory(): Promise
 }
 
 /**
+ * Verify that the SDK correctly routes all messages to messages_history when
+ * the last message is a tool result (no trailing user message).
+ * @returns The orchestration service response.
+ */
+export async function orchestrationToolLastMessageInMessages(): Promise<OrchestrationResponse> {
+  const client = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'anthropic--claude-4.5-haiku' }
+    }
+  });
+
+  const assistantMessage: AssistantChatMessage = {
+    role: 'assistant',
+    tool_calls: [
+      {
+        id: 'call_abc123',
+        type: 'function',
+        function: { name: 'lookup', arguments: '{"id":"1"}' }
+      }
+    ]
+  };
+
+  const toolMessage: ToolChatMessage = {
+    role: 'tool',
+    content: 'Result: done',
+    tool_call_id: 'call_abc123'
+  };
+
+  return client.chatCompletion({
+    messages: [
+      { role: 'user', content: 'Call the lookup tool.' },
+      assistantMessage,
+      toolMessage
+    ]
+  });
+}
+
+/**
  * Use translation module for input and output translation with advanced features.
  * @returns The orchestration service response.
  */

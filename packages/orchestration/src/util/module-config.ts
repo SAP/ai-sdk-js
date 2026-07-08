@@ -416,12 +416,9 @@ function buildCompletionModulesConfig(
     config;
 
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const prompt = {
-    ...(promptTemplating.prompt as Template | TemplateRef)
-  };
-
-  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
-  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
+  const prompt: Template | TemplateRef = promptTemplating.prompt
+    ? { ...(promptTemplating.prompt as Template | TemplateRef) }
+    : { template: [] };
 
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !request?.messages?.length) {
@@ -452,9 +449,9 @@ function buildCompletionModulesConfig(
  *
  * Routing is skipped when:
  * - placeholder values are set (user has opted into templating)
- * - any config has a non-empty static prompt.template or prompt.tools.
+ * - any config has a `prompt` property (Template or TemplateRef)
  *
- * When a TemplateRef is used, all messages are routed (splitIndex = messages.length).
+ * When no config has a `prompt` property, all messages are routed (splitIndex = messages.length).
  * @param configs - The orchestration module configurations.
  * @param messages - The chat messages to evaluate.
  * @param request - The optional chat completion request containing placeholder values.
@@ -465,10 +462,10 @@ function getMessageSplitIndex(
   messages: ChatMessage[],
   request?: ChatCompletionRequest
 ): number {
-  const usesTemplateRef = configs.some(c =>
-    isTemplateRef(c?.promptTemplating?.prompt || {})
+  const usesTemplate = configs.some(c =>
+    c?.promptTemplating?.hasOwnProperty('prompt')
   );
-  if (usesTemplateRef) {
+  if (!usesTemplate) {
     return messages.length;
   }
 
@@ -487,14 +484,6 @@ function isTemplate(templating: unknown): templating is Template {
     !!templating &&
     typeof templating === 'object' &&
     !('template_ref' in templating)
-  );
-}
-
-function isTemplateRef(templating: unknown): templating is TemplateRef {
-  return (
-    !!templating &&
-    typeof templating === 'object' &&
-    'template_ref' in templating
   );
 }
 

@@ -439,19 +439,21 @@ describe('construct completion post request', () => {
       expect(result.messages_history).toEqual([assistantMessage]);
     });
 
-    it('should not auto-route when config has a static prompt template', () => {
-      // static template present → auto-routing disabled, tool message stays in prompt.template
+    it('should auto-route tool messages even when config has a static prompt template', () => {
       const result: any = constructCompletionPostRequest(defaultConfig, {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      expect(result.messages_history).toBeUndefined();
+      expect(result.messages_history).toEqual([assistantMessage, toolMessage]);
       expect(
         result.config.modules.prompt_templating.prompt.template
-      ).toContainEqual(toolMessage);
+      ).not.toContainEqual(toolMessage);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toContainEqual(userMessage);
     });
 
-    it('should not auto-route when config has prompt.tools (no template)', () => {
+    it('should auto-route tool messages when config has prompt.tools (no template)', () => {
       const toolsConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: { name: 'gpt-5.4-nano' },
@@ -473,10 +475,13 @@ describe('construct completion post request', () => {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      expect(result.messages_history).toBeUndefined();
+      expect(result.messages_history).toEqual([assistantMessage, toolMessage]);
       expect(
         result.config.modules.prompt_templating.prompt.template
-      ).toContainEqual(toolMessage);
+      ).toContainEqual(userMessage);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).not.toContainEqual(toolMessage);
     });
   });
 });

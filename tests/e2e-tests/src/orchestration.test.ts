@@ -26,7 +26,8 @@ import {
   orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs,
   orchestrationToolResultInMessages,
-  orchestrationToolResultMaskingInMessagesHistory
+  orchestrationToolResultMaskingInMessagesHistory,
+  orchestrationToolLastMessageInMessages
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -357,6 +358,15 @@ describe('orchestration', () => {
       expect(roles.lastIndexOf('user')).toBeGreaterThan(
         roles.lastIndexOf('tool')
       );
+    });
+
+    it('should succeed when the last message is of type tool', async () => {
+      const response = await orchestrationToolLastMessageInMessages();
+      expect(response.getContent()).toEqual(expect.any(String));
+
+      const templating = response.getIntermediateResults().templating;
+      const roles = templating!.map(m => m.role);
+      expect(roles[roles.length - 1]).toBe('tool');
     });
   });
 });
