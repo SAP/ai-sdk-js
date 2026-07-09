@@ -119,6 +119,28 @@ describe('mapBaseMessageToChatMessage', () => {
     });
   });
 
+  it('should clone system message content blocks so cache_control does not leak back', () => {
+    const systemMessage = new SystemMessage({
+      content: [{ type: 'text', text: 'System text' }]
+    });
+    const messages = mapLangChainMessagesToOrchestrationMessages([
+      systemMessage
+    ]);
+
+    applyCacheControlToLastMessage(messages, { type: 'ephemeral', ttl: '5m' });
+
+    expect(messages[0].content).toEqual([
+      {
+        type: 'text',
+        text: 'System text',
+        cache_control: { type: 'ephemeral', ttl: '5m' }
+      }
+    ]);
+    expect(systemMessage.content).toEqual([
+      { type: 'text', text: 'System text' }
+    ]);
+  });
+
   it('should map AIMessage to ChatMessage with assistant role', () => {
     const aiMessage = new AIMessage('AI message content');
 
@@ -428,7 +450,7 @@ describe('mapOutputToChatResult', () => {
     });
   });
 
-  it('should default missing reasoning_tokens to 0 when completion_tokens_details is present', () => {
+  it('should omit output_token_details when reasoning_tokens is absent', () => {
     const completionResponse: CompletionPostResponse = {
       final_result: {
         id: 'test-id',
@@ -459,9 +481,7 @@ describe('mapOutputToChatResult', () => {
     const result = mapOutputToChatResult(completionResponse);
     const message = result.generations[0].message as AIMessage;
 
-    expect(message.usage_metadata?.output_token_details).toEqual({
-      reasoning: 0
-    });
+    expect(message.usage_metadata?.output_token_details).toBeUndefined();
   });
 });
 
@@ -735,6 +755,25 @@ describe('applyCacheControlToLastMessage', () => {
         {
           type: 'text',
           text: 'Tool result.',
+          cache_control: cacheControl
+        }
+      ]
+    });
+  });
+
+  it('wraps a string developer message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [
+      { role: 'developer', content: 'Prefer concise answers.' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'developer',
+      content: [
+        {
+          type: 'text',
+          text: 'Prefer concise answers.',
           cache_control: cacheControl
         }
       ]
