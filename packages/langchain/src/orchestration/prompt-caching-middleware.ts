@@ -35,8 +35,16 @@ class OrchestrationPromptCachingMiddlewareError extends Error {
  * directive. See the
  * {@link https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching | SAP AI Core prompt caching docs}
  * for the current matrix of supported models and breakpoint limits.
+ * @remarks
+ * This dedicated subpath depends on the optional `langchain` peer dependency.
+ * Importing `@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware`
+ * fails during module resolution when `langchain` is not installed.
  * @param middlewareOptions - Configuration options forwarded verbatim to `anthropicPromptCachingMiddleware`. See {@link PromptCachingMiddlewareConfig}.
  * @returns A middleware instance that can be passed to `createAgent`.
+ * @throws {OrchestrationPromptCachingMiddlewareError} If the upstream `langchain`
+ * middleware shape changes and no `contextSchema` can be extracted.
+ * @throws {OrchestrationPromptCachingMiddlewareError} If `unsupportedModelBehavior`
+ * is set to `'raise'` and the middleware is used with a non-Orchestration model.
  * @example
  * Basic usage with default settings
  * ```typescript
