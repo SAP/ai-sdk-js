@@ -360,7 +360,7 @@ function buildUsageMetadata(usage: TokenUsage): {
     input_tokens: usage.prompt_tokens,
     output_tokens: usage.completion_tokens,
     total_tokens: usage.total_tokens,
-    ...(usage.prompt_tokens_details && {
+    ...(usage.prompt_tokens_details?.cached_tokens !== undefined && {
       input_token_details: {
         cache_read: usage.prompt_tokens_details.cached_tokens ?? 0,
         cache_creation: usage.prompt_tokens_details.cache_creation_tokens ?? 0
