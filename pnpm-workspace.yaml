@@ -32,6 +32,8 @@ minimumReleaseAgeExclude:
   - form-data@4.0.6
   - js-yaml@4.1.2
   - hono@4.12.25
+  - typescript@7.0.2
+  - '@typescript/*'
 shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 131400 # 3 months
