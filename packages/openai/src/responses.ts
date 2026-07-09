@@ -1,4 +1,5 @@
 import { Responses } from 'openai/resources/responses/responses';
+import type { AzureOpenAiResponsesModel } from '@sap-ai-sdk/core';
 import type { OpenAI } from 'openai';
 import type {
   Response,
@@ -14,7 +15,7 @@ import type {
 } from 'openai/lib/ResponsesParser';
 import type { Stream } from 'openai/streaming';
 import type { APIPromise } from 'openai/api-promise';
-import type { WithoutModel } from './completions.js';
+import type { WithOptionalModel } from './types.js';
 
 type RequestOptions = Parameters<Responses['create']>[1];
 
@@ -37,24 +38,28 @@ export class SapResponses {
    * @returns A promise resolving to a {@link Response}, or a {@link Stream} of {@link ResponseStreamEvent} when `stream: true` is set.
    */
   create(
-    body: WithoutModel<ResponseCreateParamsNonStreaming>,
+    body: WithOptionalModel<
+      ResponseCreateParamsNonStreaming,
+      AzureOpenAiResponsesModel
+    >,
     options?: RequestOptions
   ): APIPromise<Response>;
   create(
-    body: WithoutModel<ResponseCreateParamsStreaming>,
+    body: WithOptionalModel<
+      ResponseCreateParamsStreaming,
+      AzureOpenAiResponsesModel
+    >,
     options?: RequestOptions
   ): APIPromise<Stream<ResponseStreamEvent>>;
   create(
-    body: WithoutModel<ResponseCreateParamsBase>,
-    options?: RequestOptions
-  ): APIPromise<Response | Stream<ResponseStreamEvent>>;
-  create(
-    body: WithoutModel<ResponseCreateParamsBase>,
+    body: WithOptionalModel<
+      ResponseCreateParamsBase,
+      AzureOpenAiResponsesModel
+    >,
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
     return this.openAiResponses.create(
-      // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-      { ...body, model: '' } satisfies ResponseCreateParamsBase,
+      body satisfies ResponseCreateParamsBase,
       options
     );
   }
@@ -67,7 +72,7 @@ export class SapResponses {
    * @returns A promise resolving to a {@link ParsedResponse} with the parsed output.
    */
   parse<
-    Params extends WithoutModel<ResponseCreateParamsWithTools>,
+    Params extends WithOptionalModel<ResponseCreateParamsWithTools>,
     ParsedT = ExtractParsedContentFromParams<Params & { model: string }>
   >(
     body: Params,
@@ -75,9 +80,9 @@ export class SapResponses {
   ): APIPromise<ParsedResponse<ParsedT>> {
     return this.openAiResponses.parse(
       {
-        // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
         ...body,
-        model: ''
+        // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
+        model: body.model || ''
       } satisfies ResponseCreateParamsWithTools,
       options
     ) as APIPromise<ParsedResponse<ParsedT>>;

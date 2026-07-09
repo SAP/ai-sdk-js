@@ -2,6 +2,7 @@ import {
   openAiChatCompletion,
   openAiChatCompletionStream,
   openAiChatCompletionParse,
+  openAiChatCompletionPerRequestModel,
   openAiComputeEmbedding,
   responsesApi,
   responsesApiStream,
@@ -32,6 +33,11 @@ describe('Azure OpenAI via OpenAI SDK', () => {
   it('should parse a chat completion with structured output', async () => {
     const result = await openAiChatCompletionParse();
     expect(result).toEqual('Paris');
+  });
+
+  it('should allow setting a model per request', async () => {
+    const result = await openAiChatCompletionPerRequestModel();
+    expect(result).toContain('Paris');
   });
 
   it('should compute an embedding vector', async () => {
