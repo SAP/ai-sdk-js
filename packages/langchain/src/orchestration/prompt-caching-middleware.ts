@@ -1,18 +1,10 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { z } from 'zod';
 import { createMiddleware, anthropicPromptCachingMiddleware } from 'langchain';
 import type { AgentMiddleware, PromptCachingMiddlewareConfig } from 'langchain';
 
 const logger = createLogger({
   package: 'langchain',
   messageContext: 'prompt-caching-middleware'
-});
-
-const contextSchema = z.object({
-  enableCaching: z.boolean().optional(),
-  ttl: z.enum(['5m', '1h']).optional(),
-  minMessagesToCache: z.number().optional(),
-  unsupportedModelBehavior: z.enum(['ignore', 'warn', 'raise']).optional()
 });
 
 /**
@@ -68,18 +60,18 @@ class OrchestrationPromptCachingMiddlewareError extends Error {
 export function orchestrationPromptCachingMiddleware(
   middlewareOptions?: OrchestrationPromptCachingMiddlewareConfig
 ): AgentMiddleware {
+  const parentMiddleware = anthropicPromptCachingMiddleware(middlewareOptions);
+  const contextSchema = parentMiddleware.contextSchema;
+  if (!contextSchema) {
+    throw new OrchestrationPromptCachingMiddlewareError(
+      'Failed to extract contextSchema from langchain anthropicPromptCachingMiddleware.'
+    );
+  }
+
   return {
     name: 'OrchestrationPromptCachingMiddleware',
     contextSchema,
     wrapModelCall: (request, handler) => {
-      const inner = anthropicPromptCachingMiddleware(middlewareOptions);
-
-      if (!inner.contextSchema) {
-        throw new OrchestrationPromptCachingMiddlewareError(
-          'Failed to extract contextSchema from langchain anthropicPromptCachingMiddleware.'
-        );
-      }
-
       if (!request.model) {
         return handler(request);
       }
@@ -124,9 +116,9 @@ export function orchestrationPromptCachingMiddleware(
 
       const middleware = createMiddleware({
         name: 'OrchestrationPromptCachingMiddleware',
-        contextSchema: inner.contextSchema,
+        contextSchema,
         wrapModelCall: proxiedRequestHandler =>
-          inner.wrapModelCall!(proxiedRequestHandler, req =>
+          parentMiddleware.wrapModelCall!(proxiedRequestHandler, req =>
             handler({ ...req, model: realModel })
           )
       });
