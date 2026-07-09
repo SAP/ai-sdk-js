@@ -67,7 +67,10 @@ function warnTemplateUsage(
       typeof c.promptTemplating.prompt === 'object' &&
       isTemplateRef(c.promptTemplating.prompt)
   );
-  if (hasTemplateRef && hasMessages) {
+  // Only warn from the second call onward — the first call may be intentional
+  // (e.g. a single-node LangGraph client that knowingly routes messages to messages_history).
+  // Users following the two-client pattern will never see this warning.
+  if (hasTemplateRef && hasMessages && callCount > 1) {
     logger.warn(
       'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
         'The prompt template is defined remotely and cannot be extended inline. ' +
@@ -189,6 +192,10 @@ export class OrchestrationClient extends BaseChatModel<
     const configs = Array.isArray(mergedOrchestrationConfig)
       ? mergedOrchestrationConfig
       : [mergedOrchestrationConfig];
+    // OrchestrationClientBase is created fresh below, so its callCount is always 1
+    // and warnInlineTemplateOnReuse there will only emit an info log, never a reuse warning.
+    // This LangChain-level warnTemplateUsage, driven by this.callCount, is the authoritative
+    // reuse check for LangChain consumers.
     warnTemplateUsage(configs, allMessages.length > 0, this.callCount);
 
     const res = await this.caller.callWithOptions(
@@ -407,6 +414,9 @@ export class OrchestrationClient extends BaseChatModel<
     const configs = Array.isArray(mergedOrchestrationConfig)
       ? mergedOrchestrationConfig
       : [mergedOrchestrationConfig];
+    // Same rationale as in _generate: a fresh OrchestrationClientBase is created below,
+    // so its warnInlineTemplateOnReuse only emits an info log (callCount === 1).
+    // This call is the reuse-warning entry point for LangChain streaming consumers.
     warnTemplateUsage(
       configs,
       orchestrationMessages.length > 0,

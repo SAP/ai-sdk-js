@@ -100,7 +100,9 @@ export class OrchestrationClient {
     this.callCount++;
     if (isConfigReference(this.config) && request?.messages?.length) {
       logger.warn(
-        'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
+        'Messages passed alongside an orchestration config reference are sent as messages_history, not as part of the prompt template. ' +
+          'The prompt template is defined remotely and cannot be extended inline. ' +
+          'In LangGraph workflows, consider using two separate clients: one with the config reference for the first node, and one without for subsequent conversational nodes.'
       );
     }
     this.warnInlineTemplateOnReuse(request);
@@ -152,7 +154,9 @@ export class OrchestrationClient {
         }
         if (request?.messages?.length) {
           logger.warn(
-            'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
+            'Messages passed alongside an orchestration config reference are sent as messages_history, not as part of the prompt template. ' +
+              'The prompt template is defined remotely and cannot be extended inline. ' +
+              'In LangGraph workflows, consider using two separate clients: one with the config reference for the first node, and one without for subsequent conversational nodes.'
           );
         }
       }
@@ -264,11 +268,19 @@ export class OrchestrationClient {
   }
 
   /**
-   * Warn if an inline template is reused across multiple calls.
+   * Log template + messages interaction on every call.
+   * - First call: info log so the prepend behavior is visible immediately.
+   * - Subsequent calls with the same client: warn about duplication risk.
+   *
+   * Note: when this client is used via the LangChain adapter, each _generate /
+   * _streamResponseChunks call constructs a fresh OrchestrationClient instance,
+   * so callCount here will always be 1 and the reuse warning below never fires.
+   * The LangChain client tracks its own callCount and delegates to warnTemplateUsage
+   * in langchain/src/orchestration/client.ts — that is the intentional split.
    * @param request - The chat completion request to check.
    */
   private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
-    if (this.callCount <= 1 || !request?.messages?.length) {
+    if (!request?.messages?.length) {
       return;
     }
     const configs: OrchestrationModuleConfig[] = Array.isArray(this.config)
@@ -284,7 +296,14 @@ export class OrchestrationClient {
         Array.isArray((c.promptTemplating.prompt as any).template) &&
         (c.promptTemplating.prompt as any).template.length > 0
     );
-    if (hasInlineTemplate) {
+    if (!hasInlineTemplate) {
+      return;
+    }
+    if (this.callCount === 1) {
+      logger.info(
+        'A prompt template is defined and messages are provided. The template will be prepended to the messages on this request.'
+      );
+    } else {
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +

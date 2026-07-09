@@ -1301,7 +1301,7 @@ describe('orchestration service client', () => {
       });
 
       expect(warnSpy).toHaveBeenCalledWith(
-        'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
+        expect.stringContaining('cannot be extended inline')
       );
     });
 
@@ -1353,7 +1353,7 @@ describe('orchestration service client', () => {
       }
 
       expect(warnSpy).toHaveBeenCalledWith(
-        'Messages provided with an orchestration config reference will be sent as messages_history, not as part of the prompt template.'
+        expect.stringContaining('cannot be extended inline')
       );
     });
 
@@ -1443,6 +1443,167 @@ describe('orchestration service client', () => {
           /* empty */
         }
       }).rejects.toThrowErrorMatchingSnapshot();
+    });
+  });
+
+  describe('template warnings', () => {
+    const configWithInlineTemplate: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: {} },
+        prompt: {
+          template: [
+            { role: 'system', content: 'You are a helpful assistant.' }
+          ]
+        }
+      }
+    };
+
+    function getLoggerSpies() {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+      return {
+        warnSpy: jest.spyOn(logger, 'warn'),
+        infoSpy: jest.spyOn(logger, 'info')
+      };
+    }
+
+    describe('inline template', () => {
+      it('emits info on first call when template and messages are both provided', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { infoSpy, warnSpy } = getLoggerSpies();
+
+        await new OrchestrationClient(configWithInlineTemplate).chatCompletion({
+          messages: [{ role: 'user', content: 'Hello' }]
+        });
+
+        expect(infoSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('emits warn on second call when reusing the same client', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.chatCompletion({
+          messages: [{ role: 'user', content: 'First message' }]
+        });
+        await client.chatCompletion({
+          messages: [{ role: 'user', content: 'Second message' }]
+        });
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('does not emit warn when reusing without messages', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.chatCompletion({});
+        await client.chatCompletion({});
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+    });
+
+    describe('config reference', () => {
+      it('warns with full guidance when messages are passed alongside a config reference in chatCompletion', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        const configRef: OrchestrationConfigRef = { id: 'test-config-id' };
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        await new OrchestrationClient(configRef).chatCompletion({
+          messages: [{ role: 'user', content: 'Hello' }]
+        });
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('cannot be extended inline')
+        );
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('two separate clients')
+        );
+      });
+
+      it('warns with full guidance when messages are passed alongside a config reference in stream', async () => {
+        const configRef: OrchestrationConfigRef = { id: 'test-config-id' };
+        const streamMock = await parseFileToString(
+          'orchestration',
+          'orchestration-chat-completion-stream-chunks.txt'
+        );
+        mockInference(
+          () => true,
+          { data: streamMock, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        const response = await new OrchestrationClient(configRef).stream({
+          messages: [{ role: 'user', content: 'Hello' }]
+        });
+        for await (const _ of response.stream) {
+          /* noop */
+        }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('cannot be extended inline')
+        );
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('two separate clients')
+        );
+      });
     });
   });
 

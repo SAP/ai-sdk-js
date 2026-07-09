@@ -1417,7 +1417,7 @@ describe('orchestration service client', () => {
     }
 
     describe('template_ref', () => {
-      it('warns in _generate when used with messages', async () => {
+      it('does not warn in _generate on first call with messages', async () => {
         mockInference(
           () => true,
           { data: mockResponse, status: 200 },
@@ -1428,6 +1428,28 @@ describe('orchestration service client', () => {
         await new OrchestrationClient(configWithTemplateRef).invoke([
           { role: 'user', content: 'Hello!' }
         ]);
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('warns in _generate on second call when reusing the same client with messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        await client.invoke([{ role: 'user', content: 'First message' }]);
+        await client.invoke([{ role: 'user', content: 'Second message' }]);
 
         expect(warnSpy).toHaveBeenCalledWith(
           expect.stringContaining('template_ref')
@@ -1440,16 +1462,23 @@ describe('orchestration service client', () => {
           { data: mockResponse, status: 200 },
           endpoint
         );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
-        await new OrchestrationClient(configWithTemplateRef).invoke([]);
+        const client = new OrchestrationClient(configWithTemplateRef);
+        await client.invoke([]);
+        await client.invoke([]);
 
         expect(warnSpy).not.toHaveBeenCalledWith(
           expect.stringContaining('template_ref')
         );
       });
 
-      it('warns in _streamResponseChunks when used with messages', async () => {
+      it('does not warn in _streamResponseChunks on first call with messages', async () => {
         mockInference(
           () => true,
           { data: mockResponseStream, status: 200 },
@@ -1464,6 +1493,38 @@ describe('orchestration service client', () => {
           /* noop */
         }
 
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('warns in _streamResponseChunks on second call when reusing the same client with messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        const stream1 = await client.stream([
+          { role: 'user', content: 'First' }
+        ]);
+        for await (const _ of stream1) {
+          /* noop */
+        }
+        const stream2 = await client.stream([
+          { role: 'user', content: 'Second' }
+        ]);
+        for await (const _ of stream2) {
+          /* noop */
+        }
+
         expect(warnSpy).toHaveBeenCalledWith(
           expect.stringContaining('template_ref')
         );
@@ -1475,12 +1536,20 @@ describe('orchestration service client', () => {
           { data: mockResponseStream, status: 200 },
           endpoint
         );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
-        const stream = await new OrchestrationClient(
-          configWithTemplateRef
-        ).stream([]);
-        for await (const _ of stream) {
+        const client = new OrchestrationClient(configWithTemplateRef);
+        const stream1 = await client.stream([]);
+        for await (const _ of stream1) {
+          /* noop */
+        }
+        const stream2 = await client.stream([]);
+        for await (const _ of stream2) {
           /* noop */
         }
 
