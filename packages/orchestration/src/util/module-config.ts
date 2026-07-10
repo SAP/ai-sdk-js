@@ -483,7 +483,7 @@ function getMessageSplitIndex(
 
   const hasPlaceholderValues =
     !!request?.placeholderValues &&
-    Object.keys(request.placeholderValues).length > 0;
+    Object.keys(request.placeholderValues).length;
   if (hasPlaceholderValues) {
     return 0;
   }
