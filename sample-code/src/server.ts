@@ -21,7 +21,8 @@ import {
   responsesApiStream,
   responsesApiParse,
   responsesApiStateful,
-  responsesApiMultiTurn
+  responsesApiMultiTurn,
+  chatCompletionPerRequestModel
 } from './openai.js';
 import {
   orchestrationChatCompletion,
@@ -343,22 +344,32 @@ app.get('/openai/chat-completion-stream', async (req, res) => {
   }
 });
 
+app.get('/openai/chat-completion-parse', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await openAiSdkChatCompletionParse());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/openai/chat-completion-per-request-model', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await chatCompletionPerRequestModel());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
 app.get('/openai/embedding', async (req, res) => {
   try {
     const embedding = await openAiSdkComputeEmbedding();
     res
       .header('Content-Type', 'text/plain')
       .send(`Got embedding vector with ${embedding.length} dimensions.`);
-  } catch (error: any) {
-    sendError(res, error);
-  }
-});
-
-app.get('/openai/chat-completion-parse', async (req, res) => {
-  try {
-    res
-      .header('Content-Type', 'text/plain')
-      .send(await openAiSdkChatCompletionParse());
   } catch (error: any) {
     sendError(res, error);
   }

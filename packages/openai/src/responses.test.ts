@@ -14,10 +14,14 @@ const responses = new SapResponses(fakeClient);
 
 describe('SapResponses', () => {
   describe('create', () => {
-    it("injects model: '' before calling openai responses.create", async () => {
+    it('forwards input to openai responses.create without injecting model', async () => {
       await responses.create({ input: 'Hello' });
       expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '', input: 'Hello' }),
+        expect.objectContaining({ input: 'Hello' }),
+        undefined
+      );
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.not.objectContaining({ model: expect.anything() }),
         undefined
       );
     });
@@ -26,7 +30,11 @@ describe('SapResponses', () => {
       const controller = new AbortController();
       await responses.create({ input: 'Hello' }, { signal: controller.signal });
       expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '' }),
+        expect.objectContaining({ input: 'Hello' }),
+        { signal: controller.signal }
+      );
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.not.objectContaining({ model: expect.anything() }),
         { signal: controller.signal }
       );
     });

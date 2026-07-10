@@ -107,6 +107,7 @@ export {
   chatCompletionStream as openAiChatCompletionStream,
   chatCompletionParse as openAiChatCompletionParse,
   computeEmbedding as openAiComputeEmbedding,
+  chatCompletionPerRequestModel as openAiChatCompletionPerRequestModel,
   responsesApi,
   responsesApiStream,
   responsesApiParse,

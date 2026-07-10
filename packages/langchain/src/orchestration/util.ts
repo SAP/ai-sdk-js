@@ -17,6 +17,7 @@ import type {
   ChatMessage,
   ChatMessageContent,
   CompletionPostResponse,
+  DeveloperChatMessage,
   FunctionObject,
   MessageToolCalls,
   SystemChatMessage,
@@ -159,27 +160,39 @@ function mapAiMessageToOrchestrationAssistantMessage(
     message.additional_kwargs.tool_calls;
   return {
     ...(tool_calls?.length ? { tool_calls } : {}),
-    content: message.content,
+    content: cloneMessageContent(message.content),
     role: 'assistant'
   } as AssistantChatMessage;
 }
 
-function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
-  if (Array.isArray(message.content)) {
-    message.content = message.content.map(content => ({
-      ...content,
-      ...(content.type === 'image_url' && typeof content.image_url === 'string'
-        ? {
-            image_url: {
-              url: content.image_url
-            }
-          }
-        : {})
-    }));
+function cloneMessageContent<TContent>(content: TContent): TContent {
+  if (!Array.isArray(content)) {
+    return content;
   }
+
+  // Shallow-clone blocks so cache_control mutations never touch caller-owned messages.
+  return content.map(block =>
+    block && typeof block === 'object' ? { ...block } : block
+  ) as TContent;
+}
+
+function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
+  const content = Array.isArray(message.content)
+    ? message.content.map(item => ({
+        ...item,
+        ...(item.type === 'image_url' && typeof item.image_url === 'string'
+          ? {
+              image_url: {
+                url: item.image_url
+              }
+            }
+          : {})
+      }))
+    : message.content;
+
   return {
     role: 'user',
-    content: message.content
+    content
   } as UserChatMessage;
 }
 
@@ -196,7 +209,7 @@ function mapSystemMessageToOrchestrationSystemMessage(
   }
   return {
     role: 'system',
-    content: message.content as ChatMessageContent
+    content: cloneMessageContent(message.content) as ChatMessageContent
   };
 }
 
@@ -213,7 +226,7 @@ function mapToolMessageToOrchestrationToolMessage(
   }
   return {
     role: 'tool',
-    content: message.content as ChatMessageContent,
+    content: cloneMessageContent(message.content) as ChatMessageContent,
     tool_call_id: message.tool_call_id
   };
 }
@@ -246,8 +259,15 @@ export function applyCacheControlToLastMessage(
   }
 
   if (typeof lastMessage.content === 'string') {
-    if (lastMessage.role === 'system' || lastMessage.role === 'tool') {
-      (lastMessage as SystemChatMessage | ToolChatMessage).content = [
+    if (
+      lastMessage.role === 'system' ||
+      lastMessage.role === 'tool' ||
+      lastMessage.role === 'developer'
+    ) {
+      (
+        lastMessage as
+          SystemChatMessage | ToolChatMessage | DeveloperChatMessage
+      ).content = [
         {
           type: 'text',
           text: lastMessage.content,
@@ -334,20 +354,20 @@ function buildUsageMetadata(usage: TokenUsage): {
   input_token_details?: { cache_read: number; cache_creation: number };
   output_token_details?: { reasoning: number };
 } {
+  const reasoning = usage.completion_tokens_details?.reasoning_tokens;
+
   return {
     input_tokens: usage.prompt_tokens,
     output_tokens: usage.completion_tokens,
     total_tokens: usage.total_tokens,
-    ...(usage.prompt_tokens_details && {
+    ...(usage.prompt_tokens_details?.cached_tokens !== undefined && {
       input_token_details: {
         cache_read: usage.prompt_tokens_details.cached_tokens ?? 0,
         cache_creation: usage.prompt_tokens_details.cache_creation_tokens ?? 0
       }
     }),
-    ...(usage.completion_tokens_details && {
-      output_token_details: {
-        reasoning: usage.completion_tokens_details.reasoning_tokens ?? 0
-      }
+    ...(reasoning !== undefined && {
+      output_token_details: { reasoning }
     })
   };
 }
