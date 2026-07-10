@@ -509,6 +509,12 @@ export class OrchestrationClient extends BaseChatModel<
       }
     }
 
+    // Ensure prompt exists when cache_control is used so messages are merged
+    // into prompt.template rather than routed to messages_history.
+    if (options.cache_control) {
+      config.promptTemplating.prompt ??= {};
+    }
+
     return config;
   }
 
