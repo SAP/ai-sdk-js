@@ -46,10 +46,11 @@ export interface ChatCompletionRequest {
 
   /**
    * New chat messages, including template messages.
-   * Messages with `role: 'tool'` — and all messages preceding them — are automatically
-   * routed to `messages_history` to bypass prompt templating. This prevents tool results
-   * from external systems containing `{{?...}}` syntax from being misinterpreted as
-   * template placeholders. To verify the final message order sent to the LLM, use
+   * All messages are automatically routed to `messages_history` when no `prompt` is configured
+   * or a `TemplateRef` is used, bypassing prompt templating entirely.
+   * When a `Template` is configured, messages are merged into `prompt.template` as usual.
+   * Routing is skipped when `placeholderValues` are provided.
+   * To verify the final message order sent to the LLM, use
    * `response.getIntermediateResults().templating`.
    * @example
    * messages: [

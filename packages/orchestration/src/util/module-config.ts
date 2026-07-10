@@ -11,7 +11,6 @@ import {
   type EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
-  ChatMessage,
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
@@ -360,17 +359,12 @@ export function constructCompletionPostRequest(
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
 
   const configs = Array.isArray(config) ? config : [config];
-  const messages = request?.messages || [];
-  const splitIndex = getMessageSplitIndex(configs, messages, request);
+  const routeToHistory = shouldRouteMessagesToHistory(configs, request);
 
   let moduleRequest = request;
-  if (splitIndex > 0 && request) {
-    const remaining = messages.slice(splitIndex);
+  if (routeToHistory && request) {
     const { messages: _messages, ...rest } = request;
-    moduleRequest = {
-      ...rest,
-      ...(remaining.length && { messages: remaining })
-    };
+    moduleRequest = rest;
   }
 
   /**
@@ -393,8 +387,11 @@ export function constructCompletionPostRequest(
     : { modules: moduleConfigurations };
 
   const messagesHistory =
-    splitIndex > 0 || request?.messagesHistory?.length
-      ? [...(request?.messagesHistory || []), ...messages.slice(0, splitIndex)]
+    routeToHistory || request?.messagesHistory?.length
+      ? [
+          ...(request?.messagesHistory || []),
+          ...(request?.messages || [])
+        ]
       : undefined;
 
   return {
@@ -415,17 +412,30 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
+  const modules = {
+    ...(filtering && Object.keys(filtering).length && { filtering }),
+    ...(masking && Object.keys(masking).length && { masking }),
+    ...(grounding && Object.keys(grounding).length && { grounding }),
+    ...(translation && Object.keys(translation).length && { translation })
+  };
+
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const prompt: Template | TemplateRef = promptTemplating.prompt
-    ? { ...(promptTemplating.prompt as Template | TemplateRef) }
-    : { template: [] };
+  if (!promptTemplating.prompt) {
+    // No prompt configured: messages are already routed to messages_history upstream.
+    // Omit the prompt key entirely — it is optional per the service API.
+    const { prompt: _prompt, ...promptTemplatingWithoutPrompt } = promptTemplating;
+    return {
+      prompt_templating: promptTemplatingWithoutPrompt as PromptTemplatingModuleConfig,
+      ...modules
+    };
+  }
+
+  const prompt: Template | TemplateRef = {
+    ...(promptTemplating.prompt as Template | TemplateRef)
+  };
 
   if (isTemplate(prompt)) {
-    if (
-      promptTemplating.prompt &&
-      !prompt.template?.length &&
-      !request?.messages?.length
-    ) {
+    if (!prompt.template?.length && !request?.messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     prompt.template = [
@@ -439,56 +449,43 @@ function buildCompletionModulesConfig(
       ...promptTemplating,
       prompt
     },
-    ...(filtering && Object.keys(filtering).length && { filtering }),
-    ...(masking && Object.keys(masking).length && { masking }),
-    ...(grounding && Object.keys(grounding).length && { grounding }),
-    ...(translation && Object.keys(translation).length && { translation })
+    ...modules
   };
 }
 
 /**
- * Determines the split index for routing messages to messages_history.
- * Messages before splitIndex bypass prompt templating; messages from splitIndex onward
- * stay in prompt.template.
+ * Determines whether all messages should be routed to messages_history,
+ * bypassing prompt templating entirely.
  *
- * Routing is skipped when:
- * - placeholder values are set (user has opted into templating)
- * - any config has a `prompt` property (Template or TemplateRef).
+ * Routes to history when:
+ * - no `prompt` is configured (messages have nowhere to be merged)
+ * - a TemplateRef is used (remote template, messages cannot be merged in)
  *
- * When no config has a `prompt` property, all messages are routed (splitIndex = messages.length).
+ * Does NOT route to history when:
+ * - a Template is set (messages are merged into prompt.template)
+ * - placeholder_values are provided (user has opted into templating)
  * @param configs - The orchestration module configurations.
- * @param messages - The chat messages to evaluate.
- * @param request - The optional chat completion request containing placeholder values.
- * @returns The index at which to split messages between messages_history and prompt.template.
+ * @param request - The optional chat completion request.
+ * @returns True if all messages should be routed to messages_history.
  */
-function getMessageSplitIndex(
+function shouldRouteMessagesToHistory(
   configs: OrchestrationModuleConfig[],
-  messages: ChatMessage[],
   request?: ChatCompletionRequest
-): number {
-  const usesTemplate = configs.some(c =>
-    c?.promptTemplating?.hasOwnProperty('prompt')
-  );
-  if (!usesTemplate) {
-    return messages.length;
-  }
-
-  const usesTemplateRef = configs.some(c => {
-    const p = c?.promptTemplating?.prompt;
-    return !!p && typeof p === 'object' && 'template_ref' in p;
-  });
-  if (usesTemplateRef) {
-    return messages.length;
-  }
-
+): boolean {
   const hasPlaceholderValues =
     !!request?.placeholderValues &&
     Object.keys(request.placeholderValues).length;
   if (hasPlaceholderValues) {
-    return 0;
+    return false;
   }
 
-  return messages.findLastIndex(msg => msg.role === 'tool') + 1;
+  return configs.some(c => {
+    const prompt = c?.promptTemplating?.prompt;
+    if (!prompt) {
+      return true;
+    }
+    return typeof prompt === 'object' && 'template_ref' in prompt;
+  });
 }
 
 function isTemplate(templating: unknown): templating is Template {
