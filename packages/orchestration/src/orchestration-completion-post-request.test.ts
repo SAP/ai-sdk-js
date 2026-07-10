@@ -367,14 +367,14 @@ describe('construct completion post request', () => {
     it('should route all messages to messages_history when no prompt is configured', () => {
       const followUp = { role: 'user' as const, content: 'Follow up.' };
       const result: any = constructCompletionPostRequest(noTemplateConfig, {
-        messages: [
-          userMessage,
-          toolMessage,
-          followUp
-        ]
+        messages: [userMessage, toolMessage, followUp]
       });
 
-      expect(result.messages_history).toEqual([userMessage, toolMessage, followUp]);
+      expect(result.messages_history).toEqual([
+        userMessage,
+        toolMessage,
+        followUp
+      ]);
       expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
     });
 

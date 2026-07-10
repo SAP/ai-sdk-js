@@ -388,10 +388,7 @@ export function constructCompletionPostRequest(
 
   const messagesHistory =
     routeToHistory || request?.messagesHistory?.length
-      ? [
-          ...(request?.messagesHistory || []),
-          ...(request?.messages || [])
-        ]
+      ? [...(request?.messagesHistory || []), ...(request?.messages || [])]
       : undefined;
 
   return {
@@ -423,9 +420,11 @@ function buildCompletionModulesConfig(
   if (!promptTemplating.prompt) {
     // No prompt configured: messages are already routed to messages_history upstream.
     // Omit the prompt key entirely — it is optional per the service API.
-    const { prompt: _prompt, ...promptTemplatingWithoutPrompt } = promptTemplating;
+    const { prompt: _prompt, ...promptTemplatingWithoutPrompt } =
+      promptTemplating;
     return {
-      prompt_templating: promptTemplatingWithoutPrompt as PromptTemplatingModuleConfig,
+      prompt_templating:
+        promptTemplatingWithoutPrompt as PromptTemplatingModuleConfig,
       ...modules
     };
   }
@@ -459,11 +458,11 @@ function buildCompletionModulesConfig(
  *
  * Routes to history when:
  * - no `prompt` is configured (messages have nowhere to be merged)
- * - a TemplateRef is used (remote template, messages cannot be merged in)
+ * - a TemplateRef is used (remote template, messages cannot be merged in).
  *
  * Does NOT route to history when:
  * - a Template is set (messages are merged into prompt.template)
- * - placeholder_values are provided (user has opted into templating)
+ * - placeholder_values are provided (user has opted into templating).
  * @param configs - The orchestration module configurations.
  * @param request - The optional chat completion request.
  * @returns True if all messages should be routed to messages_history.
