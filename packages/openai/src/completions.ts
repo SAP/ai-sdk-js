@@ -1,4 +1,5 @@
 import { Completions } from 'openai/resources/chat/completions/completions';
+import type { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
 import type { OpenAI } from 'openai';
 import type {
   ChatCompletion,
@@ -12,14 +13,9 @@ import type {
 import type { ExtractParsedContentFromParams } from 'openai/lib/parser';
 import type { Stream } from 'openai/streaming';
 import type { APIPromise } from 'openai/api-promise';
+import type { WithOptionalModel } from './types.js';
 
 type RequestOptions = Parameters<Completions['create']>[1];
-
-/**
- * Removes the `model` field from request param types so callers won't be able to supply it.
- * @internal
- */
-export type WithoutModel<T> = Omit<T, 'model'>;
 
 /**
  * Wraps `Completions` exposing only `create` and `parse`, with `model` omitted from the public API as SAP AI Core routes requests via the deployment URL.
@@ -40,24 +36,32 @@ export class SapCompletions {
    * @returns A promise resolving to a {@link ChatCompletion}, or a {@link Stream} of {@link ChatCompletionChunk} when `stream: true` is set.
    */
   create(
-    body: WithoutModel<ChatCompletionCreateParamsNonStreaming>,
+    body: WithOptionalModel<
+      ChatCompletionCreateParamsNonStreaming,
+      AzureOpenAiChatModel
+    >,
     options?: RequestOptions
   ): APIPromise<ChatCompletion>;
   create(
-    body: WithoutModel<ChatCompletionCreateParamsStreaming>,
+    body: WithOptionalModel<
+      ChatCompletionCreateParamsStreaming,
+      AzureOpenAiChatModel
+    >,
     options?: RequestOptions
   ): APIPromise<Stream<ChatCompletionChunk>>;
   create(
-    body: WithoutModel<ChatCompletionCreateParamsBase>,
-    options?: RequestOptions
-  ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>>;
-  create(
-    body: WithoutModel<ChatCompletionCreateParamsBase>,
+    body: WithOptionalModel<
+      ChatCompletionCreateParamsBase,
+      AzureOpenAiChatModel
+    >,
     options?: RequestOptions
   ): APIPromise<ChatCompletion | Stream<ChatCompletionChunk>> {
     return this.openAiCompletions.create(
-      // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-      { ...body, model: '' } satisfies ChatCompletionCreateParamsBase,
+      {
+        ...body,
+        // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
+        model: body.model || ''
+      } satisfies ChatCompletionCreateParamsBase,
       options
     );
   }
@@ -70,7 +74,7 @@ export class SapCompletions {
    * @returns A promise resolving to a {@link ParsedChatCompletion} with the parsed response content.
    */
   parse<
-    Params extends WithoutModel<ChatCompletionParseParams>,
+    Params extends WithOptionalModel<ChatCompletionParseParams>,
     ParsedT = ExtractParsedContentFromParams<Params & { model: string }>
   >(
     body: Params,
@@ -79,7 +83,8 @@ export class SapCompletions {
     return this.openAiCompletions.parse(
       {
         ...body,
-        model: ''
+        // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
+        model: body.model || ''
       } satisfies ChatCompletionCreateParamsNonStreaming,
       options
     ) as APIPromise<ParsedChatCompletion<ParsedT>>;

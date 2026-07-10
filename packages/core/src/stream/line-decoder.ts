@@ -36,9 +36,7 @@ export class LineDecoder {
       return [];
     }
 
-    const trailingNewline = LineDecoder.NEWLINE_CHARS.has(
-      text[text.length - 1] || ''
-    );
+    const trailingNewline = LineDecoder.NEWLINE_CHARS.has(text.at(-1) || '');
     let lines = text.split(LineDecoder.NEWLINE_REGEXP);
 
     // if there is a trailing new line then the last entry will be an empty

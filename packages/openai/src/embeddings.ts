@@ -1,11 +1,12 @@
 import { Embeddings } from 'openai/resources/embeddings';
+import type { AzureOpenAiEmbeddingModel } from '@sap-ai-sdk/core';
 import type { OpenAI } from 'openai';
 import type {
   EmbeddingCreateParams,
   CreateEmbeddingResponse
 } from 'openai/resources/embeddings';
 import type { APIPromise } from 'openai/api-promise';
-import type { WithoutModel } from './completions.js';
+import type { WithOptionalModel } from './types.js';
 
 type RequestOptions = Parameters<Embeddings['create']>[1];
 
@@ -28,12 +29,12 @@ export class SapEmbeddings {
    * @returns A promise resolving to a {@link CreateEmbeddingResponse}.
    */
   create(
-    body: WithoutModel<EmbeddingCreateParams>,
+    body: WithOptionalModel<EmbeddingCreateParams, AzureOpenAiEmbeddingModel>,
     options?: RequestOptions
   ): APIPromise<CreateEmbeddingResponse> {
     return this.openAiEmbeddings.create(
-      // SAP AI Core routes via deployment URL; model is required by the SDK type but ignored by the API
-      { ...body, model: '' } satisfies EmbeddingCreateParams,
+      // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
+      { ...body, model: body.model || '' } satisfies EmbeddingCreateParams,
       options
     );
   }
