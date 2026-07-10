@@ -60,10 +60,10 @@ export async function invokeChain(): Promise<string> {
 export async function invokeChainWithFallbackConfigs(): Promise<string> {
   const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
     {
-      // First configuration with a non-existent model to trigger module fallback
+      // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'non-existent-model'
+          name: 'sap-rpt-1-small'
         }
       }
     },
@@ -316,7 +316,7 @@ export async function streamChainWithFallbackConfigs(
     {
       promptTemplating: {
         model: {
-          name: 'non-existing-model'
+          name: 'sap-rpt-1-small'
         }
       }
     },
