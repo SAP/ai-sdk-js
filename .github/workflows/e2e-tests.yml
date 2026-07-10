@@ -21,6 +21,7 @@ jobs:
             secret-name: AI_CORE_PRODUCTION
     name: 'Build and Test'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
@@ -35,10 +36,18 @@ jobs:
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > tests/e2e-tests/.env
           url=$(echo "$AICORE_SERVICE_KEY" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
           echo "Using AI Core ${{ matrix.environment }} instance on $url"
-      - name: 'Check Sample App Starts Up'
+      - name: 'Start Sample App'
+        id: sample-app
         working-directory: ./sample-code
+        # TODO: use background: true
+        shell: bash
         run: |
           pnpm local &
+          JOB_ID=$!
+          echo "JOB_ID=$JOB_ID" >> "$GITHUB_OUTPUT"
+      - name: 'Wait For Sample App To Be Ready'
+        working-directory: ./sample-code
+        run: |
           timeout=15
           while ! nc -z localhost 8080; do
             sleep 1
@@ -51,6 +60,16 @@ jobs:
           wget -qO- -S --content-on-error localhost:8080
       - name: 'Execute E2E Tests'
         run: pnpm test:e2e
+      - name: 'Stop Sample App'
+        if: always() && env.JOB_ID != ''
+        # TODO: use cancel: sample-app
+        # cancel: sample-app
+        env:
+          JOB_ID: ${{ steps.sample-app.outputs.JOB_ID }}
+        run: |
+          echo "Stopping Sample App with PID $JOB_ID"
+          kill -TERM "$JOB_ID" 2>/dev/null || true
+          timeout 10 tail --pid="$JOB_ID" -f /dev/null 2>/dev/null || kill -KILL "$JOB_ID" 2>/dev/null || true
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
