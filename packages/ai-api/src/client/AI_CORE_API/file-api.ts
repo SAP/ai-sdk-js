@@ -46,7 +46,7 @@ export const FileApi = {
    * Example URLs:
    * /files/dar/schemas/schema.json
    * /files/icr/datasets/training/20201001/20201001-01.csv
-   * /files/icr/datasets/training/20201001/20201001-02.csv
+   * /files/icr/datasets/training/20201001/20201001-02.csv  
    * /files/mask-detection/training/mask-detection-20210301.tar.gz
    * @param path - path relative to the object store root URL in the secret
    * @param body - Body of the file upload request

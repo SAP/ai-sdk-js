@@ -5,6 +5,7 @@ import type {
   StreamOptions
 } from '@sap-ai-sdk/orchestration';
 import type {
+  CacheControl,
   ChatCompletionTool,
   ResponseFormatJsonObject,
   ResponseFormatJsonSchema,
@@ -58,9 +59,21 @@ export type OrchestrationCallOptions = Pick<
   placeholderValues?: Record<string, string>;
   streamOptions?: StreamOptions;
   responseFormat?:
-    | ResponseFormatText
-    | ResponseFormatJsonObject
-    | ResponseFormatJsonSchema;
+    ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema;
+  /**
+   * Cache control configuration for prompt caching. When provided, a cache
+   * breakpoint is automatically applied to the last cacheable text block of
+   * the last message so the breakpoint advances naturally as the conversation
+   * grows. This removes the need to place `cache_control` on individual
+   * content blocks manually.
+   *
+   * Only applies to models that support `cache_control` through orchestration
+   * (Anthropic Claude and Amazon Nova model families). Other models will
+   * ignore the directive. See the
+   * {@link https://help.sap.com/docs/sap-ai-core/generative-ai/prompt-caching | SAP AI Core prompt caching docs}
+   * for supported models and breakpoint limits.
+   */
+  cache_control?: CacheControl;
 };
 
 /**

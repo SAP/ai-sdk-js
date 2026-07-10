@@ -29,11 +29,7 @@ export type AzureOpenAiCreateChatCompletionResponse = {
      *
      */
     finish_reason:
-      | 'stop'
-      | 'length'
-      | 'tool_calls'
-      | 'content_filter'
-      | 'function_call';
+      'stop' | 'length' | 'tool_calls' | 'content_filter' | 'function_call';
     /**
      * The index of the choice in the list of choices.
      */

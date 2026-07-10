@@ -53,9 +53,9 @@ expectType<SapResponses>(client.responses);
 expectType<SapCompletions>(client.chat.completions);
 
 /**
- * SapCompletions.create rejects the model field.
+ * SapCompletions.create accepts an optional model field.
  */
-expectError(
+expectAssignable<Promise<unknown>>(
   client.chat.completions.create({
     model: 'gpt-4',
     messages: [{ role: 'user', content: 'Hello' }]
@@ -72,16 +72,18 @@ expectAssignable<Promise<unknown>>(
 );
 
 /**
- * SapEmbeddings.create rejects the model field.
+ * SapEmbeddings.create accepts an optional model field.
  */
-expectError(
+expectAssignable<Promise<unknown>>(
   client.embeddings.create({ model: 'text-embedding-3-small', input: 'hello' })
 );
 
 /**
- * SapResponses.create rejects the model field.
+ * SapResponses.create accepts an optional model field.
  */
-expectError(client.responses.create({ model: 'gpt-4', input: 'Hello' }));
+expectAssignable<Promise<unknown>>(
+  client.responses.create({ model: 'gpt-4', input: 'Hello' })
+);
 
 /**
  * SapResponses.parse accepts valid params without model.

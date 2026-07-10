@@ -156,7 +156,7 @@ jobs:
         id: generate
         if: steps.check-spec-changes.outputs.spec == 'true'
         run: |
-          pnpm generate
+          pnpm "$SERVICE" generate
 
       - name: 'Apply patches'
         id: apply-patches

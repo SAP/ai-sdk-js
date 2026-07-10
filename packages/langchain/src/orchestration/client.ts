@@ -23,7 +23,8 @@ import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapToolToChatCompletionTool,
-  mapOrchestrationChunkToLangChainMessageChunk
+  mapOrchestrationChunkToLangChainMessageChunk,
+  applyCacheControlToLastMessage
 } from './util.js';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type {
@@ -140,6 +141,9 @@ export class OrchestrationClient extends BaseChatModel<
 
     const { placeholderValues, customRequestConfig } = options;
     const allMessages = mapLangChainMessagesToOrchestrationMessages(messages);
+    if (options.cache_control) {
+      applyCacheControlToLastMessage(allMessages, options.cache_control);
+    }
     const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
 
     const res = await this.caller.callWithOptions(
@@ -228,9 +232,7 @@ export class OrchestrationClient extends BaseChatModel<
       > {
     // Extract config options
     const method = (config?.method ?? 'jsonSchema') as
-      | 'jsonSchema'
-      | 'functionCalling'
-      | 'jsonMode';
+      'jsonSchema' | 'functionCalling' | 'jsonMode';
     const name = config?.name ?? 'extract';
     const description = getSchemaDescription(outputSchema);
     const strict = config?.strict;
@@ -352,6 +354,12 @@ export class OrchestrationClient extends BaseChatModel<
     options.signal?.throwIfAborted();
     const orchestrationMessages =
       mapLangChainMessagesToOrchestrationMessages(messages);
+    if (options.cache_control) {
+      applyCacheControlToLastMessage(
+        orchestrationMessages,
+        options.cache_control
+      );
+    }
 
     const { placeholderValues, customRequestConfig } = options;
     const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
@@ -406,11 +414,6 @@ export class OrchestrationClient extends BaseChatModel<
       const tokenUsage = chunk.getTokenUsage();
       if (tokenUsage) {
         generationInfo.token_usage = tokenUsage;
-        messageChunk.usage_metadata = {
-          input_tokens: tokenUsage.prompt_tokens,
-          output_tokens: tokenUsage.completion_tokens,
-          total_tokens: tokenUsage.total_tokens
-        };
       }
 
       const content = chunk.getDeltaContent() ?? '';
