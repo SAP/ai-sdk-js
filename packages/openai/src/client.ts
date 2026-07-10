@@ -1,5 +1,5 @@
-import { AzureOpenAI } from 'openai';
-import { createOpenAiConfig } from './config.js';
+import { createSapOpenAiContext } from './config.js';
+import { SapAzureOpenAi } from './azure-openai.js';
 import { SapChat } from './chat.js';
 import { SapEmbeddings } from './embeddings.js';
 import { SapResponses } from './responses.js';
@@ -36,8 +36,8 @@ export class SapOpenAi {
    * ```
    */
   static async createClient(options: SapOpenAiInput): Promise<SapOpenAi> {
-    const config = await createOpenAiConfig(options);
-    return new SapOpenAi(new AzureOpenAI(config));
+    const context = await createSapOpenAiContext(options);
+    return new SapOpenAi(new SapAzureOpenAi(context));
   }
 
   readonly chat: SapChat;
@@ -45,7 +45,7 @@ export class SapOpenAi {
   readonly responses: SapResponses;
 
   /** @internal — use {@link SapOpenAi.createClient} instead */
-  private constructor(client: AzureOpenAI) {
+  private constructor(client: SapAzureOpenAi) {
     this.chat = new SapChat(client);
     this.embeddings = new SapEmbeddings(client);
     this.responses = new SapResponses(client);
