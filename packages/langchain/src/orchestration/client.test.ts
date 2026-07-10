@@ -1311,12 +1311,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: (body: any) => {
-            const template =
-              body?.config?.modules?.prompt_templating?.prompt?.template;
-            return (
-              Array.isArray(template) &&
-              !JSON.stringify(template).includes('cache_control')
-            );
+            const bodyStr = JSON.stringify(body);
+            return !bodyStr.includes('cache_control');
           }
         },
         { data: mockResponse, status: 200 },
