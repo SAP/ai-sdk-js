@@ -10,6 +10,4 @@ import type { EmbeddingMultiFormat } from './embedding-multi-format.js';
  * Representation of the 'Embedding' schema.
  */
 export type Embedding =
-  | EmbeddingFloatArray
-  | EmbeddingBase64String
-  | EmbeddingMultiFormat;
+  EmbeddingFloatArray | EmbeddingBase64String | EmbeddingMultiFormat;

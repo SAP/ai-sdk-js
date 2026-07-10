@@ -50,8 +50,6 @@ export type RetrievalVectorSearchFilter = {
    * Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
    */
   filter?:
-    | RetrievalBinaryBooleanFilter
-    | RetrievalScopedKeyValueListPair
-    | null;
+    RetrievalBinaryBooleanFilter | RetrievalScopedKeyValueListPair | null;
   scoringConfiguration?: VectorScoringConfiguration;
 } & Record<string, any>;

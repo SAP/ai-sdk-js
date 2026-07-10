@@ -1063,10 +1063,8 @@ describe('orchestration service client', () => {
       };
 
       mockInference(
-        () => ({
-          orchestrationConfig: expect.anything(),
-          params: expect.anything()
-        }),
+        // match any body — this test verifies the response parsing, not the request shape
+        (_body: any) => true,
         { data: mockStructuredResponse, status: 200 },
         endpoint
       );
@@ -1100,10 +1098,8 @@ describe('orchestration service client', () => {
       };
 
       mockInference(
-        () => ({
-          orchestrationConfig: expect.anything(),
-          params: expect.anything()
-        }),
+        // match any body — this test verifies the response parsing, not the request shape
+        (_body: any) => true,
         { data: mockStructuredResponse, status: 200 },
         endpoint
       );
@@ -1155,15 +1151,12 @@ describe('orchestration service client', () => {
       };
 
       mockInference(
-        req => {
-          const parsedReq = JSON.parse(req.body as string);
+        (body: any) => {
           expect(
-            parsedReq.orchestration_config.templating_module_config.prompt
-              .response_format
+            body.config.modules.prompt_templating.prompt.response_format
           ).toBeDefined();
           expect(
-            parsedReq.orchestration_config.templating_module_config.prompt
-              .response_format.type
+            body.config.modules.prompt_templating.prompt.response_format.type
           ).toBe('json_schema');
           return true;
         },
@@ -1281,14 +1274,10 @@ describe('orchestration service client', () => {
       it('should throw immediately when input filter error occurs with jsonSchema method', async () => {
         // Mock should only be called once - no retries on input filter error
         mockInference(
-          (req: any) => {
-            const body = JSON.parse(req.body as string);
+          (body: any) =>
             // Verify it has json_schema response_format
-            return (
-              body.orchestration_config.templating_module_config.prompt
-                ?.response_format?.type === 'json_schema'
-            );
-          },
+            body.config.modules.prompt_templating.prompt?.response_format
+              ?.type === 'json_schema',
           {
             data: mockResponseInputFilterError,
             status: 400
@@ -1310,17 +1299,11 @@ describe('orchestration service client', () => {
 
       it('should throw immediately when input filter error occurs with functionCalling method', async () => {
         mockInference(
-          (req: any) => {
-            const body = JSON.parse(req.body as string);
+          (body: any) =>
             // Verify it has tools configured
-            return (
-              Array.isArray(
-                body.orchestration_config.templating_module_config.prompt?.tools
-              ) &&
-              body.orchestration_config.templating_module_config.prompt.tools
-                .length > 0
-            );
-          },
+            Array.isArray(
+              body.config.modules.prompt_templating.prompt?.tools
+            ) && body.config.modules.prompt_templating.prompt.tools.length > 0,
           {
             data: mockResponseInputFilterError,
             status: 400
@@ -1342,14 +1325,10 @@ describe('orchestration service client', () => {
 
       it('should throw immediately when input filter error occurs with jsonMode method', async () => {
         mockInference(
-          (req: any) => {
-            const body = JSON.parse(req.body as string);
+          (body: any) =>
             // Verify it has json_object response_format
-            return (
-              body.orchestration_config.templating_module_config.prompt
-                ?.response_format?.type === 'json_object'
-            );
-          },
+            body.config.modules.prompt_templating.prompt?.response_format
+              ?.type === 'json_object',
           {
             data: mockResponseInputFilterError,
             status: 400
@@ -1388,10 +1367,8 @@ describe('orchestration service client', () => {
         };
 
         mockInference(
-          () => ({
-            orchestrationConfig: expect.anything(),
-            params: expect.anything()
-          }),
+          // match any body — this test verifies the fallback parsing behavior, not the request shape
+          (_body: any) => true,
           { data: mockInvalidJsonResponse, status: 200 },
           endpoint
         );
@@ -1406,6 +1383,161 @@ describe('orchestration service client', () => {
         expect(result).toHaveProperty('parsed');
         expect(result.parsed).toBeNull(); // Parser fallback should return null
       });
+    });
+  });
+
+  describe('cache_control', () => {
+    // `messageIdx` is passed in (rather than computed as `length - 1`) so the
+    // assertion would fail if the implementation pinned the breakpoint to a
+    // different message than the last one.
+    function expectCacheControlAt(
+      messageIdx: number,
+      expectedContent: string,
+      expectedCacheControl: { type: string; ttl?: string }
+    ): (body: any) => boolean {
+      return (body: any): boolean => {
+        const template =
+          body?.config?.modules?.prompt_templating?.prompt?.template;
+        if (!Array.isArray(template) || messageIdx >= template.length) {
+          return false;
+        }
+        const target = template[messageIdx];
+        if (target?.role !== 'user' || !Array.isArray(target.content)) {
+          return false;
+        }
+        const [block] = target.content;
+        const targetHasExpectedBreakpoint =
+          target.content.length === 1 &&
+          block?.type === 'text' &&
+          block.text === expectedContent &&
+          block.cache_control?.type === expectedCacheControl.type &&
+          block.cache_control?.ttl === expectedCacheControl.ttl;
+
+        const otherMessagesHaveBreakpoint = template.some(
+          (msg: any, idx: number) =>
+            idx !== messageIdx && JSON.stringify(msg).includes('cache_control')
+        );
+
+        return targetHasExpectedBreakpoint && !otherMessagesHaveBreakpoint;
+      };
+    }
+
+    it('applies the cache_control breakpoint to the last user message in non-streaming requests', async () => {
+      mockInference(
+        {
+          data: expectCacheControlAt(0, 'Hello!', {
+            type: 'ephemeral',
+            ttl: '5m'
+          })
+        },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
+      const response = await client.invoke(messages, {
+        cache_control: { type: 'ephemeral', ttl: '5m' }
+      });
+      expect(response.content).toBeDefined();
+    });
+
+    it('omits cache_control from the request body when the option is not set', async () => {
+      mockInference(
+        {
+          data: (body: any) => {
+            const template =
+              body?.config?.modules?.prompt_templating?.prompt?.template;
+            return (
+              Array.isArray(template) &&
+              !JSON.stringify(template).includes('cache_control')
+            );
+          }
+        },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
+      await client.invoke(messages);
+    });
+
+    it('moves the cache_control breakpoint to the new last message across successive invocations', async () => {
+      // Turn 1: single user message — breakpoint at index 0.
+      mockInference(
+        {
+          data: expectCacheControlAt(0, 'Hello!', {
+            type: 'ephemeral',
+            ttl: '5m'
+          })
+        },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+      // Turn 2: three messages — breakpoint advances to index 2.
+      mockInference(
+        {
+          data: expectCacheControlAt(2, 'Follow-up.', {
+            type: 'ephemeral',
+            ttl: '5m'
+          })
+        },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
+      const callOptions = {
+        cache_control: { type: 'ephemeral' as const, ttl: '5m' as const }
+      };
+
+      await client.invoke(messages, callOptions);
+      await client.invoke(
+        [
+          { role: 'user' as const, content: 'Hello!' },
+          { role: 'assistant' as const, content: 'Hi there.' },
+          { role: 'user' as const, content: 'Follow-up.' }
+        ],
+        callOptions
+      );
+    });
+
+    it('honors a 1h ttl in the cache_control breakpoint', async () => {
+      mockInference(
+        {
+          data: expectCacheControlAt(0, 'Hello!', {
+            type: 'ephemeral',
+            ttl: '1h'
+          })
+        },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
+      await client.invoke(messages, {
+        cache_control: { type: 'ephemeral', ttl: '1h' }
+      });
+    });
+
+    it('applies the cache_control breakpoint on the streaming path', async () => {
+      mockInference(
+        {
+          data: expectCacheControlAt(0, 'Hello!', {
+            type: 'ephemeral',
+            ttl: '5m'
+          })
+        },
+        { data: mockResponseStream, status: 200 },
+        endpoint
+      );
+
+      const client = new OrchestrationClient(config, { maxRetries: 0 });
+      const stream = await client.stream(messages, {
+        cache_control: { type: 'ephemeral', ttl: '5m' }
+      });
+      for await (const _chunk of stream) {
+        // drain
+      }
     });
   });
 });

@@ -5,7 +5,7 @@
     "version": "2407 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -14,9 +14,9 @@
     "model": "mistralai--mistral-small-instruct",
     "version": "2503 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "not earlier than 2026-09-30",
+    "suggestedReplacement": "mistralai--mistral-small",
     "retired": ""
   },
   {
@@ -25,7 +25,7 @@
     "version": "2505 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-08-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -45,7 +45,7 @@
     "version": "2 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -55,7 +55,7 @@
     "version": "2508 (latest)",
     "availableInOrchestration": "yes",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-08-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -65,7 +65,7 @@
     "version": "3.5 (latest)",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-07-30",
+    "retirementDate": "not earlier than 2026-09-30",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -75,7 +75,7 @@
     "version": "1 (latest)",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-08-30",
+    "retirementDate": "not earlier than 2026-12-31",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -85,7 +85,7 @@
     "version": "1 (latest)",
     "availableInOrchestration": "",
     "deprecated": "",
-    "retirementDate": "not earlier than 2026-08-30",
+    "retirementDate": "not earlier than 2026-12-31",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -174,9 +174,9 @@
     "model": "amazon--nova-premier",
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-09-14",
+    "suggestedReplacement": "amazon--nova-lite 2",
     "retired": ""
   },
   {
@@ -184,9 +184,9 @@
     "model": "anthropic--claude-3-haiku",
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-09-10",
+    "suggestedReplacement": "anthropic--claude-4.5-haiku",
     "retired": ""
   },
   {
@@ -194,9 +194,9 @@
     "model": "anthropic--claude-4-sonnet",
     "version": "1 (latest)",
     "availableInOrchestration": "yes",
-    "deprecated": "",
-    "retirementDate": "No current plans for retirement",
-    "suggestedReplacement": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-10-14",
+    "suggestedReplacement": "anthropic--claude-4.5-sonnet",
     "retired": ""
   },
   {
@@ -294,7 +294,7 @@
     "model": "gpt-4o",
     "version": "2024-11-20",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-01",
     "suggestedReplacement": "gpt-5",
     "retired": ""
@@ -314,7 +314,7 @@
     "model": "gpt-4.1",
     "version": "2025-04-14",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-14",
     "suggestedReplacement": "",
     "retired": ""
@@ -324,7 +324,7 @@
     "model": "gpt-4.1-mini",
     "version": "2025-04-14",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-14",
     "suggestedReplacement": "",
     "retired": ""
@@ -346,6 +346,16 @@
     "availableInOrchestration": "yes",
     "deprecated": "",
     "retirementDate": "No current plans for retirement",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.1",
+    "version": "2025-11-13 (latest)",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -434,7 +444,7 @@
     "model": "o1",
     "version": "2024-12-17",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-07-15",
     "suggestedReplacement": "",
     "retired": ""
@@ -444,7 +454,7 @@
     "model": "o3-mini",
     "version": "2025-01-31",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-08-02",
     "suggestedReplacement": "",
     "retired": ""
@@ -454,7 +464,7 @@
     "model": "o3",
     "version": "2025-04-16",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-16",
     "suggestedReplacement": "",
     "retired": ""
@@ -464,7 +474,7 @@
     "model": "o4-mini",
     "version": "2025-04-16",
     "availableInOrchestration": "yes",
-    "deprecated": "",
+    "deprecated": "yes",
     "retirementDate": "2026-10-16",
     "suggestedReplacement": "",
     "retired": ""
@@ -476,6 +486,16 @@
     "availableInOrchestration": "yes",
     "deprecated": "",
     "retirementDate": "2026-10-16",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "gcp-vertexai (Google)",
+    "model": "gemini-3.5-flash",
+    "version": "001 (latest)",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -494,8 +514,8 @@
     "model": "gemini-2.5-flash-image",
     "version": "001",
     "availableInOrchestration": "",
-    "deprecated": "",
-    "retirementDate": "",
+    "deprecated": "Yes",
+    "retirementDate": "2026-10-02",
     "suggestedReplacement": "",
     "retired": ""
   },
@@ -547,6 +567,16 @@
     "deprecated": "",
     "retirementDate": "",
     "suggestedReplacement": "mistralai--mistral-small-instruct",
+    "retired": "yes"
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-35-turbo",
+    "version": "0613",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "gpt-4o-mini",
     "retired": "yes"
   },
   {
@@ -697,6 +727,16 @@
     "deprecated": "",
     "retirementDate": "",
     "suggestedReplacement": "amazon--nova-premier",
+    "retired": "yes"
+  },
+  {
+    "executableId": "aws-bedrock (AWS)",
+    "model": "amazon--titan-image-generator",
+    "version": "2",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
     "retired": "yes"
   },
   {

@@ -51,8 +51,7 @@ export const ApplicationApi = {
    */
   kubesubmitV4ApplicationsCreate: (
     body:
-      | BckndArgoCDApplicationDataRequest
-      | BckndArgoCDApplicationDataRepoName,
+      BckndArgoCDApplicationDataRequest | BckndArgoCDApplicationDataRepoName,
     headerParameters?: { Authorization?: string }
   ) =>
     new OpenApiRequestBuilder<BckndArgoCDApplicationCreationResponse>(

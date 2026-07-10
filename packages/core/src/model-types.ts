@@ -4,8 +4,6 @@ type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>);
  * Azure OpenAI models for chat completion.
  */
 export type AzureOpenAiChatModel = LiteralUnion<
-  | 'gpt-4.1'
-  | 'gpt-4.1-mini'
   | 'gpt-4.1-nano'
   | 'gpt-5'
   | 'gpt-5-mini'
@@ -14,8 +12,7 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-5.4'
   | 'gpt-5.4-nano'
   | 'gpt-5.5'
-  | 'o3'
-  | 'o4-mini'
+  | 'gpt-5.1'
 >;
 
 /**
@@ -48,11 +45,8 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'amazon--nova-pro'
   | 'amazon--nova-lite'
   | 'amazon--nova-micro'
-  | 'amazon--nova-premier'
-  | 'anthropic--claude-3-haiku'
   | 'anthropic--claude-4.5-haiku'
   | 'anthropic--claude-4.6-opus'
-  | 'anthropic--claude-4-sonnet'
   | 'anthropic--claude-4.5-sonnet'
   | 'anthropic--claude-4.6-sonnet'
   | 'anthropic--claude-4.7-opus'
@@ -73,10 +67,9 @@ export type PerplexityChatModel = LiteralUnion<'sonar' | 'sonar-pro'>;
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'cohere--command-a-reasoning'
-  | 'mistralai--mistral-small'
   | 'mistralai--mistral-large-instruct'
-  | 'mistralai--mistral-small-instruct'
   | 'mistralai--mistral-medium-instruct'
+  | 'mistralai--mistral-small'
   | 'sap-abap-1'
 >;
 
