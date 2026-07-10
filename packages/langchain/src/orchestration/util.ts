@@ -12,13 +12,16 @@ import type {
 } from '@sap-ai-sdk/orchestration';
 import type {
   AssistantChatMessage,
+  CacheControl,
   ChatCompletionTool,
   ChatMessage,
   ChatMessageContent,
   CompletionPostResponse,
+  DeveloperChatMessage,
   FunctionObject,
   MessageToolCalls,
   SystemChatMessage,
+  TokenUsage,
   ToolChatMessage,
   UserChatMessage,
   TemplateRef,
@@ -157,27 +160,39 @@ function mapAiMessageToOrchestrationAssistantMessage(
     message.additional_kwargs.tool_calls;
   return {
     ...(tool_calls?.length ? { tool_calls } : {}),
-    content: message.content,
+    content: cloneMessageContent(message.content),
     role: 'assistant'
   } as AssistantChatMessage;
 }
 
-function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
-  if (Array.isArray(message.content)) {
-    message.content = message.content.map(content => ({
-      ...content,
-      ...(content.type === 'image_url' && typeof content.image_url === 'string'
-        ? {
-            image_url: {
-              url: content.image_url
-            }
-          }
-        : {})
-    }));
+function cloneMessageContent<TContent>(content: TContent): TContent {
+  if (!Array.isArray(content)) {
+    return content;
   }
+
+  // Shallow-clone blocks so cache_control mutations never touch caller-owned messages.
+  return content.map(block =>
+    block && typeof block === 'object' ? { ...block } : block
+  ) as TContent;
+}
+
+function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
+  const content = Array.isArray(message.content)
+    ? message.content.map(item => ({
+        ...item,
+        ...(item.type === 'image_url' && typeof item.image_url === 'string'
+          ? {
+              image_url: {
+                url: item.image_url
+              }
+            }
+          : {})
+      }))
+    : message.content;
+
   return {
     role: 'user',
-    content: message.content
+    content
   } as UserChatMessage;
 }
 
@@ -194,7 +209,7 @@ function mapSystemMessageToOrchestrationSystemMessage(
   }
   return {
     role: 'system',
-    content: message.content as ChatMessageContent
+    content: cloneMessageContent(message.content) as ChatMessageContent
   };
 }
 
@@ -211,7 +226,7 @@ function mapToolMessageToOrchestrationToolMessage(
   }
   return {
     role: 'tool',
-    content: message.content as ChatMessageContent,
+    content: cloneMessageContent(message.content) as ChatMessageContent,
     tool_call_id: message.tool_call_id
   };
 }
@@ -226,6 +241,70 @@ export function mapLangChainMessagesToOrchestrationMessages(
   messages: BaseMessage[]
 ): ChatMessage[] {
   return messages.map(mapBaseMessageToChatMessage);
+}
+
+/**
+ * Applies a cache breakpoint to the last cacheable block of the last message in place.
+ * @param messages - The orchestration messages to mutate.
+ * @param cacheControl - The cache control directive to apply.
+ * @internal
+ */
+export function applyCacheControlToLastMessage(
+  messages: ChatMessage[],
+  cacheControl: CacheControl
+): void {
+  const lastMessage = messages.at(-1);
+  if (!lastMessage) {
+    return;
+  }
+
+  if (typeof lastMessage.content === 'string') {
+    if (
+      lastMessage.role === 'system' ||
+      lastMessage.role === 'tool' ||
+      lastMessage.role === 'developer'
+    ) {
+      (
+        lastMessage as
+          SystemChatMessage | ToolChatMessage | DeveloperChatMessage
+      ).content = [
+        {
+          type: 'text',
+          text: lastMessage.content,
+          cache_control: cacheControl
+        }
+      ];
+      return;
+    }
+
+    if (lastMessage.role === 'user') {
+      (lastMessage as UserChatMessage).content = [
+        {
+          type: 'text',
+          text: lastMessage.content,
+          cache_control: cacheControl
+        }
+      ];
+    }
+    // Assistant string content has no cacheable block; leave untouched.
+    return;
+  }
+
+  if (!Array.isArray(lastMessage.content)) {
+    return;
+  }
+
+  const isUserMessage = lastMessage.role === 'user';
+  const block = lastMessage.content.findLast(
+    b =>
+      b &&
+      typeof b === 'object' &&
+      (b.type === 'text' ||
+        (isUserMessage && (b.type === 'image_url' || b.type === 'file')))
+  );
+  if (block) {
+    (block as { cache_control?: CacheControl }).cache_control = cacheControl;
+  }
 }
 
 /**
@@ -264,6 +343,36 @@ function mapOrchestrationToLangChainToolCallChunk(
 }
 
 /**
+ * Builds the LangChain `usage_metadata` shape from an orchestration {@link TokenUsage}.
+ * @param usage - The orchestration token usage.
+ * @returns The LangChain `usage_metadata` object.
+ */
+function buildUsageMetadata(usage: TokenUsage): {
+  input_tokens: number;
+  output_tokens: number;
+  total_tokens: number;
+  input_token_details?: { cache_read: number; cache_creation: number };
+  output_token_details?: { reasoning: number };
+} {
+  const reasoning = usage.completion_tokens_details?.reasoning_tokens;
+
+  return {
+    input_tokens: usage.prompt_tokens,
+    output_tokens: usage.completion_tokens,
+    total_tokens: usage.total_tokens,
+    ...(usage.prompt_tokens_details?.cached_tokens !== undefined && {
+      input_token_details: {
+        cache_read: usage.prompt_tokens_details.cached_tokens ?? 0,
+        cache_creation: usage.prompt_tokens_details.cache_creation_tokens ?? 0
+      }
+    }),
+    ...(reasoning !== undefined && {
+      output_token_details: { reasoning }
+    })
+  };
+}
+
+/**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
  * @returns The mapped {@link ChatResult}.
@@ -275,6 +384,11 @@ export function mapOutputToChatResult(
   const { final_result, intermediate_results, request_id } = completionResponse;
   const { choices, created, id, model, object, usage, system_fingerprint } =
     final_result;
+  const tokenUsage = {
+    completionTokens: usage?.completion_tokens ?? 0,
+    promptTokens: usage?.prompt_tokens ?? 0,
+    totalTokens: usage?.total_tokens ?? 0
+  };
   return {
     generations: choices.map(choice => ({
       text: choice.message.content ?? '',
@@ -283,11 +397,10 @@ export function mapOutputToChatResult(
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
-        usage_metadata: {
-          input_tokens: usage?.prompt_tokens ?? 0,
-          output_tokens: usage?.completion_tokens ?? 0,
-          total_tokens: usage?.total_tokens ?? 0
-        }
+        response_metadata: { tokenUsage },
+        usage_metadata: usage
+          ? buildUsageMetadata(usage)
+          : { input_tokens: 0, output_tokens: 0, total_tokens: 0 }
       }),
       additional_kwargs: {
         tool_calls: choice.message.tool_calls,
@@ -306,11 +419,7 @@ export function mapOutputToChatResult(
       model,
       object,
       system_fingerprint,
-      tokenUsage: {
-        completionTokens: usage?.completion_tokens ?? 0,
-        promptTokens: usage?.prompt_tokens ?? 0,
-        totalTokens: usage?.total_tokens ?? 0
-      }
+      tokenUsage
     }
   };
 }
@@ -334,7 +443,7 @@ export function isToolDefinitionLike(
 /**
  * Converts orchestration stream chunk to a LangChain message chunk.
  * @param chunk - The orchestration stream chunk.
- * @returns An {@link AIMessageChunk}
+ * @returns An {@link AIMessageChunk}.
  * @internal
  */
 export function mapOrchestrationChunkToLangChainMessageChunk(
@@ -343,6 +452,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
   const toolCallChunks = choice?.delta.tool_calls;
+  const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
     content,
     additional_kwargs: {
@@ -351,6 +461,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)
-    })
+    }),
+    ...(usage && { usage_metadata: buildUsageMetadata(usage) })
   });
 }
