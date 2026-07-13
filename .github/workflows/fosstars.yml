@@ -18,6 +18,16 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      # OWASP runs in Docker and cannot see the runner's pnpm install. Put a
+      # standalone binary in the workspace so the container can run pnpm audit.
+      - name: Install pnpm for OWASP container
+        run: |
+          mkdir -p .local/bin
+          version="$(pnpm --version)"
+          curl -fsSL "https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-linuxstatic-x64" \
+            -o .local/bin/pnpm
+          chmod +x .local/bin/pnpm
+          .local/bin/pnpm --version
       - name: 'Run OWASP Dependency Check'
         id: depcheck
         uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
@@ -34,6 +44,7 @@ jobs:
           args: >
             --failOnCVSS 7
             --disableYarnAudit
+            --pnpm /github/workspace/.local/bin/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
