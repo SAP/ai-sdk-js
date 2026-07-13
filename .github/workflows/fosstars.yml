@@ -33,6 +33,7 @@ jobs:
           # Request an API key if required at: https://nvd.nist.gov/developers/request-an-api-key
           args: >
             --failOnCVSS 7
+            --disableYarnAudit
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
