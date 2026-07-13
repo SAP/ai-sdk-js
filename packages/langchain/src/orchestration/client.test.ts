@@ -1262,12 +1262,13 @@ describe('orchestration service client', () => {
       expectedCacheControl: { type: string; ttl?: string }
     ): (body: any) => boolean {
       return (body: any): boolean => {
-        const template =
+        const messages: any[] =
+          body?.messages_history ??
           body?.config?.modules?.prompt_templating?.prompt?.template;
-        if (!Array.isArray(template) || messageIdx >= template.length) {
+        if (!Array.isArray(messages) || messageIdx >= messages.length) {
           return false;
         }
-        const target = template[messageIdx];
+        const target = messages[messageIdx];
         if (target?.role !== 'user' || !Array.isArray(target.content)) {
           return false;
         }
@@ -1279,7 +1280,7 @@ describe('orchestration service client', () => {
           block.cache_control?.type === expectedCacheControl.type &&
           block.cache_control?.ttl === expectedCacheControl.ttl;
 
-        const otherMessagesHaveBreakpoint = template.some(
+        const otherMessagesHaveBreakpoint = messages.some(
           (msg: any, idx: number) =>
             idx !== messageIdx && JSON.stringify(msg).includes('cache_control')
         );
