@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+  push:
+    paths:
+      - '.github/workflows/fosstars.yml'
+      - '.github/owasp-suppressions.xml'
 
 permissions: {}
 
@@ -21,6 +25,7 @@ jobs:
       # OWASP runs in Docker and cannot see the runner's pnpm install. Put a
       # standalone binary in the workspace so the container can run pnpm audit.
       - name: Install pnpm for OWASP container
+        shell: bash
         run: |
           mkdir -p .local/bin
           version="$(pnpm --version)"
