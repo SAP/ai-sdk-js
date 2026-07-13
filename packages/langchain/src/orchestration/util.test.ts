@@ -16,16 +16,20 @@ import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapOrchestrationChunkToLangChainMessageChunk,
-  mapToolToOrchestrationFunction
+  mapToolToOrchestrationFunction,
+  applyCacheControlToLastMessage
 } from './util.js';
 import type { OrchestrationMessage } from './orchestration-message.js';
 import type { ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
+  CacheControl,
+  ChatMessage,
   CompletionPostResponse,
   MessageToolCall,
   ToolCallChunk as OrchestrationToolCallChunk,
   CompletionPostResponseStreaming,
-  FunctionObject
+  FunctionObject,
+  TokenUsage
 } from '@sap-ai-sdk/orchestration/internal.js';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
@@ -113,6 +117,28 @@ describe('mapBaseMessageToChatMessage', () => {
       role: 'system',
       content: 'System message content'
     });
+  });
+
+  it('should clone system message content blocks so cache_control does not leak back', () => {
+    const systemMessage = new SystemMessage({
+      content: [{ type: 'text', text: 'System text' }]
+    });
+    const messages = mapLangChainMessagesToOrchestrationMessages([
+      systemMessage
+    ]);
+
+    applyCacheControlToLastMessage(messages, { type: 'ephemeral', ttl: '5m' });
+
+    expect(messages[0].content).toEqual([
+      {
+        type: 'text',
+        text: 'System text',
+        cache_control: { type: 'ephemeral', ttl: '5m' }
+      }
+    ]);
+    expect(systemMessage.content).toEqual([
+      { type: 'text', text: 'System text' }
+    ]);
   });
 
   it('should map AIMessage to ChatMessage with assistant role', () => {
@@ -276,6 +302,187 @@ describe('mapOutputToChatResult', () => {
       }
     ]);
   });
+
+  it('should preserve prompt token details in response metadata', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'Test content',
+              role: 'assistant'
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 10,
+          prompt_tokens: 20,
+          total_tokens: 30,
+          prompt_tokens_details: {
+            cached_tokens: 15,
+            cache_creation_tokens: 5
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.response_metadata).toEqual({
+      tokenUsage: {
+        completionTokens: 10,
+        promptTokens: 20,
+        totalTokens: 30
+      }
+    });
+
+    expect(message.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 10,
+      total_tokens: 30,
+      input_token_details: {
+        cache_read: 15,
+        cache_creation: 5
+      }
+    });
+  });
+
+  it('should map reasoning tokens to output_token_details', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'Test content',
+              role: 'assistant'
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 42,
+          prompt_tokens: 20,
+          total_tokens: 62,
+          completion_tokens_details: {
+            reasoning_tokens: 7
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 42,
+      total_tokens: 62,
+      output_token_details: {
+        reasoning: 7
+      }
+    });
+  });
+
+  it('should map cache and reasoning token details together', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'Test content',
+              role: 'assistant'
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 42,
+          prompt_tokens: 20,
+          total_tokens: 62,
+          prompt_tokens_details: {
+            cached_tokens: 12,
+            cache_creation_tokens: 3
+          },
+          completion_tokens_details: {
+            reasoning_tokens: 4
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 42,
+      total_tokens: 62,
+      input_token_details: {
+        cache_read: 12,
+        cache_creation: 3
+      },
+      output_token_details: {
+        reasoning: 4
+      }
+    });
+  });
+
+  it('should omit output_token_details when reasoning_tokens is absent', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: { content: 'Test content', role: 'assistant' },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: {
+          completion_tokens: 5,
+          prompt_tokens: 5,
+          total_tokens: 10,
+          // Sibling field present, reasoning_tokens omitted.
+          completion_tokens_details: {
+            accepted_prediction_tokens: 2
+          }
+        }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.usage_metadata?.output_token_details).toBeUndefined();
+  });
 });
 
 describe('mapToolToOrchestrationFunction', () => {
@@ -337,11 +544,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     content?: string,
     toolCallChunks?: OrchestrationToolCallChunk[],
     finishReason?: string,
-    tokenUsage?: {
-      completion_tokens: number;
-      prompt_tokens: number;
-      total_tokens: number;
-    }
+    tokenUsage?: TokenUsage
   ): OrchestrationStreamChunkResponse {
     const mockData: CompletionPostResponseStreaming = {
       request_id: 'req-123',
@@ -432,5 +635,261 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     };
     expect(result.tool_call_chunks?.[0]).toEqual(expectedToolCallChunk);
     expect(result).toMatchSnapshot('AIMessageChunk with tool call chunks');
+  });
+
+  it('omits usage_metadata when the chunk carries no token usage', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk('partial')
+    );
+
+    expect(result.usage_metadata).toBeUndefined();
+  });
+
+  it('maps token usage on the chunk to usage_metadata', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk(undefined, undefined, 'stop', {
+        completion_tokens: 271,
+        prompt_tokens: 17,
+        total_tokens: 288
+      })
+    );
+
+    expect(result.usage_metadata).toEqual({
+      input_tokens: 17,
+      output_tokens: 271,
+      total_tokens: 288
+    });
+  });
+
+  it('maps prompt cache token details to input_token_details on the chunk', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk(undefined, undefined, 'stop', {
+        completion_tokens: 10,
+        prompt_tokens: 20,
+        total_tokens: 30,
+        prompt_tokens_details: {
+          cached_tokens: 15,
+          cache_creation_tokens: 5
+        }
+      })
+    );
+
+    expect(result.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 10,
+      total_tokens: 30,
+      input_token_details: {
+        cache_read: 15,
+        cache_creation: 5
+      }
+    });
+  });
+
+  it('maps reasoning tokens to output_token_details on the chunk', () => {
+    const result = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk(undefined, undefined, 'stop', {
+        completion_tokens: 42,
+        prompt_tokens: 20,
+        total_tokens: 62,
+        completion_tokens_details: {
+          reasoning_tokens: 7
+        }
+      })
+    );
+
+    expect(result.usage_metadata).toEqual({
+      input_tokens: 20,
+      output_tokens: 42,
+      total_tokens: 62,
+      output_token_details: {
+        reasoning: 7
+      }
+    });
+  });
+});
+
+describe('applyCacheControlToLastMessage', () => {
+  const cacheControl: CacheControl = { type: 'ephemeral', ttl: '5m' };
+
+  it('wraps a string user message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [{ role: 'user', content: 'Hello' }];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'user',
+      content: [{ type: 'text', text: 'Hello', cache_control: cacheControl }]
+    });
+  });
+
+  it('wraps a string system message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [
+      { role: 'system', content: 'You are helpful.' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'system',
+      content: [
+        {
+          type: 'text',
+          text: 'You are helpful.',
+          cache_control: cacheControl
+        }
+      ]
+    });
+  });
+
+  it('wraps a string tool message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [
+      { role: 'tool', content: 'Tool result.', tool_call_id: 'call-1' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'tool',
+      tool_call_id: 'call-1',
+      content: [
+        {
+          type: 'text',
+          text: 'Tool result.',
+          cache_control: cacheControl
+        }
+      ]
+    });
+  });
+
+  it('wraps a string developer message into a text block carrying cache_control', () => {
+    const messages: ChatMessage[] = [
+      { role: 'developer', content: 'Prefer concise answers.' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'developer',
+      content: [
+        {
+          type: 'text',
+          text: 'Prefer concise answers.',
+          cache_control: cacheControl
+        }
+      ]
+    });
+  });
+
+  it('attaches cache_control to the last text block of an array content', () => {
+    const messages: ChatMessage[] = [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'First part.' },
+          { type: 'text', text: 'Second part.' }
+        ]
+      }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0].content).toEqual([
+      { type: 'text', text: 'First part.' },
+      { type: 'text', text: 'Second part.', cache_control: cacheControl }
+    ]);
+  });
+
+  it('moves the breakpoint to the last cacheable block when an earlier one already has cache_control', () => {
+    const existingCacheControl: CacheControl = {
+      type: 'ephemeral',
+      ttl: '1h'
+    };
+    const messages: ChatMessage[] = [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'First part.',
+            cache_control: existingCacheControl
+          },
+          { type: 'text', text: 'Second part.' }
+        ]
+      }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0].content).toEqual([
+      {
+        type: 'text',
+        text: 'First part.',
+        cache_control: existingCacheControl
+      },
+      { type: 'text', text: 'Second part.', cache_control: cacheControl }
+    ]);
+  });
+
+  it('attaches cache_control only to the last message when multiple are present', () => {
+    const messages: ChatMessage[] = [
+      { role: 'system', content: 'You are helpful.' },
+      { role: 'user', content: 'Hi.' },
+      { role: 'assistant', content: 'Hello!' },
+      { role: 'user', content: 'How are you?' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'system',
+      content: 'You are helpful.'
+    });
+    expect(messages[1]).toEqual({ role: 'user', content: 'Hi.' });
+    expect(messages[2]).toEqual({ role: 'assistant', content: 'Hello!' });
+    expect(messages[3]).toEqual({
+      role: 'user',
+      content: [
+        { type: 'text', text: 'How are you?', cache_control: cacheControl }
+      ]
+    });
+  });
+
+  it('falls back to image_url/file blocks for user messages without trailing text', () => {
+    const messages: ChatMessage[] = [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'See the image:' },
+          { type: 'image_url', image_url: { url: 'https://example.com/x.png' } }
+        ]
+      }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0].content).toEqual([
+      { type: 'text', text: 'See the image:' },
+      {
+        type: 'image_url',
+        image_url: { url: 'https://example.com/x.png' },
+        cache_control: cacheControl
+      }
+    ]);
+  });
+
+  it('does not mutate assistant messages with string content', () => {
+    const messages: ChatMessage[] = [{ role: 'assistant', content: 'Hello!' }];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({ role: 'assistant', content: 'Hello!' });
+  });
+
+  it('does not throw on an empty message list', () => {
+    const messages: ChatMessage[] = [];
+    expect(() =>
+      applyCacheControlToLastMessage(messages, cacheControl)
+    ).not.toThrow();
+    expect(messages).toEqual([]);
   });
 });

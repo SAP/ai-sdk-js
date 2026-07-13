@@ -30,6 +30,7 @@ const deployResult = await pExecFile(
     appName,
     'deploy',
     '--config.inject-workspace-packages=true',
+    '--prod',
     deployDir
   ],
   { cwd: workspaceRoot }
