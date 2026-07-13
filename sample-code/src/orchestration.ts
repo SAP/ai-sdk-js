@@ -1102,10 +1102,10 @@ export async function orchestrationSonarStreamWithCitations(
 export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient([
     {
-      // First configuration with a non-existent model to trigger module fallback
+      // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'non-existent-model'
+          name: 'sap-rpt-1-small'
         }
       }
     },
@@ -1153,7 +1153,7 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
     {
       promptTemplating: {
         model: {
-          name: 'non-existent-model'
+          name: 'sap-rpt-1-small'
         }
       }
     },
