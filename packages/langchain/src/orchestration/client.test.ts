@@ -1456,6 +1456,26 @@ describe('orchestration service client', () => {
         );
       });
 
+      it('does not warn again in _generate after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            endpoint
+          );
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        for (const content of ['First', 'Second', 'Third']) {
+          await client.invoke([{ role: 'user', content }]);
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) => msg.includes('template_ref'))
+        ).toHaveLength(1);
+      });
+
       it('does not warn in _generate when used without messages', async () => {
         mockInference(
           () => true,
@@ -1530,6 +1550,29 @@ describe('orchestration service client', () => {
         );
       });
 
+      it('does not warn again in _streamResponseChunks after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponseStream, status: 200 },
+            endpoint
+          );
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        for (const content of ['First', 'Second', 'Third']) {
+          const stream = await client.stream([{ role: 'user', content }]);
+          for await (const _ of stream) {
+            /* noop */
+          }
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) => msg.includes('template_ref'))
+        ).toHaveLength(1);
+      });
+
       it('does not warn in _streamResponseChunks when used without messages', async () => {
         mockInference(
           () => true,
@@ -1597,6 +1640,26 @@ describe('orchestration service client', () => {
         expect(warnSpy).toHaveBeenCalledWith(
           expect.stringContaining('prepended')
         );
+      });
+
+      it('does not warn again in _generate after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            endpoint
+          );
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          await client.invoke([{ role: 'user', content }]);
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) => msg.includes('prepended'))
+        ).toHaveLength(1);
       });
 
       it('does not warn in _generate when used without messages', async () => {
@@ -1671,6 +1734,29 @@ describe('orchestration service client', () => {
         expect(warnSpy).toHaveBeenCalledWith(
           expect.stringContaining('prepended')
         );
+      });
+
+      it('does not warn again in _streamResponseChunks after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponseStream, status: 200 },
+            endpoint
+          );
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          const stream = await client.stream([{ role: 'user', content }]);
+          for await (const _ of stream) {
+            /* noop */
+          }
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) => msg.includes('prepended'))
+        ).toHaveLength(1);
       });
     });
   });

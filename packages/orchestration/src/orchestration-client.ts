@@ -52,7 +52,9 @@ const logger = createLogger({
  * create a new `OrchestrationClient` instance with the desired configuration.
  */
 export class OrchestrationClient {
-  private callCount: number = 0;
+  private hasWarnedConfigRefMessages = false;
+  private hasSeenInlineTemplateCall = false;
+  private hasWarnedInlineTemplateReuse = false;
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration configuration. Can be:
@@ -97,12 +99,16 @@ export class OrchestrationClient {
     }
   ): Promise<OrchestrationResponse> {
     requestConfig?.signal?.throwIfAborted();
-    this.callCount++;
-    if (isConfigReference(this.config) && request?.messages?.length) {
+    if (
+      isConfigReference(this.config) &&
+      request?.messages?.length &&
+      !this.hasWarnedConfigRefMessages
+    ) {
+      this.hasWarnedConfigRefMessages = true;
       logger.warn(
         'Messages passed alongside an orchestration config reference are sent as messages_history, not as part of the prompt template. ' +
           'The prompt template is defined remotely and cannot be extended inline. ' +
-          'In LangGraph workflows, consider using two separate clients: one with the config reference for the first node, and one without for subsequent conversational nodes.'
+          'In agentic workflows, consider using two separate clients: one with the config reference for the first node, and one without for subsequent conversational nodes.'
       );
     }
     this.warnInlineTemplateOnReuse(request);
@@ -139,7 +145,6 @@ export class OrchestrationClient {
       });
     }
 
-    this.callCount++;
     try {
       if (typeof this.config === 'string' && options) {
         logger.warn(
@@ -152,11 +157,12 @@ export class OrchestrationClient {
             'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
           );
         }
-        if (request?.messages?.length) {
+        if (request?.messages?.length && !this.hasWarnedConfigRefMessages) {
+          this.hasWarnedConfigRefMessages = true;
           logger.warn(
             'Messages passed alongside an orchestration config reference are sent as messages_history, not as part of the prompt template. ' +
               'The prompt template is defined remotely and cannot be extended inline. ' +
-              'In LangGraph workflows, consider using two separate clients: one with the config reference for the first node, and one without for subsequent conversational nodes.'
+              'In agentic workflows, consider using two separate clients: one with the config reference for the first node, and one without for subsequent conversational nodes.'
           );
         }
       }
@@ -270,12 +276,12 @@ export class OrchestrationClient {
   /**
    * Log template + messages interaction on every call.
    * - First call: info log so the prepend behavior is visible immediately.
-   * - Subsequent calls with the same client: warn about duplication risk.
+   * - Subsequent calls with the same client: warn once about duplication risk.
    *
    * Note: when this client is used via the LangChain adapter, each _generate /
    * _streamResponseChunks call constructs a fresh OrchestrationClient instance,
-   * so callCount here will always be 1 and the reuse warning below never fires.
-   * The LangChain client tracks its own callCount and delegates to warnTemplateUsage
+   * so hasSeenInlineTemplateCall/hasWarnedInlineTemplateReuse are always false and the reuse warning never fires.
+   * The LangChain client tracks its own state and delegates to warnTemplateUsage
    * in langchain/src/orchestration/client.ts — that is the intentional split.
    * @param request - The chat completion request to check.
    */
@@ -299,11 +305,13 @@ export class OrchestrationClient {
     if (!hasInlineTemplate) {
       return;
     }
-    if (this.callCount === 1) {
+    if (!this.hasSeenInlineTemplateCall) {
+      this.hasSeenInlineTemplateCall = true;
       logger.info(
         'A prompt template is defined and messages are provided. The template will be prepended to the messages on this request.'
       );
-    } else {
+    } else if (!this.hasWarnedInlineTemplateReuse) {
+      this.hasWarnedInlineTemplateReuse = true;
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
