@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+  push:
+    paths:
+      - '.github/workflows/fosstars.yml'
+      - '.github/owasp-suppressions.xml'
 
 permissions: {}
 
@@ -18,6 +22,17 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      # OWASP runs in Docker and cannot see the runner's pnpm install. Put a
+      # standalone binary in the workspace so the container can run pnpm audit.
+      - name: Install pnpm for OWASP container
+        shell: bash
+        run: |
+          mkdir -p .local/bin
+          version="$(pnpm --version)"
+          curl --proto "=https" --tlsv1.2 -fsSL "https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-linuxstatic-x64" \
+            -o .local/bin/pnpm
+          chmod +x .local/bin/pnpm
+          .local/bin/pnpm --version
       - name: 'Run OWASP Dependency Check'
         id: depcheck
         uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
@@ -33,6 +48,8 @@ jobs:
           # Request an API key if required at: https://nvd.nist.gov/developers/request-an-api-key
           args: >
             --failOnCVSS 7
+            --disableYarnAudit
+            --pnpm /github/workspace/.local/bin/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
