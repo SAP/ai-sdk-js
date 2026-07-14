@@ -80,7 +80,8 @@ import {
   streamChain as streamChainOrchestration,
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  invokeDynamicModelAgent
+  invokeDynamicModelAgent,
+  invokePromptCachingAgent
 } from './langchain-orchestration.js';
 import {
   createCollection,
@@ -819,6 +820,25 @@ app.get('/langchain/invoke-dynamic-model-agent', async (req, res) => {
     res
       .header('Content-Type', 'text/plain')
       .send(await invokeDynamicModelAgent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-prompt-caching-agent', async (req, res) => {
+  try {
+    const [first, second] = await invokePromptCachingAgent();
+
+    let response = '--- First call (cache write) ---\n';
+    response += `Response: ${first.content}\ncacheCreationTokens: ${first.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${first.cachedTokens ?? 0}\n\n`;
+
+    response += '--- Second call (cache read) ---\n';
+    response += `Response: ${second.content}\n`;
+    response += `Cache tokens created: ${second.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${second.cachedTokens ?? 0}\n`;
+
+    res.header('Content-Type', 'text/plain').send(response);
   } catch (error: any) {
     sendError(res, error);
   }
