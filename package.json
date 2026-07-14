@@ -7,13 +7,6 @@
   "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^10",
-      "onFail": "warn"
-    }
-  },
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
