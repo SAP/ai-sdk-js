@@ -1,5 +1,16 @@
 # @sap-ai-sdk/foundation-models
 
+## 2.13.0
+
+### Patch Changes
+
+- Updated dependencies [11baf52]
+- Updated dependencies [cb8ffe7]
+- Updated dependencies [a8c9b29]
+- Updated dependencies [6542a2a]
+  - @sap-ai-sdk/core@2.13.0
+  - @sap-ai-sdk/ai-api@2.13.0
+
 ## 2.12.0
 
 ### Minor Changes
