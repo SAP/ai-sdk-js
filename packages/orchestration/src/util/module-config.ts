@@ -423,10 +423,10 @@ function buildCompletionModulesConfig(
   // If promptTemplating.prompt is not defined, initialize with an empty Template so the
   // service always receives a prompt object — messages routed to messages_history upstream
   // still need an empty template to be accepted by the Templating Module.
+  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
   const prompt: Template | TemplateRef = {
     ...(promptTemplating.prompt as Template | TemplateRef)
   };
-  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
 
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !request?.messages?.length) {
