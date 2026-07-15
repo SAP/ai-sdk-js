@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
+  push:
+    paths:
+      - '.github/workflows/fosstars.yml'
+      - '.github/owasp-suppressions.xml'
 
 permissions: {}
 
@@ -18,6 +22,20 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+      # OWASP runs in Docker and cannot see the runner's pnpm install. Put the
+      # standalone pnpm 11 bundle in the mounted workspace instead.
+      - name: Install pnpm for OWASP container
+        shell: bash
+        env:
+          PNPM_VERSION: 11.13.0
+        run: |
+          archive="${RUNNER_TEMP}/pnpm-linux-x64-musl.tar.gz"
+          curl --proto "=https" --tlsv1.2 -fsSL \
+            "https://github.com/pnpm/pnpm/releases/download/v${PNPM_VERSION}/pnpm-linux-x64-musl.tar.gz" \
+            -o "${archive}"
+          mkdir -p .local/pnpm
+          tar -xzf "${archive}" -C .local/pnpm
+          chmod +x .local/pnpm/pnpm
       - name: 'Run OWASP Dependency Check'
         id: depcheck
         uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
@@ -31,8 +49,13 @@ jobs:
           # - --nvdApiKey: Use an National Vulnerability Database (NVD) API key to increase rate limits
           #   for NVD data sync and improve reliability.
           # Request an API key if required at: https://nvd.nist.gov/developers/request-an-api-key
+          # --pnpm uses the container-mounted path (/github/workspace), not
+          # the runner's host path, since this action runs inside Docker.
           args: >
             --failOnCVSS 7
+            --disableYarnAudit
+            --exclude '**/.local/pnpm/**'
+            --pnpm /github/workspace/.local/pnpm/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
@@ -50,8 +73,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Slack Notification'
-        if: failure()
-        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        if: ${{ (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) && failure() }}
+        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
