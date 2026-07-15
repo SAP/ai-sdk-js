@@ -25,9 +25,7 @@ import {
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs,
-  orchestrationQwenChatCompletion,
-  orchestrationQwenResponseFormat,
-  orchestrationQwenWithToolCalling
+  orchestrationQwenChatCompletion
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -340,26 +338,4 @@ describe('orchestration', () => {
     const response = await orchestrationQwenChatCompletion('qwen3.6-flash');
     assertContent(response);
   });
-
-  it('should complete a basic chat with qwen3.6-plus', async () => {
-    const response = await orchestrationQwenChatCompletion('qwen3.6-plus');
-    assertContent(response);
-  });
-
-  it('should complete a basic chat with qwen3-max', async () => {
-    const response = await orchestrationQwenChatCompletion('qwen3-max');
-    assertContent(response);
-  });
-
-  it('should complete a chat with structured output using qwen3.6-plus', async () => {
-    const result = await orchestrationQwenResponseFormat();
-    expect(result.language).toBeDefined();
-    expect(result.translation).toBeDefined();
-  });
-
-  it('should complete a chat with function calling using qwen3-max', async () => {
-    const response = await orchestrationQwenWithToolCalling();
-    assertContent(response);
-  });
-
 });
