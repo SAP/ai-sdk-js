@@ -22,17 +22,20 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
-      # OWASP runs in Docker and cannot see the runner's pnpm install. Put a
-      # standalone binary in the workspace so the container can run pnpm audit.
+      # OWASP runs in Docker and cannot see the runner's pnpm install. Put the
+      # standalone pnpm 11 bundle in the mounted workspace instead.
       - name: Install pnpm for OWASP container
         shell: bash
+        env:
+          PNPM_VERSION: 11.13.0
         run: |
-          mkdir -p .local/bin
-          version="$(pnpm --version)"
-          curl --proto "=https" --tlsv1.2 -fsSL "https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-linuxstatic-x64" \
-            -o .local/bin/pnpm
-          chmod +x .local/bin/pnpm
-          .local/bin/pnpm --version
+          archive="${RUNNER_TEMP}/pnpm-linux-x64-musl.tar.gz"
+          curl --proto "=https" --tlsv1.2 -fsSL \
+            "https://github.com/pnpm/pnpm/releases/download/v${PNPM_VERSION}/pnpm-linux-x64-musl.tar.gz" \
+            -o "${archive}"
+          mkdir -p .local/pnpm
+          tar -xzf "${archive}" -C .local/pnpm
+          chmod +x .local/pnpm/pnpm
       - name: 'Run OWASP Dependency Check'
         id: depcheck
         uses: dependency-check/Dependency-Check_Action@1e54355a8b4c8abaa8cc7d0b70aa655a3bb15a6c # main
@@ -46,10 +49,17 @@ jobs:
           # - --nvdApiKey: Use an National Vulnerability Database (NVD) API key to increase rate limits
           #   for NVD data sync and improve reliability.
           # Request an API key if required at: https://nvd.nist.gov/developers/request-an-api-key
+          # --pnpm uses the container-mounted path (/github/workspace), not
+          # the runner's host path, since this action runs inside Docker.
+          # --disableNodeAudit: npm retired the classic audit API this
+          # analyzer relies on, so it always fails; skip it (pnpm audit
+          # isn't used here anyway).
           args: >
             --failOnCVSS 7
             --disableYarnAudit
-            --pnpm /github/workspace/.local/bin/pnpm
+            --disableNodeAudit
+            --exclude '**/.local/pnpm/**'
+            --pnpm /github/workspace/.local/pnpm/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
             --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
@@ -67,7 +77,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Slack Notification'
-        if: failure()
+        if: ${{ github.event_name == 'schedule' && failure() }}
         uses: slackapi/slack-github-action@fc46ded2fc4d7f11bfa62864526f920cf1a1167d # v3.0.4
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
