@@ -73,7 +73,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Slack Notification'
-        if: ${{ github.event_name == 'schedule' && failure() }}
+        if: ${{ (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) && failure() }}
         uses: slackapi/slack-github-action@fc46ded2fc4d7f11bfa62864526f920cf1a1167d # v3.0.4
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
