@@ -367,8 +367,7 @@ export function constructCompletionPostRequest(
 
   let moduleRequest = request;
   if (routeAllToHistory && request) {
-    const { messages: _messages, ...rest } = request;
-    moduleRequest = rest;
+    moduleRequest = { ...request, messages: [] };
   } else if (splitIndex > 0 && request) {
     moduleRequest = {
       ...request,
