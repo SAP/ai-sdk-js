@@ -429,7 +429,7 @@ function buildCompletionModulesConfig(
   };
 
   if (isTemplate(prompt)) {
-    if (!prompt.template?.length && !request?.messages?.length) {
+    if (!prompt.template?.length && !request?.messages) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     prompt.template = [
