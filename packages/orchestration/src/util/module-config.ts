@@ -388,7 +388,10 @@ export function constructCompletionPostRequest(
 
   const messagesHistory =
     routeToHistory || request?.messagesHistory?.length
-      ? [...(request?.messagesHistory || []), ...(request?.messages || [])]
+      ? [
+          ...(request?.messagesHistory || []),
+          ...(routeToHistory ? request?.messages || [] : [])
+        ]
       : undefined;
 
   return {
@@ -471,22 +474,21 @@ function shouldRouteMessagesToHistory(
   configs: OrchestrationModuleConfig[],
   request?: ChatCompletionRequest
 ): boolean {
-  // TemplateRef always routes to history — remote template cannot merge messages,
-  // regardless of placeholderValues.
-  const hasTemplateRef = configs.some(c => {
-    const prompt = c?.promptTemplating?.prompt;
-    return !!prompt && typeof prompt === 'object' && 'template_ref' in prompt;
-  });
-  if (hasTemplateRef) {
-    return true;
-  }
-
   // placeholderValues means the user opted into templating — do not route.
   if (
     !!request?.placeholderValues &&
     Object.keys(request.placeholderValues).length > 0
   ) {
     return false;
+  }
+
+  // TemplateRef always routes to history — remote template cannot merge messages.
+  const hasTemplateRef = configs.some(c => {
+    const prompt = c?.promptTemplating?.prompt;
+    return !!prompt && typeof prompt === 'object' && 'template_ref' in prompt;
+  });
+  if (hasTemplateRef) {
+    return true;
   }
 
   // No prompt configured — messages have nowhere to be merged into.
