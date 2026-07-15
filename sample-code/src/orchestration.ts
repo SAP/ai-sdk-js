@@ -1153,6 +1153,111 @@ export function orchestrationChatCompletionMp3File(): Promise<OrchestrationRespo
 }
 
 /**
+ * Send a basic chat completion request using a model name passed as a plain string.
+ * @param model - The model name to use.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationQwenChatCompletion(
+  model = 'qwen3.6-flash'
+): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: model }
+    }
+  });
+  return orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  });
+}
+
+/**
+ * Ask the LLM to translate a text using a model name passed as a plain string and return a structured response.
+ * @param model - The model name to use.
+ * @returns Response that adheres to `TranslationResponse` type.
+ */
+export async function orchestrationQwenResponseFormat(
+  model = 'qwen3.6-plus'
+): Promise<TranslationResponse> {
+  const translationSchema = z.strictObject({
+    language: z.string().meta({
+      description:
+        'The language of the translation, randomly chosen by the LLM.'
+    }),
+    translation: z
+      .string()
+      .meta({ description: 'The translation of the input sentence.' })
+  });
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      prompt: {
+        response_format: {
+          type: 'json_schema',
+          json_schema: {
+            name: 'translation_response',
+            strict: true,
+            schema: toJsonSchema(translationSchema)
+          }
+        }
+      },
+      model: { name: model }
+    }
+  });
+  const response = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+      },
+      { role: 'user', content: '{{?input}}' }
+    ],
+    placeholderValues: { input: 'Hello World! Why is this phrase so famous?' }
+  });
+  return JSON.parse(response.getContent()!) as TranslationResponse;
+}
+
+/**
+ * Send a chat completion request with tool calling using a model name passed as a plain string.
+ * @param model - The model name to use.
+ * @returns The orchestration service response after tool execution.
+ */
+export async function orchestrationQwenWithToolCalling(
+  model = 'qwen3-max'
+): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      prompt: { tools: [addNumbersTool] },
+      model: { name: model }
+    }
+  });
+
+  const response = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful AI that performs addition of two numbers.'
+      },
+      { role: 'user', content: 'What is 2 + 3?' }
+    ]
+  });
+  const allMessages = response.getAllMessages();
+  const toolCall = response.getAssistantMessage()?.tool_calls?.[0];
+  if (!toolCall) {
+    throw new Error('No tool call found in the response.');
+  }
+  const args = JSON.parse(toolCall.function.arguments);
+  const toolMessage: ToolChatMessage = {
+    role: 'tool',
+    content: `The sum of ${args.a} and ${args.b} is ${args.a + args.b}.`,
+    tool_call_id: toolCall.id
+  };
+  return orchestrationClient.chatCompletion({
+    messages: [toolMessage],
+    messagesHistory: allMessages
+  });
+}
+
+/**
  * Uses Anthropic prompt caching (cache_control) with a 5-minute TTL on a large system prompt.
  * Makes two sequential requests: the first creates the cache, the second reads from it.
  * @returns A tuple of [first response, second response].
