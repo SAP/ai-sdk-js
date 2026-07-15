@@ -370,27 +370,23 @@ describe('construct completion post request', () => {
         messages: [userMessage, toolMessage, followUp]
       });
 
-      expect(result.messages_history).toEqual([
-        userMessage,
-        toolMessage,
-        followUp
-      ]);
-      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
+      expect(result.messages_history).toBeUndefined();
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toEqual([userMessage, toolMessage, followUp]);
     });
 
     it('should preserve existing messagesHistory when routing all messages', () => {
       const followUpUser = { role: 'user' as const, content: 'Follow up.' };
-      const result = constructCompletionPostRequest(noTemplateConfig, {
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
         messages: [userMessage, toolMessage, followUpUser],
         messagesHistory: [assistantMessage]
       });
 
-      expect(result.messages_history).toEqual([
-        assistantMessage,
-        userMessage,
-        toolMessage,
-        followUpUser
-      ]);
+      expect(result.messages_history).toEqual([assistantMessage]);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toEqual([userMessage, toolMessage, followUpUser]);
     });
 
     it('should route all messages to history even without tool messages', () => {
@@ -398,8 +394,10 @@ describe('construct completion post request', () => {
         messages: [userMessage]
       });
 
-      expect(result.messages_history).toEqual([userMessage]);
-      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
+      expect(result.messages_history).toBeUndefined();
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toEqual([userMessage]);
     });
 
     it('should preserve chronological message order in messages_history', () => {
@@ -408,22 +406,22 @@ describe('construct completion post request', () => {
         messages: [userMessage, assistantMessage, toolMessage, followUpUser]
       });
 
-      expect(result.messages_history).toEqual([
-        userMessage,
-        assistantMessage,
-        toolMessage,
-        followUpUser
-      ]);
-      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
+      expect(result.messages_history).toBeUndefined();
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toEqual([userMessage, assistantMessage, toolMessage, followUpUser]);
     });
 
     it('should combine existing messagesHistory with routed messages', () => {
-      const result = constructCompletionPostRequest(noTemplateConfig, {
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
         messages: [userMessage],
         messagesHistory: [assistantMessage]
       });
 
-      expect(result.messages_history).toEqual([assistantMessage, userMessage]);
+      expect(result.messages_history).toEqual([assistantMessage]);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toEqual([userMessage]);
     });
 
     it('should not route messages when config has a static prompt template', () => {

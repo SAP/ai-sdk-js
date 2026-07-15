@@ -420,21 +420,13 @@ function buildCompletionModulesConfig(
   };
 
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  if (!promptTemplating.prompt) {
-    // No prompt configured: messages are already routed to messages_history upstream.
-    // Omit the prompt key entirely — it is optional per the service API.
-    const { prompt: _prompt, ...promptTemplatingWithoutPrompt } =
-      promptTemplating;
-    return {
-      prompt_templating:
-        promptTemplatingWithoutPrompt as PromptTemplatingModuleConfig,
-      ...modules
-    };
-  }
-
+  // If promptTemplating.prompt is not defined, initialize with an empty Template so the
+  // service always receives a prompt object — messages routed to messages_history upstream
+  // still need an empty template to be accepted by the Templating Module.
   const prompt: Template | TemplateRef = {
     ...(promptTemplating.prompt as Template | TemplateRef)
   };
+  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
 
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !request?.messages?.length) {
@@ -474,14 +466,6 @@ function shouldRouteMessagesToHistory(
   configs: OrchestrationModuleConfig[],
   request?: ChatCompletionRequest
 ): boolean {
-  // placeholderValues means the user opted into templating — do not route.
-  if (
-    !!request?.placeholderValues &&
-    Object.keys(request.placeholderValues).length > 0
-  ) {
-    return false;
-  }
-
   // TemplateRef always routes to history — remote template cannot merge messages.
   const hasTemplateRef = configs.some(c => {
     const prompt = c?.promptTemplating?.prompt;
@@ -491,8 +475,15 @@ function shouldRouteMessagesToHistory(
     return true;
   }
 
-  // No prompt configured — messages have nowhere to be merged into.
-  return configs.every(c => !c?.promptTemplating?.prompt);
+  // placeholderValues means the user opted into templating — do not route.
+  if (
+    !!request?.placeholderValues &&
+    Object.keys(request.placeholderValues).length > 0
+  ) {
+    return false;
+  }
+
+  return false;
 }
 
 function isTemplate(templating: unknown): templating is Template {
