@@ -19,7 +19,7 @@ jobs:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: sap/cloud-sdk-js/.github/actions/setup@0b9bf8e65a8294c108b981788751ea34129d3fa4 # main
         with:
           ref: ${{ github.head_ref }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
