@@ -490,7 +490,13 @@ function getMessageSplitIndex(
     return 0;
   }
 
-  return messages.findLastIndex(msg => msg.role === 'tool') + 1;
+  const lastToolIndex = messages.findLastIndex(msg => msg.role === 'tool');
+  // Only route if there are messages after the last tool message —
+  // the service requires at least one message in prompt.template.
+  if (lastToolIndex >= 0 && lastToolIndex < messages.length - 1) {
+    return lastToolIndex + 1;
+  }
+  return 0;
 }
 
 function isTemplate(templating: unknown): templating is Template {
