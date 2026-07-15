@@ -490,7 +490,7 @@ function shouldRouteMessagesToHistory(
   }
 
   // No prompt configured — messages have nowhere to be merged into.
-  return configs.some(c => !c?.promptTemplating?.prompt);
+  return  configs.every(c => !c?.promptTemplating?.prompt);
 }
 
 function isTemplate(templating: unknown): templating is Template {
