@@ -20,15 +20,33 @@ updates:
       default-days: 4
       exclude:
         - '@sap-cloud-sdk/*'
-    ignore:
-      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
-      - dependency-name: '@types/node'
-        update-types: ['version-update:semver-major']
+    versioning-strategy: widen
+    allow:
+      - dependency-type: production
     groups:
       sap-cloud-sdk:
         patterns: ['@sap-cloud-sdk/*']
       langchain:
         patterns: ['langchain', '@langchain/*']
+  - package-ecosystem: npm
+    target-branch: main
+    registries:
+      - sap-artifactory
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '01:00'
+      timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 4
+    versioning-strategy: increase
+    ignore:
+      # We only want to do major node updates manually, so don't create dependabot PRs for major versions
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+    allow:
+      - dependency-type: development
   - package-ecosystem: 'github-actions'
     directories:
       - '/'
@@ -41,5 +59,10 @@ updates:
     cooldown:
       default-days: 4
     ignore:
-    - dependency-name: 'SAP/ai-sdk-js'
-      update-types: ['version-update:semver-major', 'version-update:semver-minor', 'version-update:semver-patch']
+      - dependency-name: 'SAP/ai-sdk-js'
+        update-types:
+          [
+            'version-update:semver-major',
+            'version-update:semver-minor',
+            'version-update:semver-patch'
+          ]
