@@ -362,7 +362,8 @@ export function constructCompletionPostRequest(
   const configs = Array.isArray(config) ? config : [config];
   const messages = request?.messages || [];
   const splitIndex = getMessageSplitIndex(configs, messages, request);
-  const routeAllToHistory = splitIndex === messages.length && messages.length > 0;
+  const routeAllToHistory =
+    splitIndex === messages.length && messages.length > 0;
 
   let moduleRequest = request;
   if (routeAllToHistory && request) {
@@ -396,10 +397,7 @@ export function constructCompletionPostRequest(
 
   const messagesHistory =
     splitIndex > 0 || request?.messagesHistory?.length
-      ? [
-          ...(request?.messagesHistory || []),
-          ...messages.slice(0, splitIndex)
-        ]
+      ? [...(request?.messagesHistory || []), ...messages.slice(0, splitIndex)]
       : undefined;
 
   return {
