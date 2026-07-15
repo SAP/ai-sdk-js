@@ -357,7 +357,7 @@ describe('construct completion post request', () => {
     };
     const userMessage = { role: 'user' as const, content: 'Summarize.' };
 
-    // Config without a prompt — shouldRouteMessagesToHistory returns true
+    // Config without a prompt — messages with tool results get partial routing
     const noTemplateConfig: OrchestrationModuleConfig = {
       promptTemplating: {
         model: { name: 'gpt-5.4-nano' }
@@ -370,10 +370,9 @@ describe('construct completion post request', () => {
         messages: [userMessage, toolMessage, followUp]
       });
 
-      expect(result.messages_history).toBeUndefined();
+      // tool at index 1 → splitIndex = 2, followUp stays in template
+      expect(result.messages_history).toEqual([userMessage, toolMessage]);
       expect(result.config.modules.prompt_templating.prompt.template).toEqual([
-        userMessage,
-        toolMessage,
         followUp
       ]);
     });
@@ -385,10 +384,12 @@ describe('construct completion post request', () => {
         messagesHistory: [assistantMessage]
       });
 
-      expect(result.messages_history).toEqual([assistantMessage]);
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+      expect(result.messages_history).toEqual([
+        assistantMessage,
         userMessage,
-        toolMessage,
+        toolMessage
+      ]);
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         followUpUser
       ]);
     });
@@ -398,6 +399,7 @@ describe('construct completion post request', () => {
         messages: [userMessage]
       });
 
+      // no tool messages → splitIndex = 0, all go to template
       expect(result.messages_history).toBeUndefined();
       expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         userMessage
@@ -410,11 +412,13 @@ describe('construct completion post request', () => {
         messages: [userMessage, assistantMessage, toolMessage, followUpUser]
       });
 
-      expect(result.messages_history).toBeUndefined();
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+      // tool at index 2 → splitIndex = 3, followUpUser stays in template
+      expect(result.messages_history).toEqual([
         userMessage,
         assistantMessage,
-        toolMessage,
+        toolMessage
+      ]);
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         followUpUser
       ]);
     });
@@ -425,6 +429,7 @@ describe('construct completion post request', () => {
         messagesHistory: [assistantMessage]
       });
 
+      // no tool messages → splitIndex = 0, userMessage goes to template
       expect(result.messages_history).toEqual([assistantMessage]);
       expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         userMessage
@@ -436,10 +441,14 @@ describe('construct completion post request', () => {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      expect(result.messages_history).toBeUndefined();
+      // tool at index 1 → splitIndex = 2, userMessage stays in template
+      expect(result.messages_history).toEqual([assistantMessage, toolMessage]);
       expect(
         result.config.modules.prompt_templating.prompt.template
-      ).toContainEqual(toolMessage);
+      ).not.toContainEqual(toolMessage);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toContainEqual(userMessage);
     });
 
     it('should not route messages when config has prompt.tools', () => {
@@ -464,10 +473,14 @@ describe('construct completion post request', () => {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      expect(result.messages_history).toBeUndefined();
+      // tool at index 1 → splitIndex = 2, userMessage stays in template
+      expect(result.messages_history).toEqual([assistantMessage, toolMessage]);
       expect(
         result.config.modules.prompt_templating.prompt.template
-      ).toContainEqual(toolMessage);
+      ).not.toContainEqual(toolMessage);
+      expect(
+        result.config.modules.prompt_templating.prompt.template
+      ).toContainEqual(userMessage);
     });
   });
 });
