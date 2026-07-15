@@ -437,10 +437,15 @@ function buildCompletionModulesConfig(
     if (!prompt.template?.length && !request?.messages) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
-    prompt.template = [
+    const mergedTemplate = [
       ...(prompt.template || []),
       ...(request?.messages || [])
     ];
+    if (mergedTemplate.length) {
+      prompt.template = mergedTemplate;
+    } else {
+      (prompt as Record<string, unknown>).template = undefined;
+    }
   }
 
   return {
