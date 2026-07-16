@@ -278,8 +278,8 @@ importers:
         specifier: ^10.0.3
         version: 10.0.3(@eslint/js@10.0.1(eslint@10.6.0(jiti@2.7.0)))
       '@sap/xssec':
-        specifier: ^4.13.1
-        version: 4.13.1
+        specifier: ^4.13.2
+        version: 4.13.2
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -1424,8 +1424,8 @@ packages:
     resolution: {integrity: sha512-8e+bU+OyAIpAGXQanOopZa5YEK+yHKw84dhhihcCotF40MSNFbVHjQ4xM5hf4QndlqDGfXIuvXmoOMuDATa/gA==, tarball: https://registry.npmjs.org/@sap/xssec/-/xssec-4.13.0.tgz}
     engines: {node: '>=18'}
 
-  '@sap/xssec@4.13.1':
-    resolution: {integrity: sha512-sZwTvxO7Vh5qjrSXHgb0fTJEPz14kYPzScn4GI5kZYGb97fZ4X5IE90mlafjZeJFfQkBCCIzVWfrbweCpBbPyQ==, tarball: https://registry.npmjs.org/@sap/xssec/-/xssec-4.13.1.tgz}
+  '@sap/xssec@4.13.2':
+    resolution: {integrity: sha512-ODuNp7pM/p+FZmPxSawxZpMdnaRxWUi9dQjL3lKhw6LuwejSiC2TRE0oRXt9MutID40FM+hU3maOROHQ+L+B5w==, tarball: https://registry.npmjs.org/@sap/xssec/-/xssec-4.13.2.tgz}
     engines: {node: '>=18'}
 
   '@scalar/helpers@0.9.0':
@@ -6127,7 +6127,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xssec@4.13.1':
+  '@sap/xssec@4.13.2':
     dependencies:
       debug: 4.4.3
       jwt-decode: 4.0.0
