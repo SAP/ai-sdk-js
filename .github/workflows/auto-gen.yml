@@ -26,10 +26,12 @@ jobs:
           persist-credentials: true
           token: ${{ steps.app-token.outputs.token }}
       - name: Generate and apply patches
+        shell: bash
         run: |
           pnpm generate
           pnpm apply-patches
       - name: Commit Changes if needed
+        shell: bash
         env:
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
