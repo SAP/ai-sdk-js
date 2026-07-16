@@ -1,0 +1,27 @@
+diff --git a/packages/prompt-registry/src/client/prompt-registry/prompt-templates-api.ts b/packages/prompt-registry/src/client/prompt-registry/prompt-templates-api.ts
+index 413273f9..1f76cf70 100644
+--- a/packages/prompt-registry/src/client/prompt-registry/prompt-templates-api.ts
++++ b/packages/prompt-registry/src/client/prompt-registry/prompt-templates-api.ts
+@@ -79,19 +79,19 @@ export const PromptTemplatesApi = {
+    * @param scenario - Path parameter.
+    * @param version - Path parameter.
+    * @param name - Path parameter.
+-   * @param queryParameters - Object containing the following keys: $top, $skip.
+    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
++   * @param queryParameters - Object containing the following keys: $top, $skip.
+    * @returns The request builder, use the `execute()` method to trigger the request.
+    */
+   listPromptTemplateHistory: (
+     scenario: string,
+     version: string,
+     name: string,
+-    queryParameters?: { $top?: number; $skip?: number },
+     headerParameters?: {
+       'AI-Resource-Group'?: string;
+       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
+-    }
++    },
++    queryParameters?: { $top?: number; $skip?: number }
+   ) =>
+     new OpenApiRequestBuilder<PromptTemplateListResponse>(
+       'get',
