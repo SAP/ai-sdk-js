@@ -125,7 +125,7 @@ It is used internally by `createOpenAiConfig`.
 > [!NOTE]
 > The Realtime API requires the additional `ws` dependency to be installed in your project.
 
-`SapOpenAiRealtime` provides live audio and text access to the OpenAI Realtime API over WebSocket, available from the `@sap-ai-sdk/openai/realtime` subpath export.
+`SapOpenAiRealtime` provides live audio and text access to the OpenAI Realtime API over WebSocket, available from the `@sap-ai-sdk/openai/realtime` sub-path export.
 It resolves the deployment, opens the WebSocket connection, and sets the SAP-specific headers automatically, while keeping the familiar `on()` / `send()` / `close()` event API.
 
 ```ts
