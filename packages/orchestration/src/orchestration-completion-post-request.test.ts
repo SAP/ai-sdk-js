@@ -370,7 +370,11 @@ describe('construct completion post request', () => {
         messages: [userMessage, toolMessage, followUp]
       });
 
-      expect(result.messages_history).toEqual([userMessage, toolMessage, followUp]);
+      expect(result.messages_history).toEqual([
+        userMessage,
+        toolMessage,
+        followUp
+      ]);
       expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
     });
 
@@ -443,7 +447,7 @@ describe('construct completion post request', () => {
       ]);
     });
 
-    it('should route all messages when tool message present with prompt.tools config', () => {
+    it('should not route messages when config has prompt.tools (service requires template alongside tools)', () => {
       const toolsConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: { name: 'gpt-5.4-nano' },
@@ -465,13 +469,13 @@ describe('construct completion post request', () => {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      expect(result.messages_history).toEqual([
+      // prompt.tools present → routing skipped, messages merged into template
+      expect(result.messages_history).toBeUndefined();
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         assistantMessage,
         toolMessage,
         userMessage
       ]);
-      // tools config: messages removed, prompt.template omitted when empty
-      expect(result.config.modules.prompt_templating.prompt.template).toBeUndefined();
     });
   });
 });

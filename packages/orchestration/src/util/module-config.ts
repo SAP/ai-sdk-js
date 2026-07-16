@@ -362,9 +362,7 @@ export function constructCompletionPostRequest(
   const routeToHistory = shouldRouteMessagesToHistory(configs, request);
 
   const moduleRequest =
-    routeToHistory && request
-      ? { ...request, messages: undefined }
-      : request;
+    routeToHistory && request ? { ...request, messages: undefined } : request;
 
   /**
    * Module configurations for the orchestration request.
@@ -445,7 +443,7 @@ function buildCompletionModulesConfig(
     if (mergedTemplate.length) {
       prompt.template = mergedTemplate;
     } else {
-      delete (prompt as Partial<typeof prompt>).template;
+      prompt.template = [];
     }
   }
 
@@ -484,6 +482,17 @@ function shouldRouteMessagesToHistory(
 
   if (configs.some(c => isTemplateRef(c?.promptTemplating?.prompt || {}))) {
     return true;
+  }
+
+  // Skip routing when any config has prompt.tools — the service requires template
+  // to be present alongside tools, so routing would strip messages and break the request.
+  if (
+    configs.some(c => {
+      const prompt = c?.promptTemplating?.prompt;
+      return isTemplate(prompt) && !!(prompt as { tools?: unknown }).tools;
+    })
+  ) {
+    return false;
   }
 
   return !!request?.messages?.some(m => m.role === 'tool');
