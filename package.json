@@ -1,12 +1,19 @@
 {
   "name": "sap-ai-sdk",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
   "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^10",
+      "onFail": "warn"
+    }
+  },
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
