@@ -24,7 +24,7 @@ export class SapEmbeddings {
 
   /**
    * Creates an embedding request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
-   * @param body - Embedding request parameters, without `model`.
+   * @param body - Embedding request parameters.
    * @param options - Optional request options.
    * @returns A promise resolving to a {@link CreateEmbeddingResponse}.
    */
