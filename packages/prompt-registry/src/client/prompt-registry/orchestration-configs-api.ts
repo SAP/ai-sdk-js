@@ -19,7 +19,7 @@ export const OrchestrationConfigsApi = {
   _defaultBasePath: undefined,
   /**
    * List orchestration configs
-   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, include_spec, includeSpec, resolve_template_ref, resolveTemplateRef.
+   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, include_spec, includeSpec, resolve_template_ref, resolveTemplateRef, $top, $skip.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -33,6 +33,8 @@ export const OrchestrationConfigsApi = {
       includeSpec?: boolean;
       resolve_template_ref?: boolean;
       resolveTemplateRef?: boolean;
+      $top?: number;
+      $skip?: number;
     },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>
@@ -72,7 +74,7 @@ export const OrchestrationConfigsApi = {
    * @param scenario - Path parameter.
    * @param version - Path parameter.
    * @param name - Path parameter.
-   * @param queryParameters - Object containing the following keys: include_spec, includeSpec, resolve_template_ref, resolveTemplateRef.
+   * @param queryParameters - Object containing the following keys: include_spec, includeSpec, resolve_template_ref, resolveTemplateRef, $top, $skip.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -85,6 +87,8 @@ export const OrchestrationConfigsApi = {
       includeSpec?: boolean;
       resolve_template_ref?: boolean;
       resolveTemplateRef?: boolean;
+      $top?: number;
+      $skip?: number;
     },
     headerParameters?: { 'AI-Resource-Group'?: string }
   ) =>

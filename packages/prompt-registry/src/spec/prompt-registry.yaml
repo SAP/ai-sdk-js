@@ -69,9 +69,16 @@ paths:
           schema:
             type: boolean
             default: false
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
       responses:
         '200':
           description: Successful response
+          headers:
+            Link:
+              description: Pagination links (rel=next, rel=prev)
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -80,6 +87,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
         default:
           $ref: '#/components/responses/CommonError'
   /lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history:
@@ -107,9 +116,16 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
       responses:
         '200':
           description: Successful response
+          headers:
+            Link:
+              description: Pagination links (rel=next, rel=prev)
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -118,6 +134,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
         default:
           $ref: '#/components/responses/CommonError'
   /lm/promptTemplates/{promptTemplateId}:
@@ -401,9 +419,16 @@ paths:
           in: query
           schema:
             type: boolean
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
       responses:
         '200':
           description: Successful response
+          headers:
+            Link:
+              description: Pagination links (rel=next, rel=prev)
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -412,6 +437,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
         default:
           $ref: '#/components/responses/CommonError'
   /registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history:
@@ -460,9 +487,16 @@ paths:
           in: query
           schema:
             type: boolean
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
       responses:
         '200':
           description: Successful response
+          headers:
+            Link:
+              description: Pagination links (rel=next, rel=prev)
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -471,6 +505,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '403':
           $ref: '#/components/responses/ForbiddenError'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
         default:
           $ref: '#/components/responses/CommonError'
   /registry/v2/orchestrationConfigs/{orchestrationConfigId}:
@@ -2161,6 +2197,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    PayloadTooLarge:
+      description: Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip to paginate
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     ai-resource-group:
       name: AI-Resource-Group
@@ -2181,3 +2223,21 @@ components:
           - 'True'
           - 'false'
           - 'False'
+    top:
+      name: $top
+      in: query
+      description: Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+    skip:
+      name: $skip
+      in: query
+      description: Number of results to skip before returning the page.
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0

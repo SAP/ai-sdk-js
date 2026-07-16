@@ -105,13 +105,21 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateRespons
  */
 export const registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault = `both`;
 export const registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault = false;
+export const registryControllerPromptControllerListPromptTemplatesQueryTopMax = 500;
+
+export const registryControllerPromptControllerListPromptTemplatesQuerySkipDefault = 0;
+export const registryControllerPromptControllerListPromptTemplatesQuerySkipMin = 0;
+
+
 
 export const RegistryControllerPromptControllerListPromptTemplatesQueryParams = zod.object({
   "scenario": zod.string().optional(),
   "name": zod.string().optional(),
   "version": zod.string().optional(),
   "retrieve": zod.string().default(registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault),
-  "includeSpec": zod.boolean().default(registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault)
+  "includeSpec": zod.boolean().default(registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault),
+  "$top": zod.number().min(1).max(registryControllerPromptControllerListPromptTemplatesQueryTopMax).optional().describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).'),
+  "$skip": zod.number().min(registryControllerPromptControllerListPromptTemplatesQuerySkipMin).default(registryControllerPromptControllerListPromptTemplatesQuerySkipDefault).describe('Number of results to skip before returning the page.')
 })
 
 export const RegistryControllerPromptControllerListPromptTemplatesHeader = zod.object({
@@ -199,6 +207,18 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
   "scenario": zod.string(),
   "version": zod.string(),
   "name": zod.string()
+})
+
+export const registryControllerPromptControllerListPromptTemplateHistoryQueryTopMax = 500;
+
+export const registryControllerPromptControllerListPromptTemplateHistoryQuerySkipDefault = 0;
+export const registryControllerPromptControllerListPromptTemplateHistoryQuerySkipMin = 0;
+
+
+
+export const RegistryControllerPromptControllerListPromptTemplateHistoryQueryParams = zod.object({
+  "$top": zod.number().min(1).max(registryControllerPromptControllerListPromptTemplateHistoryQueryTopMax).optional().describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).'),
+  "$skip": zod.number().min(registryControllerPromptControllerListPromptTemplateHistoryQuerySkipMin).default(registryControllerPromptControllerListPromptTemplateHistoryQuerySkipDefault).describe('Number of results to skip before returning the page.')
 })
 
 export const RegistryControllerPromptControllerListPromptTemplateHistoryHeader = zod.object({
@@ -1402,6 +1422,12 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault = `both`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMax = 500;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipMin = 0;
+
+
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryParams = zod.object({
   "scenario": zod.string().optional(),
@@ -1411,7 +1437,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
   "includeSpec": zod.boolean().optional(),
   "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
-  "resolveTemplateRef": zod.boolean().optional()
+  "resolveTemplateRef": zod.boolean().optional(),
+  "$top": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMax).optional().describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).'),
+  "$skip": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipMin).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipDefault).describe('Number of results to skip before returning the page.')
 })
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigsHeader = zod.object({
@@ -2164,12 +2192,20 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMax = 500;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipDefault = 0;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipMin = 0;
+
+
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryParams = zod.object({
   "include_spec": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault).describe('DEPRECATED: Use includeSpec instead'),
   "includeSpec": zod.boolean().optional(),
   "resolve_template_ref": zod.boolean().default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault).describe('DEPRECATED: Use resolveTemplateRef instead'),
-  "resolveTemplateRef": zod.boolean().optional()
+  "resolveTemplateRef": zod.boolean().optional(),
+  "$top": zod.number().min(1).max(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMax).optional().describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).'),
+  "$skip": zod.number().min(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipMin).default(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipDefault).describe('Number of results to skip before returning the page.')
 })
 
 export const RegistryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryHeader = zod.object({
