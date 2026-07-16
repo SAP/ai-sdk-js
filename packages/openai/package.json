@@ -29,6 +29,10 @@
     "./internal.js": {
       "types": "./dist/internal.d.ts",
       "default": "./dist/internal.js"
+    },
+    "./realtime": {
+      "types": "./dist/realtime/index.d.ts",
+      "default": "./dist/realtime/index.js"
     }
   },
   "files": [
@@ -50,9 +54,17 @@
     "@sap-cloud-sdk/util": "^4.7.0"
   },
   "peerDependencies": {
-    "openai": "^6.45.0"
+    "openai": "^6.45.0",
+    "ws": "^8.20.0"
+  },
+  "peerDependenciesMeta": {
+    "ws": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "openai": "^6.45.0"
+    "@types/ws": "^8.18.1",
+    "openai": "6.45.0",
+    "ws": "8.21.0"
   }
 }

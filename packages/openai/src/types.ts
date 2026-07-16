@@ -14,26 +14,33 @@ export type SapModelName =
   AzureOpenAiChatModel | AzureOpenAiEmbeddingModel | AzureOpenAiResponsesModel;
 
 /**
- * Options for creating a pre-configured Azure OpenAI client or config for SAP AI Core.
+ * Base options shared by all pre-configured SAP AI Core OpenAI clients.
+ * @internal
  */
-export interface SapOpenAiOptions {
+export interface SapOpenAiBaseOptions<TModel extends string> {
   /**
    * Model deployment: a model name string, `{ modelName, modelVersion? }`, or `{ deploymentId }`.
    * An optional `resourceGroup` can be included in the object form.
    */
-  deployment: ModelDeployment<SapModelName>;
+  deployment: ModelDeployment<TModel>;
   /**
    * Optional custom destination. Defaults to the `aicore` service binding or `AICORE_SERVICE_KEY` env var.
    */
   destination?: HttpDestinationOrFetchOptions;
   /**
-   * Azure OpenAI API version. Defaults to `'2024-10-21'`.
-   */
-  apiVersion?: string;
-  /**
    * Additional client types appended to the `ai-client-type` header with the preconfigured `AI SDK JavaScript` value.
    */
   clientType?: string;
+}
+
+/**
+ * Options for creating a pre-configured Azure OpenAI client or config for SAP AI Core.
+ */
+export interface SapOpenAiOptions extends SapOpenAiBaseOptions<SapModelName> {
+  /**
+   * Azure OpenAI API version. Defaults to `'2024-10-21'`.
+   */
+  apiVersion?: string;
 }
 
 /**

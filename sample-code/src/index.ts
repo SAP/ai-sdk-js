@@ -113,3 +113,11 @@ export {
   responsesApiStateful,
   responsesApiMultiTurn
 } from './openai.js';
+
+export {
+  realtimeTextToAudio,
+  realtimeSpeechToSpeech,
+  pcm16ToWav,
+  realtimeSampleRate
+} from './openai-realtime.js';
+export type { RealtimeAudioResult } from './openai-realtime.js';
