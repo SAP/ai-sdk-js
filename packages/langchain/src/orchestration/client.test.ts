@@ -1472,7 +1472,9 @@ describe('orchestration service client', () => {
         }
 
         expect(
-          warnSpy.mock.calls.filter(([msg]) => msg.includes('template_ref'))
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('template_ref')
+          )
         ).toHaveLength(1);
       });
 
@@ -1569,7 +1571,9 @@ describe('orchestration service client', () => {
         }
 
         expect(
-          warnSpy.mock.calls.filter(([msg]) => msg.includes('template_ref'))
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('template_ref')
+          )
         ).toHaveLength(1);
       });
 
@@ -1658,7 +1662,9 @@ describe('orchestration service client', () => {
         }
 
         expect(
-          warnSpy.mock.calls.filter(([msg]) => msg.includes('prepended'))
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
         ).toHaveLength(1);
       });
 
@@ -1755,9 +1761,14 @@ describe('orchestration service client', () => {
         }
 
         expect(
-          warnSpy.mock.calls.filter(([msg]) => msg.includes('prepended'))
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
         ).toHaveLength(1);
       });
+    });
+  });
+
   describe('cache_control', () => {
     // `messageIdx` is passed in (rather than computed as `length - 1`) so the
     // assertion would fail if the implementation pinned the breakpoint to a

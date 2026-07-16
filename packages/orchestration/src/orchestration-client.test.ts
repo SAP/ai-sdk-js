@@ -1546,7 +1546,9 @@ describe('orchestration service client', () => {
         }
 
         expect(
-          warnSpy.mock.calls.filter(([msg]) => msg.includes('prepended'))
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
         ).toHaveLength(1);
       });
 
@@ -1645,7 +1647,9 @@ describe('orchestration service client', () => {
         }
 
         expect(
-          warnSpy.mock.calls.filter(([msg]) => msg.includes('prepended'))
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
         ).toHaveLength(1);
       });
     });
@@ -1700,7 +1704,7 @@ describe('orchestration service client', () => {
 
         expect(
           warnSpy.mock.calls.filter(([msg]) =>
-            msg.includes('cannot be extended inline')
+            (msg as unknown as string).includes('cannot be extended inline')
           )
         ).toHaveLength(1);
       });
@@ -1752,7 +1756,7 @@ describe('orchestration service client', () => {
 
         expect(
           warnSpy.mock.calls.filter(([msg]) =>
-            msg.includes('cannot be extended inline')
+            (msg as unknown as string).includes('cannot be extended inline')
           )
         ).toHaveLength(1);
       });
