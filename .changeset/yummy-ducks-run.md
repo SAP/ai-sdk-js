@@ -2,6 +2,5 @@
 '@sap-ai-sdk/orchestration': patch
 ---
 
-[Fix] Automatically route all `messages` to `messages_history` to bypass prompt templating when no `prompt` is configured or a `TemplateRef` is used.
-Routing is skipped when a `Template` is configured or `placeholderValues` are provided.
-
+[Fix] Automatically route `messages` to `messages_history` to bypass prompt templating when tool results are present (preventing `{{?...}}` syntax in tool content from being interpreted as template placeholders), a `TemplateRef` is used, or no `prompt` is configured.
+Routing is skipped when `placeholderValues` are provided.

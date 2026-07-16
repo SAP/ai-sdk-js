@@ -357,24 +357,21 @@ describe('construct completion post request', () => {
     };
     const userMessage = { role: 'user' as const, content: 'Summarize.' };
 
-    // Config without a prompt — messages with tool results get partial routing
+    // Config without a prompt — tool messages trigger full routing to messages_history
     const noTemplateConfig: OrchestrationModuleConfig = {
       promptTemplating: {
         model: { name: 'gpt-5.4-nano' }
       }
     };
 
-    it('should route all messages to messages_history when no prompt is configured', () => {
+    it('should route all messages to messages_history when tool message is present', () => {
       const followUp = { role: 'user' as const, content: 'Follow up.' };
       const result: any = constructCompletionPostRequest(noTemplateConfig, {
         messages: [userMessage, toolMessage, followUp]
       });
 
-      // tool at index 1 → splitIndex = 2, followUp stays in template
-      expect(result.messages_history).toEqual([userMessage, toolMessage]);
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
-        followUp
-      ]);
+      expect(result.messages_history).toEqual([userMessage, toolMessage, followUp]);
+      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
     });
 
     it('should preserve existing messagesHistory when routing all messages', () => {
@@ -387,38 +384,32 @@ describe('construct completion post request', () => {
       expect(result.messages_history).toEqual([
         assistantMessage,
         userMessage,
-        toolMessage
-      ]);
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+        toolMessage,
         followUpUser
       ]);
     });
 
-    it('should route all messages to history even without tool messages', () => {
+    it('should not route messages when no tool messages are present', () => {
       const result: any = constructCompletionPostRequest(noTemplateConfig, {
         messages: [userMessage]
       });
 
-      // no tool messages → splitIndex = 0, all go to template
+      // no tool messages → no routing, userMessage merged into prompt.template
       expect(result.messages_history).toBeUndefined();
       expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         userMessage
       ]);
     });
-
-    it('should preserve chronological message order in messages_history', () => {
+    it('should preserve chronological message order when routing to messages_history', () => {
       const followUpUser = { role: 'user' as const, content: 'Follow up.' };
       const result: any = constructCompletionPostRequest(noTemplateConfig, {
         messages: [userMessage, assistantMessage, toolMessage, followUpUser]
       });
 
-      // tool at index 2 → splitIndex = 3, followUpUser stays in template
       expect(result.messages_history).toEqual([
         userMessage,
         assistantMessage,
-        toolMessage
-      ]);
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+        toolMessage,
         followUpUser
       ]);
     });
@@ -429,29 +420,30 @@ describe('construct completion post request', () => {
         messagesHistory: [assistantMessage]
       });
 
-      // no tool messages → splitIndex = 0, userMessage goes to template
+      // no tool messages → no routing, userMessage merged into prompt.template
       expect(result.messages_history).toEqual([assistantMessage]);
       expect(result.config.modules.prompt_templating.prompt.template).toEqual([
         userMessage
       ]);
     });
 
-    it('should not route messages when config has a static prompt template', () => {
+    it('should route all messages when tool message present with static prompt template', () => {
       const result: any = constructCompletionPostRequest(defaultConfig, {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      // tool at index 1 → splitIndex = 2, userMessage stays in template
-      expect(result.messages_history).toEqual([assistantMessage, toolMessage]);
-      expect(
-        result.config.modules.prompt_templating.prompt.template
-      ).not.toContainEqual(toolMessage);
-      expect(
-        result.config.modules.prompt_templating.prompt.template
-      ).toContainEqual(userMessage);
+      expect(result.messages_history).toEqual([
+        assistantMessage,
+        toolMessage,
+        userMessage
+      ]);
+      // static template remains, messages were removed (routed to history)
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+        { role: 'user', content: 'Hi' }
+      ]);
     });
 
-    it('should not route messages when config has prompt.tools', () => {
+    it('should route all messages when tool message present with prompt.tools config', () => {
       const toolsConfig: OrchestrationModuleConfig = {
         promptTemplating: {
           model: { name: 'gpt-5.4-nano' },
@@ -473,14 +465,13 @@ describe('construct completion post request', () => {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      // tool at index 1 → splitIndex = 2, userMessage stays in template
-      expect(result.messages_history).toEqual([assistantMessage, toolMessage]);
-      expect(
-        result.config.modules.prompt_templating.prompt.template
-      ).not.toContainEqual(toolMessage);
-      expect(
-        result.config.modules.prompt_templating.prompt.template
-      ).toContainEqual(userMessage);
+      expect(result.messages_history).toEqual([
+        assistantMessage,
+        toolMessage,
+        userMessage
+      ]);
+      // tools config: messages removed, prompt.template omitted when empty
+      expect(result.config.modules.prompt_templating.prompt.template).toBeUndefined();
     });
   });
 });

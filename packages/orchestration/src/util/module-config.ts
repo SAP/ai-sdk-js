@@ -11,7 +11,6 @@ import {
   type EmbeddingRequest
 } from '../orchestration-types.js';
 import type {
-  ChatMessage,
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
@@ -360,20 +359,12 @@ export function constructCompletionPostRequest(
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
 
   const configs = Array.isArray(config) ? config : [config];
-  const messages = request?.messages || [];
-  const splitIndex = getMessageSplitIndex(configs, messages, request);
-  const routeAllToHistory =
-    splitIndex === messages.length && messages.length > 0;
+  const routeToHistory = shouldRouteMessagesToHistory(configs, request);
 
-  let moduleRequest = request;
-  if (routeAllToHistory && request) {
-    moduleRequest = { ...request, messages: [] };
-  } else if (splitIndex > 0 && request) {
-    moduleRequest = {
-      ...request,
-      messages: messages.slice(splitIndex)
-    };
-  }
+  const moduleRequest =
+    routeToHistory && request
+      ? { ...request, messages: undefined }
+      : request;
 
   /**
    * Module configurations for the orchestration request.
@@ -394,10 +385,12 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
+  // Only append messages when routing is active to avoid duplicating messages
+  // already present in messagesHistory.
   const messagesHistory =
-    splitIndex > 0 || request?.messagesHistory?.length
-      ? [...(request?.messagesHistory || []), ...messages.slice(0, splitIndex)]
-      : undefined;
+    routeToHistory && request?.messages?.length
+      ? [...(request.messagesHistory || []), ...request.messages]
+      : request?.messagesHistory;
 
   return {
     config: configWithStream,
@@ -425,16 +418,24 @@ function buildCompletionModulesConfig(
   };
 
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  // If promptTemplating.prompt is not defined, initialize with an empty Template so the
-  // service always receives a prompt object — messages routed to messages_history upstream
-  // still need an empty template to be accepted by the Templating Module.
+  // If promptTemplating.prompt is not defined and messages were routed upstream,
+  // omit the prompt key entirely so the service receives only messages_history.
+  if (!promptTemplating.prompt && request?.messages === undefined) {
+    const { prompt: _prompt, ...rest } = promptTemplating;
+    return {
+      prompt_templating: rest as PromptTemplatingModuleConfig,
+      ...modules
+    };
+  }
+
+  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
   promptTemplating.prompt = promptTemplating.prompt || { template: [] };
-  const prompt: Template | TemplateRef = {
+  const prompt = {
     ...(promptTemplating.prompt as Template | TemplateRef)
   };
 
   if (isTemplate(prompt)) {
-    if (!prompt.template?.length && !request?.messages) {
+    if (!prompt.template?.length && !request) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
     const mergedTemplate = [
@@ -444,7 +445,7 @@ function buildCompletionModulesConfig(
     if (mergedTemplate.length) {
       prompt.template = mergedTemplate;
     } else {
-      (prompt as Record<string, unknown>).template = undefined;
+      delete (prompt as Partial<typeof prompt>).template;
     }
   }
 
@@ -458,45 +459,34 @@ function buildCompletionModulesConfig(
 }
 
 /**
- * Returns the index at which to split request.messages.
- * Messages before the index go to messages_history (bypassing prompt templating).
- * Messages from the index onward go to prompt.template (going through templating).
+ * Determines whether all messages should be routed to messages_history,
+ * bypassing prompt templating entirely.
  *
- * Full routing (splitIndex = messages.length): TemplateRef configs — remote template, cannot merge messages in.
- * Partial routing (splitIndex = lastToolIndex + 1): tool results may contain {{?...}} syntax from external systems.
- * No routing (splitIndex = 0): placeholder values are set or no tool messages present.
+ * Routes when:
+ * - a TemplateRef is used (remote template, cannot merge messages in)
+ * - messages contain tool results (content may include {{?...}} syntax from external systems).
+ *
+ * Does NOT route when placeholder values are provided (user opted into templating).
  * @param configs - The orchestration module configurations.
- * @param messages - The messages from the request.
  * @param request - The optional chat completion request.
- * @returns The split index.
+ * @returns True if messages should be routed to messages_history.
  */
-function getMessageSplitIndex(
+function shouldRouteMessagesToHistory(
   configs: OrchestrationModuleConfig[],
-  messages: ChatMessage[],
   request?: ChatCompletionRequest
-): number {
-  const hasTemplateRef = configs.some(c => {
-    const prompt = c?.promptTemplating?.prompt;
-    return !!prompt && typeof prompt === 'object' && 'template_ref' in prompt;
-  });
-  if (hasTemplateRef) {
-    return messages.length;
-  }
-
+): boolean {
   if (
     !!request?.placeholderValues &&
     Object.keys(request.placeholderValues).length > 0
   ) {
-    return 0;
+    return false;
   }
 
-  const lastToolIndex = messages.findLastIndex(msg => msg.role === 'tool');
-  // Only route if there are messages after the last tool message —
-  // the service requires at least one message in prompt.template.
-  if (lastToolIndex >= 0 && lastToolIndex < messages.length - 1) {
-    return lastToolIndex + 1;
+  if (configs.some(c => isTemplateRef(c?.promptTemplating?.prompt || {}))) {
+    return true;
   }
-  return 0;
+
+  return !!request?.messages?.some(m => m.role === 'tool');
 }
 
 function isTemplate(templating: unknown): templating is Template {
@@ -504,6 +494,14 @@ function isTemplate(templating: unknown): templating is Template {
     !!templating &&
     typeof templating === 'object' &&
     !('template_ref' in templating)
+  );
+}
+
+function isTemplateRef(templating: unknown): templating is TemplateRef {
+  return (
+    !!templating &&
+    typeof templating === 'object' &&
+    'template_ref' in templating
   );
 }
 
