@@ -200,9 +200,7 @@ expectAssignable<Promise<unknown>>(
 /**
  * SapResponses.create accepts no model (model is optional).
  */
-expectAssignable<Promise<unknown>>(
-  client.responses.create({ input: 'Hello' })
-);
+expectAssignable<Promise<unknown>>(client.responses.create({ input: 'Hello' }));
 
 /**
  * SapResponses.parse accepts a model name string.
