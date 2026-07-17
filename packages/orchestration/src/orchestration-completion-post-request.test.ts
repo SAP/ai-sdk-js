@@ -393,16 +393,14 @@ describe('construct completion post request', () => {
       ]);
     });
 
-    it('should not route messages when no tool messages are present', () => {
+    it('should route messages when no prompt is configured (even without tool messages)', () => {
       const result: any = constructCompletionPostRequest(noTemplateConfig, {
         messages: [userMessage]
       });
 
-      // no tool messages → no routing, userMessage merged into prompt.template
-      expect(result.messages_history).toBeUndefined();
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
-        userMessage
-      ]);
+      // no prompt → always route to messages_history
+      expect(result.messages_history).toEqual([userMessage]);
+      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
     });
     it('should preserve chronological message order when routing to messages_history', () => {
       const followUpUser = { role: 'user' as const, content: 'Follow up.' };
@@ -424,26 +422,22 @@ describe('construct completion post request', () => {
         messagesHistory: [assistantMessage]
       });
 
-      // no tool messages → no routing, userMessage merged into prompt.template
-      expect(result.messages_history).toEqual([assistantMessage]);
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
-        userMessage
-      ]);
+      // no prompt → always route, prepended to existing messagesHistory
+      expect(result.messages_history).toEqual([assistantMessage, userMessage]);
     });
 
-    it('should route all messages when tool message present with static prompt template', () => {
+    it('should not route messages when config has a static prompt template', () => {
       const result: any = constructCompletionPostRequest(defaultConfig, {
         messages: [assistantMessage, toolMessage, userMessage]
       });
 
-      expect(result.messages_history).toEqual([
+      // prompt.template present → no routing, messages merged into template
+      expect(result.messages_history).toBeUndefined();
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+        { role: 'user', content: 'Hi' },
         assistantMessage,
         toolMessage,
         userMessage
-      ]);
-      // static template remains, messages were removed (routed to history)
-      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
-        { role: 'user', content: 'Hi' }
       ]);
     });
 

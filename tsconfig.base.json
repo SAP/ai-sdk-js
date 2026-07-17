@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["es2023"],
+    "target": "ES2024",
     "module": "Node16",
     "declaration": true,
     "declarationMap": true,
@@ -11,7 +10,6 @@
     "strict": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "lib": ["es2024"],
     "types": ["node"]
   }
 }

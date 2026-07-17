@@ -473,6 +473,10 @@ function shouldRouteMessagesToHistory(
   configs: OrchestrationModuleConfig[],
   request?: ChatCompletionRequest
 ): boolean {
+  if (configs.some(c => isTemplateRef(c?.promptTemplating?.prompt || {}))) {
+    return true;
+  }
+
   if (
     !!request?.placeholderValues &&
     Object.keys(request.placeholderValues).length > 0
@@ -480,16 +484,13 @@ function shouldRouteMessagesToHistory(
     return false;
   }
 
-  if (configs.some(c => isTemplateRef(c?.promptTemplating?.prompt || {}))) {
-    return true;
-  }
-
-  // Skip routing when any config has prompt.tools — the service requires template
-  // to be present alongside tools, so routing would strip messages and break the request.
+  // Skip routing when any config has a prompt with template or tools set.
+  // The service requires template to be present alongside tools,
+  // so routing would strip messages and break the request.
   if (
     configs.some(c => {
       const prompt = c?.promptTemplating?.prompt;
-      return isTemplate(prompt) || !!(prompt as { tools?: unknown }).tools;
+      return !!prompt && (isTemplate(prompt) || !!(prompt as { tools?: unknown }).tools);
     })
   ) {
     return false;
