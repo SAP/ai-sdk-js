@@ -1,10 +1,9 @@
 /* eslint-disable no-console, import-x/no-internal-modules */
 import { spawn, spawnSync } from 'node:child_process';
-import { pathToFileURL } from 'node:url';
 import readline from 'node:readline';
 import { styleText } from 'node:util';
 import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { join, resolve as resolvePath } from 'node:path';
 import { zstdDecompressSync } from 'node:zlib';
 import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
 import type { Writable } from 'node:stream';
@@ -55,57 +54,59 @@ export async function realtimeTextToAudio(
 ): Promise<RealtimeAudioResult> {
   const client = await SapOpenAiRealtime.createClient('gpt-realtime');
 
-  return new Promise<RealtimeAudioResult>((resolve, reject) => {
-    const audioChunks: Buffer[] = [];
-    let transcript = '';
+  const { promise, resolve, reject } =
+    Promise.withResolvers<RealtimeAudioResult>();
+  const audioChunks: Buffer[] = [];
+  let transcript = '';
 
-    client.on('error', err => {
-      client.close();
-      reject(err);
-    });
+  client.on('error', err => {
+    client.close();
+    reject(err);
+  });
 
-    client.on('session.created', () => {
-      client.send({
-        type: 'session.update',
-        session: {
-          type: 'realtime',
-          output_modalities: ['audio'],
-          audio: { output: { voice } },
-          instructions: 'You are a helpful assistant. Respond only in English.'
-        }
-      });
-    });
-
-    client.on('session.updated', () => {
-      client.send({
-        type: 'conversation.item.create',
-        item: {
-          type: 'message',
-          role: 'user',
-          content: [{ type: 'input_text', text }]
-        }
-      });
-      client.send({ type: 'response.create' });
-    });
-
-    client.on('response.output_audio_transcript.delta', e => {
-      transcript += e.delta ?? '';
-    });
-
-    client.on('response.output_audio.delta', e => {
-      if (e.delta) {
-        audioChunks.push(Buffer.from(e.delta, 'base64'));
+  client.on('session.created', () => {
+    client.send({
+      type: 'session.update',
+      session: {
+        type: 'realtime',
+        output_modalities: ['audio'],
+        audio: { output: { voice } },
+        instructions: 'You are a helpful assistant. Respond only in English.'
       }
     });
+  });
 
-    client.on('response.done', () => {
-      client.close();
-      resolve({
-        transcript: transcript.trim(),
-        audio: Buffer.concat(audioChunks)
-      });
+  client.on('session.updated', () => {
+    client.send({
+      type: 'conversation.item.create',
+      item: {
+        type: 'message',
+        role: 'user',
+        content: [{ type: 'input_text', text }]
+      }
+    });
+    client.send({ type: 'response.create' });
+  });
+
+  client.on('response.output_audio_transcript.delta', e => {
+    transcript += e.delta ?? '';
+  });
+
+  client.on('response.output_audio.delta', e => {
+    if (e.delta) {
+      audioChunks.push(Buffer.from(e.delta, 'base64'));
+    }
+  });
+
+  client.on('response.done', () => {
+    client.close();
+    resolve({
+      transcript: transcript.trim(),
+      audio: Buffer.concat(audioChunks)
     });
   });
+
+  return promise;
 }
 
 /**
@@ -173,65 +174,67 @@ export async function realtimeAudioToAudio(
 ): Promise<RealtimeAudioResult> {
   const client = await SapOpenAiRealtime.createClient('gpt-realtime');
 
-  return new Promise<RealtimeAudioResult>((resolve, reject) => {
-    const audioChunks: Buffer[] = [];
-    let transcript = '';
+  const { promise, resolve, reject } =
+    Promise.withResolvers<RealtimeAudioResult>();
+  const audioChunks: Buffer[] = [];
+  let transcript = '';
 
-    client.on('error', err => {
-      client.close();
-      reject(err);
-    });
+  client.on('error', err => {
+    client.close();
+    reject(err);
+  });
 
-    client.on('session.created', () => {
-      client.send({
-        type: 'session.update',
-        session: {
-          type: 'realtime',
-          output_modalities: ['audio'],
-          audio: {
-            input: {
-              format: { type: 'audio/pcm', rate: realtimeSampleRate },
-              turn_detection: null
-            },
-            output: { voice }
+  client.on('session.created', () => {
+    client.send({
+      type: 'session.update',
+      session: {
+        type: 'realtime',
+        output_modalities: ['audio'],
+        audio: {
+          input: {
+            format: { type: 'audio/pcm', rate: realtimeSampleRate },
+            turn_detection: null
           },
-          instructions: 'You are a helpful assistant. Respond only in English.'
-        }
-      });
-    });
-
-    client.on('session.updated', () => {
-      // 4800 bytes = 100ms of 16-bit mono audio at 24kHz; the backend rejects commits under 100ms.
-      const chunkSize = 4800;
-      for (let i = 0; i < inputPcm.length; i += chunkSize) {
-        const chunk = inputPcm.subarray(i, i + chunkSize);
-        client.send({
-          type: 'input_audio_buffer.append',
-          audio: chunk.toString('base64')
-        });
+          output: { voice }
+        },
+        instructions: 'You are a helpful assistant. Respond only in English.'
       }
-      client.send({ type: 'input_audio_buffer.commit' });
-      client.send({ type: 'response.create' });
-    });
-
-    client.on('response.output_audio_transcript.delta', e => {
-      transcript += e.delta ?? '';
-    });
-
-    client.on('response.output_audio.delta', e => {
-      if (e.delta) {
-        audioChunks.push(Buffer.from(e.delta, 'base64'));
-      }
-    });
-
-    client.on('response.done', () => {
-      client.close();
-      resolve({
-        transcript: transcript.trim(),
-        audio: Buffer.concat(audioChunks)
-      });
     });
   });
+
+  client.on('session.updated', () => {
+    // 4800 bytes = 100ms of 16-bit mono audio at 24kHz; the backend rejects commits under 100ms.
+    const chunkSize = 4800;
+    for (let i = 0; i < inputPcm.length; i += chunkSize) {
+      const chunk = inputPcm.subarray(i, i + chunkSize);
+      client.send({
+        type: 'input_audio_buffer.append',
+        audio: chunk.toString('base64')
+      });
+    }
+    client.send({ type: 'input_audio_buffer.commit' });
+    client.send({ type: 'response.create' });
+  });
+
+  client.on('response.output_audio_transcript.delta', e => {
+    transcript += e.delta ?? '';
+  });
+
+  client.on('response.output_audio.delta', e => {
+    if (e.delta) {
+      audioChunks.push(Buffer.from(e.delta, 'base64'));
+    }
+  });
+
+  client.on('response.done', () => {
+    client.close();
+    resolve({
+      transcript: transcript.trim(),
+      audio: Buffer.concat(audioChunks)
+    });
+  });
+
+  return promise;
 }
 
 /**
@@ -269,80 +272,81 @@ export async function realtimeWithToolCalling(
     }
   };
 
-  return new Promise<RealtimeToolCallResult>((resolve, reject) => {
-    let text = '';
-    let toolCall:
-      { callId: string; name: string; arguments: string } | undefined;
-    let responseDoneCount = 0;
+  const { promise, resolve, reject } =
+    Promise.withResolvers<RealtimeToolCallResult>();
+  let text = '';
+  let toolCall: { callId: string; name: string; arguments: string } | undefined;
+  let responseDoneCount = 0;
 
-    client.on('error', err => {
-      client.close();
-      reject(err);
-    });
+  client.on('error', err => {
+    client.close();
+    reject(err);
+  });
 
-    client.on('session.created', () => {
-      client.send({
-        type: 'session.update',
-        session: {
-          type: 'realtime',
-          output_modalities: ['text'],
-          tools: [getWeatherTool],
-          instructions:
-            'You are a helpful assistant. Use the get_weather tool to answer questions about the weather, then summarize the result for the user in one short sentence.'
-        }
-      });
-    });
-
-    client.on('session.updated', () => {
-      client.send({
-        type: 'conversation.item.create',
-        item: {
-          type: 'message',
-          role: 'user',
-          content: [{ type: 'input_text', text: prompt }]
-        }
-      });
-      client.send({ type: 'response.create' });
-    });
-
-    // The model streams the function-call arguments; once complete, return the mocked output and
-    // request a second response so the model can phrase the answer for the user.
-    client.on('response.function_call_arguments.done', e => {
-      toolCall = {
-        callId: e.call_id,
-        name: e.name,
-        arguments: e.arguments
-      };
-      client.send({
-        type: 'conversation.item.create',
-        item: {
-          type: 'function_call_output',
-          call_id: e.call_id,
-          output: JSON.stringify({ weather: toolOutput })
-        }
-      });
-      client.send({ type: 'response.create' });
-    });
-
-    client.on('response.output_text.delta', e => {
-      text += e.delta ?? '';
-    });
-
-    client.on('response.done', () => {
-      responseDoneCount++;
-      // First response: a function call is in flight — wait for the second response.
-      if (responseDoneCount === 1 && toolCall) {
-        return;
+  client.on('session.created', () => {
+    client.send({
+      type: 'session.update',
+      session: {
+        type: 'realtime',
+        output_modalities: ['text'],
+        tools: [getWeatherTool],
+        instructions:
+          'You are a helpful assistant. Use the get_weather tool to answer questions about the weather, then summarize the result for the user in one short sentence.'
       }
-      client.close();
-      resolve({
-        toolName: toolCall?.name ?? '',
-        toolArguments: toolCall?.arguments ?? '',
-        toolOutput,
-        text: text.trim()
-      });
     });
   });
+
+  client.on('session.updated', () => {
+    client.send({
+      type: 'conversation.item.create',
+      item: {
+        type: 'message',
+        role: 'user',
+        content: [{ type: 'input_text', text: prompt }]
+      }
+    });
+    client.send({ type: 'response.create' });
+  });
+
+  // The model streams the function-call arguments; once complete, return the mocked output and
+  // request a second response so the model can phrase the answer for the user.
+  client.on('response.function_call_arguments.done', e => {
+    toolCall = {
+      callId: e.call_id,
+      name: e.name,
+      arguments: e.arguments
+    };
+    client.send({
+      type: 'conversation.item.create',
+      item: {
+        type: 'function_call_output',
+        call_id: e.call_id,
+        output: JSON.stringify({ weather: toolOutput })
+      }
+    });
+    client.send({ type: 'response.create' });
+  });
+
+  client.on('response.output_text.delta', e => {
+    text += e.delta ?? '';
+  });
+
+  client.on('response.done', () => {
+    responseDoneCount++;
+    // First response: a function call is in flight — wait for the second response.
+    if (responseDoneCount === 1 && toolCall) {
+      return;
+    }
+    client.close();
+    resolve({
+      toolName: toolCall?.name ?? '',
+      toolArguments: toolCall?.arguments ?? '',
+      toolOutput,
+      text: text.trim()
+    });
+  });
+
+  return promise;
 }
 
 /**
@@ -600,10 +604,7 @@ export async function realtimeSpeechToSpeech(): Promise<void> {
 }
 
 // Run the interactive demo when this file is executed directly (e.g. `tsx src/openai-realtime.ts`).
-if (
-  process.argv[1] &&
-  import.meta.url === pathToFileURL(process.argv[1]).href
-) {
+if (process.argv[1] && import.meta.filename === resolvePath(process.argv[1])) {
   realtimeSpeechToSpeech().catch(err => {
     console.error(err);
     process.exit(1);
