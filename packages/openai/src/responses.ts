@@ -59,7 +59,7 @@ export class SapResponses {
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
     return this.openAiResponses.create(
-      body satisfies ResponseCreateParamsBase,
+      body as any satisfies ResponseCreateParamsBase,
       options
     );
   }
@@ -82,7 +82,7 @@ export class SapResponses {
       {
         ...body,
         // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
-        model: body.model || ''
+        model: body.model as any
       } satisfies ResponseCreateParamsWithTools,
       options
     ) as APIPromise<ParsedResponse<ParsedT>>;

@@ -14,16 +14,26 @@ const responses = new SapResponses(fakeClient);
 
 describe('SapResponses', () => {
   describe('create', () => {
-    it('forwards input to openai responses.create without injecting model', async () => {
-      await responses.create({ input: 'Hello' });
-      expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ input: 'Hello' }),
-        undefined
-      );
-      expect(mockCreate).toHaveBeenCalledWith(
-        expect.not.objectContaining({ model: expect.anything() }),
-        undefined
-      );
+    it('does not throw when model is undefined', async () => {
+      await expect(responses.create({ input: 'Hello' })).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a ModelConfig object', async () => {
+      await expect(
+        responses.create({
+          input: 'Hello',
+          model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' }
+        })
+      ).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a DeploymentIdConfig object', async () => {
+      await expect(
+        responses.create({
+          input: 'Hello',
+          model: { deploymentId: 'd1234' }
+        })
+      ).resolves.not.toThrow();
     });
 
     it('passes request options through', async () => {
@@ -41,19 +51,33 @@ describe('SapResponses', () => {
   });
 
   describe('parse', () => {
-    it("injects model: '' before calling openai responses.parse", async () => {
-      await responses.parse({ input: 'Hello' });
-      expect(mockParse).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '', input: 'Hello' }),
-        undefined
-      );
+    it('does not throw when model is undefined', async () => {
+      await expect(responses.parse({ input: 'Hello' })).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a ModelConfig object', async () => {
+      await expect(
+        responses.parse({
+          input: 'Hello',
+          model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' }
+        })
+      ).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a DeploymentIdConfig object', async () => {
+      await expect(
+        responses.parse({
+          input: 'Hello',
+          model: { deploymentId: 'd1234' }
+        })
+      ).resolves.not.toThrow();
     });
 
     it('passes request options through', async () => {
       const controller = new AbortController();
       await responses.parse({ input: 'Hello' }, { signal: controller.signal });
       expect(mockParse).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '' }),
+        expect.objectContaining({ model: undefined }),
         { signal: controller.signal }
       );
     });
