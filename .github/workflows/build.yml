@@ -75,10 +75,10 @@ jobs:
       # Independent read-only checks — run them concurrently.
       - parallel:
           - name: Check public API
-            uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
+            uses: sap/cloud-sdk-js/.github/actions/check-public-api@davidkna-sap/fix-subpath-public-api-check
             with:
               force_internal_exports: 'false'
-              ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?|.*?/realtime/.*?'
+              ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?'
           - name: Check dependencies
             run: pnpm check:deps
           - name: License Check
