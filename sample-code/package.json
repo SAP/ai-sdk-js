@@ -35,7 +35,7 @@
     "@types/express": "=5.0.6",
     "express": "=5.2.1",
     "langchain": "=1.5.3",
-    "openai": "=6.45.0",
+    "openai": "=6.46.0",
     "zod": "=4.4.3"
   },
   "devDependencies": {
