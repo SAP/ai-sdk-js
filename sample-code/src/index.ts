@@ -116,8 +116,14 @@ export {
 
 export {
   realtimeTextToAudio,
+  realtimeAudioToAudio,
   realtimeSpeechToSpeech,
+  realtimeWithToolCalling,
+  loadRealtimeInputPcm,
   pcm16ToWav,
   realtimeSampleRate
 } from './openai-realtime.js';
-export type { RealtimeAudioResult } from './openai-realtime.js';
+export type {
+  RealtimeAudioResult,
+  RealtimeToolCallResult
+} from './openai-realtime.js';

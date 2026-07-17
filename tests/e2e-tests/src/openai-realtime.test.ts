@@ -1,8 +1,12 @@
 import {
   realtimeTextToAudio,
+  realtimeAudioToAudio,
+  realtimeWithToolCalling,
+  loadRealtimeInputPcm,
   pcm16ToWav,
   realtimeSampleRate,
-  type RealtimeAudioResult
+  type RealtimeAudioResult,
+  type RealtimeToolCallResult
 } from '@sap-ai-sdk/sample-code';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import { expect, describe, it, beforeAll } from '@jest/globals';
@@ -124,5 +128,96 @@ describe('OpenAI Realtime API', () => {
     const wav = pcm16ToWav(result.audio);
     const transcript = await transcribeWithGemini(wav);
     expect(transcript?.toLowerCase()).toContain(keyword);
+  }, 60000);
+});
+
+// Voice-in → voice-out round trip: a bundled PCM sample ("What is the capital of France?") is
+// streamed to the Realtime API as input, and the spoken response is transcribed.
+//
+// The prompt is a factual question (rather than "repeat the word X") so the expected response is
+// determined by semantics — robust to the minor misrecognitions that synthesized input can suffer
+// (e.g. "banana" being heard as "banal").
+describe('OpenAI Realtime API with voice input', () => {
+  const expectedWord = 'paris';
+  let inputPcm: Buffer;
+  let result: RealtimeAudioResult;
+  let elapsed: number;
+
+  beforeAll(async () => {
+    inputPcm = await loadRealtimeInputPcm();
+    const realtimeStart = Date.now();
+    result = await realtimeAudioToAudio(inputPcm, 'verse');
+    elapsed = Date.now() - realtimeStart;
+  }, 60000);
+
+  it('responds to spoken input with the expected answer', async () => {
+    // eslint-disable-next-line no-console
+    console.log(
+      `[realtime e2e] realtimeAudioToAudio took ${elapsed}ms; ` +
+        `input=${inputPcm.length} bytes, output audio=${result.audio.length} bytes, ` +
+        `transcript=${JSON.stringify(result.transcript)}`
+    );
+
+    expect(result.transcript.toLowerCase()).toContain(expectedWord);
+  }, 60000);
+
+  it('produces non-silent PCM audio in response', () => {
+    const { rms, entropy } = pcm16AudioMetrics(result.audio);
+
+    // eslint-disable-next-line no-console
+    console.log(
+      '[realtime e2e] voice-input response audio quality: ' +
+        `rms=${rms.toFixed(1)}, entropy=${entropy.toFixed(2)} bits`
+    );
+
+    expect(result.audio.length).toBeGreaterThan(realtimeSampleRate);
+    expect(rms).toBeGreaterThan(500);
+    expect(entropy).toBeGreaterThan(4);
+  });
+
+  it('produces audio verifiable by an audio-capable model (Gemini)', async () => {
+    const wav = pcm16ToWav(result.audio);
+    const transcript = await transcribeWithGemini(wav);
+    expect(transcript?.toLowerCase()).toContain(expectedWord);
+  }, 60000);
+});
+
+// Tool calling: a text prompt is sent with a `get_weather` function tool registered. The model is
+// expected to emit a `function_call` item, after which the client returns a mocked weather output
+// and requests a second response. The final text answer should reference both the requested
+// location and the mocked weather conditions.
+describe('OpenAI Realtime API with tool calling', () => {
+  const location = 'Paris';
+  const mockedWeather = 'Sunny, 21°C';
+  let result: RealtimeToolCallResult;
+  let elapsed: number;
+
+  beforeAll(async () => {
+    const realtimeStart = Date.now();
+    result = await realtimeWithToolCalling(
+      `What's the weather in ${location} right now?`,
+      mockedWeather
+    );
+    elapsed = Date.now() - realtimeStart;
+  }, 60000);
+
+  it('invokes the get_weather tool with a location argument', () => {
+    // eslint-disable-next-line no-console
+    console.log(
+      `[realtime e2e] realtimeWithToolCalling took ${elapsed}ms; ` +
+        `tool=${result.toolName}, args=${result.toolArguments}, ` +
+        `output=${result.toolOutput}, text=${JSON.stringify(result.text)}`
+    );
+
+    expect(result.toolName).toBe('get_weather');
+    const args = JSON.parse(result.toolArguments);
+    expect(args.location).toMatch(new RegExp(location, 'i'));
+  }, 60000);
+
+  it('produces a final answer referencing the location and the tool output', () => {
+    const text = result.text.toLowerCase();
+    expect(text).toContain(location.toLowerCase());
+    // The model should reflect the mocked conditions, e.g. "sunny" or "21°c".
+    expect(text).toMatch(/sunny|21|°c|celsius/);
   }, 60000);
 });
