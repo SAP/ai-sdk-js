@@ -362,7 +362,7 @@ class AudioPlayer {
   }
 
   enqueue(data: Buffer): void {
-    if (!this.proc || this.proc.exitCode !== null || this.proc.killed) {
+    if (this.proc?.exitCode !== null || this.proc?.killed) {
       return; // play process has exited; drop audio instead of throwing EPIPE
     }
     try {
