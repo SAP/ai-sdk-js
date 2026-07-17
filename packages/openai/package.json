@@ -33,6 +33,10 @@
     "./realtime": {
       "types": "./dist/realtime/index.d.ts",
       "default": "./dist/realtime/index.js"
+    },
+    "./realtime/internal.js": {
+      "types": "./dist/realtime/internal.d.ts",
+      "default": "./dist/realtime/internal.js"
     }
   },
   "files": [
