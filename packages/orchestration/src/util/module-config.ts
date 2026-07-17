@@ -489,13 +489,13 @@ function shouldRouteMessagesToHistory(
   if (
     configs.some(c => {
       const prompt = c?.promptTemplating?.prompt;
-      return isTemplate(prompt) && !!(prompt as { tools?: unknown }).tools;
+      return isTemplate(prompt) || !!(prompt as { tools?: unknown }).tools;
     })
   ) {
     return false;
   }
 
-  return !!request?.messages?.some(m => m.role === 'tool');
+  return true;
 }
 
 function isTemplate(templating: unknown): templating is Template {
