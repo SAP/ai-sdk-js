@@ -18,6 +18,7 @@
     "start": "tsx src/server.ts",
     "local": "tsx --env-file=.env src/server.ts",
     "agent-tutorial": "tsx --env-file=.env src/tutorials/travel-itinerary-agent.ts",
+    "realtime-demo": "tsx --env-file=.env src/openai-realtime.ts",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",

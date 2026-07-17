@@ -354,6 +354,7 @@ class AudioPlayer {
   private stdin: NodeJS.WritableStream;
   private proc: ReturnType<typeof spawn> | undefined;
   private readonly soxBin: string;
+  private disposed = false;
 
   constructor(soxBin: string) {
     this.soxBin = soxBin;
@@ -362,13 +363,13 @@ class AudioPlayer {
   }
 
   enqueue(data: Buffer): void {
-    if (this.proc?.exitCode !== null || this.proc?.killed) {
+    if (this.disposed || this.proc?.exitCode !== null || this.proc?.killed) {
       return; // play process has exited; drop audio instead of throwing EPIPE
     }
     try {
       (this.stdin as Writable).write(data);
     } catch {
-      // play process died mid-write; ignore — a fresh proc is spawned on the next interrupt
+      // play process died mid-write; respawn-on-exit will spin up a fresh proc
     }
   }
 
@@ -379,6 +380,7 @@ class AudioPlayer {
   }
 
   close(): void {
+    this.disposed = true;
     this.kill();
   }
 
@@ -394,6 +396,7 @@ class AudioPlayer {
     const proc = spawn(this.soxBin, ['-t', 'raw', '-r', `${realtimeSampleRate}`, '-c', '1', '-e', 'signed-integer', '-b', '16', '-', '-d'],
       { stdio: ['pipe', 'ignore', 'ignore'] }
     );
+    const startedAt = Date.now();
     proc.on('error', err =>
       console.error(`${styleText(['red'], '[play error]')} ${err.message}`)
     );
@@ -401,6 +404,22 @@ class AudioPlayer {
     // the OS may still be flushing buffered audio and emit EPIPE on the dead pipe. Without a
     // listener Node logs it as an unhandled 'error' event.
     proc.stdin?.on('error', () => {});
+    // Auto-respawn if sox exits on its own (audio-device error, crash, etc.) so playback
+    // resumes on the next chunk instead of silently dropping the rest of the response.
+    // Skipped when we intentionally killed it: interrupt() has already replaced this.proc
+    // (so this proc is no longer current), and close() sets `disposed`. An exit within 250ms
+    // of spawn means sox couldn't start at all — don't retry, or we'd tight-loop.
+    proc.on('exit', () => {
+      if (this.disposed || this.proc !== proc) {
+        return;
+      }
+      if (Date.now() - startedAt < 250) {
+        this.proc = undefined;
+        return;
+      }
+      this.proc = this.spawnPlay();
+      this.stdin = this.proc.stdin!;
+    });
     return proc;
   }
 }
