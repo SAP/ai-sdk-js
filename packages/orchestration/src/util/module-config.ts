@@ -490,7 +490,10 @@ function shouldRouteMessagesToHistory(
   if (
     configs.some(c => {
       const prompt = c?.promptTemplating?.prompt;
-      return !!prompt && (isTemplate(prompt) || !!(prompt as { tools?: unknown }).tools);
+      return (
+        !!prompt &&
+        (isTemplate(prompt) || !!(prompt as { tools?: unknown }).tools)
+      );
     })
   ) {
     return false;
