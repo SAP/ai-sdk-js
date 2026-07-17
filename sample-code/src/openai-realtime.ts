@@ -271,7 +271,8 @@ export async function realtimeWithToolCalling(
 
   return new Promise<RealtimeToolCallResult>((resolve, reject) => {
     let text = '';
-    let toolCall: { callId: string; name: string; arguments: string } | undefined;
+    let toolCall:
+      { callId: string; name: string; arguments: string } | undefined;
     let responseDoneCount = 0;
 
     client.on('error', err => {
