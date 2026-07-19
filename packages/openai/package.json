@@ -50,9 +50,9 @@
     "@sap-cloud-sdk/util": "^4.7.0"
   },
   "peerDependencies": {
-    "openai": "^6.46.0"
+    "openai": "^6.47.0"
   },
   "devDependencies": {
-    "openai": "^6.46.0"
+    "openai": "^6.47.0"
   }
 }
