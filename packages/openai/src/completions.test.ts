@@ -16,17 +16,28 @@ const completions = new SapCompletions(fakeClient);
 
 describe('SapCompletions', () => {
   describe('create', () => {
-    it("injects model: '' before calling openai completions.create", async () => {
-      await completions.create({
-        messages: [{ role: 'user', content: 'Hello' }]
-      });
-      expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({
-          model: '',
-          messages: [{ role: 'user', content: 'Hello' }]
-        }),
-        undefined
-      );
+    it('does not throw when model is undefined', async () => {
+      await expect(
+        completions.create({ messages: [{ role: 'user', content: 'Hello' }] })
+      ).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a ModelConfig object', async () => {
+      await expect(
+        completions.create({
+          messages: [{ role: 'user', content: 'Hello' }],
+          model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' }
+        })
+      ).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a DeploymentIdConfig object', async () => {
+      await expect(
+        completions.create({
+          messages: [{ role: 'user', content: 'Hello' }],
+          model: { deploymentId: 'd1234' }
+        })
+      ).resolves.not.toThrow();
     });
 
     it('passes request options through', async () => {
@@ -36,24 +47,35 @@ describe('SapCompletions', () => {
         { signal: controller.signal }
       );
       expect(mockCreate).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '' }),
+        expect.objectContaining({ model: undefined }),
         { signal: controller.signal }
       );
     });
   });
 
   describe('parse', () => {
-    it("injects model: '' before calling openai completions.parse", async () => {
-      await completions.parse({
-        messages: [{ role: 'user', content: 'Hello' }]
-      });
-      expect(mockParse).toHaveBeenCalledWith(
-        expect.objectContaining({
-          model: '',
-          messages: [{ role: 'user', content: 'Hello' }]
-        }),
-        undefined
-      );
+    it('does not throw when model is undefined', async () => {
+      await expect(
+        completions.parse({ messages: [{ role: 'user', content: 'Hello' }] })
+      ).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a ModelConfig object', async () => {
+      await expect(
+        completions.parse({
+          messages: [{ role: 'user', content: 'Hello' }],
+          model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' }
+        })
+      ).resolves.not.toThrow();
+    });
+
+    it('does not throw when model is a DeploymentIdConfig object', async () => {
+      await expect(
+        completions.parse({
+          messages: [{ role: 'user', content: 'Hello' }],
+          model: { deploymentId: 'd1234' }
+        })
+      ).resolves.not.toThrow();
     });
 
     it('passes request options through', async () => {
@@ -63,7 +85,7 @@ describe('SapCompletions', () => {
         { signal: controller.signal }
       );
       expect(mockParse).toHaveBeenCalledWith(
-        expect.objectContaining({ model: '' }),
+        expect.objectContaining({ model: undefined }),
         { signal: controller.signal }
       );
     });

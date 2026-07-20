@@ -31,7 +31,7 @@ export class SapCompletions {
 
   /**
    * Creates a chat completion request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
-   * @param body - Chat completion request parameters, without `model`.
+   * @param body - Chat completion request parameters.
    * @param options - Optional request options.
    * @returns A promise resolving to a {@link ChatCompletion}, or a {@link Stream} of {@link ChatCompletionChunk} when `stream: true` is set.
    */
@@ -60,7 +60,7 @@ export class SapCompletions {
       {
         ...body,
         // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
-        model: body.model || ''
+        model: body.model as any
       } satisfies ChatCompletionCreateParamsBase,
       options
     );
@@ -69,7 +69,7 @@ export class SapCompletions {
   /**
    * Creates a chat completion and parses the response content into the provided `response_format` schema.
    * The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
-   * @param body - Chat completion request parameters including a `response_format` schema, without `model`.
+   * @param body - Chat completion request parameters including a `response_format` schema.
    * @param options - Optional request options.
    * @returns A promise resolving to a {@link ParsedChatCompletion} with the parsed response content.
    */
@@ -84,7 +84,7 @@ export class SapCompletions {
       {
         ...body,
         // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
-        model: body.model || ''
+        model: body.model as any
       } satisfies ChatCompletionCreateParamsNonStreaming,
       options
     ) as APIPromise<ParsedChatCompletion<ParsedT>>;

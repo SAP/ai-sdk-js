@@ -24,7 +24,7 @@ export class SapEmbeddings {
 
   /**
    * Creates an embedding request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
-   * @param body - Embedding request parameters, without `model`.
+   * @param body - Embedding request parameters.
    * @param options - Optional request options.
    * @returns A promise resolving to a {@link CreateEmbeddingResponse}.
    */
@@ -34,7 +34,7 @@ export class SapEmbeddings {
   ): APIPromise<CreateEmbeddingResponse> {
     return this.openAiEmbeddings.create(
       // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
-      { ...body, model: body.model || '' } satisfies EmbeddingCreateParams,
+      { ...body, model: body.model as any } satisfies EmbeddingCreateParams,
       options
     );
   }
