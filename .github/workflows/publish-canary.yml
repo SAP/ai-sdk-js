@@ -14,6 +14,7 @@ permissions: {}
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: release
     permissions:
       contents: read
       id-token: write
@@ -46,3 +47,15 @@ jobs:
           pnpm changeset version
           pnpm changeset pre exit
           pnpm changeset publish --tag "${INPUTS_TAG}"
+      - name: Notify Slack on failure
+        if: ${{ github.event_name == 'schedule' && (failure() || cancelled()) }}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: AI SDK Pipeline Bot
+          SLACK_TITLE: 'Canary Release Failed for ${{ job.status }}'
+          SLACK_MESSAGE: 'Canary release failed for ${{ github.repository }} (ref: ${{ github.ref_name }}).'
+          MSG_MINIMAL: event,actions url
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MSG_AUTHOR: ''
+          SLACK_ICON: https://sap.github.io/ai-sdk/img/AI-SDK-Logo.svg
+        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
