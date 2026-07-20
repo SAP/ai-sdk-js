@@ -17,15 +17,15 @@ import type {
 /**
  * SapOpenAi.createClient returns a Promise<SapOpenAi>.
  */
-expectType<Promise<SapOpenAi>>(SapOpenAi.createClient('gpt-4.1'));
+expectType<Promise<SapOpenAi>>(SapOpenAi.createClient('gpt-5.5'));
 
 expectType<Promise<SapOpenAi>>(
-  SapOpenAi.createClient({ deployment: 'gpt-4.1' })
+  SapOpenAi.createClient({ deployment: 'gpt-5.5' })
 );
 
 expectType<Promise<SapOpenAi>>(
   SapOpenAi.createClient({
-    deployment: 'gpt-4.1',
+    deployment: 'gpt-5.5',
     apiVersion: '2024-10-21',
     clientType: 'my-app'
   })
@@ -59,7 +59,7 @@ expectType<SapCompletions>(client.chat.completions);
  */
 expectAssignable<Promise<unknown>>(
   client.chat.completions.create({
-    model: 'gpt-4o',
+    model: 'gpt-5.5',
     messages: [{ role: 'user', content: 'Hello' }]
   })
 );
@@ -69,7 +69,7 @@ expectAssignable<Promise<unknown>>(
  */
 expectAssignable<Promise<unknown>>(
   client.chat.completions.create({
-    model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' },
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
     messages: [{ role: 'user', content: 'Hello' }]
   })
 );
@@ -98,7 +98,7 @@ expectAssignable<Promise<unknown>>(
  */
 expectAssignable<Promise<unknown>>(
   client.chat.completions.parse({
-    model: 'gpt-4o',
+    model: 'gpt-5.5',
     messages: [{ role: 'user', content: 'Hello' }]
   })
 );
@@ -108,7 +108,7 @@ expectAssignable<Promise<unknown>>(
  */
 expectAssignable<Promise<unknown>>(
   client.chat.completions.parse({
-    model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' },
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
     messages: [{ role: 'user', content: 'Hello' }]
   })
 );
@@ -174,7 +174,7 @@ expectAssignable<Promise<unknown>>(
  * SapResponses.create accepts a model name string.
  */
 expectAssignable<Promise<unknown>>(
-  client.responses.create({ model: 'gpt-4o', input: 'Hello' })
+  client.responses.create({ model: 'gpt-5.5', input: 'Hello' })
 );
 
 /**
@@ -182,7 +182,7 @@ expectAssignable<Promise<unknown>>(
  */
 expectAssignable<Promise<unknown>>(
   client.responses.create({
-    model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' },
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
     input: 'Hello'
   })
 );
@@ -206,7 +206,7 @@ expectAssignable<Promise<unknown>>(client.responses.create({ input: 'Hello' }));
  * SapResponses.parse accepts a model name string.
  */
 expectAssignable<Promise<unknown>>(
-  client.responses.parse({ model: 'gpt-4o', input: 'Hello' })
+  client.responses.parse({ model: 'gpt-5.5', input: 'Hello' })
 );
 
 /**
@@ -214,7 +214,7 @@ expectAssignable<Promise<unknown>>(
  */
 expectAssignable<Promise<unknown>>(
   client.responses.parse({
-    model: { modelName: 'gpt-4o', modelVersion: '2024-11-20' },
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
     input: 'Hello'
   })
 );
@@ -244,7 +244,7 @@ expectAssignable<
     apiVersion?: string;
     azureADTokenProvider?: () => Promise<string>;
   }>
->(createOpenAiConfig('gpt-4.1'));
+>(createOpenAiConfig('gpt-5.5'));
 
 expectAssignable<
   Promise<{
@@ -252,7 +252,7 @@ expectAssignable<
     apiVersion?: string;
     azureADTokenProvider?: () => Promise<string>;
   }>
->(createOpenAiConfig({ deployment: 'gpt-4.1' }));
+>(createOpenAiConfig({ deployment: 'gpt-5.5' }));
 
 expectAssignable<
   Promise<{
@@ -274,16 +274,16 @@ expectType<() => Promise<string>>(
 /**
  * SapModelName is assignable from known model names and any string.
  */
-expectAssignable<SapModelName>('gpt-4.1');
+expectAssignable<SapModelName>('gpt-5.5');
 expectAssignable<SapModelName>('text-embedding-3-small');
 expectAssignable<SapModelName>('unlisted-model');
 
 /**
  * SapOpenAiInput accepts a plain string or SapOpenAiOptions.
  */
-expectAssignable<SapOpenAiInput>('gpt-4.1');
+expectAssignable<SapOpenAiInput>('gpt-5.5');
 expectAssignable<SapOpenAiInput>({
-  deployment: 'gpt-4.1'
+  deployment: 'gpt-5.5'
 } satisfies SapOpenAiOptions);
 
 /**
