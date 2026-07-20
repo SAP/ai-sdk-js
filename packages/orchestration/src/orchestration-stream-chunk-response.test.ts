@@ -153,4 +153,53 @@ describe('Orchestration chat completion stream chunk response', () => {
 
     expect(chunkResponse.getCitations()).toBeUndefined();
   });
+
+  describe('getDeltaReasoningContent', () => {
+    it('should return delta reasoning blocks when present', () => {
+      const chunkWithThinking = new OrchestrationStreamChunkResponse({
+        request_id: 'test-id',
+        final_result: {
+          id: 'test',
+          object: 'chat.completion.chunk',
+          created: 0,
+          model: 'claude-3-7-sonnet',
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: '',
+                reasoning_content: [{ content: 'Let me reason...', signature: '' }]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      });
+
+      const blocks = chunkWithThinking.getDeltaReasoningContent();
+      expect(blocks).toHaveLength(1);
+      expect(blocks?.[0]).toBe('Let me reason...');
+    });
+
+    it('should return undefined when no reasoning blocks in delta', () => {
+      const chunkResponse = new OrchestrationStreamChunkResponse({
+        request_id: 'test-id',
+        final_result: {
+          id: 'test',
+          object: 'chat.completion.chunk',
+          created: 0,
+          model: 'gpt-4o',
+          choices: [
+            {
+              index: 0,
+              delta: { content: 'hello' },
+              finish_reason: ''
+            }
+          ]
+        }
+      });
+
+      expect(chunkResponse.getDeltaReasoningContent()).toBeUndefined();
+    });
+  });
 });

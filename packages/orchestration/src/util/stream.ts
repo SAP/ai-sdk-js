@@ -14,6 +14,7 @@ import type {
   MessageToolCall,
   ModuleResults,
   ModuleResultsStreaming,
+  ReasoningBlock,
   ResponseChatMessage,
   ToolCallChunk
 } from '../client/api/schema/index.js';
@@ -173,7 +174,11 @@ function mergeMessage(
     role: existing.role,
     content: existing.content + (incoming.content ?? ''),
     tool_calls: mergeToolCalls(existing.tool_calls, incoming.tool_calls),
-    refusal: incoming.refusal ?? existing.refusal
+    refusal: incoming.refusal ?? existing.refusal,
+    reasoning_content: mergeReasoningBlocks(
+      existing.reasoning_content,
+      incoming.reasoning_content
+    )
   };
 }
 
@@ -205,6 +210,28 @@ function mergeToolCalls(
     }
   }
   return mergedToolCalls;
+}
+
+function mergeReasoningBlocks(
+  existing: ReasoningBlock[] | undefined,
+  incoming: ReasoningBlock[] | undefined
+): ReasoningBlock[] | undefined {
+  if (!incoming?.length) return existing;
+  if (!existing?.length) return [...incoming];
+  const merged = [...existing];
+  for (let i = 0; i < incoming.length; i++) {
+    if (i < merged.length) {
+      merged[i] = {
+        content: (merged[i].content ?? '') + (incoming[i].content ?? ''),
+        signature: incoming[i].signature
+            ? incoming[i].signature
+            : merged[i].signature
+      };
+    } else {
+      merged.push(incoming[i]);
+    }
+  }
+  return merged;
 }
 
 function mergeLogProbs(
@@ -264,7 +291,8 @@ function transformStreamingChoice(choice: LlmChoiceStreaming): LlmChoice {
       role: 'assistant',
       content: choice.delta.content,
       tool_calls: transformStreamingToolCalls(choice.delta.tool_calls),
-      refusal: choice.delta.refusal
+      refusal: choice.delta.refusal,
+      reasoning_content: choice.delta.reasoning_content
     },
     finish_reason: choice.finish_reason ?? '',
     logprobs: choice.logprobs

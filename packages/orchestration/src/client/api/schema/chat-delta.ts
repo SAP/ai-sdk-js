@@ -4,6 +4,7 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ToolCallChunk } from './tool-call-chunk.js';
+import type { ReasoningBlock } from './reasoning-block.js';
 /**
  * Representation of the 'ChatDelta' schema.
  */
@@ -15,4 +16,8 @@ export type ChatDelta = {
    */
   refusal?: string;
   tool_calls?: ToolCallChunk[];
+  /**
+   * Reasoning content delta chunks for streaming responses.
+   */
+  reasoning_content?: ReasoningBlock[];
 } & Record<string, any>;

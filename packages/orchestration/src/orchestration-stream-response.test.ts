@@ -59,6 +59,7 @@ describe('OrchestrationStreamResponse', () => {
       );
       expect(() => streamResponse.findChoiceByIndex(0)).toThrow(errorMessage);
       expect(() => streamResponse.getCitations()).toThrow(errorMessage);
+      expect(() => streamResponse.getReasoningContent()).toThrow(errorMessage);
     });
   });
 
@@ -217,6 +218,47 @@ describe('OrchestrationStreamResponse', () => {
       closeStream(mockCompleteSuccessResponse);
 
       expect(streamResponse.getRefusal()).toBeUndefined();
+    });
+  });
+
+  describe('getReasoningContent', () => {
+    it('should throw when stream is still open', () => {
+      expect(() => streamResponse.getReasoningContent()).toThrow(
+        'The stream is still open'
+      );
+    });
+
+    it('should return thinking blocks when present', () => {
+      closeStream({
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                reasoning_content: [
+                  {
+                    content: 'Step 1: analyze the problem.',
+                    signature: ''
+                  },
+                  { content: '', signature: 'encryptedData==' }
+                ]
+              }
+            }
+          ]
+        }
+      });
+
+      const blocks = streamResponse.getReasoningContent();
+      expect(blocks).toHaveLength(2);
+      expect(blocks?.[0]).toBe('Step 1: analyze the problem.');
+      expect(blocks?.[1]).toBe('');
+    });
+
+    it('should return undefined when no thinking present', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      expect(streamResponse.getReasoningContent()).toBeUndefined();
     });
   });
 
