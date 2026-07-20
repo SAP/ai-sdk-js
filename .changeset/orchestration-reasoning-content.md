@@ -2,4 +2,7 @@
 '@sap-ai-sdk/orchestration': minor
 ---
 
-[feat] Support reasoning content in Orchestration request/responses. Add `ReasoningBlock` type and `getReasoningContent()` / `getDeltaReasoningContent()` convenience functions to access model reasoning content in both streaming and non-streaming responses. Reasoning blocks can also be supplied in `AssistantChatMessage.reasoning_content` for multi-turn conversations.
+[feat] Add reasoning content support to the Orchestration client.
+`ReasoningBlock` type and `reasoning_content` field are added to request, response, and streaming delta types.
+`getReasoningContent()` and `getDeltaReasoningContent()` convenience functions return the reasoning text from model responses.
+Reasoning blocks can be supplied in `AssistantChatMessage.reasoning_content` for multi-turn conversations.
