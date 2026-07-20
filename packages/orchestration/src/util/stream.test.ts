@@ -774,7 +774,9 @@ describe('stream-util', () => {
               message: {
                 role: 'assistant',
                 content: '',
-                reasoning_content: [{ content: '', signature: 'encryptedSig==' }]
+                reasoning_content: [
+                  { content: '', signature: 'encryptedSig==' }
+                ]
               },
               finish_reason: ''
             }

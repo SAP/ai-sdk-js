@@ -168,7 +168,9 @@ describe('Orchestration chat completion stream chunk response', () => {
               index: 0,
               delta: {
                 content: '',
-                reasoning_content: [{ content: 'Let me reason...', signature: '' }]
+                reasoning_content: [
+                  { content: 'Let me reason...', signature: '' }
+                ]
               },
               finish_reason: ''
             }
