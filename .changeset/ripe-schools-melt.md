@@ -2,4 +2,4 @@
 '@sap-ai-sdk/prompt-registry': patch
 ---
 
-[feat] prompt-registry: updated generated client to latest specification.
+[feat] prompt-registry: Update generated client to latest specification.
