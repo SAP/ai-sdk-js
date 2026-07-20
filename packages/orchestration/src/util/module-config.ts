@@ -79,7 +79,7 @@ export function constructCompletionPostRequestFromConfigReference(
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory && {
+    ...(messagesHistory?.length && {
       messages_history: messagesHistory
     })
   } as
