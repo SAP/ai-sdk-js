@@ -751,7 +751,9 @@ describe('applyCacheControlToLastMessage', () => {
 
     expect(messages[0]).toEqual({
       role: 'user',
-      content: [{ type: 'text', text: 'Question?', cache_control: cacheControl }]
+      content: [
+        { type: 'text', text: 'Question?', cache_control: cacheControl }
+      ]
     });
     expect(messages[1]).toEqual({
       role: 'tool',
