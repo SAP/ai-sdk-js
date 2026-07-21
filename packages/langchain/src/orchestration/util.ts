@@ -258,16 +258,16 @@ export function applyCacheControlToLastMessage(
     return;
   }
 
+  // Skip tool messages: cache_control is not supported by Anthropic models on tool messages.
+  // Additionally, the Orchestration service's Anthropic harmonization layer
+  // requires tool message content to be a plain string (rejects arrays with HTTP 400).
+  if (lastMessage.role === 'tool') {
+    return;
+  }
+
   if (typeof lastMessage.content === 'string') {
-    if (
-      lastMessage.role === 'system' ||
-      lastMessage.role === 'tool' ||
-      lastMessage.role === 'developer'
-    ) {
-      (
-        lastMessage as
-          SystemChatMessage | ToolChatMessage | DeveloperChatMessage
-      ).content = [
+    if (lastMessage.role === 'system' || lastMessage.role === 'developer') {
+      (lastMessage as SystemChatMessage | DeveloperChatMessage).content = [
         {
           type: 'text',
           text: lastMessage.content,
