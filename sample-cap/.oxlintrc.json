@@ -46,9 +46,7 @@
     "URL": "readonly",
     "URLSearchParams": "readonly"
   },
-  "ignorePatterns": [
-    "**/@cds-models/"
-  ],
+  "ignorePatterns": ["**/@cds-models/"],
   "rules": {
     "constructor-super": "error",
     "for-direction": "error",
@@ -114,10 +112,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/app/**/*.js",
-        "**/webapp/**/*.js"
-      ],
+      "files": ["**/app/**/*.js", "**/webapp/**/*.js"],
       "globals": {
         "window": "readonly",
         "history": "readonly",

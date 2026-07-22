@@ -61,10 +61,7 @@ export {
   stopDeployments,
   deleteDeployments
 } from './ai-api/deployment-api.js';
-export {
-  getScenarios,
-  getModelsInScenario
-} from './ai-api/scenario-api.js';
+export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.js';
 
 export {
   createCollection,

@@ -54,10 +54,7 @@ import {
   stopDeployments,
   deleteDeployments
 } from './ai-api/deployment-api.js';
-import {
-  getScenarios,
-  getModelsInScenario
-} from './ai-api/scenario-api.js';
+import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.js';
 import {
   invokeChain,
   invokeRagChain,
