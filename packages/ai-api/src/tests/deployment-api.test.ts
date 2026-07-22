@@ -174,7 +174,7 @@ describe('deployment', () => {
   });
 
   it('parses a successful response for delete request with custom destination', async () => {
-    mockDestination();
+    await mockDestination();
 
     const deploymentId = '4e5f6g7h';
     const expectedResponse: AiDeploymentDeletionResponse = {

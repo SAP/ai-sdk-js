@@ -10,7 +10,6 @@ import {
   chatCompletionWithDestination,
   computeEmbedding,
   chatCompletionWithFunctionCall
-  // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai.js';
 import {
   chatCompletion as openAiSdkChatCompletion,
@@ -54,12 +53,10 @@ import {
   createDeployment,
   stopDeployments,
   deleteDeployments
-  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/deployment-api.js';
 import {
   getScenarios,
   getModelsInScenario
-  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/scenario-api.js';
 import {
   invokeChain,

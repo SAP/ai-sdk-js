@@ -34,8 +34,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
