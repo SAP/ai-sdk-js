@@ -21,10 +21,6 @@
     ],
     "minimumReleaseAge": "4 days",
     "timezone": "Europe/Berlin",
-    // Npm mirror settings:
-    "npmToken": "{{ secrets.NPM_TOKEN_ARTIFACTORY }}",
-    // Use artifactory mirror for all packages except for @sap-ai-sdk and @sap-cloud-sdk.
-    "npmrc": "registry=//common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/\n//common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/:_authToken=${NPM_TOKEN}\n@sap-ai-sdk:registry=https://registry.npmjs.org/\n@sap-cloud-sdk:registry=https://registry.npmjs.org/",
     "packageRules": [
         {
             "matchManagers": ["github-actions"],
