@@ -89,5 +89,6 @@ export type {
   ChatCompletionTool,
   FunctionObject,
   Error as OrchestrationError,
-  Citation
+  Citation,
+  ReasoningBlock
 } from './client/api/schema/index.js';

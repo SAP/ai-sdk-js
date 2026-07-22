@@ -121,6 +121,37 @@ describe('OrchestrationResponse', () => {
     expect(localOrchestrationResponse.getRefusal()).toEqual(expect.any(String));
   });
 
+  it('should return thinking blocks from model', () => {
+    const localMockResponse = JSON.parse(JSON.stringify(mockResponse));
+    localMockResponse.final_result.choices = [
+      {
+        index: 0,
+        message: {
+          role: 'assistant',
+          reasoning_content: [
+            { content: 'Let me think about this...', signature: '' },
+            { content: '', signature: 'encryptedBase64Data==' }
+          ]
+        },
+        finish_reason: 'stop'
+      }
+    ];
+
+    const localOrchestrationResponse = new OrchestrationResponse({
+      ...rawResponse,
+      data: localMockResponse
+    });
+
+    const blocks = localOrchestrationResponse.getReasoningContent();
+    expect(blocks).toHaveLength(2);
+    expect(blocks?.[0]).toBe('Let me think about this...');
+    expect(blocks?.[1]).toBe('');
+  });
+
+  it('should return undefined reasoning content when not present', () => {
+    expect(orchestrationResponse.getReasoningContent()).toBeUndefined();
+  });
+
   it('should return default choice index with convenience functions', () => {
     expect(orchestrationResponse.getFinishReason()).toBe('stop');
     expect(orchestrationResponse.getContent()).toBe(

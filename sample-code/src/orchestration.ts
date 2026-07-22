@@ -1214,3 +1214,65 @@ export async function orchestrationCacheControl(): Promise<
 
   return [first, second];
 }
+
+/**
+ * Demonstrates reasoning content support with Anthropic extended thinking.
+ * Logs the reasoning content and final answer, then performs a follow-up turn
+ * passing the full message history to preserve reasoning context.
+ * @param signal - An optional AbortSignal to cancel the request.
+ * @returns The orchestration service response from the follow-up turn.
+ */
+export async function orchestrationReasoningContent(
+  signal?: AbortSignal
+): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'anthropic--claude-3-7-sonnet' }
+    }
+  });
+
+  const response = await orchestrationClient.chatCompletion(
+    {
+      messages: [
+        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+      ]
+    },
+    { signal }
+  );
+
+  const reasoning = response.getReasoningContent();
+  if (reasoning) {
+    logger.info('Reasoning:');
+    reasoning.forEach(block => logger.info(block));
+  }
+  logger.info('Answer:', response.getContent());
+
+  // Pass full message history (includes reasoning blocks) to maintain context
+  return orchestrationClient.chatCompletion({
+    messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+    messagesHistory: response.getAllMessages()
+  });
+}
+
+/**
+ * Demonstrates reasoning content support with streaming and Anthropic extended thinking.
+ * @param controller - The AbortController to cancel the stream.
+ * @returns The orchestration stream response.
+ */
+export async function orchestrationReasoningContentStream(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'anthropic--claude-3-7-sonnet' }
+    }
+  });
+  return orchestrationClient.stream(
+    {
+      messages: [
+        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+      ]
+    },
+    controller.signal
+  );
+}

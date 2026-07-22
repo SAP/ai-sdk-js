@@ -35,7 +35,9 @@ export {
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
-  orchestrationStreamWithFallbackConfigs
+  orchestrationStreamWithFallbackConfigs,
+  orchestrationReasoningContent,
+  orchestrationReasoningContentStream
 } from './orchestration.js';
 export {
   invoke,
