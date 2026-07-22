@@ -11,8 +11,8 @@
     "create-deployment": "tsx scripts/create-deployment.ts",
     "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "eslint . && oxfmt --check .",
+    "lint:fix": "eslint . --fix && oxfmt ."
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "canary",

@@ -20,8 +20,8 @@
     "agent-tutorial": "tsx --env-file=.env src/tutorials/travel-itinerary-agent.ts",
     "compile": "tsc",
     "dev": "tsc -w",
-    "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
+    "lint": "eslint . && oxfmt --check .",
+    "lint:fix": "eslint . --fix && oxfmt ."
   },
   "dependencies": {
     "@langchain/classic": "=1.0.40",

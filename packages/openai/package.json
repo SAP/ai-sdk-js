@@ -40,8 +40,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "eslint \"**/*.ts\" && oxfmt --check .",
+    "lint:fix": "eslint \"**/*.ts\" --fix && oxfmt ."
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
