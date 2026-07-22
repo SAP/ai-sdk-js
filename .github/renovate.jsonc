@@ -27,13 +27,13 @@
             "schedule": ["every weekend"]
         },
         {
-            "matchPackageNames": ["@sap-ai-sdk/**"],
+            "matchPackageNames": ["@sap-ai-sdk/**", "sap/ai-sdk-js/**"],
             "groupName": "sap-ai-sdk",
             "minimumReleaseAge": null,
             "pinDigests": false
         },
         {
-            "matchPackageNames": ["@sap-cloud-sdk/**"],
+            "matchPackageNames": ["@sap-cloud-sdk/**", "sap/cloud-sdk-js/**"],
             "groupName": "sap-cloud-sdk",
             "minimumReleaseAge": null,
             "pinDigests": false
