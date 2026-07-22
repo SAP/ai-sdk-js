@@ -1,0 +1,50 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:best-practices",
+        "security:openssf-scorecard",
+        ":semanticCommitType(chore)",
+        ":pinOnlyDevDependencies",
+        ":enableVulnerabilityAlerts", // Handle vulnerability alerts from dependabot
+        ":automergeMinor",
+        "helpers:disableTypesNodeMajor"
+    ],
+    "ignorePresets": [
+        // not needed
+        ":dependencyDashboard",
+        // chore is configured above
+        ":semanticPrefixFixDepsChoreOthers",
+        // We configure 4 days minimum release age below,
+        // so we don't need this preset which configures
+        // 3 days, with some exceptions (e.g. pin) we can add as-needed.
+        "security:minimumReleaseAgeNpm"
+    ],
+    "minimumReleaseAge": "4 days",
+    "timezone": "Europe/Berlin",
+    // Npm mirror settings:
+    "npmToken": "{{ secrets.NPM_TOKEN_ARTIFACTORY }}",
+    // Use artifactory mirror for all packages except for @sap-ai-sdk and @sap-cloud-sdk.
+    "npmrc": "registry=//common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/\n//common.repositories.cloud.sap/artifactory/api/npm/build.releases.npm/:_authToken=${NPM_TOKEN}\n@sap-ai-sdk:registry=https://registry.npmjs.org/\n@sap-cloud-sdk:registry=https://registry.npmjs.org/",
+    "packageRules": [
+        {
+            "matchManagers": ["github-actions"],
+            "schedule": ["every weekend"]
+        },
+        {
+            "matchPackageNames": ["@sap-ai-sdk/**"],
+            "groupName": "sap-ai-sdk",
+            "minimumReleaseAge": "0 days",
+            "pinDigests": false
+        },
+        {
+            "matchPackageNames": ["@sap-cloud-sdk/**"],
+            "groupName": "sap-cloud-sdk",
+            "minimumReleaseAge": "0 days",
+            "pinDigests": false
+        },
+        {
+            "matchPackageNames": ["langchain", "@langchain/**"],
+            "groupName": "langchain"
+        }
+    ]
+}
