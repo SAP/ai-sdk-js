@@ -80,7 +80,7 @@ jobs:
               force_internal_exports: 'false'
               ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?'
           - name: Check dependencies
-            run: pnpm check:deps
+            run: pnpm check:deps --reporter=github-actions
           - name: License Check
             uses: sap/cloud-sdk-js/.github/actions/check-license@main
           - name: API Doc Check

@@ -36,7 +36,9 @@ export {
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs,
-  orchestrationQwenChatCompletion
+  orchestrationQwenChatCompletion,
+  orchestrationQwenResponseFormat,
+  orchestrationQwenWithToolCalling
 } from './orchestration.js';
 export {
   invoke,
