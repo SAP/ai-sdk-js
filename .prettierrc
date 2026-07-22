@@ -5,6 +5,9 @@
   "trailingComma": "none",
   "arrowParens": "avoid",
   "endOfLine": "lf",
+  "plugins": [
+  	"@prettier/plugin-oxc"
+  ],
   "overrides": [
     {
       "files": "jest.config.mjs",
