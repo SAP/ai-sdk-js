@@ -29,13 +29,13 @@
         {
             "matchPackageNames": ["@sap-ai-sdk/**"],
             "groupName": "sap-ai-sdk",
-            "minimumReleaseAge": "0 days",
+            "minimumReleaseAge": null,
             "pinDigests": false
         },
         {
             "matchPackageNames": ["@sap-cloud-sdk/**"],
             "groupName": "sap-cloud-sdk",
-            "minimumReleaseAge": "0 days",
+            "minimumReleaseAge": null,
             "pinDigests": false
         },
         {
