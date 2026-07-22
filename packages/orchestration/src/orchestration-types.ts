@@ -77,6 +77,14 @@ export type LlmModelDetails = Omit<
   OriginalLLMModelDetails,
   'name' | 'params'
 > & {
+  /**
+   * The name of the model to use.
+   * In addition to the listed {@link ChatModel} values, any string is accepted,
+   * allowing use of models not yet included in the SDK's type definitions:.
+   * ```ts
+   * model: { name: 'my-custom-model-name' }
+   * ```
+   */
   name: ChatModel;
   params?: LlmModelParams;
 };
