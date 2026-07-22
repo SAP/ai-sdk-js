@@ -266,7 +266,9 @@ export function applyCacheControlToLastMessage(
     ) {
       (
         lastMessage as
-          SystemChatMessage | ToolChatMessage | DeveloperChatMessage
+          | SystemChatMessage
+          | ToolChatMessage
+          | DeveloperChatMessage
       ).content = [
         {
           type: 'text',

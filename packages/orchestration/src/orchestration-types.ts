@@ -684,7 +684,8 @@ export interface DocumentTranslationApplyToSelector {
  * Target language for translation, either a language code or a selector configuration.
  */
 export type TranslationTargetLanguage =
-  string | DocumentTranslationApplyToSelector;
+  | string
+  | DocumentTranslationApplyToSelector;
 
 /**
  * Input parameters for translation configuration.

@@ -147,7 +147,9 @@ export type AzureOpenAiCreateChatCompletionRequest =
      * @deprecated
      */
     function_call?:
-      'none' | 'auto' | AzureOpenAiChatCompletionFunctionCallOption;
+      | 'none'
+      | 'auto'
+      | AzureOpenAiChatCompletionFunctionCallOption;
     /**
      * Deprecated in favor of `tools`.
      *
