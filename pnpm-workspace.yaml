@@ -16,6 +16,7 @@ packages:
   - tests/type-tests
 
 allowBuilds:
+  '@swc/core': true
   better-sqlite3: false
   esbuild: false
   unrs-resolver: false
