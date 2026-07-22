@@ -34,7 +34,7 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests run",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code run",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
-    "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
+    "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
@@ -53,11 +53,12 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^22.20.1",
-    "depcheck": "^1.4.7",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "eslint": "^10.7.0",
     "glob": "^13.0.6",
     "jest": "^30.4.2",
     "jsonwebtoken": "^9.0.3",
+    "knip": "https://pkg.pr.new/knip@1902",
     "mock-fs": "^5.5.0",
     "nock": "^14.0.16",
     "orval": "^8.22.0",
@@ -65,7 +66,6 @@
     "ts-jest": "^29.4.11",
     "tsx": "^4.23.1",
     "typedoc": "^0.28.20",
-    "@typescript/native": "npm:typescript@^7.0.2",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "zod": "^4.4.3"
   }
