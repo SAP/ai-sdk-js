@@ -337,4 +337,139 @@ describe('construct completion post request', () => {
       );
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
   });
+
+  describe('messages routing to messages_history', () => {
+    const toolCallId = 'call_abc123';
+    const assistantMessage = {
+      role: 'assistant' as const,
+      tool_calls: [
+        {
+          id: toolCallId,
+          type: 'function' as const,
+          function: { name: 'search', arguments: '{"query":"test"}' }
+        }
+      ]
+    };
+    const toolMessage = {
+      role: 'tool' as const,
+      content: 'Result: {{?question}}',
+      tool_call_id: toolCallId
+    };
+    const userMessage = { role: 'user' as const, content: 'Summarize.' };
+
+    // Config without a prompt — tool messages trigger full routing to messages_history
+    const noTemplateConfig: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' }
+      }
+    };
+
+    it('should route all messages to messages_history when tool message is present', () => {
+      const followUp = { role: 'user' as const, content: 'Follow up.' };
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
+        messages: [userMessage, toolMessage, followUp]
+      });
+
+      expect(result.messages_history).toEqual([
+        userMessage,
+        toolMessage,
+        followUp
+      ]);
+      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
+    });
+
+    it('should preserve existing messagesHistory when routing all messages', () => {
+      const followUpUser = { role: 'user' as const, content: 'Follow up.' };
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
+        messages: [userMessage, toolMessage, followUpUser],
+        messagesHistory: [assistantMessage]
+      });
+
+      expect(result.messages_history).toEqual([
+        assistantMessage,
+        userMessage,
+        toolMessage,
+        followUpUser
+      ]);
+    });
+
+    it('should route messages when no prompt is configured (even without tool messages)', () => {
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
+        messages: [userMessage]
+      });
+
+      // no prompt → always route to messages_history
+      expect(result.messages_history).toEqual([userMessage]);
+      expect(result.config.modules.prompt_templating.prompt).toBeUndefined();
+    });
+    it('should preserve chronological message order when routing to messages_history', () => {
+      const followUpUser = { role: 'user' as const, content: 'Follow up.' };
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
+        messages: [userMessage, assistantMessage, toolMessage, followUpUser]
+      });
+
+      expect(result.messages_history).toEqual([
+        userMessage,
+        assistantMessage,
+        toolMessage,
+        followUpUser
+      ]);
+    });
+
+    it('should combine existing messagesHistory with routed messages', () => {
+      const result: any = constructCompletionPostRequest(noTemplateConfig, {
+        messages: [userMessage],
+        messagesHistory: [assistantMessage]
+      });
+
+      // no prompt → always route, prepended to existing messagesHistory
+      expect(result.messages_history).toEqual([assistantMessage, userMessage]);
+    });
+
+    it('should not route messages when config has a static prompt template', () => {
+      const result: any = constructCompletionPostRequest(defaultConfig, {
+        messages: [assistantMessage, toolMessage, userMessage]
+      });
+
+      // prompt.template present → no routing, messages merged into template
+      expect(result.messages_history).toBeUndefined();
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+        { role: 'user', content: 'Hi' },
+        assistantMessage,
+        toolMessage,
+        userMessage
+      ]);
+    });
+
+    it('should not route messages when config has prompt.tools (service requires template alongside tools)', () => {
+      const toolsConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-5.4-nano' },
+          prompt: {
+            tools: [
+              {
+                type: 'function',
+                function: {
+                  name: 'search',
+                  description: 'search',
+                  parameters: {}
+                }
+              }
+            ]
+          }
+        }
+      };
+      const result: any = constructCompletionPostRequest(toolsConfig, {
+        messages: [assistantMessage, toolMessage, userMessage]
+      });
+
+      // prompt.tools present → routing skipped, messages merged into template
+      expect(result.messages_history).toBeUndefined();
+      expect(result.config.modules.prompt_templating.prompt.template).toEqual([
+        assistantMessage,
+        toolMessage,
+        userMessage
+      ]);
+    });
+  });
 });

@@ -77,21 +77,14 @@ describe('orchestration service client', () => {
       delay?: number;
     },
     status: number = 200,
-    isStream?: boolean
+    isStream?: boolean,
+    inputMessages = messages
   ) {
     mockInference(
       {
         data: constructCompletionPostRequest(
-          {
-            ...config,
-            promptTemplating: {
-              ...config.promptTemplating,
-              prompt: {
-                template: messages
-              }
-            }
-          },
-          { messages: [] },
+          config,
+          { messages: inputMessages },
           isStream
         )
       },
@@ -169,7 +162,8 @@ describe('orchestration service client', () => {
         mockResponseStream,
         { delay: 2000 },
         200,
-        true
+        true,
+        []
       );
 
       let finalOutput: AIMessageChunk | undefined;
@@ -403,19 +397,7 @@ describe('orchestration service client', () => {
     it('supports streaming responses', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -437,19 +419,7 @@ describe('orchestration service client', () => {
     it('supports auto-streaming responses', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -476,19 +446,7 @@ describe('orchestration service client', () => {
     it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            false
-          )
+          data: constructCompletionPostRequest(config, { messages }, false)
         },
         {
           data: mockResponse,
@@ -552,19 +510,7 @@ describe('orchestration service client', () => {
     it('streams and aborts with a signal', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -588,19 +534,7 @@ describe('orchestration service client', () => {
     it('streams with a callback', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStream,
@@ -636,19 +570,7 @@ describe('orchestration service client', () => {
     it('supports streaming responses with tool calls', async () => {
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            {
-              ...config,
-              promptTemplating: {
-                ...config.promptTemplating,
-                prompt: {
-                  template: messages
-                }
-              }
-            },
-            { messages: [] },
-            true
-          )
+          data: constructCompletionPostRequest(config, { messages }, true)
         },
         {
           data: mockResponseStreamToolCalls,
@@ -677,19 +599,7 @@ describe('orchestration service client', () => {
   it('streams when invoked in a streaming langgraph', async () => {
     mockInference(
       {
-        data: constructCompletionPostRequest(
-          {
-            ...config,
-            promptTemplating: {
-              ...config.promptTemplating,
-              prompt: {
-                template: messages
-              }
-            }
-          },
-          { messages: [] },
-          true
-        )
+        data: constructCompletionPostRequest(config, { messages }, true)
       },
       {
         data: mockResponseStream,
@@ -755,27 +665,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: constructCompletionPostRequest(
-            [
-              {
-                ...primaryConfig,
-                promptTemplating: {
-                  ...primaryConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              },
-              {
-                ...fallbackConfig,
-                promptTemplating: {
-                  ...fallbackConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              }
-            ],
-            { messages: [] }
+            [primaryConfig, fallbackConfig],
+            { messages }
           )
         },
         {
@@ -812,27 +703,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: constructCompletionPostRequest(
-            [
-              {
-                ...primaryConfig,
-                promptTemplating: {
-                  ...primaryConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              },
-              {
-                ...fallbackConfig,
-                promptTemplating: {
-                  ...fallbackConfig.promptTemplating,
-                  prompt: {
-                    template: messages
-                  }
-                }
-              }
-            ],
-            { messages: [] },
+            [primaryConfig, fallbackConfig],
+            { messages },
             true
           )
         },
@@ -891,9 +763,6 @@ describe('orchestration service client', () => {
                       ...primaryConfig.promptTemplating.model.params,
                       stop: ['PRIMARY_STOP', 'END']
                     }
-                  },
-                  prompt: {
-                    template: messages
                   }
                 }
               },
@@ -907,14 +776,11 @@ describe('orchestration service client', () => {
                       ...fallbackConfig.promptTemplating.model.params,
                       stop: ['FALLBACK_STOP', 'END']
                     }
-                  },
-                  prompt: {
-                    template: messages
                   }
                 }
               }
             ],
-            { messages: [] }
+            { messages }
           )
         },
         {
@@ -1396,12 +1262,13 @@ describe('orchestration service client', () => {
       expectedCacheControl: { type: string; ttl?: string }
     ): (body: any) => boolean {
       return (body: any): boolean => {
-        const template =
+        const messageList: any[] =
+          body?.messages_history ??
           body?.config?.modules?.prompt_templating?.prompt?.template;
-        if (!Array.isArray(template) || messageIdx >= template.length) {
+        if (!Array.isArray(messageList) || messageIdx >= messageList.length) {
           return false;
         }
-        const target = template[messageIdx];
+        const target = messageList[messageIdx];
         if (target?.role !== 'user' || !Array.isArray(target.content)) {
           return false;
         }
@@ -1413,7 +1280,7 @@ describe('orchestration service client', () => {
           block.cache_control?.type === expectedCacheControl.type &&
           block.cache_control?.ttl === expectedCacheControl.ttl;
 
-        const otherMessagesHaveBreakpoint = template.some(
+        const otherMessagesHaveBreakpoint = messageList.some(
           (msg: any, idx: number) =>
             idx !== messageIdx && JSON.stringify(msg).includes('cache_control')
         );
@@ -1445,12 +1312,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: (body: any) => {
-            const template =
-              body?.config?.modules?.prompt_templating?.prompt?.template;
-            return (
-              Array.isArray(template) &&
-              !JSON.stringify(template).includes('cache_control')
-            );
+            const bodyStr = JSON.stringify(body);
+            return !bodyStr.includes('cache_control');
           }
         },
         { data: mockResponse, status: 200 },

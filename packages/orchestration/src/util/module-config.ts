@@ -358,17 +358,11 @@ export function constructCompletionPostRequest(
   // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
   // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
 
-  // When any config uses a TemplateRef, messages cannot be merged into prompt.template
-  // (the template lives remotely). Route them to messages_history instead.
   const configs = Array.isArray(config) ? config : [config];
-  const routeMessagesToHistory = configs.some(c =>
-    isTemplateRef(c?.promptTemplating?.prompt || {})
-  );
+  const routeToHistory = shouldRouteMessagesToHistory(configs, request);
 
   const moduleRequest =
-    routeMessagesToHistory && request
-      ? { ...request, messages: undefined }
-      : request;
+    routeToHistory && request ? { ...request, messages: undefined } : request;
 
   /**
    * Module configurations for the orchestration request.
@@ -389,9 +383,10 @@ export function constructCompletionPostRequest(
         )
     : { modules: moduleConfigurations };
 
-  // When routing messages to history, append request.messages after messagesHistory
+  // Only append messages when routing is active to avoid duplicating messages
+  // already present in messagesHistory.
   const messagesHistory =
-    routeMessagesToHistory && request?.messages?.length
+    routeToHistory && request?.messages?.length
       ? [...(request.messagesHistory || []), ...request.messages]
       : request?.messagesHistory;
 
@@ -413,22 +408,43 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
+  const modules = {
+    ...(filtering && Object.keys(filtering).length && { filtering }),
+    ...(masking && Object.keys(masking).length && { masking }),
+    ...(grounding && Object.keys(grounding).length && { grounding }),
+    ...(translation && Object.keys(translation).length && { translation })
+  };
+
   // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
+  // If promptTemplating.prompt is not defined and messages were routed upstream,
+  // omit the prompt key entirely so the service receives only messages_history.
+  if (!promptTemplating.prompt && request?.messages === undefined) {
+    const { prompt: _prompt, ...rest } = promptTemplating;
+    return {
+      prompt_templating: rest as PromptTemplatingModuleConfig,
+      ...modules
+    };
+  }
+
+  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
+  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
   const prompt = {
     ...(promptTemplating.prompt as Template | TemplateRef)
   };
 
-  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
-  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
-
   if (isTemplate(prompt)) {
-    if (!prompt.template?.length && !request?.messages?.length) {
+    if (!prompt.template?.length && !request) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
-    prompt.template = [
+    const mergedTemplate = [
       ...(prompt.template || []),
       ...(request?.messages || [])
     ];
+    if (mergedTemplate.length) {
+      prompt.template = mergedTemplate;
+    } else {
+      prompt.template = [];
+    }
   }
 
   return {
@@ -436,11 +452,54 @@ function buildCompletionModulesConfig(
       ...promptTemplating,
       prompt
     },
-    ...(filtering && Object.keys(filtering).length && { filtering }),
-    ...(masking && Object.keys(masking).length && { masking }),
-    ...(grounding && Object.keys(grounding).length && { grounding }),
-    ...(translation && Object.keys(translation).length && { translation })
+    ...modules
   };
+}
+
+/**
+ * Determines whether all messages should be routed to messages_history,
+ * bypassing prompt templating entirely.
+ *
+ * Routes when:
+ * - a TemplateRef is used (remote template, cannot merge messages in)
+ * - messages contain tool results (content may include {{?...}} syntax from external systems).
+ *
+ * Does NOT route when placeholder values are provided (user opted into templating).
+ * @param configs - The orchestration module configurations.
+ * @param request - The optional chat completion request.
+ * @returns True if messages should be routed to messages_history.
+ */
+function shouldRouteMessagesToHistory(
+  configs: OrchestrationModuleConfig[],
+  request?: ChatCompletionRequest
+): boolean {
+  if (configs.some(c => isTemplateRef(c?.promptTemplating?.prompt || {}))) {
+    return true;
+  }
+
+  if (
+    !!request?.placeholderValues &&
+    Object.keys(request.placeholderValues).length > 0
+  ) {
+    return false;
+  }
+
+  // Skip routing when any config has a prompt with template or tools set.
+  // The service requires template to be present alongside tools,
+  // so routing would strip messages and break the request.
+  if (
+    configs.some(c => {
+      const prompt = c?.promptTemplating?.prompt;
+      return (
+        !!prompt &&
+        (isTemplate(prompt) || !!(prompt as { tools?: unknown }).tools)
+      );
+    })
+  ) {
+    return false;
+  }
+
+  return true;
 }
 
 function isTemplate(templating: unknown): templating is Template {

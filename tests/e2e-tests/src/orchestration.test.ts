@@ -24,7 +24,10 @@ import {
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
-  orchestrationStreamWithFallbackConfigs
+  orchestrationStreamWithFallbackConfigs,
+  orchestrationToolResultInMessages,
+  orchestrationToolResultMaskingInMessagesHistory,
+  orchestrationToolLastMessageInMessages
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -331,5 +334,41 @@ describe('orchestration', () => {
     if (citations) {
       expect(Array.isArray(citations)).toBe(true);
     }
+  });
+
+  describe('tool result prompt templating interference', () => {
+    it('should succeed when tool result containing {{?...}} syntax is sent via messages', async () => {
+      const response = await orchestrationToolResultInMessages();
+      expect(response.getContent()).toEqual(expect.any(String));
+
+      const templating = response.getIntermediateResults().templating;
+      const roles = templating!.map(m => m.role);
+      expect(roles).toContain('tool');
+      expect(roles).toContain('user');
+      expect(roles.lastIndexOf('tool')).toBeLessThan(roles.lastIndexOf('user'));
+    });
+
+    it('should apply masking to tool results automatically routed to messages_history', async () => {
+      const response = await orchestrationToolResultMaskingInMessagesHistory();
+      expect(response.getIntermediateResults().input_masking).toBeDefined();
+      expect(response.getContent()).toEqual(expect.any(String));
+
+      const templating = response.getIntermediateResults().templating;
+      expect(templating).toBeDefined();
+      const roles = templating!.map(m => m.role);
+      expect(roles).toContain('tool');
+      expect(roles.lastIndexOf('user')).toBeGreaterThan(
+        roles.lastIndexOf('tool')
+      );
+    });
+
+    it('should succeed when the last message is of type tool', async () => {
+      const response = await orchestrationToolLastMessageInMessages();
+      expect(response.getContent()).toEqual(expect.any(String));
+
+      const templating = response.getIntermediateResults().templating;
+      const roles = templating!.map(m => m.role);
+      expect(roles[roles.length - 1]).toBe('tool');
+    });
   });
 });
