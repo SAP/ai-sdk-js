@@ -9,6 +9,7 @@ import {
   translateToFoundationModel,
   type FoundationModel
 } from './model.js';
+import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
@@ -90,6 +91,10 @@ export interface DeploymentResolutionOptions {
    * The destination to use for the request.
    */
   destination?: HttpDestinationOrFetchOptions;
+  /**
+   * The request configuration.
+   */
+  requestConfig?: CustomRequestConfig;
 }
 
 /**
@@ -216,6 +221,7 @@ export async function getAllDeployments(
 ): Promise<AiDeployment[]> {
   const {
     destination,
+    requestConfig,
     scenarioId,
     executableId,
     resourceGroup = 'default'
@@ -228,7 +234,7 @@ export async function getAllDeployments(
         ...(executableId && { executableIds: [executableId] })
       },
       { 'AI-Resource-Group': resourceGroup }
-    ).execute(destination);
+    ).execute(destination, requestConfig);
 
     deploymentCache.setAll(opts, resources);
 
@@ -279,13 +285,15 @@ export async function resolveDeploymentUrlForModel(
  * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
  * @param executableId - The scenario ID.
  * @param destination - The destination to use for the request.
+ * @param requestConfig - The request configuration.
  * @returns The ID of the deployment, if found.
  * @internal
  */
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string,
-  destination?: HttpDestinationOrFetchOptions
+  destination?: HttpDestinationOrFetchOptions,
+  requestConfig?: CustomRequestConfig
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
     return modelDeployment.deploymentId;
@@ -296,7 +304,8 @@ export async function getFoundationModelDeploymentId(
     executableId,
     model: translateToFoundationModel(modelDeployment),
     resourceGroup: getResourceGroup(modelDeployment),
-    destination
+    destination,
+    requestConfig
   });
 }
 
@@ -304,12 +313,14 @@ export async function getFoundationModelDeploymentId(
  * Get the deployment ID for an orchestration scenario.
  * @param deploymentConfig - The deployment configuration (resource group or deployment ID).
  * @param destination - The destination to use for the request.
+ * @param requestConfig - The request configuration.
  * @returns The ID of the deployment, if found.
  * @internal
  */
 export async function getOrchestrationDeploymentId(
   deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
-  destination?: HttpDestinationOrFetchOptions
+  destination?: HttpDestinationOrFetchOptions,
+  requestConfig?: CustomRequestConfig
 ): Promise<string> {
   if (isDeploymentIdConfig(deploymentConfig)) {
     return deploymentConfig.deploymentId;
@@ -318,6 +329,7 @@ export async function getOrchestrationDeploymentId(
   return resolveDeploymentId({
     scenarioId: 'orchestration',
     ...deploymentConfig,
-    destination
+    destination,
+    requestConfig
   });
 }
