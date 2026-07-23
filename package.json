@@ -7,9 +7,17 @@
   "repository": "github:SAP/ai-sdk-js",
   "private": true,
   "type": "module",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11",
+      "onFail": "download"
+    }
+  },
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
+    "changeset": "pnpm change",
     "test:unit": "pnpm -r '-F=./packages/**' test",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
@@ -37,7 +45,6 @@
     "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@jest/globals\" --quiet"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.1",
     "@jest/globals": "^30.4.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",

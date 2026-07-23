@@ -2,10 +2,6 @@ name: bump
 
 on:
   workflow_dispatch:
-    inputs:
-      majorVersion:
-        description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
-        required: false
 
 permissions: {}
 
@@ -25,15 +21,17 @@ jobs:
           permission-contents: write
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          pnpm-version: ''
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: true
       - name: Bump version
         id: bump
-        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
-        with:
-          majorVersion: ${{ inputs.majorVersion }}
+        run: |
+          pnpm version -r
+          VERSION=$(pnpm node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
       - name: Merge and write changelogs
         id: merge-changelogs
         env:
@@ -67,6 +65,7 @@ jobs:
       - name: Checkout current repository
         uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          pnpm-version: ''
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Fetch full commit history (blobless)

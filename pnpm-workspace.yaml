@@ -15,6 +15,20 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
+versioning:
+  fixed:
+    - ['@sap-ai-sdk/*']
+  maxBump: minor
+  changelog:
+    storage: repository
+  # POC: openai/rpt could graduate onto a parallel prerelease track ("alpha" lane).
+  # A fixed group must move lanes together, so this requires first narrowing `fixed`
+  # above to exclude them, e.g. fixed: [['@sap-ai-sdk/core', '@sap-ai-sdk/ai-api', ...]]
+  # (listing the group members explicitly, minus openai/rpt), then:
+  # lanes:
+  #   '@sap-ai-sdk/openai': alpha
+  #   '@sap-ai-sdk/rpt': alpha
+
 allowBuilds:
   better-sqlite3: false
   esbuild: false

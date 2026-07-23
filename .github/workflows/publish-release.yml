@@ -35,6 +35,7 @@ jobs:
           permission-pull-requests: read
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          pnpm-version: ''
           package-manager-cache: false
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Determine Release Notes PR Branch Name
@@ -80,12 +81,13 @@ jobs:
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          pnpm-version: ''
           node-version: 24 # Will install npm 11 needed for trusted publishing
           package-manager-cache: false
           registry-url: 'https://registry.npmjs.org'
       - name: publish
         run: |
-          pnpm changeset publish
+          pnpm publish -r
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
