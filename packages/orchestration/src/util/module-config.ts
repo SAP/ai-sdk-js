@@ -365,6 +365,13 @@ export function constructCompletionPostRequest(
     isTemplateRef(c?.promptTemplating?.prompt || {})
   );
 
+  if (routeMessagesToHistory && request?.messages?.length) {
+    logger.warn(
+      'Messages passed alongside a template_ref are sent as messages_history, not as part of the prompt template. ' +
+        'The prompt template is defined remotely and cannot be extended inline.'
+    );
+  }
+
   const moduleRequest =
     routeMessagesToHistory && request
       ? { ...request, messages: undefined }
