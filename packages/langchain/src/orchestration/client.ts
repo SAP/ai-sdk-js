@@ -61,8 +61,7 @@ export class OrchestrationClient extends BaseChatModel<
 > {
   streaming: boolean = false;
   orchestrationConfig:
-    | LangChainOrchestrationModuleConfig
-    | LangChainOrchestrationModuleConfigList;
+    LangChainOrchestrationModuleConfig | LangChainOrchestrationModuleConfigList;
   langchainOptions: LangChainOrchestrationChatModelParams;
   deploymentConfig?: ResourceGroupConfig;
   destination?: HttpDestinationOrFetchOptions;
