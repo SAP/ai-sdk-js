@@ -41,6 +41,17 @@
         {
             "matchPackageNames": ["langchain", "@langchain/**"],
             "groupName": "langchain"
+        },
+        // Avoid minimum age controls renovate does not support, pnpm workspace settings will ensure `minimumReleaseAge`
+        // Shorter version of `security:minimumReleaseAgeNpm`
+        {
+          "description": "Do not require Minimum Release Age for update types that are controlled by the package manager",
+          "matchDatasources": ["npm"],
+          "matchUpdateTypes": ["lockFileMaintenance", "replacement", "pin"],
+          "minimumReleaseAge": null,
+          "prBodyNotes": [
+            "⚠️ Renovate's lock file maintenance/replacement/pin functionality does not support validating Minimum Release Age, as the package manager performs the required changes to update package(s). Confirm whether your package manager perform its own validation for the Minimum Release Age of packages."
+          ]
         }
     ]
 }
