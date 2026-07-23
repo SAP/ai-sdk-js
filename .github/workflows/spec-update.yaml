@@ -59,8 +59,6 @@ on:
         default: true
         type: boolean
     secrets:
-      NPM_TOKEN_ARTIFACTORY:
-        required: true
       GH_TOOLS_TOKEN:
         required: true
 

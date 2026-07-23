@@ -27,8 +27,6 @@ jobs:
           skip-install: 'true'
 
       - name: Update Transitive Dependencies
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
         run: |
           pnpm --no-save update --recursive
           pnpm audit --audit-level high

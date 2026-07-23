@@ -7,8 +7,6 @@ on:
         required: true
       SAP_AI_SDK_BOT_PRIVATE_KEY:
         required: true
-      NPM_TOKEN_ARTIFACTORY:
-        required: true
 
 permissions: {}
 
