@@ -16,7 +16,7 @@
         ":semanticPrefixFixDepsChoreOthers",
         // We configure 4 days minimum release age below,
         // so we don't need this preset which configures
-        // 3 days, with some exceptions (see below)
+        // 3 days, with some exceptions (implemented below)
         "security:minimumReleaseAgeNpm"
     ],
     "minimumReleaseAge": "4 days",
