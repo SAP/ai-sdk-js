@@ -1,9 +1,9 @@
-import { createSapOpenAiContext } from './config.js';
-import { SapAzureOpenAi } from './azure-openai.js';
-import { SapChat } from './chat.js';
-import { SapEmbeddings } from './embeddings.js';
-import { SapResponses } from './responses.js';
-import type { SapOpenAiInput } from './types.js';
+import { createSapOpenAiContext } from './config.ts';
+import { SapAzureOpenAi } from './azure-openai.ts';
+import { SapChat } from './chat.ts';
+import { SapEmbeddings } from './embeddings.ts';
+import { SapResponses } from './responses.ts';
+import type { SapOpenAiInput } from './types.ts';
 
 /**
  * A pre-configured client for SAP AI Core backed by the official `openai` package.

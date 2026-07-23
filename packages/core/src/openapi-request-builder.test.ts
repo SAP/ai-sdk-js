@@ -2,8 +2,8 @@ import nock from 'nock';
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination
-} from '../../../test-util/mock-http.js';
-import { OpenApiRequestBuilder } from './openapi-request-builder.js';
+} from '../../../test-util/mock-http.ts';
+import { OpenApiRequestBuilder } from './openapi-request-builder.ts';
 
 describe('OpenApiRequestBuilder', () => {
   beforeEach(() => {

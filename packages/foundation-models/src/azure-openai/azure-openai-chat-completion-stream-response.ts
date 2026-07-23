@@ -1,11 +1,11 @@
 import { createLogger, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
-import { type ToolCallAccumulator } from './util/index.js';
+import { type ToolCallAccumulator } from './util/index.ts';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiCompletionUsage,
   AzureOpenAiCreateChatCompletionStreamResponse
-} from './client/inference/schema/index.js';
-import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.js';
+} from './client/inference/schema/index.ts';
+import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const logger = createLogger({

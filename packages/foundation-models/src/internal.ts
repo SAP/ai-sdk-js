@@ -1,3 +1,3 @@
-export * from './index.js';
-export * from './azure-openai/index.js';
-export type * from './azure-openai/client/inference/schema/index.js';
+export * from './index.ts';
+export * from './azure-openai/index.ts';
+export type * from './azure-openai/client/inference/schema/index.ts';

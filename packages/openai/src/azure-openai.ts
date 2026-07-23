@@ -6,7 +6,7 @@ import { AzureOpenAI } from 'openai';
 import { mergeIgnoreCase } from '@sap-cloud-sdk/util';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
-import type { SapModelName, SapOpenAiContext } from './types.js';
+import type { SapModelName, SapOpenAiContext } from './types.ts';
 
 type FinalRequestOptions = Parameters<AzureOpenAI['buildRequest']>[0];
 

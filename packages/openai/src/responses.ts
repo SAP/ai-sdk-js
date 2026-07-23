@@ -15,7 +15,7 @@ import type {
 } from 'openai/lib/ResponsesParser';
 import type { Stream } from 'openai/streaming';
 import type { APIPromise } from 'openai/api-promise';
-import type { WithOptionalModel } from './types.js';
+import type { WithOptionalModel } from './types.ts';
 
 type RequestOptions = Parameters<Responses['create']>[1];
 

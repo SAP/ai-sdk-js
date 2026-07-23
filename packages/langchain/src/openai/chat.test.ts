@@ -9,14 +9,14 @@ import {
   MessagesAnnotation,
   StateGraph
 } from '@langchain/langgraph';
-import { addNumbersTool, joke } from '../../../../test-util/tools.js';
+import { addNumbersTool, joke } from '../../../../test-util/tools.ts';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
   mockInference,
   parseFileToString
-} from '../../../../test-util/mock-http.js';
-import { AzureOpenAiChatClient } from './chat.js';
+} from '../../../../test-util/mock-http.ts';
+import { AzureOpenAiChatClient } from './chat.ts';
 import type { AzureOpenAiFunctionObject } from '@sap-ai-sdk/foundation-models/internal.js';
 import type { AIMessageChunk } from '@langchain/core/messages';
 describe('Chat client', () => {

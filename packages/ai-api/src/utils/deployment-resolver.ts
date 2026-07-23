@@ -2,13 +2,13 @@ import { ErrorWithCause } from '@sap-cloud-sdk/util';
 import {
   type AiDeployment,
   DeploymentApi
-} from '../client/AI_CORE_API/index.js';
-import { deploymentCache } from './deployment-cache.js';
+} from '../client/AI_CORE_API/index.ts';
+import { deploymentCache } from './deployment-cache.ts';
 import {
   extractModel,
   translateToFoundationModel,
   type FoundationModel
-} from './model.js';
+} from './model.ts';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**

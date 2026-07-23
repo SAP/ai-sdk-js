@@ -5,13 +5,14 @@ import type {
   TokenUsage,
   ToolCallChunk,
   Citation
-} from './client/api/schema/index.js';
+} from './client/api/schema/index.ts';
 
 /**
  * Orchestration stream chunk response.
  */
 export class OrchestrationStreamChunkResponse {
-  constructor(public readonly _data: CompletionPostResponseStreaming) {
+  public readonly _data: CompletionPostResponseStreaming;
+  constructor(_data: CompletionPostResponseStreaming) {
     this._data = _data;
   }
 

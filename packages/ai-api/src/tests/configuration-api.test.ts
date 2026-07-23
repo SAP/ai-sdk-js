@@ -1,14 +1,14 @@
 import nock from 'nock';
-import { ConfigurationApi } from '../client/AI_CORE_API/index.js';
+import { ConfigurationApi } from '../client/AI_CORE_API/index.ts';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
-} from '../../../../test-util/mock-http.js';
+} from '../../../../test-util/mock-http.ts';
 import type {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,
   AiConfigurationList
-} from '../client/AI_CORE_API/index.js';
+} from '../client/AI_CORE_API/index.ts';
 
 describe('configuration', () => {
   beforeEach(() => {

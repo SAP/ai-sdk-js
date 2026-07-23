@@ -1,10 +1,10 @@
 import nock from 'nock';
-import { DeploymentApi } from '../client/AI_CORE_API/index.js';
+import { DeploymentApi } from '../client/AI_CORE_API/index.ts';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall,
   mockDestination
-} from '../../../../test-util/mock-http.js';
+} from '../../../../test-util/mock-http.ts';
 import type {
   AiDeploymentCreationRequest,
   AiDeploymentCreationResponse,
@@ -13,7 +13,7 @@ import type {
   AiDeploymentModificationRequest,
   AiDeploymentModificationResponse,
   AiDeploymentTargetStatus
-} from '../client/AI_CORE_API/index.js';
+} from '../client/AI_CORE_API/index.ts';
 
 describe('deployment', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { jest, describe, it, expect } from '@jest/globals';
 import { Embeddings } from 'openai/resources/embeddings';
-import { SapEmbeddings } from './embeddings.js';
+import { SapEmbeddings } from './embeddings.ts';
 import type { OpenAI } from 'openai';
 
 const mockCreate = jest.fn<any>().mockResolvedValue({

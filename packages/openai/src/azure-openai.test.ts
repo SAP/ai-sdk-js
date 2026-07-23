@@ -12,8 +12,8 @@ import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDeploymentsList
-} from '../../../test-util/mock-http.js';
-import { SapAzureOpenAi } from './azure-openai.js';
+} from '../../../test-util/mock-http.ts';
+import { SapAzureOpenAi } from './azure-openai.ts';
 
 const deploymentUrl = `${aiCoreDestination.url}/v2/inference/deployments/deployment-001`;
 

@@ -7,7 +7,7 @@ import type {
   BodyPredictParquet,
   ColumnType as ColType,
   SchemaFieldConfig
-} from './client/rpt/index.js';
+} from './client/rpt/index.ts';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.

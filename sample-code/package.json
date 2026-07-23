@@ -15,9 +15,9 @@
     "dist/**/*.d.ts.map"
   ],
   "scripts": {
-    "start": "tsx src/server.ts",
-    "local": "tsx --env-file=.env src/server.ts",
-    "agent-tutorial": "tsx --env-file=.env src/tutorials/travel-itinerary-agent.ts",
+    "start": "node src/server.ts",
+    "local": "node --env-file=.env src/server.ts",
+    "agent-tutorial": "node --env-file=.env src/tutorials/travel-itinerary-agent.ts",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",

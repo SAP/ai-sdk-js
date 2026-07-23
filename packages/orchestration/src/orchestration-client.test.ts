@@ -12,27 +12,27 @@ import {
   mockInference,
   parseFileToString,
   parseMockResponse
-} from '../../../test-util/mock-http.js';
+} from '../../../test-util/mock-http.ts';
 import {
   addNumbersTool,
   multiplyNumbersTool
-} from '../../../test-util/tools.js';
-import { OrchestrationClient } from './orchestration-client.js';
-import { OrchestrationResponse } from './orchestration-response.js';
+} from '../../../test-util/tools.ts';
+import { OrchestrationClient } from './orchestration-client.ts';
+import { OrchestrationResponse } from './orchestration-response.ts';
 import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
-} from './util/index.js';
-import type { CompletionPostResponse } from './client/api/schema/index.js';
+} from './util/index.ts';
+import type { CompletionPostResponse } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
   StreamOptions,
   StreamOptionsWithOverrides
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 
 const defaultJsonConfig = `{
   "module_configurations": {

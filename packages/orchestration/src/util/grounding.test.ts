@@ -1,5 +1,5 @@
-import { buildDocumentGroundingConfig } from './grounding.js';
-import type { DocumentGroundingServiceConfig } from '../orchestration-types.js';
+import { buildDocumentGroundingConfig } from './grounding.ts';
+import type { DocumentGroundingServiceConfig } from '../orchestration-types.ts';
 
 describe('document grounding util', () => {
   it('builds simple grounding configuration', () => {

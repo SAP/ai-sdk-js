@@ -1,11 +1,11 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { jest } from '@jest/globals';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
-import { parseFileToString } from '../../../test-util/mock-http.js';
-import { OrchestrationStream } from './orchestration-stream.js';
-import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
+import { parseFileToString } from '../../../test-util/mock-http.ts';
+import { OrchestrationStream } from './orchestration-stream.ts';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.ts';
 
 describe('Orchestration chat completion stream', () => {
   let sseChunks: string[];

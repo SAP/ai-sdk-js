@@ -4,8 +4,8 @@ import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDeploymentsList
-} from '../../../test-util/mock-http.js';
-import { createOpenAiConfig } from './config.js';
+} from '../../../test-util/mock-http.ts';
+import { createOpenAiConfig } from './config.ts';
 
 const defaultDeployment = {
   id: 'dep-001',

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { resolve } from 'node:path';
 import { camelCase, pascalCase } from '@sap-cloud-sdk/util';
-import { transformFilesInDirectory } from './util.js';
+import { transformFilesInDirectory } from './util.ts';
 
 const namesToCorrect = [
   'LLMModuleResult',

@@ -4,8 +4,8 @@
  * By default, the generated file includes cells with '[PREDICT]'-placeholders for prediction with SAP RPT.
  * Use the --no-predict flag to exclude rows with '[PREDICT]' placeholders.
  * @example
- * npx tsx generate-parquet.ts                    // Include all data (with [PREDICT] placeholders)
- * npx tsx generate-parquet.ts --no-predict       // Exclude rows with [PREDICT] placeholders
+ * node generate-parquet.ts                    // Include all data (with [PREDICT] placeholders)
+ * node generate-parquet.ts --no-predict       // Exclude rows with [PREDICT] placeholders
  */
 /* eslint-disable no-console */
 

@@ -12,8 +12,8 @@ export const mcpClient = new MultiServerMCPClient({
   useStandardContentBlocks: true,
   mcpServers: {
     weather: {
-      command: 'npx',
-      args: ['tsx', './src/tutorials/mcp/weather-mcp-server.ts']
+      command: 'node',
+      args: ['--env-file=.env', './src/tutorials/mcp/weather-mcp-server.ts']
     }
   }
 });

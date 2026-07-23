@@ -3,21 +3,21 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import yaml from 'yaml';
 import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import { OrchestrationStream } from './orchestration-stream.js';
-import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
-import { OrchestrationResponse } from './orchestration-response.js';
+import { OrchestrationStream } from './orchestration-stream.ts';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+import { OrchestrationResponse } from './orchestration-response.ts';
 import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequestFromConfigReference
-} from './util/index.js';
+} from './util/index.ts';
 import {
   isConfigReference,
   isOrchestrationModuleConfigList,
   assertIsOrchestrationModuleConfigList
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 import type { Xor } from '@sap-cloud-sdk/util';
-import type { TemplatingChatMessage } from './client/api/schema/index.js';
+import type { TemplatingChatMessage } from './client/api/schema/index.ts';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -35,8 +35,8 @@ import type {
   StreamOptions,
   BaseStreamOptions,
   OrchestrationRequestHeaders
-} from './orchestration-types.js';
-import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
+} from './orchestration-types.ts';
+import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
@@ -52,6 +52,15 @@ const logger = createLogger({
  * create a new `OrchestrationClient` instance with the desired configuration.
  */
 export class OrchestrationClient {
+  private config:
+    | string
+    | Xor<
+        OrchestrationConfigRef,
+        OrchestrationModuleConfig | OrchestrationModuleConfigList
+      >;
+  private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
+  private destination?: HttpDestinationOrFetchOptions;
+
   /**
    * Creates an instance of the orchestration client.
    * @param config - Orchestration configuration. Can be:
@@ -63,15 +72,18 @@ export class OrchestrationClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config:
+    config:
       | string
       | Xor<
           OrchestrationConfigRef,
           OrchestrationModuleConfig | OrchestrationModuleConfigList
         >,
-    private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
-    private destination?: HttpDestinationOrFetchOptions
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
   ) {
+    this.config = config;
+    this.deploymentConfig = deploymentConfig;
+    this.destination = destination;
     if (typeof config === 'string') {
       this.validateJsonConfig(config);
     } else if (Array.isArray(config)) {

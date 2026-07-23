@@ -2,9 +2,9 @@ import nock from 'nock';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
-} from '../../../../test-util/mock-http.js';
-import { PromptTemplatesApi } from '../client/prompt-registry/index.js';
-import type { PromptTemplateListResponse } from '../client/prompt-registry/index.js';
+} from '../../../../test-util/mock-http.ts';
+import { PromptTemplatesApi } from '../client/prompt-registry/index.ts';
+import type { PromptTemplateListResponse } from '../client/prompt-registry/index.ts';
 
 describe('prompt templates', () => {
   beforeEach(() => {

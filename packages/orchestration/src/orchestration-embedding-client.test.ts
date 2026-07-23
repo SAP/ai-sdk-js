@@ -6,16 +6,16 @@ import {
   mockInference,
   parseFileToString,
   parseMockResponse
-} from '../../../test-util/mock-http.js';
-import { buildDpiMaskingProvider } from './util/masking.js';
-import { OrchestrationEmbeddingClient } from './orchestration-embedding-client.js';
-import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
-import { constructEmbeddingPostRequest } from './util/module-config.js';
-import type { EmbeddingsPostResponse } from './client/api/schema/index.js';
+} from '../../../test-util/mock-http.ts';
+import { buildDpiMaskingProvider } from './util/masking.ts';
+import { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
+import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
+import { constructEmbeddingPostRequest } from './util/module-config.ts';
+import type { EmbeddingsPostResponse } from './client/api/schema/index.ts';
 import type {
   EmbeddingModuleConfig,
   EmbeddingRequest
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 
 describe('orchestration embedding service client', () => {
   beforeEach(() => {

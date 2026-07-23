@@ -2,15 +2,14 @@ import type {
   AzureOpenAiChatCompletionMessageToolCallChunk,
   AzureOpenAiCompletionUsage,
   AzureOpenAiCreateChatCompletionStreamResponse
-} from './client/inference/schema/index.js';
+} from './client/inference/schema/index.ts';
 
 /**
  * Azure OpenAI chat completion stream chunk response.
  */
 export class AzureOpenAiChatCompletionStreamChunkResponse {
-  constructor(
-    public readonly _data: AzureOpenAiCreateChatCompletionStreamResponse
-  ) {
+  public readonly _data: AzureOpenAiCreateChatCompletionStreamResponse;
+  constructor(_data: AzureOpenAiCreateChatCompletionStreamResponse) {
     this._data = _data;
   }
 
