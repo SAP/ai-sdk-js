@@ -839,7 +839,7 @@ export type EmbeddingModelParams = Omit<
   OriginalEmbeddingsModelParams,
   'encoding_format'
 > & {
-  encoding_format?: EncodingFormat;
+  encoding_format?: EncodingFormat | EncodingFormat[];
 };
 
 /**
