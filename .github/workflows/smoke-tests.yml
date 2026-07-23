@@ -16,7 +16,6 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: '24'
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Update smoke test dependencies
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}

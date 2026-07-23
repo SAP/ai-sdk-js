@@ -27,7 +27,6 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: true
       - name: Bump version
         id: bump
@@ -68,7 +67,6 @@ jobs:
         uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Fetch full commit history (blobless)
         run: git fetch --filter=blob:none --unshallow
 

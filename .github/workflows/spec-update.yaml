@@ -81,7 +81,6 @@ jobs:
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
