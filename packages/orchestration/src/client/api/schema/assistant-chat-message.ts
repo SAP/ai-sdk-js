@@ -5,6 +5,7 @@
  */
 import type { ChatMessageContent } from './chat-message-content.js';
 import type { MessageToolCalls } from './message-tool-calls.js';
+import type { ReasoningBlock } from './reasoning-block.js';
 /**
  * Representation of the 'AssistantChatMessage' schema.
  */
@@ -13,4 +14,9 @@ export type AssistantChatMessage = {
   content?: ChatMessageContent;
   refusal?: string;
   tool_calls?: MessageToolCalls;
+  /**
+   * Reasoning or thinking content from the model's previous turn.
+   *
+   */
+  reasoning_content?: ReasoningBlock[];
 };
