@@ -23,7 +23,6 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ matrix.node-version }}
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       # type-check can run in parallel to unit tests
       - name: Type Tests
         id: test-type
@@ -50,8 +49,6 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Enforce generated code is up to date
         shell: bash
         run: |
@@ -87,20 +84,10 @@ jobs:
             run: pnpm doc
       - wait-all:
 
-  npm-install:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-url: 'https://registry.npmjs.org'
-          skip-build: 'true'
-
   dependabot:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
-    needs: [test, checks, npm-install]
+    needs: [test, checks]
     permissions:
       pull-requests: write
       contents: write

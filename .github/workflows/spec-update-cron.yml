@@ -63,7 +63,6 @@ jobs:
       ref: main
       create-pr: true
     secrets: &spec-update-secrets
-      NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
   update-document-grounding:

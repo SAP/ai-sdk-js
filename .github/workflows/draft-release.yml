@@ -13,8 +13,6 @@ jobs:
       contents: write
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Get Changelog
         id: get-changelog
         uses: sap/cloud-sdk-js/.github/actions/get-changelog@main

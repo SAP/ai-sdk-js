@@ -59,8 +59,6 @@ on:
         default: true
         type: boolean
     secrets:
-      NPM_TOKEN_ARTIFACTORY:
-        required: true
       GH_TOOLS_TOKEN:
         required: true
 
@@ -81,7 +79,6 @@ jobs:
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
