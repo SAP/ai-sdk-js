@@ -7,6 +7,7 @@ export type {
   AzureOpenAiEmbeddingModel,
   AzureOpenAiResponsesModel,
   GcpVertexAiChatModel,
+  GcpVertexAiEmbeddingModel,
   AwsBedrockChatModel,
   AiCoreOpenSourceChatModel,
   AiCoreOpenSourceEmbeddingModel,

@@ -36,7 +36,13 @@ export type GcpVertexAiChatModel = LiteralUnion<
   | 'gemini-2.5-flash-lite'
   | 'gemini-2.5-pro'
   | 'gemini-3.1-flash-lite'
+  | 'gemini-3.5-flash'
 >;
+
+/**
+ * GCP Vertex AI models for embedding.
+ */
+export type GcpVertexAiEmbeddingModel = LiteralUnion<'gemini-embedding'>;
 
 /**
  * AWS Bedrock models for chat completion.
@@ -50,6 +56,8 @@ export type AwsBedrockChatModel = LiteralUnion<
   | 'anthropic--claude-4.5-sonnet'
   | 'anthropic--claude-4.6-sonnet'
   | 'anthropic--claude-4.7-opus'
+  | 'anthropic--claude-4.5-opus'
+  | 'anthropic--claude-4.8-opus'
 >;
 
 /**
