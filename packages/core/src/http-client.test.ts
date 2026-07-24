@@ -95,7 +95,7 @@ describe('http-client', () => {
   });
 
   it('should execute a request using custom destination', async () => {
-    mockDestination();
+    await mockDestination();
 
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };

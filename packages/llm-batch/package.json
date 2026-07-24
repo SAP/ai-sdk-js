@@ -39,8 +39,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
+    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-llm-batch-experimental && pnpm lint:fix",
     "make-llm-batch-experimental": "tsx ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",

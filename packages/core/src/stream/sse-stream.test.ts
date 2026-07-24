@@ -325,7 +325,7 @@ describe('streaming decoding', () => {
     expect(event.value.event).toBeNull();
     expect(JSON.parse(event.value.data)).toEqual({ content: 'culpa ' });
 
-    expect(stream.next()).rejects.toThrow(
+    return expect(stream.next()).rejects.toThrow(
       'Invalid SSE payload: {"error":"Something went wrong"}'
     );
   });

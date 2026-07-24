@@ -1,7 +1,7 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 
 export default class AiApiService {
-  async getDeployments() {
+  async getDeployments(): Promise<string> {
     const response = await DeploymentApi.deploymentQuery(
       {},
       { 'AI-Resource-Group': 'default' }

@@ -39,7 +39,7 @@ export async function transformFilesInDirectory(
         await transformFile(filePath, transformFn);
       }
     } catch (err) {
-      throw new Error(`Error processing ${filePath}: ${err}`);
+      throw new Error(`Error processing ${filePath}: ${err}`, { cause: err });
     }
   }
 }

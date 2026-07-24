@@ -66,12 +66,12 @@ export function createDestinationTokens(
 export function getMockedAiCoreDestination(
   destination = aiCoreDestination
 ): HttpDestination {
-  const mockDestination: HttpDestination = {
+  const mockedDestination: HttpDestination = {
     ...destination,
     authentication: 'OAuth2ClientCredentials',
     ...createDestinationTokens()
   };
-  return mockDestination;
+  return mockedDestination;
 }
 
 export function mockClientCredentialsGrantCall(
@@ -193,7 +193,7 @@ export async function parseMockResponse<T>(
  * @internal
  */
 export async function mockDestination() {
-  registerDestination({
+  await registerDestination({
     name: 'aicore',
     url: 'http://example.com'
   });
