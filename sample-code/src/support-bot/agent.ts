@@ -7,6 +7,7 @@ import {
 } from '@langchain/core/messages';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
 import { SDK_KNOWLEDGE } from './knowledge.js';
 import type { StructuredToolInterface } from '@langchain/core/tools';
 import type { BaseMessage } from '@langchain/core/messages';
@@ -88,7 +89,29 @@ let tools: StructuredToolInterface[] = [];
 let modelWithTools: ReturnType<typeof model.bindTools>;
 
 const model = new OrchestrationClient({
-  promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } }
+  promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } },
+  filtering: {
+    input: {
+      filters: [
+        buildAzureContentSafetyFilter('input', {
+          hate: 'ALLOW_SAFE',
+          self_harm: 'ALLOW_SAFE',
+          sexual: 'ALLOW_SAFE',
+          violence: 'ALLOW_SAFE'
+        })
+      ]
+    },
+    output: {
+      filters: [
+        buildAzureContentSafetyFilter('output', {
+          hate: 'ALLOW_SAFE',
+          self_harm: 'ALLOW_SAFE',
+          sexual: 'ALLOW_SAFE',
+          violence: 'ALLOW_SAFE'
+        })
+      ]
+    }
+  }
 });
 
 const parser = new StringOutputParser();
@@ -164,7 +187,7 @@ export async function askBot(title: string, body?: string): Promise<string> {
     }
 
     const toolMessages = await Promise.all(
-      response.tool_calls.map(async (tc, idx) => {
+      (response as AIMessage).tool_calls!.map(async (tc, idx) => {
         const tool = getTool(tc.name);
         if (!tool) {
           return new ToolMessage({
