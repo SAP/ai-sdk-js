@@ -59,7 +59,9 @@ export type OrchestrationCallOptions = Pick<
   placeholderValues?: Record<string, string>;
   streamOptions?: StreamOptions;
   responseFormat?:
-    ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema;
+    | ResponseFormatText
+    | ResponseFormatJsonObject
+    | ResponseFormatJsonSchema;
   /**
    * Cache control configuration for prompt caching. When provided, a cache
    * breakpoint is automatically applied to the last cacheable text block of

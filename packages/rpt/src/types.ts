@@ -93,7 +93,8 @@ interface PredictionConfig<T extends DataSchema> {
  * @internal
  */
 export type DataSchema =
-  readonly ({ name: string } & SchemaFieldConfig)[] | null;
+  | readonly ({ name: string } & SchemaFieldConfig)[]
+  | null;
 
 /**
  * Representation of all data needed for prediction.

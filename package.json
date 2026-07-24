@@ -53,6 +53,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^22.20.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "depcheck": "^1.4.7",
     "eslint": "^10.7.0",
     "glob": "^13.0.6",
@@ -61,11 +62,10 @@
     "mock-fs": "^5.5.0",
     "nock": "^14.0.16",
     "orval": "^8.22.0",
-    "prettier": "^3.9.5",
+    "oxfmt": "^0.59.0",
     "ts-jest": "^29.4.11",
     "tsx": "^4.23.1",
     "typedoc": "^0.28.20",
-    "@typescript/native": "npm:typescript@^7.0.2",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "zod": "^4.4.3"
   }

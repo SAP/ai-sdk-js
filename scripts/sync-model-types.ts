@@ -8,7 +8,7 @@
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import * as prettier from 'prettier';
+import { format as oxfmt } from 'oxfmt';
 import { ScenarioApi } from '@sap-ai-sdk/ai-api';
 import { transformFile } from './util.js';
 
@@ -33,6 +33,8 @@ export interface ModelRow {
 }
 
 const SAP_MODELS_PATH = resolve(import.meta.dirname, 'sap-models.json');
+
+const OXFMTRC_PATH = resolve(import.meta.dirname, '../.oxfmtrc.json');
 
 const MODEL_TYPES_PATH = resolve(
   import.meta.dirname,
@@ -302,8 +304,9 @@ async function patchModelTypes(
         console.error(`No change for ${typeName}`);
       }
     }
-    const options = await prettier.resolveConfig(MODEL_TYPES_PATH);
-    return prettier.format(updated, options || undefined);
+    const oxfmtrc = JSON.parse(await readFile(OXFMTRC_PATH, 'utf8'));
+    const { code } = await oxfmt(MODEL_TYPES_PATH, updated, oxfmtrc);
+    return code;
   });
 
   return changed;

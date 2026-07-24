@@ -9,5 +9,6 @@ import type { AiApiErrorWithId } from './ai-api-error-with-id.js';
  * Representation of the 'AiDeploymentModificationResponseList' schema.
  */
 export type AiDeploymentModificationResponseList = (
-  AiDeploymentModificationResponse | AiApiErrorWithId
+  | AiDeploymentModificationResponse
+  | AiApiErrorWithId
 )[];

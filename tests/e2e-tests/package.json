@@ -22,8 +22,8 @@
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "cleanup-deployments": "tsx ./src/utils/cleanup-deployments.ts",
-    "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "eslint . && oxfmt --check .",
+    "lint:fix": "eslint . --fix && oxfmt ."
   },
   "devDependencies": {
     "@types/async-retry": "^1.4.9",

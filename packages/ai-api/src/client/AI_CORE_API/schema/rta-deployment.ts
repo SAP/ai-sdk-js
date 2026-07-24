@@ -25,7 +25,12 @@ export type RTADeployment = {
    * Deployment status
    */
   status?:
-    'PENDING' | 'RUNNING' | 'COMPLETED' | 'DEAD' | 'UNKNOWN' | 'DELETING';
+    | 'PENDING'
+    | 'RUNNING'
+    | 'COMPLETED'
+    | 'DEAD'
+    | 'UNKNOWN'
+    | 'DELETING';
   /**
    * Deployment status message
    * Max Length: 256.

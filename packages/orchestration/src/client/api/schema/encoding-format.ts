@@ -8,4 +8,9 @@
  * Encoding format for embeddings.
  */
 export type EncodingFormat =
-  'float' | 'base64' | 'binary' | 'int8' | 'uint8' | 'ubinary';
+  | 'float'
+  | 'base64'
+  | 'binary'
+  | 'int8'
+  | 'uint8'
+  | 'ubinary';
