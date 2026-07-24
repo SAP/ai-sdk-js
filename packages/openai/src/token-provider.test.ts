@@ -4,8 +4,8 @@ import { registerDestination } from '@sap-cloud-sdk/connectivity';
 import {
   mockClientCredentialsGrantCall,
   createDestinationTokens
-} from '../../../test-util/mock-http.js';
-import { createTokenProvider } from './token-provider.js';
+} from '../../../test-util/mock-http.ts';
+import { createTokenProvider } from './token-provider.ts';
 
 describe('createTokenProvider', () => {
   beforeEach(() => {

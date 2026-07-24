@@ -16,10 +16,10 @@ import {
   parseMockResponse,
   parseFileToString,
   aiCoreDestination
-} from '../../../../test-util/mock-http.js';
-import { addNumbersTool } from '../../../../test-util/tools.js';
-import { OrchestrationClient } from './client.js';
-import type { LangChainOrchestrationModuleConfig } from './types.js';
+} from '../../../../test-util/mock-http.ts';
+import { addNumbersTool } from '../../../../test-util/tools.ts';
+import { OrchestrationClient } from './client.ts';
+import type { LangChainOrchestrationModuleConfig } from './types.ts';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';

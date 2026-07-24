@@ -4,11 +4,11 @@ import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDeploymentsList
-} from '../../../test-util/mock-http.js';
-import { SapOpenAi } from './client.js';
-import { SapChat } from './chat.js';
-import { SapEmbeddings } from './embeddings.js';
-import { SapResponses } from './responses.js';
+} from '../../../test-util/mock-http.ts';
+import { SapOpenAi } from './client.ts';
+import { SapChat } from './chat.ts';
+import { SapEmbeddings } from './embeddings.ts';
+import { SapResponses } from './responses.ts';
 
 const defaultDeployment = {
   id: 'dep-001',

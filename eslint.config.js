@@ -16,9 +16,10 @@ export default [
             'langchain/**',
             'zod/**',
             '*/index.js',
-            '*/client/**/index.js',
-            './client/**/index.js',
-            'client/**/index.js',
+            '*/index.ts',
+            '*/client/**/index.ts',
+            './client/**/index.ts',
+            'client/**/index.ts',
             'openai/**'
           ]
         }

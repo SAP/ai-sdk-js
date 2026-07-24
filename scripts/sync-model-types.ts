@@ -1,7 +1,7 @@
 /**
  * Reads scraped model rows from scripts/sap-models.json and patches the
  * LiteralUnion type blocks in packages/core/src/model-types.ts.
- * Run: pnpm tsx scripts/sync-model-types.ts
+ * Run: node scripts/sync-model-types.ts
  */
 /* eslint-disable no-console */
 
@@ -10,7 +10,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import * as prettier from 'prettier';
 import { ScenarioApi } from '@sap-ai-sdk/ai-api';
-import { transformFile } from './util.js';
+import { transformFile } from './util.ts';
 
 /** A single row from the SAP Notes model table. */
 export interface ModelRow {

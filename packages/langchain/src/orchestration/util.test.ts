@@ -11,15 +11,15 @@ import { jest } from '@jest/globals';
 import {
   addNumbersSchema,
   addNumbersSchemaV3
-} from '../../../../test-util/tools.js';
+} from '../../../../test-util/tools.ts';
 import {
   mapLangChainMessagesToOrchestrationMessages,
   mapOutputToChatResult,
   mapOrchestrationChunkToLangChainMessageChunk,
   mapToolToOrchestrationFunction,
   applyCacheControlToLastMessage
-} from './util.js';
-import type { OrchestrationMessage } from './orchestration-message.js';
+} from './util.ts';
+import type { OrchestrationMessage } from './orchestration-message.ts';
 import type { ToolCallChunk } from '@langchain/core/messages/tool';
 import type {
   CacheControl,

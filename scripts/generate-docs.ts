@@ -4,7 +4,7 @@ import { resolve, basename, extname, dirname } from 'node:path';
 import { deflate, inflate } from 'node:zlib';
 import { promisify } from 'node:util';
 import { execFile } from 'node:child_process';
-import { transformFile } from './util.js';
+import { transformFile } from './util.ts';
 
 const execFileP = promisify(execFile);
 

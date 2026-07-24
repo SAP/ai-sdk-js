@@ -1,7 +1,7 @@
 import { executeRequest } from '@sap-ai-sdk/core';
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
-import { constructEmbeddingPostRequest } from './util/index.js';
+import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
+import { constructEmbeddingPostRequest } from './util/index.ts';
 import type {
   HttpResponse,
   CustomRequestConfig
@@ -13,13 +13,17 @@ import type {
 import type {
   EmbeddingModuleConfig,
   EmbeddingRequest
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * Orchestration embedding client for generating embeddings with optional orchestration modules.
  */
 export class OrchestrationEmbeddingClient {
+  private config: EmbeddingModuleConfig;
+  private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
+  private destination?: HttpDestinationOrFetchOptions;
+
   /**
    * Creates an instance of the orchestration embedding client.
    * @param config - Embedding module configuration.
@@ -27,10 +31,14 @@ export class OrchestrationEmbeddingClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private config: EmbeddingModuleConfig,
-    private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
-    private destination?: HttpDestinationOrFetchOptions
-  ) {}
+    config: EmbeddingModuleConfig,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  ) {
+    this.config = config;
+    this.deploymentConfig = deploymentConfig;
+    this.destination = destination;
+  }
 
   /**
    * Generate embeddings for the given input.

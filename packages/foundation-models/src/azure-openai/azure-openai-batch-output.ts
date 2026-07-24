@@ -1,4 +1,4 @@
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.ts';
 
 /**
  * Error details for a failed batch request.

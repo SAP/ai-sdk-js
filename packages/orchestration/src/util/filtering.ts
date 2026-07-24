@@ -1,4 +1,4 @@
-import { supportedAzureFilterThresholds } from '../orchestration-types.js';
+import { supportedAzureFilterThresholds } from '../orchestration-types.ts';
 import type {
   AzureContentSafetyFilterParameters,
   AzureContentSafetyFilterReturnType,
@@ -6,7 +6,7 @@ import type {
   LlamaGuard38BCategory,
   LlamaGuard38BFilterReturnType,
   ConfigType
-} from '../orchestration-types.js';
+} from '../orchestration-types.ts';
 
 /**
  * Convenience function to build Azure content filter.

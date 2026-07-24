@@ -22,7 +22,7 @@ import {
 import * as z from 'zod/v4';
 import { createAgent, createMiddleware } from 'langchain';
 // eslint-disable-next-line import-x/no-internal-modules
-import { mcpClient } from './tutorials/mcp/mcp-adapter.js';
+import { mcpClient } from './tutorials/mcp/mcp-adapter.ts';
 import type { BaseMessage, AIMessageChunk } from '@langchain/core/messages';
 import type {
   LangChainOrchestrationModuleConfig,

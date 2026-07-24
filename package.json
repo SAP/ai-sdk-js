@@ -19,7 +19,7 @@
     "lint:fix": "pnpm -r run lint:fix && pnpm typecheck",
     "generate": "pnpm -r run generate",
     "apply-patches": "pnpm -r run --if-present apply-patches",
-    "doc": "tsx scripts/generate-docs.ts",
+    "doc": "node scripts/generate-docs.ts",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api run",
     "core": "pnpm -F=@sap-ai-sdk/core run",
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding run",
@@ -53,6 +53,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^22.20.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "depcheck": "^1.4.7",
     "eslint": "^10.7.0",
     "glob": "^13.0.6",
@@ -63,9 +64,7 @@
     "orval": "^8.22.0",
     "prettier": "^3.9.5",
     "ts-jest": "^29.4.11",
-    "tsx": "^4.23.1",
     "typedoc": "^0.28.20",
-    "@typescript/native": "npm:typescript@^7.0.2",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "zod": "^4.4.3"
   }

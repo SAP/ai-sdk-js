@@ -1,7 +1,7 @@
 import type {
   AzureOpenAiChatCompletionMessageToolCall,
   AzureOpenAiChatCompletionMessageToolCallChunk
-} from '../client/inference/schema/index.js';
+} from '../client/inference/schema/index.ts';
 
 /**
  * @internal

@@ -5,10 +5,10 @@ import {
   mockInference,
   parseFileToString,
   parseMockResponse
-} from '../../../../test-util/mock-http.js';
-import { AzureOpenAiChatClient } from './azure-openai-chat-client.js';
-import { apiVersion } from './model-types.js';
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+} from '../../../../test-util/mock-http.ts';
+import { AzureOpenAiChatClient } from './azure-openai-chat-client.ts';
+import { apiVersion } from './model-types.ts';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.ts';
 
 describe('Azure OpenAI chat client', () => {
   const chatCompletionEndpoint = {

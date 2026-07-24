@@ -1,8 +1,8 @@
-import { parseMockResponse } from '../../../test-util/mock-http.js';
-import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
+import { parseMockResponse } from '../../../test-util/mock-http.ts';
+import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { EmbeddingsPostResponse } from './client/api/schema/index.js';
-import type { EmbeddingData } from './orchestration-types.js';
+import type { EmbeddingsPostResponse } from './client/api/schema/index.ts';
+import type { EmbeddingData } from './orchestration-types.ts';
 
 describe('OrchestrationEmbeddingResponse', () => {
   let mockResponse: EmbeddingsPostResponse;

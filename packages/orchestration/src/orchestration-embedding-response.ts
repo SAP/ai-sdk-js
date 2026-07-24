@@ -6,16 +6,18 @@ import type {
   ModuleResultsBase,
   Embedding,
   EmbeddingMultiFormat
-} from './client/api/schema/index.js';
-import type { EmbeddingData } from './orchestration-types.js';
+} from './client/api/schema/index.ts';
+import type { EmbeddingData } from './orchestration-types.ts';
 
 /**
  * Response wrapper for orchestration embedding requests.
  */
 export class OrchestrationEmbeddingResponse {
+  public readonly response: HttpResponse;
   public readonly _data: EmbeddingsPostResponse;
 
-  constructor(public readonly response: HttpResponse) {
+  constructor(response: HttpResponse) {
+    this.response = response;
     this._data = response.data;
   }
 

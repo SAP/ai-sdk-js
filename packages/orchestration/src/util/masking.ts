@@ -1,7 +1,7 @@
 import type {
   DpiMaskingProviderConfig,
   DpiMaskingConfig
-} from '../orchestration-types.js';
+} from '../orchestration-types.ts';
 
 /**
  * Convenience function to create masking provider SAP Data Privacy Integration.

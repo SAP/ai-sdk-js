@@ -43,8 +43,8 @@
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-llm-batch-experimental && pnpm lint:fix",
-    "make-llm-batch-experimental": "tsx ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",
-    "update-imports": "tsx ../../scripts/update-imports.ts ./src/client/batch-service"
+    "make-llm-batch-experimental": "node ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",
+    "update-imports": "node ../../scripts/update-imports.ts ./src/client/batch-service"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^"

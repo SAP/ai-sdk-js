@@ -8,7 +8,7 @@
   "scripts": {
     "start": "sap-ai-sdk-sample-server",
     "local": "node --env-file=.env node_modules/.bin/sap-ai-sdk-sample-server",
-    "create-deployment": "tsx scripts/create-deployment.ts",
+    "create-deployment": "node scripts/create-deployment.ts",
     "cf-login": "dotenv -- bash -c 'cf login -a \"$CF_API_URL\" -u \"$CF_USER\" -p \"$CF_PASSWORD\" -o \"$CF_ORG\" -s \"$CF_SPACE\"'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",

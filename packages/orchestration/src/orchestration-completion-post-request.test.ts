@@ -1,12 +1,12 @@
 import {
   constructCompletionPostRequest,
   buildAzureContentSafetyFilter
-} from './util/index.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
+} from './util/index.ts';
+import type { CompletionPostRequest } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
   StreamOptions
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {

@@ -7,23 +7,23 @@ import {
 } from '@langchain/core/messages';
 import { tool } from '@langchain/core/tools';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
-import { parseMockResponse } from '../../../../test-util/mock-http.js';
+import { parseMockResponse } from '../../../../test-util/mock-http.ts';
 import {
   addNumbersSchema,
   addNumbersSchemaV3
-} from '../../../../test-util/tools.js';
+} from '../../../../test-util/tools.ts';
 import {
   isToolDefinitionLike,
   mapLangChainToAiClient,
   mapOutputToChatResult,
   mapToolToOpenAiFunction,
   mapToolToOpenAiTool
-} from './util.js';
-import { AzureOpenAiChatClient } from './chat.js';
+} from './util.ts';
+import { AzureOpenAiChatClient } from './chat.ts';
 import type { BaseMessage } from '@langchain/core/messages';
 import type { AzureOpenAiCreateChatCompletionResponse } from '@sap-ai-sdk/foundation-models/internal.js';
 import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
-import type { AzureOpenAiChatCallOptions } from './types.js';
+import type { AzureOpenAiChatCallOptions } from './types.ts';
 
 // Signal and Prompt Index are provided by the super class in every call
 const defaultOptions = {

@@ -1,7 +1,7 @@
 import { ErrorWithCause } from '@sap-cloud-sdk/util';
-import { LineDecoder } from './line-decoder.js';
-import { SSEDecoder } from './sse-decoder.js';
-import type { ServerSentEvent } from './sse-decoder.js';
+import { LineDecoder } from './line-decoder.ts';
+import { SSEDecoder } from './sse-decoder.ts';
+import type { ServerSentEvent } from './sse-decoder.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
@@ -72,12 +72,14 @@ export class SseStream<Item> implements AsyncIterable<Item> {
     return new SseStream(iterator, controller);
   }
 
+  iterator: () => AsyncIterator<Item>;
   controller: AbortController;
 
   constructor(
-    public iterator: () => AsyncIterator<Item>,
+    iterator: () => AsyncIterator<Item>,
     controller: AbortController
   ) {
+    this.iterator = iterator;
     this.controller = controller;
   }
 

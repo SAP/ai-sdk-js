@@ -1,6 +1,6 @@
 import { jest, describe, it, expect } from '@jest/globals';
 import { Completions } from 'openai/resources/chat/completions/completions';
-import { SapCompletions } from './completions.js';
+import { SapCompletions } from './completions.ts';
 import type { OpenAI } from 'openai';
 
 const mockCreate = jest.fn<any>().mockResolvedValue({ choices: [] });
