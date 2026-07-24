@@ -38,4 +38,4 @@ jobs:
       id-token: write
     uses: ./.github/workflows/publish-canary.yml
     with:
-      tag: ${{ case(github.event_name == 'schedule', github.event.inputs.tag, 'canary') }}
+      tag: ${{ inputs.tag || 'canary' }}
