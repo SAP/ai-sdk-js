@@ -274,6 +274,6 @@ jobs:
               echo "| Client Compilation | ${{ case(steps.compile.outputs.compilation_result == 'success', '✅', '❌') }} ${STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT}"
               echo "| Client Testing | ${{ case(steps.compile.outputs.test_result == 'success', '✅', steps.compile.outputs.test_result == 'skipped', '⏩', '❌') }} ${STEPS_COMPILE_OUTPUTS_TEST_RESULT}"
               echo "| Branch Creation | ${{ case(steps.push.outcome == 'success', '✅', steps.push.outcome == 'skipped', '⏩ skipped', '❌ failure') }} [Branch Link]($DIFF_URL)"
-              echo "| Pull Request Creation | ${{ case(env.CREATE_PR == 'false', '⏩ skipped', '') }}${{ case(env.CREATE_PR == 'true' && steps.push.outcome == 'success', '✅', '') }} [PR Link]($PR_URL)"
+              echo "| Pull Request Creation | ${{ case(env.CREATE_PR == 'false', '⏩ skipped', env.CREATE_PR == 'true' && steps.push.outcome == 'success', '✅', '') }} [PR Link]($PR_URL)"
             } >> "$GITHUB_STEP_SUMMARY"
           fi
