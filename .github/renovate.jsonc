@@ -1,0 +1,58 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:best-practices",
+        "security:openssf-scorecard",
+        ":semanticCommits",
+        ":semanticCommitTypeAll(chore)",
+        ":pinOnlyDevDependencies",
+        ":enableVulnerabilityAlerts", // Handle vulnerability alerts from dependabot
+        ":automergeMinor",
+        "helpers:disableTypesNodeMajor"
+    ],
+    "ignorePresets": [
+        // not needed
+        ":dependencyDashboard",
+        // chore is configured above
+        ":semanticPrefixFixDepsChoreOthers",
+        // We configure 4 days minimum release age below,
+        // so we don't need this preset which configures
+        // 3 days, with some exceptions (implemented below)
+        "security:minimumReleaseAgeNpm"
+    ],
+    "minimumReleaseAge": "4 days",
+    "timezone": "Europe/Berlin",
+    "packageRules": [
+        {
+            "matchManagers": ["github-actions"],
+            "schedule": ["every weekend"]
+        },
+        {
+            "matchPackageNames": ["@sap-ai-sdk/**", "sap/ai-sdk-js/**"],
+            "groupName": "sap-ai-sdk",
+            "minimumReleaseAge": null,
+            "pinDigests": false
+        },
+        {
+            "matchPackageNames": ["@sap-cloud-sdk/**", "sap/cloud-sdk-js/**"],
+            "groupName": "sap-cloud-sdk",
+            "minimumReleaseAge": null,
+            "pinDigests": false
+        },
+        {
+            "matchPackageNames": ["langchain", "@langchain/**"],
+            "groupName": "langchain"
+        },
+        // Avoid minimum age controls renovate does not support, pnpm workspace settings will ensure `minimumReleaseAge`
+        // Shorter version of `security:minimumReleaseAgeNpm`
+        {
+          "description": "Do not require Minimum Release Age for update types that are controlled by the package manager",
+          "matchDatasources": ["npm"],
+          "matchUpdateTypes": ["lockFileMaintenance", "replacement", "pin"],
+          "minimumReleaseAge": null,
+          "prBodyNotes": [
+            "⚠️ Renovate's lock file maintenance/replacement/pin functionality does not support validating Minimum Release Age, as the package manager performs the required changes to update package(s). Confirm whether your package manager perform its own validation for the Minimum Release Age of packages."
+          ]
+        }
+    ]
+}
