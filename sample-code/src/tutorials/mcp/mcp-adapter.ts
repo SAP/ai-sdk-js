@@ -13,7 +13,7 @@ export const mcpClient = new MultiServerMCPClient({
   mcpServers: {
     weather: {
       command: 'node',
-      args: ['--env-file=.env', './src/tutorials/mcp/weather-mcp-server.ts']
+      args: ['--env-file-if-exists=.env', './src/tutorials/mcp/weather-mcp-server.ts']
     }
   }
 });
