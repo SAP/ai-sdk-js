@@ -68,18 +68,17 @@ const AGENT_SYSTEM_PROMPT = [
 const mcpClient = new MultiServerMCPClient({
   throwOnLoadError: true,
   prefixToolNameWithServerName: true,
-  useStandardContentBlocks: true,
   mcpServers: {
     context7: {
-      command: 'npx',
-      // ponytail: version pinned (H-2), env isolated — no credentials needed (C-1)
-      args: ['-y', '@upstash/context7-mcp@3.2.4'],
+      // installed as devDep — no on-demand download (C-1)
+      command: 'context7-mcp',
+      args: [],
       env: {}
     },
     github: {
-      command: 'npx',
-      // ponytail: version pinned (H-2), only GITHUB_PERSONAL_ACCESS_TOKEN passed (C-1)
-      args: ['-y', '@modelcontextprotocol/server-github@2025.4.8'],
+      // installed as devDep — only read token passed, write tools filtered below (C-1)
+      command: 'mcp-server-github',
+      args: [],
       env: { GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_TOKEN ?? '' }
     }
   }
@@ -112,10 +111,20 @@ function truncateToolResult(raw: unknown, toolName: string): string {
   return esc(str.slice(0, limits[toolName] ?? 2000));
 }
 
+// SEC-2: allowlist read-only GitHub tools — prevents prompt injection from triggering writes
+const ALLOWED_GITHUB_TOOLS = new Set([
+  'github__get_issue',
+  'github__search_issues',
+  'github__search_code',
+  'github__get_file_contents'
+]);
+
 export async function initAgent(): Promise<void> {
   const mcpTools = await mcpClient.getTools();
 
-  tools = mcpTools;
+  tools = mcpTools.filter(
+    t => t.name.startsWith('context7__') || ALLOWED_GITHUB_TOOLS.has(t.name)
+  );
   modelWithTools = model.bindTools(tools);
 
   const group = (prefix: string) =>
