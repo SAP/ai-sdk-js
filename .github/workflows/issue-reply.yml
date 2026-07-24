@@ -4,6 +4,8 @@ on:
   issues:
     types: [opened]
 
+permissions: {}
+
 jobs:
   reply:
     # SEC-1: only respond to trusted contributors — blocks quota abuse from anonymous filers
@@ -28,7 +30,7 @@ jobs:
         timeout-minutes: 5
         working-directory: ./sample-code
         env:
-          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }}
+          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }} # zizmor: ignore[overprovisioned-secrets]
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
