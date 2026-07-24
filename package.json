@@ -49,6 +49,7 @@
     "@sap-cloud-sdk/http-client": "^4.7.0",
     "@sap-cloud-sdk/openapi-generator": "^4.7.0",
     "@sap-cloud-sdk/util": "^4.7.0",
+    "@swc/core": "1.15.46",
     "@swc/jest": "^0.2.39",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
