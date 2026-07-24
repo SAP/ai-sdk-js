@@ -6,6 +6,7 @@ import type {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
   GcpVertexAiChatModel,
+  GcpVertexAiEmbeddingModel,
   PerplexityChatModel
 } from '@sap-ai-sdk/core';
 
@@ -25,4 +26,5 @@ export type ChatModel =
 export type EmbeddingModel =
   | AzureOpenAiEmbeddingModel
   | AwsBedrockEmbeddingModel
-  | AiCoreOpenSourceEmbeddingModel;
+  | AiCoreOpenSourceEmbeddingModel
+  | GcpVertexAiEmbeddingModel;
