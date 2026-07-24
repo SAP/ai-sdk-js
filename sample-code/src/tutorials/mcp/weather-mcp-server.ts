@@ -88,4 +88,4 @@ server.registerTool(
 );
 
 const transport = new StdioServerTransport();
-void server.connect(transport);
+await server.connect(transport);
