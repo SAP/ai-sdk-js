@@ -1,0 +1,65 @@
+name: SAP AI SDK Support Bot
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  reply:
+    # SEC-1: only respond to trusted contributors — blocks quota abuse from anonymous filers
+    if: contains(fromJSON('["MEMBER","OWNER","COLLABORATOR"]'), github.event.issue.author_association)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # SEC-1: one run per issue at a time — prevents duplicate replies
+    concurrency:
+      group: issue-reply-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+
+      - name: Generate answer
+        id: answer
+        timeout-minutes: 5
+        working-directory: ./sample-code
+        env:
+          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          npx tsx --env-file=/dev/null src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" > /tmp/answer.md
+
+      - name: Build Slack payload
+        env:
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          jq -n \
+            --arg url "$ISSUE_URL" \
+            --rawfile answer /tmp/answer.md \
+            '{
+              "username": "SAP AI SDK Support Bot",
+              "text": ($url + "\n\n" + $answer)
+            }' > /tmp/slack-payload.json
+
+      - name: Notify Slack
+        continue-on-error: true
+        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload-file-path: /tmp/slack-payload.json
+
+      - name: Post comment on GitHub issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --body-file /tmp/answer.md
