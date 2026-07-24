@@ -29,7 +29,9 @@ jobs:
         id: test-type
         run: pnpm test:type
         background: true
-      - run: pnpm test:unit
+      - run: pnpm test:unit $COVERAGE_FLAG
+        env:
+          COVERAGE_FLAG: ${{ case(strategy.job-index == 0, '--coverage', '') }}
       - name: Fetch main for SonarQube blame
         # Sonar only runs iff on first job (0) and the token is available (not on forks)
         if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}

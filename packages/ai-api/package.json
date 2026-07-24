@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm update-imports && pnpm lint:fix",
@@ -43,5 +43,8 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.7.0",
     "@sap-cloud-sdk/util": "^4.7.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }

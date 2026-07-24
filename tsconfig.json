@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
-    "types": ["node", "jest"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["packages/**/*.ts", "test-util/**/*.ts"],
   "exclude": ["dist/**/*", "node_modules/**/*"]

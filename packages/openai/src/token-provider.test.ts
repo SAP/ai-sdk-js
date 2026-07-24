@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { registerDestination } from '@sap-cloud-sdk/connectivity';
 import {
   mockClientCredentialsGrantCall,

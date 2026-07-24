@@ -19,7 +19,8 @@ export default [
             '*/client/**/index.js',
             './client/**/index.js',
             'client/**/index.js',
-            'openai/**'
+            'openai/**',
+            'vitest/config'
           ]
         }
       ],

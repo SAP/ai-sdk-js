@@ -35,7 +35,7 @@ describe('construct completion post request', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
-  xit('should construct completion post request with empty templating module', async () => {
+  it.skip('should construct completion post request with empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         prompt: { template: [] },
