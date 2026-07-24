@@ -1,5 +1,10 @@
 import { MultiServerMCPClient } from '@langchain/mcp-adapters';
-import { AIMessage, HumanMessage, SystemMessage, ToolMessage } from '@langchain/core/messages';
+import {
+  AIMessage,
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { SDK_KNOWLEDGE } from './knowledge.js';
@@ -20,7 +25,9 @@ const AGENT_SYSTEM_PROMPT = [
   SDK_KNOWLEDGE,
   '',
   '## Tools available',
-  '- context7__query-docs  — search official SAP AI SDK documentation (libraryId: "' + LIBRARY_ID + '")',
+  '- context7__query-docs  — search official SAP AI SDK documentation (libraryId: "' +
+    LIBRARY_ID +
+    '")',
   '- github__search_issues — search GitHub issues (always use q: "repo:SAP/ai-sdk-js <keywords>")',
   '- github__get_issue     — fetch full body of a specific issue by number',
   '- github__search_code   — search code examples in the SAP AI SDK repository',
@@ -55,7 +62,7 @@ const AGENT_SYSTEM_PROMPT = [
   '- End EVERY answer with a "## Related Issues" section.',
   '  Only include issues whose CORE TOPIC matches (same API, same error type, same feature).',
   '  If none match, write "No related issues found."',
-  '  Do NOT include dependency bumps or unrelated chore PRs.',
+  '  Do NOT include dependency bumps or unrelated chore PRs.'
 ].join('\n');
 
 const mcpClient = new MultiServerMCPClient({
@@ -94,12 +101,13 @@ function getTool(name: string): StructuredToolInterface | undefined {
 // Single exit point for all tool output — caps size and escapes {{ to prevent 400 errors
 function truncateToolResult(raw: unknown, toolName: string): string {
   // ponytail: null/undefined guard — JSON.stringify(undefined) returns JS undefined, not a string (H-9)
-  const str = typeof raw === 'string' ? raw : (raw == null ? '' : JSON.stringify(raw));
+  const str =
+    typeof raw === 'string' ? raw : raw == null ? '' : JSON.stringify(raw);
   const limits: Record<string, number> = {
     'context7__query-docs': 4000,
-    'github__get_issue': 800,
-    'github__search_issues': 2000,
-    'github__search_code': 2000
+    github__get_issue: 800,
+    github__search_issues: 2000,
+    github__search_code: 2000
   };
   return esc(str.slice(0, limits[toolName] ?? 2000));
 }
@@ -111,7 +119,10 @@ export async function initAgent(): Promise<void> {
   modelWithTools = model.bindTools(tools);
 
   const group = (prefix: string) =>
-    tools.filter(t => t.name.startsWith(prefix)).map(t => t.name.replace(prefix, '')).join(', ');
+    tools
+      .filter(t => t.name.startsWith(prefix))
+      .map(t => t.name.replace(prefix, ''))
+      .join(', ');
   console.error(`  context7  ${group('context7__')}`);
   console.error(`  github    ${group('github__')}`);
 }
@@ -121,13 +132,14 @@ export async function closeAgent(): Promise<void> {
 }
 
 export async function askBot(title: string, body?: string): Promise<string> {
-  if (!tools.length) throw new Error('Agent not initialized. Call initAgent() first.');
+  if (!tools.length) {
+    throw new Error('Agent not initialized. Call initAgent() first.');
+  }
 
   // Apply esc() to all user-controlled content entering the message chain (M-1)
-  const parts = [
-    'Question: ' + esc(title),
-    body ? esc(body) : null
-  ].filter(Boolean).join('\n\n');
+  const parts = ['Question: ' + esc(title), body ? esc(body) : null]
+    .filter(Boolean)
+    .join('\n\n');
 
   const messages: BaseMessage[] = [
     new SystemMessage(AGENT_SYSTEM_PROMPT),
@@ -138,20 +150,30 @@ export async function askBot(title: string, body?: string): Promise<string> {
     const response = await modelWithTools.invoke(messages);
     messages.push(response);
 
-    if (!response.tool_calls?.length) break;
+    if (!response.tool_calls?.length) {
+      break;
+    }
 
     const toolMessages = await Promise.all(
       response.tool_calls.map(async (tc, idx) => {
         const tool = getTool(tc.name);
         if (!tool) {
-          return new ToolMessage({ content: 'Unknown tool: ' + tc.name, tool_call_id: tc.id ?? 'tc_' + idx });
+          return new ToolMessage({
+            content: 'Unknown tool: ' + tc.name,
+            tool_call_id: tc.id ?? 'tc_' + idx
+          });
         }
         try {
           const raw = await tool.invoke(tc.args);
-          return new ToolMessage({ content: truncateToolResult(raw, tc.name), tool_call_id: tc.id ?? 'tc_' + idx });
+          return new ToolMessage({
+            content: truncateToolResult(raw, tc.name),
+            tool_call_id: tc.id ?? 'tc_' + idx
+          });
         } catch (err) {
           return new ToolMessage({
-            content: 'Tool error: ' + (err instanceof Error ? err.message : String(err)),
+            content:
+              'Tool error: ' +
+              (err instanceof Error ? err.message : String(err)),
             tool_call_id: tc.id ?? 'tc_' + idx
           });
         }
@@ -172,6 +194,8 @@ export async function askBot(title: string, body?: string): Promise<string> {
   } catch {
     // ponytail: fallback for multimodal content that StringOutputParser can't handle
     const content = (messages.at(-1) as AIMessage)?.content;
-    return typeof content === 'string' ? content : JSON.stringify(content ?? '');
+    return typeof content === 'string'
+      ? content
+      : JSON.stringify(content ?? '');
   }
 }
