@@ -15,7 +15,7 @@ export type EmbeddingsModelDetails = {
   version?: string;
   params?: EmbeddingsModelParams;
   /**
-   * Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
+   * Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
    * Default: 600.
    * Maximum: 1200.
    * Minimum: 1.
