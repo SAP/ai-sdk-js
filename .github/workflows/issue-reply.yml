@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 10
     # SEC-1: one run per issue at a time — prevents duplicate replies
     concurrency:
-      group: issue-reply-${{ github.event.inputs.issue_number || github.event.issue.number }}
+      group: issue-reply
       cancel-in-progress: false
     permissions:
       contents: read
