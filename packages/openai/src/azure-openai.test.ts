@@ -1,12 +1,4 @@
 import nock from 'nock';
-import {
-  jest,
-  describe,
-  it,
-  expect,
-  beforeEach,
-  afterEach
-} from '@jest/globals';
 import { AzureOpenAI } from 'openai';
 import {
   mockClientCredentialsGrantCall,
@@ -33,16 +25,16 @@ function makeClient() {
 }
 
 describe('SapAzureOpenAi', () => {
-  let superBuildRequest: ReturnType<typeof jest.spyOn>;
+  let superBuildRequest: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    superBuildRequest = jest
+    superBuildRequest = vi
       .spyOn(AzureOpenAI.prototype, 'buildRequest')
       .mockResolvedValue({} as any);
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
     nock.cleanAll();
   });
 
@@ -137,7 +129,7 @@ describe('SapAzureOpenAi', () => {
 
   describe('buildRequest headers', () => {
     beforeEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     afterEach(() => {

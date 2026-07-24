@@ -38,7 +38,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "eslint . && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint . --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
@@ -48,5 +48,8 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }

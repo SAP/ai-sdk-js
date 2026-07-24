@@ -39,7 +39,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "eslint \"**/*.ts\" && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
     "lint:fix": "eslint \"**/*.ts\" --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
   },
@@ -53,6 +53,7 @@
     "openai": "^6.47.0"
   },
   "devDependencies": {
-    "openai": "^6.47.0"
+    "openai": "^6.47.0",
+    "vitest": "^4.1.10"
   }
 }
