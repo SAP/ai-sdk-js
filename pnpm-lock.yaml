@@ -49,9 +49,6 @@ importers:
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
-      '@types/jsonwebtoken':
-        specifier: ^9.0.10
-        version: 9.0.10
       '@types/mock-fs':
         specifier: ^4.13.4
         version: 4.13.4
@@ -67,15 +64,12 @@ importers:
       eslint:
         specifier: ^10.7.0
         version: 10.7.0(jiti@2.7.0)
-      glob:
-        specifier: ^13.0.6
-        version: 13.0.6
       jest:
         specifier: ^30.4.2
         version: 30.4.2(@types/node@22.20.1)
-      jsonwebtoken:
-        specifier: ^9.0.3
-        version: 9.0.3
+      jose:
+        specifier: 6.2.3
+        version: 6.2.3
       mock-fs:
         specifier: ^5.5.0
         version: 5.5.0
@@ -1322,12 +1316,12 @@ packages:
     resolution: {integrity: sha512-nWJXMdM0Pcx/ipM2+5BvSciQKyCc0LAAO+acCOAQp65SA4HEQ2Odp9yxidY4ijW42TVp3fSMBvGwVjbWWx9Uew==}
 
   '@sap/cds-compiler@7.0.1':
-    resolution: {integrity: sha512-Qwk9jitwSSwPB9FTB/Q6gYPxFsJxswhfsO9Ux77HTxjIhse8O/Hlq2XzkpVSTyaAVr8Lo7wLfpytHwKQScZTwQ==, tarball: https://registry.npmjs.org/@sap/cds-compiler/-/cds-compiler-7.0.1.tgz}
+    resolution: {integrity: sha512-Qwk9jitwSSwPB9FTB/Q6gYPxFsJxswhfsO9Ux77HTxjIhse8O/Hlq2XzkpVSTyaAVr8Lo7wLfpytHwKQScZTwQ==}
     engines: {node: '>=22'}
     hasBin: true
 
   '@sap/cds-dk@10.0.4':
-    resolution: {integrity: sha512-xuA/Kgo5lkiyZYJM1JNYVsmYGoylPD0XMVbi2pWPdJ9opUN44WIn9/8T0qL9ouw84nUhvh3swz9XvXtNYsygNw==, tarball: https://registry.npmjs.org/@sap/cds-dk/-/cds-dk-10.0.4.tgz}
+    resolution: {integrity: sha512-xuA/Kgo5lkiyZYJM1JNYVsmYGoylPD0XMVbi2pWPdJ9opUN44WIn9/8T0qL9ouw84nUhvh3swz9XvXtNYsygNw==}
     hasBin: true
     bundledDependencies:
       - '@cap-js/asyncapi'
@@ -1439,12 +1433,12 @@ packages:
       - yaml
 
   '@sap/cds-fiori@2.3.0':
-    resolution: {integrity: sha512-6oWov+DSpFrSTgxXR0dZhak6aZ/IVRZvaHERMi0EgSTzIJdlvZlpw3Kf18ePMcTrRrtEXwD4RIjKt8pbs0g2Hg==, tarball: https://registry.npmjs.org/@sap/cds-fiori/-/cds-fiori-2.3.0.tgz}
+    resolution: {integrity: sha512-6oWov+DSpFrSTgxXR0dZhak6aZ/IVRZvaHERMi0EgSTzIJdlvZlpw3Kf18ePMcTrRrtEXwD4RIjKt8pbs0g2Hg==}
     peerDependencies:
       '@sap/cds': '>=8'
 
   '@sap/cds@10.0.3':
-    resolution: {integrity: sha512-S9q8vcJXzIsO4KC49sb9JLIhY/k0MJTZcgEOzmhvoBW/lWLLR79Oci0xmyQqSxJwwzjavR9mW8I4wbMJQQMVAA==, tarball: https://registry.npmjs.org/@sap/cds/-/cds-10.0.3.tgz}
+    resolution: {integrity: sha512-S9q8vcJXzIsO4KC49sb9JLIhY/k0MJTZcgEOzmhvoBW/lWLLR79Oci0xmyQqSxJwwzjavR9mW8I4wbMJQQMVAA==}
     engines: {node: '>=22'}
     hasBin: true
     peerDependencies:
@@ -1459,11 +1453,11 @@ packages:
     engines: {node: ^20.0.0  || ^22.0.0 || ^24.0.0}
 
   '@sap/xssec@4.13.0':
-    resolution: {integrity: sha512-8e+bU+OyAIpAGXQanOopZa5YEK+yHKw84dhhihcCotF40MSNFbVHjQ4xM5hf4QndlqDGfXIuvXmoOMuDATa/gA==, tarball: https://registry.npmjs.org/@sap/xssec/-/xssec-4.13.0.tgz}
+    resolution: {integrity: sha512-8e+bU+OyAIpAGXQanOopZa5YEK+yHKw84dhhihcCotF40MSNFbVHjQ4xM5hf4QndlqDGfXIuvXmoOMuDATa/gA==}
     engines: {node: '>=18'}
 
   '@sap/xssec@4.13.3':
-    resolution: {integrity: sha512-op5wFTpJGJFdwFcEFRDX30yKbB2Kknk+LJqXDcrHyPNLqvSqerTWXFdFnylhiIhoAdGFSccC6NimUhqFxIrUsA==, tarball: https://registry.npmjs.org/@sap/xssec/-/xssec-4.13.3.tgz}
+    resolution: {integrity: sha512-op5wFTpJGJFdwFcEFRDX30yKbB2Kknk+LJqXDcrHyPNLqvSqerTWXFdFnylhiIhoAdGFSccC6NimUhqFxIrUsA==}
     engines: {node: '>=18'}
 
   '@scalar/helpers@0.9.1':
@@ -1604,9 +1598,6 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/jsonwebtoken@9.0.10':
-    resolution: {integrity: sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA==}
-
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
 
@@ -1615,9 +1606,6 @@ packages:
 
   '@types/mock-fs@4.13.4':
     resolution: {integrity: sha512-mXmM0o6lULPI8z3XNnQCpL0BGxPwx1Ul1wXYEPBGl4efShyxW2Rln0JOPEWGyZaYZMM6OVXM/15zUuFMY52ljg==}
-
-  '@types/ms@2.1.0':
-    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
@@ -6164,11 +6152,6 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/jsonwebtoken@9.0.10':
-    dependencies:
-      '@types/ms': 2.1.0
-      '@types/node': 22.20.1
-
   '@types/minimatch@3.0.5': {}
 
   '@types/minimist@1.2.5': {}
@@ -6176,8 +6159,6 @@ snapshots:
   '@types/mock-fs@4.13.4':
     dependencies:
       '@types/node': 22.20.1
-
-  '@types/ms@2.1.0': {}
 
   '@types/node@12.20.55': {}
 
