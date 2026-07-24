@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          pnpm-version: ''
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Get Changelog
         id: get-changelog

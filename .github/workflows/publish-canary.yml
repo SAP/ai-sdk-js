@@ -22,31 +22,19 @@ jobs:
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
+          pnpm-version: ''
           node-version: 24 # Will install npm 11 needed for trusted publishing
           pnpm-install-args: ''
           package-manager-cache: false
           registry-url: 'https://registry.npmjs.org'
 
-      - name: prepare canary changeset
-        run: |
-          rm -f .changeset/*.md || true
-          cat <<EOT >> .changeset/canary-release-changeset.md
-          ---
-          '@sap-ai-sdk/core': patch
-          ---
-
-          Canary release
-          EOT
-
       - name: publish
         env:
           INPUTS_TAG: ${{ inputs.tag }}
         run: |
-          date=`date +%Y%m%d%H%M%S`
-          pnpm changeset pre enter "${date}"
-          pnpm changeset version
-          pnpm changeset pre exit
-          pnpm changeset publish --tag "${INPUTS_TAG}"
+          date=$(date +%Y%m%d%H%M%S)
+          pnpm -r exec pnpm version prepatch --preid "${date}" --no-git-tag-version
+          pnpm publish -r --tag "${INPUTS_TAG}" --no-git-checks
       - name: Notify Slack on failure
         if: ${{ github.event_name == 'schedule' && (failure() || cancelled()) }}
         env:
