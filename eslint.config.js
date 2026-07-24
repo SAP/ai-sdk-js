@@ -63,5 +63,13 @@ export default [
       'no-unused-expressions': 'off',
       'jsdoc/require-jsdoc': 'off'
     }
+  },
+  {
+    // support-bot runs as a standalone automation script (GitHub Actions bot), not as a library — JSDoc and console restrictions don't apply
+    files: ['sample-code/src/support-bot/**/*'],
+    rules: {
+      'jsdoc/require-jsdoc': 'off',
+      'no-console': 'off'
+    }
   }
 ];

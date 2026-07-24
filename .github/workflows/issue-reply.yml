@@ -3,18 +3,31 @@ name: SAP AI SDK Support Bot
 on:
   issues:
     types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to test with'
+        required: true
+      issue_title:
+        description: 'Issue title'
+        required: true
+      issue_body:
+        description: 'Issue body'
+        required: false
+        default: ''
 
 permissions: {}
 
 jobs:
   reply:
     # SEC-1: only respond to trusted contributors — blocks quota abuse from anonymous filers
-    if: contains(fromJSON('["MEMBER","OWNER","COLLABORATOR"]'), github.event.issue.author_association)
+    # workflow_dispatch is always triggered by an authenticated user (team member)
+    if: github.event_name == 'workflow_dispatch' || contains(fromJSON('["MEMBER","OWNER","COLLABORATOR"]'), github.event.issue.author_association)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     # SEC-1: one run per issue at a time — prevents duplicate replies
     concurrency:
-      group: issue-reply-${{ github.event.issue.number }}
+      group: issue-reply-${{ github.event.inputs.issue_number || github.event.issue.number }}
       cancel-in-progress: false
     permissions:
       contents: read
@@ -32,14 +45,14 @@ jobs:
         env:
           AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }} # zizmor: ignore[overprovisioned-secrets]
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.inputs.issue_title || github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
         run: |
-          npx tsx --env-file=/dev/null src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" > /tmp/answer.md
+          pnpm exec tsx src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" > /tmp/answer.md
 
       - name: Build Slack payload
         env:
-          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_URL: ${{ format('https://github.com/{0}/issues/{1}', github.repository, github.event.inputs.issue_number || github.event.issue.number) }}
         run: |
           jq -n \
             --arg url "$ISSUE_URL" \
@@ -60,7 +73,7 @@ jobs:
       - name: Post comment on GitHub issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
         run: |
           gh issue comment "$ISSUE_NUMBER" \
             --repo "$GITHUB_REPOSITORY" \
