@@ -199,4 +199,4 @@ process.on('unhandledRejection', reason => {
   process.exit(1);
 });
 
-void generateDocs();
+await generateDocs();

@@ -286,24 +286,6 @@
     },
     {
       "files": [
-        "**/*.ts"
-      ],
-      "rules": {
-        "no-unused-vars": [
-          "error",
-          {
-            "varsIgnorePattern": "^_",
-            "argsIgnorePattern": "^_"
-          }
-        ],
-        "import/namespace": "off"
-      },
-      "plugins": [
-        "import"
-      ]
-    },
-    {
-      "files": [
         "**/test/**/*",
         "**/test-util/**/*",
         "**/*.test.ts",
