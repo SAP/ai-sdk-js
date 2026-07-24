@@ -232,8 +232,8 @@ jobs:
           - Compilation outcome: ${STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT}
           - Test run outcome: ${STEPS_COMPILE_OUTPUTS_TEST_RESULT}
 
-          ${{ steps.apply-patches.outputs.patch_result == 'failure' && '> [!WARNING]
-          > Patch application failed. The spec may have introduced changes (e.g. new parameters) that conflict with existing patches. Please update the patch files manually before merging.' || '' }}
+          ${{ case(steps.apply-patches.outputs.patch_result == 'failure', '> [!WARNING]
+          > Patch application failed. The spec may have introduced changes (e.g. new parameters) that conflict with existing patches. Please update the patch files manually before merging.', '') }}
 
           Before merging, make sure to update tests and release notes, if necessary.
 
@@ -262,18 +262,18 @@ jobs:
             echo ""
             echo "| Step | Status |"
             echo "|------|--------|"
-            echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${STEPS_DOWNLOAD_OUTCOME}"
-            echo "| Spec File Changes | ${{ steps.check-spec-changes.outputs.spec == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}"
+            echo "| File Download | ${{ case(steps.download.outcome == 'success', '✅', '❌') }} ${STEPS_DOWNLOAD_OUTCOME}"
+            echo "| Spec File Changes | ${{ case(steps.check-spec-changes.outputs.spec == 'true', '🔄 Changes Detected', '⏹️ No Changes') }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
           if ${{ steps.check-spec-changes.outputs.spec == 'true' }}; then
             {
-              echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${STEPS_GENERATE_OUTCOME}"
-              echo "| Patch Application | ${{ steps.apply-patches.outputs.patch_result == 'success' && '✅' || steps.apply-patches.outputs.patch_result == 'failure' && '❌ (patch needs updating)' || '⏩ skipped' }} ${PATCH_RESULT}"
-              echo "| Client Changes | ${{ steps.check-generated-changes.outputs.all == 'true' && '🔄 Changes Detected' || '⏹️ No Changes (spec change had no effect on client)' }}"
-              echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT}"
-              echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${STEPS_COMPILE_OUTPUTS_TEST_RESULT}"
-              echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅' || steps.push.outcome == 'skipped' && '⏩ skipped' || '❌ failure' }} [Branch Link]($DIFF_URL)"
-              echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅' || '' }} [PR Link]($PR_URL)"
+              echo "| Client Generation | ${{ case(steps.generate.outcome == 'success', '✅', '❌') }} ${STEPS_GENERATE_OUTCOME}"
+              echo "| Patch Application | ${{ case(steps.apply-patches.outputs.patch_result == 'success', '✅', steps.apply-patches.outputs.patch_result == 'failure', '❌ (patch needs updating)', '⏩ skipped') }} ${PATCH_RESULT}"
+              echo "| Client Changes | ${{ case(steps.check-generated-changes.outputs.all == 'true', '🔄 Changes Detected', '⏹️ No Changes (spec change had no effect on client)') }}"
+              echo "| Client Compilation | ${{ case(steps.compile.outputs.compilation_result == 'success', '✅', '❌') }} ${STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT}"
+              echo "| Client Testing | ${{ case(steps.compile.outputs.test_result == 'success', '✅', steps.compile.outputs.test_result == 'skipped', '⏩', '❌') }} ${STEPS_COMPILE_OUTPUTS_TEST_RESULT}"
+              echo "| Branch Creation | ${{ case(steps.push.outcome == 'success', '✅', steps.push.outcome == 'skipped', '⏩ skipped', '❌ failure') }} [Branch Link]($DIFF_URL)"
+              echo "| Pull Request Creation | ${{ case(env.CREATE_PR == 'false', '⏩ skipped', env.CREATE_PR == 'true' && steps.push.outcome == 'success', '✅', '') }} [PR Link]($PR_URL)"
             } >> "$GITHUB_STEP_SUMMARY"
           fi
