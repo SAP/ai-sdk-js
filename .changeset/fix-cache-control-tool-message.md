@@ -2,5 +2,5 @@
 '@sap-ai-sdk/langchain': patch
 ---
 
-[fix] Fix https? 400 when `cache_control` is used and the last message is a tool result.
-The SDK now skips tool and assistant messages when applying `cache_control`, finding the last applicable message (system, user, or developer) instead.
+[fix] Skip tool and assistant messages when applying `cache_control`, using the last applicable message (system, user, or developer) instead.
+Some models do not support `cache_control` on `tool` messages.
