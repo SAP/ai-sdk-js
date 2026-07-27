@@ -216,26 +216,16 @@ function mergeReasoningBlocks(
   existing: ReasoningBlock[] | undefined,
   incoming: ReasoningBlock[] | undefined
 ): ReasoningBlock[] | undefined {
-  if (!incoming?.length) {
-    return existing;
-  }
-  if (!existing?.length) {
-    return [...incoming];
-  }
-  const merged = [...existing];
-  for (let i = 0; i < incoming.length; i++) {
-    if (i < merged.length) {
-      merged[i] = {
-        content: (merged[i].content ?? '') + (incoming[i].content ?? ''),
-        signature: incoming[i].signature
-          ? incoming[i].signature
-          : merged[i].signature
-      };
-    } else {
-      merged.push(incoming[i]);
-    }
-  }
-  return merged;
+  if (!incoming?.length) return existing;
+  if (!existing?.length) return incoming;
+
+  const shared = existing.map((block, i) => ({
+    content: (block.content ?? '') + (incoming[i].content ?? ''),
+    signature: incoming[i].signature || block.signature
+  }));
+  return incoming.length > existing.length
+    ? [...shared, ...incoming.slice(existing.length)]
+    : shared;
 }
 
 function mergeLogProbs(

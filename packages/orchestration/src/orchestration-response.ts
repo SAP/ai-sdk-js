@@ -89,7 +89,7 @@ export class OrchestrationResponse {
   getReasoningContent(choiceIndex = 0): string | undefined {
     const blocks =
       this.findChoiceByIndex(choiceIndex)?.message?.reasoning_content;
-    return blocks?.map(b => b.content ?? '').join(' ') || undefined;
+    return blocks?.map(b => b.content ?? '').join(' ');
   }
 
   /**

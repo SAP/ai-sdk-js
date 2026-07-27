@@ -90,5 +90,4 @@ export type {
   FunctionObject,
   Error as OrchestrationError,
   Citation,
-  ReasoningBlock
 } from './client/api/schema/index.js';
