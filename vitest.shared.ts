@@ -1,9 +1,16 @@
 import { defineConfig, mergeConfig } from 'vitest/config';
+import { join } from 'node:path';
+
+const errorWithCauseSerializer = join(
+  import.meta.dirname,
+  'scripts/vitest-snapshot-serializers.ts'
+);
 
 const baseConfig = defineConfig({
   test: {
     globals: true,
     clearMocks: true,
+    snapshotSerializers: [errorWithCauseSerializer],
   },
 });
 

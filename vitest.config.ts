@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     globals: true,
     clearMocks: true,
+    snapshotSerializers: ['./scripts/vitest-snapshot-serializers.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['html', 'lcov'],
