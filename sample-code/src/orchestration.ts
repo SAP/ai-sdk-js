@@ -1242,8 +1242,7 @@ export async function orchestrationReasoningContent(
 
   const reasoning = response.getReasoningContent();
   if (reasoning) {
-    logger.info('Reasoning:');
-    reasoning.forEach(block => logger.info(block));
+    logger.info('Reasoning:', reasoning);
   }
   logger.info('Answer:', response.getContent());
 

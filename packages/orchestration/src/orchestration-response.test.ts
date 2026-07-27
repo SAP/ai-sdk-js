@@ -142,10 +142,9 @@ describe('OrchestrationResponse', () => {
       data: localMockResponse
     });
 
-    const blocks = localOrchestrationResponse.getReasoningContent();
-    expect(blocks).toHaveLength(2);
-    expect(blocks?.[0]).toBe('Let me think about this...');
-    expect(blocks?.[1]).toBe('');
+    expect(localOrchestrationResponse.getReasoningContent()).toBe(
+      'Let me think about this... '
+    );
   });
 
   it('should return undefined reasoning content when not present', () => {

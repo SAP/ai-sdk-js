@@ -84,12 +84,12 @@ export class OrchestrationResponse {
    * Only available for models that support extended thinking (e.g. Anthropic Claude).
    * To preserve reasoning context in multi-turn conversations, pass the result of {@link getAllMessages} as messagesHistory in the next request instead of using this method directly.
    * @param choiceIndex - The index of the choice to parse.
-   * @returns The reasoning text from each reasoning block, or undefined if not present.
+   * @returns All reasoning blocks joined with a space, or undefined if not present.
    */
-  getReasoningContent(choiceIndex = 0): string[] | undefined {
+  getReasoningContent(choiceIndex = 0): string | undefined {
     const blocks =
       this.findChoiceByIndex(choiceIndex)?.message?.reasoning_content;
-    return blocks?.map(b => b.content ?? '');
+    return blocks?.map(b => b.content ?? '').join(' ') || undefined;
   }
 
   /**

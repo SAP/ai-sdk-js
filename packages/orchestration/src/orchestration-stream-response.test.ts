@@ -249,10 +249,9 @@ describe('OrchestrationStreamResponse', () => {
         }
       });
 
-      const blocks = streamResponse.getReasoningContent();
-      expect(blocks).toHaveLength(2);
-      expect(blocks?.[0]).toBe('Step 1: analyze the problem.');
-      expect(blocks?.[1]).toBe('');
+      expect(streamResponse.getReasoningContent()).toBe(
+        'Step 1: analyze the problem. '
+      );
     });
 
     it('should return undefined when no thinking present', () => {

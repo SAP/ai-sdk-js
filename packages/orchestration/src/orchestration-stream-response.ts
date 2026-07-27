@@ -141,15 +141,15 @@ export class OrchestrationStreamResponse<T> {
    * Only available after the stream has been fully consumed.
    * To get reasoning content incrementally during streaming, use {@link getDeltaReasoningContent} on each chunk instead.
    * @param choiceIndex - The index of the choice to parse.
-   * @returns The reasoning text from each reasoning block, or undefined if not present.
+   * @returns All reasoning blocks joined with a space, or undefined if not present.
    */
-  getReasoningContent(choiceIndex = 0): string[] | undefined {
+  getReasoningContent(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
       return;
     }
     const blocks =
       this.findChoiceByIndex(choiceIndex)?.message?.reasoning_content;
-    return blocks?.map(b => b.content ?? '');
+    return blocks?.map(b => b.content ?? '').join(' ') || undefined;
   }
 
   /**
