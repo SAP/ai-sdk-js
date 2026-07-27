@@ -216,8 +216,12 @@ function mergeReasoningBlocks(
   existing: ReasoningBlock[] | undefined,
   incoming: ReasoningBlock[] | undefined
 ): ReasoningBlock[] | undefined {
-  if (!incoming?.length) return existing;
-  if (!existing?.length) return incoming;
+  if (!incoming?.length) {
+    return existing;
+  }
+  if (!existing?.length) {
+    return incoming;
+  }
 
   const shared = existing.map((block, i) => ({
     content: (block.content ?? '') + (incoming[i].content ?? ''),
