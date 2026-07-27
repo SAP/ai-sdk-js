@@ -38,6 +38,7 @@ export {
   orchestrationStreamWithFallbackConfigs,
   orchestrationReasoningContent,
   orchestrationReasoningContentStream
+  orchestrationQwenChatCompletion
 } from './orchestration.js';
 export {
   invoke,
