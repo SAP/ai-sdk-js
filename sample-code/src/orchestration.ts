@@ -1381,20 +1381,4 @@ export async function orchestrationReasoningContentStream(
   );
 }
 
-/**
- * Sends a chat completion request using a Qwen model.
- * @param model - The model name to use.
- * @returns The orchestration service response.
- */
-export async function orchestrationQwenChatCompletion(
-  model = 'qwen3.6-flash'
-): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: { name: model }
-    }
-  });
-  return orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
-  });
-}
+
