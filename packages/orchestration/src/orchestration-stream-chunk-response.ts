@@ -57,8 +57,7 @@ export class OrchestrationStreamChunkResponse {
    * @returns The reasoning text delta for this chunk joined with a space, or undefined if not present.
    */
   getDeltaReasoningContent(choiceIndex = 0): string | undefined {
-    const blocks =
-      this.findChoiceByIndex(choiceIndex)?.delta.reasoning_content;
+    const blocks = this.findChoiceByIndex(choiceIndex)?.delta.reasoning_content;
     return blocks?.map(b => b.content ?? '').join(' ') || undefined;
   }
 
