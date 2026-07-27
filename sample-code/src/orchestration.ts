@@ -1332,7 +1332,7 @@ export async function orchestrationReasoningContent(
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'anthropic--claude-3-7-sonnet' }
+      model: { name: 'anthropic--claude-4.5-sonnet' }
     }
   });
 
@@ -1360,6 +1360,7 @@ export async function orchestrationReasoningContent(
 
 /**
  * Demonstrates reasoning content support with streaming and Anthropic extended thinking.
+ * Logs the delta reasoning content from each chunk.
  * @param controller - The AbortController to cancel the stream.
  * @returns The orchestration stream response.
  */
@@ -1368,10 +1369,10 @@ export async function orchestrationReasoningContentStream(
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'anthropic--claude-3-7-sonnet' }
+      model: { name: 'anthropic--claude-4.5-sonnet' }
     }
   });
-  return orchestrationClient.stream(
+  const response = await orchestrationClient.stream(
     {
       messages: [
         { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
@@ -1379,4 +1380,13 @@ export async function orchestrationReasoningContentStream(
     },
     controller.signal
   );
+
+  for await (const chunk of response.stream) {
+    const deltaReasoning = chunk.getDeltaReasoningContent();
+    if (deltaReasoning) {
+      logger.info('Reasoning delta:', deltaReasoning);
+    }
+  }
+
+  return response;
 }
