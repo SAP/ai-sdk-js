@@ -59,7 +59,7 @@ jobs:
             --rawfile answer /tmp/answer.md \
             '{
               "username": "SAP AI SDK Support Bot",
-              "text": ($url + "\n\n" + $answer)
+              "text": ("Support Issue: " + $url + "\n\n" + $answer)
             }' > /tmp/slack-payload.json
 
       - name: Notify Slack
