@@ -101,9 +101,6 @@ const config = {
   // An enum that specifies notification mode. Requires { notify: true }
   // notifyMode: "failure-change",
 
-  // A preset that is used as a base for Jest's configuration
-  preset: 'ts-jest/presets/default-esm',
-
   // Run tests from one or more projects
   // projects: undefined,
 
@@ -173,13 +170,7 @@ const config = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.tsx?$': [
-      'ts-jest',
-      {
-        useESM: true,
-        tsconfig: path.resolve(__dirname, 'tsconfig.json'),
-      },
-    ],
+    '^.+\\.tsx?$': '@swc/jest'
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
