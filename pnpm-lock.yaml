@@ -4,8 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-L19ZSrMcaJM7oYPL1NAPZdwowJv7efEOLqxBHscbKsA=
-
 importers:
 
   .:
@@ -27,25 +25,22 @@ importers:
         version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/eslint-config':
         specifier: ^4.7.0
-        version: 4.7.0(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))(prettier@3.9.5)
+        version: 4.7.0(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(prettier@3.9.5)(supports-color@7.2.0)
       '@sap-cloud-sdk/generator-common':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi-generator':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
-      '@types/jsonwebtoken':
-        specifier: ^9.0.10
-        version: 9.0.10
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@types/mock-fs':
         specifier: ^4.13.4
         version: 4.13.4
@@ -60,16 +55,13 @@ importers:
         version: 4.1.10(vitest@4.1.10)
       depcheck:
         specifier: ^1.4.7
-        version: 1.4.7
+        version: 1.4.7(supports-color@7.2.0)
       eslint:
         specifier: ^10.7.0
-        version: 10.7.0(jiti@2.7.0)
-      glob:
-        specifier: ^13.0.6
-        version: 13.0.6
-      jsonwebtoken:
-        specifier: ^9.0.3
-        version: 9.0.3
+        version: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
+      jose:
+        specifier: 6.2.3
+        version: 6.2.3
       mock-fs:
         specifier: ^5.5.0
         version: 5.5.0
@@ -78,7 +70,7 @@ importers:
         version: 14.0.16
       orval:
         specifier: ^8.22.0
-        version: 8.22.0(@typescript/typescript6@6.0.2)(prettier@3.9.5)
+        version: 8.22.0(@typescript/typescript6@6.0.2)(prettier@3.9.5)(supports-color@7.2.0)
       prettier:
         specifier: ^3.9.5
         version: 3.9.5
@@ -105,10 +97,10 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: ^4.1.10
@@ -118,16 +110,16 @@ importers:
     dependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: ^4.1.10
@@ -153,13 +145,13 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: ^4.1.10
@@ -181,10 +173,10 @@ importers:
         version: link:../orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@langchain/core':
         specifier: ^1.2.3
@@ -219,10 +211,10 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       openai:
         specifier: ^6.47.0
@@ -244,17 +236,17 @@ importers:
         version: link:../prompt-registry
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
     devDependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       vitest:
         specifier: ^4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
@@ -282,13 +274,13 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: ^4.1.10
@@ -307,13 +299,13 @@ importers:
         version: link:../packages/orchestration
       '@sap/cds':
         specifier: ^10.0.3
-        version: 10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)))
+        version: 10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(supports-color@7.2.0)
       '@sap/xssec':
         specifier: ^4.13.3
-        version: 4.13.3
+        version: 4.13.3(supports-color@7.2.0)
       express:
         specifier: ^5.2.1
-        version: 5.2.1
+        version: 5.2.1(supports-color@7.2.0)
     devDependencies:
       '@sap/cds-dk':
         specifier: ^10.0.4
@@ -332,25 +324,25 @@ importers:
         version: 1.4.8(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3)
       '@langchain/mcp-adapters':
         specifier: '=1.1.3'
-        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(@langchain/langgraph@1.4.8(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3))
+        version: 1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(@langchain/langgraph@1.4.8(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3))(supports-color@7.2.0)
       '@langchain/textsplitters':
         specifier: '=1.0.1'
         version: 1.0.1(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
       '@modelcontextprotocol/sdk':
         specifier: '=1.29.0'
-        version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
+        version: 1.29.0(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.4.3)
       '@sap-cloud-sdk/resilience':
         specifier: '=4.7.0'
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: '=4.7.0'
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@types/express':
         specifier: '=5.0.6'
         version: 5.0.6
       express:
         specifier: '=5.2.1'
-        version: 5.2.1
+        version: 5.2.1(supports-color@7.2.0)
       langchain:
         specifier: '=1.5.3'
         version: 1.5.3(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
@@ -411,7 +403,7 @@ importers:
         version: link:../../sample-code
       '@sap-cloud-sdk/util':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@types/async-retry':
         specifier: ^1.4.9
@@ -430,31 +422,31 @@ importers:
     dependencies:
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.13.1-20260722064349.0(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))
+        version: 2.13.1-20260728070653.0(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/llm-batch':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/openai':
         specifier: canary
-        version: 2.13.1-20260722064349.0(openai@6.47.0(ws@8.21.0)(zod@4.4.3))
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(supports-color@7.2.0)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.13.1-20260722064349.0
+        version: 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
@@ -491,10 +483,10 @@ importers:
         version: link:../../packages/rpt
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: ^4.7.0
-        version: 4.7.0
+        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       tsd:
         specifier: ^0.33.0
         version: 0.33.0
@@ -1210,39 +1202,39 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sap-ai-sdk/ai-api@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-4ij5V7nOiS9gg6D9F19HifRL3oW8YuhN6ej37Az2n+WhbJUEckpLdfyTEXV8iIvjeIKVhlCwa3jUmqpkXquCeA==}
+  '@sap-ai-sdk/ai-api@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-sBaWLqgMKdggYs/41rH417IAoyReGaQBdysFIf5k8QpKBfUSSRcnr4bEz30mlzufMc19DjRJVBIVhFcdepdLpA==}
 
-  '@sap-ai-sdk/core@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-LFvzfSaaf+T0QFxyjMA0LgWhbYvva7DHZAfHybHrmzr/VwXmrz92dPY/w3MQHBEwJGhgI1NDG+RNutteo4XOhg==}
+  '@sap-ai-sdk/core@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-AU8yjxXvmCRLJbvVCFBvuT00CjoXz5A9nzQo0MUve6zrzTFAenCpZwbcetYIhBGV0PUsuKItRfrAB1eKPTaUWg==}
 
-  '@sap-ai-sdk/document-grounding@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-1wXBnE4a7FNAgXf5U6lmfsuAS0oOci4ZdVLH4/qj95bbR0cXfEyHVExxeDHKkwzJHF+I7XPQwFp9NJ0z4+JOtw==}
+  '@sap-ai-sdk/document-grounding@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-E9oMkC2h0QLaOd4Xm1lKARIe505DiJhum8O8wHwnxf/1+Gs5QT+pqktt3Vo0lrxMmIZ0kHC37BboHysrAa/IZQ==}
 
-  '@sap-ai-sdk/foundation-models@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-yZN3K16xDHmIKW2EQ0o3JMLT6tURQnrSnrtaSO3DIdNjkcjMAeDnql7ImwDNNto6lO0XJH9A/tOWIAPYU8WtTQ==}
+  '@sap-ai-sdk/foundation-models@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-mfHHNDzcJnPkyJl8HLpxXaT7xJYcOVvCfkjALiNecgRKiW5QJBiCo7gqhZ9ORHu+mltzQsD3dsRnR/fWAtL3Zg==}
 
-  '@sap-ai-sdk/langchain@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-VzlMDt7Eq5xwkDtLq1Ujm19pgdoXRdsVUvhU1d08F7xirN8lsnCnsrJcijdDCHtg6WoVn+/Ja7jNtRrO+/L35w==}
+  '@sap-ai-sdk/langchain@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-ISEsDjmpJgJUIfbe5eZppTJH9ycVRfwO4iYPXmWcLm+Yv8+U0w17nAx8/sIGoZFuSKK49QRK6Lmzm+k5ZsPqCg==}
     peerDependencies:
       '@langchain/core': ^1.2.3
 
-  '@sap-ai-sdk/llm-batch@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-+A4UmnQficqANoKBA3mVDNxAw+qxos6yHl+DaXQ/MbkR7N5r50nfJLdAVUEY9TuddLG+tlF+IpRdQX18eK/Ghg==}
+  '@sap-ai-sdk/llm-batch@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-BU2KRjNAA7FPeIgsNCrKKv3sup9Npvlxyf21BwlOVbYpwYO0q6o4gOZTqHRWpxxuye1jFbz4k/Gr2FLMCeSnUQ==}
 
-  '@sap-ai-sdk/openai@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-YsXdRbQW5pmrF6bhUKWhefc0+SoYJffiNnQekmCg6p/Qd6VZwFpl6SfV1bzaE2TWoA2MSkTHEuyGZbBMDFX4vw==}
+  '@sap-ai-sdk/openai@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-9O3I2PGmdbUZX80pH1+cPAuAMtMPdDzFYk1JRCTlPTV1ij3wCX7p7fDbChih58aClg+DSKNaomfpNqBG5JOLGg==}
     peerDependencies:
       openai: ^6.47.0
 
-  '@sap-ai-sdk/orchestration@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-S56jSeWU1z/oZFaNYVoJ+B2FbqhSk1jPW3wqmFzOTI84J+jD9RHT7Gz4f3+05Cgkg9rn0HQ7o3tVK7CeakTbRg==}
+  '@sap-ai-sdk/orchestration@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-hzGRVLsVDcFJZLG3oqvxufLHr1urby5YfQdLTxYTreI3RDvO8LtmVdtq18cesSY2QoRzneYoVD+fsvW7G1JM4A==}
 
-  '@sap-ai-sdk/prompt-registry@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-Xhihayg2hrC5T0oPT/zwriVelfgXcMjlJXVxheYBYjc+Lh7Icsz/p50BU4UCUtsRZMP7YyPZtSdw97B/+D3aeA==}
+  '@sap-ai-sdk/prompt-registry@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-5dcQG7eVUezfDlf9/j26SrBmFGvhWXRECYYKVDYYUH0Wp59FzKF++djIk9Ty4cWr0ADvp6HsdLn5oQL0JJ3/3A==}
 
-  '@sap-ai-sdk/rpt@2.13.1-20260722064349.0':
-    resolution: {integrity: sha512-Iw1vjooEKByscpTdbDiqN1hJHxRXkYBUwj1FdlPOhrLou9sDuTV2lTIbOx7wIjMh32U/sxXk1BcFJuLoDKrMOA==}
+  '@sap-ai-sdk/rpt@2.13.1-20260728070653.0':
+    resolution: {integrity: sha512-o2DSXKLGKmZJGKwjCA3ZafquCrG64vJSYu4VaVxe5qiZYaPAjQrQxgZmWOYqSMSMeqKqNe1/jqIrLl0LjRDX1g==}
 
   '@sap-cloud-sdk/connectivity@4.7.0':
     resolution: {integrity: sha512-+EgdTpGi3ZomPuv/ab+bWQIxUfJvownW2MzdYSvX7hkEkmKJfod0O6ja2OqC+OJBLm1TE0JpbJ6AcCkqeZYuOg==}
@@ -1527,9 +1519,6 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/jsonwebtoken@9.0.10':
-    resolution: {integrity: sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA==}
-
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
 
@@ -1538,9 +1527,6 @@ packages:
 
   '@types/mock-fs@4.13.4':
     resolution: {integrity: sha512-mXmM0o6lULPI8z3XNnQCpL0BGxPwx1Ul1wXYEPBGl4efShyxW2Rln0JOPEWGyZaYZMM6OVXM/15zUuFMY52ljg==}
-
-  '@types/ms@2.1.0':
-    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
@@ -4329,7 +4315,7 @@ snapshots:
       '@babel/parser': 7.29.7
       '@babel/types': 7.29.7
 
-  '@babel/traverse@7.29.7':
+  '@babel/traverse@7.29.7(supports-color@7.2.0)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
@@ -4337,7 +4323,7 @@ snapshots:
       '@babel/parser': 7.29.7
       '@babel/template': 7.29.7
       '@babel/types': 7.29.7
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -4609,17 +4595,17 @@ snapshots:
   '@esbuild/win32-x64@0.28.1':
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.1(eslint@10.7.0(jiti@2.7.0))':
+  '@eslint-community/eslint-utils@4.9.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))':
     dependencies:
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/config-array@0.23.5':
+  '@eslint/config-array@0.23.5(supports-color@7.2.0)':
     dependencies:
       '@eslint/object-schema': 3.0.5
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       minimatch: 10.2.5
     transitivePeerDependencies:
       - supports-color
@@ -4632,9 +4618,9 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
 
-  '@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0))':
+  '@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))':
     optionalDependencies:
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
 
   '@eslint/object-schema@3.0.5': {}
 
@@ -4763,12 +4749,12 @@ snapshots:
       - svelte
       - vue
 
-  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(@langchain/langgraph@1.4.8(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3))':
+  '@langchain/mcp-adapters@1.1.3(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(@langchain/langgraph@1.4.8(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3))(supports-color@7.2.0)':
     dependencies:
       '@langchain/core': 1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
       '@langchain/langgraph': 1.4.8(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3)
-      '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
-      debug: 4.4.3
+      '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.4.3)
+      debug: 4.4.3(supports-color@7.2.0)
       zod: 4.4.3
     optionalDependencies:
       extended-eventsource: 1.7.0
@@ -4811,7 +4797,7 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)':
+  '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.4.3)':
     dependencies:
       '@hono/node-server': 1.19.14(hono@4.12.27)
       ajv: 8.20.0
@@ -4821,8 +4807,8 @@ snapshots:
       cross-spawn: 7.0.6
       eventsource: 3.0.7
       eventsource-parser: 3.1.0
-      express: 5.2.1
-      express-rate-limit: 8.5.2(express@5.2.1)
+      express: 5.2.1(supports-color@7.2.0)
+      express-rate-limit: 8.5.2(express@5.2.1(supports-color@7.2.0))
       hono: 4.12.27
       jose: 6.2.3
       json-schema-typed: 8.0.2
@@ -4872,28 +4858,28 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@orval/angular@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/angular@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/axios@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/axios@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/core@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/core@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
       '@scalar/openapi-types': 0.8.0
       acorn: 8.17.0
       compare-versions: 6.1.1
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       esbuild: 0.28.1
       esutils: 2.0.3
       fs-extra: 11.3.6
@@ -4906,27 +4892,27 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/effect@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/effect@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       remeda: 2.39.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/fetch@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/fetch@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/hono@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/hono@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/zod': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/zod': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       fs-extra: 11.3.6
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -4934,55 +4920,55 @@ snapshots:
       - '@faker-js/faker'
       - supports-color
 
-  '@orval/mcp@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/mcp@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/zod': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/zod': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/mock@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/mock@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       remeda: 2.39.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/query@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/query@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       remeda: 2.39.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/solid-start@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/solid-start@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/swr@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/swr@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/zod@8.22.0(@typescript/typescript6@6.0.2)':
+  '@orval/zod@8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       jsesc: 3.1.0
       remeda: 2.39.0
     transitivePeerDependencies:
@@ -5067,112 +5053,112 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.62.2':
     optional: true
 
-  '@sap-ai-sdk/ai-api@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/ai-api@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/core@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/http-client': 4.7.0
-      '@sap-cloud-sdk/openapi': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/openapi': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/document-grounding@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/foundation-models@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/http-client': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-ai-sdk/ai-api': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.13.1-20260722064349.0(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))':
+  '@sap-ai-sdk/langchain@2.13.1-20260728070653.0(@langchain/core@1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@langchain/core': 1.2.3(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
-      '@sap-ai-sdk/ai-api': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/foundation-models': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/orchestration': 2.13.1-20260722064349.0
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-ai-sdk/ai-api': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/foundation-models': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/orchestration': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/llm-batch@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/llm-batch@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/openai@2.13.1-20260722064349.0(openai@6.47.0(ws@8.21.0)(zod@4.4.3))':
+  '@sap-ai-sdk/openai@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(openai@6.47.0(ws@8.21.0)(zod@4.4.3))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-ai-sdk/ai-api': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       openai: 6.47.0(ws@8.21.0)(zod@4.4.3)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/orchestration@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/prompt-registry': 2.13.1-20260722064349.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-ai-sdk/ai-api': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/prompt-registry': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       yaml: 2.9.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/prompt-registry@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       zod: 4.4.3
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.13.1-20260722064349.0':
+  '@sap-ai-sdk/rpt@2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.13.1-20260722064349.0
-      '@sap-ai-sdk/core': 2.13.1-20260722064349.0
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/http-client': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-ai-sdk/ai-api': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.13.1-20260728070653.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/connectivity@4.7.0':
+  '@sap-cloud-sdk/connectivity@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/resilience': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
-      '@sap/xsenv': 6.2.1
-      '@sap/xssec': 4.13.0
+      '@sap-cloud-sdk/resilience': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap/xsenv': 6.2.1(supports-color@7.2.0)
+      '@sap/xssec': 4.13.0(supports-color@7.2.0)
       async-retry: 1.3.3
-      axios: 1.18.1
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       jks-js: 1.1.7
       jsonwebtoken: 9.0.3
       safe-stable-stringify: 2.5.0
@@ -5180,19 +5166,19 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/eslint-config@4.7.0(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))(prettier@3.9.5)':
+  '@sap-cloud-sdk/eslint-config@4.7.0(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(prettier@3.9.5)(supports-color@7.2.0)':
     dependencies:
-      '@eslint/js': 10.0.1(eslint@10.7.0(jiti@2.7.0))
-      '@stylistic/eslint-plugin': 3.1.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      '@typescript-eslint/parser': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      eslint: 10.7.0(jiti@2.7.0)
-      eslint-config-prettier: 10.1.8(eslint@10.7.0(jiti@2.7.0))
-      eslint-import-resolver-typescript: 4.4.5(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0))
-      eslint-plugin-import-x: 4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0))
-      eslint-plugin-jsdoc: 62.9.0(eslint@10.7.0(jiti@2.7.0))
-      eslint-plugin-prettier: 5.5.6(eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0))(prettier@3.9.5)
-      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0))
-      typescript-eslint: 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
+      '@eslint/js': 10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
+      '@stylistic/eslint-plugin': 3.1.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/parser': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
+      eslint-config-prettier: 10.1.8(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
+      eslint-import-resolver-typescript: 4.4.5(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint-plugin-import-x: 4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint-plugin-jsdoc: 62.9.0(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint-plugin-prettier: 5.5.6(eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(prettier@3.9.5)
+      eslint-plugin-unused-imports: 4.4.1(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
+      typescript-eslint: 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - '@types/eslint'
       - '@typescript-eslint/eslint-plugin'
@@ -5203,9 +5189,9 @@ snapshots:
       - supports-color
       - typescript
 
-  '@sap-cloud-sdk/generator-common@4.7.0':
+  '@sap-cloud-sdk/generator-common@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       fast-levenshtein: 3.0.0
       fs-extra: 11.3.5
       glob: 13.0.6
@@ -5216,22 +5202,22 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/http-client@4.7.0':
+  '@sap-cloud-sdk/http-client@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/resilience': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
-      axios: 1.18.1
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/resilience': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/openapi-generator@4.7.0':
+  '@sap-cloud-sdk/openapi-generator@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
-      '@sap-cloud-sdk/generator-common': 4.7.0
-      '@sap-cloud-sdk/openapi': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-cloud-sdk/generator-common': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/openapi': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       content-type: 1.0.5
       js-yaml: 4.3.0
       openapi-types: 12.1.3
@@ -5241,30 +5227,30 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-cloud-sdk/openapi@4.7.0':
+  '@sap-cloud-sdk/openapi@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.7.0
-      '@sap-cloud-sdk/http-client': 4.7.0
-      '@sap-cloud-sdk/resilience': 4.7.0
-      '@sap-cloud-sdk/util': 4.7.0
-      axios: 1.18.1
+      '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/resilience': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/resilience@4.7.0':
+  '@sap-cloud-sdk/resilience@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/util': 4.7.0
+      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       async-retry: 1.3.3
-      axios: 1.18.1
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       opossum: 9.0.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/util@4.7.0':
+  '@sap-cloud-sdk/util@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      axios: 1.18.1
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       logform: 2.7.0
       voca: 1.4.1
       winston: 3.19.0
@@ -5277,38 +5263,38 @@ snapshots:
 
   '@sap/cds-dk@10.0.4': {}
 
-  '@sap/cds-fiori@2.3.0(@sap/cds@10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0))))':
+  '@sap/cds-fiori@2.3.0(@sap/cds@10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(supports-color@7.2.0))':
     dependencies:
-      '@sap/cds': 10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)))
+      '@sap/cds': 10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(supports-color@7.2.0)
 
-  '@sap/cds@10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)))':
+  '@sap/cds@10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(supports-color@7.2.0)':
     dependencies:
-      '@eslint/js': 10.0.1(eslint@10.7.0(jiti@2.7.0))
+      '@eslint/js': 10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
       '@sap/cds-compiler': 7.0.1
-      '@sap/cds-fiori': 2.3.0(@sap/cds@10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0))))
-      express: 5.2.1
+      '@sap/cds-fiori': 2.3.0(@sap/cds@10.0.3(@eslint/js@10.0.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(supports-color@7.2.0))
+      express: 5.2.1(supports-color@7.2.0)
       yaml: 2.9.0
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xsenv@6.2.1':
+  '@sap/xsenv@6.2.1(supports-color@7.2.0)':
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       node-cache: 5.1.2
       verror: 1.10.1
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xssec@4.13.0':
+  '@sap/xssec@4.13.0(supports-color@7.2.0)':
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       jwt-decode: 4.0.0
     transitivePeerDependencies:
       - supports-color
 
-  '@sap/xssec@4.13.3':
+  '@sap/xssec@4.13.3(supports-color@7.2.0)':
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       jwt-decode: 4.0.0
     transitivePeerDependencies:
       - supports-color
@@ -5377,10 +5363,10 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stylistic/eslint-plugin@3.1.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))':
+  '@stylistic/eslint-plugin@3.1.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      eslint: 10.7.0(jiti@2.7.0)
+      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
@@ -5446,11 +5432,6 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/jsonwebtoken@9.0.10':
-    dependencies:
-      '@types/ms': 2.1.0
-      '@types/node': 22.20.1
-
   '@types/minimatch@3.0.5': {}
 
   '@types/minimist@1.2.5': {}
@@ -5458,8 +5439,6 @@ snapshots:
   '@types/mock-fs@4.13.4':
     dependencies:
       '@types/node': 22.20.1
-
-  '@types/ms@2.1.0': {}
 
   '@types/node@12.20.55': {}
 
@@ -5490,15 +5469,15 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
-  '@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))':
+  '@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
+      '@typescript-eslint/parser': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       '@typescript-eslint/scope-manager': 8.62.0
-      '@typescript-eslint/type-utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
+      '@typescript-eslint/type-utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       '@typescript-eslint/visitor-keys': 8.62.0
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       ignore: 7.0.6
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(@typescript/typescript6@6.0.2)
@@ -5506,23 +5485,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))':
+  '@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.62.0
       '@typescript-eslint/types': 8.62.0
-      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)
+      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       '@typescript-eslint/visitor-keys': 8.62.0
-      debug: 4.4.3
-      eslint: 10.7.0(jiti@2.7.0)
+      debug: 4.4.3(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.62.0(@typescript/typescript6@6.0.2)':
+  '@typescript-eslint/project-service@8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.62.0(@typescript/typescript6@6.0.2)
       '@typescript-eslint/types': 8.62.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
       - supports-color
@@ -5536,13 +5515,13 @@ snapshots:
     dependencies:
       typescript: '@typescript/typescript6@6.0.2'
 
-  '@typescript-eslint/type-utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))':
+  '@typescript-eslint/type-utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@typescript-eslint/types': 8.62.0
-      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)
-      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      debug: 4.4.3
-      eslint: 10.7.0(jiti@2.7.0)
+      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      debug: 4.4.3(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       ts-api-utils: 2.5.0(@typescript/typescript6@6.0.2)
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
@@ -5550,13 +5529,13 @@ snapshots:
 
   '@typescript-eslint/types@8.62.0': {}
 
-  '@typescript-eslint/typescript-estree@8.62.0(@typescript/typescript6@6.0.2)':
+  '@typescript-eslint/typescript-estree@8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)':
     dependencies:
-      '@typescript-eslint/project-service': 8.62.0(@typescript/typescript6@6.0.2)
+      '@typescript-eslint/project-service': 8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       '@typescript-eslint/tsconfig-utils': 8.62.0(@typescript/typescript6@6.0.2)
       '@typescript-eslint/types': 8.62.0
       '@typescript-eslint/visitor-keys': 8.62.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       minimatch: 10.2.5
       semver: 7.8.5
       tinyglobby: 0.2.17
@@ -5565,13 +5544,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))':
+  '@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@2.7.0))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
       '@typescript-eslint/scope-manager': 8.62.0
       '@typescript-eslint/types': 8.62.0
-      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)
-      eslint: 10.7.0(jiti@2.7.0)
+      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
       - supports-color
@@ -5813,9 +5792,9 @@ snapshots:
 
   acorn@8.17.0: {}
 
-  agent-base@6.0.2:
+  agent-base@6.0.2(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -5893,11 +5872,11 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.18.1:
+  axios@1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
-      follow-redirects: 1.16.0
+      follow-redirects: 1.16.0(debug@4.4.3(supports-color@7.2.0))
       form-data: 4.0.6
-      https-proxy-agent: 5.0.1
+      https-proxy-agent: 5.0.1(supports-color@7.2.0)
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
@@ -5913,11 +5892,11 @@ snapshots:
     dependencies:
       is-windows: 1.0.2
 
-  body-parser@2.3.0:
+  body-parser@2.3.0(supports-color@7.2.0):
     dependencies:
       bytes: 3.1.2
       content-type: 2.0.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       http-errors: 2.0.1
       iconv-lite: 0.7.2
       on-finished: 2.4.1
@@ -6069,9 +6048,11 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug@4.4.3:
+  debug@4.4.3(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
 
   decamelize-keys@1.1.1:
     dependencies:
@@ -6084,15 +6065,15 @@ snapshots:
 
   delayed-stream@1.0.0: {}
 
-  depcheck@1.4.7:
+  depcheck@1.4.7(supports-color@7.2.0):
     dependencies:
       '@babel/parser': 7.29.7
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@7.2.0)
       '@vue/compiler-sfc': 3.5.39
       callsite: 1.0.0
       camelcase: 6.3.0
       cosmiconfig: 7.1.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       deps-regex: 0.2.0
       findup-sync: 5.0.0
       ignore: 5.3.2
@@ -6226,9 +6207,9 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)):
+  eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)):
     dependencies:
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
 
   eslint-formatter-pretty@4.1.0:
     dependencies:
@@ -6248,10 +6229,10 @@ snapshots:
     optionalDependencies:
       unrs-resolver: 1.12.2
 
-  eslint-import-resolver-typescript@4.4.5(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0)):
+  eslint-import-resolver-typescript@4.4.5(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
-      eslint: 10.7.0(jiti@2.7.0)
+      debug: 4.4.3(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       eslint-import-context: 0.1.9(unrs-resolver@1.12.2)
       get-tsconfig: 4.14.0
       is-bun-module: 2.0.0
@@ -6259,16 +6240,16 @@ snapshots:
       tinyglobby: 0.2.17
       unrs-resolver: 1.12.2
     optionalDependencies:
-      eslint-plugin-import-x: 4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0))
+      eslint-plugin-import-x: 4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0)):
+  eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       '@typescript-eslint/types': 8.62.0
       comment-parser: 1.4.7
-      debug: 4.4.3
-      eslint: 10.7.0(jiti@2.7.0)
+      debug: 4.4.3(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       eslint-import-context: 0.1.9(unrs-resolver@1.12.2)
       is-glob: 4.0.3
       minimatch: 10.2.5
@@ -6276,19 +6257,19 @@ snapshots:
       stable-hash-x: 0.2.0
       unrs-resolver: 1.12.2
     optionalDependencies:
-      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
+      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-jsdoc@62.9.0(eslint@10.7.0(jiti@2.7.0)):
+  eslint-plugin-jsdoc@62.9.0(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       '@es-joy/jsdoccomment': 0.86.0
       '@es-joy/resolve.exports': 1.2.0
       are-docs-informative: 0.0.2
       comment-parser: 1.4.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       escape-string-regexp: 4.0.0
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       espree: 11.2.0
       esquery: 1.7.0
       html-entities: 2.6.0
@@ -6300,20 +6281,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0))(prettier@3.9.5):
+  eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(prettier@3.9.5):
     dependencies:
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       prettier: 3.9.5
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.13
     optionalDependencies:
-      eslint-config-prettier: 10.1.8(eslint@10.7.0(jiti@2.7.0))
+      eslint-config-prettier: 10.1.8(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
 
-  eslint-plugin-unused-imports@4.4.1(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(eslint@10.7.0(jiti@2.7.0)):
+  eslint-plugin-unused-imports@4.4.1(@typescript-eslint/eslint-plugin@8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0)):
     dependencies:
-      eslint: 10.7.0(jiti@2.7.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
+      '@typescript-eslint/eslint-plugin': 8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
 
   eslint-rule-docs@1.1.235: {}
 
@@ -6330,11 +6311,11 @@ snapshots:
 
   eslint-visitor-keys@5.0.1: {}
 
-  eslint@10.7.0(jiti@2.7.0):
+  eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@2.7.0))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))
       '@eslint-community/regexpp': 4.12.2
-      '@eslint/config-array': 0.23.5
+      '@eslint/config-array': 0.23.5(supports-color@7.2.0)
       '@eslint/config-helpers': 0.6.0
       '@eslint/core': 1.2.1
       '@eslint/plugin-kit': 0.7.2
@@ -6344,7 +6325,7 @@ snapshots:
       '@types/estree': 1.0.9
       ajv: 6.15.0
       cross-spawn: 7.0.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       escape-string-regexp: 4.0.0
       eslint-scope: 9.1.2
       eslint-visitor-keys: 5.0.1
@@ -6432,25 +6413,25 @@ snapshots:
 
   expect-type@1.4.0: {}
 
-  express-rate-limit@8.5.2(express@5.2.1):
+  express-rate-limit@8.5.2(express@5.2.1(supports-color@7.2.0)):
     dependencies:
-      express: 5.2.1
+      express: 5.2.1(supports-color@7.2.0)
       ip-address: 10.2.0
 
-  express@5.2.1:
+  express@5.2.1(supports-color@7.2.0):
     dependencies:
       accepts: 2.0.0
-      body-parser: 2.3.0
+      body-parser: 2.3.0(supports-color@7.2.0)
       content-disposition: 1.1.0
       content-type: 1.0.5
       cookie: 0.7.2
       cookie-signature: 1.2.2
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       depd: 2.0.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
-      finalhandler: 2.1.1
+      finalhandler: 2.1.1(supports-color@7.2.0)
       fresh: 2.0.0
       http-errors: 2.0.1
       merge-descriptors: 2.0.0
@@ -6461,9 +6442,9 @@ snapshots:
       proxy-addr: 2.0.7
       qs: 6.15.3
       range-parser: 1.3.0
-      router: 2.2.0
-      send: 1.2.1
-      serve-static: 2.2.1
+      router: 2.2.0(supports-color@7.2.0)
+      send: 1.2.1(supports-color@7.2.0)
+      serve-static: 2.2.1(supports-color@7.2.0)
       statuses: 2.0.2
       type-is: 2.1.0
       vary: 1.1.2
@@ -6525,9 +6506,9 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  finalhandler@2.1.1:
+  finalhandler@2.1.1(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
@@ -6567,7 +6548,9 @@ snapshots:
 
   fn.name@1.1.0: {}
 
-  follow-redirects@1.16.0: {}
+  follow-redirects@1.16.0(debug@4.4.3(supports-color@7.2.0)):
+    optionalDependencies:
+      debug: 4.4.3(supports-color@7.2.0)
 
   form-data@4.0.6:
     dependencies:
@@ -6729,10 +6712,10 @@ snapshots:
 
   http2-client@1.3.5: {}
 
-  https-proxy-agent@5.0.1:
+  https-proxy-agent@5.0.1(supports-color@7.2.0):
     dependencies:
-      agent-base: 6.0.2
-      debug: 4.4.3
+      agent-base: 6.0.2(supports-color@7.2.0)
+      debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7280,21 +7263,21 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@8.22.0(@typescript/typescript6@6.0.2)(prettier@3.9.5):
+  orval@8.22.0(@typescript/typescript6@6.0.2)(prettier@3.9.5)(supports-color@7.2.0):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
-      '@orval/angular': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/axios': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/effect': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/hono': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/mcp': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/mock': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/query': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/solid-start': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/swr': 8.22.0(@typescript/typescript6@6.0.2)
-      '@orval/zod': 8.22.0(@typescript/typescript6@6.0.2)
+      '@orval/angular': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/axios': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/core': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/effect': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/fetch': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/hono': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/mcp': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/mock': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/query': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/solid-start': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/swr': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@orval/zod': 8.22.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
       '@scalar/json-magic': 0.12.18
       '@scalar/openapi-parser': 0.28.9
       '@scalar/openapi-types': 0.8.0
@@ -7603,9 +7586,9 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.62.2
       fsevents: 2.3.3
 
-  router@2.2.0:
+  router@2.2.0(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       depd: 2.0.0
       is-promise: 4.0.0
       parseurl: 1.3.3
@@ -7629,9 +7612,9 @@ snapshots:
 
   semver@7.8.5: {}
 
-  send@1.2.1:
+  send@1.2.1(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@7.2.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -7645,12 +7628,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serve-static@2.2.1:
+  serve-static@2.2.1(supports-color@7.2.0):
     dependencies:
       encodeurl: 2.0.0
       escape-html: 1.0.3
       parseurl: 1.3.3
-      send: 1.2.1
+      send: 1.2.1(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7909,13 +7892,13 @@ snapshots:
       typescript: '@typescript/typescript6@6.0.2'
       yaml: 2.9.0
 
-  typescript-eslint@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)):
+  typescript-eslint@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      '@typescript-eslint/parser': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)
-      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0))
-      eslint: 10.7.0(jiti@2.7.0)
+      '@typescript-eslint/eslint-plugin': 8.62.0(@typescript-eslint/parser@8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/parser': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/typescript-estree': 8.62.0(@typescript/typescript6@6.0.2)(supports-color@7.2.0)
+      '@typescript-eslint/utils': 8.62.0(@typescript/typescript6@6.0.2)(eslint@10.7.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint: 10.7.0(jiti@2.7.0)(supports-color@7.2.0)
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
       - supports-color
