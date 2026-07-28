@@ -1360,7 +1360,7 @@ export async function orchestrationReasoningContent(
 
 /**
  * Demonstrates reasoning content support with streaming and Anthropic extended thinking.
- * Logs the delta reasoning content from each chunk.
+ * Iterate over the stream to access delta reasoning content via {@link OrchestrationStreamChunkResponse.getDeltaReasoningContent}.
  * @param controller - The AbortController to cancel the stream.
  * @returns The orchestration stream response.
  */
@@ -1372,7 +1372,7 @@ export async function orchestrationReasoningContentStream(
       model: { name: 'anthropic--claude-4.5-sonnet' }
     }
   });
-  const response = await orchestrationClient.stream(
+  return orchestrationClient.stream(
     {
       messages: [
         { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
@@ -1380,13 +1380,4 @@ export async function orchestrationReasoningContentStream(
     },
     controller.signal
   );
-
-  for await (const chunk of response.stream) {
-    const deltaReasoning = chunk.getDeltaReasoningContent();
-    if (deltaReasoning) {
-      logger.info('Reasoning delta:', deltaReasoning);
-    }
-  }
-
-  return response;
 }

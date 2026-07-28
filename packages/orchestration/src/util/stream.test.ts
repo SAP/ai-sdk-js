@@ -807,5 +807,58 @@ describe('stream-util', () => {
         response._data.final_result?.choices[0].message.reasoning_content
       ).toEqual([{ content: 'final text', signature: 'encryptedSig==' }]);
     });
+
+    it('handles existing blocks count greater than incoming', () => {
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          emptyHttpResponse
+        );
+      response._data = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '',
+                reasoning_content: [
+                  { content: 'block A: ', signature: '' },
+                  { content: 'block B', signature: '' }
+                ]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      };
+
+      const chunk: CompletionPostResponseStreaming = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: '',
+                reasoning_content: [{ content: 'continued', signature: '' }]
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mergeStreamResponse(response, chunk);
+
+      expect(
+        response._data.final_result?.choices[0].message.reasoning_content
+      ).toEqual([
+        { content: 'block A: continued', signature: '' },
+        { content: 'block B', signature: '' }
+      ]);
+    });
   });
 });
