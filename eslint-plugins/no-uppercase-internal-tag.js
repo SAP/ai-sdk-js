@@ -6,14 +6,16 @@ export default {
       create(context) {
         return {
           Program() {
-            for (const comment of context.sourceCode.getAllComments()) {
-              if (comment.value.includes('@Internal')) {
+            context.sourceCode
+              .getAllComments()
+              .filter(comment => comment.value.includes('@Internal'))
+              .forEach(comment =>
                 context.report({
                   loc: comment.loc,
-                  message: 'You are not allowed to use @Internal. Please use @internal.'
-                });
-              }
-            }
+                  message:
+                    'You are not allowed to use @Internal. Please use @internal.'
+                })
+              );
           }
         };
       }

@@ -66,12 +66,11 @@ export function createDestinationTokens(
 export function getMockedAiCoreDestination(
   destination = aiCoreDestination
 ): HttpDestination {
-  const mockedDestination: HttpDestination = {
+  return {
     ...destination,
     authentication: 'OAuth2ClientCredentials',
     ...createDestinationTokens()
   };
-  return mockedDestination;
 }
 
 export function mockClientCredentialsGrantCall(
