@@ -29,7 +29,6 @@ jobs:
     secrets:
       SAP_AI_SDK_BOT_CLIENT_ID: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
       SAP_AI_SDK_BOT_PRIVATE_KEY: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
-      NPM_TOKEN_ARTIFACTORY: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
 
   delegate_to_canary_job:
     if: ${{ github.event_name != 'release' }}
