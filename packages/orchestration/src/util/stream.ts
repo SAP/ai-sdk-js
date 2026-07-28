@@ -223,12 +223,12 @@ function mergeReasoningBlocks(
     return incoming;
   }
 
-  const shared = existing.map((block, i) => ({
-    content: (block.content ?? '') + (incoming[i].content ?? ''),
-    signature: incoming[i].signature || block.signature
+  const shared = incoming.map((block, i) => ({
+    content: (existing[i]?.content ?? '') + (block.content ?? ''),
+    signature: block.signature || existing[i]?.signature
   }));
-  return incoming.length > existing.length
-    ? [...shared, ...incoming.slice(existing.length)]
+  return existing.length > incoming.length
+    ? [...shared, ...existing.slice(incoming.length)]
     : shared;
 }
 
