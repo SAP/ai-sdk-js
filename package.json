@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
-    "test:unit": "pnpm -r '-F=./packages/**' test",
+    "test:unit": "vitest run",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
     "test:smoke": "pnpm smoke-tests test",

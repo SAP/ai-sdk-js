@@ -1,4 +1,4 @@
-import { defineConfig, mergeConfig } from 'vitest/config';
+import { defineProject, mergeConfig } from 'vitest/config';
 import { join } from 'node:path';
 
 const errorWithCauseSerializer = join(
@@ -6,7 +6,7 @@ const errorWithCauseSerializer = join(
   'scripts/vitest-snapshot-serializers.ts'
 );
 
-const baseConfig = defineConfig({
+const baseConfig = defineProject({
   test: {
     globals: true,
     clearMocks: true,
@@ -21,17 +21,12 @@ export const sharedConfig = baseConfig;
 export function definePackageConfig(name: string) {
   return mergeConfig(
     baseConfig,
-    defineConfig({
+    defineProject({
       test: {
         name,
         include: ['src/**/*.test.ts'],
         exclude: ['**/dist/**'],
         globalSetup: ['../../global-test-setup.mjs'],
-        coverage: {
-          provider: 'v8',
-          reporter: ['lcov', 'html'],
-          reportsDirectory: 'coverage',
-        },
       },
     })
   );
