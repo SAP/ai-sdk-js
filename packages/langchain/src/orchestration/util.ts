@@ -243,8 +243,18 @@ export function mapLangChainMessagesToOrchestrationMessages(
   return messages.map(mapBaseMessageToChatMessage);
 }
 
+function messageSupportsCacheControl(message: ChatMessage): boolean {
+  return (
+    message.role === 'system' ||
+    message.role === 'user' ||
+    message.role === 'developer'
+  );
+}
+
 /**
- * Applies a cache breakpoint to the last cacheable block of the last message in place.
+ * Applies a cache breakpoint to the last cacheable block of the last applicable message in place.
+ * Skips tool and assistant messages, as cache_control is not supported on these message types
+ * across all supported model families.
  * @param messages - The orchestration messages to mutate.
  * @param cacheControl - The cache control directive to apply.
  * @internal
@@ -253,49 +263,42 @@ export function applyCacheControlToLastMessage(
   messages: ChatMessage[],
   cacheControl: CacheControl
 ): void {
-  const lastMessage = messages.at(-1);
-  if (!lastMessage) {
+  const idx = messages.findLastIndex(messageSupportsCacheControl);
+  if (idx === -1) {
     return;
   }
+  const message = messages[idx];
 
-  if (typeof lastMessage.content === 'string') {
-    if (
-      lastMessage.role === 'system' ||
-      lastMessage.role === 'tool' ||
-      lastMessage.role === 'developer'
-    ) {
-      (
-        lastMessage as
-          SystemChatMessage | ToolChatMessage | DeveloperChatMessage
-      ).content = [
+  if (typeof message.content === 'string') {
+    if (message.role === 'system' || message.role === 'developer') {
+      (message as SystemChatMessage | DeveloperChatMessage).content = [
         {
           type: 'text',
-          text: lastMessage.content,
+          text: message.content,
           cache_control: cacheControl
         }
       ];
       return;
     }
 
-    if (lastMessage.role === 'user') {
-      (lastMessage as UserChatMessage).content = [
+    if (message.role === 'user') {
+      (message as UserChatMessage).content = [
         {
           type: 'text',
-          text: lastMessage.content,
+          text: message.content,
           cache_control: cacheControl
         }
       ];
     }
-    // Assistant string content has no cacheable block; leave untouched.
     return;
   }
 
-  if (!Array.isArray(lastMessage.content)) {
+  if (!Array.isArray(message.content)) {
     return;
   }
 
-  const isUserMessage = lastMessage.role === 'user';
-  const block = lastMessage.content.findLast(
+  const isUserMessage = message.role === 'user';
+  const block = message.content.findLast(
     b =>
       b &&
       typeof b === 'object' &&

@@ -741,24 +741,82 @@ describe('applyCacheControlToLastMessage', () => {
     });
   });
 
-  it('wraps a string tool message into a text block carrying cache_control', () => {
+  it('applies cache_control to the last user message when the last message is a tool message', () => {
     const messages: ChatMessage[] = [
+      { role: 'user', content: 'Question?' },
       { role: 'tool', content: 'Tool result.', tool_call_id: 'call-1' }
     ];
 
     applyCacheControlToLastMessage(messages, cacheControl);
 
     expect(messages[0]).toEqual({
-      role: 'tool',
-      tool_call_id: 'call-1',
+      role: 'user',
       content: [
-        {
-          type: 'text',
-          text: 'Tool result.',
-          cache_control: cacheControl
-        }
+        { type: 'text', text: 'Question?', cache_control: cacheControl }
       ]
     });
+    expect(messages[1]).toEqual({
+      role: 'tool',
+      content: 'Tool result.',
+      tool_call_id: 'call-1'
+    });
+  });
+
+  it('applies cache_control to the last system message when the last message is a tool message', () => {
+    const messages: ChatMessage[] = [
+      { role: 'system', content: 'You are helpful.' },
+      { role: 'tool', content: 'Tool result.', tool_call_id: 'call-1' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'system',
+      content: [
+        { type: 'text', text: 'You are helpful.', cache_control: cacheControl }
+      ]
+    });
+  });
+
+  it('skips assistant messages when finding the last applicable message', () => {
+    const messages: ChatMessage[] = [
+      { role: 'user', content: 'Call a tool.' },
+      {
+        role: 'assistant',
+        content: '',
+        tool_calls: [
+          {
+            id: 'tc1',
+            type: 'function',
+            function: { name: 'get_data', arguments: '{}' }
+          }
+        ]
+      },
+      { role: 'tool', content: 'the result', tool_call_id: 'tc1' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages[0]).toEqual({
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Call a tool.', cache_control: cacheControl }
+      ]
+    });
+  });
+
+  it('does nothing when all messages are tool messages', () => {
+    const messages: ChatMessage[] = [
+      { role: 'tool', content: 'r1', tool_call_id: 'c1' },
+      { role: 'tool', content: 'r2', tool_call_id: 'c2' }
+    ];
+
+    applyCacheControlToLastMessage(messages, cacheControl);
+
+    expect(messages).toEqual([
+      { role: 'tool', content: 'r1', tool_call_id: 'c1' },
+      { role: 'tool', content: 'r2', tool_call_id: 'c2' }
+    ]);
   });
 
   it('wraps a string developer message into a text block carrying cache_control', () => {
