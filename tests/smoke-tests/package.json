@@ -27,8 +27,8 @@
     "@sap-ai-sdk/sample-code": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "=22.20.1",
-    "dotenv-cli": "=11.0.0",
+    "@types/node": "22.20.1",
+    "dotenv-cli": "11.0.0",
     "vitest": "^4.1.10"
   },
   "engines": {
