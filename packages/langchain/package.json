@@ -21,8 +21,8 @@
       "default": "./dist/index.js"
     },
     "./orchestration/prompt-caching-middleware": {
-      "types": "./dist/orchestration/prompt-caching-middleware.d.ts",
-      "default": "./dist/orchestration/prompt-caching-middleware.js"
+      "types": "./dist/orchestration/prompt-caching-middleware/index.d.ts",
+      "default": "./dist/orchestration/prompt-caching-middleware/index.js"
     },
     "./internal.js": {
       "types": "./dist/internal.d.ts",

@@ -3,7 +3,7 @@ import { AIMessage, HumanMessage } from '@langchain/core/messages';
 import { createAgent } from 'langchain';
 import { AzureOpenAiChatClient } from '../openai/chat.js';
 import { OrchestrationClient } from './client.js';
-import { orchestrationPromptCachingMiddleware } from './prompt-caching-middleware.js';
+import { orchestrationPromptCachingMiddleware } from './prompt-caching-middleware/index.js';
 import type { LanguageModelLike } from '@langchain/core/language_models/base';
 
 function getBindToolsOptions(
