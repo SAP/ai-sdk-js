@@ -26,8 +26,6 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }} # zizmor: ignore[overprovisioned-secrets]
@@ -72,7 +70,7 @@ jobs:
           timeout 10 tail --pid="$JOB_ID" -f /dev/null 2>/dev/null || kill -KILL "$JOB_ID" 2>/dev/null || true
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
-        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        uses: slackapi/slack-github-action@0d95c9a7becc1e6e297d76df9bc735c44f4cbcbc # v3.0.5
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

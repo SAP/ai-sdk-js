@@ -1,5 +1,24 @@
 # @sap-ai-sdk/langchain
 
+## 2.13.0
+
+### Minor Changes
+
+- fafd99e: [feat] Add `cache_control` call option to the LangChain orchestration client.
+  When the `cache_control` option is set, a cache breakpoint is automatically applied to the request.
+
+### Patch Changes
+
+- fafd99e: [feat] Expose `cached_tokens` and `cache_creation_tokens` in `usage_metadata.input_token_details` for LangChain orchestration responses.
+- Updated dependencies [11baf52]
+- Updated dependencies [cb8ffe7]
+- Updated dependencies [a8c9b29]
+- Updated dependencies [6542a2a]
+  - @sap-ai-sdk/core@2.13.0
+  - @sap-ai-sdk/ai-api@2.13.0
+  - @sap-ai-sdk/foundation-models@2.13.0
+  - @sap-ai-sdk/orchestration@2.13.0
+
 ## 2.12.0
 
 ### Patch Changes

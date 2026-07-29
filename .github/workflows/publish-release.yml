@@ -7,8 +7,6 @@ on:
         required: true
       SAP_AI_SDK_BOT_PRIVATE_KEY:
         required: true
-      NPM_TOKEN_ARTIFACTORY:
-        required: true
 
 permissions: {}
 
@@ -36,7 +34,6 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           package-manager-cache: false
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Determine Release Notes PR Branch Name
         id: determine-branch-name
         run: |
@@ -82,7 +79,6 @@ jobs:
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
           package-manager-cache: false
-          registry-url: 'https://registry.npmjs.org'
       - name: publish
         run: |
           pnpm changeset publish

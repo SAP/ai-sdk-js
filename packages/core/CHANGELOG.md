@@ -1,5 +1,15 @@
 # @sap-ai-sdk/core
 
+## 2.13.0
+
+### Minor Changes
+
+- 11baf52: [Improvement] Remove deprecated models `mistralai--mistral-small-instruct` (retirement date: not earlier than 2026-09-30) — use `mistralai--mistral-small` instead, `amazon--nova-premier` (retirement date: 2026-09-10) — use `amazon--nova-lite` (version: 2) instead, `anthropic--claude-3-haiku` (retirement date: 2026-09-10) — use `anthropic--claude-4.5-haiku` instead and `anthropic--claude-4-sonnet` (retirement date: 2026-10-14) — use `anthropic--claude-4.5-sonnet` instead.
+- cb8ffe7: [Improvement] Added `gpt-5.1` to the available model list.
+- a8c9b29: [Improvement] Remove deprecated models `gpt-4.1` (retirement date: 2026-10-14), `gpt-4.1-mini` (retirement date: 2026-10-14), `o3` (retirement date: 2026-10-16) and `o4-mini` (retirement date: 2026-10-16).
+- 6542a2a: [feat] Add `toReadableStream()` method to `SseStream`.
+  The new method converts the asynchronous iterable stream to a pull-based `ReadableStream` of newline-delimited JSON, enabling composable transformations via the Web Streams API `pipeThrough()` pattern with native flow control.
+
 ## 2.12.0
 
 ### Minor Changes

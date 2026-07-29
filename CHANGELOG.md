@@ -28,6 +28,22 @@
 
 -
 
+# 2.13.0
+## New Features
+
+- [core] Add `toReadableStream()` method to `SseStream`.
+  The new method converts the asynchronous iterable stream to a pull-based `ReadableStream` of newline-delimited JSON, enabling composable transformations via the Web Streams API `pipeThrough()` pattern with native flow control. (6542a2a)
+- [langchain] Add `cache_control` call option to the LangChain orchestration client.
+  When the `cache_control` option is set, a cache breakpoint is automatically applied to the request. (fafd99e)
+- [langchain] Expose `cached_tokens` and `cache_creation_tokens` in `usage_metadata.input_token_details` for LangChain orchestration responses. (fafd99e)
+- [openai] Allow setting a model or deployment configuration per request. (fea1c3f)
+
+## Improvements
+
+- [core] Remove deprecated models `mistralai--mistral-small-instruct` (retirement date: not earlier than 2026-09-30) — use `mistralai--mistral-small` instead, `amazon--nova-premier` (retirement date: 2026-09-10) — use `amazon--nova-lite` (version: 2) instead, `anthropic--claude-3-haiku` (retirement date: 2026-09-10) — use `anthropic--claude-4.5-haiku` instead and `anthropic--claude-4-sonnet` (retirement date: 2026-10-14) — use `anthropic--claude-4.5-sonnet` instead. (11baf52)
+- [core] Added `gpt-5.1` to the available model list. (cb8ffe7)
+- [core] Remove deprecated models `gpt-4.1` (retirement date: 2026-10-14), `gpt-4.1-mini` (retirement date: 2026-10-14), `o3` (retirement date: 2026-10-16) and `o4-mini` (retirement date: 2026-10-16). (a8c9b29)
+
 # 2.12.0
 ## New Features
 
