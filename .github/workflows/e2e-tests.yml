@@ -26,8 +26,6 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }} # zizmor: ignore[overprovisioned-secrets]
