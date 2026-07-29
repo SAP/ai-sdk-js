@@ -33,7 +33,7 @@ export class SapResponses {
 
   /**
    * Creates a model response request. The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
-   * @param body - Response request parameters, without `model`.
+   * @param body - Response request parameters.
    * @param options - Optional request options.
    * @returns A promise resolving to a {@link Response}, or a {@link Stream} of {@link ResponseStreamEvent} when `stream: true` is set.
    */
@@ -59,7 +59,7 @@ export class SapResponses {
     options?: RequestOptions
   ): APIPromise<Response | Stream<ResponseStreamEvent>> {
     return this.openAiResponses.create(
-      body satisfies ResponseCreateParamsBase,
+      body as any satisfies ResponseCreateParamsBase,
       options
     );
   }
@@ -67,7 +67,7 @@ export class SapResponses {
   /**
    * Creates a model response request and parses the output into the provided schema.
    * The `model` field is omitted — SAP AI Core routes requests via the deployment URL.
-   * @param body - Response request parameters including tool or schema definitions, without `model`.
+   * @param body - Response request parameters including tool or schema definitions.
    * @param options - Optional request options.
    * @returns A promise resolving to a {@link ParsedResponse} with the parsed output.
    */
@@ -82,7 +82,7 @@ export class SapResponses {
       {
         ...body,
         // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
-        model: body.model || ''
+        model: body.model as any
       } satisfies ResponseCreateParamsWithTools,
       options
     ) as APIPromise<ParsedResponse<ParsedT>>;

@@ -16,6 +16,7 @@ packages:
   - tests/type-tests
 
 allowBuilds:
+  '@swc/core': true
   better-sqlite3: false
   esbuild: false
   unrs-resolver: false
@@ -25,6 +26,9 @@ minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
   - '@sap-cloud-sdk/*'
+  - brace-expansion@2.1.3
+  - js-yaml@4.3.0 || 5.2.2
+  - '@hono/node-server@2.0.12'
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true

@@ -68,4 +68,4 @@ export interface SapOpenAiContext {
 export type WithOptionalModel<T, TModel extends string = string> = Omit<
   T,
   'model'
-> & { model?: TModel };
+> & { model?: ModelDeployment<TModel> };

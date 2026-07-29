@@ -24,7 +24,8 @@ import {
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
-  orchestrationStreamWithFallbackConfigs
+  orchestrationStreamWithFallbackConfigs,
+  orchestrationQwenChatCompletion
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
@@ -331,5 +332,10 @@ describe('orchestration', () => {
     if (citations) {
       expect(Array.isArray(citations)).toBe(true);
     }
+  });
+
+  it('should complete a basic chat with qwen3.6-flash', async () => {
+    const response = await orchestrationQwenChatCompletion('qwen3.6-flash');
+    assertContent(response);
   });
 });

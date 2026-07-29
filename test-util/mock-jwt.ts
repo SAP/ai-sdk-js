@@ -1,5 +1,5 @@
-import { generateKeyPairSync } from 'node:crypto';
-import jwt from 'jsonwebtoken';
+import { createPrivateKey, generateKeyPairSync } from 'node:crypto';
+import { SignJWT } from 'jose';
 
 export const { publicKey, privateKey } = generateKeyPairSync('rsa', {
   modulusLength: 4096,
@@ -13,6 +13,6 @@ export const { publicKey, privateKey } = generateKeyPairSync('rsa', {
   }
 });
 
-export const dummyToken = jwt.sign({ dummy: 'content' }, privateKey, {
-  algorithm: 'RS512'
-});
+export const dummyToken = await new SignJWT({ dummy: 'content' })
+  .setProtectedHeader({ alg: 'RS512' })
+  .sign(createPrivateKey(privateKey));
