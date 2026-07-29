@@ -72,7 +72,7 @@ export class SseStream<Item> implements AsyncIterable<Item> {
     return new SseStream(iterator, controller);
   }
 
-  iterator: () => AsyncIterator<Item>;
+  public iterator: () => AsyncIterator<Item>;
   controller: AbortController;
 
   constructor(
