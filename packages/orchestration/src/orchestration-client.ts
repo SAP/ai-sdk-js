@@ -16,7 +16,6 @@ import {
   isOrchestrationModuleConfigList,
   assertIsOrchestrationModuleConfigList
 } from './orchestration-types.js';
-import type { Xor } from '@sap-cloud-sdk/util';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
@@ -29,7 +28,8 @@ import type {
 import type {
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
-  OrchestrationConfigRef,
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName,
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions,
@@ -52,23 +52,59 @@ const logger = createLogger({
  * create a new `OrchestrationClient` instance with the desired configuration.
  */
 export class OrchestrationClient {
+  /* eslint-disable @typescript-eslint/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
-   * Creates an instance of the orchestration client.
-   * @param config - Orchestration configuration. Can be:
-   * - An `OrchestrationModuleConfig` object for inline configuration
-   * - An `OrchestrationModuleConfigList` array for module fallback (tries each config in order until one succeeds)
-   * - A JSON string obtained from AI Launchpad
-   * - An object of type`OrchestrationConfigRef` to reference a stored configuration by ID or name.
+   * Creates an instance of the orchestration client with a JSON string configuration.
+   * @param config - A JSON string obtained from AI Launchpad.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
+    config: string,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client with an inline module configuration.
+   * @param config - A single orchestration module configuration or a list for module fallback (tries each config in order until one succeeds).
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client referencing a stored configuration by its unique ID.
+   * @param configRef - An object with the configuration `id`.
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    configRef: OrchestrationConfigRefById,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client referencing a stored configuration by scenario, name and version.
+   * @param configRef - An object with `scenario`, `name`, and `version`.
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    configRef: OrchestrationConfigRefByName,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /* eslint-enable @typescript-eslint/unified-signatures */
+  constructor(
     private config:
       | string
-      | Xor<
-          OrchestrationConfigRef,
-          OrchestrationModuleConfig | OrchestrationModuleConfigList
-        >,
+      | OrchestrationConfigRefById
+      | OrchestrationConfigRefByName
+      | OrchestrationModuleConfig
+      | OrchestrationModuleConfigList,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
   ) {

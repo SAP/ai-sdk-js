@@ -270,36 +270,42 @@ export type OrchestrationModuleConfigList = [
 ];
 
 /**
- * Reference to an orchestration configuration created via the Prompt Registry API.
- * Use this to reference a pre-configured orchestration setup without
- * defining the full configuration in code. The configuration must be
- * created via the Prompt Registry API before it can be referenced.
- * Reference by ID.
+ * Reference to an orchestration configuration by its unique ID.
  * @example
- * const configRef: OrchestrationConfigRef = {
+ * const configRef: OrchestrationConfigRefById = {
  *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
  * };
- * Reference by scenario, name and version.
+ */
+export interface OrchestrationConfigRefById {
+  /** Orchestration configuration ID. */
+  id: string;
+}
+
+/**
+ * Reference to an orchestration configuration by scenario, name and version.
  * @example
- * const configRef: OrchestrationConfigRef = {
+ * const configRef: OrchestrationConfigRefByName = {
  *   scenario: 'customer-support',
  *   name: 'example-orchestration-config',
  *   version: '0.0.1'
  * };
  */
+export interface OrchestrationConfigRefByName {
+  /** Scenario identifier. */
+  scenario: string;
+  /** Configuration name. */
+  name: string;
+  /** Configuration version. */
+  version: string;
+}
+
+/**
+ * Reference to an orchestration configuration created via the Prompt Registry API.
+ * @deprecated - Use {@link OrchestrationConfigRefById} or {@link OrchestrationConfigRefByName} instead.
+ */
 export type OrchestrationConfigRef = Xor<
-  {
-    /** Orchestration configuration ID. */
-    id: string;
-  },
-  {
-    /** Scenario identifier. */
-    scenario: string;
-    /** Configuration name. */
-    name: string;
-    /** Configuration version. */
-    version: string;
-  }
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName
 >;
 
 /**
@@ -312,8 +318,9 @@ export function isConfigReference(
     | OrchestrationModuleConfig
     | OrchestrationModuleConfigList
     | string
-    | OrchestrationConfigRef
-): config is OrchestrationConfigRef {
+    | OrchestrationConfigRefById
+    | OrchestrationConfigRefByName
+): config is OrchestrationConfigRefById | OrchestrationConfigRefByName {
   return (
     typeof config === 'object' &&
     !Array.isArray(config) &&
@@ -333,7 +340,8 @@ export function assertIsOrchestrationModuleConfigList(
     | OrchestrationModuleConfig
     | OrchestrationModuleConfigList
     | string
-    | OrchestrationConfigRef
+    | OrchestrationConfigRefById
+    | OrchestrationConfigRefByName
 ): asserts config is OrchestrationModuleConfigList {
   if (!Array.isArray(config)) {
     throw new TypeError('Configuration must be an array for module fallback.');
@@ -370,7 +378,8 @@ export function isOrchestrationModuleConfigList(
     | OrchestrationModuleConfig
     | OrchestrationModuleConfigList
     | string
-    | OrchestrationConfigRef
+    | OrchestrationConfigRefById
+    | OrchestrationConfigRefByName
 ): config is OrchestrationModuleConfigList {
   try {
     assertIsOrchestrationModuleConfigList(config);

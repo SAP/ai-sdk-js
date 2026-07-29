@@ -4,7 +4,8 @@ import {
   type StreamOptions,
   type BaseStreamOptions,
   type ModuleStreamOptions,
-  type OrchestrationConfigRef,
+  type OrchestrationConfigRefById,
+  type OrchestrationConfigRefByName,
   type OrchestrationModuleConfig,
   type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
@@ -62,7 +63,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
  * @internal
  */
 export function constructCompletionPostRequestFromConfigReference(
-  configRef: OrchestrationConfigRef,
+  configRef: OrchestrationConfigRefById | OrchestrationConfigRefByName,
   request?: ChatCompletionRequest
 ):
   | CompletionRequestConfigurationReferenceById
