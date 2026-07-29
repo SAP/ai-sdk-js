@@ -22,9 +22,22 @@
     ],
     "minimumReleaseAge": "4 days",
     "timezone": "Europe/Berlin",
+    "customManagers": [
+        {
+            "customType": "regex",
+            "description": "Update PNPM_VERSION env var in workflow files",
+            "managerFilePatterns": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+            "matchStrings": [
+                "PNPM_VERSION:\\s*(?<currentValue>[^\\s]+)"
+            ],
+            "depNameTemplate": "pnpm/pnpm",
+            "datasourceTemplate": "github-releases",
+            "extractVersionTemplate": "^v?(?<version>.*)$"
+        }
+    ],
     "packageRules": [
         {
-            "matchManagers": ["github-actions"],
+            "matchManagers": ["github-actions", "custom.regex"],
             "schedule": ["every weekend"]
         },
         {
