@@ -23,7 +23,6 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ matrix.node-version }}
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       # type-check can run in parallel to unit tests
       - name: Type Tests
         id: test-type
@@ -34,13 +33,13 @@ jobs:
         # Sonar only runs iff on first job (0) and the token is available (not on forks)
         if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}
         env:
-          HAS_SONAR_TOKEN: ${{ secrets.SONAR_TOKEN == '' && 'false' || 'true' }}
+          HAS_SONAR_TOKEN: ${{ case(secrets.SONAR_TOKEN == '', 'false', 'true') }}
         run: git fetch --unshallow origin main
       - name: SonarQube Scan
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e # v8.2.0
+        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
       - name: Wait for type tests
         wait: test-type
 
@@ -50,8 +49,6 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Enforce generated code is up to date
         shell: bash
         run: |
@@ -87,20 +84,10 @@ jobs:
             run: pnpm doc
       - wait-all:
 
-  npm-install:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-url: 'https://registry.npmjs.org'
-          skip-build: 'true'
-
   dependabot:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
-    needs: [test, checks, npm-install]
+    needs: [test, checks]
     permissions:
       pull-requests: write
       contents: write
