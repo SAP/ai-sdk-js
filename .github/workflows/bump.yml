@@ -24,7 +24,6 @@ jobs:
           pnpm-version: ''
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: true
       - name: Bump version
         id: bump
@@ -67,7 +66,6 @@ jobs:
         with:
           pnpm-version: ''
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
       - name: Fetch full commit history (blobless)
         run: git fetch --filter=blob:none --unshallow
 

@@ -11,10 +11,10 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "express": "^5.2.1",
     "@sap/xssec": "^4.13.3",
-    "@sap/cds": "^10.0.3"
+    "@sap/cds": "^10.0.4"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^10.0.4"
+    "@sap/cds-dk": "^10.0.5"
   },
   "scripts": {
     "prebuild": "rm -rf dist",
@@ -26,8 +26,8 @@
     "start": "npx cds-serve",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
-    "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
+    "lint": "oxlint && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
+    "lint:fix": "oxlint --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "cds": {
     "requires": {
