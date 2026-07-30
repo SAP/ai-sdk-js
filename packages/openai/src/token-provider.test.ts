@@ -27,7 +27,7 @@ describe('createTokenProvider', () => {
   });
 
   it('throws when no auth tokens are available on the destination', async () => {
-    registerDestination({
+    await registerDestination({
       name: 'no-token-dest',
       url: 'https://api.ai.ml.hana.ondemand.com'
     });
@@ -44,7 +44,7 @@ describe('createTokenProvider', () => {
 
   it('passes the destination to getAiCoreDestination', async () => {
     const customToken = 'custom-token-value';
-    registerDestination({
+    await registerDestination({
       name: 'custom-dest',
       url: 'https://custom.example.com',
       ...createDestinationTokens(customToken)
