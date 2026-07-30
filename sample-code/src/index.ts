@@ -5,7 +5,6 @@ export {
   computeEmbedding,
   chatCompletionWithDestination,
   chatCompletionWithFunctionCall
-  // eslint-disable-next-line import-x/no-internal-modules
 } from './foundation-models/azure-openai.ts';
 export {
   orchestrationChatCompletion,
@@ -61,13 +60,8 @@ export {
   createDeployment,
   stopDeployments,
   deleteDeployments
-  // eslint-disable-next-line import-x/no-internal-modules
 } from './ai-api/deployment-api.ts';
-export {
-  getScenarios,
-  getModelsInScenario
-  // eslint-disable-next-line import-x/no-internal-modules
-} from './ai-api/scenario-api.ts';
+export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
 
 export {
   createCollection,

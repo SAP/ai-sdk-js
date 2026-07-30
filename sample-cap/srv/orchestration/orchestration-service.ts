@@ -1,7 +1,7 @@
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 export default class OrchestrationService {
-  async chatCompletion(req: any) {
+  async chatCompletion(req: any): Promise<string | null | undefined> {
     const { template, placeholderValues } = req.data;
     const model = {
       name: 'gpt-5'
@@ -38,7 +38,7 @@ export default class OrchestrationService {
  *   param1: 'value1'
  * }
  * ```
- * @param inputParams - Array of `PlaceholderValue` entity.
+ * @param placeholderValues - Array of `PlaceholderValue` entity.
  * @returns Mapped placeholder values for orchestration service.
  */
 function mapPlaceholderValues(

@@ -73,7 +73,9 @@ async function adjustForGitHubPages(docPath: string) {
 
 /**
  * Decompresses Base64-encoded deflate compressed data and parses it into a JSON object.
- * @link https://github.com/TypeStrong/typedoc/blob/82449253188582f6b63695fecf608d9887ba1761/src/lib/output/themes/default/assets/typedoc/utils/decompress.ts
+ * @see https://github.com/TypeStrong/typedoc/blob/82449253188582f6b63695fecf608d9887ba1761/src/lib/output/themes/default/assets/typedoc/utils/decompress.ts
+ * @param base64 - Base64-encoded deflate compressed string.
+ * @returns Parsed JSON object.
  */
 async function decompressJson(base64: string) {
   const buffer = Buffer.from(base64, 'base64');
@@ -83,7 +85,9 @@ async function decompressJson(base64: string) {
 
 /**
  * Compresses a JSON-serializable object into a Base64-encoded deflate string.
- * @link https://github.com/TypeStrong/typedoc/blob/82449253188582f6b63695fecf608d9887ba1761/src/lib/utils/compress.ts
+ * @see https://github.com/TypeStrong/typedoc/blob/82449253188582f6b63695fecf608d9887ba1761/src/lib/utils/compress.ts
+ * @param data - JSON-serializable object to compress.
+ * @returns Base64-encoded deflate-compressed string.
  */
 async function compressJson(data: any) {
   const gz = await deflateP(Buffer.from(JSON.stringify(data)));
@@ -184,7 +188,7 @@ async function generateDocs() {
     cwd: resolve()
   });
   validateLogs(generationLogs.stdout);
-  
+
   const docPath = await getDocPath();
   await adjustForGitHubPages(docPath);
   await insertCopyright(docPath);
@@ -195,4 +199,4 @@ process.on('unhandledRejection', reason => {
   process.exit(1);
 });
 
-generateDocs();
+await generateDocs();

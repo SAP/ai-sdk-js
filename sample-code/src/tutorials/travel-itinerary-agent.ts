@@ -1,6 +1,6 @@
 // NOTE: ALL code changes in this file MUST be reflected in the documentation portal.
 
-/* eslint-disable no-console, import-x/no-internal-modules*/
+/* eslint-disable no-console */
 import {
   StateGraph,
   MessagesAnnotation,
