@@ -249,9 +249,10 @@ describe('OrchestrationStreamResponse', () => {
         }
       });
 
-      expect(streamResponse.getReasoningContent()).toBe(
-        'Step 1: analyze the problem. '
-      );
+      expect(streamResponse.getReasoningContent()).toEqual([
+        'Step 1: analyze the problem.',
+        ''
+      ]);
     });
 
     it('should return undefined when no thinking present', () => {

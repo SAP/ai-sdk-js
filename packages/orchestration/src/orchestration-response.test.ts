@@ -142,9 +142,10 @@ describe('OrchestrationResponse', () => {
       data: localMockResponse
     });
 
-    expect(localOrchestrationResponse.getReasoningContent()).toBe(
-      'Let me think about this... '
-    );
+    expect(localOrchestrationResponse.getReasoningContent()).toEqual([
+      'Let me think about this...',
+      ''
+    ]);
   });
 
   it('should return undefined reasoning content when not present', () => {

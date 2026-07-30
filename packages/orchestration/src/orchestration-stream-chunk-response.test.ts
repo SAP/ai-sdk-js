@@ -178,9 +178,9 @@ describe('Orchestration chat completion stream chunk response', () => {
         }
       });
 
-      expect(chunkWithThinking.getDeltaReasoningContent()).toBe(
+      expect(chunkWithThinking.getDeltaReasoningContent()).toEqual([
         'Let me reason...'
-      );
+      ]);
     });
 
     it('should return undefined when no reasoning blocks in delta', () => {
