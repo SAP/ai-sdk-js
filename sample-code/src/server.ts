@@ -46,7 +46,8 @@ import {
   orchestrationSapAbapChatCompletion,
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
-  orchestrationCacheControl
+  orchestrationCacheControl,
+  orchestrationReasoningContent
 } from './orchestration.js';
 import {
   getDeployments,
@@ -472,7 +473,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       sapAbap: orchestrationSapAbapChatCompletion,
       fallbackModules: orchestrationWithFallbackConfigs,
       sonarWithCitations: orchestrationSonarWithCitations,
-      cacheControl: orchestrationCacheControl
+      cacheControl: orchestrationCacheControl,
+      reasoningContent: orchestrationReasoningContent
     }[sampleCase] || orchestrationChatCompletion;
 
   try {

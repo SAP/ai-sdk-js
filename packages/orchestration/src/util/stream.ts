@@ -223,13 +223,18 @@ function mergeReasoningBlocks(
     return incoming;
   }
 
-  const shared = incoming.map((block, i) => ({
-    content: (existing[i]?.content ?? '') + (block.content ?? ''),
-    signature: block.signature || existing[i]?.signature
+  const minLength = Math.min(existing.length, incoming.length);
+  const shared = incoming.slice(0, minLength).map((block, i) => ({
+    content: (existing[i].content ?? '') + (block.content ?? ''),
+    signature: block.signature || existing[i].signature
   }));
-  return existing.length > incoming.length
-    ? [...shared, ...existing.slice(incoming.length)]
-    : shared;
+  if (incoming.length > existing.length) {
+    return [...shared, ...incoming.slice(minLength)];
+  }
+  if (existing.length > incoming.length) {
+    return [...shared, ...existing.slice(minLength)];
+  }
+  return shared;
 }
 
 function mergeLogProbs(
