@@ -1,5 +1,4 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
 import { isOrchestrationModuleConfigList } from '../orchestration-types.ts';
 import {
   addStreamOptions,
