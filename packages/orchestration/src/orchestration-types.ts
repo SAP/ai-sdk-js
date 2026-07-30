@@ -301,7 +301,7 @@ export interface OrchestrationConfigRefByName {
 
 /**
  * Reference to an orchestration configuration created via the Prompt Registry API.
- * @deprecated - Use {@link OrchestrationConfigRefById} or {@link OrchestrationConfigRefByName} instead.
+ * @deprecated Use {@link OrchestrationConfigRefById} or {@link OrchestrationConfigRefByName} instead.
  */
 export type OrchestrationConfigRef = Xor<
   OrchestrationConfigRefById,
