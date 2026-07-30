@@ -1,17 +1,14 @@
-import { jest, describe, it, expect } from '@jest/globals';
 import { Embeddings } from 'openai/resources/embeddings';
 import { SapEmbeddings } from './embeddings.js';
 import type { OpenAI } from 'openai';
 
-const mockCreate = jest.fn<any>().mockResolvedValue({
+const mockCreate = vi.fn<any>().mockResolvedValue({
   data: [],
   model: '',
   usage: { prompt_tokens: 0, total_tokens: 0 }
 });
 
-jest
-  .spyOn(Embeddings.prototype, 'create')
-  .mockImplementation(mockCreate as any);
+vi.spyOn(Embeddings.prototype, 'create').mockImplementation(mockCreate as any);
 
 const fakeClient = {} as OpenAI;
 const embeddings = new SapEmbeddings(fakeClient);
