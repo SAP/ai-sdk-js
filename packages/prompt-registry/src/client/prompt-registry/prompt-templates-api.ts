@@ -21,7 +21,7 @@ export const PromptTemplatesApi = {
   _defaultBasePath: undefined,
   /**
    * List prompt templates
-   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, includeSpec.
+   * @param queryParameters - Object containing the following keys: scenario, name, version, retrieve, includeSpec, $top, $skip.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -32,6 +32,8 @@ export const PromptTemplatesApi = {
       version?: string;
       retrieve?: string;
       includeSpec?: boolean;
+      $top?: number;
+      $skip?: number;
     },
     headerParameters?: {
       'AI-Resource-Group'?: string;
@@ -78,6 +80,7 @@ export const PromptTemplatesApi = {
    * @param version - Path parameter.
    * @param name - Path parameter.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
+   * @param queryParameters - Object containing the following keys: $top, $skip.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   listPromptTemplateHistory: (
@@ -87,14 +90,16 @@ export const PromptTemplatesApi = {
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
-    }
+    },
+    queryParameters?: { $top?: number; $skip?: number }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
       '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
       {
         pathParameters: { scenario, version, name },
-        headerParameters
+        headerParameters,
+        queryParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),

@@ -22,8 +22,8 @@
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "cleanup-deployments": "tsx ./src/utils/cleanup-deployments.ts",
-    "lint": "eslint . && oxfmt --check .",
-    "lint:fix": "eslint . --fix && oxfmt ."
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "devDependencies": {
     "@types/async-retry": "^1.4.9",

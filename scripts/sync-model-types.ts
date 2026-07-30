@@ -45,7 +45,11 @@ const MODEL_TYPES_PATH = resolve(
 // Add model names here when a model has been intentionally removed from the type hints.
 const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4o-mini',    // Same reason
+  'gpt-4o-mini',    // Intentionally removed — deprecated despite having a non-deprecated row
+  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14
+  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14
+  'o3',             // Intentionally removed — retiring 2026-10-16
+  'o4-mini',        // Intentionally removed — retiring 2026-10-16
   'gpt-realtime',   // WebSocket-based, not a standard chat completion model
   'gpt-5.3-codex',  // Responses API only, not a standard chat completion model
   'cohere-reranker' // Re-ranker model, not a chat/embedding model
@@ -76,7 +80,8 @@ const EXECUTABLE_ID_TO_TYPE: Record<string, string> = {
 // Embedding overrides: if model name contains 'embed', remap to embedding type.
 const EMBEDDING_TYPE_MAP: Record<string, string> = {
   AzureOpenAiChatModel: 'AzureOpenAiEmbeddingModel',
-  AwsBedrockChatModel: 'AwsBedrockEmbeddingModel'
+  AwsBedrockChatModel: 'AwsBedrockEmbeddingModel',
+  GcpVertexAiChatModel: 'GcpVertexAiEmbeddingModel'
 };
 
 // Per-model type overrides for models whose executableId is missing in SAP Notes.

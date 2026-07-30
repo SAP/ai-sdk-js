@@ -34,8 +34,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint \"**/*.ts\" && oxfmt --check .",
-    "lint:fix": "eslint \"**/*.ts\" --fix && oxfmt ."
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^4.7.0",
