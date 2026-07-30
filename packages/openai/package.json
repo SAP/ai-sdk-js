@@ -39,7 +39,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."
   },
@@ -53,6 +53,7 @@
     "openai": "^6.49.0"
   },
   "devDependencies": {
-    "openai": "^6.49.0"
+    "openai": "^6.49.0",
+    "vitest": "^4.1.10"
   }
 }

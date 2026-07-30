@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "pnpm generate:azure-openai",
@@ -47,5 +47,8 @@
     "@sap-cloud-sdk/connectivity": "^4.7.0",
     "@sap-cloud-sdk/http-client": "^4.7.0",
     "@sap-cloud-sdk/util": "^4.7.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }

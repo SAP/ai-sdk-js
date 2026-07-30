@@ -1,15 +1,12 @@
-import { jest, describe, it, expect } from '@jest/globals';
 import { Completions } from 'openai/resources/chat/completions/completions';
 import { SapCompletions } from './completions.js';
 import type { OpenAI } from 'openai';
 
-const mockCreate = jest.fn<any>().mockResolvedValue({ choices: [] });
-const mockParse = jest.fn<any>().mockResolvedValue({ choices: [] });
+const mockCreate = vi.fn<any>().mockResolvedValue({ choices: [] });
+const mockParse = vi.fn<any>().mockResolvedValue({ choices: [] });
 
-jest
-  .spyOn(Completions.prototype, 'create')
-  .mockImplementation(mockCreate as any);
-jest.spyOn(Completions.prototype, 'parse').mockImplementation(mockParse as any);
+vi.spyOn(Completions.prototype, 'create').mockImplementation(mockCreate as any);
+vi.spyOn(Completions.prototype, 'parse').mockImplementation(mockParse as any);
 
 const fakeClient = {} as OpenAI;
 const completions = new SapCompletions(fakeClient);

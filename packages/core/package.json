@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "compile": "tsc",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."
   },
@@ -42,5 +42,8 @@
     "@sap-cloud-sdk/http-client": "^4.7.0",
     "@sap-cloud-sdk/openapi": "^4.7.0",
     "@sap-cloud-sdk/util": "^4.7.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }
