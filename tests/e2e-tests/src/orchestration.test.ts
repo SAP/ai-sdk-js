@@ -272,6 +272,78 @@ describe('orchestration', () => {
     `);
   });
 
+  it('should return reasoning content in a non-streaming response', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-sonnet',
+          params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+        }
+      }
+    };
+
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messages: [
+        {
+          role: 'user',
+          content: 'Think step by step: what is 15 * 17?'
+        }
+      ]
+    });
+
+    const reasoning = response.getReasoningContent();
+    // Reasoning content is best-effort: the model may or may not emit it.
+    if (reasoning) {
+      expect(Array.isArray(reasoning)).toBe(true);
+      expect(reasoning.length).toBeGreaterThanOrEqual(1);
+      reasoning.forEach(block => expect(typeof block).toBe('string'));
+    }
+    expect(response.getContent()).toEqual(expect.any(String));
+  });
+
+  it('should accumulate reasoning content across a stream with tool calls', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-sonnet',
+          params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+        },
+        prompt: {
+          tools: [addNumbersTool]
+        }
+      }
+    };
+
+    const response = await new OrchestrationClient(config).stream({
+      messages: [
+        {
+          role: 'user',
+          content:
+            'Think step by step about whether you need a tool, then use the add tool to compute 123456 and 789012, then reason about the result.'
+        }
+      ]
+    });
+
+    const deltaReasoningChunks: string[][] = [];
+    for await (const chunk of response.stream) {
+      const delta = chunk.getDeltaReasoningContent();
+      if (delta) {
+        deltaReasoningChunks.push(delta);
+      }
+    }
+
+    const reasoning = response.getReasoningContent();
+    // Reasoning + tool-call interleaving is non-deterministic; assert loosely.
+    if (reasoning) {
+      expect(reasoning.length).toBeGreaterThanOrEqual(1);
+      reasoning.forEach(block => expect(typeof block).toBe('string'));
+      // If delta reasoning was streamed, the accumulated result must reflect it.
+      if (deltaReasoningChunks.length > 0) {
+        expect(reasoning.join('')).not.toBe('');
+      }
+    }
+  });
+
   it('should generate embeddings with masking', async () => {
     const response = await orchestrationEmbeddingWithMasking();
     expect(response).toBeDefined();

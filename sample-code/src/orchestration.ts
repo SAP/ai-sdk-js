@@ -1332,7 +1332,11 @@ export async function orchestrationReasoningContent(
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'anthropic--claude-4.5-sonnet' }
+      model: {
+        name: 'anthropic--claude-4.5-sonnet',
+        // Extended thinking must be explicitly enabled to receive reasoning content.
+        params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+      }
     }
   });
 
@@ -1368,7 +1372,11 @@ export async function orchestrationReasoningContentStream(
 ): Promise<void> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      model: { name: 'anthropic--claude-4.5-sonnet' }
+      model: {
+        name: 'anthropic--claude-4.5-sonnet',
+        // Extended thinking must be explicitly enabled to receive reasoning content.
+        params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+      }
     }
   });
   const response = await orchestrationClient.stream(
