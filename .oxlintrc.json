@@ -303,8 +303,7 @@
         "sample-code/src/support-bot/**/*"
       ],
       "rules": {
-        "no-console": "off",
-        "jsdoc/require-jsdoc": "off"
+        "no-console": "off"
       }
     }
   ]

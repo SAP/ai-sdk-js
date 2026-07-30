@@ -142,11 +142,46 @@ const ALLOWED_GITHUB_TOOLS = new Set([
   'github__get_file_contents'
 ]);
 
+// SEC-3: restrict GitHub MCP to SAP/ai-sdk-js only — any call targeting another repo is blocked
+function assertAllowedRepo(
+  toolName: string,
+  args: Record<string, unknown>
+): void {
+  if (
+    toolName === 'github__search_issues' ||
+    toolName === 'github__search_code'
+  ) {
+    const q = ((args.q as string) ?? '').toLowerCase();
+    const repoQualifiers = [...q.matchAll(/(?:^|\s)repo:([^\s]+)/g)].map(
+      m => m[1]
+    );
+    const orgQualifiers = [...q.matchAll(/(?:^|\s)(?:org|user):([^\s]+)/g)];
+    if (orgQualifiers.length > 0) {
+      throw new Error('Restricted: org:/user: qualifiers are not allowed');
+    }
+    if (
+      repoQualifiers.length === 0 ||
+      repoQualifiers.some(r => r !== 'sap/ai-sdk-js')
+    ) {
+      throw new Error('Restricted: query must only target repo:SAP/ai-sdk-js');
+    }
+    return;
+  }
+  const owner = (args.owner as string | undefined)?.toLowerCase();
+  const repo = (args.repo as string | undefined)?.toLowerCase();
+  if (owner && repo && !(owner === 'sap' && repo === 'ai-sdk-js')) {
+    throw new Error(
+      `Restricted: only SAP/ai-sdk-js is accessible, got ${owner}/${repo}`
+    );
+  }
+}
+
 export async function initAgent(): Promise<void> {
   const mcpTools = await mcpClient.getTools();
 
   tools = mcpTools.filter(
-    t => t.name.startsWith('context7__') || ALLOWED_GITHUB_TOOLS.has(t.name)
+    (t: StructuredToolInterface) =>
+      t.name.startsWith('context7__') || ALLOWED_GITHUB_TOOLS.has(t.name)
   );
   modelWithTools = model.bindTools(tools);
 
@@ -196,6 +231,9 @@ export async function askBot(title: string, body?: string): Promise<string> {
           });
         }
         try {
+          if (tc.name.startsWith('github__')) {
+            assertAllowedRepo(tc.name, tc.args as Record<string, unknown>);
+          }
           const raw = await tool.invoke(tc.args);
           return new ToolMessage({
             content: truncateToolResult(raw, tc.name),
