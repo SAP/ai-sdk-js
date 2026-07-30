@@ -55,24 +55,13 @@ const logger = createLogger({
 export class OrchestrationClient {
   /* eslint-disable @typescript-eslint/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
-   * Creates an instance of the orchestration client with a JSON string configuration.
-   * @param config - A JSON string obtained from AI Launchpad.
-   * @param deploymentConfig - Deployment configuration.
-   * @param destination - The destination to use for the request.
-   */
-  constructor(
-    config: string,
-    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
-    destination?: HttpDestinationOrFetchOptions
-  );
-  /**
    * Creates an instance of the orchestration client with an inline module configuration.
-   * @param config - A single orchestration module configuration or a list for module fallback (tries each config in order until one succeeds).
+   * @param config - A single orchestration module configuration.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
-    config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
+    config: OrchestrationModuleConfig,
     deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     destination?: HttpDestinationOrFetchOptions
   );
@@ -95,6 +84,28 @@ export class OrchestrationClient {
    */
   constructor(
     configRef: OrchestrationConfigRefByName,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client with a JSON string configuration.
+   * @param config - A JSON string obtained from AI Launchpad.
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    config: string,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client with an inline module configuration.
+   * @param config - A list for module fallback (tries each config in order until one succeeds).
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    configs: OrchestrationModuleConfigList,
     deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     destination?: HttpDestinationOrFetchOptions
   );
