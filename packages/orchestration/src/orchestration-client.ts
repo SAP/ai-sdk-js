@@ -16,6 +16,7 @@ import {
   isOrchestrationModuleConfigList,
   assertIsOrchestrationModuleConfigList
 } from './orchestration-types.js';
+import type { Xor } from '@sap-cloud-sdk/util';
 import type { TemplatingChatMessage } from './client/api/schema/index.js';
 import type {
   HttpResponse,
@@ -101,9 +102,7 @@ export class OrchestrationClient {
   constructor(
     private config:
       | string
-      | OrchestrationConfigRefById
-      | OrchestrationConfigRefByName
-      | OrchestrationModuleConfig
+      | Xor<OrchestrationConfigRefById, Xor<OrchestrationConfigRefByName, OrchestrationModuleConfig>>
       | OrchestrationModuleConfigList,
     private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     private destination?: HttpDestinationOrFetchOptions
