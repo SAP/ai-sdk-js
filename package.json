@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
-    "test:unit": "pnpm -r '-F=./packages/**' test",
+    "test:unit": "vitest run",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
     "test:smoke": "pnpm smoke-tests test",
@@ -38,7 +38,6 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
-    "@jest/globals": "^30.4.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -48,13 +47,10 @@
     "@sap-cloud-sdk/http-client": "^4.7.0",
     "@sap-cloud-sdk/openapi-generator": "^4.7.0",
     "@sap-cloud-sdk/util": "^4.7.0",
-    "@swc/core": "1.15.46",
-    "@swc/jest": "^0.2.39",
-    "@types/jest": "^30.0.0",
     "@types/mock-fs": "^4.13.4",
     "@types/node": "^22.20.1",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "jest": "^30.4.2",
+    "@vitest/coverage-v8": "4.1.10",
     "jose": "6.2.4",
     "knip": "^6.29.0",
     "mock-fs": "^5.5.0",
@@ -66,6 +62,7 @@
     "tsx": "^4.23.1",
     "typedoc": "^0.28.20",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "^4.1.10",
     "zod": "^4.4.3"
   }
 }

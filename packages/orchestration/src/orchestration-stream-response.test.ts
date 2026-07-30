@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
 import { parseMockResponse } from '../../../test-util/mock-http.js';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
@@ -93,7 +92,7 @@ describe('OrchestrationStreamResponse', () => {
         package: 'orchestration',
         messageContext: 'orchestration-stream-response'
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       new OrchestrationStreamResponse();
 
@@ -112,7 +111,7 @@ describe('OrchestrationStreamResponse', () => {
   });
 
   describe('getFinishReason', () => {
-    beforeEach(closeStream);
+    beforeEach(() => closeStream());
 
     it('should return finish reason for default index', () => {
       expect(streamResponse.getFinishReason()).toBe('stop');

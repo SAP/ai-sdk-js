@@ -3,12 +3,14 @@ import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { parseEnv } from 'node:util';
+import type { ChildProcess } from 'node:child_process';
 
 const port = process.env.SMOKE_TEST_PORT ?? '8080';
 const timeout = 30_000;
 const envFile = resolve(import.meta.dirname, '..', '.env');
+let smokeTestServer: ChildProcess | undefined;
 
-export default async function setup(): Promise<void> {
+export async function setup(): Promise<void> {
   if (process.env.SMOKE_TEST_URL || process.env.CI) {
     return;
   }
@@ -37,7 +39,7 @@ export default async function setup(): Promise<void> {
     throw new Error('Failed to spawn server');
   }
 
-  (globalThis as any).__SMOKE_TEST_SERVER__ = server;
+  smokeTestServer = server;
 
   const {
     promise: serverPromise,
@@ -60,9 +62,16 @@ export default async function setup(): Promise<void> {
   server.stderr.on('data', (data: Buffer) => console.error(data.toString()));
   server.on('error', reject);
 
-  // Wait for the server to start before proceeding with the tests
   await serverPromise;
 
   process.env.SMOKE_TEST_URL = `http://localhost:${port}`;
   console.log(`Smoke test server running at ${process.env.SMOKE_TEST_URL}`);
+}
+
+export async function teardown(): Promise<void> {
+  const server = smokeTestServer;
+  if (server) {
+    server.kill();
+    smokeTestServer = undefined;
+  }
 }
