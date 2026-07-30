@@ -1,5 +1,4 @@
 import nock from 'nock';
-import { jest } from '@jest/globals';
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -24,7 +23,7 @@ describe('orchestration embedding service client', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     nock.cleanAll();
   });
 
@@ -307,7 +306,7 @@ describe('orchestration embedding service client', () => {
 
     try {
       await new OrchestrationEmbeddingClient(config).embed(request);
-      fail('Expected an error to be thrown');
+      throw new Error('Expected an error to be thrown');
     } catch (error: any) {
       expect(error.cause?.response?.data?.error).toMatchSnapshot();
     }
