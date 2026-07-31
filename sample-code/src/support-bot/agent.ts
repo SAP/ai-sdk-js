@@ -143,7 +143,8 @@ const ALLOWED_GITHUB_TOOLS = new Set([
 ]);
 
 // SEC-3: restrict GitHub MCP to SAP/ai-sdk-js only
-// For search tools: force-prepend repo:SAP/ai-sdk-js so the model cannot target other repos.
+// For search tools: strip all repo/org/user qualifiers and boolean operators from the model's
+// query, then force-prepend repo:SAP/ai-sdk-js — prevents OR/AND bypass (e.g. "repo:X OR repo:Y").
 // For owner/repo tools: require exact match — undefined counts as a mismatch.
 function scopeToAllowedRepo(
   toolName: string,
@@ -153,8 +154,14 @@ function scopeToAllowedRepo(
     toolName === 'github__search_issues' ||
     toolName === 'github__search_code'
   ) {
-    const q = ((args.q as string) ?? '').trim();
-    return { ...args, q: 'repo:SAP/ai-sdk-js ' + q };
+    const raw = ((args.q as string) ?? '').trim();
+    // Strip repo:/org:/user: qualifiers and boolean operators before prepending
+    const stripped = raw
+      .replace(/(?:^|\s)(?:repo|org|user):[^\s]*/gi, '')
+      .replace(/\b(?:OR|AND|NOT)\b/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+    return { ...args, q: 'repo:SAP/ai-sdk-js ' + stripped };
   }
   const owner = (args.owner as string | undefined)?.toLowerCase();
   const repo = (args.repo as string | undefined)?.toLowerCase();
@@ -225,6 +232,13 @@ export async function askBot(
           });
         }
         try {
+          if (tc.name === 'context7__query-docs') {
+            // Force libraryId to the known SAP AI SDK docs — model cannot override via args
+            tc = {
+              ...tc,
+              args: { ...tc.args, libraryId: LIBRARY_ID }
+            };
+          }
           if (tc.name.startsWith('github__')) {
             // SEC-3: block current issue re-fetch (prompt injection vector)
             if (
