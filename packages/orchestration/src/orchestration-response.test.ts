@@ -1,10 +1,10 @@
-import { parseMockResponse } from '../../../test-util/mock-http.js';
-import { OrchestrationResponse } from './orchestration-response.js';
+import { parseMockResponse } from '../../../test-util/mock-http.ts';
+import { OrchestrationResponse } from './orchestration-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type {
   CompletionPostResponse,
   LlmChoice
-} from './client/api/schema/index.js';
+} from './client/api/schema/index.ts';
 
 describe('OrchestrationResponse', () => {
   let mockResponse: CompletionPostResponse;

@@ -179,6 +179,10 @@
               "."
             ],
             "patterns": [
+              {
+                "regex": "^\\.{1,2}/.*\\.(?:[cm]?js|jsx)$",
+                "message": "Use the TypeScript source extension for relative imports in TypeScript files."
+              },
               "**/index"
             ]
           }

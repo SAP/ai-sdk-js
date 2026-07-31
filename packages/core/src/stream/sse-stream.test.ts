@@ -3,7 +3,7 @@ import {
   SseStream,
   _iterSseMessages,
   _decodeChunks as decodeChunks
-} from './sse-stream.js';
+} from './sse-stream.ts';
 
 class TestSseStream<Item> extends SseStream<Item> {
   static create<Item>(response: any): TestSseStream<Item> {

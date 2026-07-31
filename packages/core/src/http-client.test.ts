@@ -3,8 +3,8 @@ import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDestination
-} from '../../../test-util/mock-http.js';
-import { executeRequest, getTargetUrl } from './http-client.js';
+} from '../../../test-util/mock-http.ts';
+import { executeRequest, getTargetUrl } from './http-client.ts';
 describe('http-client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();

@@ -1,10 +1,10 @@
 import { SseStream } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-import { mergeStreamResponse } from './util/index.js';
-import type { CompletionPostResponseStreaming } from './client/api/schema/index.js';
+import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
+import { mergeStreamResponse } from './util/index.ts';
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { OrchestrationStreamResponse } from './orchestration-stream-response.js';
+import type { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -101,7 +101,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
   }
 
   constructor(
-    public iterator: () => AsyncIterator<Item>,
+    iterator: () => AsyncIterator<Item>,
     controller: AbortController
   ) {
     super(iterator, controller);

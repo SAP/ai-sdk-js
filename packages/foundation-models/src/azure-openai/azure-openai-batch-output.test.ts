@@ -1,4 +1,4 @@
-import { parseBatchOutput } from './azure-openai-batch-output.js';
+import { parseBatchOutput } from './azure-openai-batch-output.ts';
 
 describe('parseBatchOutput', () => {
   const successLine = JSON.stringify({

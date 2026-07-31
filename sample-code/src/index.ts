@@ -5,7 +5,7 @@ export {
   computeEmbedding,
   chatCompletionWithDestination,
   chatCompletionWithFunctionCall
-} from './foundation-models/azure-openai.js';
+} from './foundation-models/azure-openai.ts';
 export {
   orchestrationChatCompletion,
   orchestrationChatCompletionResilient,
@@ -36,14 +36,14 @@ export {
   orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs,
   orchestrationQwenChatCompletion
-} from './orchestration.js';
+} from './orchestration.ts';
 export {
   invoke,
   invokeWithStructuredOutputJsonSchema,
   invokeWithStructuredOutputToolCalling,
   invokeChain,
   invokeRagChain
-} from './langchain-azure-openai.js';
+} from './langchain-azure-openai.ts';
 export {
   invokeChain as orchestrationInvokeChain,
   invokeChainWithFallbackConfigs as orchestrationInvokeChainWithFallbackConfigs,
@@ -53,27 +53,27 @@ export {
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain,
   streamChainWithFallbackConfigs as orchestrationStreamChainWithFallbackConfigs
-} from './langchain-orchestration.js';
+} from './langchain-orchestration.ts';
 export {
   getDeployments,
   getDeploymentsWithDestination,
   createDeployment,
   stopDeployments,
   deleteDeployments
-} from './ai-api/deployment-api.js';
-export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.js';
+} from './ai-api/deployment-api.ts';
+export { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
 
 export {
   createCollection,
   createDocumentsWithTimestamp,
   deleteCollection,
   getPipelineStatus
-} from './document-grounding.js';
+} from './document-grounding.ts';
 
 export {
   createPromptTemplate,
   deletePromptTemplate
-} from './prompt-registry.js';
+} from './prompt-registry.ts';
 
 export {
   predictWithSchema,
@@ -82,7 +82,7 @@ export {
   predictParquetBlob,
   predictWithSchemaCompressed,
   predictWithSchemaResilient
-} from './rpt.js';
+} from './rpt.ts';
 
 export {
   listBatches,
@@ -94,7 +94,7 @@ export {
   downloadBatchOutput,
   uploadBatchInput,
   deleteFile
-} from './llm-batch.js';
+} from './llm-batch.ts';
 
 export {
   chatCompletion as openAiChatCompletion,
@@ -107,4 +107,4 @@ export {
   responsesApiParse,
   responsesApiStateful,
   responsesApiMultiTurn
-} from './openai.js';
+} from './openai.ts';
