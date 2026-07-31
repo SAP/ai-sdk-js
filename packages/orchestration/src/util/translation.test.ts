@@ -1,8 +1,8 @@
-import { buildTranslationConfig } from './translation.js';
+import { buildTranslationConfig } from './translation.ts';
 import type {
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput
-} from '../client/api/schema/index.js';
+} from '../client/api/schema/index.ts';
 
 describe('Translation module config', () => {
   it('builds input translation config', async () => {
