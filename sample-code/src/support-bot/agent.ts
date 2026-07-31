@@ -169,7 +169,7 @@ function assertAllowedRepo(
   }
   const owner = (args.owner as string | undefined)?.toLowerCase();
   const repo = (args.repo as string | undefined)?.toLowerCase();
-  if (owner && repo && !(owner === 'sap' && repo === 'ai-sdk-js')) {
+  if (owner !== 'sap' || repo !== 'ai-sdk-js') {
     throw new Error(
       `Restricted: only SAP/ai-sdk-js is accessible, got ${owner}/${repo}`
     );

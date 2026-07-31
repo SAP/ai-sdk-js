@@ -1,4 +1,4 @@
-import { initAgent, closeAgent, askBot } from './agent.js';
+import { initAgent, closeAgent, askBot } from './agent.ts';
 
 // GitHub Action passes title and body as separate args
 const title = process.argv[2];
