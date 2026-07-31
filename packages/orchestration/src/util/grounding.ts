@@ -1,7 +1,7 @@
 import type {
   DocumentGroundingServiceConfig,
   GroundingModule
-} from '../orchestration-types.js';
+} from '../orchestration-types.ts';
 
 /**
  * Convenience function to create Document Grounding configuration.

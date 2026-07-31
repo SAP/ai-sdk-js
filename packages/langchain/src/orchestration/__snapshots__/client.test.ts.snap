@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`orchestration service client resilience returns successful response when maxRetries equals retry configuration 1`] = `
+exports[`orchestration service client > resilience > returns successful response when maxRetries equals retry configuration 1`] = `
 {
   "id": [
     "langchain_core",
@@ -39,7 +39,7 @@ exports[`orchestration service client resilience returns successful response whe
 }
 `;
 
-exports[`orchestration service client resilience returns successful response when timeout is bigger than delay 1`] = `
+exports[`orchestration service client > resilience > returns successful response when timeout is bigger than delay 1`] = `
 {
   "id": [
     "langchain_core",
@@ -78,7 +78,7 @@ exports[`orchestration service client resilience returns successful response whe
 }
 `;
 
-exports[`orchestration service client streaming supports auto-streaming responses 1`] = `
+exports[`orchestration service client > streaming > supports auto-streaming responses 1`] = `
 {
   "id": [
     "langchain_core",
@@ -179,7 +179,7 @@ Overall, the SAP Cloud SDK is an essential tool for developers looking to build 
 }
 `;
 
-exports[`orchestration service client streaming supports streaming responses 1`] = `
+exports[`orchestration service client > streaming > supports streaming responses 1`] = `
 {
   "id": [
     "langchain_core",
@@ -280,7 +280,7 @@ Overall, the SAP Cloud SDK is an essential tool for developers looking to build 
 }
 `;
 
-exports[`orchestration service client streaming supports streaming responses with tool calls 1`] = `
+exports[`orchestration service client > streaming > supports streaming responses with tool calls 1`] = `
 {
   "id": [
     "langchain_core",

@@ -3,7 +3,7 @@ import {
   SseStream,
   _iterSseMessages,
   _decodeChunks as decodeChunks
-} from './sse-stream.js';
+} from './sse-stream.ts';
 
 class TestSseStream<Item> extends SseStream<Item> {
   static create<Item>(response: any): TestSseStream<Item> {
@@ -325,7 +325,7 @@ describe('streaming decoding', () => {
     expect(event.value.event).toBeNull();
     expect(JSON.parse(event.value.data)).toEqual({ content: 'culpa ' });
 
-    expect(stream.next()).rejects.toThrow(
+    await expect(stream.next()).rejects.toThrow(
       'Invalid SSE payload: {"error":"Something went wrong"}'
     );
   });

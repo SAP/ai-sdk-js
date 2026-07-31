@@ -1,6 +1,6 @@
 import nock from 'nock';
-import { mockClientCredentialsGrantCall } from '../../../test-util/mock-http.js';
-import { getAiCoreDestination } from './context.js';
+import { mockClientCredentialsGrantCall } from '../../../test-util/mock-http.ts';
+import { getAiCoreDestination } from './context.ts';
 
 describe('context', () => {
   afterAll(() => {

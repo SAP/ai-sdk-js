@@ -10,8 +10,7 @@ import {
   chatCompletionWithDestination,
   computeEmbedding,
   chatCompletionWithFunctionCall
-  // eslint-disable-next-line import-x/no-internal-modules
-} from './foundation-models/azure-openai.js';
+} from './foundation-models/azure-openai.ts';
 import {
   chatCompletion as openAiSdkChatCompletion,
   chatCompletionStream as openAiSdkChatCompletionStream,
@@ -23,7 +22,7 @@ import {
   responsesApiStateful,
   responsesApiMultiTurn,
   chatCompletionPerRequestModel
-} from './openai.js';
+} from './openai.ts';
 import {
   orchestrationChatCompletion,
   orchestrationTemplating,
@@ -47,20 +46,15 @@ import {
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationCacheControl
-} from './orchestration.js';
+} from './orchestration.ts';
 import {
   getDeployments,
   getDeploymentsWithDestination,
   createDeployment,
   stopDeployments,
   deleteDeployments
-  // eslint-disable-next-line import-x/no-internal-modules
-} from './ai-api/deployment-api.js';
-import {
-  getScenarios,
-  getModelsInScenario
-  // eslint-disable-next-line import-x/no-internal-modules
-} from './ai-api/scenario-api.js';
+} from './ai-api/deployment-api.ts';
+import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
 import {
   invokeChain,
   invokeRagChain,
@@ -69,7 +63,7 @@ import {
   streamChain,
   invokeWithStructuredOutputJsonSchema,
   invokeReasoningWithMaxTokens
-} from './langchain-azure-openai.js';
+} from './langchain-azure-openai.ts';
 import {
   invokeChain as invokeChainOrchestration,
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
@@ -82,17 +76,17 @@ import {
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent,
   invokePromptCachingAgent
-} from './langchain-orchestration.js';
+} from './langchain-orchestration.ts';
 import {
   createCollection,
   createDocumentsWithTimestamp,
   deleteCollection,
   retrieveDocuments
-} from './document-grounding.js';
+} from './document-grounding.ts';
 import {
   createPromptTemplate,
   deletePromptTemplate
-} from './prompt-registry.js';
+} from './prompt-registry.ts';
 import {
   listBatches,
   createBatch,
@@ -100,12 +94,12 @@ import {
   getBatchStatus,
   cancelBatch,
   deleteBatch
-} from './llm-batch.js';
+} from './llm-batch.ts';
 import {
   predictAutomaticParsing,
   predictWithSchema,
   predictParquetBlob
-} from './rpt.js';
+} from './rpt.ts';
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type {

@@ -1,4 +1,4 @@
-import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
+import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.ts';
 
 /**
  * Creates a JSONL Blob for upload via FileApi from typed chat completion requests.

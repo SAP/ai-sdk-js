@@ -1,22 +1,22 @@
-import { jest } from '@jest/globals';
 import { AIMessage, HumanMessage } from '@langchain/core/messages';
 import { createAgent } from 'langchain';
-import { AzureOpenAiChatClient } from '../openai/chat.js';
-import { OrchestrationClient } from './client.js';
-import { orchestrationPromptCachingMiddleware } from './prompt-caching-middleware/index.js';
+import { AzureOpenAiChatClient } from '../openai/chat.ts';
+import { OrchestrationClient } from './client.ts';
+import { orchestrationPromptCachingMiddleware } from './prompt-caching-middleware/index.ts';
 import type { LanguageModelLike } from '@langchain/core/language_models/base';
+import type { Mock } from 'vitest';
 
 function getBindToolsOptions(
   model: LanguageModelLike
 ): Record<string, unknown> | undefined {
-  const bindToolsMock = (model as any).bindTools as jest.Mock;
+  const bindToolsMock = (model as any).bindTools as Mock;
   return bindToolsMock.mock.calls.at(-1)?.[1] as
     Record<string, unknown> | undefined;
 }
 
 function stubModel<T extends LanguageModelLike>(model: T): T {
-  const bindToolsMock = jest.fn().mockReturnValue(model);
-  const invokeMock = jest
+  const bindToolsMock = vi.fn().mockReturnValue(model);
+  const invokeMock = vi
     .fn()
     .mockResolvedValue(new AIMessage('Response from model') as never);
 
@@ -47,7 +47,7 @@ function createUnsupportedModel(): LanguageModelLike {
 
 describe('orchestrationPromptCachingMiddleware', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('adds cache_control to modelSettings when conditions are met', async () => {
