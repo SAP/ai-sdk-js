@@ -91,6 +91,4 @@ export type {
   Error as OrchestrationError,
   Citation,
   ReasoningBlock
-} from './client/api/schema/index.js';
-  Citation
 } from './client/api/schema/index.ts';

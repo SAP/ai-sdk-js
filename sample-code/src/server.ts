@@ -47,8 +47,6 @@ import {
   orchestrationSonarWithCitations,
   orchestrationCacheControl,
   orchestrationReasoningContent
-} from './orchestration.js';
-  orchestrationCacheControl
 } from './orchestration.ts';
 import {
   getDeployments,
