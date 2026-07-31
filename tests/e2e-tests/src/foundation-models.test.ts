@@ -4,8 +4,8 @@ import {
   computeEmbedding
 } from '@sap-ai-sdk/sample-code';
 import { AzureOpenAiChatClient } from '@sap-ai-sdk/foundation-models';
-import { addNumbersTool } from '../../../test-util/tools.js';
-import { loadEnv } from './utils/load-env.js';
+import { addNumbersTool } from '../../../test-util/tools.ts';
+import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
 
