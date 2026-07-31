@@ -494,6 +494,7 @@ async function realtimeSpeechToSpeech(): Promise<void> {
     terminal: process.stdin.isTTY ?? false
   });
 
+  /** @param text - user text to send as a conversation message */
   function submitText(text: string): void {
     const trimmed = text.trim();
     if (!trimmed) {
