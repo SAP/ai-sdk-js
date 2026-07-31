@@ -1,5 +1,5 @@
 import { Responses } from 'openai/resources/responses/responses';
-import { SapResponses } from './responses.js';
+import { SapResponses } from './responses.ts';
 import type { OpenAI } from 'openai';
 
 const mockCreate = vi.fn<any>().mockResolvedValue({ output: [] });

@@ -1,4 +1,4 @@
-import { SapCompletions } from './completions.js';
+import { SapCompletions } from './completions.ts';
 import type { OpenAI } from 'openai';
 
 /**
