@@ -25,7 +25,7 @@ import {
   mapToolToChatCompletionTool,
   mapOrchestrationChunkToLangChainMessageChunk,
   applyCacheControlToLastMessage
-} from './util.js';
+} from './util.ts';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type {
   BaseLanguageModelInput,
@@ -36,14 +36,14 @@ import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
-import type { OrchestrationMessageChunk } from './orchestration-message-chunk.js';
+import type { OrchestrationMessageChunk } from './orchestration-message-chunk.ts';
 import type {
   OrchestrationCallOptions,
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationModuleConfigList,
   LangChainOrchestrationChatModelParams,
   ChatOrchestrationToolType
-} from './types.js';
+} from './types.ts';
 
 function isInputFilteringError(error: any): boolean {
   return (
@@ -60,14 +60,19 @@ export class OrchestrationClient extends BaseChatModel<
   OrchestrationMessageChunk
 > {
   streaming: boolean = false;
+  orchestrationConfig:
+    LangChainOrchestrationModuleConfig | LangChainOrchestrationModuleConfigList;
+  langchainOptions: LangChainOrchestrationChatModelParams;
+  deploymentConfig?: ResourceGroupConfig;
+  destination?: HttpDestinationOrFetchOptions;
 
   constructor(
-    public orchestrationConfig:
+    orchestrationConfig:
       | LangChainOrchestrationModuleConfig
       | LangChainOrchestrationModuleConfigList,
-    public langchainOptions: LangChainOrchestrationChatModelParams = {},
-    public deploymentConfig?: ResourceGroupConfig,
-    public destination?: HttpDestinationOrFetchOptions
+    langchainOptions: LangChainOrchestrationChatModelParams = {},
+    deploymentConfig?: ResourceGroupConfig,
+    destination?: HttpDestinationOrFetchOptions
   ) {
     // Avoid retry if the error is due to input filtering
     const { onFailedAttempt } = langchainOptions;
@@ -78,6 +83,10 @@ export class OrchestrationClient extends BaseChatModel<
       onFailedAttempt?.(error);
     };
     super(langchainOptions);
+    this.orchestrationConfig = orchestrationConfig;
+    this.langchainOptions = langchainOptions;
+    this.deploymentConfig = deploymentConfig;
+    this.destination = destination;
 
     // Initialize streaming flags with LangChain-compatible behavior:
     // - `streaming`: true enables auto-streaming in `invoke()` calls

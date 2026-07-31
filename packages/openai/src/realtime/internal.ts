@@ -1,3 +1,3 @@
-export * from './index.js';
-export * from './realtime-config.js';
-export * from './types.js';
+export * from './index.ts';
+export * from './realtime-config.ts';
+export * from './types.ts';

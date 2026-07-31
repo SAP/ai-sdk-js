@@ -1,6 +1,6 @@
 import { createLogger, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiEmbeddingOutput } from './azure-openai-embedding-types.js';
+import type { AzureOpenAiEmbeddingOutput } from './azure-openai-embedding-types.ts';
 
 const logger = createLogger({
   package: 'foundation-models',
@@ -14,9 +14,11 @@ export class AzureOpenAiEmbeddingResponse {
   /**
    * The embedding response.
    */
+  public readonly rawResponse: HttpResponse;
   public readonly _data: AzureOpenAiEmbeddingOutput;
 
-  constructor(public readonly rawResponse: HttpResponse) {
+  constructor(rawResponse: HttpResponse) {
+    this.rawResponse = rawResponse;
     this._data = rawResponse.data;
   }
 

@@ -1,5 +1,5 @@
-import { buildDpiMaskingProvider } from './masking.js';
-import type { DpiConfig } from '../client/api/schema/index.js';
+import { buildDpiMaskingProvider } from './masking.ts';
+import type { DpiConfig } from '../client/api/schema/index.ts';
 
 describe('masking util', () => {
   it('builds DPI masking provider with minimal parameters', () => {

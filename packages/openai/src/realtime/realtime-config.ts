@@ -2,12 +2,12 @@ import {
   getResourceGroup,
   resolveDeploymentUrlForModel
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { createTokenProvider } from '../token-provider.js';
+import { createTokenProvider } from '../token-provider.ts';
 import type {
   SapOpenAiRealtimeContext,
   SapOpenAiRealtimeInput,
   SapOpenAiRealtimeOptions
-} from './types.js';
+} from './types.ts';
 
 /**
  * Resolves the deployment URL, token provider, and resource group required to open a Realtime API WebSocket for SAP AI Core.

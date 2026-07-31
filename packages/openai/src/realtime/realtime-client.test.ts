@@ -1,17 +1,9 @@
 import nock from 'nock';
 import {
-  jest,
-  describe,
-  it,
-  expect,
-  beforeEach,
-  afterEach
-} from '@jest/globals';
-import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDeploymentsList
-} from '../../../../test-util/mock-http.js';
+} from '../../../../test-util/mock-http.ts';
 
 class MockWebSocket {
   static instances: MockWebSocket[] = [];
@@ -59,12 +51,12 @@ class MockWebSocket {
   }
 }
 
-jest.unstable_mockModule('ws', () => ({
+vi.mock('ws', () => ({
   __esModule: true,
   default: MockWebSocket
 }));
 
-const { SapOpenAiRealtime } = await import('./realtime-client.js');
+const { SapOpenAiRealtime } = await import('./realtime-client.ts');
 
 const defaultDeployment = {
   id: 'dep-realtime',

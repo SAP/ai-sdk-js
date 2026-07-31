@@ -10,7 +10,7 @@ import type {
   ModuleResults,
   Error as OrchestrationError,
   Citation
-} from './client/api/schema/index.js';
+} from './client/api/schema/index.ts';
 
 /**
  * Representation of an orchestration response.
@@ -19,8 +19,10 @@ export class OrchestrationResponse {
   /**
    * The completion post response.
    */
+  public readonly rawResponse: HttpResponse;
   public readonly _data: CompletionPostResponse;
-  constructor(public readonly rawResponse: HttpResponse) {
+  constructor(rawResponse: HttpResponse) {
+    this.rawResponse = rawResponse;
     this._data = rawResponse.data;
   }
 

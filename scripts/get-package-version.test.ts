@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import mock from 'mock-fs';
-import { getPackageVersion } from './get-package-version.js';
+import { getPackageVersion } from './get-package-version.ts';
 
 describe('get package version', () => {
   afterEach(() => {

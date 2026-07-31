@@ -1,11 +1,11 @@
 import { OpenAIRealtimeEmitter } from 'openai/realtime/internal-base.js';
 import WebSocket from 'ws';
-import { createRealtimeContext } from './realtime-config.js';
+import { createRealtimeContext } from './realtime-config.ts';
 import type {
   RealtimeClientEvent,
   RealtimeServerEvent
 } from 'openai/resources/realtime/realtime';
-import type { SapOpenAiRealtimeInput } from './types.js';
+import type { SapOpenAiRealtimeInput } from './types.ts';
 
 /**
  * A pre-configured OpenAI Realtime API (speech-to-speech) client for SAP AI Core.

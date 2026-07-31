@@ -15,14 +15,14 @@
     "dist/**/*.d.ts.map"
   ],
   "scripts": {
-    "start": "tsx src/server.ts",
-    "local": "tsx --env-file=.env src/server.ts",
-    "agent-tutorial": "tsx --env-file=.env src/tutorials/travel-itinerary-agent.ts",
-    "realtime-demo": "tsx --env-file=.env src/openai-realtime.ts",
+    "start": "node src/server.ts",
+    "local": "node --env-file-if-exists=.env src/server.ts",
+    "agent-tutorial": "node --env-file-if-exists=.env src/tutorials/travel-itinerary-agent.ts",
+    "realtime-demo": "node --env-file-if-exists=.env src/openai-realtime.ts",
     "compile": "tsc",
     "dev": "tsc -w",
-    "lint": "eslint . && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
-    "lint:fix": "eslint . --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
+    "lint": "oxlint && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
+    "lint:fix": "oxlint --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
   },
   "dependencies": {
     "@langchain/classic": "1.0.40",

@@ -9,8 +9,7 @@ import {
   type RealtimeToolCallResult
 } from '@sap-ai-sdk/sample-code';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
-import { expect, describe, it, beforeAll } from '@jest/globals';
-import { loadEnv } from './utils/load-env.js';
+import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
 

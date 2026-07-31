@@ -1,18 +1,19 @@
-export type { CustomRequestConfig, EndpointOptions } from './http-client.js';
-export { executeRequest } from './http-client.js';
-export { getAiCoreDestination } from './context.js';
-export { OpenApiRequestBuilder } from './openapi-request-builder.js';
+export type { CustomRequestConfig, EndpointOptions } from './http-client.ts';
+export { executeRequest } from './http-client.ts';
+export { getAiCoreDestination } from './context.ts';
+export { OpenApiRequestBuilder } from './openapi-request-builder.ts';
 export type {
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel,
   AzureOpenAiResponsesModel,
   AzureOpenAiRealtimeModel,
   GcpVertexAiChatModel,
+  GcpVertexAiEmbeddingModel,
   AwsBedrockChatModel,
   AiCoreOpenSourceChatModel,
   AiCoreOpenSourceEmbeddingModel,
   AwsBedrockEmbeddingModel,
   PerplexityChatModel,
   SapRptModel
-} from './model-types.js';
-export { SseStream, LineDecoder, SSEDecoder } from './stream/index.js';
+} from './model-types.ts';
+export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';

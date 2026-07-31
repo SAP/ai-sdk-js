@@ -1,5 +1,5 @@
 import type { AzureOpenAiRealtimeModel } from '@sap-ai-sdk/core';
-import type { SapOpenAiBaseOptions } from '../types.js';
+import type { SapOpenAiBaseOptions } from '../types.ts';
 
 /**
  * Options for creating a pre-configured Realtime API client for SAP AI Core.
