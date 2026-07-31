@@ -48,7 +48,7 @@ jobs:
           ISSUE_TITLE: ${{ github.event.inputs.issue_title || github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
         run: |
-          pnpm exec tsx src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" > /tmp/answer.md
+          pnpm exec node src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" > /tmp/answer.md
 
       - name: Build Slack payload
         env:
