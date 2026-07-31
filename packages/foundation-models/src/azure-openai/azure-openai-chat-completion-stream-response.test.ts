@@ -1,5 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
+import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 describe('AzureOpenAiChatCompletionStreamResponse', () => {

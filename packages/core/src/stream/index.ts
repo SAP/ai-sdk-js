@@ -1,3 +1,3 @@
-export * from './sse-stream.js';
-export * from './sse-decoder.js';
-export * from './line-decoder.js';
+export * from './sse-stream.ts';
+export * from './sse-decoder.ts';
+export * from './line-decoder.ts';

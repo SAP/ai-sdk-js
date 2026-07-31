@@ -4,7 +4,7 @@ import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
-import type { ChatOrchestrationToolType } from './types.js';
+import type { ChatOrchestrationToolType } from './types.ts';
 import type { ChatResult } from '@langchain/core/outputs';
 import type {
   OrchestrationStreamChunkResponse,

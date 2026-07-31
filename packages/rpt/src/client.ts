@@ -3,17 +3,17 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
-import { RptApi } from './internal.js';
+import { RptApi } from './internal.ts';
 import type {
   DataSchema,
   PredictionData,
   RptRequestOptions,
   ParquetPayload
-} from './types.js';
+} from './types.ts';
 import type {
   PredictRequestPayload,
   PredictResponsePayload
-} from './client/rpt/index.js';
+} from './client/rpt/index.ts';
 import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
@@ -23,15 +23,21 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class RptClient {
+  private modelDeployment: ModelDeployment<SapRptModel>;
+  private destination?: HttpDestinationOrFetchOptions;
+
   /**
    * Creates an instance of the RPT client.
    * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
    * @param destination - The destination to use for the request.
    */
   constructor(
-    private modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
-    private destination?: HttpDestinationOrFetchOptions
-  ) {}
+    modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
+    destination?: HttpDestinationOrFetchOptions
+  ) {
+    this.modelDeployment = modelDeployment;
+    this.destination = destination;
+  }
 
   /**
    * Predict based on data schema and prediction data.

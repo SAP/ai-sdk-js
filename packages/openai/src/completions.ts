@@ -13,7 +13,7 @@ import type {
 import type { ExtractParsedContentFromParams } from 'openai/lib/parser';
 import type { Stream } from 'openai/streaming';
 import type { APIPromise } from 'openai/api-promise';
-import type { WithOptionalModel } from './types.js';
+import type { WithOptionalModel } from './types.ts';
 
 type RequestOptions = Parameters<Completions['create']>[1];
 

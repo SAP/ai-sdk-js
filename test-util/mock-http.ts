@@ -13,7 +13,7 @@ import {
   type FoundationModel,
   type DeploymentResolutionOptions
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { dummyToken } from './mock-jwt.js';
+import { dummyToken } from './mock-jwt.ts';
 
 // Get the directory of this file
 const __filename = fileURLToPath(import.meta.url);

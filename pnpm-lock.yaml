@@ -74,9 +74,6 @@ importers:
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
-      tsx:
-        specifier: ^4.23.1
-        version: 4.23.1
       typedoc:
         specifier: ^0.28.20
         version: 0.28.20(@typescript/typescript6@6.0.2)
@@ -7426,6 +7423,7 @@ snapshots:
       esbuild: 0.28.1
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   type-check@0.4.0:
     dependencies:

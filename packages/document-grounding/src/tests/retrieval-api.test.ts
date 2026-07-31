@@ -2,8 +2,8 @@ import nock from 'nock';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
-} from '../../../../test-util/mock-http.js';
-import { RetrievalApi, type DataRepositories } from '../client/api/index.js';
+} from '../../../../test-util/mock-http.ts';
+import { RetrievalApi, type DataRepositories } from '../client/api/index.ts';
 
 describe('retrieval data repository', () => {
   beforeEach(() => {
