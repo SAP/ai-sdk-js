@@ -474,7 +474,7 @@ function checkPrerequisites(): string {
  * hands-on exploration and is not used by the automated tests.
  * @returns A promise that never resolves under normal operation.
  */
-export async function realtimeSpeechToSpeech(): Promise<void> {
+async function realtimeSpeechToSpeech(): Promise<void> {
   const soxBin = checkPrerequisites();
   const client = await SapOpenAiRealtime.createClient('gpt-realtime');
   const player = new AudioPlayer(soxBin);

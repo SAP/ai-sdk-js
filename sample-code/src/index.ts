@@ -112,7 +112,6 @@ export {
 export {
   realtimeTextToAudio,
   realtimeAudioToAudio,
-  realtimeSpeechToSpeech,
   realtimeWithToolCalling,
   loadRealtimeInputPcm,
   pcm16ToWav,
