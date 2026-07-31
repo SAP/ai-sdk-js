@@ -11,6 +11,10 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   security-checks:
     runs-on: ubuntu-latest
