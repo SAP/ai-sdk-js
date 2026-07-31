@@ -31,7 +31,7 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: read
-      issues: write
+      # issues: write
 
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
