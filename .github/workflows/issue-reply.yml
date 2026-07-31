@@ -47,8 +47,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: ${{ github.event.inputs.issue_title || github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
         run: |
-          pnpm exec node src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" > /tmp/answer.md
+          pnpm exec node src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_NUMBER" > /tmp/answer.md
 
       - name: Build Slack payload
         env:

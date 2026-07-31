@@ -1,8 +1,11 @@
 import { initAgent, closeAgent, askBot } from './agent.ts';
 
-// GitHub Action passes title and body as separate args
+// GitHub Action passes title, body, and issue number as separate args
 const title = process.argv[2];
 const rawBody = process.argv[3] ?? '';
+const issueNumber = process.argv[4]
+  ? Number.parseInt(process.argv[4], 10)
+  : undefined;
 
 if (!title) {
   console.error('Usage: tsx src/support-bot/reply.ts "<title>" ["<body>"]');
@@ -92,7 +95,7 @@ const enrichedBody = [
 // H-1: closeAgent() always runs — even if askBot() throws
 try {
   await initAgent();
-  const answer = await askBot(title, enrichedBody || undefined);
+  const answer = await askBot(title, enrichedBody || undefined, issueNumber);
   // Output only the answer — captured by GitHub Action
   process.stdout.write(answer);
 } finally {

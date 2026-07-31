@@ -8,7 +8,7 @@ import {
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
-import { SDK_KNOWLEDGE } from './knowledge.js';
+import { SDK_KNOWLEDGE } from './knowledge.ts';
 import type { StructuredToolInterface } from '@langchain/core/tools';
 import type { BaseMessage } from '@langchain/core/messages';
 
@@ -142,30 +142,19 @@ const ALLOWED_GITHUB_TOOLS = new Set([
   'github__get_file_contents'
 ]);
 
-// SEC-3: restrict GitHub MCP to SAP/ai-sdk-js only — any call targeting another repo is blocked
-function assertAllowedRepo(
+// SEC-3: restrict GitHub MCP to SAP/ai-sdk-js only
+// For search tools: force-prepend repo:SAP/ai-sdk-js so the model cannot target other repos.
+// For owner/repo tools: require exact match — undefined counts as a mismatch.
+function scopeToAllowedRepo(
   toolName: string,
   args: Record<string, unknown>
-): void {
+): Record<string, unknown> {
   if (
     toolName === 'github__search_issues' ||
     toolName === 'github__search_code'
   ) {
-    const q = ((args.q as string) ?? '').toLowerCase();
-    const repoQualifiers = [...q.matchAll(/(?:^|\s)repo:([^\s]+)/g)].map(
-      m => m[1]
-    );
-    const orgQualifiers = [...q.matchAll(/(?:^|\s)(?:org|user):([^\s]+)/g)];
-    if (orgQualifiers.length > 0) {
-      throw new Error('Restricted: org:/user: qualifiers are not allowed');
-    }
-    if (
-      repoQualifiers.length === 0 ||
-      repoQualifiers.some(r => r !== 'sap/ai-sdk-js')
-    ) {
-      throw new Error('Restricted: query must only target repo:SAP/ai-sdk-js');
-    }
-    return;
+    const q = ((args.q as string) ?? '').trim();
+    return { ...args, q: 'repo:SAP/ai-sdk-js ' + q };
   }
   const owner = (args.owner as string | undefined)?.toLowerCase();
   const repo = (args.repo as string | undefined)?.toLowerCase();
@@ -174,6 +163,7 @@ function assertAllowedRepo(
       `Restricted: only SAP/ai-sdk-js is accessible, got ${owner}/${repo}`
     );
   }
+  return args;
 }
 
 export async function initAgent(): Promise<void> {
@@ -198,7 +188,11 @@ export async function closeAgent(): Promise<void> {
   await mcpClient.close();
 }
 
-export async function askBot(title: string, body?: string): Promise<string> {
+export async function askBot(
+  title: string,
+  body?: string,
+  currentIssueNumber?: number
+): Promise<string> {
   if (!tools.length) {
     throw new Error('Agent not initialized. Call initAgent() first.');
   }
@@ -232,7 +226,26 @@ export async function askBot(title: string, body?: string): Promise<string> {
         }
         try {
           if (tc.name.startsWith('github__')) {
-            assertAllowedRepo(tc.name, tc.args as Record<string, unknown>);
+            // SEC-3: block current issue re-fetch (prompt injection vector)
+            if (
+              tc.name === 'github__get_issue' &&
+              currentIssueNumber !== undefined &&
+              (tc.args as Record<string, unknown>).issue_number ===
+                currentIssueNumber
+            ) {
+              return new ToolMessage({
+                content:
+                  'Restricted: re-fetching the current issue is not allowed.',
+                tool_call_id: tc.id ?? 'tc_' + idx
+              });
+            }
+            tc = {
+              ...tc,
+              args: scopeToAllowedRepo(
+                tc.name,
+                tc.args as Record<string, unknown>
+              )
+            };
           }
           const raw = await tool.invoke(tc.args);
           return new ToolMessage({
