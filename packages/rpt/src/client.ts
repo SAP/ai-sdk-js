@@ -32,7 +32,7 @@ export class RptClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
+    modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1.5',
     destination?: HttpDestinationOrFetchOptions
   ) {
     this.modelDeployment = modelDeployment;
@@ -100,7 +100,12 @@ export class RptClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    return RptApi.predictParquet({ ...payload, file })
+    return RptApi.predictParquet({
+      ...payload,
+      file,
+      // TODO: Remote server seems to accept both JSON string and real object.
+      prediction_config: payload.prediction_config as any
+    })
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({
         'ai-resource-group': resourceGroup || 'default'
@@ -127,11 +132,11 @@ export class RptClient {
     const body = {
       data_schema: dataSchema
         ? Object.fromEntries(
-            dataSchema.map(({ name, ...schemaFieldConfig }) => [
-              name,
-              schemaFieldConfig
-            ])
-          )
+          dataSchema.map(({ name, ...schemaFieldConfig }) => [
+            name,
+            schemaFieldConfig
+          ])
+        )
         : null,
       ...predictionData
     } satisfies PredictRequestPayload;

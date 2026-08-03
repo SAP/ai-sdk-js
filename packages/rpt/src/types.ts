@@ -31,8 +31,8 @@ export type DateString =
 type TsType<T extends ColType> = T extends 'numeric'
   ? number
   : T extends 'date'
-    ? DateString
-    : string;
+  ? DateString
+  : string;
 
 /**
  * Represents the type of the `rows` property.
@@ -42,10 +42,10 @@ type TsType<T extends ColType> = T extends 'numeric'
  */
 export type RowType<T extends DataSchema> = T extends readonly any[]
   ? {
-      [N in T[number]['name']]: TsType<
-        Extract<T[number], { name: N }>['dtype']
-      >;
-    }
+    [N in T[number]['name']]: TsType<
+      Extract<T[number], { name: N }>['dtype']
+    >;
+  }
   : Record<string, string | number>;
 
 /**
@@ -128,7 +128,7 @@ export type PredictionData<T extends DataSchema> = {
 /**
  * Representation of the payload for Parquet-based predictions.
  */
-export type ParquetPayload = BodyPredictParquet & {
+export type ParquetPayload = Omit<BodyPredictParquet, 'prediction_config'> & {
   /**
    * Parquet file containing the data. Can also be a File to forward the filename.
    */

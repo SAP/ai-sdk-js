@@ -17,24 +17,40 @@ import type {
 export const RptApi = {
   _defaultBasePath: undefined,
   /**
-   * Make in-context predictions for specified target columns.
-   * Either "rows" or "columns" must be provided and must contain both context and query rows.
-   * You can optionally send gzip-compressed JSON payloads and set a "Content-Encoding: gzip" header.
-   * @param body - Request body.
+   * Create a request builder for execution of get requests to the '/health' endpoint.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  predict: (body: PredictRequestPayload) =>
+  health: () =>
+    new OpenApiRequestBuilder<any>(
+      'get',
+      '/health',
+      {},
+      RptApi._defaultBasePath
+    ),
+  /**
+   * Create a request builder for execution of post requests to the '/predict' endpoint.
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: Content-Encoding.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  predict: (
+    body: PredictRequestPayload,
+    headerParameters?: { 'Content-Encoding'?: 'gzip' }
+  ) =>
     new OpenApiRequestBuilder<PredictResponsePayload>(
       'post',
       '/predict',
       {
         body,
-        headerParameters: { 'content-type': 'application/json' }
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       RptApi._defaultBasePath
     ),
   /**
-   * Make in-context predictions for specified target columns based on provided table data Parquet file.
+   * Create a request builder for execution of post requests to the '/predict_parquet' endpoint.
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -46,25 +62,25 @@ export const RptApi = {
         body,
         _encoding: {
           prediction_config: {
-            contentType: 'application/json',
+            contentType: 'text/plain',
             isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'application/json' }]
+            parsedContentTypes: [{ type: 'text/plain', parameters: {} }]
           },
           index_column: {
             contentType: 'text/plain',
             isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
+            parsedContentTypes: [{ type: 'text/plain', parameters: {} }]
           },
           parse_data_types: {
             contentType: 'text/plain',
             isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
+            parsedContentTypes: [{ type: 'text/plain', parameters: {} }]
           },
           file: {
             contentType: 'application/vnd.apache.parquet',
             isImplicit: false,
             parsedContentTypes: [
-              { parameters: {}, type: 'application/vnd.apache.parquet' }
+              { type: 'application/vnd.apache.parquet', parameters: {} }
             ]
           }
         },
