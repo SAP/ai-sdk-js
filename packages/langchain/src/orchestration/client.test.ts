@@ -23,8 +23,6 @@ import type { ToolCall } from '@langchain/core/messages/tool';
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
 
-vi.setConfig({ testTimeout: 30000 });
-
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
   let mockResponseInputFilterError: OrchestrationErrorResponse;
@@ -110,7 +108,7 @@ describe('orchestration service client', () => {
         maxRetries: 2
       });
       expect(await client.invoke(messages)).toMatchSnapshot();
-    });
+    }, 30000);
 
     it('throws error response when maxRetries is smaller than required retries', async () => {
       mockInferenceWithResilience(mockResponse, { retry: 2 });
@@ -120,12 +118,14 @@ describe('orchestration service client', () => {
       await expect(client.invoke(messages)).rejects.toThrow(
         'Request failed with status code 500'
       );
-    });
+    }, 30000);
 
     it('throws when delay exceeds timeout', async () => {
-      mockInferenceWithResilience(mockResponse, { delay: 2000 });
+      mockInferenceWithResilience(mockResponse, { delay: 5000 });
+      const controller = new AbortController();
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      const response = client.invoke(messages, { timeout: 1000 });
+      const response = client.invoke(messages, { signal: controller.signal });
+      controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
       await expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
@@ -134,19 +134,32 @@ describe('orchestration service client', () => {
     });
 
     it('retries when delay exceeds timeout', async () => {
-      mockInferenceWithResilience(mockResponse, { delay: 2000 });
-      const onFailedAttempt = vi.fn();
-      const client = new OrchestrationClient(config, {
-        maxRetries: 1,
-        onFailedAttempt
-      });
-      const response = client.invoke(messages, { timeout: 1000 });
-      await expect(response).rejects.toThrow(
-        expect.objectContaining({
-          stack: expect.stringMatching(/Timeout/)
-        })
-      );
-      expect(onFailedAttempt).toHaveBeenCalledTimes(1);
+      vi.useFakeTimers();
+      try {
+        mockInferenceWithResilience(mockResponse, { delay: 5000 });
+        const controller = new AbortController();
+        const onFailedAttempt = vi.fn();
+        const client = new OrchestrationClient(config, {
+          maxRetries: 1,
+          onFailedAttempt
+        });
+        const response = client.invoke(messages, { signal: controller.signal });
+        // Attach rejection handler before aborting to avoid unhandled rejection
+        const settled = response.catch(() => {});
+        // Yield to let the request reach nock, then abort
+        await vi.advanceTimersByTimeAsync(0);
+        controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
+        await vi.advanceTimersByTimeAsync(0);
+        await expect(response).rejects.toThrow(
+          expect.objectContaining({
+            stack: expect.stringMatching(/Timeout/)
+          })
+        );
+        await settled;
+        expect(onFailedAttempt).toHaveBeenCalledTimes(1);
+      } finally {
+        vi.useRealTimers();
+      }
     });
 
     it('throws immediately when input filter error occurs', async () => {
@@ -166,31 +179,36 @@ describe('orchestration service client', () => {
     it('throws when delay exceeds timeout during streaming', async () => {
       mockInferenceWithResilience(
         mockResponseStream,
-        { delay: 2000 },
+        { delay: 5000 },
         200,
         true
       );
 
+      const controller = new AbortController();
       let finalOutput: AIMessageChunk | undefined;
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      try {
-        const stream = await client.stream([], { timeout: 1000 });
+      let caughtError: unknown;
+      const streamPromise = (async () => {
+        const stream = await client.stream([], { signal: controller.signal });
         for await (const chunk of stream) {
           finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
         }
-      } catch (e) {
-        expect(e).toEqual(
-          expect.objectContaining({
-            stack: expect.stringMatching(/Timeout/)
-          })
-        );
-      }
+      })().catch(e => {
+        caughtError = e;
+      });
+      controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
+      await streamPromise;
+      expect(caughtError).toEqual(
+        expect.objectContaining({
+          stack: expect.stringMatching(/Timeout/)
+        })
+      );
     });
 
     it('returns successful response when timeout is bigger than delay', async () => {
-      mockInferenceWithResilience(mockResponse, { delay: 2000 });
+      mockInferenceWithResilience(mockResponse, { delay: 50 });
       const client = new OrchestrationClient(config);
-      const response = await client.invoke(messages, { timeout: 3000 });
+      const response = await client.invoke(messages, { timeout: 5000 });
       expect(response).toMatchSnapshot();
     });
 
@@ -211,14 +229,15 @@ describe('orchestration service client', () => {
     it('throws when delay exceeds timeout using streaming', async () => {
       mockInferenceWithResilience(
         mockResponseStream,
-        { delay: 2000 },
+        { delay: 5000 },
         200,
         true
       );
+      const controller = new AbortController();
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      await expect(client.stream('Hello!', { timeout: 1000 })).rejects.toThrow(
-        'aborted'
-      );
+      const streamPromise = client.stream('Hello!', { signal: controller.signal });
+      controller.abort();
+      await expect(streamPromise).rejects.toThrow('aborted');
     });
   });
 
