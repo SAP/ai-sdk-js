@@ -288,6 +288,17 @@ export type OrchestrationModuleConfigList = [
  *   version: '0.0.1'
  * };
  */
+/**
+ * Partial override configuration for a stored orchestration config reference.
+ * `stream.enabled` is excluded, as it is controlled by the call site (.stream() or .chatCompletion()).
+ */
+export type OrchestrationConfigRefOverride = Omit<
+  PartialOrchestrationConfig,
+  'stream'
+> & {
+  stream?: Omit<GlobalStreamOptions, 'enabled'>;
+};
+
 export type OrchestrationConfigRef = Xor<
   {
     /** Orchestration configuration ID. */
@@ -305,7 +316,7 @@ export type OrchestrationConfigRef = Xor<
   /**
    * Optional partial configuration to override parts of the stored orchestration config at request time.
    */
-  overrideConfig?: PartialOrchestrationConfig;
+  overrideConfig?: OrchestrationConfigRefOverride;
 };
 
 /**

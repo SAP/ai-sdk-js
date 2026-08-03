@@ -39,6 +39,7 @@ import { loadEnv } from './utils/load-env.ts';
 loadEnv();
 
 describe('orchestration', () => {
+  // Pre-existing orchestration configuration reference for testing.
   const configReference: OrchestrationConfigReference = {
     id: '62e8638a-ae87-4bd5-9027-a0bc67db1609'
   };
