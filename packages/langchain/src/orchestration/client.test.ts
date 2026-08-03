@@ -125,7 +125,9 @@ describe('orchestration service client', () => {
       const controller = new AbortController();
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       const response = client.invoke(messages, { signal: controller.signal });
-      controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
+      controller.abort(
+        new DOMException('The operation timed out.', 'TimeoutError')
+      );
       await expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
@@ -148,7 +150,9 @@ describe('orchestration service client', () => {
         const settled = response.catch(() => {});
         // Yield to let the request reach nock, then abort
         await vi.advanceTimersByTimeAsync(0);
-        controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
+        controller.abort(
+          new DOMException('The operation timed out.', 'TimeoutError')
+        );
         await vi.advanceTimersByTimeAsync(0);
         await expect(response).rejects.toThrow(
           expect.objectContaining({
@@ -196,7 +200,9 @@ describe('orchestration service client', () => {
       })().catch(e => {
         caughtError = e;
       });
-      controller.abort(new DOMException('The operation timed out.', 'TimeoutError'));
+      controller.abort(
+        new DOMException('The operation timed out.', 'TimeoutError')
+      );
       await streamPromise;
       expect(caughtError).toEqual(
         expect.objectContaining({
@@ -235,7 +241,9 @@ describe('orchestration service client', () => {
       );
       const controller = new AbortController();
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      const streamPromise = client.stream('Hello!', { signal: controller.signal });
+      const streamPromise = client.stream('Hello!', {
+        signal: controller.signal
+      });
       controller.abort();
       await expect(streamPromise).rejects.toThrow('aborted');
     });
