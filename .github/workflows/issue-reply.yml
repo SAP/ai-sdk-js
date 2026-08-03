@@ -43,7 +43,7 @@ jobs:
         timeout-minutes: 5
         working-directory: ./sample-code
         env:
-          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }} # zizmor: ignore[overprovisioned-secrets]
+          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: ${{ github.event.inputs.issue_title || github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
