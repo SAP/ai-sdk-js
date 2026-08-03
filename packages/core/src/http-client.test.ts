@@ -3,8 +3,8 @@ import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDestination
-} from '../../../test-util/mock-http.js';
-import { executeRequest, getTargetUrl } from './http-client.js';
+} from '../../../test-util/mock-http.ts';
+import { executeRequest, getTargetUrl } from './http-client.ts';
 describe('http-client', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -95,7 +95,7 @@ describe('http-client', () => {
   });
 
   it('should execute a request using custom destination', async () => {
-    mockDestination();
+    await mockDestination();
 
     const mockPrompt = { prompt: 'some test prompt' };
     const mockPromptResponse = { completion: 'some test completion' };

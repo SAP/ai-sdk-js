@@ -13,7 +13,7 @@ import {
   type FoundationModel,
   type DeploymentResolutionOptions
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { dummyToken } from './mock-jwt.js';
+import { dummyToken } from './mock-jwt.ts';
 
 // Get the directory of this file
 const __filename = fileURLToPath(import.meta.url);
@@ -66,12 +66,11 @@ export function createDestinationTokens(
 export function getMockedAiCoreDestination(
   destination = aiCoreDestination
 ): HttpDestination {
-  const mockDestination: HttpDestination = {
+  return {
     ...destination,
     authentication: 'OAuth2ClientCredentials',
     ...createDestinationTokens()
   };
-  return mockDestination;
 }
 
 export function mockClientCredentialsGrantCall(
@@ -193,7 +192,7 @@ export async function parseMockResponse<T>(
  * @internal
  */
 export async function mockDestination() {
-  registerDestination({
+  await registerDestination({
     name: 'aicore',
     url: 'http://example.com'
   });

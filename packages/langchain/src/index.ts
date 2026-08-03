@@ -1,21 +1,21 @@
 export {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
-} from './openai/index.js';
+} from './openai/index.ts';
 export type {
   AzureOpenAiChatModelParams,
   AzureOpenAiEmbeddingModelParams,
   AzureOpenAiChatCallOptions,
   ChatAzureOpenAIToolType
-} from './openai/index.js';
+} from './openai/index.ts';
 export {
   OrchestrationClient,
   OrchestrationMessageChunk
-} from './orchestration/index.js';
+} from './orchestration/index.ts';
 export type {
   OrchestrationCallOptions,
   LangChainOrchestrationChatModelParams,
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationModuleConfigList,
   ChatOrchestrationToolType
-} from './orchestration/index.js';
+} from './orchestration/index.ts';

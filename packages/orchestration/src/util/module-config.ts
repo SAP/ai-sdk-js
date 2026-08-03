@@ -10,7 +10,7 @@ import {
   type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
   type EmbeddingRequest
-} from '../orchestration-types.js';
+} from '../orchestration-types.ts';
 import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
@@ -25,7 +25,7 @@ import type {
   EmbeddingsPostRequest,
   EmbeddingsOrchestrationConfig,
   EmbeddingsModuleConfigs
-} from '../client/api/schema/index.js';
+} from '../client/api/schema/index.ts';
 
 const logger = createLogger({
   package: 'orchestration',
