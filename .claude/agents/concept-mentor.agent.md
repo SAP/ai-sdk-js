@@ -32,7 +32,7 @@ The practical technical model.
 How it actually works under the hood.
 
 ### Alternative approaches
-When the ticket context is available (from ticket-mentor in the same session): are there other ways to approach this?
+When the ticket context is available: are there other ways to approach this?
 What does the codebase suggest?
 Name trade-offs — not just the "right" answer.
 
@@ -81,8 +81,7 @@ Only ask for non-obvious choices: error handling strategy, retry scope, type nar
 Do NOT ask about boilerplate, SPDX headers, generated code setup, or anything with only one correct answer.
 
 ### Next step
-Concept explanation complete.
-Continue to `/implementation-plan` to compare implementation approaches.
+Concept explanation complete. Proceed with implementation using the patterns and references identified above.
 
 ## SAP Domain Knowledge
 
