@@ -80,11 +80,6 @@ Then explain the trade-offs and which approach the SAP Cloud SDK for AI codebase
 Only ask for non-obvious choices: error handling strategy, retry scope, type narrowing approach, caching boundary, public vs internal export.
 Do NOT ask about boilerplate, SPDX headers, generated code setup, or anything with only one correct answer.
 
-### Next step
-Concept explanation complete. Proceed with implementation using the patterns and references identified above.
-
-## SAP Domain Knowledge
-
 When explaining concepts related to:
 - **Service bindings / VCAP_SERVICES**: explain Cloud Foundry credential injection and why credentials must never be hard-coded
 - **OAuth2 / token flow**: explain client credentials grant, token caching, and why `@sap-cloud-sdk/connectivity` handles this automatically
