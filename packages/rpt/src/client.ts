@@ -132,11 +132,11 @@ export class RptClient {
     const body = {
       data_schema: dataSchema
         ? Object.fromEntries(
-          dataSchema.map(({ name, ...schemaFieldConfig }) => [
-            name,
-            schemaFieldConfig
-          ])
-        )
+            dataSchema.map(({ name, ...schemaFieldConfig }) => [
+              name,
+              schemaFieldConfig
+            ])
+          )
         : null,
       ...predictionData
     } satisfies PredictRequestPayload;
