@@ -176,6 +176,7 @@ describe('orchestration service client', () => {
     }, 1000);
 
     it('throws when delay exceeds timeout during streaming', async () => {
+      vi.useFakeTimers();
       mockInferenceWithResilience(
         mockResponseStream,
         { delay: 5000 },
@@ -183,27 +184,16 @@ describe('orchestration service client', () => {
         true
       );
 
-      const controller = new AbortController();
-      let finalOutput: AIMessageChunk | undefined;
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      let caughtError: unknown;
-      const streamPromise = (async () => {
-        const stream = await client.stream([], { signal: controller.signal });
-        for await (const chunk of stream) {
-          finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
-        }
-      })().catch(e => {
-        caughtError = e;
-      });
-      controller.abort(
-        new DOMException('The operation timed out.', 'TimeoutError')
-      );
-      await streamPromise;
-      expect(caughtError).toEqual(
+      const stream = client.stream([], { signal: AbortSignal.timeout(100) });
+      const streamPromise = stream.then(s => Array.fromAsync(s));
+      const assertion = expect(streamPromise).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
+      await vi.advanceTimersByTimeAsync(100);
+      await assertion;
     });
 
     it('returns successful response when timeout is bigger than delay', async () => {

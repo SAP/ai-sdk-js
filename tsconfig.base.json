@@ -13,7 +13,7 @@
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "rewriteRelativeImportExtensions": true,
-    "lib": ["es2024"],
+    "lib": ["es2024", "esnext.array"],
     "types": ["node"]
   }
 }
