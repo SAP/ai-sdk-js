@@ -102,6 +102,10 @@ describe('orchestration service client', () => {
   }
 
   describe('resilience', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('returns successful response when maxRetries equals retry configuration', async () => {
       mockInferenceWithResilience(mockResponse, { retry: 2 });
       const client = new OrchestrationClient(config, {
@@ -121,49 +125,40 @@ describe('orchestration service client', () => {
     }, 30000);
 
     it('throws when delay exceeds timeout', async () => {
+      vi.useFakeTimers();
       mockInferenceWithResilience(mockResponse, { delay: 5000 });
-      const controller = new AbortController();
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      const response = client.invoke(messages, { signal: controller.signal });
-      controller.abort(
-        new DOMException('The operation timed out.', 'TimeoutError')
-      );
-      await expect(response).rejects.toThrow(
+      const response = client.invoke(messages, {
+        signal: AbortSignal.timeout(100)
+      });
+      const assertion = expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
+      await vi.advanceTimersByTimeAsync(100);
+      await assertion;
     });
 
     it('retries when delay exceeds timeout', async () => {
       vi.useFakeTimers();
-      try {
-        mockInferenceWithResilience(mockResponse, { delay: 5000 });
-        const controller = new AbortController();
-        const onFailedAttempt = vi.fn();
-        const client = new OrchestrationClient(config, {
-          maxRetries: 1,
-          onFailedAttempt
-        });
-        const response = client.invoke(messages, { signal: controller.signal });
-        // Attach rejection handler before aborting to avoid unhandled rejection
-        const settled = response.catch(() => {});
-        // Yield to let the request reach nock, then abort
-        await vi.advanceTimersByTimeAsync(0);
-        controller.abort(
-          new DOMException('The operation timed out.', 'TimeoutError')
-        );
-        await vi.advanceTimersByTimeAsync(0);
-        await expect(response).rejects.toThrow(
-          expect.objectContaining({
-            stack: expect.stringMatching(/Timeout/)
-          })
-        );
-        await settled;
-        expect(onFailedAttempt).toHaveBeenCalledTimes(1);
-      } finally {
-        vi.useRealTimers();
-      }
+      mockInferenceWithResilience(mockResponse, { delay: 5000 });
+      const onFailedAttempt = vi.fn();
+      const client = new OrchestrationClient(config, {
+        maxRetries: 1,
+        onFailedAttempt
+      });
+      const response = client.invoke(messages, {
+        signal: AbortSignal.timeout(100)
+      });
+      const assertion = expect(response).rejects.toThrow(
+        expect.objectContaining({
+          stack: expect.stringMatching(/Timeout/)
+        })
+      );
+      await vi.advanceTimersByTimeAsync(100);
+      await assertion;
+      expect(onFailedAttempt).toHaveBeenCalledTimes(1);
     });
 
     it('throws immediately when input filter error occurs', async () => {
