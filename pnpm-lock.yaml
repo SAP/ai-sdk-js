@@ -54,8 +54,8 @@ importers:
         specifier: 1.4.7
         version: 1.4.7(supports-color@7.2.0)
       jose:
-        specifier: 6.2.4
-        version: 6.2.4
+        specifier: 6.2.5
+        version: 6.2.5
       mock-fs:
         specifier: 5.5.0
         version: 5.5.0
@@ -2915,8 +2915,8 @@ packages:
   jks-js@1.1.7:
     resolution: {integrity: sha512-BeiDRKsAi1NwEwgx2JB/9/0tar5BNGIv+foGm1G5GgiyR35s/iUnfd/BWqYd16mLDD8qTaAVBrIcOOuVqXJZNQ==}
 
-  jose@6.2.4:
-    resolution: {integrity: sha512-N8acGzVsQy6M/fjFcxtysNc4Q379TcM5dM/qKkNtsHFji88yANnXTr7BLeP75iPnFwBfQzM/jg2BZ9+HZrHCZA==}
+  jose@6.2.5:
+    resolution: {integrity: sha512-2E5L2yRp03FnwreJLJX8/r7mHiZICCf8kG7fAsTWkSQTDAcc46NIZoQLKy+EJ8sPoJlxyS4OQR5H70LjIZZlIQ==}
 
   js-tiktoken@1.0.21:
     resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
@@ -4809,7 +4809,7 @@ snapshots:
       express: 5.2.1(supports-color@7.2.0)
       express-rate-limit: 8.5.2(express@5.2.1(supports-color@7.2.0))
       hono: 4.12.27
-      jose: 6.2.4
+      jose: 6.2.5
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
@@ -5650,7 +5650,7 @@ snapshots:
       '@upstash/redis': 1.38.0
       commander: 13.1.0
       express: 5.2.1(supports-color@7.2.0)
-      jose: 6.2.4
+      jose: 6.2.5
       undici: 7.29.0
       zod: 4.4.3
     transitivePeerDependencies:
@@ -6728,7 +6728,7 @@ snapshots:
       node-int64: 0.4.0
       node-rsa: 1.1.1
 
-  jose@6.2.4: {}
+  jose@6.2.5: {}
 
   js-tiktoken@1.0.21:
     dependencies:
