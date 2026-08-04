@@ -220,67 +220,67 @@ importers:
         specifier: workspace:^
         version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/generator-common':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi-generator':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@types/mock-fs':
-        specifier: ^4.13.4
+        specifier: 4.13.4
         version: 4.13.4
       '@types/node':
-        specifier: ^22.20.1
+        specifier: 22.20.1
         version: 22.20.1
       '@typescript/native':
-        specifier: npm:typescript@^7.0.2
+        specifier: npm:typescript@7.0.2
         version: typescript@7.0.2
       '@vitest/coverage-v8':
         specifier: 4.1.10
         version: 4.1.10(vitest@4.1.10)
       depcheck:
-        specifier: ^1.4.7
+        specifier: 1.4.7
         version: 1.4.7(supports-color@7.2.0)
       jose:
         specifier: 6.2.4
         version: 6.2.4
       mock-fs:
-        specifier: ^5.5.0
+        specifier: 5.5.0
         version: 5.5.0
       nock:
-        specifier: ^14.0.16
+        specifier: 14.0.16
         version: 14.0.16
       orval:
-        specifier: ^8.22.0
+        specifier: 8.22.0
         version: 8.22.0(@typescript/typescript6@6.0.2)(prettier@3.9.6)(supports-color@7.2.0)
       oxfmt:
-        specifier: ^0.59.0
+        specifier: 0.59.0
         version: 0.59.0
       oxlint:
-        specifier: ^1.74.0
+        specifier: 1.74.0
         version: 1.74.0(oxlint-tsgolint@0.25.0)
       oxlint-tsgolint:
-        specifier: ^0.25.0
+        specifier: 0.25.0
         version: 0.25.0
       typedoc:
-        specifier: ^0.28.20
+        specifier: 0.28.20
         version: 0.28.20(@typescript/typescript6@6.0.2)
       typescript:
-        specifier: npm:@typescript/typescript6@^6.0.2
+        specifier: npm:@typescript/typescript6@6.0.2
         version: '@typescript/typescript6@6.0.2'
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
       zod:
-        specifier: ^4.4.3
+        specifier: 4.4.3
         version: 4.4.3
 
   packages/ai-api:
@@ -296,7 +296,7 @@ importers:
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/core:
@@ -315,7 +315,7 @@ importers:
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/document-grounding:
@@ -325,7 +325,7 @@ importers:
         version: link:../core
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/foundation-models:
@@ -347,7 +347,7 @@ importers:
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/langchain:
@@ -378,10 +378,10 @@ importers:
         specifier: ^1.4.8
         version: 1.4.8(@langchain/core@1.2.3(openai@6.49.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(zod@4.4.3)
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
       zod:
-        specifier: ^4.4.3
+        specifier: 4.4.3
         version: 4.4.3
 
   packages/llm-batch:
@@ -391,7 +391,7 @@ importers:
         version: link:../core
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/openai:
@@ -410,10 +410,10 @@ importers:
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       openai:
-        specifier: ^6.49.0
+        specifier: 6.49.0
         version: 6.49.0(ws@8.21.0)(zod@4.4.3)
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/orchestration:
@@ -435,13 +435,13 @@ importers:
         version: 2.9.0
     devDependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.7.0
+        specifier: 4.7.0
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/prompt-registry:
@@ -454,7 +454,7 @@ importers:
         version: 4.4.3
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   packages/rpt:
@@ -476,7 +476,7 @@ importers:
         version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
-        specifier: ^4.1.10
+        specifier: 4.1.10
         version: 4.1.10(@types/node@22.20.1)(@vitest/coverage-v8@4.1.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(tsx@4.23.1)(yaml@2.9.0))
 
   sample-cap:
@@ -501,8 +501,8 @@ importers:
         version: 5.2.1(supports-color@7.2.0)
     devDependencies:
       '@sap/cds-dk':
-        specifier: ^10.0.5
-        version: 10.0.5
+        specifier: 10.0.6
+        version: 10.0.6
 
   sample-code:
     dependencies:
@@ -525,11 +525,11 @@ importers:
         specifier: 1.29.0
         version: 1.29.0(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.4.3)
       '@sap-cloud-sdk/resilience':
-        specifier: 4.7.0
-        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 4.8.0
+        version: 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
-        specifier: 4.7.0
-        version: 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 4.8.0
+        version: 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@types/express':
         specifier: 5.0.6
         version: 5.0.6
@@ -577,8 +577,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/rpt
       '@upstash/context7-mcp':
-        specifier: 3.2.4
-        version: 3.2.4(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)
+        specifier: 3.2.5
+        version: 3.2.5(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)
       hyparquet-writer:
         specifier: 0.16.1
         version: 0.16.1
@@ -1635,16 +1635,22 @@ packages:
   '@sap-cloud-sdk/resilience@4.7.0':
     resolution: {integrity: sha512-L6PV49nNyZHnTNFbvaufadm+qOhaammXLXkDQmD7WIzMjhiYMqa/obK3NJoohe/kZ7q73jPB2vdLsAqopqTh0A==}
 
+  '@sap-cloud-sdk/resilience@4.8.0':
+    resolution: {integrity: sha512-/XclOtUHhdN39acKH1otJdMILAm+HJkQ6wjpUvqBx7RNiQ1GQwe34qSqy8wGDJr5MbcxuhENYGWJRLE4P4OHqw==}
+
   '@sap-cloud-sdk/util@4.7.0':
     resolution: {integrity: sha512-nWJXMdM0Pcx/ipM2+5BvSciQKyCc0LAAO+acCOAQp65SA4HEQ2Odp9yxidY4ijW42TVp3fSMBvGwVjbWWx9Uew==}
+
+  '@sap-cloud-sdk/util@4.8.0':
+    resolution: {integrity: sha512-wLWxgxYwAL1N5dh+m8XGZTZ2vzooDHXKXrkay3rBpYSFHhZjsD2V37ezbAhbBKlFIELZA03C+Eb9o4YgHpvTKg==}
 
   '@sap/cds-compiler@7.0.3':
     resolution: {integrity: sha512-scgBPK0TcobT0tXIQOEBTeVuGaxWthKeIQjhBoeLWcQXwVC3s61U3GFdbW56h01pXFwwUUSsxjzZN7all5lRyg==}
     engines: {node: '>=22'}
     hasBin: true
 
-  '@sap/cds-dk@10.0.5':
-    resolution: {integrity: sha512-jbh5lK3oSwA6xzqxQeZbKkphzV0i57HutIo2friTuolS2QYHX9WOaVAZySqovoPmT8acQtqj5ki7/nuJepGBRA==}
+  '@sap/cds-dk@10.0.6':
+    resolution: {integrity: sha512-rukYYrovNkpaRPgF6tI+tBHhel9WcpZRW2KFjVCVPCufrbTFqzz6PdCaQrb7tEctrRk5GBIL2bmN28s051Vt3w==}
     hasBin: true
     bundledDependencies:
       - '@cap-js/asyncapi'
@@ -2043,8 +2049,9 @@ packages:
     resolution: {integrity: sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==}
     hasBin: true
 
-  '@upstash/context7-mcp@3.2.4':
-    resolution: {integrity: sha512-w2Vg6MkF4Qojp8X1fdmJ6NrjZ8Ip/9lflybtqfDKaqOsUV9iVaXeRbyGTqARdn1O8teIPm7Bt+nfVqFiUcZvjQ==}
+  '@upstash/context7-mcp@3.2.5':
+    resolution: {integrity: sha512-m+GIwQKBx2yCnLN7Et3wqkuTk1iPkMySQH2i6KiUf4B9wVI0tgtjeXRcDfFZPf5rnRA3gjYhr1FqQqMb9aSRnw==}
+    engines: {node: '>=20.18.1'}
     hasBin: true
 
   '@upstash/redis@1.38.0':
@@ -2729,10 +2736,6 @@ packages:
   fresh@2.0.0:
     resolution: {integrity: sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==}
     engines: {node: '>= 0.8'}
-
-  fs-extra@11.3.5:
-    resolution: {integrity: sha512-eKpRKAovdpZtR1WopLHxlBWvAgPny3c4gX1G5Jhwmmw4XJj0ifSD5qB5TOo8hmA0wlRKDAOAhEE1yVPgs6Fgcg==}
-    engines: {node: '>=14.14'}
 
   fs-extra@11.3.6:
     resolution: {integrity: sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==}
@@ -3450,6 +3453,10 @@ packages:
   openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
 
+  opossum@10.0.0:
+    resolution: {integrity: sha512-sghtqL8Usj+et06Zui0nyn0R6FFsl7cyuoU+d7MctYU0nbS7Htzjleh+tWohFqk1Rp1srrFwbFa8Vxd0O64w6A==}
+    engines: {node: ^26 || ^24 || ^22}
+
   opossum@9.0.0:
     resolution: {integrity: sha512-K76U0QkxOfUZamneQuzz+AP0fyfTJcCplZ2oZL93nxeupuJbN4s6uFNbmVCt4eWqqGqRnnowdFuBicJ1fLMVxw==}
     engines: {node: ^24 || ^22 || ^20}
@@ -4051,9 +4058,9 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
-  undici@6.27.0:
-    resolution: {integrity: sha512-YmfV3YnEDzXRC5lZ2jWtWWHKGUm1zIt8AhesR1tens+HTNv+YZlN/dp6G727LOvMJ8xjP9Be7Y2Sdr96LDm+pg==}
-    engines: {node: '>=18.17'}
+  undici@7.29.0:
+    resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
+    engines: {node: '>=20.18.1'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -5036,7 +5043,7 @@ snapshots:
     dependencies:
       '@sap-ai-sdk/core': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5046,7 +5053,7 @@ snapshots:
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5064,7 +5071,7 @@ snapshots:
       '@sap-ai-sdk/core': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5077,7 +5084,7 @@ snapshots:
       '@sap-ai-sdk/foundation-models': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/orchestration': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5094,7 +5101,7 @@ snapshots:
       '@sap-ai-sdk/ai-api': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/core': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       openai: 6.49.0(ws@8.21.0)(zod@4.4.3)
     transitivePeerDependencies:
       - debug
@@ -5105,7 +5112,7 @@ snapshots:
       '@sap-ai-sdk/ai-api': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/core': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/prompt-registry': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       yaml: 2.9.0
     transitivePeerDependencies:
       - debug
@@ -5125,7 +5132,7 @@ snapshots:
       '@sap-ai-sdk/core': 2.13.1-20260804060737.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5149,7 +5156,7 @@ snapshots:
     dependencies:
       '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       fast-levenshtein: 3.0.0
-      fs-extra: 11.3.5
+      fs-extra: 11.3.6
       glob: 13.0.6
       prettier: 3.9.6
       voca: 1.4.1
@@ -5187,8 +5194,8 @@ snapshots:
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/resilience': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/resilience': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
@@ -5204,7 +5211,28 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-cloud-sdk/resilience@4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      '@sap-cloud-sdk/util': 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      async-retry: 1.3.3
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      opossum: 10.0.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@sap-cloud-sdk/util@4.7.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      logform: 2.7.0
+      voca: 1.4.1
+      winston: 3.19.0
+      winston-transport: 4.9.0
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-cloud-sdk/util@4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       axios: 1.18.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       logform: 2.7.0
@@ -5217,7 +5245,7 @@ snapshots:
 
   '@sap/cds-compiler@7.0.3': {}
 
-  '@sap/cds-dk@10.0.5': {}
+  '@sap/cds-dk@10.0.6': {}
 
   '@sap/cds-fiori@2.3.0(@sap/cds@10.0.4(@eslint/js@10.0.1(eslint@10.8.0(jiti@2.7.0)(supports-color@7.2.0)))(supports-color@7.2.0))':
     dependencies:
@@ -5467,7 +5495,7 @@ snapshots:
     dependencies:
       '@typescript/old': typescript@6.0.3
 
-  '@upstash/context7-mcp@3.2.4(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)':
+  '@upstash/context7-mcp@3.2.5(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.4.3)
       '@types/express': 5.0.6
@@ -5475,7 +5503,7 @@ snapshots:
       commander: 13.1.0
       express: 5.2.1(supports-color@7.2.0)
       jose: 6.2.4
-      undici: 6.27.0
+      undici: 7.29.0
       zod: 4.4.3
     transitivePeerDependencies:
       - '@cfworker/json-schema'
@@ -6275,12 +6303,6 @@ snapshots:
 
   fresh@2.0.0: {}
 
-  fs-extra@11.3.5:
-    dependencies:
-      graceful-fs: 4.2.11
-      jsonfile: 6.2.1
-      universalify: 2.0.1
-
   fs-extra@11.3.6:
     dependencies:
       graceful-fs: 4.2.11
@@ -6943,6 +6965,8 @@ snapshots:
       zod: 4.4.3
 
   openapi-types@12.1.3: {}
+
+  opossum@10.0.0: {}
 
   opossum@9.0.0: {}
 
@@ -7614,7 +7638,7 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undici@6.27.0: {}
+  undici@7.29.0: {}
 
   unicorn-magic@0.3.0: {}
 
