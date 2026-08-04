@@ -6,7 +6,7 @@ import type {
   CreateEmbeddingResponse
 } from 'openai/resources/embeddings';
 import type { APIPromise } from 'openai/api-promise';
-import type { WithOptionalModel } from './types.js';
+import type { WithOptionalModel } from './types.ts';
 
 type RequestOptions = Parameters<Embeddings['create']>[1];
 

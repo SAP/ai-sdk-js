@@ -7,7 +7,7 @@ import type {
   BodyPredictParquet,
   ColumnType as ColType,
   SchemaFieldConfig
-} from './client/rpt/index.js';
+} from './client/rpt/index.ts';
 
 /**
  * Represents a string literal type that includes all column names from the data schema.
@@ -93,7 +93,8 @@ interface PredictionConfig<T extends DataSchema> {
  * @internal
  */
 export type DataSchema =
-  readonly ({ name: string } & SchemaFieldConfig)[] | null;
+  | readonly ({ name: string } & SchemaFieldConfig)[]
+  | null;
 
 /**
  * Representation of all data needed for prediction.

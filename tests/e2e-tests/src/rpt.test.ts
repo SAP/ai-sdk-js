@@ -6,7 +6,7 @@ import {
   predictParquetBlob,
   predictParquetFile
 } from '@sap-ai-sdk/sample-code';
-import { loadEnv } from './utils/load-env.js';
+import { loadEnv } from './utils/load-env.ts';
 import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
 
 loadEnv();

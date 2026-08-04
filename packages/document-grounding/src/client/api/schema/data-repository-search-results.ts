@@ -13,6 +13,7 @@ export type DataRepositorySearchResults = {
    * List of returned results.
    */
   results: (
-    DataRepositoryPerFilterSearchResult | PerFilterSearchResultWithError
+    | DataRepositoryPerFilterSearchResult
+    | PerFilterSearchResultWithError
   )[];
 } & Record<string, any>;

@@ -2,12 +2,12 @@ import nock from 'nock';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
-} from '../../../../test-util/mock-http.js';
-import { VectorApi } from '../client/api/index.js';
+} from '../../../../test-util/mock-http.ts';
+import { VectorApi } from '../client/api/index.ts';
 import type {
   Documents,
   CollectionsListResponse
-} from '../client/api/index.js';
+} from '../client/api/index.ts';
 
 describe('vector api', () => {
   beforeEach(() => {

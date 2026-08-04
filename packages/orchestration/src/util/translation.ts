@@ -1,11 +1,11 @@
-import type { SAPDocumentTranslationApplyToSelector } from '../client/api/schema/index.js';
+import type { SAPDocumentTranslationApplyToSelector } from '../client/api/schema/index.ts';
 import type {
   TranslationConfigParams,
   TranslationReturnType,
   ConfigType,
   TranslationInputParameters,
   DocumentTranslationApplyToSelector
-} from '../orchestration-types.js';
+} from '../orchestration-types.ts';
 
 function mapSelectorToBaseType(
   selector: DocumentTranslationApplyToSelector
