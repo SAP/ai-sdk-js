@@ -162,7 +162,7 @@ describe('Orchestration chat completion stream chunk response', () => {
           id: 'test',
           object: 'chat.completion.chunk',
           created: 0,
-          model: 'claude-3-7-sonnet',
+          model: 'anthropic--claude-4.5-haiku',
           choices: [
             {
               index: 0,
@@ -190,7 +190,7 @@ describe('Orchestration chat completion stream chunk response', () => {
           id: 'test',
           object: 'chat.completion.chunk',
           created: 0,
-          model: 'gpt-4o',
+          model: 'gpt-5.4-nano',
           choices: [
             {
               index: 0,
