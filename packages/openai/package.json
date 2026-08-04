@@ -53,7 +53,7 @@
     "openai": "^6.49.0"
   },
   "devDependencies": {
-    "openai": "^6.49.0",
-    "vitest": "^4.1.10"
+    "openai": "6.49.0",
+    "vitest": "4.1.10"
   }
 }

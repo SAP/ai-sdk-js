@@ -48,8 +48,8 @@
   "devDependencies": {
     "@langchain/core": "^1.2.3",
     "@langchain/langgraph": "^1.4.8",
-    "zod": "^4.4.3",
-    "vitest": "^4.1.10"
+    "zod": "4.4.3",
+    "vitest": "4.1.10"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.3"
