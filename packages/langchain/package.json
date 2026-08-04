@@ -20,6 +20,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./orchestration/prompt-caching-middleware": {
+      "types": "./dist/orchestration/prompt-caching-middleware/index.d.ts",
+      "default": "./dist/orchestration/prompt-caching-middleware/index.js"
+    },
     "./internal.js": {
       "types": "./dist/internal.d.ts",
       "default": "./dist/internal.js"
@@ -48,10 +52,17 @@
   "devDependencies": {
     "@langchain/core": "^1.2.3",
     "@langchain/langgraph": "^1.4.8",
+    "langchain": "^1.5.4",
     "zod": "^4.4.3",
     "vitest": "^4.1.10"
   },
   "peerDependencies": {
-    "@langchain/core": "^1.2.3"
+    "@langchain/core": "^1.2.3",
+    "langchain": "^1.5.4"
+  },
+  "peerDependenciesMeta": {
+    "langchain": {
+      "optional": true
+    }
   }
 }
