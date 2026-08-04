@@ -301,6 +301,14 @@
         "no-unused-expressions": "off",
         "typescript/explicit-module-boundary-types": "off"
       }
+    },
+    {
+      "files": [
+        "sample-code/src/support-bot/**/*"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
     }
   ]
 }

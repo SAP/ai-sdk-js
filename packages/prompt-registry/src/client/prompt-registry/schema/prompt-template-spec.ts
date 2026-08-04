@@ -26,7 +26,9 @@ export type PromptTemplateSpec = {
    *
    */
   response_format?:
-    ResponseFormatText | ResponseFormatJsonObject | ResponseFormatJsonSchema;
+    | ResponseFormatText
+    | ResponseFormatJsonObject
+    | ResponseFormatJsonSchema;
   /**
    * A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.
    *

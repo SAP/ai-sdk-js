@@ -9,4 +9,5 @@ import type { LlamaGuard38BFilterConfig } from './llama-guard-38-b-filter-config
  * Representation of the 'InputFilterConfig' schema.
  */
 export type InputFilterConfig =
-  AzureContentSafetyInputFilterConfig | LlamaGuard38BFilterConfig;
+  | AzureContentSafetyInputFilterConfig
+  | LlamaGuard38BFilterConfig;
