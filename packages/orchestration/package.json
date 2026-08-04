@@ -51,6 +51,6 @@
   "devDependencies": {
     "@sap-cloud-sdk/connectivity": "^4.7.0",
     "@sap-cloud-sdk/http-client": "^4.7.0",
-    "vitest": "^4.1.10"
+    "vitest": "4.1.10"
   }
 }
