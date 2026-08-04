@@ -128,15 +128,13 @@ describe('orchestration service client', () => {
       vi.useFakeTimers();
       mockInferenceWithResilience(mockResponse, { delay: 5000 });
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      const response = client.invoke(messages, {
-        signal: AbortSignal.timeout(100)
-      });
+      const response = client.invoke(messages, { timeout: 1000 });
+      await vi.advanceTimersByTimeAsync(1000);
       const assertion = expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
-      await vi.advanceTimersByTimeAsync(100);
       await assertion;
     });
 
@@ -148,16 +146,14 @@ describe('orchestration service client', () => {
         maxRetries: 1,
         onFailedAttempt
       });
-      const response = client.invoke(messages, {
-        signal: AbortSignal.timeout(100)
-      });
-      const assertion = expect(response).rejects.toThrow(
+      const response = client.invoke(messages, { timeout: 100 });
+      await vi.advanceTimersByTimeAsync(100);
+      await expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
-      await vi.advanceTimersByTimeAsync(100);
-      await assertion;
+
       expect(onFailedAttempt).toHaveBeenCalledTimes(1);
     });
 
@@ -185,9 +181,9 @@ describe('orchestration service client', () => {
       );
 
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      const stream = client.stream([], { signal: AbortSignal.timeout(100) });
-      const streamPromise = stream.then(s => Array.fromAsync(s));
-      const assertion = expect(streamPromise).rejects.toThrow(
+      const stream = client.stream(messages, { timeout: 100 });
+      // Install rejection handler before advancing timers to avoid unhandled promise rejection
+      const assertion = expect(stream).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
@@ -218,19 +214,17 @@ describe('orchestration service client', () => {
     }, 1000);
 
     it('throws when delay exceeds timeout using streaming', async () => {
+      vi.useFakeTimers();
       mockInferenceWithResilience(
         mockResponseStream,
         { delay: 5000 },
         200,
         true
       );
-      const controller = new AbortController();
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      const streamPromise = client.stream('Hello!', {
-        signal: controller.signal
-      });
-      controller.abort();
-      await expect(streamPromise).rejects.toThrow('aborted');
+      const stream = client.stream('Hello!', { timeout: 1000 });
+      await vi.advanceTimersByTimeAsync(1000);
+      await expect(stream).rejects.toThrow('aborted');
     });
   });
 
