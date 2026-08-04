@@ -128,7 +128,7 @@ export type PredictionData<T extends DataSchema> = {
 /**
  * Representation of the payload for Parquet-based predictions.
  */
-export type ParquetPayload = BodyPredictParquet & {
+export type ParquetPayload = Omit<BodyPredictParquet, 'prediction_config'> & {
   /**
    * Parquet file containing the data. Can also be a File to forward the filename.
    */

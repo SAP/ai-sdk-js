@@ -63,7 +63,7 @@ const data: PredictionData<typeof schema> = {
  * @returns The prediction results.
  */
 export async function predictWithSchema(): Promise<PredictResponsePayload> {
-  const client = new RptClient();
+  const client = new RptClient('sap-rpt-1.5');
   return client.predictWithSchema(schema, data);
 }
 
@@ -72,7 +72,7 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
  * @returns The prediction results.
  */
 export async function predictWithSchemaCompressed(): Promise<PredictResponsePayload> {
-  const client = new RptClient();
+  const client = new RptClient('sap-rpt-1.5');
   return client.predictWithSchema(schema, data, {
     compress: {
       mode: 'always' // force-enable compression
@@ -85,7 +85,7 @@ export async function predictWithSchemaCompressed(): Promise<PredictResponsePayl
  * @returns The prediction results.
  */
 export async function predictAutomaticParsing(): Promise<PredictResponsePayload> {
-  const client = new RptClient();
+  const client = new RptClient('sap-rpt-1.5');
   return client.predictWithoutSchema(data);
 }
 
@@ -107,7 +107,7 @@ export async function predictParquetFile(): Promise<PredictResponsePayload> {
     type: 'application/vnd.apache.parquet'
   });
   // Send the Parquet file to the RPT service for predictions
-  const client = new RptClient();
+  const client = new RptClient('sap-rpt-1.5');
   return client.predictParquet({
     file: parquetFile,
     prediction_config: data.prediction_config,
@@ -125,7 +125,7 @@ export async function predictParquetBlob(): Promise<PredictResponsePayload> {
     type: 'application/vnd.apache.parquet'
   });
   // Send the Parquet blob to the RPT service for predictions
-  const client = new RptClient();
+  const client = new RptClient('sap-rpt-1.5');
   return client.predictParquet({
     file: parquetFileBlob,
     prediction_config: data.prediction_config,
@@ -140,7 +140,7 @@ export async function predictParquetBlob(): Promise<PredictResponsePayload> {
  * @returns The prediction results.
  */
 export async function predictWithSchemaResilient(): Promise<PredictResponsePayload> {
-  const client = new RptClient();
+  const client = new RptClient('sap-rpt-1.5');
   return client.predictWithSchema(schema, data, {
     middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
   });
