@@ -61,7 +61,8 @@ export class OrchestrationClient extends BaseChatModel<
 > {
   streaming: boolean = false;
   orchestrationConfig:
-    LangChainOrchestrationModuleConfig | LangChainOrchestrationModuleConfigList;
+    | LangChainOrchestrationModuleConfig
+    | LangChainOrchestrationModuleConfigList;
   langchainOptions: LangChainOrchestrationChatModelParams;
   deploymentConfig?: ResourceGroupConfig;
   destination?: HttpDestinationOrFetchOptions;
@@ -241,7 +242,9 @@ export class OrchestrationClient extends BaseChatModel<
       > {
     // Extract config options
     const method = (config?.method ?? 'jsonSchema') as
-      'jsonSchema' | 'functionCalling' | 'jsonMode';
+      | 'jsonSchema'
+      | 'functionCalling'
+      | 'jsonMode';
     const name = config?.name ?? 'extract';
     const description = getSchemaDescription(outputSchema);
     const strict = config?.strict;

@@ -9,4 +9,5 @@
  * vector search.
  */
 export type AzureOpenAiOnYourDataVectorizationSourceType =
-  'endpoint' | 'deployment_name';
+  | 'endpoint'
+  | 'deployment_name';
