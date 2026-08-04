@@ -1321,11 +1321,11 @@ export async function orchestrationCacheControl(): Promise<
 }
 
 /**
- * Demonstrates reasoning content support with Anthropic extended thinking.
- * Logs the reasoning content and final answer, then performs a follow-up turn
- * passing the full message history to preserve reasoning context.
+ * Demonstrates reasoning content support using the harmonized reasoning_effort parameter.
+ * Performs a follow-up turn passing the full message history so the model
+ * keeps the reasoning context from the first turn.
  * @param signal - An optional AbortSignal to cancel the request.
- * @returns The orchestration service response from the follow-up turn.
+ * @returns The orchestration service response from the first turn, which carries the reasoning content.
  */
 export async function orchestrationReasoningContent(
   signal?: AbortSignal
@@ -1333,9 +1333,10 @@ export async function orchestrationReasoningContent(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'anthropic--claude-4.5-sonnet',
-        // Extended thinking must be explicitly enabled to receive reasoning content.
-        params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+        name: 'gemini-3.5-flash',
+        // reasoning_effort is harmonized across providers; orchestration maps it
+        // to each model's native reasoning configuration.
+        params: { reasoning_effort: 'high' }
       }
     }
   });
@@ -1349,37 +1350,38 @@ export async function orchestrationReasoningContent(
     { signal }
   );
 
-  const reasoning = response.getReasoningContent();
-  if (reasoning) {
-    logger.info('Reasoning:', reasoning);
-  }
-  logger.info('Answer:', response.getContent());
+  // Pass full message history (includes reasoning blocks) to maintain context.
+  await orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+      messagesHistory: response.getAllMessages()
+    },
+    { signal }
+  );
 
-  // Pass full message history (includes reasoning blocks) to maintain context
-  return orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
-    messagesHistory: response.getAllMessages()
-  });
+  // Return the first-turn response so the caller can read its reasoning content.
+  return response;
 }
 
 /**
- * Demonstrates reasoning content support with streaming and Anthropic extended thinking.
- * Iterates over the stream and logs the delta reasoning content from each chunk.
+ * Demonstrates reasoning content support with streaming using the harmonized reasoning_effort parameter.
  * @param controller - The AbortController to cancel the stream.
+ * @returns The orchestration stream response.
  */
 export async function orchestrationReasoningContentStream(
   controller: AbortController
-): Promise<void> {
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'anthropic--claude-4.5-sonnet',
-        // Extended thinking must be explicitly enabled to receive reasoning content.
-        params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+        name: 'gemini-3.5-flash',
+        // reasoning_effort is harmonized across providers; orchestration maps it
+        // to each model's native reasoning configuration.
+        params: { reasoning_effort: 'high' }
       }
     }
   });
-  const response = await orchestrationClient.stream(
+  return orchestrationClient.stream(
     {
       messages: [
         { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
@@ -1387,11 +1389,4 @@ export async function orchestrationReasoningContentStream(
     },
     controller.signal
   );
-
-  for await (const chunk of response.stream) {
-    const deltaReasoning = chunk.getDeltaReasoningContent();
-    if (deltaReasoning) {
-      deltaReasoning.forEach(block => logger.info(block));
-    }
-  }
 }

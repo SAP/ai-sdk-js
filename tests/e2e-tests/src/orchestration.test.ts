@@ -276,8 +276,8 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'anthropic--claude-4.5-sonnet',
-          params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
+          name: 'gemini-3.5-flash',
+          params: { reasoning_effort: 'high' }
         }
       }
     };
@@ -292,24 +292,18 @@ describe('orchestration', () => {
     });
 
     const reasoning = response.getReasoningContent();
-    // Reasoning content is best-effort: the model may or may not emit it.
-    if (reasoning) {
-      expect(Array.isArray(reasoning)).toBe(true);
-      expect(reasoning.length).toBeGreaterThanOrEqual(1);
-      reasoning.forEach(block => expect(typeof block).toBe('string'));
-    }
+    expect(reasoning).toBeDefined();
+    expect(reasoning!.length).toBeGreaterThanOrEqual(1);
+    reasoning!.forEach(block => expect(typeof block).toBe('string'));
     expect(response.getContent()).toEqual(expect.any(String));
   });
 
-  it('should accumulate reasoning content across a stream with tool calls', async () => {
+  it('should accumulate reasoning content across a stream', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'anthropic--claude-4.5-sonnet',
-          params: { thinking: { type: 'enabled', budget_tokens: 2048 } }
-        },
-        prompt: {
-          tools: [addNumbersTool]
+          name: 'gemini-3.5-flash',
+          params: { reasoning_effort: 'high' }
         }
       }
     };
@@ -318,30 +312,25 @@ describe('orchestration', () => {
       messages: [
         {
           role: 'user',
-          content:
-            'Think step by step about whether you need a tool, then use the add tool to compute 123456 and 789012, then reason about the result.'
+          content: 'Think step by step: what is 123456 plus 789012?'
         }
       ]
     });
 
-    const deltaReasoningChunks: string[][] = [];
+    let sawDeltaReasoning = false;
     for await (const chunk of response.stream) {
       const delta = chunk.getDeltaReasoningContent();
       if (delta) {
-        deltaReasoningChunks.push(delta);
+        sawDeltaReasoning = true;
       }
     }
 
     const reasoning = response.getReasoningContent();
-    // Reasoning + tool-call interleaving is non-deterministic; assert loosely.
-    if (reasoning) {
-      expect(reasoning.length).toBeGreaterThanOrEqual(1);
-      reasoning.forEach(block => expect(typeof block).toBe('string'));
-      // If delta reasoning was streamed, the accumulated result must reflect it.
-      if (deltaReasoningChunks.length > 0) {
-        expect(reasoning.join('')).not.toBe('');
-      }
-    }
+    expect(reasoning).toBeDefined();
+    expect(reasoning!.length).toBeGreaterThanOrEqual(1);
+    reasoning!.forEach(block => expect(typeof block).toBe('string'));
+    expect(sawDeltaReasoning).toBe(true);
+    expect(reasoning!.join('')).not.toBe('');
   });
 
   it('should generate embeddings with masking', async () => {

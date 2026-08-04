@@ -46,7 +46,8 @@ import {
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationCacheControl,
-  orchestrationReasoningContent
+  orchestrationReasoningContent,
+  orchestrationReasoningContentStream
 } from './orchestration.ts';
 import {
   getDeployments,
@@ -548,6 +549,17 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
             `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
             `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
         );
+    } else if (sampleCase === 'reasoningContent') {
+      const reasoningResult = result as OrchestrationResponse;
+      const reasoning = reasoningResult.getReasoningContent();
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          '--- Reasoning ---\n' +
+            `${reasoning ? reasoning.join('\n') : '(none)'}\n\n` +
+            '--- Answer ---\n' +
+            `${reasoningResult.getContent()}`
+        );
     } else {
       res
         .header('Content-Type', 'text/plain')
@@ -658,6 +670,46 @@ app.get(
     }
   }
 );
+
+app.get('/orchestration-stream/reasoning-content', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const response = await orchestrationReasoningContentStream(controller);
+
+    // Set headers for event stream.
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    // Abort the stream if the client connection is closed.
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    // Stream the delta reasoning content and the delta answer content.
+    for await (const chunk of response.stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      const deltaReasoning = chunk.getDeltaReasoningContent();
+      if (deltaReasoning) {
+        deltaReasoning.forEach(block => res.write(`[reasoning] ${block}\n`));
+      }
+      const deltaContent = chunk.getDeltaContent();
+      if (deltaContent) {
+        res.write(deltaContent);
+      }
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
 
 /* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
