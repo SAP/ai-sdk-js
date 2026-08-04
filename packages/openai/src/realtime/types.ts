@@ -12,7 +12,8 @@ export type SapOpenAiRealtimeOptions =
  * Passing a string is shorthand for `{ deployment: modelName }`.
  */
 export type SapOpenAiRealtimeInput =
-  SapOpenAiRealtimeOptions | AzureOpenAiRealtimeModel;
+  | SapOpenAiRealtimeOptions
+  | AzureOpenAiRealtimeModel;
 
 /** @internal */
 export interface SapOpenAiRealtimeContext {

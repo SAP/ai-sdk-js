@@ -22,8 +22,8 @@
   "scripts": {
     "test": "vitest run",
     "cleanup-deployments": "node ./src/utils/cleanup-deployments.ts",
-    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "devDependencies": {
     "@types/async-retry": "^1.4.9",

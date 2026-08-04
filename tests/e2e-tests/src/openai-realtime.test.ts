@@ -57,7 +57,7 @@ function pcm16AudioMetrics(pcm: Buffer): { rms: number; entropy: number } {
  */
 async function transcribeWithGemini(wav: Buffer): Promise<string | undefined> {
   const client = new OrchestrationClient({
-    promptTemplating: { model: { name: 'gemini-2.5-flash' } }
+    promptTemplating: { model: { name: 'gemini-3.5-flash' } }
   });
   const response = await client.chatCompletion({
     messages: [

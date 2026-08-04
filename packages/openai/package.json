@@ -48,8 +48,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
-    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
@@ -67,9 +67,9 @@
     }
   },
   "devDependencies": {
-    "@types/ws": "^8.18.1",
+    "@types/ws": "8.18.1",
     "openai": "6.49.0",
     "ws": "8.21.0",
-    "vitest": "^4.1.10"
+    "vitest": "4.1.10"
   }
 }

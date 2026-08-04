@@ -7,7 +7,7 @@
   "types": "test",
   "scripts": {
     "test": "pnpm tsd",
-    "lint:fix": "prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint:fix": "oxfmt ."
   },
   "tsd": {
     "directory": "test"
