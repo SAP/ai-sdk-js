@@ -272,6 +272,67 @@ describe('orchestration', () => {
     `);
   });
 
+  it('should return reasoning content in a non-streaming response', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gemini-3.5-flash',
+          params: { reasoning_effort: 'high' }
+        }
+      }
+    };
+
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messages: [
+        {
+          role: 'user',
+          content: 'Think step by step: what is 15 * 17?'
+        }
+      ]
+    });
+
+    const reasoning = response.getReasoningContent();
+    expect(reasoning).toBeDefined();
+    expect(reasoning!.length).toBeGreaterThanOrEqual(1);
+    reasoning!.forEach(block => expect(typeof block).toBe('string'));
+    expect(response.getContent()).toEqual(expect.any(String));
+  });
+
+  it('should accumulate reasoning content across a stream', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gemini-3.5-flash',
+          params: { reasoning_effort: 'high' }
+        }
+      }
+    };
+
+    const response = await new OrchestrationClient(config).stream({
+      messages: [
+        {
+          role: 'user',
+          content: 'Think step by step: what is 123456 plus 789012?'
+        }
+      ]
+    });
+
+    let sawDeltaReasoning = false;
+    for await (const chunk of response.stream) {
+      const delta = chunk.getDeltaReasoningContent();
+      if (delta) {
+        sawDeltaReasoning = true;
+      }
+    }
+
+    const reasoning = response.getReasoningContent();
+    expect(reasoning).toBeDefined();
+    expect(reasoning!.length).toBeGreaterThanOrEqual(1);
+    reasoning!.forEach(block => expect(typeof block).toBe('string'));
+    expect(sawDeltaReasoning).toBe(true);
+    expect(reasoning!.join('')).not.toBe('');
+  });
+
   it('should generate embeddings with masking', async () => {
     const response = await orchestrationEmbeddingWithMasking();
     expect(response).toBeDefined();
