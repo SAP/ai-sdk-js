@@ -779,7 +779,8 @@ app.openapi(
           response += 'No citations found in the response.\n';
         }
         return c.text(response);
-      } else if (sampleCase === 'cacheControl') {
+      }
+      if (sampleCase === 'cacheControl') {
         const [first, second] = result as [
           OrchestrationResponse,
           OrchestrationResponse
