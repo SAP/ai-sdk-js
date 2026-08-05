@@ -310,6 +310,15 @@ importers:
 
   sample-code:
     dependencies:
+      '@hono/node-server':
+        specifier: 2.0.6
+        version: 2.0.6(hono@4.12.25)
+      '@hono/swagger-ui':
+        specifier: 0.6.1
+        version: 0.6.1(hono@4.12.25)
+      '@hono/zod-openapi':
+        specifier: 1.5.1
+        version: 1.5.1(hono@4.12.25)(zod@4.4.3)
       '@langchain/classic':
         specifier: 1.0.40
         version: 1.0.40(@langchain/core@1.2.4(openai@7.3.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(openai@7.3.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
@@ -334,12 +343,9 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: 4.8.0
         version: 4.8.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@types/express':
-        specifier: 5.0.6
-        version: 5.0.6
-      express:
-        specifier: 5.2.1
-        version: 5.2.1(supports-color@7.2.0)
+      hono:
+        specifier: 4.12.25
+        version: 4.12.25
       langchain:
         specifier: 1.5.4
         version: 1.5.4(@langchain/core@1.2.4(openai@7.3.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0))(openai@7.3.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
@@ -511,6 +517,11 @@ packages:
     resolution: {integrity: sha512-e5mJoswsnAX0jG+J09xHFYQXb/bUc5S3pLpMxUuRUA2H8T2kni3yEoyz2R3Dltw5f4A6j6rPNMpWTK+iVDFlng==}
     peerDependencies:
       openapi-types: '>=7'
+
+  '@asteasolutions/zod-to-openapi@8.5.0':
+    resolution: {integrity: sha512-SABbKiObg5dLRiTFnqiW1WWwGcg1BJfmHtT2asIBnBHg6Smy/Ms2KHc650+JI4Hw7lSkdiNebEGXpwoxfben8Q==}
+    peerDependencies:
+      zod: ^4.0.0
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -828,11 +839,29 @@ packages:
   '@gerrit0/mini-shiki@3.23.0':
     resolution: {integrity: sha512-bEMORlG0cqdjVyCEuU0cDQbORWX+kYCeo0kV1lbxF5bt4r7SID2l9bqsxJEM0zndaxpOUT7riCyIVEuqq/Ynxg==}
 
-  '@hono/node-server@1.19.15':
-    resolution: {integrity: sha512-Za2ai6TLdKjUvnur+eenO6nuYYipVAEhyCAdaV8IRvmU9kK8crOZUSYvIXn72E4f8fJqyAbpcJuTsYYmZp9Deg==}
-    engines: {node: '>=18.14.1'}
+  '@hono/node-server@2.0.6':
+    resolution: {integrity: sha512-7DeRlKG57JDBNZ5Qj2jwVdgwQy4b0tLubRLl3zCf91/rCf9i7p1V5FtW/yWibm1uUHE493ts9ZXH/7g/LQWl+g==}
+    engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
+
+  '@hono/swagger-ui@0.6.1':
+    resolution: {integrity: sha512-sJTvldu1GPeEPfyeLG7gRj+W4vEuD+JDi+JjJ3TJs/DvMUtBLs0KJO5yokGegWWdy5qrbdnQGekbhgNRmPmYKQ==}
+    peerDependencies:
+      hono: '>=4.0.0'
+
+  '@hono/zod-openapi@1.5.1':
+    resolution: {integrity: sha512-ZaDdEIkn6PEGjIYHXJeyByg6yhvLzI+UXn968pWtahpwcQ6HMjQYXI3zNffTl0Wl9QZ79nUnGqiN1erEIu23fA==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      hono: '>=4.10.0'
+      zod: ^4.0.0
+
+  '@hono/zod-validator@0.9.0':
+    resolution: {integrity: sha512-n0ZSXmCiHVIp4Y5wlOOyZCeTd/rsawA/qW1cipB8QOYKZ9N8Tk0nZUZCXho9cu374AN4JpDNKioNKBJ/W+LBug==}
+    peerDependencies:
+      hono: '>=4.11.2'
+      zod: ^3.25.0 || ^4.0.0
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -2739,6 +2768,10 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
+  hono@4.12.25:
+    resolution: {integrity: sha512-2NFaIyNVgJmBs/ecmtGzlmluTFs5cHEWGTdu0t1HBwYzoGXOL5nUQBRMXsXWla5i4KkG//QMzVP88m1+I3fdAQ==}
+    engines: {node: '>=16.9.0'}
+
   hono@4.12.27:
     resolution: {integrity: sha512-1yrb/+w6HWQJrUCLkJ2IF5jNIPvvFkblV5RNOYl6bV+OA6p9GLcMpHFFGTosSvHvcAUibuUukRqhlYI4z32C7Q==}
     engines: {node: '>=16.9.0'}
@@ -3402,6 +3435,9 @@ packages:
 
   openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
+
+  openapi3-ts@4.6.1:
+    resolution: {integrity: sha512-XW9MOldkhoICNeXVzzmXzmOW5G73ppOEGmh7fLCqHjgfdEYCGGN+00MlVCeUZgovjjfC56j9tvtDt1zGabNjjA==}
 
   opossum@10.0.0:
     resolution: {integrity: sha512-sghtqL8Usj+et06Zui0nyn0R6FFsl7cyuoU+d7MctYU0nbS7Htzjleh+tWohFqk1Rp1srrFwbFa8Vxd0O64w6A==}
@@ -4307,6 +4343,11 @@ snapshots:
       call-me-maybe: 1.0.2
       openapi-types: 12.1.3
 
+  '@asteasolutions/zod-to-openapi@8.5.0(zod@4.4.3)':
+    dependencies:
+      openapi3-ts: 4.6.1
+      zod: 4.4.3
+
   '@babel/code-frame@7.29.7':
     dependencies:
       '@babel/helper-validator-identifier': 7.29.7
@@ -4644,9 +4685,30 @@ snapshots:
       '@shikijs/types': 3.23.0
       '@shikijs/vscode-textmate': 10.0.2
 
-  '@hono/node-server@1.19.15(hono@4.12.27)':
+  '@hono/node-server@2.0.6(hono@4.12.25)':
+    dependencies:
+      hono: 4.12.25
+
+  '@hono/node-server@2.0.6(hono@4.12.27)':
     dependencies:
       hono: 4.12.27
+
+  '@hono/swagger-ui@0.6.1(hono@4.12.25)':
+    dependencies:
+      hono: 4.12.25
+
+  '@hono/zod-openapi@1.5.1(hono@4.12.25)(zod@4.4.3)':
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 8.5.0(zod@4.4.3)
+      '@hono/zod-validator': 0.9.0(hono@4.12.25)(zod@4.4.3)
+      hono: 4.12.25
+      openapi3-ts: 4.6.1
+      zod: 4.4.3
+
+  '@hono/zod-validator@0.9.0(hono@4.12.25)(zod@4.4.3)':
+    dependencies:
+      hono: 4.12.25
+      zod: 4.4.3
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -4815,7 +4877,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.4.3)':
     dependencies:
-      '@hono/node-server': 1.19.15(hono@4.12.27)
+      '@hono/node-server': 2.0.6(hono@4.12.27)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -6606,6 +6668,8 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
+  hono@4.12.25: {}
+
   hono@4.12.27: {}
 
   hosted-git-info@2.8.9: {}
@@ -7178,6 +7242,10 @@ snapshots:
       zod: 4.4.3
 
   openapi-types@12.1.3: {}
+
+  openapi3-ts@4.6.1:
+    dependencies:
+      yaml: 2.9.0
 
   opossum@10.0.0: {}
 
