@@ -668,9 +668,35 @@ const orchestrationSampleCases = [
   'sapAbap',
   'fallbackModules',
   'sonarWithCitations',
-  'cacheControl',
-  'file'
+  'cacheControl'
 ] as const;
+
+app.openapi(
+  createRoute({
+    method: 'get',
+    path: '/orchestration/file',
+    tags: ['Orchestration'],
+    summary: 'Chat completion with file input',
+    request: {
+      query: z.object({
+        type: z.enum(['pdf', 'csv', 'docx', 'mp3']),
+        model: z.string().optional()
+      })
+    },
+    responses: { 200: { description: 'File chat response' } }
+  }),
+  async c => {
+    const fileType = c.req.query('type') as 'pdf' | 'csv' | 'docx' | 'mp3';
+    const model = c.req.query('model');
+    try {
+      const result = await orchestrationChatCompletionFile(fileType, { model });
+      return c.text(String(result.getContent() ?? ''));
+    } catch (error: any) {
+      console.error(error.stack);
+      return c.text(errorBody(error), errorStatus(error));
+    }
+  }
+);
 
 app.openapi(
   createRoute({
@@ -679,30 +705,12 @@ app.openapi(
     tags: ['Orchestration'],
     summary: 'Run orchestration sample case',
     request: {
-      params: z.object({ sampleCase: z.enum(orchestrationSampleCases) }),
-      query: z.object({
-        type: z.enum(['pdf', 'csv', 'docx', 'mp3']).optional(),
-        model: z.string().optional()
-      })
+      params: z.object({ sampleCase: z.enum(orchestrationSampleCases) })
     },
     responses: { 200: { description: 'Sample case result' } }
   }),
   async c => {
     const sampleCase = c.req.param('sampleCase');
-
-    if (sampleCase === 'file') {
-      const fileType = c.req.query('type') as 'pdf' | 'csv' | 'docx' | 'mp3';
-      const model = c.req.query('model');
-      try {
-        const result = await orchestrationChatCompletionFile(fileType, {
-          model
-        });
-        return c.text(String(result.getContent() ?? ''));
-      } catch (error: any) {
-        console.error(error.stack);
-        return c.text(errorBody(error), errorStatus(error));
-      }
-    }
 
     const testCase =
       {
