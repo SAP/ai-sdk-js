@@ -742,7 +742,8 @@ app.openapi(
         return c.text(
           `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
         );
-      } else if (sampleCase === 'embeddingWithMasking') {
+      }
+      if (sampleCase === 'embeddingWithMasking') {
         const embeddingResult = result as OrchestrationEmbeddingResponse;
         const embedding = embeddingResult
           .getEmbeddings()
