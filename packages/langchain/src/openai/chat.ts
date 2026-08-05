@@ -22,7 +22,7 @@ import {
   mapLangChainToAiClient,
   mapOutputToChatResult,
   mapToolToOpenAiTool
-} from './util.js';
+} from './util.ts';
 import type { InteropZodType } from '@langchain/core/utils/types';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
 import type {
@@ -37,7 +37,7 @@ import type {
   AzureOpenAiChatCallOptions,
   AzureOpenAiChatModelParams,
   ChatAzureOpenAIToolType
-} from './types.js';
+} from './types.ts';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { JsonSchema7Type } from '@langchain/core/utils/json_schema';
 

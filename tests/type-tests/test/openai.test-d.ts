@@ -17,15 +17,15 @@ import type {
 /**
  * SapOpenAi.createClient returns a Promise<SapOpenAi>.
  */
-expectType<Promise<SapOpenAi>>(SapOpenAi.createClient('gpt-4.1'));
+expectType<Promise<SapOpenAi>>(SapOpenAi.createClient('gpt-5.5'));
 
 expectType<Promise<SapOpenAi>>(
-  SapOpenAi.createClient({ deployment: 'gpt-4.1' })
+  SapOpenAi.createClient({ deployment: 'gpt-5.5' })
 );
 
 expectType<Promise<SapOpenAi>>(
   SapOpenAi.createClient({
-    deployment: 'gpt-4.1',
+    deployment: 'gpt-5.5',
     apiVersion: '2024-10-21',
     clientType: 'my-app'
   })
@@ -52,18 +52,79 @@ expectType<SapResponses>(client.responses);
  */
 expectType<SapCompletions>(client.chat.completions);
 
+// --- SapCompletions ---
+
 /**
- * SapCompletions.create accepts an optional model field.
+ * SapCompletions.create accepts a model name string.
  */
 expectAssignable<Promise<unknown>>(
   client.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-5.5',
     messages: [{ role: 'user', content: 'Hello' }]
   })
 );
 
 /**
- * SapCompletions.parse accepts valid params without model.
+ * SapCompletions.create accepts a ModelConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.create({
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.create accepts a DeploymentIdConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.create({
+    model: { deploymentId: 'd1234' },
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.create accepts no model (model is optional).
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.create({
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.parse accepts a model name string.
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.parse({
+    model: 'gpt-5.5',
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.parse accepts a ModelConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.parse({
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.parse accepts a DeploymentIdConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.chat.completions.parse({
+    model: { deploymentId: 'd1234' },
+    messages: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+/**
+ * SapCompletions.parse accepts no model (model is optional).
  */
 expectAssignable<Promise<unknown>>(
   client.chat.completions.parse({
@@ -71,22 +132,105 @@ expectAssignable<Promise<unknown>>(
   })
 );
 
+// --- SapEmbeddings ---
+
 /**
- * SapEmbeddings.create accepts an optional model field.
+ * SapEmbeddings.create accepts a model name string.
  */
 expectAssignable<Promise<unknown>>(
   client.embeddings.create({ model: 'text-embedding-3-small', input: 'hello' })
 );
 
 /**
- * SapResponses.create accepts an optional model field.
+ * SapEmbeddings.create accepts a ModelConfig object.
  */
 expectAssignable<Promise<unknown>>(
-  client.responses.create({ model: 'gpt-4', input: 'Hello' })
+  client.embeddings.create({
+    model: { modelName: 'text-embedding-3-small' },
+    input: 'hello'
+  })
 );
 
 /**
- * SapResponses.parse accepts valid params without model.
+ * SapEmbeddings.create accepts a DeploymentIdConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.embeddings.create({
+    model: { deploymentId: 'd1234' },
+    input: 'hello'
+  })
+);
+
+/**
+ * SapEmbeddings.create accepts no model (model is optional).
+ */
+expectAssignable<Promise<unknown>>(
+  client.embeddings.create({ input: 'hello' })
+);
+
+// --- SapResponses ---
+
+/**
+ * SapResponses.create accepts a model name string.
+ */
+expectAssignable<Promise<unknown>>(
+  client.responses.create({ model: 'gpt-5.5', input: 'Hello' })
+);
+
+/**
+ * SapResponses.create accepts a ModelConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.responses.create({
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
+    input: 'Hello'
+  })
+);
+
+/**
+ * SapResponses.create accepts a DeploymentIdConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.responses.create({
+    model: { deploymentId: 'd1234' },
+    input: 'Hello'
+  })
+);
+
+/**
+ * SapResponses.create accepts no model (model is optional).
+ */
+expectAssignable<Promise<unknown>>(client.responses.create({ input: 'Hello' }));
+
+/**
+ * SapResponses.parse accepts a model name string.
+ */
+expectAssignable<Promise<unknown>>(
+  client.responses.parse({ model: 'gpt-5.5', input: 'Hello' })
+);
+
+/**
+ * SapResponses.parse accepts a ModelConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.responses.parse({
+    model: { modelName: 'gpt-5.5', modelVersion: '2024-11-20' },
+    input: 'Hello'
+  })
+);
+
+/**
+ * SapResponses.parse accepts a DeploymentIdConfig object.
+ */
+expectAssignable<Promise<unknown>>(
+  client.responses.parse({
+    model: { deploymentId: 'd1234' },
+    input: 'Hello'
+  })
+);
+
+/**
+ * SapResponses.parse accepts no model (model is optional).
  */
 expectAssignable<Promise<unknown>>(client.responses.parse({ input: 'Hello' }));
 
@@ -100,7 +244,7 @@ expectAssignable<
     apiVersion?: string;
     azureADTokenProvider?: () => Promise<string>;
   }>
->(createOpenAiConfig('gpt-4.1'));
+>(createOpenAiConfig('gpt-5.5'));
 
 expectAssignable<
   Promise<{
@@ -108,7 +252,7 @@ expectAssignable<
     apiVersion?: string;
     azureADTokenProvider?: () => Promise<string>;
   }>
->(createOpenAiConfig({ deployment: 'gpt-4.1' }));
+>(createOpenAiConfig({ deployment: 'gpt-5.5' }));
 
 expectAssignable<
   Promise<{
@@ -130,16 +274,16 @@ expectType<() => Promise<string>>(
 /**
  * SapModelName is assignable from known model names and any string.
  */
-expectAssignable<SapModelName>('gpt-4.1');
+expectAssignable<SapModelName>('gpt-5.5');
 expectAssignable<SapModelName>('text-embedding-3-small');
 expectAssignable<SapModelName>('unlisted-model');
 
 /**
  * SapOpenAiInput accepts a plain string or SapOpenAiOptions.
  */
-expectAssignable<SapOpenAiInput>('gpt-4.1');
+expectAssignable<SapOpenAiInput>('gpt-5.5');
 expectAssignable<SapOpenAiInput>({
-  deployment: 'gpt-4.1'
+  deployment: 'gpt-5.5'
 } satisfies SapOpenAiOptions);
 
 /**

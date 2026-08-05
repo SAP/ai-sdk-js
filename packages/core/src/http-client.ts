@@ -8,7 +8,7 @@ import {
   removeTrailingSlashes
 } from '@sap-cloud-sdk/util';
 import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
-import { getAiCoreDestination } from './context.js';
+import { getAiCoreDestination } from './context.ts';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpRequestConfig,

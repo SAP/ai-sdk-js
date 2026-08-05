@@ -1,12 +1,12 @@
 import {
   constructCompletionPostRequest,
   buildAzureContentSafetyFilter
-} from './util/index.js';
-import type { CompletionPostRequest } from './client/api/schema/index.js';
+} from './util/index.ts';
+import type { CompletionPostRequest } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
   StreamOptions
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
@@ -35,7 +35,7 @@ describe('construct completion post request', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
-  xit('should construct completion post request with empty templating module', async () => {
+  it.skip('should construct completion post request with empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         prompt: { template: [] },

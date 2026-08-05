@@ -46,19 +46,19 @@ export type {
   EmbeddingModuleConfig,
   EmbeddingData,
   OrchestrationRequestHeaders
-} from './orchestration-types.js';
+} from './orchestration-types.ts';
 export {
   isConfigReference,
   isOrchestrationModuleConfigList
-} from './orchestration-types.js';
-export { OrchestrationStreamResponse } from './orchestration-stream-response.js';
-export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
-export { OrchestrationStream } from './orchestration-stream.js';
-export { OrchestrationClient } from './orchestration-client.js';
-export { OrchestrationResponse } from './orchestration-response.js';
-export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.js';
-export { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.js';
-export type { ChatModel, EmbeddingModel } from './model-types.js';
+} from './orchestration-types.ts';
+export { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
+export { OrchestrationStream } from './orchestration-stream.ts';
+export { OrchestrationClient } from './orchestration-client.ts';
+export { OrchestrationResponse } from './orchestration-response.ts';
+export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
+export { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
+export type { ChatModel, EmbeddingModel } from './model-types.ts';
 
 export {
   buildAzureContentSafetyFilter,
@@ -66,7 +66,7 @@ export {
   buildDocumentGroundingConfig,
   buildDpiMaskingProvider,
   buildTranslationConfig
-} from './util/index.js';
+} from './util/index.ts';
 
 /**
  * Exporting frequently used types.
@@ -90,4 +90,4 @@ export type {
   FunctionObject,
   Error as OrchestrationError,
   Citation
-} from './client/api/schema/index.js';
+} from './client/api/schema/index.ts';

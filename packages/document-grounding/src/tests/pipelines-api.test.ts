@@ -2,9 +2,9 @@ import nock from 'nock';
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
-} from '../../../../test-util/mock-http.js';
-import { PipelinesApi } from '../client/api/index.js';
-import type { GetPipelines } from '../client/api/index.js';
+} from '../../../../test-util/mock-http.ts';
+import { PipelinesApi } from '../client/api/index.ts';
+import type { GetPipelines } from '../client/api/index.ts';
 
 describe('pipelines', () => {
   beforeEach(() => {

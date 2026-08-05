@@ -1,2 +1,2 @@
-export * from './deployment-resolver.js';
-export * from './model.js';
+export * from './deployment-resolver.ts';
+export * from './model.ts';

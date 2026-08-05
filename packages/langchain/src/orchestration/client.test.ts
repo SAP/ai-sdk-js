@@ -1,6 +1,4 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
-import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
 import nock from 'nock';
 import {
   START,
@@ -17,15 +15,15 @@ import {
   parseMockResponse,
   parseFileToString,
   aiCoreDestination
-} from '../../../../test-util/mock-http.js';
-import { addNumbersTool } from '../../../../test-util/tools.js';
-import { OrchestrationClient } from './client.js';
-import type { LangChainOrchestrationModuleConfig } from './types.js';
+} from '../../../../test-util/mock-http.ts';
+import { addNumbersTool } from '../../../../test-util/tools.ts';
+import { OrchestrationClient } from './client.ts';
+import type { LangChainOrchestrationModuleConfig } from './types.ts';
 import type { ToolCall } from '@langchain/core/messages/tool';
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
 
-jest.setTimeout(30000);
+vi.setConfig({ testTimeout: 30000 });
 
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
@@ -137,7 +135,7 @@ describe('orchestration service client', () => {
 
     it('retries when delay exceeds timeout', async () => {
       mockInferenceWithResilience(mockResponse, { delay: 2000 });
-      const onFailedAttempt = jest.fn();
+      const onFailedAttempt = vi.fn();
       const client = new OrchestrationClient(config, {
         maxRetries: 1,
         onFailedAttempt
@@ -219,7 +217,7 @@ describe('orchestration service client', () => {
       );
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       await expect(client.stream('Hello!', { timeout: 1000 })).rejects.toThrow(
-        'Aborted'
+        'aborted'
       );
     });
   });
@@ -459,7 +457,7 @@ describe('orchestration service client', () => {
         endpoint
       );
 
-      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+      vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
 
       const client = new OrchestrationClient(config, {
         streaming: true
@@ -498,7 +496,7 @@ describe('orchestration service client', () => {
         endpoint
       );
 
-      jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+      vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
 
       const client = new OrchestrationClient(config, {
         streaming: true,
@@ -583,7 +581,7 @@ describe('orchestration service client', () => {
         }
       };
 
-      await expect(streamFunction()).rejects.toThrow('Aborted');
+      await expect(streamFunction()).rejects.toThrow('aborted');
     }, 1000);
 
     it('streams with a callback', async () => {
@@ -611,7 +609,7 @@ describe('orchestration service client', () => {
       );
       let tokenCount = 0;
       const callbackHandler = {
-        handleLLMNewToken: jest.fn().mockImplementation(() => {
+        handleLLMNewToken: vi.fn().mockImplementation(() => {
           tokenCount += 1;
         })
       };
@@ -698,7 +696,7 @@ describe('orchestration service client', () => {
       },
       endpoint
     );
-    jest.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+    vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
 
     const llm = new OrchestrationClient(config);
 
@@ -947,7 +945,7 @@ describe('orchestration service client', () => {
 
     it('should create response_format config with jsonSchema by default', () => {
       const llm = new OrchestrationClient(config);
-      const spy = jest.spyOn(llm, 'withConfig');
+      const spy = vi.spyOn(llm, 'withConfig');
 
       llm.withStructuredOutput(jokeSchema, { name: 'joke', strict: true });
 
@@ -974,7 +972,7 @@ describe('orchestration service client', () => {
 
     it('should work with plain JSON schema', () => {
       const llm = new OrchestrationClient(config);
-      const spy = jest.spyOn(llm, 'withConfig');
+      const spy = vi.spyOn(llm, 'withConfig');
 
       const plainSchema = {
         type: 'object',
@@ -1003,7 +1001,7 @@ describe('orchestration service client', () => {
 
     it('should use default name "extract" when not provided', () => {
       const llm = new OrchestrationClient(config);
-      const spy = jest.spyOn(llm, 'withConfig');
+      const spy = vi.spyOn(llm, 'withConfig');
 
       llm.withStructuredOutput(jokeSchema);
 
@@ -1173,7 +1171,7 @@ describe('orchestration service client', () => {
 
     it('should use `jsonMode` method if specified', async () => {
       const llm = new OrchestrationClient(config);
-      const spy = jest.spyOn(llm, 'withConfig');
+      const spy = vi.spyOn(llm, 'withConfig');
 
       llm.withStructuredOutput(jokeSchema, { method: 'jsonMode' });
 
@@ -1202,7 +1200,7 @@ describe('orchestration service client', () => {
 
     it('should use `functionCalling` method if specified', async () => {
       const llm = new OrchestrationClient(config);
-      const spy = jest.spyOn(llm, 'withConfig');
+      const spy = vi.spyOn(llm, 'withConfig');
 
       llm.withStructuredOutput(jokeSchema, { method: 'functionCalling' });
 
@@ -1230,7 +1228,7 @@ describe('orchestration service client', () => {
 
     it('should use `functionCalling` with plain JSON schema', async () => {
       const llm = new OrchestrationClient(config);
-      const spy = jest.spyOn(llm, 'withConfig');
+      const spy = vi.spyOn(llm, 'withConfig');
 
       const plainJsonSchema = {
         name: 'joke',

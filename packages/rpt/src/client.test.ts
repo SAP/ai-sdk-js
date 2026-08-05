@@ -3,8 +3,8 @@ import {
   mockInference,
   mockClientCredentialsGrantCall,
   mockDeploymentsList
-} from '../../../test-util/mock-http.js';
-import { RptClient } from './client.js';
+} from '../../../test-util/mock-http.ts';
+import { RptClient } from './client.ts';
 
 describe('rpt', () => {
   beforeEach(() => {

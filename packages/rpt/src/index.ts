@@ -1,4 +1,4 @@
-export * from './client.js';
+export * from './client.ts';
 export type {
   DateString,
   PredictionData,
@@ -7,9 +7,9 @@ export type {
   ParquetPayload,
   RptRequestOptions,
   RptRequestCompressionMiddlewareOptions
-} from './types.js';
+} from './types.ts';
 export type {
   PredictResponseMetadata,
   PredictResponsePayload,
   PredictResponseStatus
-} from './client/rpt/schema/index.js';
+} from './client/rpt/schema/index.ts';

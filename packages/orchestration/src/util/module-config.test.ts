@@ -1,27 +1,26 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
-import { isOrchestrationModuleConfigList } from '../orchestration-types.js';
+import { isOrchestrationModuleConfigList } from '../orchestration-types.ts';
 import {
   addStreamOptions,
   addStreamOptionsToOutputFilteringConfig,
   addStreamOptionsToPromptTemplatingModuleConfig,
   constructCompletionPostRequest,
   constructCompletionPostRequestFromConfigReference
-} from './module-config.js';
-import { buildAzureContentSafetyFilter } from './filtering.js';
+} from './module-config.ts';
+import { buildAzureContentSafetyFilter } from './filtering.ts';
 import type {
   ModuleConfigs,
   OrchestrationConfig,
   PromptTemplatingModuleConfig
-} from '../client/api/schema/index.js';
-import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.js';
+} from '../client/api/schema/index.ts';
+import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.ts';
 import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
   OrchestrationModuleConfigList,
   StreamOptions
-} from '../orchestration-types.js';
+} from '../orchestration-types.ts';
 
 describe('stream util tests', () => {
   const defaultOrchestrationModules: OrchestrationModuleConfig = {
@@ -156,7 +155,7 @@ describe('stream util tests', () => {
       messageContext: 'orchestration-utils'
     });
 
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
 
     const config = addStreamOptions(defaultModuleConfigs, defaultStreamOptions);
 
@@ -455,7 +454,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
 
     const configs: ModuleConfigs[] = [
       createModuleConfig('gpt-5.4'),
@@ -478,7 +477,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configWithFilter: ModuleConfigs = {
@@ -516,7 +515,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configWithFilter1: ModuleConfigs = {
@@ -659,7 +658,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configWithFilter: ModuleConfigs = {
@@ -698,7 +697,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configWithFilter: ModuleConfigs = {
@@ -740,7 +739,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configWithFilter1: ModuleConfigs = {
@@ -790,7 +789,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configs: ModuleConfigs[] = [
@@ -818,7 +817,7 @@ describe('addStreamOptions with module fallback configs', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const warnSpy = jest.spyOn(logger, 'warn');
+    const warnSpy = vi.spyOn(logger, 'warn');
     warnSpy.mockClear();
 
     const configs: ModuleConfigs[] = [
@@ -855,7 +854,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [createModuleConfig('gpt-5.4-nano')];
@@ -880,7 +879,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [
@@ -903,7 +902,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [createModuleConfig('gpt-5.4-nano')];
@@ -923,7 +922,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [createModuleConfig('gpt-5.4-nano')];
@@ -943,7 +942,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [
@@ -970,7 +969,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [
@@ -1001,7 +1000,7 @@ describe('warnAboutUnusedOverrides', () => {
       package: 'orchestration',
       messageContext: 'orchestration-utils'
     });
-    const debugSpy = jest.spyOn(logger, 'debug');
+    const debugSpy = vi.spyOn(logger, 'debug');
     debugSpy.mockClear();
 
     const configs = [

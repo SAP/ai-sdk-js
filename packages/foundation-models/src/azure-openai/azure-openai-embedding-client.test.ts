@@ -3,13 +3,13 @@ import {
   mockClientCredentialsGrantCall,
   mockInference,
   parseMockResponse
-} from '../../../../test-util/mock-http.js';
-import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.js';
-import { apiVersion } from './model-types.js';
+} from '../../../../test-util/mock-http.ts';
+import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.ts';
+import { apiVersion } from './model-types.ts';
 import type {
   AzureOpenAiEmbeddingOutput,
   AzureOpenAiEmbeddingParameters
-} from './azure-openai-embedding-types.js';
+} from './azure-openai-embedding-types.ts';
 
 describe('Azure OpenAI embedding client', () => {
   const embeddingsEndpoint = {
