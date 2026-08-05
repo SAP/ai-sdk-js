@@ -751,7 +751,8 @@ app.openapi(
         return c.text(
           `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
         );
-      } else if (sampleCase === 'fallbackModules') {
+      }
+      if (sampleCase === 'fallbackModules') {
         const intermediateFailures = (
           result as OrchestrationResponse
         ).getIntermediateFailures();
