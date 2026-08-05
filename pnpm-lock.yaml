@@ -384,8 +384,8 @@ importers:
         specifier: 3.2.5
         version: 3.2.5(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)
       hyparquet-writer:
-        specifier: 0.16.2
-        version: 0.16.2
+        specifier: 0.16.3
+        version: 0.16.3
 
   tests/e2e-tests:
     dependencies:
@@ -2772,8 +2772,8 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  hyparquet-writer@0.16.2:
-    resolution: {integrity: sha512-HZRMXcLdfFAAyeh6Vmsi9NC9cyt4d+y6Cshk0M9QSiuwfOrMpzdC1YsNcfiyCVwBtct+5i/YL+9TZwvWYPmrUA==}
+  hyparquet-writer@0.16.3:
+    resolution: {integrity: sha512-N2kSj/igfWLV2gNAdkgqqHKla/kYaqBjVUmHArihsyYTUOcRjVvGuP2ma7g8VcP81GdTQ6CkRfsGdJrmzIndUA==}
 
   hyparquet@1.27.1:
     resolution: {integrity: sha512-kvMGVKlB/xa9UHxWLJkySJYGC436nPeBWC9Fzo/BZtMEzFUjmzD1KuLz67EOpA3Ci6V7yF/yTG7QRSDSx5EDSg==}
@@ -6620,7 +6620,7 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  hyparquet-writer@0.16.2:
+  hyparquet-writer@0.16.3:
     dependencies:
       hyparquet: 1.27.1
 
