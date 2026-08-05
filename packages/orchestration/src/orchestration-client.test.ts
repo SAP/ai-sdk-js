@@ -1463,8 +1463,8 @@ describe('orchestration service client', () => {
         messageContext: 'orchestration-client'
       });
       return {
-        warnSpy: jest.spyOn(logger, 'warn'),
-        infoSpy: jest.spyOn(logger, 'info')
+        warnSpy: vi.spyOn(logger, 'warn'),
+        infoSpy: vi.spyOn(logger, 'info')
       };
     }
 

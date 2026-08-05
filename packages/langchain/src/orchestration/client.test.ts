@@ -1,4 +1,5 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
 import nock from 'nock';
 import {
   START,
@@ -1411,7 +1412,7 @@ describe('orchestration service client', () => {
         package: 'langchain',
         messageContext: 'orchestration-client'
       });
-      return jest.spyOn(logger, 'warn');
+      return vi.spyOn(logger, 'warn');
     }
 
     describe('template_ref', () => {
