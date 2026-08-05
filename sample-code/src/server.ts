@@ -760,7 +760,8 @@ app.openapi(
         return c.text(
           `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
         );
-      } else if (sampleCase === 'sonarWithCitations') {
+      }
+      if (sampleCase === 'sonarWithCitations') {
         const sonarResult = result as OrchestrationResponse;
         const content = sonarResult.getContent();
         const citations = sonarResult.getCitations();
