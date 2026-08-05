@@ -797,9 +797,8 @@ app.openapi(
             `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
             `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
         );
-      } else {
-        return c.text((result as OrchestrationResponse).getContent() ?? '');
       }
+      return c.text((result as OrchestrationResponse).getContent() ?? '');
     } catch (error: any) {
       console.error(error.stack);
       return c.text(errorBody(error), errorStatus(error));
