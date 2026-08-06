@@ -1,5 +1,5 @@
-import { parseMockResponse } from '../../../test-util/mock-http.js';
-import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.js';
+import { parseMockResponse } from '../../../test-util/mock-http.ts';
+import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 
 describe('Orchestration chat completion stream chunk response', () => {
   let mockResponses: {

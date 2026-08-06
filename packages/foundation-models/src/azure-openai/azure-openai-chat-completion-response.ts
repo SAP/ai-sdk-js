@@ -5,7 +5,7 @@ import type {
   AzureOpenAiChatCompletionResponseMessage,
   AzureOpenAiCompletionUsage,
   AzureOpenAiCreateChatCompletionResponse
-} from './client/inference/schema/index.js';
+} from './client/inference/schema/index.ts';
 
 /**
  * Azure OpenAI chat completion response.
@@ -14,8 +14,10 @@ export class AzureOpenAiChatCompletionResponse {
   /**
    * The chat completion response.
    */
+  public readonly rawResponse: HttpResponse;
   public readonly _data: AzureOpenAiCreateChatCompletionResponse;
-  constructor(public readonly rawResponse: HttpResponse) {
+  constructor(rawResponse: HttpResponse) {
+    this.rawResponse = rawResponse;
     this._data = rawResponse.data;
   }
 

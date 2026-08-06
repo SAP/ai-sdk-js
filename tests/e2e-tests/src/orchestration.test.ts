@@ -32,8 +32,8 @@ import {
   type OrchestrationModuleConfig,
   type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
-import { addNumbersTool } from '../../../test-util/tools.js';
-import { loadEnv } from './utils/load-env.js';
+import { addNumbersTool } from '../../../test-util/tools.ts';
+import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
 

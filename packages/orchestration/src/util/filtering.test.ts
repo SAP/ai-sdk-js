@@ -1,7 +1,7 @@
 import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
-} from './filtering.js';
+} from './filtering.ts';
 
 describe('Content filter util', () => {
   describe('Azure content filter', () => {

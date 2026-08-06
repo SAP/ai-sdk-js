@@ -1,4 +1,4 @@
-import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.js';
+import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.ts';
 
 /**
  * Azure OpenAI chat completion input parameters.

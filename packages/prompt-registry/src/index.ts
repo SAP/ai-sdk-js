@@ -1,1 +1,1 @@
-export * from './client/prompt-registry/index.js';
+export * from './client/prompt-registry/index.ts';

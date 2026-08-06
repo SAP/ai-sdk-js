@@ -1,6 +1,6 @@
 import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel, EmbeddingModel } from './model-types.js';
+import type { ChatModel, EmbeddingModel } from './model-types.ts';
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -30,7 +30,7 @@ import type {
   Embedding,
   EmbeddingMultiFormat,
   EncodingFormat
-} from './client/api/schema/index.js';
+} from './client/api/schema/index.ts';
 
 /**
  * Per-request inputs for a chat completion call.
@@ -684,7 +684,8 @@ export interface DocumentTranslationApplyToSelector {
  * Target language for translation, either a language code or a selector configuration.
  */
 export type TranslationTargetLanguage =
-  string | DocumentTranslationApplyToSelector;
+  | string
+  | DocumentTranslationApplyToSelector;
 
 /**
  * Input parameters for translation configuration.

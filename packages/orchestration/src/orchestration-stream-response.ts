@@ -11,8 +11,8 @@ import type {
   TokenUsage,
   Citation,
   Error as OrchestrationError
-} from './client/api/schema/index.js';
-import type { OrchestrationStream } from './orchestration-stream.js';
+} from './client/api/schema/index.ts';
+import type { OrchestrationStream } from './orchestration-stream.ts';
 
 const logger = createLogger({
   package: 'orchestration',

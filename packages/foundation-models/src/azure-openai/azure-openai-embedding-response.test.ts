@@ -1,9 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import { jest } from '@jest/globals';
-import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.js';
+import { parseMockResponse } from '../../../../test-util/mock-http.ts';
+import { AzureOpenAiEmbeddingResponse } from './azure-openai-embedding-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiEmbeddingOutput } from './azure-openai-embedding-types.js';
+import type { AzureOpenAiEmbeddingOutput } from './azure-openai-embedding-types.ts';
 
 describe('Azure OpenAI embedding response', () => {
   let embeddingResponse: AzureOpenAiEmbeddingResponse;
@@ -57,7 +56,7 @@ describe('Azure OpenAI embedding response', () => {
       package: 'foundation-models',
       messageContext: 'azure-openai-embedding-response'
     });
-    const errorSpy = jest.spyOn(logger, 'error');
+    const errorSpy = vi.spyOn(logger, 'error');
     expect(embeddingResponse.getEmbedding(2)).toBeUndefined();
     expect(errorSpy).toHaveBeenCalledWith('Data index 2 is out of bounds.');
     expect(errorSpy).toHaveBeenCalledTimes(1);

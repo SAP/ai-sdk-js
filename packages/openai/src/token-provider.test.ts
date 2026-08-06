@@ -1,11 +1,10 @@
 import nock from 'nock';
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { registerDestination } from '@sap-cloud-sdk/connectivity';
 import {
   mockClientCredentialsGrantCall,
   createDestinationTokens
-} from '../../../test-util/mock-http.js';
-import { createTokenProvider } from './token-provider.js';
+} from '../../../test-util/mock-http.ts';
+import { createTokenProvider } from './token-provider.ts';
 
 describe('createTokenProvider', () => {
   beforeEach(() => {
@@ -28,7 +27,7 @@ describe('createTokenProvider', () => {
   });
 
   it('throws when no auth tokens are available on the destination', async () => {
-    registerDestination({
+    await registerDestination({
       name: 'no-token-dest',
       url: 'https://api.ai.ml.hana.ondemand.com'
     });
@@ -45,7 +44,7 @@ describe('createTokenProvider', () => {
 
   it('passes the destination to getAiCoreDestination', async () => {
     const customToken = 'custom-token-value';
-    registerDestination({
+    await registerDestination({
       name: 'custom-dest',
       url: 'https://custom.example.com',
       ...createDestinationTokens(customToken)
