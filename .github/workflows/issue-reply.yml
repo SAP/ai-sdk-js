@@ -37,6 +37,7 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          pnpm-version: 11
 
       - name: Generate answer
         id: answer

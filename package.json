@@ -42,11 +42,11 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "4.8.0",
-    "@sap-cloud-sdk/generator-common": "4.8.0",
-    "@sap-cloud-sdk/http-client": "4.8.0",
-    "@sap-cloud-sdk/openapi-generator": "4.8.0",
-    "@sap-cloud-sdk/util": "4.8.0",
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/generator-common": "catalog:",
+    "@sap-cloud-sdk/http-client": "catalog:",
+    "@sap-cloud-sdk/openapi-generator": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:",
     "@types/mock-fs": "4.13.4",
     "@types/node": "22.20.1",
     "@typescript/native": "npm:typescript@7.0.2",
@@ -62,6 +62,6 @@
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vitest": "4.1.10",
-    "zod": "4.4.3"
+    "zod": "catalog:"
   }
 }

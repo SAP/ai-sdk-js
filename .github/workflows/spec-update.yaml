@@ -81,6 +81,7 @@ jobs:
         with:
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          pnpm-version: 11
 
       - name: 'Checkout or Create Branch'
         id: branch

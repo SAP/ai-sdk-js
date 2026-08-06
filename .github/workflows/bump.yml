@@ -28,6 +28,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
           persist-credentials: true
+          pnpm-version: 11
       - name: Bump version
         id: bump
         uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
@@ -67,6 +68,7 @@ jobs:
         uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
+          pnpm-version: 11
       - name: Fetch full commit history (blobless)
         run: git fetch --filter=blob:none --unshallow
 

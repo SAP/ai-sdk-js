@@ -26,6 +26,8 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          pnpm-version: 11
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }} # zizmor: ignore[overprovisioned-secrets]

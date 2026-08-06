@@ -16,6 +16,8 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          pnpm-version: 11
       - name: Generate API documentation
         run: |
           pnpm generate

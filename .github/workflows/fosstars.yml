@@ -24,14 +24,15 @@ jobs:
       contents: write
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          pnpm-version: 11
       # OWASP runs in Docker and cannot see the runner's pnpm install. Put the
       # standalone pnpm 11 bundle in the mounted workspace instead.
       - name: Install pnpm for OWASP container
         shell: bash
-        env:
-          PNPM_VERSION: 11.13.0
         run: |
           archive="${RUNNER_TEMP}/pnpm-linux-x64-musl.tar.gz"
+          PNPM_VERSION="$(pnpm --version)"
           curl --proto "=https" --tlsv1.2 -fsSL \
             "https://github.com/pnpm/pnpm/releases/download/v${PNPM_VERSION}/pnpm-linux-x64-musl.tar.gz" \
             -o "${archive}"

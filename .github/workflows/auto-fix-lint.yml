@@ -24,6 +24,7 @@ jobs:
           ref: ${{ github.head_ref }}
           persist-credentials: true
           token: ${{ steps.app-token.outputs.token }}
+          pnpm-version: 11
       - run: pnpm lint:fix
       - name: Commit Changes if needed
         env:

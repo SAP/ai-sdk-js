@@ -42,16 +42,16 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.8.0",
-    "@sap-cloud-sdk/util": "^4.8.0"
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.4",
-    "@langchain/langgraph": "1.4.8",
+    "@langchain/core": "catalog:",
+    "@langchain/langgraph": "catalog:",
     "vitest": "4.1.10",
-    "zod": "4.4.3"
+    "zod": "catalog:"
   },
   "peerDependencies": {
-    "@langchain/core": "^1.2.3"
+    "@langchain/core": "catalog:"
   }
 }

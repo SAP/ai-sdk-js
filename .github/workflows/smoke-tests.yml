@@ -16,6 +16,7 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: '24'
+          pnpm-version: 11
       - name: Update smoke test dependencies
         # Always use latest SDK packages for smoke tests to ensure they are tested against the latest version.
         run: pnpm --filter @sap-ai-sdk/smoke-tests update '@sap-ai-sdk/*' --no-save --ignore-scripts
