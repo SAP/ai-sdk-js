@@ -1,1 +1,1 @@
-export * from './tool-calls.js';
+export * from './tool-calls.ts';

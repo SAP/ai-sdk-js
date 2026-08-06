@@ -1,6 +1,6 @@
 import { createLogger } from '@sap-cloud-sdk/util';
-import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.js';
-import type { OrchestrationStreamResponse } from '../orchestration-stream-response.js';
+import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
+import type { OrchestrationStreamResponse } from '../orchestration-stream-response.ts';
 import type {
   ChatDelta,
   ChoiceLogprobs,
@@ -14,9 +14,10 @@ import type {
   MessageToolCall,
   ModuleResults,
   ModuleResultsStreaming,
+  ReasoningBlock,
   ResponseChatMessage,
   ToolCallChunk
-} from '../client/api/schema/index.js';
+} from '../client/api/schema/index.ts';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -173,7 +174,11 @@ function mergeMessage(
     role: existing.role,
     content: existing.content + (incoming.content ?? ''),
     tool_calls: mergeToolCalls(existing.tool_calls, incoming.tool_calls),
-    refusal: incoming.refusal ?? existing.refusal
+    refusal: incoming.refusal ?? existing.refusal,
+    reasoning_content: mergeReasoningBlocks(
+      existing.reasoning_content,
+      incoming.reasoning_content
+    )
   };
 }
 
@@ -205,6 +210,31 @@ function mergeToolCalls(
     }
   }
   return mergedToolCalls;
+}
+
+function mergeReasoningBlocks(
+  existing: ReasoningBlock[] | undefined,
+  incoming: ReasoningBlock[] | undefined
+): ReasoningBlock[] | undefined {
+  if (!incoming?.length) {
+    return existing;
+  }
+  if (!existing?.length) {
+    return incoming;
+  }
+
+  const minLength = Math.min(existing.length, incoming.length);
+  const shared = incoming.slice(0, minLength).map((block, i) => ({
+    content: (existing[i].content ?? '') + (block.content ?? ''),
+    signature: block.signature || existing[i].signature
+  }));
+  if (incoming.length > existing.length) {
+    return [...shared, ...incoming.slice(minLength)];
+  }
+  if (existing.length > incoming.length) {
+    return [...shared, ...existing.slice(minLength)];
+  }
+  return shared;
 }
 
 function mergeLogProbs(
@@ -264,7 +294,8 @@ function transformStreamingChoice(choice: LlmChoiceStreaming): LlmChoice {
       role: 'assistant',
       content: choice.delta.content,
       tool_calls: transformStreamingToolCalls(choice.delta.tool_calls),
-      refusal: choice.delta.refusal
+      refusal: choice.delta.refusal,
+      reasoning_content: choice.delta.reasoning_content
     },
     finish_reason: choice.finish_reason ?? '',
     logprobs: choice.logprobs

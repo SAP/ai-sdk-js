@@ -1,14 +1,14 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
-import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.js';
-import { isMessageToolCall, mergeToolCallChunk } from './util/index.js';
-import type { ToolCallAccumulator } from './util/index.js';
+import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.ts';
+import { isMessageToolCall, mergeToolCallChunk } from './util/index.ts';
+import type { ToolCallAccumulator } from './util/index.ts';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiCreateChatCompletionStreamResponse
-} from './client/inference/schema/index.js';
+} from './client/inference/schema/index.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.js';
+import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.ts';
 
 const logger = createLogger({
   package: 'foundation-models',
@@ -188,7 +188,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
   }
 
   constructor(
-    public iterator: () => AsyncIterator<Item>,
+    iterator: () => AsyncIterator<Item>,
     controller: AbortController
   ) {
     super(iterator, controller);

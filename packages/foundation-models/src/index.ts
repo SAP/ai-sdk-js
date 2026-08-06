@@ -3,14 +3,14 @@ export type {
   AzureOpenAiChatCompletionParameters,
   AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters
-} from './azure-openai/index.js';
+} from './azure-openai/index.ts';
 
-export { createBatchInput, parseBatchOutput } from './azure-openai/index.js';
+export { createBatchInput, parseBatchOutput } from './azure-openai/index.ts';
 export type {
   BatchOutputLine,
   BatchOutputError,
   BatchOutputResponse
-} from './azure-openai/index.js';
+} from './azure-openai/index.ts';
 
 export {
   AzureOpenAiChatClient,
@@ -20,7 +20,7 @@ export {
   AzureOpenAiChatCompletionStreamChunkResponse,
   AzureOpenAiChatCompletionStreamResponse,
   AzureOpenAiChatCompletionStream
-} from './azure-openai/index.js';
+} from './azure-openai/index.ts';
 
 /**
  * Exporting frequently used types.
@@ -35,4 +35,4 @@ export type {
   AzureOpenAiChatCompletionRequestUserMessage,
   AzureOpenAiChatCompletionRequestAssistantMessage,
   AzureOpenAiChatCompletionRequestToolMessage
-} from './azure-openai/client/inference/schema/index.js';
+} from './azure-openai/client/inference/schema/index.ts';

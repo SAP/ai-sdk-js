@@ -5,13 +5,14 @@ import type {
   TokenUsage,
   ToolCallChunk,
   Citation
-} from './client/api/schema/index.js';
+} from './client/api/schema/index.ts';
 
 /**
  * Orchestration stream chunk response.
  */
 export class OrchestrationStreamChunkResponse {
-  constructor(public readonly _data: CompletionPostResponseStreaming) {
+  public readonly _data: CompletionPostResponseStreaming;
+  constructor(_data: CompletionPostResponseStreaming) {
     this._data = _data;
   }
 
@@ -48,6 +49,18 @@ export class OrchestrationStreamChunkResponse {
    */
   getDeltaContent(choiceIndex = 0): string | undefined {
     return this.findChoiceByIndex(choiceIndex)?.delta.content;
+  }
+
+  /**
+   * Parses the chunk response and returns the incremental reasoning content delta for this chunk.
+   * Returns only the user-visible reasoning text; encrypted or redacted reasoning blocks are excluded.
+   * To get the fully accumulated reasoning content after streaming completes, use {@link getReasoningContent} on the stream response instead.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns The content of each reasoning block delta as an array, or undefined if not present.
+   */
+  getDeltaReasoningContent(choiceIndex = 0): string[] | undefined {
+    const blocks = this.findChoiceByIndex(choiceIndex)?.delta.reasoning_content;
+    return blocks?.map(b => b.content ?? '');
   }
 
   /**

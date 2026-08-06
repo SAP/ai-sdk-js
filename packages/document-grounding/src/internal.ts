@@ -1,1 +1,1 @@
-export * from './client/api/index.js';
+export * from './client/api/index.ts';

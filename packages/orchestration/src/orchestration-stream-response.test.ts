@@ -1,7 +1,6 @@
-import { jest } from '@jest/globals';
 import { createLogger } from '@sap-cloud-sdk/util';
-import { parseMockResponse } from '../../../test-util/mock-http.js';
-import { OrchestrationStreamResponse } from './orchestration-stream-response.js';
+import { parseMockResponse } from '../../../test-util/mock-http.ts';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 describe('OrchestrationStreamResponse', () => {
@@ -59,6 +58,7 @@ describe('OrchestrationStreamResponse', () => {
       );
       expect(() => streamResponse.findChoiceByIndex(0)).toThrow(errorMessage);
       expect(() => streamResponse.getCitations()).toThrow(errorMessage);
+      expect(() => streamResponse.getReasoningContent()).toThrow(errorMessage);
     });
   });
 
@@ -93,7 +93,7 @@ describe('OrchestrationStreamResponse', () => {
         package: 'orchestration',
         messageContext: 'orchestration-stream-response'
       });
-      const warnSpy = jest.spyOn(logger, 'warn');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       new OrchestrationStreamResponse();
 
@@ -112,7 +112,7 @@ describe('OrchestrationStreamResponse', () => {
   });
 
   describe('getFinishReason', () => {
-    beforeEach(closeStream);
+    beforeEach(() => closeStream());
 
     it('should return finish reason for default index', () => {
       expect(streamResponse.getFinishReason()).toBe('stop');
@@ -217,6 +217,47 @@ describe('OrchestrationStreamResponse', () => {
       closeStream(mockCompleteSuccessResponse);
 
       expect(streamResponse.getRefusal()).toBeUndefined();
+    });
+  });
+
+  describe('getReasoningContent', () => {
+    it('should throw when stream is still open', () => {
+      expect(() => streamResponse.getReasoningContent()).toThrow(
+        'The stream is still open'
+      );
+    });
+
+    it('should return thinking blocks when present', () => {
+      closeStream({
+        final_result: {
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                reasoning_content: [
+                  {
+                    content: 'Step 1: analyze the problem.',
+                    signature: ''
+                  },
+                  { content: '', signature: 'encryptedData==' }
+                ]
+              }
+            }
+          ]
+        }
+      });
+
+      expect(streamResponse.getReasoningContent()).toEqual([
+        'Step 1: analyze the problem.',
+        ''
+      ]);
+    });
+
+    it('should return undefined when no thinking present', () => {
+      closeStream(mockCompleteSuccessResponse);
+
+      expect(streamResponse.getReasoningContent()).toBeUndefined();
     });
   });
 

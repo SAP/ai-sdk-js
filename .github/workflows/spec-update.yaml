@@ -149,6 +149,17 @@ jobs:
             echo "spec=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: 'Check for breaking changes'
+        id: breaking-changes
+        if: steps.check-spec-changes.outputs.spec == 'true'
+        continue-on-error: true
+        uses: oasdiff/oasdiff-action/breaking@0ab8ad204b00d25acc5ae87106281433e288d0c1 # v0.1.10
+        with:
+          base: 'origin/main:${{ steps.resolve.outputs.file_path }}'
+          revision: 'HEAD:${{ steps.resolve.outputs.file_path }}'
+          fail-on: ERR
+          review: false
+
       - name: 'Generate'
         id: generate
         if: steps.check-spec-changes.outputs.spec == 'true'
@@ -211,10 +222,22 @@ jobs:
           STEPS_COMPILE_OUTPUTS_COMPILATION_RESULT: ${{ steps.compile.outputs.compilation_result }}
           STEPS_COMPILE_OUTPUTS_TEST_RESULT: ${{ steps.compile.outputs.test_result }}
           PATCH_RESULT: ${{ steps.apply-patches.outputs.patch_result || 'skipped' }}
+          BREAKING_CHANGES: ${{ steps.breaking-changes.outputs.breaking }}
         run: |
           if gh pr list --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
             echo "An open PR already exists for this branch. Skipping PR creation."
             exit 0
+          fi
+
+          BREAKING_CHANGES_SECTION=""
+          if [ -n "$BREAKING_CHANGES" ]; then
+            BREAKING_CHANGES_SECTION="
+          ## Breaking Changes (oasdiff)
+
+          \`\`\`
+          $BREAKING_CHANGES
+          \`\`\`
+          "
           fi
 
           PR_URL=$(gh pr create --base main --head "$BRANCH" --title "feat: Update $SERVICE specification" --body "
@@ -238,6 +261,7 @@ jobs:
 
           - [ ] Unit / type tests cover new classes
           - [ ] Release notes / Changeset updated
+          ${BREAKING_CHANGES_SECTION}
           ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: Generate Job Summary

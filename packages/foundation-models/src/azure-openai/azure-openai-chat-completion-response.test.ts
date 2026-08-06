@@ -1,7 +1,7 @@
-import { parseMockResponse } from '../../../../test-util/mock-http.js';
-import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.js';
+import { parseMockResponse } from '../../../../test-util/mock-http.ts';
+import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.ts';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.js';
+import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.ts';
 
 describe('OpenAI chat completion response', () => {
   let mockResponse: AzureOpenAiCreateChatCompletionResponse;

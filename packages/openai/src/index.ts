@@ -1,12 +1,12 @@
-export { createOpenAiConfig } from './config.js';
-export { SapOpenAi } from './client.js';
-export { SapChat } from './chat.js';
-export { SapCompletions } from './completions.js';
-export { SapEmbeddings } from './embeddings.js';
-export { SapResponses } from './responses.js';
-export { createTokenProvider } from './token-provider.js';
+export { createOpenAiConfig } from './config.ts';
+export { SapOpenAi } from './client.ts';
+export { SapChat } from './chat.ts';
+export { SapCompletions } from './completions.ts';
+export { SapEmbeddings } from './embeddings.ts';
+export { SapResponses } from './responses.ts';
+export { createTokenProvider } from './token-provider.ts';
 export type {
   SapOpenAiOptions,
   SapOpenAiInput,
   SapModelName
-} from './types.js';
+} from './types.ts';

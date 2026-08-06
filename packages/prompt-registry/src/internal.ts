@@ -1,2 +1,2 @@
-export * from './client/prompt-registry/index.js';
-export * from './zod/index.js';
+export * from './client/prompt-registry/index.ts';
+export * from './zod/index.ts';

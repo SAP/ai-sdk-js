@@ -10,6 +10,9 @@
     "strict": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "rewriteRelativeImportExtensions": true,
     "lib": ["es2024"],
     "types": ["node"]
   }
