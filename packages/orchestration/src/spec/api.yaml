@@ -174,7 +174,7 @@ paths:
                   value:
                     request_id: '11c785a2-09c7-4b12-b86e-3a3ff7ece72e'
                     final_result:
-                      object: 'dict'
+                      object: 'list'
                       data:
                         - object: 'embedding'
                           embedding:
