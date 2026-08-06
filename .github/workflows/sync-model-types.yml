@@ -1,0 +1,80 @@
+name: sync model types
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+          persist-credentials: true
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Sync model types
+        run: node scripts/sync-model-types.ts 2>&1
+
+      - name: Lint
+        run: pnpm lint:fix
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        id: commit
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        run: |
+          git config --global user.email "$BOT_EMAIL"
+          git config --global user.name "$BOT_NAME"
+          BRANCH_NAME="bot/sync-model-types-$(date -u +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+          git add scripts/sap-models.json packages/core/src/model-types.ts .changeset/
+          git status
+          git commit -m "chore: sync model types from SAP Notes 3437766"
+          git push --set-upstream origin "$BRANCH_NAME"
+          echo "branch-name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH_NAME: ${{ steps.commit.outputs.branch-name }}
+        run: |
+          gh pr create \
+            --draft \
+            --base main \
+            --head "$BRANCH_NAME" \
+            --title "chore: Sync model types from SAP Notes" \
+            --body "Automated sync of model types from [SAP Notes 3437766](https://me.sap.com/notes/3437766).
+
+          ## Changes
+
+          Updated LiteralUnion type blocks in \`packages/core/src/model-types.ts\` to reflect current model availability.
+
+          ## Definition of Done
+
+          - [ ] Model names are correct
+          - [ ] Compilation passes
+          - [ ] Release notes / Changeset updated if needed"
