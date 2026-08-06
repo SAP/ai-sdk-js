@@ -23,6 +23,7 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           node-version: ${{ matrix.node-version }}
+          pnpm-version: 11
       # type-check can run in parallel to unit tests
       - name: Type Tests
         id: test-type
@@ -51,6 +52,8 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          pnpm-version: 11
       - name: Enforce generated code is up to date
         shell: bash
         run: |

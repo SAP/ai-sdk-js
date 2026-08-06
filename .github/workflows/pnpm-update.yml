@@ -25,6 +25,7 @@ jobs:
           persist-credentials: true
           token: ${{ steps.app-token.outputs.token }}
           skip-install: 'true'
+          pnpm-version: 11
 
       - name: Update Transitive Dependencies
         run: |

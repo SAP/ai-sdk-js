@@ -34,6 +34,7 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           package-manager-cache: false
+          pnpm-version: 11
       - name: Determine Release Notes PR Branch Name
         id: determine-branch-name
         run: |
@@ -79,6 +80,7 @@ jobs:
         with:
           node-version: 24 # Will install npm 11 needed for trusted publishing
           package-manager-cache: false
+          pnpm-version: 11
       - name: publish
         run: |
           pnpm changeset publish

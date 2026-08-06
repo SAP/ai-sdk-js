@@ -15,6 +15,18 @@ packages:
   - tests/smoke-tests
   - tests/type-tests
 
+catalog:
+  '@sap-cloud-sdk/connectivity': ^4.8.0
+  '@sap-cloud-sdk/generator-common': ^4.8.0
+  '@sap-cloud-sdk/http-client': ^4.8.0
+  '@sap-cloud-sdk/openapi': ^4.8.0
+  '@sap-cloud-sdk/openapi-generator': ^4.8.0
+  '@sap-cloud-sdk/resilience': ^4.8.0
+  '@sap-cloud-sdk/util': ^4.8.0
+  '@langchain/core': ^1.2.4
+  '@langchain/langgraph': ^1.4.8
+  zod: ^4.4.3
+
 allowBuilds:
   '@swc/core': true
   better-sqlite3: false

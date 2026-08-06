@@ -25,6 +25,7 @@ jobs:
           node-version: 24 # Will install npm 11 needed for trusted publishing
           pnpm-install-args: ''
           package-manager-cache: false
+          pnpm-version: 11
 
       - name: prepare canary changeset
         run: |
