@@ -54,8 +54,8 @@ importers:
         specifier: 1.4.7
         version: 1.4.7(supports-color@7.2.0)
       jose:
-        specifier: 6.2.6
-        version: 6.2.6
+        specifier: 6.2.7
+        version: 6.2.7
       mock-fs:
         specifier: 5.5.0
         version: 5.5.0
@@ -390,8 +390,8 @@ importers:
         specifier: 3.2.5
         version: 3.2.5(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)
       hyparquet-writer:
-        specifier: 0.16.3
-        version: 0.16.3
+        specifier: 0.16.4
+        version: 0.16.4
 
   tests/e2e-tests:
     dependencies:
@@ -2781,8 +2781,8 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  hyparquet-writer@0.16.3:
-    resolution: {integrity: sha512-N2kSj/igfWLV2gNAdkgqqHKla/kYaqBjVUmHArihsyYTUOcRjVvGuP2ma7g8VcP81GdTQ6CkRfsGdJrmzIndUA==}
+  hyparquet-writer@0.16.4:
+    resolution: {integrity: sha512-ZEIasXVmv7R+hrywkKv1+4ePao3kwsx6GhwSzEX2WBu+gMW5/mglkRKioQ00njwU3stVt7A2uCJ5VruMKlAUng==}
 
   hyparquet@1.27.1:
     resolution: {integrity: sha512-kvMGVKlB/xa9UHxWLJkySJYGC436nPeBWC9Fzo/BZtMEzFUjmzD1KuLz67EOpA3Ci6V7yF/yTG7QRSDSx5EDSg==}
@@ -2924,8 +2924,8 @@ packages:
   jks-js@1.1.7:
     resolution: {integrity: sha512-BeiDRKsAi1NwEwgx2JB/9/0tar5BNGIv+foGm1G5GgiyR35s/iUnfd/BWqYd16mLDD8qTaAVBrIcOOuVqXJZNQ==}
 
-  jose@6.2.6:
-    resolution: {integrity: sha512-HwMtbJjMw8rC8dUTwCNilHJD+fxTeKM3JV1eprSmTjS41qwXSSt6exJXgyPK1QOu0jB9eDYLESRDkB3qaT3jnw==}
+  jose@6.2.7:
+    resolution: {integrity: sha512-hq1OB1bALKfydZNoViyg6hPVGV4i93ny9Op+n4zP5RSf7SCZEXa/TsG2O3IEr7+WlHRTPnpqDmHfMH6qXAD60w==}
 
   js-tiktoken@1.0.21:
     resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
@@ -4835,7 +4835,7 @@ snapshots:
       express: 5.2.1(supports-color@7.2.0)
       express-rate-limit: 8.5.2(express@5.2.1(supports-color@7.2.0))
       hono: 4.12.27
-      jose: 6.2.6
+      jose: 6.2.7
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
@@ -5680,7 +5680,7 @@ snapshots:
       '@upstash/redis': 1.38.0
       commander: 13.1.0
       express: 5.2.1(supports-color@7.2.0)
-      jose: 6.2.6
+      jose: 6.2.7
       undici: 7.29.0
       zod: 4.4.3
     transitivePeerDependencies:
@@ -6650,7 +6650,7 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  hyparquet-writer@0.16.3:
+  hyparquet-writer@0.16.4:
     dependencies:
       hyparquet: 1.27.1
 
@@ -6758,7 +6758,7 @@ snapshots:
       node-int64: 0.4.0
       node-rsa: 1.1.1
 
-  jose@6.2.6: {}
+  jose@6.2.7: {}
 
   js-tiktoken@1.0.21:
     dependencies:
