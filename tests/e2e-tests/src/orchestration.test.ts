@@ -20,7 +20,7 @@ import {
   orchestrationMessageHistoryWithToolCalling,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
-  OrchestrationConfigRef,
+  OrchestrationConfigRef as orchestrationConfigRefSample,
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
@@ -29,6 +29,7 @@ import {
 } from '@sap-ai-sdk/sample-code';
 import {
   OrchestrationClient,
+  type OrchestrationConfigRef as OrchestrationConfigReference,
   type OrchestrationModuleConfig,
   type OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
@@ -38,6 +39,11 @@ import { loadEnv } from './utils/load-env.ts';
 loadEnv();
 
 describe('orchestration', () => {
+  // Pre-existing orchestration configuration reference for testing.
+  const configReference: OrchestrationConfigReference = {
+    id: '62e8638a-ae87-4bd5-9027-a0bc67db1609'
+  };
+
   const assertContent = (response: OrchestrationResponse) => {
     expect(response.getIntermediateResults()).toBeDefined();
     expect(response.getIntermediateResults().templating).not.toHaveLength(0);
@@ -77,9 +83,38 @@ describe('orchestration', () => {
   });
 
   it('should complete a chat with orchestration config reference', async () => {
-    const response = await OrchestrationConfigRef();
+    const response = await orchestrationConfigRefSample();
 
     assertContent(response);
+  });
+
+  it('should complete a non-streaming chat with orchestration config reference', async () => {
+    const response = await new OrchestrationClient(
+      configReference
+    ).chatCompletion({
+      placeholderValues: {
+        phrase: 'Happy New Year!',
+        number: '3'
+      }
+    });
+
+    assertContent(response);
+  });
+
+  it('should stream a chat with orchestration config reference', async () => {
+    const response = await new OrchestrationClient(configReference).stream({
+      placeholderValues: {
+        phrase: 'Happy New Year!',
+        number: '3'
+      }
+    });
+
+    for await (const chunk of response.stream) {
+      expect(chunk).toBeDefined();
+    }
+
+    expect(response.getFinishReason()).toEqual('stop');
+    expect(response.getTokenUsage()).toBeDefined();
   });
 
   it('should trigger an input filter', async () => {
@@ -270,6 +305,67 @@ describe('orchestration', () => {
        },
      ]
     `);
+  });
+
+  it('should return reasoning content in a non-streaming response', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gemini-3.5-flash',
+          params: { reasoning_effort: 'high' }
+        }
+      }
+    };
+
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messages: [
+        {
+          role: 'user',
+          content: 'Think step by step: what is 15 * 17?'
+        }
+      ]
+    });
+
+    const reasoning = response.getReasoningContent();
+    expect(reasoning).toBeDefined();
+    expect(reasoning!.length).toBeGreaterThanOrEqual(1);
+    reasoning!.forEach(block => expect(typeof block).toBe('string'));
+    expect(response.getContent()).toEqual(expect.any(String));
+  });
+
+  it('should accumulate reasoning content across a stream', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gemini-3.5-flash',
+          params: { reasoning_effort: 'high' }
+        }
+      }
+    };
+
+    const response = await new OrchestrationClient(config).stream({
+      messages: [
+        {
+          role: 'user',
+          content: 'Think step by step: what is 123456 plus 789012?'
+        }
+      ]
+    });
+
+    let sawDeltaReasoning = false;
+    for await (const chunk of response.stream) {
+      const delta = chunk.getDeltaReasoningContent();
+      if (delta) {
+        sawDeltaReasoning = true;
+      }
+    }
+
+    const reasoning = response.getReasoningContent();
+    expect(reasoning).toBeDefined();
+    expect(reasoning!.length).toBeGreaterThanOrEqual(1);
+    reasoning!.forEach(block => expect(typeof block).toBe('string'));
+    expect(sawDeltaReasoning).toBe(true);
+    expect(reasoning!.join('')).not.toBe('');
   });
 
   it('should generate embeddings with masking', async () => {
