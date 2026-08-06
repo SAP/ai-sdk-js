@@ -71,9 +71,10 @@ export function constructCompletionPostRequestFromConfigReference(
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
   // Route request.messages into messages_history since there is no local
   // prompt.template to merge them into for config references.
-  const messagesHistory = request?.messages?.length
-    ? [...(request.messagesHistory || []), ...request.messages]
-    : request?.messagesHistory;
+  const messagesHistory = [
+    ...(request?.messagesHistory || []),
+    ...(request?.messages || [])
+  ];
 
   const { overrideConfig, ...configReference } = configRef;
   const partialConfig: PartialOrchestrationConfig = {
@@ -90,7 +91,7 @@ export function constructCompletionPostRequestFromConfigReference(
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory && {
+    ...(messagesHistory.length && {
       messages_history: messagesHistory
     })
   } as
