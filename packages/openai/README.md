@@ -16,6 +16,7 @@ It handles deployment resolution, authentication, and SAP-specific headers autom
   - [High-level client](#high-level-client)
   - [Low-level config](#low-level-config)
   - [Token provider](#token-provider)
+  - [Realtime API (experimental)](#realtime-api-experimental)
 - [Documentation](#documentation)
 
 - [Support, Feedback, Contribution](#support-feedback-contribution)
@@ -23,14 +24,20 @@ It handles deployment resolution, authentication, and SAP-specific headers autom
 
 ## Installation
 
-```
-$ npm install @sap-ai-sdk/openai
+```sh
+npm install @sap-ai-sdk/openai
 ```
 
 The `openai` package is a peer dependency and must be installed separately:
 
+```sh
+npm install openai
 ```
-$ npm install openai
+
+If you want to use the Realtime API, you also need to install the `ws` package:
+
+```sh
+npm install ws
 ```
 
 ## Prerequisites
@@ -109,6 +116,56 @@ const client = new AzureOpenAI(config);
 
 `createTokenProvider` returns an `azureADTokenProvider`-compatible function that resolves the bearer token from the AI Core destination on each call.
 It is used internally by `createOpenAiConfig`.
+
+### Realtime API (experimental)
+
+> [!WARNING]
+> Only WebSocket connections are supported and browser usage is not supported.
+
+> [!NOTE]
+> The Realtime API requires the additional `ws` dependency to be installed in your project.
+
+`SapOpenAiRealtime` provides live audio and text access to the OpenAI Realtime API over WebSocket, available from the `@sap-ai-sdk/openai/realtime` sub-path export.
+It resolves the deployment, opens the WebSocket connection, and sets the SAP-specific headers automatically, while keeping the familiar `on()` / `send()` / `close()` event API.
+
+```ts
+import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+
+const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+
+client.on('session.created', () => {
+  client.send({
+    type: 'session.update',
+    session: {
+      type: 'realtime',
+      output_modalities: ['audio'],
+      audio: { output: { voice: 'alloy' } },
+      instructions: 'You are a helpful assistant.'
+    }
+  });
+});
+
+client.on('session.updated', () => {
+  client.send({
+    type: 'conversation.item.create',
+    item: {
+      type: 'message',
+      role: 'user',
+      content: [{ type: 'input_text', text: 'Introduce yourself briefly.' }]
+    }
+  });
+  client.send({ type: 'response.create' });
+});
+
+client.on('response.output_audio.delta', e => {
+  // e.delta is base64-encoded PCM16 (24 kHz mono) audio
+});
+client.on('response.output_audio_transcript.delta', e =>
+  process.stdout.write(e.delta ?? '')
+);
+client.on('response.done', () => client.close());
+client.on('error', e => console.error(e.message));
+```
 
 ## Documentation
 
