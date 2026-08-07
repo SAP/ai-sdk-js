@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAP Cloud SDK for AI — Realtime Demo</title>
+    <link rel="icon" type="image/svg+xml" href="/img/ai-sdk-logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --purple: #6440f5;
+        --purple-d: #4f2de0;
+        --purple-t: #ede9fe;
+        --purple-s: #f7f5ff;
+        --ink: #1a1523;
+        --ink-2: #4b4458;
+        --ink-3: #8b80a0;
+        --ink-4: #c4bbd4;
+        --surface: #f7f5ff;
+        --panel: #ffffff;
+        --border: #e8e3f4;
+        --shell: #354a5e;
+        --green: #107e3e;
+        --red: #bb0000;
+        --amber: #c75500;
+        --mono: 'JetBrains Mono', 'Cascadia Code', monospace;
+        --sans: 'Inter', system-ui, -apple-system, sans-serif;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: var(--sans);
+        color: var(--ink);
+        background: var(--surface);
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* ── Shell bar ── */
+      .shell-bar {
+        background: var(--shell);
+        color: #fff;
+        padding: 0 1.25rem;
+        height: 2.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-shrink: 0;
+        z-index: 10;
+      }
+      .shell-bar__logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .shell-bar__app {
+        font-weight: 500;
+        font-size: 0.875rem;
+        letter-spacing: 0.005em;
+      }
+      .shell-bar__sep {
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .shell-bar__sub {
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 0.8rem;
+        font-weight: 400;
+      }
+      .shell-bar__right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* ── Status badge ── */
+      .status-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.65);
+        padding: 0.2rem 0.625rem;
+        border-radius: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--red);
+        flex-shrink: 0;
+      }
+      .status-dot.connected {
+        background: var(--green);
+        box-shadow: 0 0 0 2px rgba(16, 126, 62, 0.3);
+      }
+      .status-dot.connecting {
+        background: var(--amber);
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      /* ── Error strip ── */
+      .error-strip {
+        display: none;
+        background: #fff0f0;
+        border-bottom: 1px solid #ffd0d0;
+        color: var(--red);
+        font-size: 0.8rem;
+        padding: 0.5rem 1.25rem;
+        flex-shrink: 0;
+      }
+      .error-strip.visible {
+        display: block;
+      }
+
+      /* ── Chat area ── */
+      .chat-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.75rem 1rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        scroll-behavior: smooth;
+        background: var(--surface);
+      }
+      .chat-area::-webkit-scrollbar {
+        width: 4px;
+      }
+      .chat-area::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .chat-area::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+
+      /* ── Messages ── */
+      .msg-row {
+        display: flex;
+        max-width: 680px;
+        width: 100%;
+        margin: 0 auto;
+      }
+      .msg-row--user {
+        justify-content: flex-end;
+      }
+      .msg-row--ai {
+        justify-content: flex-start;
+      }
+
+      .msg-bubble {
+        max-width: 74%;
+        padding: 0.7rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      .msg-bubble--user {
+        background: var(--purple);
+        color: #fff;
+        border-bottom-right-radius: 0.25rem;
+        font-weight: 400;
+      }
+      .msg-bubble--user-voice {
+        background: var(--purple-t);
+        color: var(--ink-2);
+        border: 1px solid #c4b5fd;
+        border-bottom-right-radius: 0.25rem;
+        font-style: italic;
+        display: flex;
+        align-items: baseline;
+        gap: 0.4rem;
+      }
+      .msg-bubble--user-voice::before {
+        content: '🎙';
+        font-style: normal;
+        font-size: 0.78em;
+        flex-shrink: 0;
+      }
+      .msg-bubble--user-voice.placeholder {
+        color: var(--ink-4);
+      }
+      .msg-bubble--ai {
+        background: var(--panel);
+        color: var(--ink);
+        border: 1px solid var(--border);
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      /* ── Tool call card ── */
+      .tool-card {
+        max-width: 680px;
+        margin: 0 auto;
+        width: 100%;
+        display: none;
+      }
+      .tool-card.visible {
+        display: block;
+      }
+      .tool-card__inner {
+        background: #0f1720;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 0.625rem;
+        padding: 0.6rem 0.875rem;
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.65);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem 1.25rem;
+      }
+      .tool-card__label {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-right: 0.2rem;
+      }
+      .tool-card__value {
+        color: #a78bfa;
+      }
+
+      /* ── Input panel ── */
+      .input-panel {
+        background: var(--panel);
+        border-top: 1px solid var(--border);
+        flex-shrink: 0;
+        padding: 0.875rem 1rem 1rem;
+      }
+      .input-panel__inner {
+        max-width: 680px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+      }
+
+      /* ── Composer box (Joule-style) ── */
+      .composer {
+        position: relative;
+        border: 1.5px solid var(--border);
+        border-radius: 0.875rem;
+        background: var(--panel);
+        transition: border-color 0.15s;
+        overflow: hidden;
+      }
+      .composer:focus-within {
+        border-color: var(--purple);
+      }
+
+      .text-input {
+        display: block;
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: var(--ink);
+        font-family: var(--sans);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        padding: 0.75rem 1rem 0.375rem;
+        resize: none;
+        outline: none;
+        min-height: 2.5rem;
+      }
+      .text-input::placeholder {
+        color: var(--ink-4);
+      }
+
+      /* ── Audio level bar inside composer ── */
+      .audio-bar {
+        height: 2px;
+        background: transparent;
+        margin: 0 1rem 0.5rem;
+        border-radius: 1px;
+        overflow: hidden;
+        position: relative;
+      }
+      .audio-bar__fill {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, var(--purple) 0%, #a78bfa 100%);
+        transform-origin: left;
+        transform: scaleX(0);
+        transition: transform 0.05s linear;
+        border-radius: 1px;
+      }
+      .audio-bar__fill.ai {
+        background: linear-gradient(90deg, #6440f5 0%, #a78bfa 100%);
+      }
+      .audio-bar__fill.mic {
+        background: linear-gradient(90deg, #107e3e 0%, #34d399 100%);
+      }
+
+      /* ── Composer toolbar ── */
+      .composer-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 0.625rem 0.5rem;
+      }
+
+      /* ── Voice select ── */
+      .voice-select {
+        appearance: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--ink-2);
+        font-family: var(--sans);
+        font-size: 0.78rem;
+        padding: 0.3rem 0.625rem;
+        border-radius: 2rem;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .voice-select:focus {
+        border-color: var(--purple);
+      }
+      .voice-select:hover {
+        border-color: var(--purple-d);
+      }
+
+      /* ── PTT button ── */
+      .btn-ptt {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        color: var(--ink-3);
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition:
+          background 0.12s,
+          border-color 0.12s,
+          color 0.12s,
+          transform 0.08s;
+        flex-shrink: 0;
+        outline: none;
+      }
+      .btn-ptt:hover {
+        background: var(--purple-t);
+        border-color: var(--purple);
+        color: var(--purple);
+      }
+      .btn-ptt:active {
+        transform: scale(0.93);
+      }
+      .btn-ptt.active {
+        background: #fef2f2;
+        border-color: #ef4444;
+        color: #dc2626;
+        animation: ptt-ring 1.4s ease-in-out infinite;
+      }
+      .btn-ptt:focus-visible {
+        box-shadow: 0 0 0 3px rgba(100, 64, 245, 0.25);
+      }
+
+      @keyframes ptt-ring {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 5px rgba(239, 68, 68, 0);
+        }
+      }
+
+      /* ── Send button ── */
+      .btn-send {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: none;
+        background: var(--purple);
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition:
+          background 0.12s,
+          transform 0.08s;
+        flex-shrink: 0;
+        margin-left: auto;
+        outline: none;
+      }
+      .btn-send:hover {
+        background: var(--purple-d);
+      }
+      .btn-send:active {
+        transform: scale(0.93);
+      }
+      .btn-send:focus-visible {
+        box-shadow: 0 0 0 3px rgba(100, 64, 245, 0.25);
+      }
+
+      /* ── Footer row ── */
+      .footer-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.72rem;
+        color: var(--ink-3);
+        min-height: 1.5rem;
+      }
+
+      .ptt-label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        user-select: none;
+        color: var(--ink-3);
+      }
+      .ptt-toggle {
+        appearance: none;
+        width: 1.875rem;
+        height: 1rem;
+        border-radius: 1rem;
+        background: var(--ink-4);
+        border: none;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .ptt-toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+      }
+      .ptt-toggle:checked {
+        background: var(--purple);
+      }
+      .ptt-toggle:checked::after {
+        transform: translateX(14px);
+      }
+
+      .mic-hint {
+        color: var(--ink-3);
+      }
+
+      .btn-disconnect {
+        background: transparent;
+        color: var(--ink-3);
+        border: 1px solid var(--border);
+        border-radius: 2rem;
+        font-family: var(--sans);
+        font-size: 0.72rem;
+        padding: 0.2rem 0.625rem;
+        cursor: pointer;
+        transition:
+          color 0.12s,
+          border-color 0.12s;
+        outline: none;
+      }
+      .btn-disconnect:hover {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .btn-disconnect.hidden {
+        display: none;
+      }
+
+      /* ── Empty state ── */
+      .empty-state {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        pointer-events: none;
+        padding-bottom: 3rem;
+      }
+      .empty-state__icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 1rem;
+        background: var(--purple);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 24px rgba(100, 64, 245, 0.3);
+      }
+      .empty-state__title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .empty-state__sub {
+        font-size: 0.85rem;
+        color: var(--ink-3);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .btn-ptt.active {
+          animation: none;
+        }
+        .status-dot.connecting {
+          animation: none;
+          opacity: 0.7;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Shell bar -->
+    <header class="shell-bar">
+      <div class="shell-bar__logo">
+        <img
+          src="/img/ai-sdk-logo.svg"
+          alt="SAP AI SDK logo"
+          height="20"
+          style="display: block; width: auto"
+        />
+        <span class="shell-bar__app">SAP Cloud SDK for AI</span>
+      </div>
+      <span class="shell-bar__sep">/</span>
+      <span class="shell-bar__sub">Realtime Demo</span>
+      <div class="shell-bar__right">
+        <div class="status-badge" role="status" aria-live="polite">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-label">Disconnected</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Error strip -->
+    <div class="error-strip" id="error-strip" role="alert"></div>
+
+    <!-- Chat area -->
+    <div
+      class="chat-area"
+      id="chat-area"
+      role="log"
+      aria-live="polite"
+      aria-label="Conversation"
+    >
+      <div class="empty-state" id="empty-state">
+        <div class="empty-state__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path
+              d="M11 2C6.03 2 2 5.69 2 10.25c0 2.4 1.1 4.56 2.87 6.08L4 20l3.93-1.57A9.8 9.8 0 0011 18.5c4.97 0 9-3.69 9-8.25S15.97 2 11 2z"
+              fill="white"
+            />
+          </svg>
+        </div>
+        <p class="empty-state__title">What's on your mind?</p>
+        <p class="empty-state__sub">
+          Type a message or hold the mic button to speak
+        </p>
+      </div>
+    </div>
+
+    <!-- Tool call card -->
+    <div
+      class="tool-card"
+      id="tool-detail"
+      role="region"
+      aria-label="Tool call"
+    >
+      <div class="tool-card__inner">
+        <span
+          ><span class="tool-card__label">fn</span
+          ><span class="tool-card__value" id="tool-name"></span
+        ></span>
+        <span
+          ><span class="tool-card__label">args</span
+          ><span class="tool-card__value" id="tool-args"></span
+        ></span>
+        <span
+          ><span class="tool-card__label">result</span
+          ><span class="tool-card__value" id="tool-result">…</span></span
+        >
+      </div>
+    </div>
+
+    <!-- Input panel -->
+    <div class="input-panel">
+      <div class="input-panel__inner">
+        <!-- Composer -->
+        <div class="composer" id="composer">
+          <textarea
+            id="text-input"
+            class="text-input"
+            rows="1"
+            placeholder="Message Realtime AI…"
+            aria-label="Message input"
+          ></textarea>
+
+          <!-- Audio level bar: fills as mic/AI speaks -->
+          <div class="audio-bar" id="audio-bar" aria-hidden="true">
+            <div class="audio-bar__fill" id="audio-bar-fill"></div>
+          </div>
+
+          <!-- Composer toolbar -->
+          <div class="composer-bar">
+            <select
+              id="voice-select"
+              class="voice-select"
+              title="Voice"
+              aria-label="AI voice"
+            >
+              <option value="alloy" selected>Alloy</option>
+              <option value="ash">Ash</option>
+              <option value="ballad">Ballad</option>
+              <option value="coral">Coral</option>
+              <option value="echo">Echo</option>
+              <option value="sage">Sage</option>
+              <option value="shimmer">Shimmer</option>
+              <option value="verse">Verse</option>
+              <option value="marin">Marin</option>
+              <option value="cedar">Cedar</option>
+            </select>
+
+            <button
+              id="ptt-btn"
+              class="btn-ptt"
+              title="Push to talk"
+              aria-label="Push to talk"
+              aria-pressed="false"
+            >
+              <svg
+                id="ptt-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <rect
+                  x="5.5"
+                  y="1"
+                  width="5"
+                  height="8"
+                  rx="2.5"
+                  fill="currentColor"
+                />
+                <path
+                  d="M3 7.5A5 5 0 0013 7.5"
+                  stroke="currentColor"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="8"
+                  y1="12.5"
+                  x2="8"
+                  y2="15"
+                  stroke="currentColor"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+            <button
+              id="send-btn"
+              class="btn-send"
+              title="Send"
+              aria-label="Send message"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M7 12V2M3 6l4-4 4 4"
+                  stroke="white"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-row">
+          <label class="ptt-label">
+            <input type="checkbox" id="ptt-toggle" class="ptt-toggle" checked />
+            Push-to-talk
+          </label>
+          <span class="mic-hint" id="mic-hint">Connect on first use</span>
+          <button
+            id="disconnect-btn"
+            class="btn-disconnect hidden"
+            style="margin-left: auto"
+          >
+            Disconnect
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── State ──────────────────────────────────────────────────────
+      let ws, audioCtx, player, micStream, micAnalyser, outAnalyser;
+      let audioRafId;
+      let micStarted = false;
+      let connected = false,
+        connecting = false;
+      let pttActive = false;
+      let currentAiBubble = null;
+      let pendingAction = null;
+
+      // ── Speech recognition ─────────────────────────────────────────
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recognition = null;
+      let voiceBubble = null; // placeholder bubble while speaking
+      let voiceTranscript = ''; // accumulated interim/final text
+
+      function initRecognition() {
+        if (!SpeechRecognition) return;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = e => {
+          let text = '';
+          for (let i = 0; i < e.results.length; i++) {
+            text += e.results[i][0].transcript;
+          }
+          voiceTranscript = text;
+          if (voiceBubble) {
+            voiceBubble.textContent = text || '…';
+            voiceBubble.classList.toggle('placeholder', !text.trim());
+          }
+        };
+
+        recognition.onend = () => {
+          recognition = null;
+        };
+        recognition.onerror = () => {
+          /* silently ignore — bubble stays as placeholder */
+        };
+      }
+
+      function startVoiceBubble() {
+        if (!SpeechRecognition) return;
+        voiceTranscript = '';
+        voiceBubble = appendBubble('user-voice');
+        voiceBubble.classList.add('placeholder');
+        voiceBubble.textContent = '…';
+        initRecognition();
+        try {
+          // Chrome 135+: pass the existing mic track to avoid opening a second mic session
+          const track = micStream?.getAudioTracks()[0];
+          if (track && recognition.start.length > 0) {
+            recognition.start(track);
+          } else {
+            recognition.start();
+          }
+        } catch {
+          /* already running or not supported */
+        }
+      }
+
+      function finalizeVoiceBubble() {
+        if (!voiceBubble) return;
+        try {
+          recognition?.stop();
+        } catch {
+          /* ignore */
+        }
+        // keep bubble even without transcript — shows user that speech was detected
+        voiceBubble = null;
+        voiceTranscript = '';
+      }
+
+      // ── DOM ────────────────────────────────────────────────────────
+      const statusDot = document.getElementById('status-dot');
+      const statusLabel = document.getElementById('status-label');
+      const errorStrip = document.getElementById('error-strip');
+      const voiceSelect = document.getElementById('voice-select');
+      const chatArea = document.getElementById('chat-area');
+      const emptyState = document.getElementById('empty-state');
+      const toolDetail = document.getElementById('tool-detail');
+      const toolNameEl = document.getElementById('tool-name');
+      const toolArgsEl = document.getElementById('tool-args');
+      const toolResultEl = document.getElementById('tool-result');
+      const audioBarFill = document.getElementById('audio-bar-fill');
+      const textInput = document.getElementById('text-input');
+      const sendBtn = document.getElementById('send-btn');
+      const pttBtn = document.getElementById('ptt-btn');
+      const pttToggle = document.getElementById('ptt-toggle');
+      const micHint = document.getElementById('mic-hint');
+      const disconnectBtn = document.getElementById('disconnect-btn');
+
+      // ── Status ─────────────────────────────────────────────────────
+      function setStatus(label, state) {
+        statusLabel.textContent = label;
+        statusDot.className = 'status-dot' + (state ? ' ' + state : '');
+      }
+
+      function showError(msg) {
+        errorStrip.textContent = msg;
+        errorStrip.classList.add('visible');
+      }
+
+      function clearError() {
+        errorStrip.classList.remove('visible');
+      }
+
+      // ── Audio level bar ────────────────────────────────────────────
+      function startAudioBar() {
+        if (audioRafId) return;
+        const micBuf = micAnalyser
+          ? new Uint8Array(micAnalyser.frequencyBinCount)
+          : null;
+        const outBuf = outAnalyser
+          ? new Uint8Array(outAnalyser.frequencyBinCount)
+          : null;
+
+        function tick() {
+          audioRafId = requestAnimationFrame(tick);
+          let rms = 0;
+          let isMic = false;
+
+          if (
+            micAnalyser &&
+            micBuf &&
+            connected &&
+            (!pttToggle.checked || pttActive)
+          ) {
+            micAnalyser.getByteTimeDomainData(micBuf);
+            let sum = 0;
+            for (let i = 0; i < micBuf.length; i++) {
+              const v = micBuf[i] / 128.0 - 1;
+              sum += v * v;
+            }
+            rms = Math.sqrt(sum / micBuf.length);
+            isMic = true;
+          }
+
+          if (outAnalyser && outBuf) {
+            outAnalyser.getByteTimeDomainData(outBuf);
+            let sum = 0;
+            for (let i = 0; i < outBuf.length; i++) {
+              const v = outBuf[i] / 128.0 - 1;
+              sum += v * v;
+            }
+            const outRms = Math.sqrt(sum / outBuf.length);
+            if (outRms > rms) {
+              rms = outRms;
+              isMic = false;
+            }
+          }
+
+          // map rms (typically 0–0.3) to 0–1
+          const level = Math.min(1, rms * 5);
+          audioBarFill.style.transform = `scaleX(${level})`;
+          audioBarFill.className =
+            'audio-bar__fill ' + (level > 0.02 ? (isMic ? 'mic' : 'ai') : '');
+        }
+        tick();
+      }
+
+      function stopAudioBar() {
+        if (audioRafId) {
+          cancelAnimationFrame(audioRafId);
+          audioRafId = null;
+        }
+        audioBarFill.style.transform = 'scaleX(0)';
+      }
+
+      // ── Chat bubbles ───────────────────────────────────────────────
+      function appendBubble(role) {
+        emptyState.style.display = 'none';
+        const row = document.createElement('div');
+        const isUser = role === 'user' || role === 'user-voice';
+        row.className = `msg-row msg-row--${isUser ? 'user' : 'ai'}`;
+        const bubble = document.createElement('div');
+        bubble.className = `msg-bubble msg-bubble--${role === 'ai' ? 'ai' : role === 'user-voice' ? 'user-voice' : 'user'}`;
+        row.appendChild(bubble);
+        chatArea.appendChild(row);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        return bubble;
+      }
+
+      // ── PCM player ─────────────────────────────────────────────────
+      function createPcmPlayer(ctx, dest) {
+        let next = 0;
+        const active = new Set();
+        return {
+          play(ab) {
+            const i16 = new Int16Array(ab);
+            const f32 = new Float32Array(i16.length);
+            for (let i = 0; i < i16.length; i++) f32[i] = i16[i] / 32768.0;
+            const buf = ctx.createBuffer(1, f32.length, 24000);
+            buf.copyToChannel(f32, 0);
+            const src = ctx.createBufferSource();
+            src.buffer = buf;
+            src.connect(dest);
+            active.add(src);
+            src.onended = () => active.delete(src);
+            if (next < ctx.currentTime) next = ctx.currentTime;
+            src.start(next);
+            next += buf.duration;
+          },
+          reset() {
+            next = 0;
+            for (const src of active) {
+              try {
+                src.stop();
+              } catch {
+                /* already ended */
+              }
+            }
+            active.clear();
+          }
+        };
+      }
+
+      // ── PTT ────────────────────────────────────────────────────────
+      function pttStart(e) {
+        if (e) e.preventDefault();
+        if (pttActive) return;
+        if (!connected) {
+          pendingAction = { type: 'ptt' };
+          connect();
+          return;
+        }
+        if (!pttToggle.checked) return;
+        pttActive = true;
+        pttBtn.classList.add('active');
+        pttBtn.setAttribute('aria-pressed', 'true');
+        startVoiceBubble();
+      }
+
+      function pttEnd() {
+        if (!pttActive) return;
+        pttActive = false;
+        pttBtn.classList.remove('active');
+        pttBtn.setAttribute('aria-pressed', 'false');
+        finalizeVoiceBubble();
+        if (ws?.readyState === WebSocket.OPEN)
+          ws.send(JSON.stringify({ type: 'commit_audio' }));
+      }
+
+      pttToggle.addEventListener('change', onPttToggle);
+
+      function onPttToggle() {
+        if (connected && ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(
+            JSON.stringify({ type: 'set_ptt', enabled: pttToggle.checked })
+          );
+          updateMicHint();
+        } else if (!pttToggle.checked && !connected && !connecting) {
+          connect();
+        }
+      }
+
+      function updateMicHint() {
+        if (!connected) {
+          micHint.textContent = 'Connect on first use';
+          return;
+        }
+        micHint.textContent = micStream
+          ? pttToggle.checked
+            ? 'Hold mic to talk'
+            : 'VAD active — just speak'
+          : 'Mic unavailable — text only';
+      }
+
+      // ── Send text ──────────────────────────────────────────────────
+      function sendText() {
+        const text = textInput.value.trim();
+        if (!text) return;
+        if (!connected) {
+          pendingAction = { type: 'text', text };
+          connect();
+          return;
+        }
+        toolDetail.classList.remove('visible');
+        appendBubble('user').textContent = text;
+        textInput.value = '';
+        ws.send(JSON.stringify({ type: 'text_input', text }));
+      }
+
+      function handleKey(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendText();
+        }
+      }
+
+      // ── Connect ────────────────────────────────────────────────────
+      async function connect() {
+        if (connected || connecting) return;
+        connecting = true;
+        clearError();
+        setStatus('Connecting…', 'connecting');
+
+        const voice = voiceSelect.value;
+        const ptt = pttToggle.checked;
+
+        ws = new WebSocket(`ws://${location.host}/openai-realtime/ws`);
+        ws.binaryType = 'arraybuffer';
+
+        ws.onopen = () => {
+          ws.send(
+            JSON.stringify({
+              type: 'configure',
+              mode: ptt ? 'speech-ptt' : 'speech',
+              voice
+            })
+          );
+          setStatus('Connecting…', 'connecting');
+
+          audioCtx = new AudioContext({ sampleRate: 24000 });
+          audioCtx.resume().catch(() => {});
+          outAnalyser = audioCtx.createAnalyser();
+          outAnalyser.fftSize = 512;
+          outAnalyser.connect(audioCtx.destination);
+          player = createPcmPlayer(audioCtx, outAnalyser);
+        };
+
+        ws.onmessage = async e => {
+          if (e.data instanceof ArrayBuffer) {
+            player?.play(e.data);
+            setStatus('AI speaking…', 'connected');
+            return;
+          }
+          const msg = JSON.parse(e.data);
+          if (msg.type === 'ready') {
+            connected = true;
+            connecting = false;
+            setStatus('Connected', 'connected');
+            disconnectBtn.classList.remove('hidden');
+            await startMic();
+            startAudioBar();
+            updateMicHint();
+            if (pendingAction) {
+              const action = pendingAction;
+              pendingAction = null;
+              if (action.type === 'text' && action.text) {
+                toolDetail.classList.remove('visible');
+                appendBubble('user').textContent = action.text;
+                textInput.value = '';
+                ws.send(
+                  JSON.stringify({ type: 'text_input', text: action.text })
+                );
+              } else if (action.type === 'ptt' && pttToggle.checked) {
+                pttActive = true;
+                pttBtn.classList.add('active');
+                pttBtn.setAttribute('aria-pressed', 'true');
+                startVoiceBubble();
+              }
+            }
+          } else if (msg.type === 'speech_started') {
+            player?.reset();
+            setStatus('Listening…', 'connecting');
+            startVoiceBubble();
+          } else if (msg.type === 'speech_stopped') {
+            setStatus('Processing…', 'connecting');
+            finalizeVoiceBubble();
+          } else if (msg.type === 'transcript') {
+            if (!currentAiBubble) currentAiBubble = appendBubble('ai');
+            currentAiBubble.textContent += msg.delta;
+            chatArea.scrollTop = chatArea.scrollHeight;
+          } else if (msg.type === 'tool_call') {
+            toolNameEl.textContent = msg.name;
+            try {
+              toolArgsEl.textContent = JSON.stringify(
+                JSON.parse(msg.arguments)
+              );
+            } catch {
+              toolArgsEl.textContent = msg.arguments;
+            }
+            toolResultEl.textContent = '…';
+            toolDetail.classList.add('visible');
+          } else if (msg.type === 'tool_result') {
+            toolResultEl.textContent = msg.result;
+          } else if (msg.type === 'done') {
+            currentAiBubble = null;
+            updateMicHint();
+            setStatus('Connected', 'connected');
+          } else if (msg.type === 'error') {
+            showError(msg.message);
+          }
+        };
+
+        ws.onclose = () => cleanup();
+        ws.onerror = () => {
+          showError('WebSocket error');
+          connecting = false;
+        };
+      }
+
+      async function startMic() {
+        if (micStarted) return;
+        micStarted = true;
+        const workletCode = `class MicProcessor extends AudioWorkletProcessor {
+        process(inputs) {
+          const ch = inputs[0]?.[0];
+          if (ch) {
+            const int16 = new Int16Array(ch.length);
+            for (let i = 0; i < ch.length; i++) {
+              const s = Math.max(-1, Math.min(1, ch[i]));
+              int16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+            }
+            this.port.postMessage(int16.buffer, [int16.buffer]);
+          }
+          return true;
+        }
+      }
+      registerProcessor('mic-processor', MicProcessor);`;
+        const blob = new Blob([workletCode], {
+          type: 'application/javascript'
+        });
+        const url = URL.createObjectURL(blob);
+        await audioCtx.audioWorklet.addModule(url);
+        URL.revokeObjectURL(url);
+
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: true
+          });
+        } catch (err) {
+          console.warn('[mic] getUserMedia failed', err);
+          micStream = null;
+          return;
+        }
+
+        const src = audioCtx.createMediaStreamSource(micStream);
+        const workletNode = new AudioWorkletNode(audioCtx, 'mic-processor');
+        src.connect(workletNode);
+        micAnalyser = audioCtx.createAnalyser();
+        micAnalyser.fftSize = 512;
+        src.connect(micAnalyser);
+        workletNode.port.onmessage = ev => {
+          if (!ws || ws.readyState !== WebSocket.OPEN) return;
+          if (pttToggle.checked && !pttActive) return;
+          ws.send(ev.data);
+        };
+      }
+
+      function cleanup() {
+        ws = null;
+        connected = false;
+        connecting = false;
+        currentAiBubble = null;
+        pttActive = false;
+        finalizeVoiceBubble();
+        micStream?.getTracks().forEach(t => t.stop());
+        micStream = null;
+        micStarted = false;
+        micAnalyser = null;
+        outAnalyser = null;
+        stopAudioBar();
+        audioCtx?.close();
+        audioCtx = null;
+        disconnectBtn.classList.add('hidden');
+        setStatus('Disconnected', '');
+        updateMicHint();
+      }
+
+      function disconnect() {
+        if (ws) {
+          ws.onclose = null;
+          ws.close();
+        }
+        cleanup();
+      }
+
+      // ── Event listeners ────────────────────────────────────────────
+      sendBtn.addEventListener('click', sendText);
+      textInput.addEventListener('keydown', handleKey);
+      disconnectBtn.addEventListener('click', disconnect);
+      pttBtn.addEventListener('mousedown', pttStart);
+      pttBtn.addEventListener('mouseup', pttEnd);
+      pttBtn.addEventListener('mouseleave', pttEnd);
+      pttBtn.addEventListener('touchstart', e => {
+        e.preventDefault();
+        pttStart(e);
+      });
+      pttBtn.addEventListener('touchend', pttEnd);
+
+      // ── Eagerly request mic permission on load ─────────────────────
+      navigator.mediaDevices
+        ?.getUserMedia({ audio: true })
+        .then(stream => {
+          stream.getTracks().forEach(t => t.stop());
+        })
+        .catch(() => {
+          /* permission denied — mic hint will reflect this when connected */
+        });
+    </script>
+  </body>
+</html>

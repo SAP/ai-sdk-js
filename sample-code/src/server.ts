@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
 import express from 'express';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import {
   resolveDeploymentUrl,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
+import { attachRealtimeWs } from './openai-realtime-ws.ts';
 import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
@@ -118,8 +121,25 @@ server.on('error', (error: Error) => {
   process.exit(1);
 });
 
+attachRealtimeWs(server);
+
+app.get('/openai-realtime', async (_req, res) => {
+  const html = await readFile(
+    join(import.meta.dirname, 'openai-realtime-spa.html'),
+    'utf8'
+  );
+  res.header('Content-Type', 'text/html').send(html);
+});
+
+app.get('/img/ai-sdk-logo.svg', async (_req, res) => {
+  const svg = await readFile(
+    join(import.meta.dirname, '..', 'img', 'ai-sdk-logo.svg')
+  );
+  res.header('Content-Type', 'image/svg+xml').send(svg);
+});
+
 app.get(['/', '/health'], (req, res) => {
-  res.send('Hello World! 🌍');
+  res.send('Hello World! 🌍<br><a href="/openai-realtime">Realtime Demo</a>');
 });
 
 function sendError(res: any, error: any, send: boolean = true) {

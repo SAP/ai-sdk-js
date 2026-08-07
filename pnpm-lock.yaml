@@ -352,6 +352,9 @@ importers:
       openai:
         specifier: 7.3.0
         version: 7.3.0(ws@8.21.0)(zod@4.4.3)
+      ws:
+        specifier: 8.21.0
+        version: 8.21.0
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -386,6 +389,9 @@ importers:
       '@sap-ai-sdk/rpt':
         specifier: workspace:^
         version: link:../packages/rpt
+      '@types/ws':
+        specifier: 8.18.1
+        version: 8.18.1
       '@upstash/context7-mcp':
         specifier: 3.2.5
         version: 3.2.5(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)
