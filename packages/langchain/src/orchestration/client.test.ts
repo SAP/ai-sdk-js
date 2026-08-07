@@ -23,8 +23,6 @@ import type { ToolCall } from '@langchain/core/messages/tool';
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
 
-vi.setConfig({ testTimeout: 30000 });
-
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;
   let mockResponseInputFilterError: OrchestrationErrorResponse;
@@ -104,13 +102,17 @@ describe('orchestration service client', () => {
   }
 
   describe('resilience', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('returns successful response when maxRetries equals retry configuration', async () => {
       mockInferenceWithResilience(mockResponse, { retry: 2 });
       const client = new OrchestrationClient(config, {
         maxRetries: 2
       });
       expect(await client.invoke(messages)).toMatchSnapshot();
-    });
+    }, 30000);
 
     it('throws error response when maxRetries is smaller than required retries', async () => {
       mockInferenceWithResilience(mockResponse, { retry: 2 });
@@ -120,32 +122,38 @@ describe('orchestration service client', () => {
       await expect(client.invoke(messages)).rejects.toThrow(
         'Request failed with status code 500'
       );
-    });
+    }, 30000);
 
     it('throws when delay exceeds timeout', async () => {
-      mockInferenceWithResilience(mockResponse, { delay: 2000 });
+      vi.useFakeTimers();
+      mockInferenceWithResilience(mockResponse, { delay: 5000 });
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       const response = client.invoke(messages, { timeout: 1000 });
-      await expect(response).rejects.toThrow(
+      await vi.advanceTimersByTimeAsync(1000);
+      const assertion = expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
+      await assertion;
     });
 
     it('retries when delay exceeds timeout', async () => {
-      mockInferenceWithResilience(mockResponse, { delay: 2000 });
+      vi.useFakeTimers();
+      mockInferenceWithResilience(mockResponse, { delay: 5000 });
       const onFailedAttempt = vi.fn();
       const client = new OrchestrationClient(config, {
         maxRetries: 1,
         onFailedAttempt
       });
-      const response = client.invoke(messages, { timeout: 1000 });
+      const response = client.invoke(messages, { timeout: 100 });
+      await vi.advanceTimersByTimeAsync(100);
       await expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
+
       expect(onFailedAttempt).toHaveBeenCalledTimes(1);
     });
 
@@ -164,33 +172,30 @@ describe('orchestration service client', () => {
     }, 1000);
 
     it('throws when delay exceeds timeout during streaming', async () => {
+      vi.useFakeTimers();
       mockInferenceWithResilience(
         mockResponseStream,
-        { delay: 2000 },
+        { delay: 5000 },
         200,
         true
       );
 
-      let finalOutput: AIMessageChunk | undefined;
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      try {
-        const stream = await client.stream([], { timeout: 1000 });
-        for await (const chunk of stream) {
-          finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
-        }
-      } catch (e) {
-        expect(e).toEqual(
-          expect.objectContaining({
-            stack: expect.stringMatching(/Timeout/)
-          })
-        );
-      }
+      const stream = client.stream(messages, { timeout: 100 });
+      // Install rejection handler before advancing timers to avoid unhandled promise rejection
+      const assertion = expect(stream).rejects.toThrow(
+        expect.objectContaining({
+          stack: expect.stringMatching(/Timeout/)
+        })
+      );
+      await vi.advanceTimersByTimeAsync(100);
+      await assertion;
     });
 
     it('returns successful response when timeout is bigger than delay', async () => {
-      mockInferenceWithResilience(mockResponse, { delay: 2000 });
+      mockInferenceWithResilience(mockResponse, { delay: 50 });
       const client = new OrchestrationClient(config);
-      const response = await client.invoke(messages, { timeout: 3000 });
+      const response = await client.invoke(messages, { timeout: 5000 });
       expect(response).toMatchSnapshot();
     });
 
@@ -209,16 +214,17 @@ describe('orchestration service client', () => {
     }, 1000);
 
     it('throws when delay exceeds timeout using streaming', async () => {
+      vi.useFakeTimers();
       mockInferenceWithResilience(
         mockResponseStream,
-        { delay: 2000 },
+        { delay: 5000 },
         200,
         true
       );
       const client = new OrchestrationClient(config, { maxRetries: 0 });
-      await expect(client.stream('Hello!', { timeout: 1000 })).rejects.toThrow(
-        'aborted'
-      );
+      const stream = client.stream('Hello!', { timeout: 1000 });
+      await vi.advanceTimersByTimeAsync(1000);
+      await expect(stream).rejects.toThrow('aborted');
     });
   });
 
