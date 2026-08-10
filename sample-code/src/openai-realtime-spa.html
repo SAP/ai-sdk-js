@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SAP Cloud SDK for AI — Realtime Demo</title>
     <link rel="icon" type="image/svg+xml" href="/img/ai-sdk-logo.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
     <style>
       *,
       *::before,
@@ -36,8 +30,8 @@
         --green: #107e3e;
         --red: #bb0000;
         --amber: #c75500;
-        --mono: 'JetBrains Mono', 'Cascadia Code', monospace;
-        --sans: 'Inter', system-ui, -apple-system, sans-serif;
+        --mono: ui-monospace, 'Cascadia Code', 'Menlo', monospace;
+        --sans: system-ui, -apple-system, sans-serif;
       }
 
       html,
@@ -482,9 +476,9 @@
         color: var(--ink-3);
       }
 
-      .btn-disconnect {
+      .btn-disconnect,
+      .btn-connect {
         background: transparent;
-        color: var(--ink-3);
         border: 1px solid var(--border);
         border-radius: 2rem;
         font-family: var(--sans);
@@ -496,11 +490,22 @@
           border-color 0.12s;
         outline: none;
       }
+      .btn-disconnect {
+        color: var(--ink-3);
+      }
       .btn-disconnect:hover {
         color: var(--red);
         border-color: var(--red);
       }
-      .btn-disconnect.hidden {
+      .btn-connect {
+        color: var(--purple);
+        border-color: var(--purple-t);
+      }
+      .btn-connect:hover {
+        border-color: var(--purple);
+      }
+      .btn-disconnect.hidden,
+      .btn-connect.hidden {
         display: none;
       }
 
@@ -729,6 +734,13 @@
           </label>
           <span class="mic-hint" id="mic-hint">Connect on first use</span>
           <button
+            id="connect-btn"
+            class="btn-connect"
+            style="margin-left: auto"
+          >
+            Connect
+          </button>
+          <button
             id="disconnect-btn"
             class="btn-disconnect hidden"
             style="margin-left: auto"
@@ -834,6 +846,7 @@
       const pttToggle = document.getElementById('ptt-toggle');
       const micHint = document.getElementById('mic-hint');
       const disconnectBtn = document.getElementById('disconnect-btn');
+      const connectBtn = document.getElementById('connect-btn');
 
       // ── Status ─────────────────────────────────────────────────────
       function setStatus(label, state) {
@@ -1076,6 +1089,7 @@
             connecting = false;
             setStatus('Connected', 'connected');
             disconnectBtn.classList.remove('hidden');
+            connectBtn.classList.add('hidden');
             await startMic();
             startAudioBar();
             updateMicHint();
@@ -1200,6 +1214,7 @@
         audioCtx?.close();
         audioCtx = null;
         disconnectBtn.classList.add('hidden');
+        connectBtn.classList.remove('hidden');
         setStatus('Disconnected', '');
         updateMicHint();
       }
@@ -1215,6 +1230,7 @@
       // ── Event listeners ────────────────────────────────────────────
       sendBtn.addEventListener('click', sendText);
       textInput.addEventListener('keydown', handleKey);
+      connectBtn.addEventListener('click', connect);
       disconnectBtn.addEventListener('click', disconnect);
       pttBtn.addEventListener('mousedown', pttStart);
       pttBtn.addEventListener('mouseup', pttEnd);
