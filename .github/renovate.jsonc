@@ -26,7 +26,7 @@
         {
             "customType": "regex",
             "description": "Update PNPM_VERSION env var in workflow files",
-            "managerFilePatterns": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+            "managerFilePatterns": ["/^\\.github\\/workflows\\/[^/]+\\.ya?ml$/"],
             "matchStrings": [
                 "PNPM_VERSION:\\s*(?<currentValue>[^\\s]+)"
             ],
@@ -37,7 +37,7 @@
         {
             "customType": "regex",
             "description": "Update vale version in workflow files",
-            "managerFilePatterns": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+            "managerFilePatterns": ["/^\\.github\\/workflows\\/[^/]+\\.ya?ml$/"],
             "matchStrings": [
                 "# see https://github\\.com/vale-cli/vale for all releases\\s+version:\\s*(?<currentValue>[^\\s]+)"
             ],
