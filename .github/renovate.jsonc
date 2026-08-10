@@ -33,6 +33,17 @@
             "depNameTemplate": "pnpm/pnpm",
             "datasourceTemplate": "github-releases",
             "extractVersionTemplate": "^v?(?<version>.*)$"
+        },
+        {
+            "customType": "regex",
+            "description": "Update vale version in workflow files",
+            "managerFilePatterns": ["^\\.github/workflows/[^/]+\\.ya?ml$"],
+            "matchStrings": [
+                "# see https://github\\.com/vale-cli/vale for all releases\\s+version:\\s*(?<currentValue>[^\\s]+)"
+            ],
+            "depNameTemplate": "vale-cli/vale",
+            "datasourceTemplate": "github-releases",
+            "extractVersionTemplate": "^v?(?<version>.*)$"
         }
     ],
     "packageRules": [
