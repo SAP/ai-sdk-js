@@ -42,5 +42,7 @@ jobs:
           files: ${{ steps.changed-files.outputs.changed-files }}
           # the separator for the file list. we are using a comma (see step above)
           separator: ','
+          # post inline suggestions from vale's language server as PR review comments
+          reporter: github-pr-review
           # let review dog fail if there are errors
           fail_on_error: true
