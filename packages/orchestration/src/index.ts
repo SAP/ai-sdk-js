@@ -2,6 +2,7 @@ export type {
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
   OrchestrationConfigRef,
+  OrchestrationConfigRefOverride,
   PromptTemplatingModule,
   MaskingModule,
   GroundingModule,
@@ -89,5 +90,6 @@ export type {
   ChatCompletionTool,
   FunctionObject,
   Error as OrchestrationError,
-  Citation
+  Citation,
+  ReasoningBlock
 } from './client/api/schema/index.ts';

@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/foundation-models",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -44,11 +44,11 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.7.0",
-    "@sap-cloud-sdk/http-client": "^4.7.0",
-    "@sap-cloud-sdk/util": "^4.7.0"
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/http-client": "^4.8.0",
+    "@sap-cloud-sdk/util": "^4.8.0"
   },
   "devDependencies": {
-    "vitest": "^4.1.10"
+    "vitest": "4.1.10"
   }
 }
