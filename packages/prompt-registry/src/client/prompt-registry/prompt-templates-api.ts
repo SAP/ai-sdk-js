@@ -177,7 +177,7 @@ export const PromptTemplatesApi = {
             contentType: 'application/octet-stream',
             isImplicit: true,
             parsedContentTypes: [
-              { parameters: {}, type: 'application/octet-stream' }
+              { type: 'application/octet-stream', parameters: {} }
             ]
           }
         },

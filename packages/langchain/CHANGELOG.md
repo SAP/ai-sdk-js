@@ -1,5 +1,20 @@
 # @sap-ai-sdk/langchain
 
+## 2.14.0
+
+### Patch Changes
+
+- 4003a12: [fix] Skip tool and assistant messages when applying `cache_control`, using the last applicable message (system, user, or developer) instead.
+  Some models do not support `cache_control` on `tool` messages.
+- Updated dependencies [cca7edd]
+- Updated dependencies [b986b70]
+- Updated dependencies [b986b70]
+- Updated dependencies [cca7edd]
+  - @sap-ai-sdk/core@2.14.0
+  - @sap-ai-sdk/orchestration@2.14.0
+  - @sap-ai-sdk/ai-api@2.14.0
+  - @sap-ai-sdk/foundation-models@2.14.0
+
 ## 2.13.0
 
 ### Minor Changes

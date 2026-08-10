@@ -35,6 +35,8 @@ export {
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs,
+  orchestrationReasoningContent,
+  orchestrationReasoningContentStream,
   orchestrationQwenChatCompletion
 } from './orchestration.ts';
 export {
