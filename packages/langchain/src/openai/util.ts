@@ -28,11 +28,11 @@ import type {
   ToolMessage
 } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { AzureOpenAiChatClient } from './chat.js';
+import type { AzureOpenAiChatClient } from './chat.ts';
 import type {
   AzureOpenAiChatCallOptions,
   ChatAzureOpenAIToolType
-} from './types.js';
+} from './types.ts';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 
 /**

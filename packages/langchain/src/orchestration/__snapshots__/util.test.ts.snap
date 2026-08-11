@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with content to AIMessageChunk: AIMessageChunk with content 1`] = `
+exports[`mapOrchestrationChunkToLangChainMessageChunk > should map a chunk with content to AIMessageChunk > AIMessageChunk with content 1`] = `
 {
   "id": [
     "langchain_core",
@@ -43,7 +43,7 @@ exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with co
 }
 `;
 
-exports[`mapOrchestrationChunkToLangChainMessageChunk should map a chunk with tool call chunks to AIMessageChunk: AIMessageChunk with tool call chunks 1`] = `
+exports[`mapOrchestrationChunkToLangChainMessageChunk > should map a chunk with tool call chunks to AIMessageChunk > AIMessageChunk with tool call chunks 1`] = `
 {
   "id": [
     "langchain_core",

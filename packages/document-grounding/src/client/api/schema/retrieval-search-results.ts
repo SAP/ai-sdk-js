@@ -13,6 +13,7 @@ export type RetrievalSearchResults = {
    * List of returned results.
    */
   results: (
-    RetrievalPerFilterSearchResult | RetrievalPerFilterSearchResultWithError
+    | RetrievalPerFilterSearchResult
+    | RetrievalPerFilterSearchResultWithError
   )[];
 } & Record<string, any>;

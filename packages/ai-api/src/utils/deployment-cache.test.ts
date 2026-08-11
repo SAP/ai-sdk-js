@@ -1,6 +1,6 @@
-import { type AiDeployment } from '../client/AI_CORE_API/index.js';
-import { deploymentCache } from './deployment-cache.js';
-import type { FoundationModel } from './model.js';
+import { type AiDeployment } from '../client/AI_CORE_API/index.ts';
+import { deploymentCache } from './deployment-cache.ts';
+import type { FoundationModel } from './model.ts';
 
 describe('deployment cache', () => {
   afterEach(() => {

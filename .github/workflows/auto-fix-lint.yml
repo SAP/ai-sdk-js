@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   fix-lint:
-    if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name }}
+    if: ${{ github.event.pull_request.user.type != 'Bot' && github.repository == github.event.pull_request.head.repo.full_name }}
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App token
@@ -22,7 +22,6 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
         with:
           ref: ${{ github.head_ref }}
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
           persist-credentials: true
           token: ${{ steps.app-token.outputs.token }}
       - run: pnpm lint:fix

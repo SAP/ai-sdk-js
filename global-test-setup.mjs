@@ -1,7 +1,7 @@
 /**
  * This file is used to mock the environment variables that are required for the tests.
  */
-export default async function mockAiCoreEnvVariable() {
+export async function setup() {
   const aiCoreServiceCredentials = {
     clientid: 'clientid',
     clientsecret: 'clientsecret',
@@ -11,4 +11,8 @@ export default async function mockAiCoreEnvVariable() {
     }
   };
   process.env['AICORE_SERVICE_KEY'] = JSON.stringify(aiCoreServiceCredentials);
-};
+}
+
+export async function teardown() {
+  delete process.env.AICORE_SERVICE_KEY;
+}
