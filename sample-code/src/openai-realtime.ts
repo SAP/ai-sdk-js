@@ -390,7 +390,7 @@ class AudioPlayer {
 
   private kill(): void {
     const proc = this.proc;
-    if (proc && proc.exitCode === null && !proc.killed) {
+    if (proc?.exitCode === null && !proc.killed) {
       proc.kill('SIGTERM');
     }
   }
