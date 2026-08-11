@@ -8,4 +8,6 @@
  * Representation of the 'ScoresAggregationStrategy' schema.
  */
 export type ScoresAggregationStrategy =
-  'weighted_average' | 'rrf' | 'weighted_rrf';
+  | 'weighted_average'
+  | 'rrf'
+  | 'weighted_rrf';

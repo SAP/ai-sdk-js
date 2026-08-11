@@ -29,7 +29,8 @@ import type {
   SAPDocumentTranslationOutput,
   Embedding,
   EmbeddingMultiFormat,
-  EncodingFormat
+  EncodingFormat,
+  PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
 
 /**
@@ -287,6 +288,17 @@ export type OrchestrationModuleConfigList = [
  *   version: '0.0.1'
  * };
  */
+/**
+ * Partial override configuration for a stored orchestration config reference.
+ * `stream.enabled` is excluded, as it is controlled by the call site (.stream() or .chatCompletion()).
+ */
+export type OrchestrationConfigRefOverride = Omit<
+  PartialOrchestrationConfig,
+  'stream'
+> & {
+  stream?: Omit<GlobalStreamOptions, 'enabled'>;
+};
+
 export type OrchestrationConfigRef = Xor<
   {
     /** Orchestration configuration ID. */
@@ -300,7 +312,12 @@ export type OrchestrationConfigRef = Xor<
     /** Configuration version. */
     version: string;
   }
->;
+> & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: OrchestrationConfigRefOverride;
+};
 
 /**
  * Type guard to check if config is a config reference.
@@ -684,7 +701,8 @@ export interface DocumentTranslationApplyToSelector {
  * Target language for translation, either a language code or a selector configuration.
  */
 export type TranslationTargetLanguage =
-  string | DocumentTranslationApplyToSelector;
+  | string
+  | DocumentTranslationApplyToSelector;
 
 /**
  * Input parameters for translation configuration.

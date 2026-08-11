@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/llm-batch",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -39,8 +39,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
-    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-llm-batch-experimental && pnpm lint:fix",
     "make-llm-batch-experimental": "node ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",
@@ -50,6 +50,6 @@
     "@sap-ai-sdk/core": "workspace:^"
   },
   "devDependencies": {
-    "vitest": "^4.1.10"
+    "vitest": "4.1.10"
   }
 }

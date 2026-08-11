@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -38,23 +38,23 @@
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
-    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.7.0",
-    "@sap-cloud-sdk/util": "^4.7.0"
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/util": "^4.8.0"
   },
   "devDependencies": {
-    "@langchain/core": "^1.2.3",
-    "@langchain/langgraph": "^1.4.8",
-    "langchain": "^1.5.4",
-    "zod": "^4.4.3",
-    "vitest": "^4.1.10"
+    "@langchain/core": "1.2.5",
+    "@langchain/langgraph": "1.4.9",
+    "langchain": "1.5.5",
+    "vitest": "4.1.10",
+    "zod": "4.4.3"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.3",
