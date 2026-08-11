@@ -3,6 +3,8 @@ info:
   title: Orchestration v2
   description: Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
   version: 1.5.1
+  contact:
+    name: SAP AI Core
 x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
 servers:
   - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}/v2
@@ -174,7 +176,7 @@ paths:
                   value:
                     request_id: '11c785a2-09c7-4b12-b86e-3a3ff7ece72e'
                     final_result:
-                      object: 'dict'
+                      object: 'list'
                       data:
                         - object: 'embedding'
                           embedding:
@@ -329,7 +331,7 @@ components:
         params:
           $ref: '#/components/schemas/EmbeddingsModelParams'
         timeout:
-          description: Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models.
+          description: Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
           type: integer
           default: 600
           minimum: 1
@@ -1282,7 +1284,7 @@ components:
             stream_options:
               include_usage: true
         timeout:
-          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
           type: integer
           default: 600
           minimum: 1
