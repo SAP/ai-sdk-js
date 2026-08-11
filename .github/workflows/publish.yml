@@ -20,8 +20,24 @@ on:
 permissions: {}
 
 jobs:
+  approval:
+    name: Approve Release
+    runs-on: ubuntu-latest
+    # Scheduled releases may continue without approval, but releases triggered by a GitHub Release require approval.
+    environment: ${{ case(github.event_name == 'schedule', 'ensure-main', 'approve-release') }}
+    steps:
+      - run: echo "Approved"
+
+  ensure-main:
+    if: ${{ github.event_name == 'release' }}
+    environment: ensure-main
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Ensuring that the official release is running on the main branch"
+
   delegate_to_release_job:
     if: ${{ github.event_name == 'release' }}
+    needs: [approval, ensure-main]
     permissions:
       contents: read
       id-token: write
@@ -32,6 +48,7 @@ jobs:
 
   delegate_to_canary_job:
     if: ${{ github.event_name != 'release' }}
+    needs: [approval]
     permissions:
       contents: read
       id-token: write
