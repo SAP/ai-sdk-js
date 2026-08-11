@@ -12,6 +12,8 @@ class MockWebSocket {
   readonly options: { headers?: Record<string, string> };
   readonly sent: string[] = [];
   closed: { code: number; reason: string } | undefined;
+  sendError: Error | undefined;
+  closeError: Error | undefined;
 
   private readonly listeners: Record<string, ((...args: any[]) => void)[]> = {};
 
@@ -31,10 +33,16 @@ class MockWebSocket {
   }
 
   send(data: string): void {
+    if (this.sendError) {
+      throw this.sendError;
+    }
     this.sent.push(data);
   }
 
   close(code: number, reason: string): void {
+    if (this.closeError) {
+      throw this.closeError;
+    }
     this.closed = { code, reason };
   }
 
@@ -196,6 +204,35 @@ describe('SapOpenAiRealtime', () => {
     expect(errors[0].message).toContain('could not parse websocket event');
   });
 
+  it('ignores null message frames', async () => {
+    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const socket = MockWebSocket.instances[0];
+
+    const genericEvents: unknown[] = [];
+    const errors: { message: string }[] = [];
+    client.on('event', e => genericEvents.push(e));
+    client.on('error', e => errors.push(e));
+
+    socket.receiveRaw(Buffer.from('null'));
+
+    expect(genericEvents).toEqual([]);
+    expect(errors).toEqual([]);
+  });
+
+  it('routes send failures through the error listener', async () => {
+    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const socket = MockWebSocket.instances[0];
+    socket.sendError = new Error('send exploded');
+
+    const errors: { message: string }[] = [];
+    client.on('error', e => errors.push(e));
+
+    client.send({ type: 'response.create' });
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0].message).toContain('could not send data');
+  });
+
   it('closes the socket with the provided code and reason', async () => {
     const client = await SapOpenAiRealtime.createClient('gpt-realtime');
 
@@ -216,5 +253,19 @@ describe('SapOpenAiRealtime', () => {
       code: 1000,
       reason: 'OK'
     });
+  });
+
+  it('routes close failures through the error listener', async () => {
+    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const socket = MockWebSocket.instances[0];
+    socket.closeError = new Error('close exploded');
+
+    const errors: { message: string }[] = [];
+    client.on('error', e => errors.push(e));
+
+    client.close();
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0].message).toContain('could not close the connection');
   });
 });

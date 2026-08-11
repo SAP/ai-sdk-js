@@ -47,7 +47,8 @@ export class SapOpenAiRealtime extends OpenAIRealtimeEmitter {
   /** The resolved WebSocket URL, including the `/v1/realtime` suffix. */
   readonly url: URL;
 
-  private readonly socket: WebSocket;
+  /** The underlying WebSocket connection. */
+  socket: WebSocket;
 
   /** @internal — use {@link SapOpenAiRealtime.createClient} instead */
   private constructor(
@@ -73,20 +74,23 @@ export class SapOpenAiRealtime extends OpenAIRealtimeEmitter {
     }) as WebSocket;
 
     this.socket.on('message', (data: WebSocket.RawData) => {
-      let event: RealtimeServerEvent;
+      let event: RealtimeServerEvent | undefined = undefined;
       try {
         event = JSON.parse(data.toString());
       } catch (err) {
-        this._onError(null, 'could not parse websocket event', err);
+        return this._onError(null, 'could not parse websocket event', err);
+      }
+      // null/undefined is ignored entirely in the upstream implementation
+      if (!event) {
         return;
       }
       this._emit('event', event);
       if (event.type === 'error') {
-        this._onError(event);
-      } else {
-        // @ts-expect-error TS isn't smart enough to get the relationship right here
-        this._emit(event.type, event);
+        return this._onError(event);
       }
+
+      // @ts-expect-error TS isn't smart enough to get the relationship right here
+      this._emit(event.type, event);
     });
 
     this.socket.on('error', err => {
