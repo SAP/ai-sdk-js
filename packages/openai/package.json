@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -53,7 +53,7 @@
     "openai": "^6.49.0 || ^7.0.0"
   },
   "devDependencies": {
-    "openai": "7.3.0",
+    "openai": "7.4.0",
     "vitest": "4.1.10"
   }
 }
