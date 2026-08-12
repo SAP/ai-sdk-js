@@ -34,7 +34,7 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests run",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code run",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
-    "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@modelcontextprotocol/server-github,@upstash/context7-mcp\" --quiet"
+    "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
   "devDependencies": {
     "@changesets/cli": "2.31.1",
@@ -51,8 +51,8 @@
     "@types/node": "22.20.1",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "4.1.10",
-    "depcheck": "1.4.7",
     "jose": "6.2.8",
+    "knip": "6.29.0",
     "mock-fs": "5.5.0",
     "nock": "14.0.17",
     "orval": "8.23.0",
