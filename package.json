@@ -52,7 +52,7 @@
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "4.1.10",
     "jose": "6.2.8",
-    "knip": "6.29.0",
+    "knip": "6.32.0",
     "mock-fs": "5.5.0",
     "nock": "14.0.17",
     "orval": "8.23.0",
