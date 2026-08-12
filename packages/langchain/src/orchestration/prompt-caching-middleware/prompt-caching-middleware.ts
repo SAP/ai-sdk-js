@@ -42,7 +42,7 @@ class OrchestrationPromptCachingMiddlewareError extends Error {
  * @param middlewareOptions - Configuration options forwarded verbatim to `anthropicPromptCachingMiddleware`. See {@link PromptCachingMiddlewareConfig}.
  * @returns A middleware instance that can be passed to `createAgent`.
  * @throws {OrchestrationPromptCachingMiddlewareError} If the upstream `langchain`
- * middleware shape changes and no `contextSchema` can be extracted.
+ * middleware shape changes and `contextSchema` or `wrapModelCall` cannot be extracted.
  * @throws {OrchestrationPromptCachingMiddlewareError} If `unsupportedModelBehavior`
  * is set to `'raise'` and the middleware is used with a non-Orchestration model.
  * @example
@@ -73,6 +73,12 @@ export function orchestrationPromptCachingMiddleware(
   if (!contextSchema) {
     throw new OrchestrationPromptCachingMiddlewareError(
       'Failed to extract contextSchema from langchain anthropicPromptCachingMiddleware.'
+    );
+  }
+  const parentWrapModelCall = parentMiddleware.wrapModelCall;
+  if (!parentWrapModelCall) {
+    throw new OrchestrationPromptCachingMiddlewareError(
+      'Failed to extract wrapModelCall from langchain anthropicPromptCachingMiddleware.'
     );
   }
 
@@ -126,14 +132,23 @@ export function orchestrationPromptCachingMiddleware(
         name: 'OrchestrationPromptCachingMiddleware',
         contextSchema,
         wrapModelCall: proxiedRequestHandler =>
-          parentMiddleware.wrapModelCall!(proxiedRequestHandler, req =>
+          parentWrapModelCall(proxiedRequestHandler, req =>
             handler({ ...req, model: realModel })
           )
       });
 
-      return middleware.wrapModelCall!(
+      const { wrapModelCall } = middleware;
+      if (!wrapModelCall) {
+        throw new OrchestrationPromptCachingMiddlewareError(
+          'createMiddleware did not return a wrapModelCall hook.'
+        );
+      }
+
+      return wrapModelCall(
+        // Cast needed: outer wrapModelCall and inner middleware have different
+        // inferred TSchema/TContext type params despite identical runtime shape.
         { ...request, model: proxiedModel } as Parameters<
-          NonNullable<typeof middleware.wrapModelCall>
+          typeof wrapModelCall
         >[0],
         handler
       );
