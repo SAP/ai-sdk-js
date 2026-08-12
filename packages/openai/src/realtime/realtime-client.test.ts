@@ -62,8 +62,8 @@ class MockWebSocket {
 
 vi.mock('ws', () => ({
   __esModule: true,
-  default: MockWebSocket,
-  WebSocket: MockWebSocket
+  WebSocket: MockWebSocket,
+  default: MockWebSocket
 }));
 
 const { SapOpenAiRealtime } = await import('./realtime-client.ts');
