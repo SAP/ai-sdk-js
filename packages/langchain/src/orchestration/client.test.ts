@@ -130,12 +130,11 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       const response = client.invoke(messages, { timeout: 1000 });
       await vi.advanceTimersByTimeAsync(1000);
-      const assertion = expect(response).rejects.toThrow(
+      await expect(response).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
-      await assertion;
     });
 
     it('retries when delay exceeds timeout', async () => {
