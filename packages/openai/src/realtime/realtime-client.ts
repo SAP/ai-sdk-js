@@ -1,5 +1,5 @@
 import { OpenAIRealtimeEmitter } from 'openai/realtime/internal-base.js';
-import WebSocket from 'ws';
+import { WebSocket }from 'ws';
 import { createRealtimeContext } from './realtime-config.ts';
 import type {
   RealtimeClientEvent,
@@ -70,8 +70,7 @@ export class SapOpenAiRealtime extends OpenAIRealtimeEmitter {
           .filter(Boolean)
           .join(',')
       }
-      // ws.WebSocket doesn't satisfy the browser-shim WebSocket type from the openai realtime shims.
-    }) as WebSocket;
+    });
 
     this.socket.on('message', (data: WebSocket.RawData) => {
       let event: RealtimeServerEvent | undefined = undefined;

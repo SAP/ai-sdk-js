@@ -61,6 +61,7 @@ class MockWebSocket {
 
 vi.mock('ws', () => ({
   __esModule: true,
+  WebSocket: MockWebSocket,
   default: MockWebSocket
 }));
 
