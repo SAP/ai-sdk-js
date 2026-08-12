@@ -1,5 +1,5 @@
 import { OpenAIRealtimeEmitter } from 'openai/realtime/internal-base.js';
-import { WebSocket }from 'ws';
+import { WebSocket } from 'ws';
 import { createRealtimeContext } from './realtime-config.ts';
 import type {
   RealtimeClientEvent,
