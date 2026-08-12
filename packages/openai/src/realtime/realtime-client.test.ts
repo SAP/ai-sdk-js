@@ -18,12 +18,13 @@ class MockWebSocket {
   private readonly listeners: Record<string, ((...args: any[]) => void)[]> = {};
 
   constructor(
-    url: string,
-    _protocols: unknown,
-    options: { headers?: Record<string, string> } = {}
+    url: string | URL,
+    protocolsOrOptions: unknown,
+    options?: { headers?: Record<string, string> }
   ) {
-    this.url = url;
-    this.options = options;
+    this.url = url.toString();
+    this.options =
+      options ?? (protocolsOrOptions as { headers?: Record<string, string> });
     MockWebSocket.instances.push(this);
   }
 
@@ -61,7 +62,8 @@ class MockWebSocket {
 
 vi.mock('ws', () => ({
   __esModule: true,
-  default: MockWebSocket
+  default: MockWebSocket,
+  WebSocket: MockWebSocket
 }));
 
 const { SapOpenAiRealtime } = await import('./realtime-client.ts');

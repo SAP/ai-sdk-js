@@ -1,10 +1,8 @@
-import { OpenAIRealtimeEmitter } from 'openai/realtime/internal-base.js';
-import WebSocket from 'ws';
-import { createRealtimeContext } from './realtime-config.ts';
-import type {
-  RealtimeClientEvent,
-  RealtimeServerEvent
-} from 'openai/resources/realtime/realtime';
+import { OpenAIRealtimeWS } from 'openai/realtime/ws';
+import type * as WS from 'ws';
+
+import { createSapOpenAiContext } from '../config.ts';
+import { SapAzureOpenAi } from '../azure-openai.ts';
 import type { SapOpenAiRealtimeInput } from './types.ts';
 
 /**
@@ -16,7 +14,33 @@ import type { SapOpenAiRealtimeInput } from './types.ts';
  * Use {@link SapOpenAiRealtime.createClient} to create an instance.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
-export class SapOpenAiRealtime extends OpenAIRealtimeEmitter {
+export class SapOpenAiRealtime extends OpenAIRealtimeWS {
+  static override readonly create: never = undefined as never;
+  static override readonly azure: never = undefined as never;
+
+  declare private _url: URL;
+
+  static {
+    Object.defineProperty(this.prototype, 'url', {
+      get(this: SapOpenAiRealtime) {
+        return this.getUrl();
+      },
+      set(this: SapOpenAiRealtime, url: URL) {
+        this.setUrl(url);
+      }
+    });
+  }
+
+  private getUrl(): URL {
+    return this._url;
+  }
+
+  private setUrl(url: URL): void {
+    url.search = '';
+    url.pathname = url.pathname.replace(/\/realtime$/, '/v1/realtime');
+    this._url = url;
+  }
+
   /**
    * Creates a pre-configured {@link SapOpenAiRealtime} client and opens the WebSocket connection to SAP AI Core.
    * Resolves the deployment, fetches a bearer token, and sets the SAP-specific headers automatically.
@@ -38,89 +62,33 @@ export class SapOpenAiRealtime extends OpenAIRealtimeEmitter {
   static async createClient(
     options: SapOpenAiRealtimeInput
   ): Promise<SapOpenAiRealtime> {
-    const { url, tokenProvider, resourceGroup, clientType } =
-      await createRealtimeContext(options);
-    const token = await tokenProvider();
-    return new SapOpenAiRealtime(url, token, resourceGroup, clientType);
-  }
-
-  /** The resolved WebSocket URL, including the `/v1/realtime` suffix. */
-  readonly url: URL;
-
-  /** The underlying WebSocket connection. */
-  socket: WebSocket;
-
-  /** @internal — use {@link SapOpenAiRealtime.createClient} instead */
-  private constructor(
-    deploymentUrl: string,
-    token: string,
-    resourceGroup: string,
-    clientType?: string
-  ) {
-    super();
-
-    this.url = new URL(`${deploymentUrl}/v1/realtime`);
-    this.url.protocol = 'wss';
-
-    this.socket = new WebSocket(this.url.toString(), undefined, {
+    const userWsOptions =
+      typeof options === 'object' && 'wsOptions' in options
+        ? options.wsOptions
+        : undefined;
+    const clientType =
+      typeof options === 'object' ? options.clientType : undefined;
+    const context = await createSapOpenAiContext(options);
+    const wsOptions: WS.ClientOptions = {
+      ...userWsOptions,
       headers: {
-        Authorization: `Bearer ${token}`,
-        'AI-Resource-Group': resourceGroup,
+        ...userWsOptions?.headers,
+        'AI-Resource-Group': context.resourceGroup,
         'AI-Client-Type': ['AI SDK JavaScript', clientType]
           .filter(Boolean)
           .join(',')
       }
-      // ws.WebSocket doesn't satisfy the browser-shim WebSocket type from the openai realtime shims.
-    }) as WebSocket;
+    };
+    const openAiClient = new SapAzureOpenAi(context);
+    const resolvedApiKey = await openAiClient._callApiKey();
 
-    this.socket.on('message', (data: WebSocket.RawData) => {
-      let event: RealtimeServerEvent | undefined = undefined;
-      try {
-        event = JSON.parse(data.toString());
-      } catch (err) {
-        return this._onError(null, 'could not parse websocket event', err);
-      }
-      // null/undefined is ignored entirely in the upstream implementation
-      if (!event) {
-        return;
-      }
-      this._emit('event', event);
-      if (event.type === 'error') {
-        return this._onError(event);
-      }
-
-      // @ts-expect-error TS isn't smart enough to get the relationship right here
-      this._emit(event.type, event);
-    });
-
-    this.socket.on('error', err => {
-      this._onError(null, err.message, err);
-    });
-  }
-
-  /**
-   * Sends a client event to the Realtime API.
-   * @param event - The client event to send.
-   */
-  send(event: RealtimeClientEvent): void {
-    try {
-      this.socket.send(JSON.stringify(event));
-    } catch (err) {
-      this._onError(null, 'could not send data', err);
-    }
-  }
-
-  /**
-   * Closes the WebSocket connection.
-   * @param props - Optional close options.
-   * @param props.code - The WebSocket close code. Defaults to `1000`.
-   * @param props.reason - The close reason. Defaults to `'OK'`.
-   */
-  close(props?: { code?: number; reason?: string }): void {
-    try {
-      this.socket.close(props?.code ?? 1000, props?.reason ?? 'OK');
-    } catch (err) {
-      this._onError(null, 'could not close the connection', err);
-    }
+    return new SapOpenAiRealtime(
+      {
+        model: 'gpt-realtime',
+        options: wsOptions,
+        __resolvedApiKey: resolvedApiKey
+      },
+      openAiClient
+    );
   }
 }
