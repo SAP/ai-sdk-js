@@ -59,4 +59,25 @@ export const SDK_KNOWLEDGE = `
   automatically renamed to max_completion_tokens — this is a CONVERSION, not a failure.
   temperature is passed through unchanged. Direct AzureOpenAiChatClient (non-LangChain) users
   must use max_completion_tokens manually.
+
+### @sap-ai-sdk/prompt-registry — PromptTemplatesApi, OrchestrationConfigsApi
+- NO client class or constructor. Exports generated API objects; call a static method, then chain .execute()
+- Pattern: await PromptTemplatesApi.listPromptTemplates(queryParameters?).execute()
+- PromptTemplatesApi: listPromptTemplates(), createUpdatePromptTemplate(body), getPromptTemplateByUuid(id), deletePromptTemplate(id), parsePromptTemplateById(id, body, queryParameters?) → renders template variables
+- OrchestrationConfigsApi: listOrchestrationConfigs(), createUpdateOrchestrationConfig(body), getOrchestrationConfigByUuid(id), deleteOrchestrationConfig(id)
+- NOT: new PromptRegistryClient(), substitute(), renderTemplate() — use parsePromptTemplateById / parsePromptTemplateByNameVersion to render a template
+
+### @sap-ai-sdk/document-grounding — PipelinesApi, RetrievalApi, VectorApi, MetadataConfigurationsApi
+- NO client class. Generated API objects; every method returns a request builder — chain .execute()
+- All except MetadataConfigurationsApi require headerParameters: { 'AI-Resource-Group': string }
+- RetrievalApi.search(body, header) → grounding search across data repositories
+- VectorApi: getAllCollections(), createCollection(body) (async — poll getCollectionCreationStatus), createDocuments(collectionId, body), search(body, header) → chunk search within a collection
+- PipelinesApi: getAllPipelines(), createPipeline(body), getPipelineById(id), getPipelineStatus(id)
+- NOT: new DocumentGroundingClient(). NOT one search() — RetrievalApi.search (repositories) and VectorApi.search (collection chunks) are distinct. MetadataConfigurationsApi takes NO AI-Resource-Group header
+
+### @sap-ai-sdk/llm-batch — BatchesApi (@experimental)
+- NO client class. Generated API object; chain .execute(). API may change without notice (experimental)
+- All methods require headerParameters: { 'AI-Resource-Group': string }
+- listBatches(header) (header only, no query params), createBatch(body, header), getBatchById(id, header), getBatchStatus(id, header), cancelBatch(id, header) (PATCH), deleteBatch(id, header)
+- NOT: new BatchClient(). cancelBatch stops an in-progress batch; deleteBatch only works on terminal-state batches (cancelled/completed/failed)
 `.trim();

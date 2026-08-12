@@ -39,7 +39,6 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@modelcontextprotocol/server-github": "2025.4.8",
     "@upstash/context7-mcp": "4.0.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",

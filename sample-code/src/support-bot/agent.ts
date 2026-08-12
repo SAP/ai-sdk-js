@@ -9,6 +9,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
 import { SDK_KNOWLEDGE } from './knowledge.ts';
+import { githubTools } from './github-tools.ts';
 import type { StructuredToolInterface } from '@langchain/core/tools';
 import type { BaseMessage } from '@langchain/core/messages';
 
@@ -16,6 +17,11 @@ const MAX_ITER = 8;
 
 // Best match from context7 resolve: Benchmark 83, 532 snippets
 const LIBRARY_ID = '/websites/sap_github_io_ai-sdk_js';
+
+// AC4: allow querying LangChain docs too, not just the SAP AI SDK site. Any other libraryId
+// the model requests is forced back to LIBRARY_ID below.
+// TODO: add the resolved context7 libraryId for the SAP AI SDK llms.txt once confirmed.
+const ALLOWED_LIBRARY_IDS = new Set([LIBRARY_ID, '/langchain-ai/langchainjs']);
 
 // Escape {{ to prevent Orchestration API 400 "Unused parameters" — applied to all user content
 const esc = (s: string) => s.replaceAll('{{', '{ {');
@@ -29,9 +35,9 @@ const AGENT_SYSTEM_PROMPT = [
   '- context7__query-docs  — search official SAP AI SDK documentation (libraryId: "' +
     LIBRARY_ID +
     '")',
-  '- github__search_issues — search GitHub issues (always use q: "repo:SAP/ai-sdk-js <keywords>")',
+  '- github__search_issues — search GitHub issues (pass keywords only; repo scope is automatic)',
   '- github__get_issue     — fetch full body of a specific issue by number',
-  '- github__search_code   — search code examples in the SAP AI SDK repository',
+  '- github__search_code   — search code examples (pass keywords only; repo scope is automatic)',
   '',
   '## Required strategy — follow this order every time',
   '1. ALWAYS call context7__query-docs first with the full question.',
@@ -43,13 +49,12 @@ const AGENT_SYSTEM_PROMPT = [
   '',
   '## Dynamic source retrieval — use when steps 1-3 do not yield a definitive answer',
   '- MODEL NAME QUESTIONS (valid model names, provider formats, "model not found" errors):',
-  '  call github__get_file_contents with owner="SAP", repo="ai-sdk-js",',
-  '  path="packages/core/src/model-types.ts" — the authoritative always-current type list.',
+  '  call github__get_file_contents with path="packages/core/src/model-types.ts"',
+  '  — the authoritative always-current type list.',
   '  Do NOT rely on examples in this system prompt; the file is the source of truth.',
   '',
   '- TEMPLATE / PROMPT REGISTRY QUESTIONS (TemplateRef, messages_history, { {?placeholder}}):',
-  '  call github__get_file_contents with owner="SAP", repo="ai-sdk-js",',
-  '  path="packages/orchestration/src/util/module-config.ts"',
+  '  call github__get_file_contents with path="packages/orchestration/src/util/module-config.ts"',
   '  This file contains the exact routing logic: messages → messages_history when TemplateRef is used.',
   '',
   '## Security constraints',
@@ -68,7 +73,8 @@ const AGENT_SYSTEM_PROMPT = [
 ].join('\n');
 
 const mcpClient = new MultiServerMCPClient({
-  throwOnLoadError: true,
+  // AC6: a context7 load hiccup should degrade gracefully, not kill the run
+  throwOnLoadError: false,
   prefixToolNameWithServerName: true,
   mcpServers: {
     context7: {
@@ -76,12 +82,6 @@ const mcpClient = new MultiServerMCPClient({
       command: 'context7-mcp',
       args: [],
       env: {}
-    },
-    github: {
-      // installed as devDep — only read token passed, write tools filtered below (C-1)
-      command: 'mcp-server-github',
-      args: [],
-      env: { GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_TOKEN ?? '' }
     }
   }
 });
@@ -135,52 +135,16 @@ function truncateToolResult(raw: unknown, toolName: string): string {
   return esc(str.slice(0, limits[toolName] ?? 2000));
 }
 
-// SEC-2: allowlist read-only GitHub tools — prevents prompt injection from triggering writes
-const ALLOWED_GITHUB_TOOLS = new Set([
-  'github__get_issue',
-  'github__search_issues',
-  'github__search_code',
-  'github__get_file_contents'
-]);
-
-// SEC-3: restrict GitHub MCP to SAP/ai-sdk-js only
-// For search tools: strip all repo/org/user qualifiers and boolean operators from the model's
-// query, then force-prepend repo:SAP/ai-sdk-js — prevents OR/AND bypass (e.g. "repo:X OR repo:Y").
-// For owner/repo tools: require exact match — undefined counts as a mismatch.
-function scopeToAllowedRepo(
-  toolName: string,
-  args: Record<string, unknown>
-): Record<string, unknown> {
-  if (
-    toolName === 'github__search_issues' ||
-    toolName === 'github__search_code'
-  ) {
-    const raw = ((args.q as string) ?? '').trim();
-    // Strip repo:/org:/user: qualifiers and boolean operators before prepending
-    const stripped = raw
-      .replace(/(?:^|\s)(?:repo|org|user):[^\s]*/gi, '')
-      .replace(/\b(?:OR|AND|NOT)\b/g, '')
-      .replace(/\s{2,}/g, ' ')
-      .trim();
-    return { ...args, q: 'repo:SAP/ai-sdk-js ' + stripped };
-  }
-  const owner = (args.owner as string | undefined)?.toLowerCase();
-  const repo = (args.repo as string | undefined)?.toLowerCase();
-  if (owner !== 'sap' || repo !== 'ai-sdk-js') {
-    throw new Error(
-      `Restricted: only SAP/ai-sdk-js is accessible, got ${owner}/${repo}`
-    );
-  }
-  return args;
-}
-
 export async function initAgent(): Promise<void> {
   const mcpTools = await mcpClient.getTools();
 
-  tools = mcpTools.filter(
-    (t: StructuredToolInterface) =>
-      t.name.startsWith('context7__') || ALLOWED_GITHUB_TOOLS.has(t.name)
-  );
+  // context7 comes from MCP; GitHub tools are native-fetch (repo scope enforced inside them)
+  tools = [
+    ...mcpTools.filter((t: StructuredToolInterface) =>
+      t.name.startsWith('context7__')
+    ),
+    ...githubTools
+  ];
   modelWithTools = model.bindTools(tools);
 
   const group = (prefix: string) =>
@@ -234,33 +198,33 @@ export async function askBot(
         }
         try {
           if (tc.name === 'context7__query-docs') {
-            // Force libraryId to the known SAP AI SDK docs — model cannot override via args
+            // AC4: keep the model's libraryId only if allowlisted; otherwise force SAP docs
+            const requested = (tc.args as Record<string, unknown>).libraryId;
             tc = {
               ...tc,
-              args: { ...tc.args, libraryId: LIBRARY_ID }
+              args: {
+                ...tc.args,
+                libraryId:
+                  typeof requested === 'string' &&
+                  ALLOWED_LIBRARY_IDS.has(requested)
+                    ? requested
+                    : LIBRARY_ID
+              }
             };
           }
-          if (tc.name.startsWith('github__')) {
-            // SEC-3: block current issue re-fetch (prompt injection vector)
-            if (
-              tc.name === 'github__get_issue' &&
-              currentIssueNumber !== undefined &&
-              (tc.args as Record<string, unknown>).issue_number ===
-                currentIssueNumber
-            ) {
-              return new ToolMessage({
-                content:
-                  'Restricted: re-fetching the current issue is not allowed.',
-                tool_call_id: tc.id ?? 'tc_' + idx
-              });
-            }
-            tc = {
-              ...tc,
-              args: scopeToAllowedRepo(
-                tc.name,
-                tc.args as Record<string, unknown>
-              )
-            };
+          // SEC-3: block current issue re-fetch (prompt injection vector). Repo scope is now
+          // enforced inside the github tools themselves, so no scoping pass is needed here.
+          if (
+            tc.name === 'github__get_issue' &&
+            currentIssueNumber !== undefined &&
+            (tc.args as Record<string, unknown>).issue_number ===
+              currentIssueNumber
+          ) {
+            return new ToolMessage({
+              content:
+                'Restricted: re-fetching the current issue is not allowed.',
+              tool_call_id: tc.id ?? 'tc_' + idx
+            });
           }
           const raw = await tool.invoke(tc.args);
           return new ToolMessage({
