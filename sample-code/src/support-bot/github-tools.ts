@@ -45,7 +45,7 @@ function scopedQuery(term: string): string {
 const searchIssues = tool(
   async ({ query }) => {
     const q = encodeURIComponent(`${scopedQuery(query)} is:issue`);
-    const data = (await gh(`/search/issues?q=${q}`)) as {
+    const data = (await gh(`/search/issues?search_type=hybrid&q=${q}`)) as {
       items?: {
         number: number;
         title: string;
