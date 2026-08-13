@@ -264,9 +264,11 @@ export async function askBot(
     messages.push(...toolMessages);
   }
 
-  // C-3: guarantee the final message is an AIMessage — loop may exhaust with ToolMessages pending
+  // C-3: guarantee the final message is an AIMessage — loop may exhaust with ToolMessages pending.
+  // Use the tool-less model so the model MUST emit a text answer: modelWithTools would let it
+  // reply with another tool call + preamble ("Let me search…") that we'd capture as the answer.
   if (!(messages.at(-1) instanceof AIMessage)) {
-    const final = await modelWithTools.invoke(messages);
+    const final = await model.invoke(messages);
     messages.push(final);
   }
 
