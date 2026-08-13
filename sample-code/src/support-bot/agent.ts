@@ -18,10 +18,13 @@ const MAX_ITER = 8;
 // Best match from context7 resolve: Benchmark 83, 532 snippets
 const LIBRARY_ID = '/websites/sap_github_io_ai-sdk_js';
 
-// AC4: allow querying LangChain docs too, not just the SAP AI SDK site. Any other libraryId
-// the model requests is forced back to LIBRARY_ID below.
-// TODO: add the resolved context7 libraryId for the SAP AI SDK llms.txt once confirmed.
-const ALLOWED_LIBRARY_IDS = new Set([LIBRARY_ID, '/langchain-ai/langchainjs']);
+// AC4: allow querying LangChain docs and the SAP AI SDK llms.txt variant too, not just the
+// main SAP AI SDK site. Any other libraryId the model requests is forced back to LIBRARY_ID below.
+const ALLOWED_LIBRARY_IDS = new Set([
+  LIBRARY_ID,
+  '/llmstxt/sap_github_io_ai-sdk_llms_txt',
+  '/langchain-ai/langchainjs'
+]);
 
 // Escape {{ to prevent Orchestration API 400 "Unused parameters" — applied to all user content
 const esc = (s: string) => s.replaceAll('{{', '{ {');
@@ -73,15 +76,21 @@ const AGENT_SYSTEM_PROMPT = [
 ].join('\n');
 
 const mcpClient = new MultiServerMCPClient({
-  // AC6: a context7 load hiccup should degrade gracefully, not kill the run
+  // AC6: a context7 hiccup should degrade gracefully, not kill the run
   throwOnLoadError: false,
   prefixToolNameWithServerName: true,
   mcpServers: {
     context7: {
-      // installed as devDep — no on-demand download (C-1)
-      command: 'context7-mcp',
-      args: [],
-      env: {}
+      // Hosted context7 over streamable HTTP — no local process to spawn, so a
+      // missing/broken binary can't kill the run (removes the stdio ENOENT gap).
+      // API key is optional: free tier works, CONTEXT7_API_KEY raises rate limits.
+      url: 'https://mcp.context7.com/mcp',
+      transport: 'http',
+      ...(process.env.CONTEXT7_API_KEY
+        ? {
+            headers: { Authorization: `Bearer ${process.env.CONTEXT7_API_KEY}` }
+          }
+        : {})
     }
   }
 });
