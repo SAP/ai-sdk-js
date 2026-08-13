@@ -67,12 +67,18 @@ const AGENT_SYSTEM_PROMPT = [
   '',
   '## Answer rules',
   '- Keep your replies concise.',
+  '- Write the answer as a reply posted directly to the GitHub issue. Do NOT narrate your',
+  '  process: never write "based on the documentation", "after searching issues/code", or',
+  '  similar. State findings directly.',
+  '- The reader IS the author of the issue being answered. Do NOT restate their problem back',
+  '  to them as a "known issue", and do NOT tell them their issue "matches" or "is the exact',
+  '  match for" their problem — that is circular.',
   '- Cite doc section titles or GitHub issue numbers (#xxx) in your answer.',
   '- If a feature is only in an open issue or unmerged PR, say so explicitly.',
   '- End EVERY answer with a "## Related Issues" section.',
   '  Only include issues whose CORE TOPIC matches (same API, same error type, same feature).',
   '  If none match, write "No related issues found."',
-  '  Do NOT include dependency bumps, unrelated chore PRs, or this issue itself.'
+  '  Do NOT include dependency bumps, unrelated chore PRs, or the issue being answered itself.'
 ].join('\n');
 
 const mcpClient = new MultiServerMCPClient({
@@ -184,7 +190,11 @@ export async function askBot(
     .join('\n\n');
 
   const messages: BaseMessage[] = [
-    new SystemMessage(AGENT_SYSTEM_PROMPT),
+    new SystemMessage(
+      currentIssueNumber === undefined
+        ? AGENT_SYSTEM_PROMPT
+        : `${AGENT_SYSTEM_PROMPT}\n\n## Current issue\nYou are replying to GitHub issue #${currentIssueNumber}. Never cite, list, or describe #${currentIssueNumber} as a related or matching issue — it is the issue being answered, not a reference.`
+    ),
     new HumanMessage(parts)
   ];
 
