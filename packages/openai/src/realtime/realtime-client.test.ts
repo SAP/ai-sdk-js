@@ -66,7 +66,7 @@ vi.mock('ws', () => ({
   default: MockWebSocket
 }));
 
-const { SapOpenAiRealtime } = await import('./realtime-client.ts');
+const { SapOpenAiRealtime, rewriteRealtimeUrl } = await import('./realtime-client.ts');
 
 const defaultDeployment = {
   id: 'dep-realtime',
@@ -92,7 +92,7 @@ describe('SapOpenAiRealtime', () => {
     const client = await SapOpenAiRealtime.createClient('gpt-realtime');
 
     expect(client.url.toString()).toBe(
-      'wss://api.ai.ml.hana.ondemand.com/v2/inference/deployments/dep-realtime/v1/realtime'
+      'wss://api.ai.ml.hana.ondemand.com/v2/inference/deployments/dep-realtime/v1/realtime?api-version=2024-10-21'
     );
     const socket = MockWebSocket.instances[0];
     expect(socket.url).toBe(client.url.toString());
@@ -269,5 +269,40 @@ describe('SapOpenAiRealtime', () => {
 
     expect(errors).toHaveLength(1);
     expect(errors[0].message).toContain('could not close the connection');
+  });
+});
+
+describe('rewriteRealtimeUrl', () => {
+  it('rewrites /realtime to /v1/realtime', () => {
+    const url = new URL('wss://example.com/v2/inference/deployments/dep/realtime');
+    rewriteRealtimeUrl(url);
+    expect(url.pathname).toBe('/v2/inference/deployments/dep/v1/realtime');
+  });
+
+  it('does not double-insert /v1 if already /v1/realtime', () => {
+    const url = new URL('wss://example.com/v2/inference/deployments/dep/v1/realtime');
+    rewriteRealtimeUrl(url);
+    expect(url.pathname).toBe('/v2/inference/deployments/dep/v1/realtime');
+  });
+
+  it('throws if path does not end in /realtime', () => {
+    const url = new URL('wss://example.com/v2/inference/deployments/dep/v1');
+    expect(() => rewriteRealtimeUrl(url)).toThrow('Unexpected realtime URL path');
+  });
+
+  it('preserves api-version and strips other query params', () => {
+    const url = new URL(
+      'wss://example.com/dep/realtime?api-version=2024-10-21&deployment=bad&model=also-bad'
+    );
+    rewriteRealtimeUrl(url);
+    expect(url.searchParams.get('api-version')).toBe('2024-10-21');
+    expect(url.searchParams.get('deployment')).toBeNull();
+    expect(url.searchParams.get('model')).toBeNull();
+  });
+
+  it('strips all query params when api-version is absent', () => {
+    const url = new URL('wss://example.com/dep/realtime?deployment=bad');
+    rewriteRealtimeUrl(url);
+    expect(url.search).toBe('');
   });
 });
