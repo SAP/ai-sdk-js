@@ -66,7 +66,8 @@ vi.mock('ws', () => ({
   default: MockWebSocket
 }));
 
-const { SapOpenAiRealtime, rewriteRealtimeUrl } = await import('./realtime-client.ts');
+const { SapOpenAiRealtime, rewriteRealtimeUrl } =
+  await import('./realtime-client.ts');
 
 const defaultDeployment = {
   id: 'dep-realtime',
@@ -274,20 +275,26 @@ describe('SapOpenAiRealtime', () => {
 
 describe('rewriteRealtimeUrl', () => {
   it('rewrites /realtime to /v1/realtime', () => {
-    const url = new URL('wss://example.com/v2/inference/deployments/dep/realtime');
+    const url = new URL(
+      'wss://example.com/v2/inference/deployments/dep/realtime'
+    );
     rewriteRealtimeUrl(url);
     expect(url.pathname).toBe('/v2/inference/deployments/dep/v1/realtime');
   });
 
   it('does not double-insert /v1 if already /v1/realtime', () => {
-    const url = new URL('wss://example.com/v2/inference/deployments/dep/v1/realtime');
+    const url = new URL(
+      'wss://example.com/v2/inference/deployments/dep/v1/realtime'
+    );
     rewriteRealtimeUrl(url);
     expect(url.pathname).toBe('/v2/inference/deployments/dep/v1/realtime');
   });
 
   it('throws if path does not end in /realtime', () => {
     const url = new URL('wss://example.com/v2/inference/deployments/dep/v1');
-    expect(() => rewriteRealtimeUrl(url)).toThrow('Unexpected realtime URL path');
+    expect(() => rewriteRealtimeUrl(url)).toThrow(
+      'Unexpected realtime URL path'
+    );
   });
 
   it('preserves api-version and strips other query params', () => {
