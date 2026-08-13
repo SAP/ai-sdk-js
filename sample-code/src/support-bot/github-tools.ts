@@ -30,13 +30,15 @@ async function gh(path: string): Promise<unknown> {
   return res.json();
 }
 
-// SEC-3: scope enforced at the API call. Strip any repo/org/user qualifiers and boolean
-// operators the model slipped into its term, then force-prepend repo:SAP/ai-sdk-js — this
-// makes "OR repo:other" bypasses impossible because the model never controls the full query.
+// SEC-3: scope enforced at the API call. The only bypass vector is an injected
+// repo:/org:/user: qualifier — `repo:SAP/ai-sdk-js foo OR repo:other bar` leaks the
+// other repo's results (verified). Bare OR/AND/NOT never widen scope: the leading
+// repo: binds the whole query (dangling/leading OR after stripping also stays scoped).
+// So strip only the competing qualifiers and keep boolean operators for richer search.
+// GitHub caps AND/OR/NOT at 5 and 422s beyond that, surfacing as a retryable tool error.
 function scopedQuery(term: string): string {
   const stripped = (term ?? '')
     .replace(/(?:^|\s)(?:repo|org|user):[^\s]*/gi, '')
-    .replace(/\b(?:OR|AND|NOT)\b/g, '')
     .replace(/\s{2,}/g, ' ')
     .trim();
   return `repo:${ALLOWED_REPO} ${stripped}`.trim();
@@ -51,15 +53,20 @@ const searchIssues = tool(
         title: string;
         state: string;
         html_url: string;
+        repository_url: string;
       }[];
     };
     // Compact projection — raw search JSON overruns the loop's char cap into garbage.
-    const items = (data.items ?? []).map(i => ({
-      number: i.number,
-      title: i.title,
-      state: i.state,
-      url: i.html_url
-    }));
+    // SEC-3 defense-in-depth: enforce scope on the RESULTS too, independent of how GitHub
+    // parsed the query, so an unforeseen query-syntax trick can't surface a foreign repo.
+    const items = (data.items ?? [])
+      .filter(i => i.repository_url === `${GH_API}/repos/${ALLOWED_REPO}`)
+      .map(i => ({
+        number: i.number,
+        title: i.title,
+        state: i.state,
+        url: i.html_url
+      }));
     return JSON.stringify(items);
   },
   {
@@ -102,13 +109,21 @@ const searchCode = tool(
   async ({ query }) => {
     const q = encodeURIComponent(scopedQuery(query));
     const data = (await gh(`/search/code?q=${q}`)) as {
-      items?: { name: string; path: string; html_url: string }[];
+      items?: {
+        name: string;
+        path: string;
+        html_url: string;
+        repository?: { full_name: string };
+      }[];
     };
-    const items = (data.items ?? []).map(i => ({
-      name: i.name,
-      path: i.path,
-      url: i.html_url
-    }));
+    // SEC-3 defense-in-depth: same result-side scope check as search_issues.
+    const items = (data.items ?? [])
+      .filter(i => i.repository?.full_name === ALLOWED_REPO)
+      .map(i => ({
+        name: i.name,
+        path: i.path,
+        url: i.html_url
+      }));
     return JSON.stringify(items);
   },
   {
