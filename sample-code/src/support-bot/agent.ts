@@ -105,7 +105,7 @@ let tools: StructuredToolInterface[] = [];
 let modelWithTools: ReturnType<typeof model.bindTools>;
 
 const model = new OrchestrationClient({
-  promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } },
+  promptTemplating: { model: { name: 'anthropic--claude-4.6-sonnet' } },
   filtering: {
     input: {
       filters: [
@@ -264,10 +264,29 @@ export async function askBot(
     messages.push(...toolMessages);
   }
 
-  // C-3: guarantee the final message is an AIMessage — loop may exhaust with ToolMessages pending.
-  // Use the tool-less model so the model MUST emit a text answer: modelWithTools would let it
-  // reply with another tool call + preamble ("Let me search…") that we'd capture as the answer.
-  if (!(messages.at(-1) instanceof AIMessage)) {
+  // Ensure the loop produced a real answer, not a dangling intent. Two ways it can fail:
+  //  - MAX_ITER exhausted with tool calls still pending (last message is a ToolMessage), or
+  //  - the model bailed with a preamble ("Now let me check the ChatDelta schema:") and NO tool
+  //    call, which breaks the loop and would otherwise be surfaced as the answer.
+  // Every real answer must carry the mandated "## Related Issues" section, so use that as the
+  // completeness signal. If it's missing, force ONE tool-less synthesis pass so the model must
+  // emit a final answer instead of narrating a next step.
+  // ponytail: "Related Issues" marker as a completeness proxy + a single retry; if this still
+  // slips, the model (haiku) is too weak for the agentic loop — bump it before adding more retries.
+  const last = messages.at(-1);
+  const lastText =
+    last instanceof AIMessage
+      ? typeof last.content === 'string'
+        ? last.content
+        : JSON.stringify(last.content)
+      : '';
+  if (!/related issues/i.test(lastText)) {
+    messages.push(
+      new HumanMessage(
+        'Based only on what you have gathered above, write your complete final answer now. ' +
+          'Do not call tools or state what you will do next. End with the "## Related Issues" section.'
+      )
+    );
     const final = await model.invoke(messages);
     messages.push(final);
   }
