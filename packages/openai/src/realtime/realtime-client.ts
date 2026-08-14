@@ -43,10 +43,10 @@ export function rewriteRealtimeUrl(url: URL): URL {
  * Only `gpt-realtime` is supported. Session configuration must use the GA `session.update` schema
  * (`output_modalities`, nested `audio`), not the preview schema.
  *
- * Use {@link SapOpenAiRealtime.createClient} to create an instance.
+ * Use {@link SapOpenAiRealtimeWs.createClient} to create an instance.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
-export class SapOpenAiRealtime extends OpenAIRealtimeWS {
+export class SapOpenAiRealtimeWs extends OpenAIRealtimeWS {
   static override readonly create: never = undefined as never;
   static override readonly azure: never = undefined as never;
 
@@ -57,10 +57,10 @@ export class SapOpenAiRealtime extends OpenAIRealtimeWS {
     // intercept the value set by the parent constructor and rewrite the path.
     // TODO: Move to `buildRealtimeURL()` callback once openai/openai-node#2308 is released.
     Object.defineProperty(this.prototype, 'url', {
-      get(this: SapOpenAiRealtime) {
+      get(this: SapOpenAiRealtimeWs) {
         return this._url;
       },
-      set(this: SapOpenAiRealtime, url: URL) {
+      set(this: SapOpenAiRealtimeWs, url: URL) {
         this._url = rewriteRealtimeUrl(url);
       }
     });
@@ -90,15 +90,15 @@ export class SapOpenAiRealtime extends OpenAIRealtimeWS {
   }
 
   /**
-   * Creates a pre-configured {@link SapOpenAiRealtime} client and opens the WebSocket connection to SAP AI Core.
+   * Creates a pre-configured {@link SapOpenAiRealtimeWs} client and opens the WebSocket connection to SAP AI Core.
    * Resolves the deployment, fetches a bearer token, and sets the SAP-specific headers automatically.
    * @param options - Options including model deployment, destination, and client type. A plain model name string is accepted as shorthand for `{ deployment: modelName }`.
-   * @returns A promise that resolves to a connected {@link SapOpenAiRealtime} instance.
+   * @returns A promise that resolves to a connected {@link SapOpenAiRealtimeWs} instance.
    * @example
    * ```ts
-   * import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+   * import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
    *
-   * const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+   * const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
    * client.on('session.created', () => {
    *   client.send({
    *     type: 'session.update',
@@ -109,14 +109,14 @@ export class SapOpenAiRealtime extends OpenAIRealtimeWS {
    */
   static async createClient(
     options: SapOpenAiRealtimeInput
-  ): Promise<SapOpenAiRealtime> {
+  ): Promise<SapOpenAiRealtimeWs> {
     const context = await createSapOpenAiContext(options);
 
-    const wsOptions = SapOpenAiRealtime.buildWsOptions(context, options);
+    const wsOptions = SapOpenAiRealtimeWs.buildWsOptions(context, options);
     const openAiClient = new SapAzureOpenAi(context);
     const resolvedApiKey = await openAiClient._callApiKey();
 
-    return new SapOpenAiRealtime(
+    return new SapOpenAiRealtimeWs(
       {
         model: 'gpt-realtime',
         options: wsOptions,
