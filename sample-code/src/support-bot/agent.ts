@@ -15,6 +15,22 @@ import type { BaseMessage } from '@langchain/core/messages';
 
 const MAX_ITER = 8;
 
+// Approach A: after the draft, run a bounded self-verify pass with tools still bound so the
+// model re-checks its own claims against source (self-judgment without re-reading just confirms
+// its own misread). Bounded so a stuck verify can't blow the 5-min step timeout.
+const MAX_VERIFY_ITER = 3;
+
+const SELF_VERIFY_PROMPT = [
+  'Before finalizing, verify your draft. For each factual claim — file paths, type/field shapes,',
+  'the root cause, and where a fix or contribution belongs — re-confirm it with the tools',
+  '(github__get_file_contents, github__get_issue). Correct anything the tools do not support.',
+  'Drop any related issue you cannot confirm via github__get_issue. Hedge any claim about the',
+  'Python SDK, service-side behavior, or model wire behavior you cannot confirm from source.',
+  'Then write the corrected final answer, ending with the "## Related Issues" section. Do not',
+  'describe what you will do — produce the final answer only. Output ONLY the answer text,',
+  'starting directly with the first heading; no preamble, no verification narration.'
+].join('\n');
+
 // Best match from context7 resolve: Benchmark 83, 532 snippets
 const LIBRARY_ID = '/websites/sap_github_io_ai-sdk_js';
 
@@ -78,11 +94,18 @@ const AGENT_SYSTEM_PROMPT = [
   '  to them as a "known issue", and do NOT tell them their issue "matches" or "is the exact',
   '  match for" their problem — that is circular.',
   '- Cite doc section titles or GitHub issue numbers (#xxx) in your answer.',
+  '- Before stating where a fix or contribution belongs (a file, package, or repo), confirm it',
+  '  with github__get_file_contents. Never name a target file/package/repo you have not opened.',
+  '- For claims about the Python SDK, service-side validators, or model wire behavior that you',
+  '  cannot confirm from this repo\'s source, qualify them ("reportedly", "per the docs") — never',
+  '  state them as verified fact.',
   '- If a feature is only in an open issue or unmerged PR, say so explicitly.',
   '- End EVERY answer with a "## Related Issues" section listing issues that share the same',
   '  API/method, error, or feature as the question — include a closely related fix or PR even',
-  '  if its wording differs. You MUST have run github__search_issues before this section; only',
-  '  write "No related issues found." if a search genuinely returned nothing on-topic.',
+  '  if its wording differs. Cite a related issue ONLY after github__get_issue confirms it shares',
+  '  the same API/method, error, or feature; if you cannot confirm, omit it — never guess. You',
+  '  MUST have run github__search_issues before this section; only write "No related issues found."',
+  '  if a search genuinely returned nothing on-topic.',
   '  Do NOT include dependency bumps, unrelated chore PRs, or the issue being answered itself.'
 ].join('\n');
 
@@ -110,7 +133,10 @@ let tools: StructuredToolInterface[] = [];
 let modelWithTools: ReturnType<typeof model.bindTools>;
 
 const model = new OrchestrationClient({
-  promptTemplating: { model: { name: 'anthropic--claude-4.6-sonnet' } },
+  // temperature:0 — reduce run-to-run variance (FM4). Applies to every request from this client.
+  promptTemplating: {
+    model: { name: 'anthropic--claude-4.6-sonnet', params: { temperature: 0 } }
+  },
   filtering: {
     input: {
       filters: [
@@ -180,6 +206,84 @@ export async function closeAgent(): Promise<void> {
   await mcpClient.close();
 }
 
+// Dispatches a single tool call, applying the context7 libraryId allowlist (AC4) and the SEC-3
+// current-issue re-fetch guard. Always resolves to a ToolMessage (errors are caught, not thrown)
+// so one bad call can't reject the whole Promise.all batch.
+async function dispatchToolCall(
+  tc: NonNullable<AIMessage['tool_calls']>[number],
+  idx: number,
+  currentIssueNumber?: number
+): Promise<ToolMessage> {
+  const tool = getTool(tc.name);
+  const toolCallId = tc.id ?? 'tc_' + idx;
+  if (!tool) {
+    return new ToolMessage({
+      content: 'Unknown tool: ' + tc.name,
+      tool_call_id: toolCallId
+    });
+  }
+  try {
+    if (tc.name === 'context7__query-docs') {
+      // AC4: keep the model's libraryId only if allowlisted; otherwise force SAP docs
+      const requested = (tc.args as Record<string, unknown>).libraryId;
+      const allowed =
+        typeof requested === 'string' && ALLOWED_LIBRARY_IDS.has(requested);
+      tc = {
+        ...tc,
+        args: { ...tc.args, libraryId: allowed ? requested : LIBRARY_ID }
+      };
+    }
+    // SEC-3: block current issue re-fetch (prompt injection vector). Repo scope is now
+    // enforced inside the github tools themselves, so no scoping pass is needed here.
+    if (
+      tc.name === 'github__get_issue' &&
+      currentIssueNumber !== undefined &&
+      (tc.args as Record<string, unknown>).issue_number === currentIssueNumber
+    ) {
+      return new ToolMessage({
+        content: 'Restricted: re-fetching the current issue is not allowed.',
+        tool_call_id: toolCallId
+      });
+    }
+    const raw = await tool.invoke(tc.args);
+    return new ToolMessage({
+      content: truncateToolResult(raw, tc.name),
+      tool_call_id: toolCallId
+    });
+  } catch (err) {
+    return new ToolMessage({
+      content:
+        'Tool error: ' + (err instanceof Error ? err.message : String(err)),
+      tool_call_id: toolCallId
+    });
+  }
+}
+
+// Runs one agent turn: invoke the model, and if it requested tools, dispatch them and append
+// the results. Returns true when the model produced a final answer (no tool calls) — the caller's
+// loop should stop. Shared by the draft loop and the self-verify loop so the SEC-3 current-issue
+// re-fetch guard and the context7 libraryId allowlist live in ONE place.
+async function runToolTurn(
+  messages: BaseMessage[],
+  currentIssueNumber?: number
+): Promise<boolean> {
+  const response = await modelWithTools.invoke(messages);
+  messages.push(response);
+
+  if (!response.tool_calls?.length) {
+    return true;
+  }
+
+  const toolMessages = await Promise.all(
+    (response as AIMessage).tool_calls!.map((tc, idx) =>
+      dispatchToolCall(tc, idx, currentIssueNumber)
+    )
+  );
+
+  messages.push(...toolMessages);
+  return false;
+}
+
 export async function askBot(
   title: string,
   body?: string,
@@ -203,81 +307,26 @@ export async function askBot(
     new HumanMessage(parts)
   ];
 
+  // Draft loop.
   for (let i = 0; i < MAX_ITER; i++) {
-    const response = await modelWithTools.invoke(messages);
-    messages.push(response);
-
-    if (!response.tool_calls?.length) {
+    if (await runToolTurn(messages, currentIssueNumber)) {
       break;
     }
-
-    const toolMessages = await Promise.all(
-      (response as AIMessage).tool_calls!.map(async (tc, idx) => {
-        const tool = getTool(tc.name);
-        if (!tool) {
-          return new ToolMessage({
-            content: 'Unknown tool: ' + tc.name,
-            tool_call_id: tc.id ?? 'tc_' + idx
-          });
-        }
-        try {
-          if (tc.name === 'context7__query-docs') {
-            // AC4: keep the model's libraryId only if allowlisted; otherwise force SAP docs
-            const requested = (tc.args as Record<string, unknown>).libraryId;
-            tc = {
-              ...tc,
-              args: {
-                ...tc.args,
-                libraryId:
-                  typeof requested === 'string' &&
-                  ALLOWED_LIBRARY_IDS.has(requested)
-                    ? requested
-                    : LIBRARY_ID
-              }
-            };
-          }
-          // SEC-3: block current issue re-fetch (prompt injection vector). Repo scope is now
-          // enforced inside the github tools themselves, so no scoping pass is needed here.
-          if (
-            tc.name === 'github__get_issue' &&
-            currentIssueNumber !== undefined &&
-            (tc.args as Record<string, unknown>).issue_number ===
-              currentIssueNumber
-          ) {
-            return new ToolMessage({
-              content:
-                'Restricted: re-fetching the current issue is not allowed.',
-              tool_call_id: tc.id ?? 'tc_' + idx
-            });
-          }
-          const raw = await tool.invoke(tc.args);
-          return new ToolMessage({
-            content: truncateToolResult(raw, tc.name),
-            tool_call_id: tc.id ?? 'tc_' + idx
-          });
-        } catch (err) {
-          return new ToolMessage({
-            content:
-              'Tool error: ' +
-              (err instanceof Error ? err.message : String(err)),
-            tool_call_id: tc.id ?? 'tc_' + idx
-          });
-        }
-      })
-    );
-
-    messages.push(...toolMessages);
   }
 
-  // Ensure the loop produced a real answer, not a dangling intent. Two ways it can fail:
-  //  - MAX_ITER exhausted with tool calls still pending (last message is a ToolMessage), or
-  //  - the model bailed with a preamble ("Now let me check the ChatDelta schema:") and NO tool
-  //    call, which breaks the loop and would otherwise be surfaced as the answer.
-  // Every real answer must carry the mandated "## Related Issues" section, so use that as the
-  // completeness signal. If it's missing, force ONE tool-less synthesis pass so the model must
-  // emit a final answer instead of narrating a next step.
-  // ponytail: "Related Issues" marker as a completeness proxy + a single retry; if this still
-  // slips, the model (haiku) is too weak for the agentic loop — bump it before adding more retries.
+  // Approach A: self-verify pass. Keep tools bound so the model can re-read source and correct
+  // its own draft (FM1/FM2/FM3 catch); temperature:0 + CM1 handle the prevention side.
+  messages.push(new HumanMessage(SELF_VERIFY_PROMPT));
+  for (let i = 0; i < MAX_VERIFY_ITER; i++) {
+    if (await runToolTurn(messages, currentIssueNumber)) {
+      break;
+    }
+  }
+
+  // Ensure a real answer, not a dangling intent. The loops can exit with tool calls still pending
+  // (last message a ToolMessage) or on a preamble bail. Every real answer carries the mandated
+  // "## Related Issues" section, so use that as the completeness signal; if missing, force ONE
+  // tool-less synthesis pass so the model must emit a final answer instead of narrating a next step.
   const last = messages.at(-1);
   const lastText =
     last instanceof AIMessage

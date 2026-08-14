@@ -30,6 +30,10 @@ export const SDK_KNOWLEDGE = `
 ### @sap-ai-sdk/orchestration — OrchestrationStreamChunkResponse
 - getDeltaContent(choiceIndex?) → string | undefined  (delta text of a single streaming chunk)
 
+### Orchestration response normalization (IMPORTANT)
+- The Orchestration service normalizes ALL backend model responses (Anthropic Claude, Llama, etc.) to the OpenAI-compatible shape.
+- ChatDelta.content is ALWAYS a plain string — never native provider content blocks (no content_block_delta / delta.text arrays). Claude's native block structure does NOT reach this SDK; do not claim delta.content is array-shaped for any model.
+
 ### @sap-ai-sdk/langchain — OrchestrationClient (LangChain wrapper)
 - Extends BaseChatModel — use invoke(), stream(), bindTools(), withStructuredOutput()
 - Constructor: new OrchestrationClient(config, langchainOptions?, deploymentConfig?, destination?)
