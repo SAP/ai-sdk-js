@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [22, 24]
+        node-version: [22, 24, 26]
 
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
@@ -51,6 +51,8 @@ jobs:
       contents: read
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
+        with:
+          node-version: 26
       - name: Enforce generated code is up to date
         shell: bash
         run: |
