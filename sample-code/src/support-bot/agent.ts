@@ -26,6 +26,11 @@ const SELF_VERIFY_PROMPT = [
   '(github__get_file_contents, github__get_issue). Correct anything the tools do not support.',
   'Drop any related issue you cannot confirm via github__get_issue. Hedge any claim about the',
   'Python SDK, service-side behavior, or model wire behavior you cannot confirm from source.',
+  'In any code example, the argument order and count MUST match the actual method signature you',
+  'opened — verify each positional argument (e.g. is a config the 2nd argument or a later one?).',
+  'Do NOT put a paraphrase inside quotation marks or a blockquote as if it were a release-note or',
+  'doc quote: quote verbatim from a tool result, or state it as your own words without quotes.',
+  'Re-read your draft for internal contradictions and remove them before finalizing.',
   'Then write the corrected final answer, ending with the "## Related Issues" section. Do not',
   'describe what you will do — produce the final answer only. Output ONLY the answer text,',
   'starting directly with the first heading; no preamble, no verification narration.'
