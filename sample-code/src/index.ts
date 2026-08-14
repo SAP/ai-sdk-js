@@ -113,3 +113,16 @@ export {
   responsesApiStateful,
   responsesApiMultiTurn
 } from './openai.ts';
+
+export {
+  realtimeTextToAudio,
+  realtimeAudioToAudio,
+  realtimeWithToolCalling,
+  loadRealtimeInputPcm,
+  pcm16ToWav,
+  realtimeSampleRate
+} from './openai-realtime.ts';
+export type {
+  RealtimeAudioResult,
+  RealtimeToolCallResult
+} from './openai-realtime.ts';
