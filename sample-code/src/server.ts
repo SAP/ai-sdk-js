@@ -47,7 +47,8 @@ import {
   orchestrationSonarWithCitations,
   orchestrationCacheControl,
   orchestrationReasoningContent,
-  orchestrationReasoningContentStream
+  orchestrationReasoningContentStream,
+  chatCompletionStreamWithTools
 } from './orchestration.ts';
 import {
   getDeployments,
@@ -76,7 +77,8 @@ import {
   streamChain as streamChainOrchestration,
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  invokeDynamicModelAgent
+  invokeDynamicModelAgent,
+  invokePromptCachingAgent
 } from './langchain-orchestration.ts';
 import {
   createCollection,
@@ -671,6 +673,58 @@ app.get(
   }
 );
 
+app.post(
+  '/orchestration-stream/chat-completion-stream-tools',
+  express.json(),
+  async (req, res) => {
+    const controller = new AbortController();
+    try {
+      const response = await chatCompletionStreamWithTools(
+        controller,
+        req.body
+      );
+
+      // Set headers for event stream.
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Connection', 'keep-alive');
+      res.flushHeaders();
+
+      let connectionAlive = true;
+
+      // Abort the stream if the client connection is closed.
+      res.on('close', () => {
+        controller.abort();
+        connectionAlive = false;
+        res.end();
+      });
+
+      // Stream the delta content.
+      for await (const chunk of response.stream) {
+        if (!connectionAlive) {
+          break;
+        }
+        res.write(chunk.getDeltaContent() + '\n');
+      }
+
+      // Write the finish reason and token usage after the stream ends.
+      if (connectionAlive) {
+        const finishReason = response.getFinishReason();
+        const tokenUsage = response.getTokenUsage();
+        res.write('\n\n---------------------------\n');
+        res.write(`Finish reason: ${finishReason}\n`);
+        res.write('Token usage:\n');
+        res.write(`  - Completion tokens: ${tokenUsage?.completion_tokens}\n`);
+        res.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
+        res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
+      }
+    } catch (error: any) {
+      sendError(res, error, false);
+    } finally {
+      res.end();
+    }
+  }
+);
+
 app.get('/orchestration-stream/reasoning-content', async (req, res) => {
   const controller = new AbortController();
   try {
@@ -867,6 +921,25 @@ app.get('/langchain/invoke-dynamic-model-agent', async (req, res) => {
     res
       .header('Content-Type', 'text/plain')
       .send(await invokeDynamicModelAgent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-prompt-caching-agent', async (req, res) => {
+  try {
+    const [first, second] = await invokePromptCachingAgent();
+
+    let response = '--- First call (cache write) ---\n';
+    response += `Response: ${first.content}\ncacheCreationTokens: ${first.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${first.cachedTokens ?? 0}\n\n`;
+
+    response += '--- Second call (cache read) ---\n';
+    response += `Response: ${second.content}\n`;
+    response += `Cache tokens created: ${second.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${second.cachedTokens ?? 0}\n`;
+
+    res.header('Content-Type', 'text/plain').send(response);
   } catch (error: any) {
     sendError(res, error);
   }
