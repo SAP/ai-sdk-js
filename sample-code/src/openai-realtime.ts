@@ -5,7 +5,7 @@ import { styleText } from 'node:util';
 import { readFile } from 'node:fs/promises';
 import { join, resolve as resolvePath } from 'node:path';
 import { zstdDecompressSync } from 'node:zlib';
-import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 import type { Writable } from 'node:stream';
 
 /**
@@ -41,7 +41,7 @@ export interface RealtimeToolCallResult {
 }
 
 type RealtimeClient = Awaited<
-  ReturnType<typeof SapOpenAiRealtime.createClient>
+  ReturnType<typeof SapOpenAiRealtimeWs.createClient>
 >;
 
 const defaultRealtimeInstructions =
@@ -62,7 +62,7 @@ async function runRealtimeAudioTurn(options: {
   onSessionCreated: (client: RealtimeClient) => void;
   onSessionUpdated: (client: RealtimeClient) => void;
 }): Promise<RealtimeAudioResult> {
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+  const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
   const { promise, resolve, reject } =
     Promise.withResolvers<RealtimeAudioResult>();
   const audioChunks: Buffer[] = [];
@@ -247,7 +247,7 @@ export async function realtimeWithToolCalling(
   prompt = "What's the weather in Paris right now?",
   toolOutput = 'Sunny, 21°C'
 ): Promise<RealtimeToolCallResult> {
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+  const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
   const getWeatherTool = {
     type: 'function' as const,
@@ -462,7 +462,7 @@ function checkPrerequisites(): string {
  */
 async function realtimeSpeechToSpeech(): Promise<void> {
   const soxBin = checkPrerequisites();
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+  const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
   const player = new AudioPlayer(soxBin);
 
   // prettier-ignore
