@@ -53,6 +53,7 @@ export {
   invokeChainWithFallbackConfigs as orchestrationInvokeChainWithFallbackConfigs,
   invokeLangGraphChain,
   invokeDynamicModelAgent,
+  invokePromptCachingAgent,
   invokeLangGraphChainStream,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain,
