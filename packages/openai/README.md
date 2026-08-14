@@ -125,13 +125,13 @@ It is used internally by `createOpenAiConfig`.
 > [!NOTE]
 > The Realtime API requires the additional `ws` dependency to be installed in your project.
 
-`SapOpenAiRealtime` provides live audio and text access to the OpenAI Realtime API over WebSocket, available from the `@sap-ai-sdk/openai/realtime` sub-path export.
+`SapOpenAiRealtimeWs` provides live audio and text access to the OpenAI Realtime API over WebSocket, available from the `@sap-ai-sdk/openai/realtime` sub-path export.
 It resolves the deployment, opens the WebSocket connection, and sets the SAP-specific headers automatically, while keeping the familiar `on()` / `send()` / `close()` event API.
 
 ```ts
-import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 
-const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
 client.on('session.created', () => {
   client.send({
