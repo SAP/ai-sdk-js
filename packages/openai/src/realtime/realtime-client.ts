@@ -3,6 +3,7 @@ import type * as WS from 'ws';
 
 import { createSapOpenAiContext } from '../config.ts';
 import { SapAzureOpenAi } from '../azure-openai.ts';
+import type { SapOpenAiContext } from '../types.ts';
 import type { SapOpenAiRealtimeInput } from './types.ts';
 
 /**
@@ -66,6 +67,29 @@ export class SapOpenAiRealtime extends OpenAIRealtimeWS {
   }
 
   /**
+   * @param context - The SAP OpenAI context.
+   * @param options - The realtime input options.
+   * @returns The WebSocket client options.
+   */
+  private static buildWsOptions(
+    context: SapOpenAiContext,
+    options: SapOpenAiRealtimeInput
+  ): WS.ClientOptions {
+    const { clientType, wsOptions: userWsOptions } =
+      typeof options === 'object' ? options : {};
+    return {
+      ...userWsOptions,
+      headers: {
+        ...userWsOptions?.headers,
+        'AI-Resource-Group': context.resourceGroup,
+        'AI-Client-Type': ['AI SDK JavaScript', clientType]
+          .filter(Boolean)
+          .join(',')
+      }
+    };
+  }
+
+  /**
    * Creates a pre-configured {@link SapOpenAiRealtime} client and opens the WebSocket connection to SAP AI Core.
    * Resolves the deployment, fetches a bearer token, and sets the SAP-specific headers automatically.
    * @param options - Options including model deployment, destination, and client type. A plain model name string is accepted as shorthand for `{ deployment: modelName }`.
@@ -86,23 +110,9 @@ export class SapOpenAiRealtime extends OpenAIRealtimeWS {
   static async createClient(
     options: SapOpenAiRealtimeInput
   ): Promise<SapOpenAiRealtime> {
-    const userWsOptions =
-      typeof options === 'object' && 'wsOptions' in options
-        ? options.wsOptions
-        : undefined;
-    const clientType =
-      typeof options === 'object' ? options.clientType : undefined;
     const context = await createSapOpenAiContext(options);
-    const wsOptions: WS.ClientOptions = {
-      ...userWsOptions,
-      headers: {
-        ...userWsOptions?.headers,
-        'AI-Resource-Group': context.resourceGroup,
-        'AI-Client-Type': ['AI SDK JavaScript', clientType]
-          .filter(Boolean)
-          .join(',')
-      }
-    };
+
+    const wsOptions = SapOpenAiRealtime.buildWsOptions(context, options);
     const openAiClient = new SapAzureOpenAi(context);
     const resolvedApiKey = await openAiClient._callApiKey();
 
