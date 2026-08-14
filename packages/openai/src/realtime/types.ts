@@ -1,6 +1,6 @@
 import type { AzureOpenAiRealtimeModel } from '@sap-ai-sdk/core';
 import type { SapOpenAiBaseOptions } from '../types.ts';
-import type { ClientOptions as WsClientOptions } from 'ws';
+import type * as WS from 'ws';
 
 /**
  * Options for creating a pre-configured Realtime API client for SAP AI Core.
@@ -8,7 +8,7 @@ import type { ClientOptions as WsClientOptions } from 'ws';
 export type SapOpenAiRealtimeOptions =
   SapOpenAiBaseOptions<AzureOpenAiRealtimeModel> & {
     /** Options passed to `ws.WebSocket` constructor. */
-    wsOptions?: WsClientOptions;
+    wsOptions?: WS.ClientOptions;
   };
 
 /**
