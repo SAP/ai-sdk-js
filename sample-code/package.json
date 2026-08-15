@@ -51,7 +51,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
-    "hyparquet-writer": "0.16.5"
+    "hyparquet-writer": "0.16.6"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
