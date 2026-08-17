@@ -33,14 +33,16 @@ jobs:
         if: ${{ github.event.pull_request.changed_files < 100 && steps.changed-files.outputs.changed-files != '' }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        uses: vale-cli/vale-action@85f9f7f2c5f449ac0ae5b66662961bae3f77ca6a # 2.1.2
+        uses: vale-cli/vale-action@518a9136acc6e6668ce7c00d367051e0941e87ff # v3.0.0
         with:
           # version of 'vale' to use
           # see https://github.com/vale-cli/vale for all releases
-          version: 3.14.1
+          version: 3.17.1
           # changed files. computed in the step above
           files: ${{ steps.changed-files.outputs.changed-files }}
           # the separator for the file list. we are using a comma (see step above)
           separator: ','
+          # post inline suggestions from vale's language server as PR review comments
+          reporter: github-pr-review
           # let review dog fail if there are errors
           fail_on_error: true

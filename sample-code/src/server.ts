@@ -45,7 +45,10 @@ import {
   orchestrationSapAbapChatCompletion,
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
-  orchestrationCacheControl
+  orchestrationCacheControl,
+  orchestrationReasoningContent,
+  orchestrationReasoningContentStream,
+  chatCompletionStreamWithTools
 } from './orchestration.ts';
 import {
   getDeployments,
@@ -74,7 +77,8 @@ import {
   streamChain as streamChainOrchestration,
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  invokeDynamicModelAgent
+  invokeDynamicModelAgent,
+  invokePromptCachingAgent
 } from './langchain-orchestration.ts';
 import {
   createCollection,
@@ -466,7 +470,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       sapAbap: orchestrationSapAbapChatCompletion,
       fallbackModules: orchestrationWithFallbackConfigs,
       sonarWithCitations: orchestrationSonarWithCitations,
-      cacheControl: orchestrationCacheControl
+      cacheControl: orchestrationCacheControl,
+      reasoningContent: orchestrationReasoningContent
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -545,6 +550,17 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
             `Response: ${second.getContent()}\n` +
             `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
             `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
+        );
+    } else if (sampleCase === 'reasoningContent') {
+      const reasoningResult = result as OrchestrationResponse;
+      const reasoning = reasoningResult.getReasoningContent();
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          '--- Reasoning ---\n' +
+            `${reasoning ? reasoning.join('\n') : '(none)'}\n\n` +
+            '--- Answer ---\n' +
+            `${reasoningResult.getContent()}`
         );
     } else {
       res
@@ -656,6 +672,98 @@ app.get(
     }
   }
 );
+
+app.post(
+  '/orchestration-stream/chat-completion-stream-tools',
+  express.json(),
+  async (req, res) => {
+    const controller = new AbortController();
+    try {
+      const response = await chatCompletionStreamWithTools(
+        controller,
+        req.body
+      );
+
+      // Set headers for event stream.
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Connection', 'keep-alive');
+      res.flushHeaders();
+
+      let connectionAlive = true;
+
+      // Abort the stream if the client connection is closed.
+      res.on('close', () => {
+        controller.abort();
+        connectionAlive = false;
+        res.end();
+      });
+
+      // Stream the delta content.
+      for await (const chunk of response.stream) {
+        if (!connectionAlive) {
+          break;
+        }
+        res.write(chunk.getDeltaContent() + '\n');
+      }
+
+      // Write the finish reason and token usage after the stream ends.
+      if (connectionAlive) {
+        const finishReason = response.getFinishReason();
+        const tokenUsage = response.getTokenUsage();
+        res.write('\n\n---------------------------\n');
+        res.write(`Finish reason: ${finishReason}\n`);
+        res.write('Token usage:\n');
+        res.write(`  - Completion tokens: ${tokenUsage?.completion_tokens}\n`);
+        res.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
+        res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
+      }
+    } catch (error: any) {
+      sendError(res, error, false);
+    } finally {
+      res.end();
+    }
+  }
+);
+
+app.get('/orchestration-stream/reasoning-content', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const response = await orchestrationReasoningContentStream(controller);
+
+    // Set headers for event stream.
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    // Abort the stream if the client connection is closed.
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    // Stream the delta reasoning content and the delta answer content.
+    for await (const chunk of response.stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      const deltaReasoning = chunk.getDeltaReasoningContent();
+      if (deltaReasoning) {
+        deltaReasoning.forEach(block => res.write(`[reasoning] ${block}\n`));
+      }
+      const deltaContent = chunk.getDeltaContent();
+      if (deltaContent) {
+        res.write(deltaContent);
+      }
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
 
 /* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
@@ -813,6 +921,25 @@ app.get('/langchain/invoke-dynamic-model-agent', async (req, res) => {
     res
       .header('Content-Type', 'text/plain')
       .send(await invokeDynamicModelAgent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-prompt-caching-agent', async (req, res) => {
+  try {
+    const [first, second] = await invokePromptCachingAgent();
+
+    let response = '--- First call (cache write) ---\n';
+    response += `Response: ${first.content}\ncacheCreationTokens: ${first.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${first.cachedTokens ?? 0}\n\n`;
+
+    response += '--- Second call (cache read) ---\n';
+    response += `Response: ${second.content}\n`;
+    response += `Cache tokens created: ${second.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${second.cachedTokens ?? 0}\n`;
+
+    res.header('Content-Type', 'text/plain').send(response);
   } catch (error: any) {
     sendError(res, error);
   }

@@ -1319,3 +1319,74 @@ export async function orchestrationCacheControl(): Promise<
 
   return [first, second];
 }
+
+/**
+ * Demonstrates reasoning content support using the harmonized reasoning_effort parameter.
+ * Performs a follow-up turn passing the full message history so the model
+ * keeps the reasoning context from the first turn.
+ * @param signal - An optional AbortSignal to cancel the request.
+ * @returns The orchestration service response from the first turn, which carries the reasoning content.
+ */
+export async function orchestrationReasoningContent(
+  signal?: AbortSignal
+): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gemini-3.5-flash',
+        // reasoning_effort is harmonized across providers; orchestration maps it
+        // to each model's native reasoning configuration.
+        params: { reasoning_effort: 'high' }
+      }
+    }
+  });
+
+  const response = await orchestrationClient.chatCompletion(
+    {
+      messages: [
+        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+      ]
+    },
+    { signal }
+  );
+
+  // Pass full message history (includes reasoning blocks) to maintain context.
+  await orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+      messagesHistory: response.getAllMessages()
+    },
+    { signal }
+  );
+
+  // Return the first-turn response so the caller can read its reasoning content.
+  return response;
+}
+
+/**
+ * Demonstrates reasoning content support with streaming using the harmonized reasoning_effort parameter.
+ * @param controller - The AbortController to cancel the stream.
+ * @returns The orchestration stream response.
+ */
+export async function orchestrationReasoningContentStream(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gemini-3.5-flash',
+        // reasoning_effort is harmonized across providers; orchestration maps it
+        // to each model's native reasoning configuration.
+        params: { reasoning_effort: 'high' }
+      }
+    }
+  });
+  return orchestrationClient.stream(
+    {
+      messages: [
+        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+      ]
+    },
+    controller.signal
+  );
+}

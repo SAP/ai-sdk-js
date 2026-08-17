@@ -430,7 +430,7 @@ export function mapOutputToChatResult(
 /**
  * @internal
  */
-export function isToolDefinitionLike(
+function isToolDefinitionLike(
   tool: ChatOrchestrationToolType
 ): tool is ChatCompletionTool | ToolDefinition {
   return (

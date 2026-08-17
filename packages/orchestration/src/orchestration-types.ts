@@ -29,7 +29,8 @@ import type {
   SAPDocumentTranslationOutput,
   Embedding,
   EmbeddingMultiFormat,
-  EncodingFormat
+  EncodingFormat,
+  PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
 
 /**
@@ -238,7 +239,7 @@ export interface OrchestrationModuleConfig {
    */
   masking?: MaskingModule;
   /**
-   * Grounding module configuraton.
+   * Grounding module configuration.
    */
   grounding?: GroundingModule;
   /**
@@ -270,18 +271,6 @@ export type OrchestrationModuleConfigList = [
 ];
 
 /**
- * Reference to an orchestration configuration by its unique ID.
- * @example
- * const configRef: OrchestrationConfigRefById = {
- *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
- * };
- */
-export interface OrchestrationConfigRefById {
-  /** Orchestration configuration ID. */
-  id: string;
-}
-
-/**
  * Reference to an orchestration configuration by scenario, name and version.
  * @example
  * const configRef: OrchestrationConfigRefByName = {
@@ -290,15 +279,47 @@ export interface OrchestrationConfigRefById {
  *   version: '0.0.1'
  * };
  */
-export interface OrchestrationConfigRefByName {
+/**
+ * Partial override configuration for a stored orchestration config reference.
+ * `stream.enabled` is excluded, as it is controlled by the call site (.stream() or .chatCompletion()).
+ */
+export type OrchestrationConfigRefOverride = Omit<
+  PartialOrchestrationConfig,
+  'stream'
+> & {
+  stream?: Omit<GlobalStreamOptions, 'enabled'>;
+};
+
+/**
+ * Reference to an orchestration configuration by its unique ID.
+ * @example
+ * const configRef: OrchestrationConfigRefById = {
+ *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+ * };
+ */
+export type OrchestrationConfigRefById = {
+  /** Orchestration configuration ID. */
+  id: string;
+} & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: OrchestrationConfigRefOverride;
+};
+
+export type OrchestrationConfigRefByName = {
   /** Scenario identifier. */
   scenario: string;
   /** Configuration name. */
   name: string;
   /** Configuration version. */
   version: string;
-}
-
+} & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: OrchestrationConfigRefOverride;
+};
 /**
  * @deprecated Since v2.14.0. Use {@link OrchestrationConfigRefById} or {@link OrchestrationConfigRefByName} instead.
  * Reference to an orchestration configuration created via the Prompt Registry API.
@@ -306,7 +327,12 @@ export interface OrchestrationConfigRefByName {
 export type OrchestrationConfigRef = Xor<
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName
->;
+> & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: OrchestrationConfigRefOverride;
+};
 
 /**
  * Type guard to check if config is a config reference.
@@ -693,7 +719,8 @@ export interface DocumentTranslationApplyToSelector {
  * Target language for translation, either a language code or a selector configuration.
  */
 export type TranslationTargetLanguage =
-  string | DocumentTranslationApplyToSelector;
+  | string
+  | DocumentTranslationApplyToSelector;
 
 /**
  * Input parameters for translation configuration.

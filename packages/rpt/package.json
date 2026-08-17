@@ -1,7 +1,7 @@
 {
   "name": "@sap-ai-sdk/rpt",
-  "version": "2.13.0",
-  "description": "This package provides a client for SAP\u2019s Relational Pretrained Transformer model, SAP-RPT-1.",
+  "version": "2.14.0",
+  "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
   "license": "Apache-2.0",
   "keywords": [
     "sap-ai-sdk",
@@ -35,8 +35,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
-    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/rpt",
@@ -46,11 +46,11 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.7.0",
-    "@sap-cloud-sdk/http-client": "^4.7.0",
-    "@sap-cloud-sdk/util": "^4.7.0"
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/http-client": "^4.8.0",
+    "@sap-cloud-sdk/util": "^4.8.0"
   },
   "devDependencies": {
-    "vitest": "^4.1.10"
+    "vitest": "4.1.10"
   }
 }

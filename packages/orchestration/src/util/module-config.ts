@@ -19,6 +19,7 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
+  PartialOrchestrationConfig,
   Template,
   PromptTemplatingModuleConfig,
   TemplateRef,
@@ -64,22 +65,34 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
  */
 export function constructCompletionPostRequestFromConfigReference(
   configRef: OrchestrationConfigRefById | OrchestrationConfigRefByName,
-  request?: ChatCompletionRequest
+  request?: ChatCompletionRequest,
+  stream?: boolean
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
   // Route request.messages into messages_history since there is no local
   // prompt.template to merge them into for config references.
-  const messagesHistory = request?.messages?.length
-    ? [...(request.messagesHistory || []), ...request.messages]
-    : request?.messagesHistory;
+  const messagesHistory = [
+    ...(request?.messagesHistory || []),
+    ...(request?.messages || [])
+  ];
+
+  const { overrideConfig, ...configReference } = configRef;
+  const partialConfig: PartialOrchestrationConfig = {
+    ...overrideConfig,
+    stream: {
+      ...overrideConfig?.stream,
+      enabled: stream === true
+    }
+  };
 
   return {
-    config_ref: configRef,
+    config_ref: configReference,
+    config: partialConfig,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),
-    ...(messagesHistory && {
+    ...(messagesHistory.length && {
       messages_history: messagesHistory
     })
   } as

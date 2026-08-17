@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@sap-ai-sdk/sample-cap",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "description": "Sample CAP application with Cloud SDK for AI.",
   "repository": "https://github.com/sap/ai-sdk-js",
   "private": true,
@@ -14,7 +14,7 @@
     "@sap/cds": "^10.0.4"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^10.0.5"
+    "@sap/cds-dk": "10.0.7"
   },
   "scripts": {
     "prebuild": "rm -rf dist",
@@ -26,8 +26,8 @@
     "start": "npx cds-serve",
     "watch": "cds-tsx watch",
     "watch:hybrid": "cds-tsx watch --profile hybrid",
-    "lint": "oxlint && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../.prettierrc --ignore-path ../.prettierignore -w --log-level error"
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "cds": {
     "requires": {

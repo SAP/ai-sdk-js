@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -29,6 +29,14 @@
     "./internal.js": {
       "types": "./dist/internal.d.ts",
       "default": "./dist/internal.js"
+    },
+    "./realtime": {
+      "types": "./dist/realtime/index.d.ts",
+      "default": "./dist/realtime/index.js"
+    },
+    "./realtime/internal.js": {
+      "types": "./dist/realtime/internal.d.ts",
+      "default": "./dist/realtime/internal.js"
     }
   },
   "files": [
@@ -40,20 +48,28 @@
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
-    "lint": "oxlint && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -c",
-    "lint:fix": "oxlint --fix && prettier . --config ../../.prettierrc --ignore-path ../../.prettierignore -w --log-level error"
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.7.0",
-    "@sap-cloud-sdk/util": "^4.7.0"
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/util": "^4.8.0"
   },
   "peerDependencies": {
-    "openai": "^6.49.0"
+    "openai": "^6.49.0 || ^7.0.0",
+    "ws": "^8.20.0"
+  },
+  "peerDependenciesMeta": {
+    "ws": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "openai": "^6.49.0",
-    "vitest": "^4.1.10"
+    "@types/ws": "8.18.1",
+    "openai": "7.4.0",
+    "ws": "8.21.3",
+    "vitest": "4.1.10"
   }
 }
