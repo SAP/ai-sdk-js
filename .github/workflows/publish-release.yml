@@ -107,4 +107,3 @@ jobs:
         run: |
           echo "Attempting to merge PR for branch: $BRANCH_NAME"
           gh pr merge --squash "$BRANCH_NAME" --delete-branch --auto --repo "SAP/ai-sdk"
-

@@ -1,4 +1,8 @@
-import { defineProject, mergeConfig } from 'vitest/config';
+import {
+  defineProject,
+  mergeConfig,
+  type UserWorkspaceConfig
+} from 'vitest/config';
 import { join } from 'node:path';
 
 const errorWithCauseSerializer = join(
@@ -10,15 +14,15 @@ const baseConfig = defineProject({
   test: {
     globals: true,
     clearMocks: true,
-    snapshotSerializers: [errorWithCauseSerializer],
-  },
+    snapshotSerializers: [errorWithCauseSerializer]
+  }
 });
 
 /** @internal */
 export const sharedConfig = baseConfig;
 
 /** @internal */
-export function definePackageConfig(name: string) {
+export function definePackageConfig(name: string): UserWorkspaceConfig {
   return mergeConfig(
     baseConfig,
     defineProject({
@@ -26,8 +30,8 @@ export function definePackageConfig(name: string) {
         name,
         include: ['src/**/*.test.ts'],
         exclude: ['**/dist/**'],
-        globalSetup: ['../../global-test-setup.mjs'],
-      },
+        globalSetup: ['../../global-test-setup.mjs']
+      }
     })
   );
 }

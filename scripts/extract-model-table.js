@@ -30,13 +30,15 @@
     });
 
     const col = (keyword, fallback) =>
-      Object.entries(colIndex).find(([k]) => k.includes(keyword))?.[1] ?? fallback;
+      Object.entries(colIndex).find(([k]) => k.includes(keyword))?.[1] ??
+      fallback;
 
     return {
       executableIdCol: col('executable', 0),
-      modelCol: Object.entries(colIndex).find(
-        ([k]) => k.includes('model') && !k.includes('token')
-      )?.[1] ?? 1,
+      modelCol:
+        Object.entries(colIndex).find(
+          ([k]) => k.includes('model') && !k.includes('token')
+        )?.[1] ?? 1,
       versionCol: col('version', 2),
       orchestrationCol: col('orchestration', 7),
       deprecatedCol: col('deprecat', 8),
@@ -47,7 +49,9 @@
 
   function extractActiveRows(allRows, cols) {
     return allRows.slice(2).reduce((rows, row) => {
-      const cells = Array.from(row.querySelectorAll('td')).map(td => td.textContent);
+      const cells = Array.from(row.querySelectorAll('td')).map(
+        td => td.textContent
+      );
       const model = clean(cells[cols.modelCol]);
       if (!model) return rows;
       rows.push({
@@ -57,7 +61,11 @@
         availableInOrchestration: clean(cells[cols.orchestrationCol]),
         deprecated: clean(cells[cols.deprecatedCol]),
         retirementDate: clean(cells[cols.retirementCol]),
-        suggestedReplacement: cells[cols.replacementCol].split('\n').map(clean).filter(Boolean).join(', ')
+        suggestedReplacement: cells[cols.replacementCol]
+          .split('\n')
+          .map(clean)
+          .filter(Boolean)
+          .join(', ')
       });
       return rows;
     }, []);
@@ -68,9 +76,9 @@
 
   function findRetiredTable() {
     return Array.from(document.querySelectorAll('table')).find(t => {
-      const headerCells = Array.from(t.querySelectorAll('tbody tr:first-child td')).map(
-        c => c.textContent.trim().toLowerCase()
-      );
+      const headerCells = Array.from(
+        t.querySelectorAll('tbody tr:first-child td')
+      ).map(c => c.textContent.trim().toLowerCase());
       return (
         headerCells.some(h => h.includes('suggested replacement')) &&
         !headerCells.some(h => h.includes('orchestration'))
@@ -81,7 +89,9 @@
   function extractRetiredRows(allRows) {
     // First row is header; skip it.
     return allRows.slice(1).reduce((rows, row) => {
-      const rawCells = Array.from(row.querySelectorAll('td')).map(td => td.textContent);
+      const rawCells = Array.from(row.querySelectorAll('td')).map(
+        td => td.textContent
+      );
       const cells = rawCells.map(clean);
       // Columns: executableId(0), model(1), version(2), suggestedReplacement(3)
       const model = cells[1];
@@ -90,7 +100,11 @@
         executableId: clean(rawCells[0].split('\n')[0]),
         model,
         version: cells[2] ?? '',
-        suggestedReplacement: rawCells[3].split('\n').map(clean).filter(Boolean).join(', ')
+        suggestedReplacement: rawCells[3]
+          .split('\n')
+          .map(clean)
+          .filter(Boolean)
+          .join(', ')
       });
       return rows;
     }, []);
@@ -109,4 +123,4 @@
     : [];
 
   return { active, retired };
-})()
+})();

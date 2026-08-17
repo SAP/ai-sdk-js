@@ -3,11 +3,13 @@
 ## Status
 
 <!-- What is the status, such as decided, proposed, outdated -> one sentence reason, superseded -> link to followup ADR. -->
+
 proposed
 
 ## Context
 
 <!-- What is the issue that we're seeing that is motivating this decision or change? -->
+
 At the moment of writing, we only support Azure OpenAI with chat completion.
 The current approach is to generate types based on the Azure OpenAI OpenAPI spec (prior to the v1 API), then handwrite a client.
 However the market is evolving rapidly, further features such as Responses API or Realtime API need to be supported.
@@ -69,7 +71,7 @@ First, we consider migrating our existing Azure OpenAI client to the official `O
 Users can create a configuration object based on the input for AI Core.
 
 ```ts
-import { tokenProvider } from "@sap-ai-sdk/core";
+import { tokenProvider } from '@sap-ai-sdk/core';
 
 export function createOpenAIConfig(options: any): OpenAIConfig {
   // resolve deployment URL based on the input options
@@ -89,12 +91,12 @@ export function createOpenAIConfig(options: any): OpenAIConfig {
 Then supply this configuration to the official SDK to create client instances.
 
 ```ts
-import { AzureOpenAI } from "openai";
-import { createOpenAIConfig } from "@sap-ai-sdk/foundation-models";
+import { AzureOpenAI } from 'openai';
+import { createOpenAIConfig } from '@sap-ai-sdk/foundation-models';
 
 const config = createOpenAIConfig({
-  model: "gpt-5",
-  resourceGroup: "rg",
+  model: 'gpt-5',
+  resourceGroup: 'rg'
 });
 
 // Or in short:
@@ -102,10 +104,8 @@ const config = createOpenAIConfig({
 
 const client = new AzureOpenAI(config);
 client.chat.completions.create({
-  model: "gpt-5", // Unfortunately must be defined here again
-  messages: [
-    { role: "user", content: "Hello world" }
-  ]
+  model: 'gpt-5', // Unfortunately must be defined here again
+  messages: [{ role: 'user', content: 'Hello world' }]
 });
 ```
 
@@ -125,17 +125,15 @@ Cons:
 We can also provide a configured client based on the official provider SDKs, which encapsulates the configuration.
 
 ```ts
-import { createAzureOpenAIClient } from "@sap-ai-sdk/foundation-models";
+import { createAzureOpenAIClient } from '@sap-ai-sdk/foundation-models';
 
 const client = createAzureOpenAIClient({
-  model: "gpt-5",
-  resourceGroup: "rg",
+  model: 'gpt-5',
+  resourceGroup: 'rg'
 });
 client.chat.completions.create({
   // model: "gpt-5", // No need to specify the model again, as the function was overriden to hide this parameter
-  messages: [
-    { role: "user", content: "Hello world" }
-  ]
+  messages: [{ role: 'user', content: 'Hello world' }]
 });
 ```
 
@@ -168,4 +166,4 @@ Pros:
 Cons:
 
 - User might be confused about what to use.
-- We need to maintain both the configuration and the configured client. 
+- We need to maintain both the configuration and the configured client.

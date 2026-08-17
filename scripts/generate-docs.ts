@@ -162,7 +162,9 @@ async function insertCopyright(docPath: string) {
       return transformFile(filePath, (file: string) => {
         const lines = file.split('\n');
         // Insert the copyright div before the line including </footer>
-        const footerIndex = lines.findIndex((line: string) => line.includes('</footer>'));
+        const footerIndex = lines.findIndex((line: string) =>
+          line.includes('</footer>')
+        );
         if (footerIndex === -1) {
           console.warn(`No </footer> found in ${filePath}`);
           return file; // Return unchanged
@@ -184,9 +186,13 @@ function validateLogs(generationLogs: string) {
 }
 
 async function generateDocs() {
-  const generationLogs = await execFileP('typedoc', ['--tsconfig', 'tsconfig.typedoc.json'], {
-    cwd: resolve()
-  });
+  const generationLogs = await execFileP(
+    'typedoc',
+    ['--tsconfig', 'tsconfig.typedoc.json'],
+    {
+      cwd: resolve()
+    }
+  );
   validateLogs(generationLogs.stdout);
 
   const docPath = await getDocPath();

@@ -44,14 +44,14 @@ const MODEL_TYPES_PATH = resolve(
 // Models that should never be added to model-types.ts regardless of table state.
 // Add model names here when a model has been intentionally removed from the type hints.
 const MODEL_EXCLUSION_LIST = new Set<string>([
-  'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4o-mini',    // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14
-  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14
-  'o3',             // Intentionally removed — retiring 2026-10-16
-  'o4-mini',        // Intentionally removed — retiring 2026-10-16
-  'gpt-realtime',   // WebSocket-based, not a standard chat completion model
-  'gpt-5.3-codex',  // Responses API only, not a standard chat completion model
+  'gpt-4o', // Intentionally removed — deprecated despite having a non-deprecated row
+  'gpt-4o-mini', // Intentionally removed — deprecated despite having a non-deprecated row
+  'gpt-4.1', // Intentionally removed — retiring 2026-10-14
+  'gpt-4.1-mini', // Intentionally removed — retiring 2026-10-14
+  'o3', // Intentionally removed — retiring 2026-10-16
+  'o4-mini', // Intentionally removed — retiring 2026-10-16
+  'gpt-realtime', // WebSocket-based, not a standard chat completion model
+  'gpt-5.3-codex', // Responses API only, not a standard chat completion model
   'cohere-reranker' // Re-ranker model, not a chat/embedding model
 ]);
 
@@ -160,7 +160,10 @@ function modelPrefix(model: string): string {
   return /^[a-z-]+/.exec(model)?.[0] ?? model;
 }
 
-function buildLiteralUnionBlock(existingModels: string[], activeModels: Set<string>): string {
+function buildLiteralUnionBlock(
+  existingModels: string[],
+  activeModels: Set<string>
+): string {
   // Preserve existing order, remove retired models, append new ones at the end
   const kept = existingModels.filter(m => activeModels.has(m));
   const added = [...activeModels].filter(m => !existingModels.includes(m));
@@ -185,14 +188,17 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
     return new Set();
   }
   const inner = match[1];
-  return new Set(
-    [...inner.matchAll(/'([^']+)'/g)].map(m => m[1])
-  );
+  return new Set([...inner.matchAll(/'([^']+)'/g)].map(m => m[1]));
 }
 
 function buildReleaseNote(
   added: string[],
-  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[]
+  removed: {
+    model: string;
+    replacement: string;
+    retirementDate: string;
+    isRetiredFromTable: boolean;
+  }[]
 ): string {
   const parts: string[] = [];
 
@@ -222,8 +228,12 @@ function buildReleaseNote(
       return desc;
     });
     const last = descriptions.pop();
-    const joined = descriptions.length ? `${descriptions.join(', ')} and ${last}` : last;
-    parts.push(`Remove ${group.label} model${group.items.length > 1 ? 's' : ''} ${joined}.`);
+    const joined = descriptions.length
+      ? `${descriptions.join(', ')} and ${last}`
+      : last;
+    parts.push(
+      `Remove ${group.label} model${group.items.length > 1 ? 's' : ''} ${joined}.`
+    );
   }
 
   return parts.join(' ');
@@ -231,23 +241,24 @@ function buildReleaseNote(
 
 interface ActiveModelMap {
   typeToActiveModels: Record<string, Set<string>>;
-  retiredInfo: Record<string, { replacement: string; retirementDate: string; isRetiredFromTable: boolean }>;
+  retiredInfo: Record<
+    string,
+    { replacement: string; retirementDate: string; isRetiredFromTable: boolean }
+  >;
   skippedRows: { model: string; executableId: string }[];
 }
 
 function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
   const typeToActiveModels: Record<string, Set<string>> = {};
   const retiredInfo = Object.fromEntries(
-    rows
-      .filter(isRetired)
-      .map(r => [
-        r.model,
-        {
-          replacement: r.suggestedReplacement,
-          retirementDate: r.retirementDate,
-          isRetiredFromTable: r.retired?.toLowerCase().includes('yes') === true
-        }
-      ])
+    rows.filter(isRetired).map(r => [
+      r.model,
+      {
+        replacement: r.suggestedReplacement,
+        retirementDate: r.retirementDate,
+        isRetiredFromTable: r.retired?.toLowerCase().includes('yes') === true
+      }
+    ])
   );
   const skippedRows: { model: string; executableId: string }[] = [];
 
@@ -267,8 +278,12 @@ function buildActiveModelMap(rows: ModelRow[]): ActiveModelMap {
       continue;
     }
 
-    const isOrchestration = row.availableInOrchestration.toLowerCase().includes('yes');
-    const isAzureOpenAi = row.executableId.toLowerCase().startsWith('azure-openai');
+    const isOrchestration = row.availableInOrchestration
+      .toLowerCase()
+      .includes('yes');
+    const isAzureOpenAi = row.executableId
+      .toLowerCase()
+      .startsWith('azure-openai');
     const isSapRpt = typeName === 'SapRptModel';
 
     if (!isOrchestration && !isAzureOpenAi && !isSapRpt) {
@@ -289,7 +304,9 @@ async function patchModelTypes(
 
   await transformFile(MODEL_TYPES_PATH, async content => {
     let updated = content;
-    const sorted = Object.entries(typeToActiveModels).sort(([a], [b]) => a.localeCompare(b));
+    const sorted = Object.entries(typeToActiveModels).sort(([a], [b]) =>
+      a.localeCompare(b)
+    );
     for (const [typeName, models] of sorted) {
       if (models.size === 0) {
         continue;
@@ -327,25 +344,30 @@ async function syncModelTypes(): Promise<void> {
     process.exit(1);
   }
 
-  const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
+  const { typeToActiveModels, retiredInfo, skippedRows } =
+    buildActiveModelMap(rows);
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
-  const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...activeModels].filter(m => !current.has(m));
-  });
+  const allAdded = Object.entries(typeToActiveModels).flatMap(
+    ([typeName, activeModels]) => {
+      const current = extractCurrentModels(currentContent, typeName);
+      return [...activeModels].filter(m => !current.has(m));
+    }
+  );
 
-  const allRemoved = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...current]
-      .filter(m => !activeModels.has(m))
-      .map(m => ({
-        model: m,
-        replacement: retiredInfo[m]?.replacement ?? '',
-        retirementDate: retiredInfo[m]?.retirementDate ?? '',
-        isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
-      }));
-  });
+  const allRemoved = Object.entries(typeToActiveModels).flatMap(
+    ([typeName, activeModels]) => {
+      const current = extractCurrentModels(currentContent, typeName);
+      return [...current]
+        .filter(m => !activeModels.has(m))
+        .map(m => ({
+          model: m,
+          replacement: retiredInfo[m]?.replacement ?? '',
+          retirementDate: retiredInfo[m]?.retirementDate ?? '',
+          isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
+        }));
+    }
+  );
 
   const changed = await patchModelTypes(typeToActiveModels);
 
@@ -408,13 +430,17 @@ async function checkLandscapeAvailability(
 
   const modelList = await ScenarioApi.scenarioQueryModels('foundation-models', {
     'AI-Resource-Group': 'default'
-  }).execute().catch((err: unknown) => {
-    console.error('\n⚠ Landscape check skipped — API request failed:', err);
-    return null;
-  });
+  })
+    .execute()
+    .catch((err: unknown) => {
+      console.error('\n⚠ Landscape check skipped — API request failed:', err);
+      return null;
+    });
 
   if (!modelList?.resources?.length) {
-    console.error('\n⚠ Landscape check skipped — unexpected response: missing resources.');
+    console.error(
+      '\n⚠ Landscape check skipped — unexpected response: missing resources.'
+    );
     return;
   }
 
