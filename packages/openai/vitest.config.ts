@@ -1,3 +1,11 @@
 import { definePackageConfig } from '../../vitest.shared.ts';
 
-export default definePackageConfig('openai');
+const config = definePackageConfig('openai');
+
+config.test.server = {
+  deps: {
+    inline: ['openai', 'ws']
+  }
+};
+
+export default config;

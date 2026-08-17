@@ -29,6 +29,12 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
 >;
 
 /**
+ * Azure OpenAI models for the Realtime (speech-to-speech) API.
+ * Currently only `gpt-realtime` is supported by SAP AI Core; other realtime scenarios (e.g. transcription, translation) are not fully supported.
+ */
+export type AzureOpenAiRealtimeModel = LiteralUnion<'gpt-realtime'>;
+
+/**
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
