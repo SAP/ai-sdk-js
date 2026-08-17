@@ -120,6 +120,17 @@ export class OrchestrationClient {
     deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     destination?: HttpDestinationOrFetchOptions
   );
+  constructor(
+    config:
+      | string
+      | Xor<
+          OrchestrationConfigRefById,
+          Xor<OrchestrationConfigRefByName, OrchestrationModuleConfig>
+        >
+      | OrchestrationModuleConfigList,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
   /* eslint-enable @typescript-eslint/unified-signatures */
   constructor(
     config:
