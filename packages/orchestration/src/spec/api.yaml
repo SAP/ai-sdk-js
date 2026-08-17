@@ -54,6 +54,15 @@ paths:
       responses:
         '200':
           description: 'Successful response'
+          headers:
+            X-Orchestration-Dropped-Model-Params:
+              schema:
+                type: string
+              description: >
+                Comma-separated sorted list of Chat Completions parameters silently
+                dropped because they are not supported by the Responses API.
+                Present only when at least one parameter was dropped and
+                drop_unsupported_params is true (the default).
           content:
             application/json:
               schema:
