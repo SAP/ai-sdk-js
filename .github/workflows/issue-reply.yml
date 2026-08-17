@@ -20,10 +20,6 @@ permissions: {}
 
 jobs:
   reply:
-    # Trigger on every opened issue (and manual dispatch). This is an open-source repo, so most
-    # support questions come from external users — restricting to team members would skip the bot's
-    # actual audience. Blast radius of an abusive issue is bounded: the bot posts to Slack only (no
-    # auto issue reply), so a spam filing costs one model call + one Slack line, never a public reply.
     runs-on: ubuntu-latest
     timeout-minutes: 10
     # SEC-1: one run per issue at a time — prevents duplicate replies
