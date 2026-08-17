@@ -5,7 +5,7 @@ import { styleText } from 'node:util';
 import { readFile } from 'node:fs/promises';
 import { join, resolve as resolvePath } from 'node:path';
 import { zstdDecompressSync } from 'node:zlib';
-import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 import type { Writable } from 'node:stream';
 
 /**
@@ -40,20 +40,29 @@ export interface RealtimeToolCallResult {
   text: string;
 }
 
-/**
- * Send a text prompt to the OpenAI Realtime API and collect the spoken audio response.
- *
- * Uses the GA `session.update` schema (`output_modalities`, nested `audio`), which is what SAP AI Core expects.
- * @param text - The text prompt to send to the model.
- * @param voice - The voice to use for the audio response. Defaults to `alloy`.
- * @returns A promise that resolves to the transcript and raw PCM audio of the response.
- */
-export async function realtimeTextToAudio(
-  text = 'Please say the exact word: banana.',
-  voice = 'alloy'
-): Promise<RealtimeAudioResult> {
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+type RealtimeClient = Awaited<
+  ReturnType<typeof SapOpenAiRealtimeWs.createClient>
+>;
 
+const defaultRealtimeInstructions =
+  'You are a helpful assistant. Respond only in English.';
+
+function sendUserTextMessage(client: RealtimeClient, text: string): void {
+  client.send({
+    type: 'conversation.item.create',
+    item: {
+      type: 'message',
+      role: 'user',
+      content: [{ type: 'input_text', text }]
+    }
+  });
+}
+
+async function runRealtimeAudioTurn(options: {
+  onSessionCreated: (client: RealtimeClient) => void;
+  onSessionUpdated: (client: RealtimeClient) => void;
+}): Promise<RealtimeAudioResult> {
+  const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
   const { promise, resolve, reject } =
     Promise.withResolvers<RealtimeAudioResult>();
   const audioChunks: Buffer[] = [];
@@ -65,27 +74,11 @@ export async function realtimeTextToAudio(
   });
 
   client.on('session.created', () => {
-    client.send({
-      type: 'session.update',
-      session: {
-        type: 'realtime',
-        output_modalities: ['audio'],
-        audio: { output: { voice } },
-        instructions: 'You are a helpful assistant. Respond only in English.'
-      }
-    });
+    options.onSessionCreated(client);
   });
 
   client.on('session.updated', () => {
-    client.send({
-      type: 'conversation.item.create',
-      item: {
-        type: 'message',
-        role: 'user',
-        content: [{ type: 'input_text', text }]
-      }
-    });
-    client.send({ type: 'response.create' });
+    options.onSessionUpdated(client);
   });
 
   client.on('response.output_audio_transcript.delta', e => {
@@ -107,6 +100,37 @@ export async function realtimeTextToAudio(
   });
 
   return promise;
+}
+
+/**
+ * Send a text prompt to the OpenAI Realtime API and collect the spoken audio response.
+ *
+ * Uses the GA `session.update` schema (`output_modalities`, nested `audio`), which is what SAP AI Core expects.
+ * @param text - The text prompt to send to the model.
+ * @param voice - The voice to use for the audio response. Defaults to `alloy`.
+ * @returns A promise that resolves to the transcript and raw PCM audio of the response.
+ */
+export async function realtimeTextToAudio(
+  text = 'Please say the exact word: banana.',
+  voice = 'alloy'
+): Promise<RealtimeAudioResult> {
+  return runRealtimeAudioTurn({
+    onSessionCreated: client => {
+      client.send({
+        type: 'session.update',
+        session: {
+          type: 'realtime',
+          output_modalities: ['audio'],
+          audio: { output: { voice } },
+          instructions: defaultRealtimeInstructions
+        }
+      });
+    },
+    onSessionUpdated: client => {
+      sendUserTextMessage(client, text);
+      client.send({ type: 'response.create' });
+    }
+  });
 }
 
 /**
@@ -172,69 +196,38 @@ export async function realtimeAudioToAudio(
   inputPcm: Buffer,
   voice = 'alloy'
 ): Promise<RealtimeAudioResult> {
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
-
-  const { promise, resolve, reject } =
-    Promise.withResolvers<RealtimeAudioResult>();
-  const audioChunks: Buffer[] = [];
-  let transcript = '';
-
-  client.on('error', err => {
-    client.close();
-    reject(err);
-  });
-
-  client.on('session.created', () => {
-    client.send({
-      type: 'session.update',
-      session: {
-        type: 'realtime',
-        output_modalities: ['audio'],
-        audio: {
-          input: {
-            format: { type: 'audio/pcm', rate: realtimeSampleRate },
-            turn_detection: null
-          },
-          output: { voice }
-        },
-        instructions: 'You are a helpful assistant. Respond only in English.'
-      }
-    });
-  });
-
-  client.on('session.updated', () => {
-    // 4800 bytes = 100ms of 16-bit mono audio at 24kHz; the backend rejects commits under 100ms.
-    const chunkSize = 4800;
-    for (let i = 0; i < inputPcm.length; i += chunkSize) {
-      const chunk = inputPcm.subarray(i, i + chunkSize);
+  return runRealtimeAudioTurn({
+    onSessionCreated: client => {
       client.send({
-        type: 'input_audio_buffer.append',
-        audio: chunk.toString('base64')
+        type: 'session.update',
+        session: {
+          type: 'realtime',
+          output_modalities: ['audio'],
+          audio: {
+            input: {
+              format: { type: 'audio/pcm', rate: realtimeSampleRate },
+              turn_detection: null
+            },
+            output: { voice }
+          },
+          instructions: defaultRealtimeInstructions
+        }
       });
+    },
+    onSessionUpdated: client => {
+      // 4800 bytes = 100ms of 16-bit mono audio at 24kHz; the backend rejects commits under 100ms.
+      const chunkSize = 4800;
+      for (let i = 0; i < inputPcm.length; i += chunkSize) {
+        const chunk = inputPcm.subarray(i, i + chunkSize);
+        client.send({
+          type: 'input_audio_buffer.append',
+          audio: chunk.toString('base64')
+        });
+      }
+      client.send({ type: 'input_audio_buffer.commit' });
+      client.send({ type: 'response.create' });
     }
-    client.send({ type: 'input_audio_buffer.commit' });
-    client.send({ type: 'response.create' });
   });
-
-  client.on('response.output_audio_transcript.delta', e => {
-    transcript += e.delta ?? '';
-  });
-
-  client.on('response.output_audio.delta', e => {
-    if (e.delta) {
-      audioChunks.push(Buffer.from(e.delta, 'base64'));
-    }
-  });
-
-  client.on('response.done', () => {
-    client.close();
-    resolve({
-      transcript: transcript.trim(),
-      audio: Buffer.concat(audioChunks)
-    });
-  });
-
-  return promise;
 }
 
 /**
@@ -254,7 +247,7 @@ export async function realtimeWithToolCalling(
   prompt = "What's the weather in Paris right now?",
   toolOutput = 'Sunny, 21°C'
 ): Promise<RealtimeToolCallResult> {
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+  const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
   const getWeatherTool = {
     type: 'function' as const,
@@ -297,14 +290,7 @@ export async function realtimeWithToolCalling(
   });
 
   client.on('session.updated', () => {
-    client.send({
-      type: 'conversation.item.create',
-      item: {
-        type: 'message',
-        role: 'user',
-        content: [{ type: 'input_text', text: prompt }]
-      }
-    });
+    sendUserTextMessage(client, prompt);
     client.send({ type: 'response.create' });
   });
 
@@ -390,7 +376,7 @@ class AudioPlayer {
 
   private kill(): void {
     const proc = this.proc;
-    if (proc && proc.exitCode === null && !proc.killed) {
+    if (proc?.exitCode === null && !proc.killed) {
       proc.kill('SIGTERM');
     }
   }
@@ -476,7 +462,7 @@ function checkPrerequisites(): string {
  */
 async function realtimeSpeechToSpeech(): Promise<void> {
   const soxBin = checkPrerequisites();
-  const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+  const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
   const player = new AudioPlayer(soxBin);
 
   // prettier-ignore
@@ -500,14 +486,7 @@ async function realtimeSpeechToSpeech(): Promise<void> {
     if (!trimmed) {
       return;
     }
-    client.send({
-      type: 'conversation.item.create',
-      item: {
-        type: 'message',
-        role: 'user',
-        content: [{ type: 'input_text', text: trimmed }]
-      }
-    });
+    sendUserTextMessage(client, trimmed);
     if (responseInProgress) {
       // A voice response is in flight; trigger a response once it finishes.
       pendingTextResponse = true;
@@ -530,7 +509,7 @@ async function realtimeSpeechToSpeech(): Promise<void> {
           input: { format: { type: 'audio/pcm', rate: realtimeSampleRate } },
           output: { voice: 'alloy' }
         },
-        instructions: 'You are a helpful assistant. Respond only in English.'
+        instructions: defaultRealtimeInstructions
       }
     });
   });

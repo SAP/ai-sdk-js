@@ -35,7 +35,11 @@ export {
   orchestrationSonarWithCitations,
   orchestrationSonarStreamWithCitations,
   orchestrationStreamWithFallbackConfigs,
-  orchestrationQwenChatCompletion
+  orchestrationReasoningContent,
+  orchestrationReasoningContentStream,
+  orchestrationQwenChatCompletion,
+  orchestrationQwenResponseFormat,
+  orchestrationQwenWithToolCalling
 } from './orchestration.ts';
 export {
   invoke,
@@ -49,6 +53,7 @@ export {
   invokeChainWithFallbackConfigs as orchestrationInvokeChainWithFallbackConfigs,
   invokeLangGraphChain,
   invokeDynamicModelAgent,
+  invokePromptCachingAgent,
   invokeLangGraphChainStream,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   streamChain,

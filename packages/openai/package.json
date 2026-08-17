@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.13.0",
+  "version": "2.14.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -54,8 +54,8 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.7.0",
-    "@sap-cloud-sdk/util": "^4.7.0"
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/util": "^4.8.0"
   },
   "peerDependencies": {
     "openai": "^6.49.0 || ^7.0.0",
@@ -68,8 +68,8 @@
   },
   "devDependencies": {
     "@types/ws": "8.18.1",
-    "openai": "7.3.0",
-    "ws": "8.21.0",
+    "openai": "7.4.0",
+    "ws": "8.21.3",
     "vitest": "4.1.10"
   }
 }

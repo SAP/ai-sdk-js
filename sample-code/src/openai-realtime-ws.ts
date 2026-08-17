@@ -2,7 +2,7 @@ import { WebSocketServer } from 'ws';
 import type WebSocket from 'ws';
 import type { RawData } from 'ws';
 import type { Server } from 'node:http';
-import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 
 type Mode = 'text-to-audio' | 'speech' | 'speech-ptt';
 
@@ -148,7 +148,7 @@ export function attachRealtimeWs(server: Server): void {
   });
 
   wss.on('connection', (browserWs: WebSocket) => {
-    let client: SapOpenAiRealtime | undefined;
+    let client: SapOpenAiRealtimeWs | undefined;
     let sessionReady = false;
     const audioQueue: Buffer[] = [];
 
@@ -176,7 +176,7 @@ export function attachRealtimeWs(server: Server): void {
     }
 
     async function resolveToolCall(
-      realtime: SapOpenAiRealtime,
+      realtime: SapOpenAiRealtimeWs,
       event: { call_id: string; arguments: string }
     ): Promise<void> {
       let result: string;
@@ -236,9 +236,9 @@ export function attachRealtimeWs(server: Server): void {
         sessionReady = false;
         audioQueue.length = 0;
         const { mode, voice } = msg;
-        let realtime: SapOpenAiRealtime;
+        let realtime: SapOpenAiRealtimeWs;
         try {
-          realtime = await SapOpenAiRealtime.createClient('gpt-realtime');
+          realtime = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
         } catch (err: unknown) {
           const message = err instanceof Error ? err.message : String(err);
           sendJson(browserWs, { type: 'error', message });

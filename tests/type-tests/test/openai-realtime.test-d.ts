@@ -1,5 +1,5 @@
 import { expectType, expectAssignable, expectError } from 'tsd';
-import { SapOpenAiRealtime } from '@sap-ai-sdk/openai/realtime';
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 import type { AzureOpenAiRealtimeModel } from '@sap-ai-sdk/core';
 import type {
   SapOpenAiRealtimeOptions,
@@ -7,28 +7,28 @@ import type {
 } from '@sap-ai-sdk/openai/realtime';
 
 /**
- * SapOpenAiRealtime.createClient returns a Promise<SapOpenAiRealtime>.
+ * SapOpenAiRealtimeWs.createClient returns a Promise<SapOpenAiRealtimeWs>.
  */
-expectType<Promise<SapOpenAiRealtime>>(
-  SapOpenAiRealtime.createClient('gpt-realtime')
+expectType<Promise<SapOpenAiRealtimeWs>>(
+  SapOpenAiRealtimeWs.createClient('gpt-realtime')
 );
 
-expectType<Promise<SapOpenAiRealtime>>(
-  SapOpenAiRealtime.createClient({ deployment: 'gpt-realtime' })
+expectType<Promise<SapOpenAiRealtimeWs>>(
+  SapOpenAiRealtimeWs.createClient({ deployment: 'gpt-realtime' })
 );
 
-expectType<Promise<SapOpenAiRealtime>>(
-  SapOpenAiRealtime.createClient({
+expectType<Promise<SapOpenAiRealtimeWs>>(
+  SapOpenAiRealtimeWs.createClient({
     deployment: 'gpt-realtime',
     clientType: 'my-app'
   })
 );
 
 /**
- * SapOpenAiRealtime.createClient accepts deployment by ID.
+ * SapOpenAiRealtimeWs.createClient accepts deployment by ID.
  */
-expectType<Promise<SapOpenAiRealtime>>(
-  SapOpenAiRealtime.createClient({ deployment: { deploymentId: 'd123' } })
+expectType<Promise<SapOpenAiRealtimeWs>>(
+  SapOpenAiRealtimeWs.createClient({ deployment: { deploymentId: 'd123' } })
 );
 
 /**

@@ -12,16 +12,19 @@ class MockWebSocket {
   readonly options: { headers?: Record<string, string> };
   readonly sent: string[] = [];
   closed: { code: number; reason: string } | undefined;
+  sendError: Error | undefined;
+  closeError: Error | undefined;
 
   private readonly listeners: Record<string, ((...args: any[]) => void)[]> = {};
 
   constructor(
-    url: string,
-    _protocols: unknown,
-    options: { headers?: Record<string, string> } = {}
+    url: string | URL,
+    protocolsOrOptions: unknown,
+    options?: { headers?: Record<string, string> }
   ) {
-    this.url = url;
-    this.options = options;
+    this.url = url.toString();
+    this.options =
+      options ?? (protocolsOrOptions as { headers?: Record<string, string> });
     MockWebSocket.instances.push(this);
   }
 
@@ -31,10 +34,16 @@ class MockWebSocket {
   }
 
   send(data: string): void {
+    if (this.sendError) {
+      throw this.sendError;
+    }
     this.sent.push(data);
   }
 
   close(code: number, reason: string): void {
+    if (this.closeError) {
+      throw this.closeError;
+    }
     this.closed = { code, reason };
   }
 
@@ -53,10 +62,12 @@ class MockWebSocket {
 
 vi.mock('ws', () => ({
   __esModule: true,
+  WebSocket: MockWebSocket,
   default: MockWebSocket
 }));
 
-const { SapOpenAiRealtime } = await import('./realtime-client.ts');
+const { SapOpenAiRealtimeWs, rewriteRealtimeUrl } =
+  await import('./realtime-client.ts');
 
 const defaultDeployment = {
   id: 'dep-realtime',
@@ -64,7 +75,7 @@ const defaultDeployment = {
   deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/dep-realtime`
 };
 
-describe('SapOpenAiRealtime', () => {
+describe('SapOpenAiRealtimeWs', () => {
   beforeEach(() => {
     MockWebSocket.instances = [];
     mockClientCredentialsGrantCall();
@@ -79,10 +90,10 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('opens a wss connection to /v1/realtime with SAP headers', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
     expect(client.url.toString()).toBe(
-      'wss://api.ai.ml.hana.ondemand.com/v2/inference/deployments/dep-realtime/v1/realtime'
+      'wss://api.ai.ml.hana.ondemand.com/v2/inference/deployments/dep-realtime/v1/realtime?api-version=2024-10-21'
     );
     const socket = MockWebSocket.instances[0];
     expect(socket.url).toBe(client.url.toString());
@@ -94,7 +105,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('appends a custom client type to the AI-Client-Type header', async () => {
-    const client = await SapOpenAiRealtime.createClient({
+    const client = await SapOpenAiRealtimeWs.createClient({
       deployment: 'gpt-realtime',
       clientType: 'my-app'
     });
@@ -103,7 +114,7 @@ describe('SapOpenAiRealtime', () => {
     expect(socket.options.headers?.['AI-Client-Type']).toBe(
       'AI SDK JavaScript,my-app'
     );
-    expect(client).toBeInstanceOf(SapOpenAiRealtime);
+    expect(client).toBeInstanceOf(SapOpenAiRealtimeWs);
   });
 
   it('resolves a deployment with a custom resource group', async () => {
@@ -118,7 +129,7 @@ describe('SapOpenAiRealtime', () => {
       defaultDeployment
     );
 
-    await SapOpenAiRealtime.createClient({
+    await SapOpenAiRealtimeWs.createClient({
       deployment: { modelName: 'gpt-realtime', resourceGroup: 'my-rg' }
     });
 
@@ -128,7 +139,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('serializes sent events to JSON', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
     client.send({ type: 'response.create' });
 
@@ -138,7 +149,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('re-emits incoming messages as typed and generic events', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
     const socket = MockWebSocket.instances[0];
 
     const genericEvents: unknown[] = [];
@@ -154,7 +165,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('routes server error events through the error listener', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
     const socket = MockWebSocket.instances[0];
 
     const errors: { message: string }[] = [];
@@ -171,7 +182,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('routes transport errors through the error listener', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
     const socket = MockWebSocket.instances[0];
 
     const errors: { message: string }[] = [];
@@ -184,7 +195,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('emits an error when an invalid message frame is received', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
     const socket = MockWebSocket.instances[0];
 
     const errors: { message: string }[] = [];
@@ -196,8 +207,37 @@ describe('SapOpenAiRealtime', () => {
     expect(errors[0].message).toContain('could not parse websocket event');
   });
 
+  it('ignores null message frames', async () => {
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+    const socket = MockWebSocket.instances[0];
+
+    const genericEvents: unknown[] = [];
+    const errors: { message: string }[] = [];
+    client.on('event', e => genericEvents.push(e));
+    client.on('error', e => errors.push(e));
+
+    socket.receiveRaw(Buffer.from('null'));
+
+    expect(genericEvents).toEqual([]);
+    expect(errors).toEqual([]);
+  });
+
+  it('routes send failures through the error listener', async () => {
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+    const socket = MockWebSocket.instances[0];
+    socket.sendError = new Error('send exploded');
+
+    const errors: { message: string }[] = [];
+    client.on('error', e => errors.push(e));
+
+    client.send({ type: 'response.create' });
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0].message).toContain('could not send data');
+  });
+
   it('closes the socket with the provided code and reason', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
     client.close({ code: 4000, reason: 'bye' });
 
@@ -208,7 +248,7 @@ describe('SapOpenAiRealtime', () => {
   });
 
   it('closes the socket with defaults when no props are given', async () => {
-    const client = await SapOpenAiRealtime.createClient('gpt-realtime');
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
     client.close();
 
@@ -216,5 +256,60 @@ describe('SapOpenAiRealtime', () => {
       code: 1000,
       reason: 'OK'
     });
+  });
+
+  it('routes close failures through the error listener', async () => {
+    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+    const socket = MockWebSocket.instances[0];
+    socket.closeError = new Error('close exploded');
+
+    const errors: { message: string }[] = [];
+    client.on('error', e => errors.push(e));
+
+    client.close();
+
+    expect(errors).toHaveLength(1);
+    expect(errors[0].message).toContain('could not close the connection');
+  });
+});
+
+describe('rewriteRealtimeUrl', () => {
+  it('rewrites /realtime to /v1/realtime', () => {
+    const url = new URL(
+      'wss://example.com/v2/inference/deployments/dep/realtime'
+    );
+    rewriteRealtimeUrl(url);
+    expect(url.pathname).toBe('/v2/inference/deployments/dep/v1/realtime');
+  });
+
+  it('does not double-insert /v1 if already /v1/realtime', () => {
+    const url = new URL(
+      'wss://example.com/v2/inference/deployments/dep/v1/realtime'
+    );
+    rewriteRealtimeUrl(url);
+    expect(url.pathname).toBe('/v2/inference/deployments/dep/v1/realtime');
+  });
+
+  it('throws if path does not end in /realtime', () => {
+    const url = new URL('wss://example.com/v2/inference/deployments/dep/v1');
+    expect(() => rewriteRealtimeUrl(url)).toThrow(
+      'Unexpected realtime URL path'
+    );
+  });
+
+  it('preserves api-version and strips other query params', () => {
+    const url = new URL(
+      'wss://example.com/dep/realtime?api-version=2024-10-21&deployment=bad&model=also-bad'
+    );
+    rewriteRealtimeUrl(url);
+    expect(url.searchParams.get('api-version')).toBe('2024-10-21');
+    expect(url.searchParams.get('deployment')).toBeNull();
+    expect(url.searchParams.get('model')).toBeNull();
+  });
+
+  it('strips all query params when api-version is absent', () => {
+    const url = new URL('wss://example.com/dep/realtime?deployment=bad');
+    rewriteRealtimeUrl(url);
+    expect(url.search).toBe('');
   });
 });
