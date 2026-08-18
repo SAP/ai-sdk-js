@@ -20,9 +20,6 @@ permissions: {}
 
 jobs:
   reply:
-    # SEC-1: only respond to trusted contributors — blocks quota abuse from anonymous filers
-    # workflow_dispatch is always triggered by an authenticated user (team member)
-    if: github.event_name == 'workflow_dispatch' || contains(fromJSON('["MEMBER","OWNER","COLLABORATOR"]'), github.event.issue.author_association)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     # SEC-1: one run per issue at a time — prevents duplicate replies
