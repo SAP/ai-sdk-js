@@ -5,9 +5,11 @@
  */
 import type { AzureContentSafetyInputFilterConfig } from './azure-content-safety-input-filter-config.js';
 import type { LlamaGuard38BFilterConfig } from './llama-guard-38-b-filter-config.js';
+import type { GraniteGuardianConfig } from './granite-guardian-config.js';
 /**
  * Representation of the 'InputFilterConfig' schema.
  */
 export type InputFilterConfig =
   | AzureContentSafetyInputFilterConfig
-  | LlamaGuard38BFilterConfig;
+  | LlamaGuard38BFilterConfig
+  | GraniteGuardianConfig;
