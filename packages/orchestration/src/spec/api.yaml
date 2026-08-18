@@ -1744,32 +1744,43 @@ components:
           $ref: '#/components/schemas/GraniteGuardian41'
 
     GraniteGuardian41:
-      description: 'Configuration for IBM Granite Guardian 4.1 filter provider. Note: Granite Guardian requires separate calls for each configured content category. Recommendation: Use only `harm` catch all content category.'
+      description: Configuration for IBM Granite Guardian 4.1 filter provider.
       type: object
       additionalProperties: false
-      minProperties: 1
+      required:
+        - categories
       properties:
-        harm:
+        enable_think_mode:
           type: boolean
-          description: Catch-all criterion for generally harmful content.
-        social_bias:
-          type: boolean
-          description: Detect prejudice or discrimination based on identity or protected characteristics.
-        jailbreak:
-          type: boolean
-          description: Detect attempts to manipulate the model into producing harmful or otherwise undesired outputs.
-        violence:
-          type: boolean
-          description: Detect content promoting or depicting physical, mental, or sexual harm.
-        profanity:
-          type: boolean
-          description: Detect offensive language or insults.
-        sexual_content:
-          type: boolean
-          description: Detect explicit or suggestive material of a sexual nature.
-        unethical_behavior:
-          type: boolean
-          description: Detect content describing actions that violate moral or legal standards.
+          default: false
+          description: Enable reasoning (think) mode for Granite Guardian. Applies to every configured category. Returns reasoning content when enabled.
+        categories:
+          description: 'Content criteria to evaluate. Note: Granite Guardian requires separate calls for each configured content category. Recommendation: Use only `harm` catch all content category.'
+          type: object
+          additionalProperties: false
+          minProperties: 1
+          properties:
+            harm:
+              type: boolean
+              description: Catch-all criterion for generally harmful content.
+            social_bias:
+              type: boolean
+              description: Detect prejudice or discrimination based on identity or protected characteristics.
+            jailbreak:
+              type: boolean
+              description: Detect attempts to manipulate the model into producing harmful or otherwise undesired outputs.
+            violence:
+              type: boolean
+              description: Detect content promoting or depicting physical, mental, or sexual harm.
+            profanity:
+              type: boolean
+              description: Detect offensive language or insults.
+            sexual_content:
+              type: boolean
+              description: Detect explicit or suggestive material of a sexual nature.
+            unethical_behavior:
+              type: boolean
+              description: Detect content describing actions that violate moral or legal standards.
 
     # --- Masking module ---
     MaskingModuleConfig:
