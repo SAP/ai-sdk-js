@@ -1,5 +1,12 @@
 # @sap-ai-sdk/llm-batch
 
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies [a5407c8]
+  - @sap-ai-sdk/core@2.15.0
+
 ## 2.14.0
 
 ### Patch Changes
