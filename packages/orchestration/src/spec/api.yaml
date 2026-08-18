@@ -1590,13 +1590,13 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AzureContentSafetyInputFilterConfig'
         - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
-        - $ref: '#/components/schemas/GraniteGuardianConfig'
+        - $ref: '#/components/schemas/GraniteGuardianFilterConfig'
 
     OutputFilterConfig:
       oneOf:
         - $ref: '#/components/schemas/AzureContentSafetyOutputFilterConfig'
         - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
-        - $ref: '#/components/schemas/GraniteGuardianConfig'
+        - $ref: '#/components/schemas/GraniteGuardianFilterConfig'
 
     AzureContentSafetyInputFilterConfig:
       type: object
@@ -1727,7 +1727,7 @@ components:
         code_interpreter_abuse:
           type: boolean
 
-    GraniteGuardianConfig:
+    GraniteGuardianFilterConfig:
       type: object
       required:
         - type
@@ -1744,13 +1744,11 @@ components:
           $ref: '#/components/schemas/GraniteGuardian41'
 
     GraniteGuardian41:
-      description: Configuration for IBM Granite Guardian 4.1 filter provider.
+      description: 'Configuration for IBM Granite Guardian 4.1 filter provider. Note: Granite Guardian requires separate calls for each configured content category. Recommendation: Use only `harm` catch all content category.'
       type: object
       additionalProperties: false
       minProperties: 1
       properties:
-        # NOTE: Granite Guardian judges against exactly one criterion per model
-        # call. N configured categories result in N calls per filtered input.
         harm:
           type: boolean
           description: Catch-all criterion for generally harmful content.

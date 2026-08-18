@@ -88,7 +88,7 @@ export * from './azure-content-safety-output.js';
 export * from './azure-threshold.js';
 export * from './llama-guard-38-b-filter-config.js';
 export * from './llama-guard-38-b.js';
-export * from './granite-guardian-config.js';
+export * from './granite-guardian-filter-config.js';
 export * from './granite-guardian-41.js';
 export * from './masking-module-config.js';
 export * from './masking-provider-config.js';

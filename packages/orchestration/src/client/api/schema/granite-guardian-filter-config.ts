@@ -5,9 +5,9 @@
  */
 import type { GraniteGuardian41 } from './granite-guardian-41.js';
 /**
- * Representation of the 'GraniteGuardianConfig' schema.
+ * Representation of the 'GraniteGuardianFilterConfig' schema.
  */
-export type GraniteGuardianConfig = {
+export type GraniteGuardianFilterConfig = {
   /**
    * Name of the filter provider type
    * @example "granite_guardian_4_1"

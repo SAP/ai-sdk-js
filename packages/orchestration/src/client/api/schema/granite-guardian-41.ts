@@ -5,7 +5,7 @@
  */
 
 /**
- * Configuration for IBM Granite Guardian 4.1 filter provider.
+ * Configuration for IBM Granite Guardian 4.1 filter provider. Note: Granite Guardian requires separate calls for each configured content category. Recommendation: Use only `harm` catch all content category.
  */
 export type GraniteGuardian41 = {
   /**
