@@ -611,16 +611,6 @@
   },
   {
     "executableId": "azure-openai (Azure)",
-    "model": "gpt-35-turbo",
-    "version": "1106",
-    "availableInOrchestration": "",
-    "deprecated": "",
-    "retirementDate": "",
-    "suggestedReplacement": "gpt-4o, gpt-4.1, gpt-5",
-    "retired": "yes"
-  },
-  {
-    "executableId": "azure-openai (Azure)",
     "model": "gpt-35-turbo-16k",
     "version": "0613",
     "availableInOrchestration": "",
@@ -868,5 +858,75 @@
     "retirementDate": "",
     "suggestedReplacement": "mistralai--mistral-medium-instruct",
     "retired": "yes"
+  },
+  {
+    "executableId": "",
+    "model": "mistralai--mistral-medium",
+    "version": "3.5",
+    "availableInOrchestration": "Yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "aicore-sap (SAP-hosted)",
+    "model": "sap-rpt-1.5",
+    "version": "1.5",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "aicore-sap (SAP-hosted)",
+    "model": "sap-rpt-1.5-large",
+    "version": "1.5",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.6-sol",
+    "version": "2026-07-09",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.6-terra",
+    "version": "2026-07-09",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "azure-openai (Azure)",
+    "model": "gpt-5.6-luna",
+    "version": "2026-07-09",
+    "availableInOrchestration": "yes",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
+  },
+  {
+    "executableId": "",
+    "model": "gemini-embedding-2",
+    "version": "001",
+    "availableInOrchestration": "",
+    "deprecated": "",
+    "retirementDate": "",
+    "suggestedReplacement": "",
+    "retired": ""
   }
 ]
