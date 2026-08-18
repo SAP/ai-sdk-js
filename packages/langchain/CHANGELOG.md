@@ -1,5 +1,23 @@
 # @sap-ai-sdk/langchain
 
+## 2.15.0
+
+### Minor Changes
+
+- 070b309: [feat] Add `orchestrationPromptCachingMiddleware()` middleware for the LangChain Orchestration client, exported from `@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware`.
+  It enables automatic cache control for orchestration requests.
+  The middleware requires the optional `langchain` peer dependency to be installed.
+
+### Patch Changes
+
+- Updated dependencies [b61cb53]
+- Updated dependencies [b61cb53]
+- Updated dependencies [a5407c8]
+  - @sap-ai-sdk/orchestration@2.15.0
+  - @sap-ai-sdk/core@2.15.0
+  - @sap-ai-sdk/ai-api@2.15.0
+  - @sap-ai-sdk/foundation-models@2.15.0
+
 ## 2.14.0
 
 ### Patch Changes

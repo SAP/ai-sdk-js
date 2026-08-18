@@ -1,5 +1,11 @@
 # @sap-ai-sdk/core
 
+## 2.15.0
+
+### Minor Changes
+
+- a5407c8: [feat] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export.
+
 ## 2.14.0
 
 ### Minor Changes
