@@ -33,9 +33,13 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
        - After merging, **verify no duplicate `model` values exist** in `sap-models.json`. If any remain, remove the older/less-complete entry and report the duplicate removal to the user.
     - **Sync batch models into `scripts/sap-batch-models.json`**:
        - `result.batch` is a string array of model names from the SAP Notes "Batch Consumption Supported Models" section.
-       - **The SAP Notes batch list is authoritatively incomplete** — the LLM batch service supports models not listed there. `sap-batch-models.json` is the ground truth and must never be shrunk by a scrape.
-       - Merge non-destructively: take the **union** of the existing file and `result.batch`, deduplicated and sorted ascending. **Add** any scraped model not already in the file.
-       - **Never auto-remove** a model that is in the file but absent from `result.batch` — it is likely a service-only model the SAP Notes omit. Instead, **list those models to the user** and let them decide whether to remove any. Only remove on explicit user confirmation.
+       - **The SAP Notes batch list is authoritatively incomplete** — the LLM batch service supports models not listed there.
+         `sap-batch-models.json` is the ground truth and must never be shrunk by a scrape.
+       - Merge non-destructively: take the **union** of the existing file and `result.batch`, de-duplicated and sorted ascending.
+         **Add** any scraped model not already in the file.
+       - **Never auto-remove** a model that is in the file but absent from `result.batch` — it is likely a service-only model the SAP Notes omit.
+         Instead, **list those models to the user** and let them decide whether to remove any.
+         Only remove on explicit user confirmation.
        - If `result.batch` is empty (section not found), keep `sap-batch-models.json` unchanged and warn the user.
    - **Close the browser tab** using `browser_close` to avoid stale session issues on future runs.
 
