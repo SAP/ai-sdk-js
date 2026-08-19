@@ -63,6 +63,36 @@
     }, []);
   }
 
+  // --- Batch Consumption Supported Models table ---
+  // Identified by a "region" column with no "orchestration" and no
+  // "suggested replacement" column (distinguishes it from active/retired tables).
+
+  function findBatchTable() {
+    return Array.from(document.querySelectorAll('table')).find(t => {
+      const headerCells = Array.from(t.querySelectorAll('tbody tr:first-child td')).map(
+        c => c.textContent.trim().toLowerCase()
+      );
+      return (
+        headerCells.some(h => h.includes('region')) &&
+        !headerCells.some(h => h.includes('orchestration')) &&
+        !headerCells.some(h => h.includes('suggested replacement'))
+      );
+    });
+  }
+
+  function extractBatchRows(allRows) {
+    // Header/title rows vary, so filter by model-name shape instead of a fixed
+    // slice offset: keep only cells that look like a model id (lowercase,
+    // digits, dots, dashes). This rejects header labels like "Model"/"Region".
+    const isModelName = s => /^[a-z0-9][a-z0-9.-]*$/.test(s);
+    return allRows.reduce((rows, row) => {
+      const cells = Array.from(row.querySelectorAll('td')).map(td => clean(td.textContent));
+      const model = cells[0];
+      if (model && isModelName(model)) rows.push(model);
+      return rows;
+    }, []);
+  }
+
   // --- Recently Retired Models table ---
   // Identified by having "suggested replacement" in its header row (4 columns, no orchestration col).
 
@@ -108,5 +138,10 @@
     ? extractRetiredRows(Array.from(retiredTable.querySelectorAll('tbody tr')))
     : [];
 
-  return { active, retired };
+  const batchTable = findBatchTable();
+  const batch = batchTable
+    ? extractBatchRows(Array.from(batchTable.querySelectorAll('tbody tr')))
+    : [];
+
+  return { active, retired, batch };
 })()

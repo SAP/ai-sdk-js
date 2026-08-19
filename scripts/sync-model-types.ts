@@ -34,6 +34,8 @@ export interface ModelRow {
 
 const SAP_MODELS_PATH = resolve(import.meta.dirname, 'sap-models.json');
 
+const SAP_BATCH_MODELS_PATH = resolve(import.meta.dirname, 'sap-batch-models.json');
+
 const OXFMTRC_PATH = resolve(import.meta.dirname, '../.oxfmtrc.json');
 
 const MODEL_TYPES_PATH = resolve(
@@ -46,8 +48,8 @@ const MODEL_TYPES_PATH = resolve(
 const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
   'gpt-4o-mini',    // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14
-  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14
+  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14 (chat only; still valid for LlmBatchModel via sap-batch-models.json)
+  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14 (chat only; still valid for LlmBatchModel via sap-batch-models.json)
   'o3',             // Intentionally removed — retiring 2026-10-16
   'o4-mini',        // Intentionally removed — retiring 2026-10-16
   'gpt-realtime',   // WebSocket-based, not a standard chat completion model
@@ -328,7 +330,23 @@ async function syncModelTypes(): Promise<void> {
   }
 
   const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
+
+  try {
+    const batchModels: string[] = JSON.parse(await readFile(SAP_BATCH_MODELS_PATH, 'utf8'));
+    typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
+  } catch {
+    console.error(`⚠ Could not read ${SAP_BATCH_MODELS_PATH} — LlmBatchModel will not be updated.`);
+  }
+
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
+
+  // LlmBatchModel lives in @sap-ai-sdk/llm-batch's public surface (BatchCreateRequest.spec.model),
+  // so a change to it must also bump that package, not just @sap-ai-sdk/core.
+  const batchCurrent = extractCurrentModels(currentContent, 'LlmBatchModel');
+  const batchNew = typeToActiveModels['LlmBatchModel'] ?? new Set<string>();
+  const batchChanged =
+    batchCurrent.size !== batchNew.size ||
+    [...batchNew].some(m => !batchCurrent.has(m));
 
   const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
     const current = extractCurrentModels(currentContent, typeName);
@@ -361,7 +379,7 @@ async function syncModelTypes(): Promise<void> {
     console.log('\n--- Release Note ---');
     console.log(releaseNote);
     console.log('--------------------');
-    await writeChangeset(releaseNote);
+    await writeChangeset(releaseNote, batchChanged);
   }
 
   if (skippedRows.length) {
@@ -439,11 +457,15 @@ async function checkLandscapeAvailability(
   }
 }
 
-async function writeChangeset(releaseNote: string): Promise<void> {
+async function writeChangeset(releaseNote: string, batchChanged: boolean): Promise<void> {
   const changesetDir = resolve(import.meta.dirname, '../.changeset');
   const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const filename = `model-types-sync-${date}.md`;
-  const content = `---\n'@sap-ai-sdk/core': minor\n---\n\n[Improvement] ${releaseNote}\n`;
+  const bumps = ["'@sap-ai-sdk/core': minor"];
+  if (batchChanged) {
+    bumps.push("'@sap-ai-sdk/llm-batch': minor");
+  }
+  const content = `---\n${bumps.join('\n')}\n---\n\n[Improvement] ${releaseNote}\n`;
   await writeFile(resolve(changesetDir, filename), content, 'utf8');
   console.error(`\nChangeset written: .changeset/${filename}`);
 }
