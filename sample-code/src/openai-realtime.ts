@@ -382,7 +382,7 @@ class AudioPlayer {
   }
 
   private spawnPlay(): ReturnType<typeof spawn> {
-    // prettier-ignore
+    // oxfmt-ignore
     const proc = spawn(this.soxBin, ['-t', 'raw', '-r', `${realtimeSampleRate}`, '-c', '1', '-e', 'signed-integer', '-b', '16', '-', '-d'],
       { stdio: ['pipe', 'ignore', 'ignore'] }
     );
@@ -465,7 +465,7 @@ async function realtimeSpeechToSpeech(): Promise<void> {
   const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
   const player = new AudioPlayer(soxBin);
 
-  // prettier-ignore
+  // oxfmt-ignore
   const soxArgs = ['-d', '-t', 'raw', '-r', `${realtimeSampleRate}`,
     '-c', '1', '-e', 'signed-integer', '-b', '16', '-'];
 
