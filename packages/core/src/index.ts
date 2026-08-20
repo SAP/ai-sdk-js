@@ -14,6 +14,7 @@ export type {
   AiCoreOpenSourceEmbeddingModel,
   AwsBedrockEmbeddingModel,
   PerplexityChatModel,
-  SapRptModel
+  SapRptModel,
+  LlmBatchModel
 } from './model-types.ts';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';

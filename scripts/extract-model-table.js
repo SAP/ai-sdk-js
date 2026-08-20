@@ -63,6 +63,35 @@
     }, []);
   }
 
+  // --- Batch Consumption Supported Models table ---
+  // Identified by a "region" column with no "orchestration" and no
+  // "suggested replacement" column (distinguishes it from active/retired tables).
+
+  function findBatchTable() {
+    // Find the first table after the "Batch Consumption Supported Models" heading
+    const allElements = Array.from(
+      document.querySelectorAll('strong, b, h1, h2, h3, h4, h5, h6, table')
+    );
+    let foundHeading = false;
+    for (const el of allElements) {
+      if (el.tagName === 'TABLE') {
+        if (foundHeading) return el;
+      } else if (el.textContent.trim().toLowerCase().includes('batch consumption')) {
+        foundHeading = true;
+      }
+    }
+    return undefined;
+  }
+
+  function extractBatchRows(allRows) {
+    return allRows.slice(1).reduce((rows, row) => {
+      const cells = Array.from(row.querySelectorAll('td')).map(td => clean(td.textContent));
+      const model = cells[0];
+      if (model) rows.push(model);
+      return rows;
+    }, []);
+  }
+
   // --- Recently Retired Models table ---
   // Identified by having "suggested replacement" in its header row (4 columns, no orchestration col).
 
@@ -108,5 +137,10 @@
     ? extractRetiredRows(Array.from(retiredTable.querySelectorAll('tbody tr')))
     : [];
 
-  return { active, retired };
+  const batchTable = findBatchTable();
+  const batch = batchTable
+    ? extractBatchRows(Array.from(batchTable.querySelectorAll('tbody tr')))
+    : [];
+
+  return { active, retired, batch };
 })()
