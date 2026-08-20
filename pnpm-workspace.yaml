@@ -24,6 +24,7 @@ allowBuilds:
 gitBranchLockfile: true
 mergeGitBranchLockfilesBranchPattern:
   - main
+  - renovate/*
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
