@@ -63,7 +63,7 @@ export class OrchestrationClient {
   private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
   private destination?: HttpDestinationOrFetchOptions;
 
-  /* eslint-disable @typescript-eslint/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
+  /* oxlint-disable typescript/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
    * Creates an instance of the orchestration client with an inline module configuration.
    * @param config - A single orchestration module configuration.
@@ -131,7 +131,7 @@ export class OrchestrationClient {
     deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     destination?: HttpDestinationOrFetchOptions
   );
-  /* eslint-enable @typescript-eslint/unified-signatures */
+  /* oxlint-enable typescript/unified-signatures */
   constructor(
     config:
       | string

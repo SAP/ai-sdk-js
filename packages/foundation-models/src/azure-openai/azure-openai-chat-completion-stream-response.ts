@@ -44,7 +44,7 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
    * Creates an Azure OpenAI chat completion stream response.
    * @param rawResponse - The raw HTTP response. SSE data is not part of the immediate response.
    */
-  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  // oxlint-disable-next-line typescript/unified-signatures
   constructor(rawResponse: HttpResponse);
 
   constructor(rawResponse?: HttpResponse) {
