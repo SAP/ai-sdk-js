@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -50,7 +50,7 @@
     "@types/node": "22.20.1",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "4.1.10",
-    "jose": "6.2.8",
+    "jose": "6.2.9",
     "knip": "6.32.2",
     "memfs": "4.68.1",
     "nock": "14.0.17",
