@@ -3,7 +3,7 @@
  * LiteralUnion type blocks in packages/core/src/model-types.ts.
  * Run: node scripts/sync-model-types.ts
  */
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -33,8 +33,6 @@ export interface ModelRow {
 }
 
 const SAP_MODELS_PATH = resolve(import.meta.dirname, 'sap-models.json');
-
-const SAP_BATCH_MODELS_PATH = resolve(import.meta.dirname, 'sap-batch-models.json');
 
 const OXFMTRC_PATH = resolve(import.meta.dirname, '../.oxfmtrc.json');
 
@@ -194,7 +192,9 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
 
 function buildReleaseNote(
   added: string[],
-  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[]
+  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[],
+  batchAdded: string[],
+  batchRemoved: string[]
 ): string {
   const parts: string[] = [];
 
@@ -226,6 +226,15 @@ function buildReleaseNote(
     const last = descriptions.pop();
     const joined = descriptions.length ? `${descriptions.join(', ')} and ${last}` : last;
     parts.push(`Remove ${group.label} model${group.items.length > 1 ? 's' : ''} ${joined}.`);
+  }
+
+  if (batchAdded.length) {
+    const names = batchAdded.map(m => `\`${m}\``).join(', ');
+    parts.push(`Added ${names} to the batch model list.`);
+  }
+  if (batchRemoved.length) {
+    const names = batchRemoved.map(m => `\`${m}\``).join(', ');
+    parts.push(`Removed ${names} from the batch model list.`);
   }
 
   return parts.join(' ');
@@ -319,41 +328,45 @@ async function patchModelTypes(
   return changed;
 }
 
+/** Parsed structure of scripts/sap-models.json. */
+interface SapModelsFile {
+  models: ModelRow[];
+  batchModels: string[];
+}
+
 async function syncModelTypes(): Promise<void> {
   let rows: ModelRow[];
+  let batchModels: string[];
   try {
     const raw = await readFile(SAP_MODELS_PATH, 'utf8');
-    rows = JSON.parse(raw) as ModelRow[];
+    const data = JSON.parse(raw) as SapModelsFile;
+    rows = data.models;
+    batchModels = data.batchModels ?? [];
   } catch {
     console.error(`Error: could not read or parse ${SAP_MODELS_PATH}.`);
     process.exit(1);
   }
 
   const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
-
-  try {
-    const batchModels: string[] = JSON.parse(await readFile(SAP_BATCH_MODELS_PATH, 'utf8'));
-    typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
-  } catch {
-    console.error(`⚠ Could not read ${SAP_BATCH_MODELS_PATH} — LlmBatchModel will not be updated.`);
-  }
+  typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
 
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
-  // LlmBatchModel lives in @sap-ai-sdk/llm-batch's public surface (BatchCreateRequest.spec.model),
-  // so a change to it must also bump that package, not just @sap-ai-sdk/core.
   const batchCurrent = extractCurrentModels(currentContent, 'LlmBatchModel');
   const batchNew = typeToActiveModels['LlmBatchModel'] ?? new Set<string>();
-  const batchChanged =
-    batchCurrent.size !== batchNew.size ||
-    [...batchNew].some(m => !batchCurrent.has(m));
+  const batchAdded = [...batchNew].filter(m => !batchCurrent.has(m));
+  const batchRemoved = [...batchCurrent].filter(m => !batchNew.has(m));
 
-  const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...activeModels].filter(m => !current.has(m));
-  });
+  const allAdded = Object.entries(typeToActiveModels)
+    .filter(([typeName]) => typeName !== 'LlmBatchModel')
+    .flatMap(([typeName, activeModels]) => {
+      const current = extractCurrentModels(currentContent, typeName);
+      return [...activeModels].filter(m => !current.has(m));
+    });
 
-  const allRemoved = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
+  const allRemoved = Object.entries(typeToActiveModels)
+    .filter(([typeName]) => typeName !== 'LlmBatchModel')
+    .flatMap(([typeName, activeModels]) => {
     const current = extractCurrentModels(currentContent, typeName);
     return [...current]
       .filter(m => !activeModels.has(m))
@@ -374,12 +387,12 @@ async function syncModelTypes(): Promise<void> {
 
   console.error(`\nPatched: ${MODEL_TYPES_PATH}`);
 
-  const releaseNote = buildReleaseNote(allAdded, allRemoved);
+  const releaseNote = buildReleaseNote(allAdded, allRemoved, batchAdded, batchRemoved);
   if (releaseNote) {
     console.log('\n--- Release Note ---');
     console.log(releaseNote);
     console.log('--------------------');
-    await writeChangeset(releaseNote, batchChanged);
+    await writeChangeset(releaseNote);
   }
 
   if (skippedRows.length) {
@@ -457,15 +470,11 @@ async function checkLandscapeAvailability(
   }
 }
 
-async function writeChangeset(releaseNote: string, batchChanged: boolean): Promise<void> {
+async function writeChangeset(releaseNote: string): Promise<void> {
   const changesetDir = resolve(import.meta.dirname, '../.changeset');
   const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   const filename = `model-types-sync-${date}.md`;
-  const bumps = ["'@sap-ai-sdk/core': minor"];
-  if (batchChanged) {
-    bumps.push("'@sap-ai-sdk/llm-batch': minor");
-  }
-  const content = `---\n${bumps.join('\n')}\n---\n\n[Improvement] ${releaseNote}\n`;
+  const content = `---\n'@sap-ai-sdk/core': minor\n---\n\n[Improvement] ${releaseNote}\n`;
   await writeFile(resolve(changesetDir, filename), content, 'utf8');
   console.error(`\nChangeset written: .changeset/${filename}`);
 }

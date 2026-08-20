@@ -68,27 +68,26 @@
   // "suggested replacement" column (distinguishes it from active/retired tables).
 
   function findBatchTable() {
-    return Array.from(document.querySelectorAll('table')).find(t => {
-      const headerCells = Array.from(t.querySelectorAll('tbody tr:first-child td')).map(
-        c => c.textContent.trim().toLowerCase()
-      );
-      return (
-        headerCells.some(h => h.includes('region')) &&
-        !headerCells.some(h => h.includes('orchestration')) &&
-        !headerCells.some(h => h.includes('suggested replacement'))
-      );
-    });
+    // Find the first table after the "Batch Consumption Supported Models" heading
+    const allElements = Array.from(
+      document.querySelectorAll('strong, b, h1, h2, h3, h4, h5, h6, table')
+    );
+    let foundHeading = false;
+    for (const el of allElements) {
+      if (el.tagName === 'TABLE') {
+        if (foundHeading) return el;
+      } else if (el.textContent.trim().toLowerCase().includes('batch consumption')) {
+        foundHeading = true;
+      }
+    }
+    return undefined;
   }
 
   function extractBatchRows(allRows) {
-    // Header/title rows vary, so filter by model-name shape instead of a fixed
-    // slice offset: keep only cells that look like a model id (lowercase,
-    // digits, dots, dashes). This rejects header labels like "Model"/"Region".
-    const isModelName = s => /^[a-z0-9][a-z0-9.-]*$/.test(s);
-    return allRows.reduce((rows, row) => {
+    return allRows.slice(1).reduce((rows, row) => {
       const cells = Array.from(row.querySelectorAll('td')).map(td => clean(td.textContent));
       const model = cells[0];
-      if (model && isModelName(model)) rows.push(model);
+      if (model) rows.push(model);
       return rows;
     }, []);
   }
