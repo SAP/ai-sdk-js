@@ -13,7 +13,7 @@ export default {
       'ErrorWithCause {',
       `${indent}"message": ${message},`,
       `${indent}"cause": ${cause},`,
-      `${indentation}}`,
+      `${indentation}}`
     ].join('\n');
-  },
+  }
 } satisfies SnapshotSerializer;

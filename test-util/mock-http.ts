@@ -110,18 +110,21 @@ export function mockInference(
     }
   });
 
-  const bodyMatcher =
-    typeof request === 'function' ? request : request.data;
+  const bodyMatcher = typeof request === 'function' ? request : request.data;
 
-  let interceptor = scope.post(`/v2/${url}`, bodyMatcher).query(apiVersion ? { 'api-version': apiVersion } : {});
+  let interceptor = scope
+    .post(`/v2/${url}`, bodyMatcher)
+    .query(apiVersion ? { 'api-version': apiVersion } : {});
 
   if (resilienceOptions?.retry) {
     interceptor = interceptor.times(resilienceOptions.retry);
-    if(resilienceOptions.delay) {
+    if (resilienceOptions.delay) {
       interceptor = interceptor.delay(resilienceOptions.delay);
     }
     interceptor.reply(500);
-    interceptor = scope.post(`/v2/${url}`, bodyMatcher).query(apiVersion ? { 'api-version': apiVersion } : {});
+    interceptor = scope
+      .post(`/v2/${url}`, bodyMatcher)
+      .query(apiVersion ? { 'api-version': apiVersion } : {});
   }
 
   if (!resilienceOptions?.retry && resilienceOptions?.delay) {
@@ -136,7 +139,11 @@ export function mockInference(
  */
 export function mockDeploymentsList(
   opts: DeploymentResolutionOptions,
-  ...deployments: { id: string; model?: FoundationModel; deploymentUrl?: string }[]
+  ...deployments: {
+    id: string;
+    model?: FoundationModel;
+    deploymentUrl?: string;
+  }[]
 ): nock.Scope {
   const nockOpts = {
     reqheaders: {

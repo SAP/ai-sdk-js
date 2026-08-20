@@ -7,11 +7,14 @@
   "printWidth": 80,
   "sortPackageJson": false,
   "ignorePatterns": [
+    ".changeset/",
     "node_modules/",
     "dist/",
     "dist-cjs/",
     "coverage/",
+    "test-util/data",
     "pnpm-lock.yaml",
+    "CHANGELOG.md",
     "packages/prompt-registry/src/zod"
   ],
   "overrides": [
