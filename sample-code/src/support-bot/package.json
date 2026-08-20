@@ -10,14 +10,6 @@
     "@opencode-ai/sdk": "^1.18.4",
     "opencode-ai": "^1.18.4"
   },
-  "devDependencies": {
-    "@types/node": "^22.0.0",
-    "typescript": "^5.0.0"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "packageManager": "pnpm@10.1.0",
   "pnpm": {
     "onlyBuiltDependencies": ["opencode-ai"]
   }
