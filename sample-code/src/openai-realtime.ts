@@ -1,4 +1,4 @@
-/* eslint-disable no-console, import-x/no-internal-modules */
+/* oxlint-disable no-console, import/no-internal-modules */
 import { spawn, spawnSync } from 'node:child_process';
 import readline from 'node:readline';
 import { styleText } from 'node:util';
