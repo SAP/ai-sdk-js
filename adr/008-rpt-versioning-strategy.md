@@ -13,7 +13,7 @@ The current `@sap-ai-sdk/rpt` package targets RPT-1.0. RPT-1.5 introduces breaki
 3. `ColumnType` enum expands from 3 to 16 values — any exhaustive switch/conditional in consumer code gains unhandled cases.
 4. `TargetColumnConfig` and `SchemaFieldConfig` gain `additionalProperties: false` — extra properties previously ignored now cause validation errors.
 
-Additionally, the RPT team has signaled that further breaking changes are expected in future versions (e.g. RPT-1.6 is already in progress). We need to decide how to structure our package(s) going forward.
+Additionally, the RPT team has signaled that further breaking changes are expected in future versions. We need to decide how to structure our package(s) going forward.
 
 The existing RPT-1.0 model names (`sap-rpt-1-small`, `sap-rpt-1-large`) are not yet deprecated and have a retirement date of no earlier than 2026-12-31, meaning 1.0 and 1.5 deployments will coexist for at least the remainder of 2026.
 
