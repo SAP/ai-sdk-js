@@ -35,10 +35,14 @@ jobs:
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
 
+      - name: Install support-bot deps
+        working-directory: ./sample-code/src/support-bot
+        run: pnpm install
+
       - name: Generate answer
         id: answer
         timeout-minutes: 5
-        working-directory: ./sample-code
+        working-directory: ./sample-code/src/support-bot
         env:
           AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +50,7 @@ jobs:
           ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
         run: |
-          pnpm exec node src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_NUMBER" > /tmp/answer.md
+          node reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_NUMBER"
 
       - name: Build Slack payload
         env:
