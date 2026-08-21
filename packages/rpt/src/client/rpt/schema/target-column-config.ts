@@ -15,13 +15,13 @@ export type TargetColumnConfig = {
   /**
    * The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.
    */
-  prediction_placeholder: string | number;
+  prediction_placeholder: string | number | null;
   /**
    * The type of prediction task for this column. If not provided, the model will infer the task type from the data.
    */
   task_type?: 'classification' | 'regression' | null;
   /**
-   * How many predictions to output per classification column.If not provided, only a single prediction is returned. Only relevant for classification.
+   * How many predictions to output for this classification column.If not provided, only a single prediction is returned. Only relevant for classification.
    */
   top_k?: number | null;
-} & Record<string, any>;
+};

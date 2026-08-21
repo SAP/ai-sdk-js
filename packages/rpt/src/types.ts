@@ -6,6 +6,7 @@ import type {
 import type {
   BodyPredictParquet,
   ColumnType as ColType,
+  ExplanationConfig,
   SchemaFieldConfig
 } from './client/rpt/index.ts';
 
@@ -25,14 +26,30 @@ export type DateString =
   `${number}${number}${number}${number}-${number}${number}-${number}${number}`;
 
 /**
+ * Represents a time string in the format hh:mm:ss.
+ */
+export type TimeString =
+  `${number}${number}:${number}${number}:${number}${number}`;
+
+/**
  * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
  * @template T - Type of the data schema.
  */
-type TsType<T extends ColType> = T extends 'numeric'
+type TsType<T extends ColType> = T extends
+  | 'numeric'
+  | 'integer'
+  | 'int16'
+  | 'int32'
+  | 'int64'
+  | 'uint8'
+  | 'decimal'
+  | 'double'
   ? number
   : T extends 'date'
     ? DateString
-    : string;
+    : T extends 'time'
+      ? TimeString
+      : string;
 
 /**
  * Represents the type of the `rows` property.
@@ -79,12 +96,16 @@ interface PredictionConfig<T extends DataSchema> {
     /**
      * The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.
      */
-    prediction_placeholder: string | number;
+    prediction_placeholder: string | number | null;
     /**
      * The type of prediction task for this column. If not provided, the model will infer the task type from the data.
      */
     task_type?: 'classification' | 'regression';
   }[];
+  /**
+   * Configuration for explainability. When provided, the server returns feature importance scores alongside predictions.
+   */
+  explanations?: ExplanationConfig;
 }
 
 /**
@@ -108,7 +129,7 @@ export type PredictionData<T extends DataSchema> = {
   index_column?: ColumnNames<T>;
   /**
    * Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
-   * Default: true.
+   * The RPT-1.5 server default is `false`. The SDK automatically uses `true` for RPT-1.0 model names unless explicitly overridden.
    */
   parse_data_types?: boolean;
 } & Xor<
