@@ -6,7 +6,8 @@ proposed
 
 ## Context
 
-The current `@sap-ai-sdk/rpt` package targets RPT-1.0. RPT-1.5 introduces breaking changes (detailed below).
+The current `@sap-ai-sdk/rpt` package targets RPT-1.0.
+RPT-1.5 introduces breaking changes (detailed below).
 
 The existing RPT-1.0 model names (`sap-rpt-1-small`, `sap-rpt-1-large`) are not yet deprecated and have a retirement date of no earlier than 2026-12-31, meaning 1.0 and 1.5 deployments will coexist for at least the remainder of 2026.
 
@@ -49,7 +50,9 @@ Cons:
 
 ### Additional Questions
 
-- **Should the SDK accept `prediction_config` as a JSON string on `/predict`?** The server accepts it despite the spec declaring a structured object only. **Decision: No** — the SDK exposes the typed object only; the string form is an undocumented server detail not surfaced to consumers.
+- **Should the SDK accept `prediction_config` as a JSON string on `/predict`?**
+  The server accepts it despite the spec declaring a structured object only.
+  **Decision: No** — the SDK exposes the typed object only; the string form is an undocumented server detail not surfaced to consumers.
 
 # Appendix
 
