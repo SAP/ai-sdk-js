@@ -50,7 +50,7 @@ jobs:
           ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
         run: |
-          node reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_NUMBER" > /tmp/answer.md
+          node reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_NUMBER"
 
       - name: Build Slack payload
         env:

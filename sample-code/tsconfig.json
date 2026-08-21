@@ -7,7 +7,12 @@
     "composite": true
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist/**/*", "**/*.test.ts", "node_modules/**/*", "src/support-bot/**/*"],
+  "exclude": [
+    "dist/**/*",
+    "**/*.test.ts",
+    "node_modules/**/*",
+    "src/support-bot/**/*"
+  ],
   "references": [
     {
       "path": "../packages/ai-api"
