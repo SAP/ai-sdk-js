@@ -21,6 +21,14 @@ import type {
   ParquetPayload
 } from './types.ts';
 
+const rpt1ModelNames = new Set<string>(['sap-rpt-1-small', 'sap-rpt-1-large']);
+
+function isRpt1Model(modelDeployment: ModelDeployment<SapRptModel>): boolean {
+  return (
+    typeof modelDeployment === 'string' && rpt1ModelNames.has(modelDeployment)
+  );
+}
+
 /**
  * Representation of an RPT client to make predictions.
  * @experimental This class is experimental and may change at any time without prior notice.
@@ -35,7 +43,7 @@ export class RptClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
+    modelDeployment: ModelDeployment<SapRptModel>,
     destination?: HttpDestinationOrFetchOptions
   ) {
     this.modelDeployment = modelDeployment;
@@ -136,7 +144,13 @@ export class RptClient {
             ])
           )
         : null,
-      ...predictionData
+      ...predictionData,
+      // backwards compatibility with RPT-1.0
+      // TODO: Remove once RPT-1.0 is no longer supported
+      ...(isRpt1Model(this.modelDeployment) &&
+        predictionData.parse_data_types === undefined && {
+          parse_data_types: true
+        })
     } satisfies PredictRequestPayload;
 
     const { compress, ...customRequestConfig } = requestConfig;

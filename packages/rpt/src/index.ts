@@ -1,6 +1,7 @@
 export * from './client.ts';
 export type {
   DateString,
+  TimeString,
   PredictionData,
   RowType,
   ColumnType,

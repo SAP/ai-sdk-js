@@ -5,9 +5,14 @@
  */
 
 import type { TargetColumnConfig } from './target-column-config.js';
+import type { ExplanationConfig } from './explanation-config.js';
 /**
  * Configuration of the prediction model.
  */
 export type PredictionConfig = {
   target_columns: TargetColumnConfig[];
+  /**
+   * Optional configuration for explainability outputs (column scores and relevant context rows).
+   */
+  explanations?: ExplanationConfig;
 };
