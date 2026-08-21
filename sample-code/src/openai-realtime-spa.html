@@ -985,6 +985,10 @@
           return;
         }
         if (!pttToggle.checked) return;
+        activatePtt();
+      }
+
+      function activatePtt() {
         pttActive = true;
         pttBtn.classList.add('active');
         pttBtn.setAttribute('aria-pressed', 'true');
@@ -992,14 +996,16 @@
       }
 
       function pttEnd() {
+        if (pendingAction?.type === 'ptt') {
+          pendingAction = null;
+        }
         if (!pttActive) return;
         pttActive = false;
         pttBtn.classList.remove('active');
         pttBtn.setAttribute('aria-pressed', 'false');
         finalizeVoiceBubble();
         if (ws?.readyState === WebSocket.OPEN && !responseInProgress) {
-          responseInProgress = true;
-          updateInputState();
+          setResponseInProgress(true);
           ws.send(JSON.stringify({ type: 'commit_audio' }));
         }
       }
@@ -1037,7 +1043,19 @@
         pttBtn.style.opacity = busy ? '0.4' : '';
       }
 
+      function setResponseInProgress(value) {
+        responseInProgress = value;
+        updateInputState();
+      }
+
       // ── Send text ──────────────────────────────────────────────────
+      function submitText(text) {
+        appendBubble('user').textContent = text;
+        textInput.value = '';
+        setResponseInProgress(true);
+        ws.send(JSON.stringify({ type: 'text_input', text }));
+      }
+
       function sendText() {
         const text = textInput.value.trim();
         if (!text || responseInProgress) return;
@@ -1046,11 +1064,7 @@
           connect();
           return;
         }
-        appendBubble('user').textContent = text;
-        textInput.value = '';
-        responseInProgress = true;
-        ws.send(JSON.stringify({ type: 'text_input', text }));
-        updateInputState();
+        submitText(text);
       }
 
       function handleKey(e) {
@@ -1070,7 +1084,8 @@
         const voice = voiceSelect.value;
         const ptt = pttToggle.checked;
 
-        ws = new WebSocket(`ws://${location.host}/openai-realtime/ws`);
+        const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+        ws = new WebSocket(`${protocol}//${location.host}/openai-realtime/ws`);
         ws.binaryType = 'arraybuffer';
 
         ws.onopen = () => {
@@ -1111,18 +1126,9 @@
               const action = pendingAction;
               pendingAction = null;
               if (action.type === 'text' && action.text) {
-                appendBubble('user').textContent = action.text;
-                textInput.value = '';
-                responseInProgress = true;
-                updateInputState();
-                ws.send(
-                  JSON.stringify({ type: 'text_input', text: action.text })
-                );
+                submitText(action.text);
               } else if (action.type === 'ptt' && pttToggle.checked) {
-                pttActive = true;
-                pttBtn.classList.add('active');
-                pttBtn.setAttribute('aria-pressed', 'true');
-                startVoiceBubble();
+                activatePtt();
               }
             }
           } else if (msg.type === 'speech_started') {
@@ -1189,8 +1195,7 @@
             }
           } else if (msg.type === 'done') {
             currentAiBubble = null;
-            responseInProgress = false;
-            updateInputState();
+            setResponseInProgress(false);
             updateMicHint();
             setStatus('Connected', 'connected');
           } else if (msg.type === 'error') {
@@ -1259,8 +1264,8 @@
         connecting = false;
         currentAiBubble = null;
         currentToolBubble = null;
-        responseInProgress = false;
-        updateInputState();
+        setResponseInProgress(false);
+        pendingAction = null;
         pttActive = false;
         finalizeVoiceBubble();
         micStream?.getTracks().forEach(t => t.stop());

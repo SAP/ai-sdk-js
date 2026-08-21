@@ -58,36 +58,24 @@ const instructions =
   'When asked about weather, use the get_weather tool and summarize the result in one short sentence.';
 
 function buildSessionUpdate(mode: Mode, voice = 'alloy') {
-  const tools = [getWeatherTool];
-
-  if (mode === 'speech' || mode === 'speech-ptt') {
-    return {
-      type: 'session.update' as const,
-      session: {
-        type: 'realtime' as const,
-        output_modalities: ['audio'] as ['audio'],
-        tools,
-        audio: {
-          input: {
-            format: { type: 'audio/pcm' as const, rate: 24000 as const },
-            turn_detection:
-              mode === 'speech' ? { type: 'server_vad' as const } : null
-          },
-          output: { voice }
-        },
-        instructions
-      }
-    };
-  }
-
-  // text-to-audio
   return {
     type: 'session.update' as const,
     session: {
       type: 'realtime' as const,
       output_modalities: ['audio'] as ['audio'],
-      tools,
-      audio: { output: { voice } },
+      tools: [getWeatherTool],
+      audio: {
+        ...(mode === 'text-to-audio'
+          ? {}
+          : {
+              input: {
+                format: { type: 'audio/pcm' as const, rate: 24000 as const },
+                turn_detection:
+                  mode === 'speech' ? { type: 'server_vad' as const } : null
+              }
+            }),
+        output: { voice }
+      },
       instructions
     }
   };
@@ -135,6 +123,19 @@ function sendJson(ws: WebSocket, payload: object): void {
   }
 }
 
+function appendAudio(client: SapOpenAiRealtimeWs, chunk: Buffer): void {
+  client.send({
+    type: 'input_audio_buffer.append',
+    audio: chunk.toString('base64')
+  });
+}
+
+function forwardTranscriptDelta(browserWs: WebSocket, delta?: string): void {
+  if (delta) {
+    sendJson(browserWs, { type: 'transcript', role: 'ai', delta });
+  }
+}
+
 export function attachRealtimeWs(server: Server): void {
   const wss = new WebSocketServer({ noServer: true });
 
@@ -156,12 +157,7 @@ export function attachRealtimeWs(server: Server): void {
       if (!client) {
         return;
       }
-      for (const chunk of audioQueue) {
-        client.send({
-          type: 'input_audio_buffer.append',
-          audio: chunk.toString('base64')
-        });
-      }
+      audioQueue.forEach(chunk => appendAudio(client!, chunk));
       audioQueue.length = 0;
     }
 
@@ -203,23 +199,86 @@ export function attachRealtimeWs(server: Server): void {
       (data, isBinary) => void handleMessage(data, isBinary)
     );
 
+    function handleAudio(data: RawData): void {
+      if (!client) {
+        return;
+      }
+      const chunk = toBuffer(data);
+      if (sessionReady) {
+        appendAudio(client, chunk);
+      } else {
+        audioQueue.push(chunk);
+      }
+    }
+
+    async function configure(mode: Mode, voice?: string): Promise<void> {
+      client?.close();
+      sessionReady = false;
+      audioQueue.length = 0;
+
+      let realtime: SapOpenAiRealtimeWs;
+      try {
+        realtime = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        sendJson(browserWs, { type: 'error', message });
+        browserWs.close();
+        return;
+      }
+      client = realtime;
+
+      realtime.on('error', err => {
+        sendJson(browserWs, { type: 'error', message: err.message });
+        browserWs.close();
+      });
+      realtime.on('session.created', () => {
+        realtime.send(buildSessionUpdate(mode, voice));
+      });
+      realtime.on('session.updated', () => {
+        if (sessionReady) {
+          return;
+        }
+        sessionReady = true;
+        flushAudioQueue();
+        sendJson(browserWs, { type: 'ready' });
+      });
+      realtime.on('input_audio_buffer.speech_started', () => {
+        sendJson(browserWs, { type: 'speech_started' });
+      });
+      realtime.on('input_audio_buffer.speech_stopped', () => {
+        sendJson(browserWs, { type: 'speech_stopped' });
+      });
+      realtime.on('response.output_audio.delta', e => {
+        if (e.delta) {
+          browserWs.send(Buffer.from(e.delta, 'base64'));
+        }
+      });
+
+      realtime.on('response.output_audio_transcript.delta', e =>
+        forwardTranscriptDelta(browserWs, e.delta)
+      );
+      realtime.on('response.output_text.delta', e =>
+        forwardTranscriptDelta(browserWs, e.delta)
+      );
+      realtime.on('response.function_call_arguments.done', e => {
+        sendJson(browserWs, {
+          type: 'tool_call',
+          name: e.name,
+          arguments: e.arguments
+        });
+        void resolveToolCall(realtime, e);
+      });
+      realtime.on('response.done', () => {
+        sendJson(browserWs, { type: 'done' });
+      });
+    }
+
     async function handleMessage(
       data: RawData,
       isBinary: boolean
     ): Promise<void> {
       if (isBinary) {
-        if (!client) {
-          return;
-        }
-        const chunk = toBuffer(data);
-        if (!sessionReady) {
-          audioQueue.push(chunk);
-        } else {
-          client.send({
-            type: 'input_audio_buffer.append',
-            audio: chunk.toString('base64')
-          });
-        }
+        handleAudio(data);
         return;
       }
 
@@ -232,80 +291,7 @@ export function attachRealtimeWs(server: Server): void {
       }
 
       if (msg.type === 'configure') {
-        client?.close();
-        sessionReady = false;
-        audioQueue.length = 0;
-        const { mode, voice } = msg;
-        let realtime: SapOpenAiRealtimeWs;
-        try {
-          realtime = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
-        } catch (err: unknown) {
-          const message = err instanceof Error ? err.message : String(err);
-          sendJson(browserWs, { type: 'error', message });
-          browserWs.close();
-          return;
-        }
-        client = realtime;
-
-        realtime.on('error', err => {
-          sendJson(browserWs, { type: 'error', message: err.message });
-          browserWs.close();
-        });
-
-        realtime.on('session.created', () => {
-          realtime.send(buildSessionUpdate(mode, voice));
-        });
-
-        // session.updated also fires on later session.update calls (e.g. set_ptt
-        // toggles) — only the first one means the session is ready for audio.
-        realtime.on('session.updated', () => {
-          if (sessionReady) {
-            return;
-          }
-          sessionReady = true;
-          flushAudioQueue();
-          sendJson(browserWs, { type: 'ready' });
-        });
-
-        realtime.on('input_audio_buffer.speech_started', () => {
-          sendJson(browserWs, { type: 'speech_started' });
-        });
-
-        realtime.on('input_audio_buffer.speech_stopped', () => {
-          sendJson(browserWs, { type: 'speech_stopped' });
-        });
-
-        realtime.on('response.output_audio.delta', e => {
-          if (e.delta) {
-            browserWs.send(Buffer.from(e.delta, 'base64'));
-          }
-        });
-
-        function forwardTranscriptDelta(delta?: string): void {
-          if (delta) {
-            sendJson(browserWs, { type: 'transcript', role: 'ai', delta });
-          }
-        }
-        realtime.on('response.output_audio_transcript.delta', e =>
-          forwardTranscriptDelta(e.delta)
-        );
-        realtime.on('response.output_text.delta', e =>
-          forwardTranscriptDelta(e.delta)
-        );
-
-        realtime.on('response.function_call_arguments.done', e => {
-          sendJson(browserWs, {
-            type: 'tool_call',
-            name: e.name,
-            arguments: e.arguments
-          });
-          void resolveToolCall(realtime, e);
-        });
-
-        realtime.on('response.done', () => {
-          sendJson(browserWs, { type: 'done' });
-        });
-
+        await configure(msg.mode, msg.voice);
         return;
       }
 
