@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 import express from 'express';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';

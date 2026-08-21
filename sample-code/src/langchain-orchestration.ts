@@ -3,7 +3,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   orchestrationPromptCachingMiddleware
-  // eslint-disable-next-line import-x/no-internal-modules
+  // oxlint-disable-next-line import/no-internal-modules
 } from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
 import {
   buildAzureContentSafetyFilter,
