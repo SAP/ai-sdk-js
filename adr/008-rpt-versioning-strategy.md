@@ -30,7 +30,8 @@ Cons:
 
 ### RPT-1.0 Compatibility Behavior
 
-The model name is always **required** — no default value is provided. The model name determines which generation of RPT behavior the SDK applies.
+The model name is always **required** — no default value is provided.
+The model name determines which generation of RPT behavior the SDK applies.
 
 The TypeScript type for the model name is a **strict union of known strings**:
 
@@ -40,9 +41,12 @@ The TypeScript type for the model name is a **strict union of known strings**:
 
 The 1.0 names (`sap-rpt-1-small`, `sap-rpt-1-large`) are marked `@deprecated` to nudge consumers toward 1.5 without breaking their build.
 
-The SDK infers the RPT generation from the model name at runtime. For RPT-1.0 model names the SDK silently injects `parse_data_types: true` as a request default (restoring the RPT-1.0 server default, which flipped to `false` in 1.5). An explicit user-supplied value always takes precedence over this injection.
+The SDK infers the RPT generation from the model name at runtime.
+For RPT-1.0 model names the SDK silently injects `parse_data_types: true` as a request default (restoring the RPT-1.0 server default, which flipped to `false` in 1.5).
+An explicit user-supplied value always takes precedence over this injection.
 
-All TypeScript request/response types are the RPT-1.5 types regardless of model name. RPT-1.0 consumers who pass 1.5-only fields (e.g. `explanations`) will compile successfully but receive a server-side error.
+All TypeScript request/response types are the RPT-1.5 types regardless of model name.
+RPT-1.0 consumers who pass 1.5-only fields (e.g. `explanations`) will compile successfully but receive a server-side error.
 
 ### Breaking Changes and SDK Handling
 
