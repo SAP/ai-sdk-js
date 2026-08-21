@@ -62,7 +62,8 @@ paths:
                 Comma-separated sorted list of Chat Completions parameters silently
                 dropped because they are not supported by the Responses API.
                 Present only when at least one parameter was dropped and
-                drop_unsupported_params is true (the default).
+                drop_unsupported_params is true (the default). Applies to both
+                synchronous (application/json) and streaming (text/event-stream) responses.
           content:
             application/json:
               schema:
