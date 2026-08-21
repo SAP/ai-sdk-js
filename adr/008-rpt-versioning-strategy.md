@@ -12,6 +12,20 @@ The existing RPT-1.0 model names (`sap-rpt-1-small`, `sap-rpt-1-large`) are not 
 
 We need to decide, how to handle such updates in the future.
 
+## Decision
+
+Bump `@sap-ai-sdk/rpt` to support RPT-1.5, issue a major version changeset documenting breaking changes, and drop RPT-1.0-specific behavior.
+
+Pros:
+
+- Single install, single import path — no consumer confusion about which package to use.
+- Maintenance overhead stays constant regardless of how many RPT versions the model team ships.
+- Follows the precedent set by other packages in this repo (e.g. `@sap-ai-sdk/foundation-models` ships all Azure OpenAI versions under one package).
+
+Cons:
+
+- Consumers pinned to RPT-1.0 deployments must stay on the old package version and cannot take newer SDK updates without also migrating their deployment.
+
 ### Breaking Changes and SDK Handling
 
 <!-- prettier-ignore -->
@@ -33,23 +47,9 @@ We need to decide, how to handle such updates in the future.
 | `Content-Encoding: gzip` formally documented on `/predict` | No action — compression middleware already handles this | Additive |
 | `ColumnType` expands from 3 to 16 values | Map new types in `types.ts` (integer variants → `number`, `boolean` → `boolean`, `timestamp`/`datetime` → `DateString`) | Additive — consumers gain access to extended type vocabulary |
 
-### Open Questions / Notes
+### Additional Questions
 
-- **Why was supporting `prediction_config` as a string on the `/predict` endpoint suggested in the BLI?** The current decision is to keep the typed object only (the spec does not support a string form here). But the BLI explicitly raises this — needs clarification from the author whether there is a concrete use case that motivated it, or whether it was prompted by the parquet endpoint situation.
-
-## Decision
-
-Bump `@sap-ai-sdk/rpt` to support RPT-1.5, issue a major version changeset documenting breaking changes, and drop RPT-1.0-specific behavior.
-
-Pros:
-
-- Single install, single import path — no consumer confusion about which package to use.
-- Maintenance overhead stays constant regardless of how many RPT versions the model team ships.
-- Follows the precedent set by other packages in this repo (e.g. `@sap-ai-sdk/foundation-models` ships all Azure OpenAI versions under one package).
-
-Cons:
-
-- Consumers pinned to RPT-1.0 deployments must stay on the old package version and cannot take newer SDK updates without also migrating their deployment.
+- **Should the SDK accept `prediction_config` as a JSON string on `/predict`?** The server accepts it despite the spec declaring a structured object only. **Decision: No** — the SDK exposes the typed object only; the string form is an undocumented server detail not surfaced to consumers.
 
 # Appendix
 
