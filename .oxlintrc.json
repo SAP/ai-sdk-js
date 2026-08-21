@@ -18,7 +18,7 @@
     "typeAware": true
   },
   "jsPlugins": [
-    { "name": "local", "specifier": "./eslint-plugins/no-uppercase-internal-tag.js" }
+    { "name": "local", "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js" }
   ],
   "ignorePatterns": [
     "**/*.d.ts",
@@ -270,7 +270,7 @@
         "typescript/no-unsafe-return": "off"
       },
       "jsPlugins": [
-        { "name": "local", "specifier": "./eslint-plugins/no-uppercase-internal-tag.js" }
+        { "name": "local", "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js" }
       ],
       "plugins": [
         "import",
