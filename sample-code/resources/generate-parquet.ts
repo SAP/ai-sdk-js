@@ -7,7 +7,7 @@
  * node generate-parquet.ts                    // Include all data (with [PREDICT] placeholders)
  * node generate-parquet.ts --no-predict       // Exclude rows with [PREDICT] placeholders
  */
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 
 import { join } from 'node:path';
 import { parquetWriteFile } from 'hyparquet-writer';
