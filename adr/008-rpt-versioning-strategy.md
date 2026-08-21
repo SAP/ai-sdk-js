@@ -15,17 +15,34 @@ We need to decide, how to handle such updates in the future.
 
 ## Decision
 
-Bump `@sap-ai-sdk/rpt` to support RPT-1.5, issue a major version changeset documenting breaking changes, and drop RPT-1.0-specific behavior.
+Bump `@sap-ai-sdk/rpt` to support RPT-1.5, issue a major version changeset documenting breaking changes, and maintain backward compatibility for RPT-1.0 deployments within the same package.
 
 Pros:
 
 - Single install, single import path — no consumer confusion about which package to use.
 - Maintenance overhead stays constant regardless of how many RPT versions the model team ships.
 - Follows the precedent set by other packages in this repo (e.g. `@sap-ai-sdk/foundation-models` ships all Azure OpenAI versions under one package).
+- Consumers on RPT-1.0 deployments can upgrade the SDK without migrating their deployment immediately.
 
 Cons:
 
-- Consumers pinned to RPT-1.0 deployments must stay on the old package version and cannot take newer SDK updates without also migrating their deployment.
+- The package must maintain version-detection and request-patching logic until the RPT-1.0 retirement date (no earlier than 2026-12-31).
+
+### RPT-1.0 Compatibility Behavior
+
+The model name is always **required** — no default value is provided. The model name determines which generation of RPT behavior the SDK applies.
+
+The TypeScript type for the model name is a **strict union of known strings**:
+
+```ts
+'sap-rpt-1-small' | 'sap-rpt-1-large' | 'sap-rpt-1.5' | 'sap-rpt-1.5-large'
+```
+
+The 1.0 names (`sap-rpt-1-small`, `sap-rpt-1-large`) are marked `@deprecated` to nudge consumers toward 1.5 without breaking their build.
+
+The SDK infers the RPT generation from the model name at runtime. For RPT-1.0 model names the SDK silently injects `parse_data_types: true` as a request default (restoring the RPT-1.0 server default, which flipped to `false` in 1.5). An explicit user-supplied value always takes precedence over this injection.
+
+All TypeScript request/response types are the RPT-1.5 types regardless of model name. RPT-1.0 consumers who pass 1.5-only fields (e.g. `explanations`) will compile successfully but receive a server-side error.
 
 ### Breaking Changes and SDK Handling
 
