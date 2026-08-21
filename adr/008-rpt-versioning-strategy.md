@@ -68,4 +68,4 @@ Cons:
 - Package proliferation — each new RPT version adds a new package to the registry, the repo, and the release pipeline.
 - Consumers must know which package name corresponds to their deployment version, adding discovery friction.
 - Shared improvements (bug fixes, new SDK features) must be backported to every active package rather than landing once.
-- Increases maintenance surface unboundedly as the number of supported RPT versions grows.
+- Increases maintenance surface without bound as the number of supported RPT versions grows.
