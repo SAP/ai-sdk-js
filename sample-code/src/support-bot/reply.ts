@@ -1,6 +1,6 @@
 import { createOpencode } from '@opencode-ai/sdk';
 import type { TextPart } from '@opencode-ai/sdk';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, symlinkSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SDK_KNOWLEDGE } from './knowledge.ts';
@@ -112,17 +112,34 @@ const AGENT_SYSTEM_PROMPT = [
 // Escape {{ to prevent potential template parsing issues in system prompts
 const esc = (s: string) => s.replaceAll('{{', '{ {');
 
-let opencodeInstance: Awaited<ReturnType<typeof createOpencode>> | null = null;
+type OpencodeInstance = Awaited<ReturnType<typeof createOpencode>>;
+let opencodeInstance: OpencodeInstance | null = null;
 
 export async function initAgent(): Promise<void> {
+  // Ensure opencode binary is on PATH. The postinstall script has a bug where it
+  // names the binary opencode.exe on all platforms; create an `opencode` symlink if missing.
+  const binDir = resolve(__dirname, '../../../node_modules/opencode-ai/bin');
+  const exePath = resolve(binDir, 'opencode.exe');
+  const binPath = resolve(binDir, 'opencode');
+  if (existsSync(exePath) && !existsSync(binPath)) {
+    symlinkSync('opencode.exe', binPath);
+    console.log('[support-bot] created opencode symlink in bin/');
+  }
+  if (!process.env.PATH?.includes(binDir)) {
+    process.env.PATH = `${binDir}:${process.env.PATH ?? ''}`;
+  }
+
+  console.log('[support-bot] starting opencode server...');
   const config = JSON.parse(
     readFileSync(resolve(__dirname, 'opencode.json'), 'utf8')
   );
-  opencodeInstance = await createOpencode({ port: 4097, config });
+  opencodeInstance = await createOpencode({ port: 0, config });
+  console.log('[support-bot] opencode server ready');
 }
 
 export async function closeAgent(): Promise<void> {
-  await opencodeInstance?.kill();
+  console.log('[support-bot] shutting down opencode server...');
+  opencodeInstance?.server.close();
   opencodeInstance = null;
 }
 
@@ -148,6 +165,7 @@ export async function askBot(
     .filter(Boolean)
     .join('\n\n');
 
+  console.log('[support-bot] draft pass...');
   // Draft pass — opencode runs the full tool-calling agent loop internally
   await client.session.prompt({
     path: { id },
@@ -158,6 +176,7 @@ export async function askBot(
     }
   });
 
+  console.log('[support-bot] self-verify pass...');
   // Self-verify pass — tools still available, model re-checks its claims against source
   await client.session.prompt({
     path: { id },
@@ -167,6 +186,7 @@ export async function askBot(
     }
   });
 
+  console.log('[support-bot] collecting answer...');
   // Collect the verified answer
   const verifyResult = await client.session.prompt({
     path: { id },
@@ -185,6 +205,7 @@ export async function askBot(
   // Completeness check: ## Related Issues heading must be present.
   // "No related issues found." is valid — a missing heading means the loop ended prematurely.
   if (!/related issues/i.test(answer)) {
+    console.log('[support-bot] completeness check: forcing final synthesis...');
     const final = await client.session.prompt({
       path: { id },
       body: {
@@ -203,10 +224,13 @@ export async function askBot(
     answer = extractText(final);
   }
 
+  console.log('[support-bot] answer ready (' + answer.length + ' chars)');
   return answer;
 }
 
-function extractText(result: { data?: { parts?: Array<{ type: string; text?: string }> } }): string {
+function extractText(result: {
+  data?: { parts?: { type: string; text?: string }[] };
+}): string {
   return (result.data?.parts ?? [])
     .filter((p): p is TextPart => p.type === 'text')
     .map(p => p.text)
@@ -283,14 +307,14 @@ function parseIssueBody(body: string) {
 
 // ── Entry point ───────────────────────────────────────────────────────────────
 
-const title = process.argv[2];
+const issueTitle = process.argv[2];
 const rawBody = process.argv[3] ?? '';
 const issueNumber = process.argv[4]
   ? Number.parseInt(process.argv[4], 10)
   : undefined;
 
-if (!title) {
-  console.error('Usage: node reply.ts "<title>" ["<body>"] [<issue_number>]');
+if (!issueTitle) {
+  console.log('Usage: node reply.ts "<title>" ["<body>"] [<issue_number>]');
   process.exit(1);
 }
 
@@ -306,10 +330,21 @@ const enrichedBody = [
   .join('\n\n');
 
 // H-1: closeAgent() always runs — even if askBot() throws
+const OUTPUT_FILE = process.env.ANSWER_FILE ?? '/tmp/answer.md';
+let exitCode = 0;
 try {
   await initAgent();
-  const answer = await askBot(title, enrichedBody || undefined, issueNumber);
-  process.stdout.write(answer);
+  const answer = await askBot(
+    issueTitle,
+    enrichedBody || undefined,
+    issueNumber
+  );
+  writeFileSync(OUTPUT_FILE, answer);
+  console.log('[support-bot] final answer written to ' + OUTPUT_FILE);
+} catch (err) {
+  console.error('[support-bot] error:', err);
+  exitCode = 1;
 } finally {
   await closeAgent();
 }
+process.exit(exitCode);
