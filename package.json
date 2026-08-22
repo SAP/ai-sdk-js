@@ -49,7 +49,7 @@
     "@sap-cloud-sdk/util": "4.8.0",
     "@types/node": "22.20.1",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/coverage-v8": "4.1.11",
     "jose": "6.2.9",
     "knip": "6.32.2",
     "memfs": "4.68.1",
@@ -60,7 +60,7 @@
     "oxlint-tsgolint": "7.0.2001",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vitest": "4.1.10",
+    "vitest": "4.1.11",
     "zod": "4.4.3"
   }
 }
