@@ -12,7 +12,6 @@ import type {
   EmbeddingsUsage,
   ModuleResultsBase
 } from '@sap-ai-sdk/orchestration/internal.js';
-
 /**
  * Basic Embedding Client Construction.
  */
@@ -285,3 +284,56 @@ expectError<EmbeddingData>({
   embedding: [0.1, 0.2],
   index: 0
 });
+
+/**
+ * encoding_format accepts a single value or an array (Cohere multi-format support).
+ */
+expectAssignable<EmbeddingModelDetails>({
+  name: 'cohere--single-serving-embed',
+  params: {
+    encoding_format: 'float'
+  }
+});
+
+expectAssignable<EmbeddingModelDetails>({
+  name: 'cohere--single-serving-embed',
+  params: {
+    encoding_format: ['float', 'int8']
+  }
+});
+
+expectAssignable<EmbeddingModelDetails>({
+  name: 'cohere--single-serving-embed',
+  params: {
+    encoding_format: ['float', 'int8', 'uint8', 'binary', 'ubinary', 'base64']
+  }
+});
+
+/**
+ * Error: encoding_format with invalid value should fail.
+ */
+expectError(
+  new OrchestrationEmbeddingClient({
+    embeddings: {
+      model: {
+        name: 'text-embedding-3-small',
+        params: {
+          encoding_format: 'invalid-format'
+        }
+      }
+    }
+  })
+);
+
+expectError(
+  new OrchestrationEmbeddingClient({
+    embeddings: {
+      model: {
+        name: 'text-embedding-3-small',
+        params: {
+          encoding_format: ['float', 'invalid-format']
+        }
+      }
+    }
+  })
+);
