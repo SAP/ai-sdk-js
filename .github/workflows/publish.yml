@@ -1,5 +1,10 @@
 # For trusted publishing releases, it is required to start all releases from a single workflow file.
 # This workflow delegates to the appropriate release workflow based on the event that triggered it.
+#
+# Environment protection matrix:
+# - Regular release: needs approval, needs to run on main/protected branch.
+# - Scheduled canary release: no approval, needs to run on main/protected branch.
+# - Manual canary release: needs approval, no branch restrictions.
 name: publish
 
 on:
@@ -20,8 +25,26 @@ on:
 permissions: {}
 
 jobs:
+  approval:
+    name: Approve Release
+    runs-on: ubuntu-latest
+    # Scheduled releases may continue without approval but needs to run on main/protected branch,
+    # and other types of releases need approval but can run on any branch, unless they have extra dependencies
+    # such as ensure-main, which needs to run on main/protected branch.
+    environment: ${{ case(github.event_name == 'schedule', 'ensure-main', 'approve-release') }}
+    steps:
+      - run: echo "Approved"
+
+  ensure-main:
+    if: ${{ github.event_name == 'release' }}
+    environment: ensure-main
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Ensuring that the official release is running on the main branch"
+
   delegate_to_release_job:
     if: ${{ github.event_name == 'release' }}
+    needs: [approval, ensure-main]
     permissions:
       contents: read
       id-token: write
@@ -32,6 +55,7 @@ jobs:
 
   delegate_to_canary_job:
     if: ${{ github.event_name != 'release' }}
+    needs: [approval]
     permissions:
       contents: read
       id-token: write
