@@ -1,0 +1,102 @@
+# Tabular orchestration SDK Release Strategy
+
+## Status
+
+proposed
+
+## Context
+
+Providing SDK clients for the Tabular Orchestration APIs is a significant undertaking.
+The work consists of two main public surfaces:
+
+- the prediction client, generated from one OpenApi specification; and
+- the context-registry client, generated from nine specifications covering synchronous and asynchronous operations.
+
+Neither client is strictly required to implement the other.
+The prediction client can accept existing scenario configuration names, while the context-registry client is useful independently for managing data destinations, tabular artifacts, and scenarios.
+However, an end-to-end workflow commonly uses both: create or discover context, configure a scenario, and submit a prediction.
+
+Release order and implementation order are separate decisions.
+The prediction and context-registry clients can be tracked, implemented, reviewed, and released as independent efforts.
+
+## Decision
+
+No decision has been accepted yet.
+
+The current recommendation is **Option D**: create independent tickets for the prediction and context-registry clients and release each client as soon as it satisfies its own release criteria.
+Neither client should wait for the other solely to preserve a predetermined release order.
+
+## Discussion
+
+### Question 1: Client Release Order
+
+#### Option A: Prediction Client First
+
+Release the prediction client before the context-registry client.
+Users initially provide existing scenario configuration names and manage registry resources through other tooling or direct API calls.
+
+**Pros:**
+
+- Delivers the primary prediction capability earlier.
+- Has a smaller generation surface: one specification and one main operation.
+- Allows feedback on prediction request types, model handling, and package boundaries before the larger registry API is finalized.
+
+**Cons:**
+
+- Does not initially provide a complete SDK-only setup workflow.
+- Samples depend on pre-existing registry resources or temporary direct API usage.
+- Prediction-client design remains exposed to unresolved changes in scenario and artifact contracts.
+
+#### Option B: Context Registry First
+
+Release the context-registry client before the prediction client.
+
+**Pros:**
+
+- Establishes resource-management primitives before prediction workflows depend on them.
+- Gives users value for provisioning and managing data destinations, artifacts, and scenarios independently of prediction.
+- Exercises the more complex specification merge and asynchronous behavior early.
+
+**Cons:**
+
+- Delays the primary prediction use case.
+- Requires resolving nine specifications, shared schemas, internal API elements, and polling behavior before the first release.
+- Early users cannot complete a prediction workflow using only the new SDK surface.
+
+#### Option C: Release Both Clients Together
+
+Hold both clients until a coordinated release provides the complete workflow.
+
+**Pros:**
+
+- Delivers one coherent end-to-end experience.
+- Allows package names, shared concepts, examples, and compatibility expectations to be reviewed together.
+- Avoids a temporary state in which documentation relies on unsupported setup paths.
+
+**Cons:**
+
+- The less mature contract blocks the entire release.
+- Increases the initial review, test, and documentation scope.
+- Delays user feedback that could improve either client independently.
+
+#### Option D: Independent Efforts, Release When Ready
+
+Create separate delivery tickets for the prediction and context-registry clients.
+Each effort has its own owner, scope, review, tests, documentation, and release criteria.
+Work may proceed concurrently or at different times depending on available capacity.
+The first client to become release-ready is released first; the other follows when ready.
+
+This is a first-completed, first-released strategy rather than a commitment to parallel completion or a coordinated launch.
+
+**Pros:**
+
+- Avoids blocking one client on unresolved work in the other.
+- Allows ownership and scheduling to follow available capacity.
+- Delivers whichever usable client matures first without predicting that order upfront.
+- Keeps each ticket, review, and release milestone focused.
+
+**Cons:**
+
+- The first release may not provide a complete SDK-only workflow.
+- Shared package naming, concepts, and documentation still require coordination.
+

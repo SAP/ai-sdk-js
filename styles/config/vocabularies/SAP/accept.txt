@@ -25,6 +25,9 @@ JCo
 OAuth
 API's
 SDK's
+RPT's
+explainability
+subpath
 SAMLAssertion
 zoneId
 CRDs
