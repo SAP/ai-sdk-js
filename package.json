@@ -37,7 +37,7 @@
     "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
   "devDependencies": {
-    "@changesets/cli": "3.0.0",
+    "@changesets/cli": "3.0.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
