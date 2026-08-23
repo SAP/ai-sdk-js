@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@langchain/core": "1.2.8",
-    "@langchain/langgraph": "1.4.10",
+    "@langchain/langgraph": "1.4.11",
     "langchain": "1.5.9",
     "vitest": "4.1.11",
     "zod": "4.4.3"
