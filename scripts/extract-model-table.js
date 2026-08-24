@@ -69,18 +69,24 @@
 
   function findBatchTable() {
     // Find the first table after the "Batch Consumption Supported Models" heading
-    const allElements = Array.from(
-      document.querySelectorAll('strong, b, h1, h2, h3, h4, h5, h6, table')
+     const headingWalker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_ELEMENT,
+        el => el.matches('strong, b, h1, h2, h3, h4, h5, h6') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+      );
+
+    let heading = headingWalker.nextNode()
+    for (; !heading.textContent.trim().toLowerCase().includes('batch consumption'); heading = headingWalker.nextNode()) {}
+  
+    const walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_ELEMENT,
+      el => el.matches('table') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
     );
-    let foundHeading = false;
-    for (const el of allElements) {
-      if (el.tagName === 'TABLE') {
-        if (foundHeading) return el;
-      } else if (el.textContent.trim().toLowerCase().includes('batch consumption')) {
-        foundHeading = true;
-      }
-    }
-    return undefined;
+  
+    walker.currentNode = heading;
+    return walker.nextNode()
+  
   }
 
   function extractBatchRows(allRows) {
