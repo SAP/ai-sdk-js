@@ -1,4 +1,4 @@
-# Tabular Orchestration Prediction SDK
+# Tabular Orchestration Prediction Client
 
 ## Status
 

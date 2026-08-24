@@ -1,4 +1,4 @@
-# Context Registry SDK
+# Context Registry Client
 
 ## Status
 
