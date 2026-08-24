@@ -1,13 +1,15 @@
 /* oxlint-disable no-console */
-import { resolve, basename } from 'node:path';
+import { resolve, join } from 'node:path';
 import { transformFile } from './util.ts';
 
-const filePaths = process.argv.slice(2);
+const clientDir = process.argv[2];
 
-if (!filePaths.length) {
-  console.error('Please provide at least one API file path as an argument.');
+if (!clientDir) {
+  console.error('Please provide the batch-service client directory path as an argument.');
   process.exit(1);
 }
+
+const dir = resolve(clientDir);
 
 const replaceOrFail = (content: string, from: string, to: string, fileName: string): string => {
   const next = content.replace(from, to);
@@ -20,36 +22,27 @@ const replaceOrFail = (content: string, from: string, to: string, fileName: stri
   return next;
 };
 
-for (const filePath of filePaths) {
-  const resolvedPath = resolve(filePath);
-  const fileName = basename(resolvedPath);
+await transformFile(join(dir, 'batches-api.ts'), file =>
+  file.replace(
+    "* This API is part of the 'batch-service' service.",
+    "* This API is part of the 'llm-batch' service.\n * @experimental This API is experimental and may change at any time without prior notice."
+  )
+);
+console.log('batches-api.ts: processed successfully.');
 
-  if (fileName === 'batches-api.ts') {
-    await transformFile(resolvedPath, file =>
-      file.replace(
-        "* This API is part of the 'batch-service' service.",
-        "* This API is part of the 'llm-batch' service.\n * @experimental This API is experimental and may change at any time without prior notice."
-      )
-    );
-  } else if (fileName === 'batch-create-request.ts') {
-    // Assert each replacement actually matched. If the generator changes its
-    // output format (JSDoc wording, indentation), a silent no-op would revert
-    // the file to `model: string` without the LlmBatchModel import — fail loudly
-    // instead so the anchor can be updated.
-    await transformFile(resolvedPath, file => {
-      let next = replaceOrFail(
-        file,
-        "\n/**\n * Representation of the 'BatchCreateRequest' schema.\n */",
-        "\nimport type { LlmBatchModel } from '@sap-ai-sdk/core';\n\n/**\n * Representation of the 'BatchCreateRequest' schema.\n */",
-        fileName
-      );
-      next = replaceOrFail(next, '    model: string;', '    model: LlmBatchModel;', fileName);
-      return next;
-    });
-  } else {
-    console.error(`Unknown file: ${fileName}`);
-    process.exit(1);
-  }
-
-  console.log(`${fileName}: processed successfully.`);
-}
+// Assert each replacement actually matched. If the generator changes its
+// output format (JSDoc wording, indentation), a silent no-op would revert
+// the file to `model: string` without the LlmBatchModel import — fail loudly
+// instead so the anchor can be updated.
+await transformFile(join(dir, 'schema/batch-create-request.ts'), file => {
+  const fileName = 'batch-create-request.ts';
+  let next = replaceOrFail(
+    file,
+    "\n/**\n * Representation of the 'BatchCreateRequest' schema.\n */",
+    "\nimport type { LlmBatchModel } from '@sap-ai-sdk/core';\n\n/**\n * Representation of the 'BatchCreateRequest' schema.\n */",
+    fileName
+  );
+  next = replaceOrFail(next, '    model: string;', '    model: LlmBatchModel;', fileName);
+  return next;
+});
+console.log('batch-create-request.ts: processed successfully.');
