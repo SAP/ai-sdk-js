@@ -1,5 +1,19 @@
 # @sap-ai-sdk/orchestration
 
+## 2.15.0
+
+### Minor Changes
+
+- b61cb53: [compat] Deprecate `OrchestrationConfigRef` — use `OrchestrationConfigRefById` or `OrchestrationConfigRefByName` instead.
+- b61cb53: [feat] Split `OrchestrationConfigRef` into `OrchestrationConfigRefById` and `OrchestrationConfigRefByName`.
+
+### Patch Changes
+
+- Updated dependencies [a5407c8]
+  - @sap-ai-sdk/core@2.15.0
+  - @sap-ai-sdk/ai-api@2.15.0
+  - @sap-ai-sdk/prompt-registry@2.15.0
+
 ## 2.14.0
 
 ### Minor Changes

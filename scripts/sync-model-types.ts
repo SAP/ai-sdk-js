@@ -3,7 +3,7 @@
  * LiteralUnion type blocks in packages/core/src/model-types.ts.
  * Run: node scripts/sync-model-types.ts
  */
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';

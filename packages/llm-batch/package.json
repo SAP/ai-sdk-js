@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/llm-batch",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -50,6 +50,6 @@
     "@sap-ai-sdk/core": "workspace:^"
   },
   "devDependencies": {
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   }
 }

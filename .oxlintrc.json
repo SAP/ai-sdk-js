@@ -18,7 +18,7 @@
   "jsPlugins": [
     {
       "name": "local",
-      "specifier": "./eslint-plugins/no-uppercase-internal-tag.js"
+      "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js"
     }
   ],
   "ignorePatterns": [
@@ -254,7 +254,7 @@
       "jsPlugins": [
         {
           "name": "local",
-          "specifier": "./eslint-plugins/no-uppercase-internal-tag.js"
+          "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js"
         }
       ],
       "plugins": ["import", "jsdoc"]

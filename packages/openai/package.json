@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "publishConfig": {
     "tag": "beta",
     "access": "public"
@@ -70,6 +70,6 @@
     "@types/ws": "8.18.1",
     "openai": "7.4.0",
     "ws": "8.21.3",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   }
 }
