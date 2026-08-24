@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { RTABackendDetails } from './rta-backend-details.js';
 /**
  * Representation of the 'RTADeploymentDetails' schema.

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { MSSharePointPipelineMinimalResponse } from './ms-share-point-pipeline-minimal-response.js';
 import type { S3PipelineMinimalResponse } from './s-3-pipeline-minimal-response.js';
 import type { SFTPPipelineMinimalResponse } from './sftp-pipeline-minimal-response.js';

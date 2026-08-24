@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { RTAExecutionId } from './rta-execution-id.js';
 import type { RTAArtifactUrl } from './rta-artifact-url.js';
 import type { RTAArtifactSignature } from './rta-artifact-signature.js';
