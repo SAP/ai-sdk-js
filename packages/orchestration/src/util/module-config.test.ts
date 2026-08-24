@@ -120,7 +120,7 @@ describe('stream util tests', () => {
       }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // oxlint-disable-next-line no-unused-vars
     const { promptTemplating, ...streamOptions } = defaultStreamOptions;
 
     const expectedOrchestrationConfig: OrchestrationConfig = {
