@@ -68,7 +68,7 @@ The RPT coupling is visible in three places:
 - Context selection and target-column semantics are only agnostic if every supported model gives them the same meaning.
   The current RPT docs document RPT limits, jointly predicted columns, and RPT-specific explainability; Other model providers may not share an equivalent shared contract.
 
-That means changing the enum to accept another string would make the client appear agnostic without making its types or behavior agnostic.
+That means, once the TFMEnum other models, it would make the client appear agnostic without making its types or behavior agnostic.
 It would move incompatibilities to runtime validation and to the untyped `modelConfig` object.
 
 #### Option A: Generic generated client only
