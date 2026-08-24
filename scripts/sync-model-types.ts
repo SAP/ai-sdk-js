@@ -46,8 +46,8 @@ const MODEL_TYPES_PATH = resolve(
 const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
   'gpt-4o-mini',    // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14 (chat only; still valid for LlmBatchModel via sap-batch-models.json)
-  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14 (chat only; still valid for LlmBatchModel via sap-batch-models.json)
+  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14
+  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14
   'o3',             // Intentionally removed — retiring 2026-10-16
   'o4-mini',        // Intentionally removed — retiring 2026-10-16
   'gpt-realtime',   // WebSocket-based, not a standard chat completion model
