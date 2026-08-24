@@ -55,13 +55,13 @@ Release the context-registry client before the prediction client.
 
 - Establishes resource-management primitives before prediction workflows depend on them.
 - Gives users value for provisioning and managing data destinations, artifacts, and scenarios independently of prediction.
-- Exercises the more complex specification merge and asynchronous behavior early.
+- Exercises the more complex specification merge and asynchronous behavior first.
 
 **Cons:**
 
 - Delays the primary prediction use case.
 - Requires resolving nine specifications, shared schemas, internal API elements, and polling behavior before the first release.
-- Early users cannot complete a prediction workflow using only the new SDK surface.
+- Users of the initial release cannot complete any predictions or verify that the configured registry resources meet their needs in a prediction scenario.
 
 #### Option C: Release Both Clients Together
 

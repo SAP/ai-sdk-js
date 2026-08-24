@@ -50,6 +50,7 @@ GUIDs
 Blust
 Streifeneder
 ESM
+PoC
 
 subaccount
 microservices
@@ -126,6 +127,8 @@ subscribable
 Sandeep
 browserified
 untrusted
+async
+handwrite
 
 v2
 v4

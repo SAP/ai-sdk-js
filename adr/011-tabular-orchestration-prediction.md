@@ -6,7 +6,7 @@ proposed
 
 ## Context
 
-The prediction SDK is generated from one OpenApi specification, but the checked-in contract and the current Tabular Orchestration v2 documentation are not demonstrably the same contract.
+The prediction SDK is generated from one OpenApi specification, but the checked-in contract and the current Tabular Orchestration v2 documentation are not demonstrably the same.
 The checked-in specification identifies itself as version `1.6.0` and already uses `/v1/predict`, but it still:
 
 - generates a request builder that calls `/predict` rather than `/v1/predict`;
@@ -18,8 +18,24 @@ The checked-in specification identifies itself as version `1.6.0` and already us
 The exact documentation and specification revisions used for this comparison have not been pinned.
 They must be captured before this ADR is accepted.
 
-The current client is therefore strongly coupled to an RPT-style contract.
-Significant changes may be required to support other models, putting both the public client design and package boundary at risk.
+### Generated client
+
+The generated prediction client is usable but low-level.
+Its default operation name follows the specification's `operationId` (`PredictApi.predictV1PredictPost`). 
+It can be replaced with `x-sap-cloud-sdk-operation-name` in the specification, so naming is a specification concern rather than a client-design concern.
+The design concern is the RPT-specific shape encoded in the types: a closed `TFMEnum`, `ContextSelectionConfig.filterConditions`, and an untyped `ModelConfig`.
+Prediction also runs against a discovered deployment URL rather than the AI Core base destination.
+The consumer must therefore resolve the running deployment and override the destination URL, unless they create a custom destination in the destination service.
+These are the problems a convenience layer would address and are the reason for Question 2.
+
+The concern is not that only SAP RPT is supported today; a single supported model is expected at this stage.
+The concern is that the contract shape is RPT-specific, not just its model list.
+This includes the closed `TFMEnum`, the RPT-oriented `modelConfig` fields, and RPT-specific context and explainability semantics.
+A different model may not share this shape.
+Another tabular model could require a different request and response contract, such as an in-context training-and-test payload instead of RPT's scenario and context-selection model, as well as a different execution model.
+The service could reconcile such differences server-side, mapping a shared request to each provider's contract.
+However, there is no finalized specification for that reconciliation, and it is not clear that it will be something that the service strives for.
+As long as the overall shape, not only the enumerated values, is RPT-first, supporting a structurally different model could require significant changes to the public client design and package boundary.
 The model-name extensibility concern shared by generated clients is tracked in [ADR-009](./009-tabular-orchestration-release-strategy.md).
 
 ## Decision
@@ -68,7 +84,7 @@ The RPT coupling is visible in three places:
 - Context selection and target-column semantics are only agnostic if every supported model gives them the same meaning.
   The current RPT docs document RPT limits, jointly predicted columns, and RPT-specific explainability; Other model providers may not share an equivalent shared contract.
 
-That means, once the TFMEnum other models, it would make the client appear agnostic without making its types or behavior agnostic.
+That means, once the `TFMEnum` includes other models, it would make the client appear agnostic without making its types or behavior agnostic.
 It would move incompatibilities to runtime validation and to the untyped `modelConfig` object.
 
 #### Option A: Generic generated client only
@@ -99,7 +115,18 @@ await client.predict({
 ```
 
 This is the smallest neutral API, but `providerConfig` remains an escape hatch.
+`providerConfig` differs from today's `modelConfig` in intent, not shape.
+It is meant to carry provider-scoped settings that may extend beyond the fields `modelConfig` currently forwards, but it remains an untyped bag.
+It could eventually have TypeScript convenience types for known providers.
+It also assumes providers share the same top-level request.
+A provider whose request differs structurally, for example a training-and-test payload rather than scenario and rows, fits this shape only if the service reconciles the difference server-side.
+One possible mechanism would be the context registry and a context selector that assembles the training and test data the provider expects.
+Without that reconciliation, the provider does not fit inside `providerConfig`; it breaks the neutral shape rather than extending it.
 It is appropriate for a transport SDK and for newly introduced providers, not a good developer experience for provider-specific features.
+
+Full harmonization across providers may not be achievable.
+The existing Orchestration service already exposes provider-specific configuration that conflicts with a single neutral shape.
+An untyped escape hatch is therefore necessary regardless of the option chosen; the choice is how this gap is bridged in the public API.
 
 #### Option B: Neutral core with typed provider profiles
 
@@ -168,6 +195,8 @@ They still reuse the SAP Cloud SDK runtime for destination resolution, request e
 This is the simplest boundary when provider contracts differ substantially or evolve independently.
 It avoids a lowest-common-denominator abstraction, but consumers that support multiple providers must define their own abstraction and provider switching is not uniform.
 
+Even under this boundary, the orchestration value of the service is not lost: for models that share the RPT-style contract a unified client remains possible, and consumers still gain access to prediction inputs through the context-registry service.
+
 ### Question 2: Level of Convenience
 
 Recommended Option B: a thin convenience client that mirrors the current RPT client.
@@ -185,7 +214,7 @@ such as `predictV1PredictPost`.
 #### Option B: Prediction convenience client
 
 Add a thin client that mirrors the convenience of the current RPT client.
-In general the API-design is similar.
+In general, the API design is similar.
 
 ### Question 3: Package Boundary
 
