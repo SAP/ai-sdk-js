@@ -33,7 +33,7 @@ export type TimeString =
   `${number}${number}:${number}${number}:${number}${number}`;
 
 /**
- * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
+ * Maps the type from the spec to a TypeScript type.
  * @template T - Type of the data schema.
  */
 type TsType<T extends ColType> = T extends
