@@ -108,11 +108,6 @@ and optional features:
 
 ```ts
 const client = new TabularOrchestrationClient({ destination });
-await client.predict({
-  model: { name: 'sap-rpt-1.5' },
-  scenarioConfigName,
-  rows,
-  targets: [{ name: 'salesgroup', task: 'classification' }]
 });
 
 const rpt = new RptProvider(client);
