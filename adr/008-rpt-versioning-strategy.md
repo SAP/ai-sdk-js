@@ -39,7 +39,6 @@ The TypeScript type for the model name is a **strict union of known strings**:
 'sap-rpt-1-small' | 'sap-rpt-1-large' | 'sap-rpt-1.5' | 'sap-rpt-1.5-large'
 ```
 
-The 1.0 names (`sap-rpt-1-small`, `sap-rpt-1-large`) are marked `@deprecated` to nudge consumers toward 1.5 without breaking their build.
 
 The SDK infers the RPT generation from the model name at runtime.
 For RPT-1.0 model names the SDK injects `parse_data_types: true` as a request default (restoring the RPT-1.0 server default, which flipped to `false` in 1.5).
