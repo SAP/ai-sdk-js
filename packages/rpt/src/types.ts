@@ -7,8 +7,8 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BodyPredictParquet,
   ColumnType as ColType,
-  ExplanationConfig,
-  SchemaFieldConfig
+  SchemaFieldConfig,
+  TargetColumnConfig
 } from './client/rpt/index.ts';
 
 /**
@@ -50,7 +50,9 @@ type TsType<T extends ColType> = T extends
     ? DateString
     : T extends 'time'
       ? TimeString
-      : string;
+      : T extends 'boolean'
+        ? boolean
+        : string;
 
 /**
  * Represents the type of the `rows` property.
@@ -76,38 +78,12 @@ export type ColumnType<T extends DataSchema> = {
   [P in keyof RowType<T>]: RowType<T>[P][];
 };
 
-//
-// This could be simplified, if `TargetColumnConfig` in the spec would set `additionalProperties` to `false`.
-// Then it could be replaced with:.
-// ```
-// type PredictionConfig<T extends DataSchema> = {target_columns: (Omit<TargetColumnConfig, 'name'> & {name: ColNames<T>;})[]}
-// ```
-//
 
 /**
  * Represents the type of the `prediction_config` property.
  * @template T - Type of the data schema.
  */
-interface PredictionConfig<T extends DataSchema> {
-  target_columns: {
-    /**
-     * The name of the target column.
-     */
-    name: ColumnNames<T>;
-    /**
-     * The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.
-     */
-    prediction_placeholder: string | number | null;
-    /**
-     * The type of prediction task for this column. If not provided, the model will infer the task type from the data.
-     */
-    task_type?: 'classification' | 'regression';
-  }[];
-  /**
-   * Configuration for explainability. When provided, the server returns feature importance scores alongside predictions.
-   */
-  explanations?: ExplanationConfig;
-}
+interface PredictionConfig<T extends DataSchema> {target_columns: (Omit<TargetColumnConfig, 'name'> & {name: ColumnNames<T>;})[]}
 
 /**
  * Representation of a schema defining the data types of each column.
