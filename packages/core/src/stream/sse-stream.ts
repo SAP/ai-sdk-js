@@ -1,8 +1,11 @@
 import { ErrorWithCause } from '@sap-cloud-sdk/util';
+
 import { LineDecoder } from './line-decoder.ts';
 import { SSEDecoder } from './sse-decoder.ts';
-import type { ServerSentEvent } from './sse-decoder.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+import type { ServerSentEvent } from './sse-decoder.ts';
 
 type Bytes = string | ArrayBuffer | Uint8Array | Buffer | null | undefined;
 

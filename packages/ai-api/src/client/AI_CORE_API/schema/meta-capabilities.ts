@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { MetaVersion } from './meta-version.js';
 import type { MetaAiApi } from './meta-ai-api.js';
 import type { MetaExtensions } from './meta-extensions.js';
+import type { MetaVersion } from './meta-version.js';
 /**
  * Representation of the 'MetaCapabilities' schema.
  */

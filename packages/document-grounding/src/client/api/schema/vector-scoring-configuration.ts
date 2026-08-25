@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { BoostingScoringConfiguration } from './boosting-scoring-configuration.js';
 import type { DenseRetrievalScoringConfiguration } from './dense-retrieval-scoring-configuration.js';
 import type { KeyWordRetrievalScoringConfiguration } from './key-word-retrieval-scoring-configuration.js';
-import type { BoostingScoringConfiguration } from './boosting-scoring-configuration.js';
 import type { ScoresAggregationStrategy } from './scores-aggregation-strategy.js';
 /**
  * Representation of the 'VectorScoringConfiguration' schema.

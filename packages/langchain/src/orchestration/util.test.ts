@@ -1,3 +1,5 @@
+import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+
 import {
   AIMessage,
   FunctionMessage,
@@ -6,7 +8,7 @@ import {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+
 import {
   addNumbersSchema,
   addNumbersSchemaV3
@@ -18,8 +20,7 @@ import {
   mapToolToOrchestrationFunction,
   applyCacheControlToLastMessage
 } from './util.ts';
-import type { OrchestrationMessage } from './orchestration-message.ts';
-import type { ToolCallChunk } from '@langchain/core/messages/tool';
+
 import type {
   CacheControl,
   ChatMessage,
@@ -30,6 +31,9 @@ import type {
   FunctionObject,
   TokenUsage
 } from '@sap-ai-sdk/orchestration/internal.js';
+
+import type { OrchestrationMessage } from './orchestration-message.ts';
+import type { ToolCallChunk } from '@langchain/core/messages/tool';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
   it('should map an array of LangChain messages to Orchestration messages', () => {

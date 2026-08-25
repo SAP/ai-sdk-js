@@ -1,11 +1,14 @@
 import { AzureOpenAiEmbeddingClient as AzureOpenAiEmbeddingClientBase } from '@sap-ai-sdk/foundation-models';
+
 import { Embeddings } from '@langchain/core/embeddings';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
 import type {
   AzureOpenAiEmbeddingModel,
   AzureOpenAiEmbeddingParameters,
   AzureOpenAiEmbeddingResponse
 } from '@sap-ai-sdk/foundation-models';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
 import type { AzureOpenAiEmbeddingModelParams } from './types.ts';
 
 /**

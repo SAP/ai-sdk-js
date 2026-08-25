@@ -1,6 +1,11 @@
 import { Completions } from 'openai/resources/chat/completions/completions';
+
 import type { AzureOpenAiChatModel } from '@sap-ai-sdk/core';
+
+import type { WithOptionalModel } from './types.ts';
 import type { OpenAI } from 'openai';
+import type { APIPromise } from 'openai/api-promise';
+import type { ExtractParsedContentFromParams } from 'openai/lib/parser';
 import type {
   ChatCompletion,
   ChatCompletionChunk,
@@ -10,10 +15,7 @@ import type {
   ChatCompletionParseParams,
   ParsedChatCompletion
 } from 'openai/resources/chat/completions/completions';
-import type { ExtractParsedContentFromParams } from 'openai/lib/parser';
 import type { Stream } from 'openai/streaming';
-import type { APIPromise } from 'openai/api-promise';
-import type { WithOptionalModel } from './types.ts';
 
 type RequestOptions = Parameters<Completions['create']>[1];
 

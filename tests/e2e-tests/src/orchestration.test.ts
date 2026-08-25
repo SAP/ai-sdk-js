@@ -1,4 +1,10 @@
 import {
+  OrchestrationClient,
+  type OrchestrationConfigRef as OrchestrationConfigReference,
+  type OrchestrationModuleConfig,
+  type OrchestrationResponse
+} from '@sap-ai-sdk/orchestration';
+import {
   orchestrationChatCompletion,
   orchestrationChatCompletionResilient,
   orchestrationTemplating,
@@ -27,12 +33,7 @@ import {
   orchestrationStreamWithFallbackConfigs,
   orchestrationQwenChatCompletion
 } from '@sap-ai-sdk/sample-code';
-import {
-  OrchestrationClient,
-  type OrchestrationConfigRef as OrchestrationConfigReference,
-  type OrchestrationModuleConfig,
-  type OrchestrationResponse
-} from '@sap-ai-sdk/orchestration';
+
 import { addNumbersTool } from '../../../test-util/tools.ts';
 import { loadEnv } from './utils/load-env.ts';
 

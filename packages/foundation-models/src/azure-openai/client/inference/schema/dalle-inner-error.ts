@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { AzureOpenAiInnerErrorCode } from './inner-error-code.js';
 import type { AzureOpenAiDalleFilterResults } from './dalle-filter-results.js';
+import type { AzureOpenAiInnerErrorCode } from './inner-error-code.js';
 /**
  * Inner error with additional details.
  */

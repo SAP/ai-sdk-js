@@ -4,10 +4,10 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { AzureOpenAiImageSize } from './image-size.js';
-import type { AzureOpenAiImagesResponseFormat } from './images-response-format.js';
 import type { AzureOpenAiImageQuality } from './image-quality.js';
+import type { AzureOpenAiImageSize } from './image-size.js';
 import type { AzureOpenAiImageStyle } from './image-style.js';
+import type { AzureOpenAiImagesResponseFormat } from './images-response-format.js';
 /**
  * Representation of the 'AzureOpenAiImageGenerationsRequest' schema.
  */
