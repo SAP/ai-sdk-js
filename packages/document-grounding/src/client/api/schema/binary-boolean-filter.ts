@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ScopedKeyValueListPair } from './scoped-key-value-list-pair.js';
 /**
  * Representation of the 'BinaryBooleanFilter' schema.

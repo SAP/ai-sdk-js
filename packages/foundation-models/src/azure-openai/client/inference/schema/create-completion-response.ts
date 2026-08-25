@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiContentFilterChoiceResults } from './content-filter-choice-results.js';
 import type { AzureOpenAiPromptFilterResults } from './prompt-filter-results.js';
 import type { AzureOpenAiCompletionUsage } from './completion-usage.js';

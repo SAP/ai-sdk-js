@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { PredictionConfig } from './prediction-config.js';
 import type { SchemaFieldConfig } from './schema-field-config.js';
 /**
@@ -13,6 +14,9 @@ import type { SchemaFieldConfig } from './schema-field-config.js';
  * value in that column.
  */
 export type PredictRequestPayload = {
+  /**
+   * Configuration of target columns and placeholder value.
+   */
   prediction_config: PredictionConfig;
   /**
    * Table rows, i.e. list of objects where each object is a mapping of column names to values. Either "rows" or "columns" must be provided.
