@@ -49,8 +49,8 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@sap-cloud-sdk/connectivity": "4.9.0",
-    "@sap-cloud-sdk/http-client": "4.9.0",
+    "@sap-cloud-sdk/connectivity": "4.9.1",
+    "@sap-cloud-sdk/http-client": "4.9.1",
     "vitest": "4.1.11"
   }
 }
