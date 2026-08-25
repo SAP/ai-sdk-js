@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { GraniteGuardian41 } from './granite-guardian-41.js';
 /**
  * Representation of the 'GraniteGuardianFilterConfig' schema.
