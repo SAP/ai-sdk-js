@@ -297,7 +297,7 @@ function mapBaseMessageToAzureOpenAiChatMessage(
  * @param client The LangChain Azure OpenAI client
  * @param options The {@link AzureOpenAiChatCallOptions}
  * @param messages The messages to be send
- * @returns An AI SDK compatibile request
+ * @returns An AI SDK compatible request
  * @internal
  */
 export function mapLangChainToAiClient(
