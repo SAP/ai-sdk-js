@@ -2,17 +2,23 @@
   "name": "@sap-ai-sdk/rpt",
   "version": "2.15.0",
   "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
-  "license": "Apache-2.0",
   "keywords": [
-    "sap-ai-sdk",
     "ai-api",
-    "rpt"
+    "rpt",
+    "sap-ai-sdk"
   ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/rpt"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,12 +32,6 @@
       "default": "./dist/internal.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
