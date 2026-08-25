@@ -7,14 +7,13 @@ proposed
 ## Context
 
 Providing SDK clients for the Tabular Orchestration APIs is a significant undertaking.
-The work consists of two main public surfaces:
+The Tabular Orchestration services have two main entry points:
 
 - the prediction client, generated from one OpenApi specification; and
 - the context-registry client, generated from nine specifications covering synchronous and asynchronous operations.
 
-Neither client is strictly required to implement the other.
-The prediction client can accept existing scenario configuration names, while the context-registry client is useful independently for managing data destinations, tabular artifacts, and scenarios.
-However, an end-to-end workflow commonly uses both: create or discover context, configure a scenario, and submit a prediction.
+Neither requires the other: prediction can use existing scenario configuration names, while the context registry independently manages data destinations, tabular artifacts, and scenarios.
+An end-to-end workflow commonly uses both to create or discover context, configure a scenario, and submit a prediction.
 
 Release order and implementation order are separate decisions.
 The prediction and context-registry clients can be tracked, implemented, reviewed, and released as independent efforts.
@@ -23,8 +22,7 @@ The prediction and context-registry clients can be tracked, implemented, reviewe
 
 No decision has been accepted yet.
 
-The current recommendation is **Option D**: create independent tickets for the prediction and context-registry clients and release each client as soon as it satisfies its own release criteria.
-Neither client should wait for the other solely to preserve a predetermined release order.
+The current recommendation is **Option D**: track the clients independently and release each as soon as it satisfies its own criteria, without waiting for a predetermined order.
 
 ## Discussion
 
@@ -32,8 +30,7 @@ Neither client should wait for the other solely to preserve a predetermined rele
 
 #### Option A: Prediction Client First
 
-Release the prediction client before the context-registry client.
-Users initially provide existing scenario configuration names and manage registry resources through other tooling or direct API calls.
+Release prediction first; users initially provide existing scenario configuration names and manage registry resources through other tooling or direct API calls.
 
 **Pros:**
 
@@ -81,10 +78,8 @@ Hold both clients until a coordinated release provides the complete workflow.
 
 #### Option D: Independent Efforts, Release When Ready
 
-Create separate delivery tickets for the prediction and context-registry clients.
-Each effort has its own owner, scope, review, tests, documentation, and release criteria.
-Work may proceed concurrently or at different times depending on available capacity.
-The first client to become release-ready is released first; the other follows when ready.
+Create separate delivery tickets, each with its own owner, scope, review, tests, documentation, and release criteria.
+Work may proceed concurrently or at different times; whichever client becomes ready first is released first.
 
 This is a first-completed, first-released strategy rather than a commitment to parallel completion or a coordinated launch.
 
@@ -99,4 +94,3 @@ This is a first-completed, first-released strategy rather than a commitment to p
 
 - The first release may not provide a complete SDK-only workflow.
 - Shared package naming, concepts, and documentation still require coordination.
-

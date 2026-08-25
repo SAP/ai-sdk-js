@@ -6,27 +6,24 @@ proposed
 
 ## Context
 
-The tabular orchestration context registry SDK is generated from nine separate OpenApi specifications.
-No combined specification is currently available.
+The tabular orchestration context registry service is shared via nine separate OpenApi specifications.
+No combined specification is currently available at this time.
 The specifications cover health, provisioning, a SQL API, and three resources that each ship a synchronous and an asynchronous variant: data destinations, scenario configuration, and tabular artifacts.
 
-The synchronous and asynchronous variants are not part of a shared API; they are mutually exclusive alternative deployments of the same service.
-Because the variants are mutually exclusive deployments, merging both into a single client was never coherent.
+The synchronous and asynchronous variants are mutually exclusive deployments, so merging both into one client is not coherent.
+The synchronous client is considered legacy, and we can likely avoid supporting it in the SDK.
 
-Targeting the asynchronous variant does not remove all merge work.
-The asynchronous client is still assembled from several specifications (the asynchronous resources plus the common health, provisioning, and SQL API specifications).
-Those specifications repeat type definitions — for example every resource specification redefines `ApiError` and `DetailsErrorResponse`, and `ColumnInfo` and `Url` each appear in more than one specification.
+The asynchronous client still requires merging its resource specifications with the common health, provisioning, and SQL API specifications if we want to source from a single specification.
+They repeat some type definitions: every resource redefines `ApiError` and `DetailsErrorResponse`, while `ColumnInfo` and `Url` each appear more than once.
 
 Some specifications also contain internal headers (`AI-Main-Tenant`) and internal endpoint references that we should avoid releasing.
 
 ### Generated clients
 
-The generated clients are usable but low-level, and their quality depends on the source specifications.
-Verbose default operation names follow each `operationId`.
-They can be replaced with `x-sap-cloud-sdk-operation-name` in the specification, so naming is a specification concern rather than a client-design concern.
-The main usability gap is the asynchronous workflow: creation returns http `202` with a `Location` header.
-With the raw client, consumers must call `.executeRaw(...)`, parse the header, and implement polling, terminal-state checks, and timeouts themselves.
-Consumers also provide the destination and resource-group header unless a helper is added (see Question 4).
+The generated clients are usable but depend on the source specifications.
+Their verbose `operationId` names can be replaced with `x-sap-cloud-sdk-operation-name`, making naming a specification concern.
+The main usability gap is asynchronous creation: it returns http `202` with a `Location` header, leaving consumers to call `.executeRaw(...)`, parse the header, and implement polling, terminal-state checks, and timeouts.
+Consumers also provide the destination and resource-group header unless a helper is added (Question 4).
 
 The SDK design must therefore determine:
 
@@ -48,13 +45,12 @@ Current recommendations and unresolved questions are recorded below.
 
 **Recommendation: Option A.** Merge the asynchronous specifications and the common specifications into one self-contained asynchronous specification and generate a single asynchronous client.
 
-The specifications are currently published as separate files, but they are not independent APIs.
-Eventually they will be merged into one specification, or included in a single combined specification for the service.
+The specifications are separate files but not independent APIs; eventually they will be merged or included in one service specification.
+Until this is the case, merging via e.g. `@redocly/cli` is a reasonable approach to prepare for an eventual combined specification and to reduce the number of generated clients in the meantime.
 
 #### Option A: Combine specifications before generation
 
-Merge the asynchronous specifications with the common specifications (health, provisioning, SQL API) into one asynchronous specification, then generate a single client.
-This allows generating early clients without needing to wait for a combined specification from the service team.
+Merge the asynchronous and common specifications (health, provisioning, SQL API) via `@redocly/cli`, then generate one client without waiting for the service team's combined specification.
 
 ```text
 ctx-registry/
@@ -65,19 +61,18 @@ An optional synchronous compatibility specification can be produced the same way
 
 **Pros:** Produces one coherent client surface for the target deployment and keeps the generation input self-contained.
 
-**Cons:** Requires a deterministic merge step and duplicates the common definitions into any optional synchronous compatibility client.
-The merge is riskier where specifications are not parallel: same-named schemas that differ between specifications, or types present in only one specification, must be reconciled rather than merged without validation.
+**Cons:** Requires a deterministic merge step and duplicates common definitions in any synchronous compatibility client.
+Nonparallel specifications require validation and reconciliation of conflicting or unique schemas.
 
 #### Option B: Wait for an upstream combined specification
 
 **Pros:** Avoids local merge logic and keeps the generated SDK aligned with its source of truth.
-**Cons:** Delays SDK availability and has not been provided despite having already been requested some time ago.
-Even if published on API Hub, the service may still be represented by multiple specifications.
+**Cons:** Delays the SDK for a specification that has already been requested, and API Hub may still represent the service with multiple specifications.
 
 ### Question 2: Package Name
 
-The context registry is mostly vendor-neutral but has some ties to SAP RPT's design, with a risk of breaking changes.
-This risk is smaller than with the prediction client, so it is within reason to release a vendor-neutral package name.
+The context registry is mostly vendor-neutral but retains SAP RPT ties and some breaking-change risk.
+Because this risk is smaller than for prediction, a vendor-neutral package name is reasonable.
 
 **Recommendation: Option A.1.** Use `@sap-ai-sdk/ctx-registry`.
 Note: If the service becomes part of AI_API use the existing `@sap-ai-sdk/ai-api` package instead of creating a new package.
@@ -102,8 +97,7 @@ Note: If the service becomes part of AI_API use the existing `@sap-ai-sdk/ai-api
 
 ### Question 4: Convenience Methods
 
-Generated SDKs are low-level by nature.
-The question is whether to layer convenience methods on top, especially for polling asynchronous operations, which are the default surface for this client.
+The question is whether to add convenience methods, especially for polling asynchronous operations, the default surface for this client.
 
 **Recommendation: Option B.2.** Include only targeted helpers for workflows that are cumbersome or unsafe with the generated client, starting with asynchronous polling.
 
@@ -126,10 +120,8 @@ Add helpers for operations not well served by the raw generated client, e.g. pol
 
 **Cons:** Requires an explicit contract for timeouts, retries, cancellation, and error propagation.
 
-The asynchronous creation contract is http `202 Accepted` with a `Location` header identifying the resource URL to poll.
-Subsequent `GET` requests to that URL return http `200` while the resource exists.
-Progress is represented by the response body's lifecycle status (`PROCESSING`, `ACTIVE`, or `ERROR`).
-A helper should preserve this contract, follow the returned polling location, and make terminal and failure states explicit.
+Asynchronous creation returns http `202 Accepted` and a `Location` URL whose subsequent `GET` requests return http `200`.
+The response lifecycle status is `PROCESSING`, `ACTIVE`, or `ERROR`; a helper should follow the location and expose terminal and failure states.
 The PoC's `wait-for-async-resource.mts` helper demonstrates this polling loop with the generated client.
 
 The exact helper API is still open:
@@ -138,11 +130,12 @@ The exact helper API is still open:
 // Note: Subject to change
 const artifact = await pollAsyncResource({
   read: () => client.get(pollingLocation),
-  isComplete: (current) => current.status === "ACTIVE",
-  getFailure: (current) => (current.status === "ERROR" ? current.errorMessage : undefined),
+  isComplete: current => current.status === 'ACTIVE',
+  getFailure: current =>
+    current.status === 'ERROR' ? current.errorMessage : undefined,
   intervalMs: 2_000,
   timeoutMs: 120_000,
-  signal,
+  signal
 });
 
 // It would also make sense to provide an async generator for streaming progress updates:
@@ -161,4 +154,3 @@ Add helpers for all operations, including those already well-supported by the ge
 **Pros:** Provides a consistent handwritten experience across the complete API.
 
 **Cons:** Duplicates generated functionality and significantly increases initial effort, maintenance, and the cost of specification changes.
-
