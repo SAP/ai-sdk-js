@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureContentSafetyInputFilterConfig } from './azure-content-safety-input-filter-config.js';
 import type { LlamaGuard38BFilterConfig } from './llama-guard-38-b-filter-config.js';
 import type { GraniteGuardianFilterConfig } from './granite-guardian-filter-config.js';
