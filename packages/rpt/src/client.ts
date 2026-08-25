@@ -135,23 +135,7 @@ export class RptClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    const body = {
-      data_schema: dataSchema
-        ? Object.fromEntries(
-            dataSchema.map(({ name, ...schemaFieldConfig }) => [
-              name,
-              schemaFieldConfig
-            ])
-          )
-        : null,
-      ...predictionData,
-      // backwards compatibility with RPT-1.0
-      // TODO: Remove once RPT-1.0 is no longer supported
-      ...(isRpt1Model(this.modelDeployment) &&
-        predictionData.parse_data_types === undefined && {
-          parse_data_types: true
-        })
-    } satisfies PredictRequestPayload;
+    const body = this.buildBody(predictionData, dataSchema);
 
     const { compress, ...customRequestConfig } = requestConfig;
 
@@ -167,6 +151,55 @@ export class RptClient {
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
       .addCustomRequestConfiguration(customRequestConfig)
       .execute(this.destination);
+  }
+
+  private buildBody<T extends DataSchema>(
+    predictionData: PredictionData<T>,
+    dataSchema?: T
+  ): PredictRequestPayload {
+    const { rows, columns, ...restData } = predictionData;
+
+    const base = {
+      data_schema: dataSchema
+        ? Object.fromEntries(
+            dataSchema.map(({ name, ...schemaFieldConfig }) => [
+              name,
+              schemaFieldConfig
+            ])
+          )
+        : null,
+      ...restData,
+      // backwards compatibility with RPT-1.0
+      // TODO: Remove once RPT-1.0 is no longer supported
+      ...(isRpt1Model(this.modelDeployment) &&
+        predictionData.parse_data_types === undefined && {
+          parse_data_types: true
+        })
+    };
+
+    const serializeBooleans = (v: any) =>
+      typeof v === 'boolean' ? String(v) : v;
+
+    if (rows) {
+      return {
+        ...base,
+        rows: rows.map(row =>
+          Object.fromEntries<string | number | null>(
+            Object.entries(row).map(([k, v]) => [k, serializeBooleans(v)])
+          )
+        )
+      } satisfies PredictRequestPayload;
+    }
+
+    return {
+      ...base,
+      columns: Object.fromEntries<(string | number | null)[]>(
+        Object.entries(columns).map(([k, vals]) => [
+          k,
+          vals.map(serializeBooleans)
+        ])
+      )
+    } satisfies PredictRequestPayload;
   }
 
   /**

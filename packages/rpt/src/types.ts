@@ -78,12 +78,15 @@ export type ColumnType<T extends DataSchema> = {
   [P in keyof RowType<T>]: RowType<T>[P][];
 };
 
-
 /**
  * Represents the type of the `prediction_config` property.
  * @template T - Type of the data schema.
  */
-interface PredictionConfig<T extends DataSchema> {target_columns: (Omit<TargetColumnConfig, 'name'> & {name: ColumnNames<T>;})[]}
+interface PredictionConfig<T extends DataSchema> {
+  target_columns: (Omit<TargetColumnConfig, 'name'> & {
+    name: ColumnNames<T>;
+  })[];
+}
 
 /**
  * Representation of a schema defining the data types of each column.
