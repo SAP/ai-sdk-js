@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { MSSharePointPipelineCreateRequest } from './ms-share-point-pipeline-create-request.js';
 import type { S3PipelineCreateRequest } from './s-3-pipeline-create-request.js';
 import type { SFTPPipelineCreateRequest } from './sftp-pipeline-create-request.js';

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { S3Configuration } from './s-3-configuration.js';
 import type { MetaData } from './meta-data.js';
 /**

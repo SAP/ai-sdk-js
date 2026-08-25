@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { PartialPromptTemplatingModuleConfig } from './partial-prompt-templating-module-config.js';
 import type { FilteringModuleConfig } from './filtering-module-config.js';
 import type { MaskingModuleConfig } from './masking-module-config.js';

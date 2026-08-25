@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { PromptTemplateSpec } from './prompt-template-spec.js';
 /**
  * Representation of the 'PromptTemplatePostRequest' schema.

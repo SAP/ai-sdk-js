@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { TrckMetricName } from './trck-metric-name.js';
 import type { TrckMetricValue } from './trck-metric-value.js';
 import type { TrckTimestamp } from './trck-timestamp.js';

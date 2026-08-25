@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ModuleResultsBase } from './module-results-base.js';
 import type { EmbeddingsResponse } from './embeddings-response.js';
 /**

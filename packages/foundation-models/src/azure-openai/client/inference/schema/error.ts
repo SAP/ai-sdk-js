@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiErrorBase } from './error-base.js';
 import type { AzureOpenAiInnerError } from './inner-error.js';
 /**

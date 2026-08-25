@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { MergeStrategyScoreReuse } from './merge-strategy-score-reuse.js';
 import type { MergeStrategyReranker } from './merge-strategy-reranker.js';
 import type { PostProcessingObjectReference } from './post-processing-object-reference.js';
@@ -19,6 +20,7 @@ export type PostProcessingOperation = {
    * Maximum number of chunks to be retained in final PerSearchFilterResult.
    * Default: 5.
    * Maximum: 10000000.
+   * Exclusive Minimum: true.
    */
   maxChunkCount?: number | null;
   /**
