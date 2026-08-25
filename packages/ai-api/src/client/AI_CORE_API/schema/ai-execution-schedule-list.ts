@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AiExecutionSchedule } from './ai-execution-schedule.js';
 /**
  * Representation of the 'AiExecutionScheduleList' schema.

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiContentFilterResultsBase } from './content-filter-results-base.js';
 import type { AzureOpenAiContentFilterDetectedResult } from './content-filter-detected-result.js';
 import type { AzureOpenAiContentFilterDetectedWithCitationResult } from './content-filter-detected-with-citation-result.js';
