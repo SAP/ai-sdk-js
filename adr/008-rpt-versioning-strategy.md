@@ -7,7 +7,7 @@ proposed
 ## Context
 
 The current `@sap-ai-sdk/rpt` package targets RPT-1.0.
-RPT-1.5 introduces breaking changes (detailed below).
+RPT-1.5 introduces behavioral changes (detailed below).
 
 The existing RPT-1.0 model names (`sap-rpt-1-small`, `sap-rpt-1-large`) are not yet deprecated and have a retirement date of no earlier than 2026-12-31, meaning 1.0 and 1.5 deployments will coexist for at least the remainder of 2026.
 
@@ -15,7 +15,9 @@ We need to decide, how to handle such updates in the future.
 
 ## Decision
 
-Bump `@sap-ai-sdk/rpt` to support RPT-1.5, issue a major version changeset documenting breaking changes, and maintain backward compatibility for RPT-1.0 deployments within the same package.
+Bump `@sap-ai-sdk/rpt` to support RPT-1.5 and maintain backward compatibility for RPT-1.0 deployments within the same package.
+
+## Consequences
 
 Pros:
 
@@ -30,29 +32,18 @@ Cons:
 
 ### RPT-1.0 Compatibility Behavior
 
-The model name is always **required** — no default value is provided.
-The model name determines which generation of RPT behavior the SDK applies.
+- The model name is **required** and determines the RPT generation (`sap-rpt-1-*` → RPT-1.0 behavior; `sap-rpt-1.5*` → RPT-1.5 behavior).
 
-The TypeScript type for the model name is a **strict union of known strings**:
+- For RPT-1.0 model names, the SDK injects `parse_data_types: true` as a request default; explicit values always take precedence.
 
-```ts
-'sap-rpt-1-small' | 'sap-rpt-1-large' | 'sap-rpt-1.5' | 'sap-rpt-1.5-large'
-```
+- All TypeScript types are RPT-1.5 types regardless of model name — RPT-1.0 consumers passing 1.5-only fields (e.g. `explanations`) will compile but receive a server-side error.
 
-
-The SDK infers the RPT generation from the model name at runtime.
-For RPT-1.0 model names the SDK injects `parse_data_types: true` as a request default (restoring the RPT-1.0 server default, which flipped to `false` in 1.5).
-An explicit user-supplied value always takes precedence over this injection.
-
-All TypeScript request/response types are the RPT-1.5 types regardless of model name.
-RPT-1.0 consumers who pass 1.5-only fields (e.g. `explanations`) will compile successfully but receive a server-side error.
-
-### Breaking Changes and SDK Handling
+### Behavioral Changes and SDK Handling
 
 <!-- prettier-ignore -->
 | Change | SDK handling | Consumer impact |
 | ------ | ------------ | --------------- |
-| `predict_parquet`: `parse_data_types` default flips `true` → `false` | Follow the spec | Must pass `parse_data_types: true` explicitly to preserve old behavior |
+| `predict_parquet`: `parse_data_types` default flips `true` → `false` | Follow the spec | None for RPT-1.0 consumers (SDK injects `parse_data_types: true`); RPT-1.5 consumers default to `false` |
 | `TargetColumnConfig` and `SchemaFieldConfig` gain `additionalProperties: false` | No action — enforced by the server | Extra properties now cause validation errors |
 | `PredictRequestPayload`: `rows`/`columns` become strictly required via `oneOf` | No action — `PredictionData<T>` already enforces this via `Xor<>` | None |
 
