@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { SystemChatMessage } from './system-chat-message.js';
 import type { UserChatMessage } from './user-chat-message.js';
 import type { AssistantChatMessage } from './assistant-chat-message.js';

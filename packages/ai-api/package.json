@@ -41,10 +41,10 @@
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.8.0",
-    "@sap-cloud-sdk/util": "^4.8.0"
+    "@sap-cloud-sdk/connectivity": "^4.9.0",
+    "@sap-cloud-sdk/util": "^4.9.0"
   },
   "devDependencies": {
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   }
 }

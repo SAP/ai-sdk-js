@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { TextOnlyBaseChunk } from './text-only-base-chunk.js';
 import type { VectorDocumentKeyValueListPair } from './vector-document-key-value-list-pair.js';
 /**

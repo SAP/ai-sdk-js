@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { Template } from './template.js';
 import type { TemplateRef } from './template-ref.js';
 import type { LLMModelDetails } from './llm-model-details.js';

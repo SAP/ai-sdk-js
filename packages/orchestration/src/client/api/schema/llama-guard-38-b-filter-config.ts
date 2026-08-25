@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { LlamaGuard38B } from './llama-guard-38-b.js';
 /**
  * Representation of the 'LlamaGuard38BFilterConfig' schema.

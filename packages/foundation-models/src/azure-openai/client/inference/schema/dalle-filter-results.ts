@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiDalleContentFilterResults } from './dalle-content-filter-results.js';
 import type { AzureOpenAiContentFilterDetectedResult } from './content-filter-detected-result.js';
 /**

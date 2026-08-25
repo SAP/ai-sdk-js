@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { GenericModuleResult } from './generic-module-result.js';
 import type { TemplatingChatMessage } from './templating-chat-message.js';
 import type { InputTranslationModuleResult } from './input-translation-module-result.js';

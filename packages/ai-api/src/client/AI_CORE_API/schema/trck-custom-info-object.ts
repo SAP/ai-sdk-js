@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { TrckGenericName } from './trck-generic-name.js';
 import type { TrckCustomInfoObjectData } from './trck-custom-info-object-data.js';
 /**

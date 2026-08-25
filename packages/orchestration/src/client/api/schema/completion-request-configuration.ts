@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { OrchestrationConfig } from './orchestration-config.js';
 import type { ChatMessages } from './chat-messages.js';
 /**
