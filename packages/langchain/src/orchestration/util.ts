@@ -216,17 +216,25 @@ function mapSystemMessageToOrchestrationSystemMessage(
 function mapToolMessageToOrchestrationToolMessage(
   message: ToolMessage
 ): ToolChatMessage {
-  if (
-    typeof message.content !== 'string' &&
-    message.content.some(content => content.type !== 'text')
-  ) {
-    throw new Error(
-      'The content type of tool message can only be "text" in the Orchestration Client.'
-    );
+  const { content } = message;
+
+  if (typeof content !== 'string') {
+    if (!content?.length) {
+      return { role: 'tool', content: '', tool_call_id: message.tool_call_id };
+    }
+    if (
+      !Array.isArray(content) ||
+      content.some(block => block.type !== 'text')
+    ) {
+      throw new Error(
+        'The content type of tool message can only be "text" in the Orchestration Client.'
+      );
+    }
   }
+
   return {
     role: 'tool',
-    content: cloneMessageContent(message.content) as ChatMessageContent,
+    content: cloneMessageContent(content) as ChatMessageContent,
     tool_call_id: message.tool_call_id
   };
 }
