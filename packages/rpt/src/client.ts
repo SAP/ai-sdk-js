@@ -1,6 +1,8 @@
 import {
   getFoundationModelDeploymentId,
-  getResourceGroup
+  getResourceGroup,
+  isDeploymentIdConfig,
+  translateToFoundationModel
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
 
@@ -21,12 +23,17 @@ import type {
   ParquetPayload
 } from './types.ts';
 
-const rpt1ModelNames = new Set<string>(['sap-rpt-1-small', 'sap-rpt-1-large']);
-
+// Detects RPT-1.0 model names to apply the parse_data_types backward-compat workaround.
+// When a deploymentId is passed without a modelName, detection is not possible and the workaround is skipped.
 function isRpt1Model(modelDeployment: ModelDeployment<SapRptModel>): boolean {
-  return (
-    typeof modelDeployment === 'string' && rpt1ModelNames.has(modelDeployment)
-  );
+  const model =
+    typeof modelDeployment === 'string'
+      ? modelDeployment
+      : isDeploymentIdConfig(modelDeployment)
+        ? undefined
+        : modelDeployment.modelName;
+
+  return !!model && ['sap-rpt-1-small', 'sap-rpt-1-large'].includes(model);
 }
 
 /**

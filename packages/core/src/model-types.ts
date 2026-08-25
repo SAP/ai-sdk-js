@@ -93,8 +93,7 @@ export type AiCoreOpenSourceEmbeddingModel =
   LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
 
 /**
- * SAP RPT models.
- * @remarks `sap-rpt-1-small` and `sap-rpt-1-large` are deprecated and retire no earlier than 2026-12-31. Use `sap-rpt-1.5` or `sap-rpt-1.5-large` instead.
+ * All SAP RPT models.
  */
 export type SapRptModel = LiteralUnion<
   'sap-rpt-1.5' | 'sap-rpt-1.5-large' | 'sap-rpt-1-small' | 'sap-rpt-1-large'
