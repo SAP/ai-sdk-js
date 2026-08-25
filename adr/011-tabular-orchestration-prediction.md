@@ -32,7 +32,7 @@ The concern is not that only SAP RPT is supported today; a single supported mode
 The concern is that the contract shape is RPT-specific, not just its model list.
 This includes the closed `TFMEnum`, the RPT-oriented `modelConfig` fields, and RPT-specific context and explainability semantics.
 A different model may not share this shape.
-Another tabular model could require a different request and response contract, such as an in-context training-and-test payload instead of RPT's scenario and context-selection model, as well as a different execution model.
+Another tabular model could require a different request and response contract, such as an in-context training-and-test payload instead of RPT's scenario and context-selection model, or a relational graph of multiple tables queried through a predictive query language rather than a single flat row set, as well as a different execution model.
 The service could reconcile such differences server-side, mapping a shared request to each provider's contract.
 However, there is no finalized specification for that reconciliation, and it is not clear that it will be something that the service strives for.
 As long as the overall shape, not only the enumerated values, is RPT-first, supporting a structurally different model could require significant changes to the public client design and package boundary.
