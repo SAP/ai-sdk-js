@@ -31,13 +31,7 @@ jobs:
       # issues: write
 
     steps:
-      - uses: $/.github/actions/setup
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
-
-      - name: Install support-bot deps
-        working-directory: ./sample-code/src/support-bot
-        run: pnpm install
+      - uses: sap/cloud-sdk-js/.github/actions/setup@main
 
       - name: Generate answer
         id: answer
