@@ -147,4 +147,71 @@ describe('rpt', () => {
     await new RptClient('sap-rpt-1.5').predictWithoutSchema({} as any);
     expect(requestSpy.isDone()).toBe(true);
   });
+
+  it('should inject parse_data_types for RPT-1.0 model specified as object', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
+    const requestSpy = mockInference(
+      { data: { data_schema: null, parse_data_types: true } },
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/1234/predict' }
+    );
+
+    await new RptClient({ modelName: 'sap-rpt-1-small' }).predictWithoutSchema(
+      {} as any
+    );
+    expect(requestSpy.isDone()).toBe(true);
+  });
+
+  it('should not inject parse_data_types when only a deployment ID is given', async () => {
+    const requestSpy = mockInference(
+      { data: { data_schema: null } },
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/1234/predict' }
+    );
+
+    await new RptClient({ deploymentId: '1234' }).predictWithoutSchema(
+      {} as any
+    );
+    expect(requestSpy.isDone()).toBe(true);
+  });
+
+  it('should serialize boolean values in rows to strings', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '5678', model: { name: 'sap-rpt-1.5', version: 'latest' } }
+    );
+    const requestSpy = mockInference(
+      (body: any) =>
+        body.rows?.[0].active === 'true' && body.rows?.[1].active === 'false',
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/5678/predict' }
+    );
+
+    await new RptClient('sap-rpt-1.5').predictWithoutSchema({
+      rows: [{ active: true }, { active: false }]
+    } as any);
+    expect(requestSpy.isDone()).toBe(true);
+  });
+
+  it('should serialize boolean values in columns to strings', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '5678', model: { name: 'sap-rpt-1.5', version: 'latest' } }
+    );
+    const requestSpy = mockInference(
+      (body: any) =>
+        body.columns?.active?.[0] === 'true' &&
+        body.columns?.active?.[1] === 'false',
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/5678/predict' }
+    );
+
+    await new RptClient('sap-rpt-1.5').predictWithoutSchema({
+      columns: { active: [true, false] }
+    } as any);
+    expect(requestSpy.isDone()).toBe(true);
+  });
 });
