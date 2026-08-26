@@ -1148,6 +1148,10 @@ components:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
           example: stop
+        provider_specific_fields:
+          type: object
+          description: "Provider-specific fields not representable in the OpenAI schema. When not identical, includes 'finish_reason' with the raw, unmapped finish reason string from the provider."
+          additionalProperties: true
     LLMChoiceStreaming:
       type: object
       required:
@@ -1164,6 +1168,10 @@ components:
         finish_reason:
           type: string
           description: Reason for stopping the model
+        provider_specific_fields:
+          type: object
+          description: "Provider-specific fields not representable in the OpenAI schema. When not identical, includes 'finish_reason' with the raw, unmapped finish reason string from the provider."
+          additionalProperties: true
 
     # Copied from the azure openai spec https://github.com/Azure/azure-rest-api-specs/blob/91e3aca0bfa4b59a9f578959d0b214a26b90df40/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2025-02-01-preview/inference.yaml#L4615-L4669
     TokenUsage:
