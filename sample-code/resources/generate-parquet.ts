@@ -10,13 +10,16 @@
 /* oxlint-disable no-console */
 
 import { join } from 'node:path';
+
 import { parquetWriteFile } from 'hyparquet-writer';
-import type { ColumnSource } from 'hyparquet-writer';
+
+import type { RowType } from '@sap-ai-sdk/rpt';
 import type {
   ColumnType,
   SchemaFieldConfig
 } from '@sap-ai-sdk/rpt/internal.js';
-import type { RowType } from '@sap-ai-sdk/rpt';
+
+import type { ColumnSource } from 'hyparquet-writer';
 
 type DataSchema = readonly ({ name: string } & SchemaFieldConfig)[];
 

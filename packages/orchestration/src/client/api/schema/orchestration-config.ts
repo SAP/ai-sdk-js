@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { ModuleConfigs } from './module-configs.js';
-import type { ModuleConfigsList } from './module-configs-list.js';
 import type { GlobalStreamOptions } from './global-stream-options.js';
+import type { ModuleConfigsList } from './module-configs-list.js';
+import type { ModuleConfigs } from './module-configs.js';
 /**
  * Representation of the 'OrchestrationConfig' schema.
  */

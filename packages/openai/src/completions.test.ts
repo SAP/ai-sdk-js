@@ -1,5 +1,7 @@
 import { Completions } from 'openai/resources/chat/completions/completions';
+
 import { SapCompletions } from './completions.ts';
+
 import type { OpenAI } from 'openai';
 
 const mockCreate = vi.fn<any>().mockResolvedValue({ choices: [] });

@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { AzureOpenAiCompletionUsage } from './completion-usage.js';
 import type { AzureOpenAiContentFilterChoiceResults } from './content-filter-choice-results.js';
 import type { AzureOpenAiPromptFilterResults } from './prompt-filter-results.js';
-import type { AzureOpenAiCompletionUsage } from './completion-usage.js';
 /**
  * Represents a completion response from the API. Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint).
  *

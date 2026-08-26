@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { ModuleResultsBase } from './module-results-base.js';
-import type { LlmModuleResult } from './llm-module-result.js';
 import type { LlmChoice } from './llm-choice.js';
+import type { LlmModuleResult } from './llm-module-result.js';
+import type { ModuleResultsBase } from './module-results-base.js';
 /**
  * Synchronous results of each module.
  */
