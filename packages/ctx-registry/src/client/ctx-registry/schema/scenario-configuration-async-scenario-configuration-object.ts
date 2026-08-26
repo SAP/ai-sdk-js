@@ -1,13 +1,13 @@
+import type { ScenarioConfigurationAsyncScenarioConfigurationErrorMessage } from './scenario-configuration-async-scenario-configuration-error-message.js';
+import type { ScenarioConfigurationAsyncScenarioConfigurationStatus } from './scenario-configuration-async-scenario-configuration-status.js';
+import type { ScenarioConfigurationAsyncTabularArtifactConfig } from './scenario-configuration-async-tabular-artifact-config.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ScenarioConfigurationCommonContextSelectionStrategy } from './scenario-configuration-common-context-selection-strategy.js';
-import type { ScenarioConfigurationAsyncTabularArtifactConfig } from './scenario-configuration-async-tabular-artifact-config.js';
 import type { ScenarioConfigurationCommonLabel } from './scenario-configuration-common-label.js';
-import type { ScenarioConfigurationAsyncScenarioConfigurationStatus } from './scenario-configuration-async-scenario-configuration-status.js';
-import type { ScenarioConfigurationAsyncScenarioConfigurationErrorMessage } from './scenario-configuration-async-scenario-configuration-error-message.js';
 /**
  * Representation of the 'ScenarioConfigurationAsyncScenarioConfigurationObject' schema.
  */

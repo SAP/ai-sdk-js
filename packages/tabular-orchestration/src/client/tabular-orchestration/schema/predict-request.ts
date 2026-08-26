@@ -1,14 +1,14 @@
+import type { ColumnarData } from './columnar-data.js';
+import type { ContextSelectionConfig } from './context-selection-config.js';
+import type { ModelConfig } from './model-config.js';
+import type { PredictionConfig } from './prediction-config.js';
+import type { RowData } from './row-data.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { TFMEnum } from './tfm-enum.js';
-import type { ContextSelectionConfig } from './context-selection-config.js';
-import type { PredictionConfig } from './prediction-config.js';
-import type { ModelConfig } from './model-config.js';
-import type { ColumnarData } from './columnar-data.js';
-import type { RowData } from './row-data.js';
 /**
  * Request schema for prediction endpoint.
  */

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+
 import { pollAsyncResource } from './poll-async-resource.ts';
 
 describe('pollAsyncResource', () => {

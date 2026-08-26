@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ScenarioConfigurationCommonContextSelectionStrategy } from './scenario-configuration-common-context-selection-strategy.js';
-import type { ScenarioConfigurationCommonTabularArtifactsContainer } from './scenario-configuration-common-tabular-artifacts-container.js';
 import type { ScenarioConfigurationCommonLabel } from './scenario-configuration-common-label.js';
+import type { ScenarioConfigurationCommonTabularArtifactsContainer } from './scenario-configuration-common-tabular-artifacts-container.js';
 /**
  * Representation of the 'ScenarioConfigurationCommonScenarioConfigurationInternalResponse' schema.
  */

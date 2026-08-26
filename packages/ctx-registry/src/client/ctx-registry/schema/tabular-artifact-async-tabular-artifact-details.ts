@@ -1,11 +1,11 @@
+import type { TabularArtifactAsyncTabularArtifactErrorMessage } from './tabular-artifact-async-tabular-artifact-error-message.js';
+import type { TabularArtifactCommonCSNDefinition } from './tabular-artifact-common-csn-definition.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { TabularArtifactCommonTabularArtifactStatus } from './tabular-artifact-common-tabular-artifact-status.js';
-import type { TabularArtifactAsyncTabularArtifactErrorMessage } from './tabular-artifact-async-tabular-artifact-error-message.js';
-import type { TabularArtifactCommonCSNDefinition } from './tabular-artifact-common-csn-definition.js';
 /**
  * Representation of the 'TabularArtifactAsyncTabularArtifactDetails' schema.
  */

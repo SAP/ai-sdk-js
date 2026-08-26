@@ -1,3 +1,6 @@
+import type { DataDestinationAsyncAzureDataDestinationCreateRequest } from './data-destination-async-azure-data-destination-create-request.js';
+import type { DataDestinationAsyncDeltaSharingDataDestinationCreateRequest } from './data-destination-async-delta-sharing-data-destination-create-request.js';
+import type { DataDestinationAsyncGCSDataDestinationCreateRequest } from './data-destination-async-gcs-data-destination-create-request.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
@@ -5,9 +8,6 @@
  */
 import type { DataDestinationAsyncHDLDataDestinationCreateRequest } from './data-destination-async-hdl-data-destination-create-request.js';
 import type { DataDestinationAsyncS3DataDestinationCreateRequest } from './data-destination-async-s-3-data-destination-create-request.js';
-import type { DataDestinationAsyncGCSDataDestinationCreateRequest } from './data-destination-async-gcs-data-destination-create-request.js';
-import type { DataDestinationAsyncAzureDataDestinationCreateRequest } from './data-destination-async-azure-data-destination-create-request.js';
-import type { DataDestinationAsyncDeltaSharingDataDestinationCreateRequest } from './data-destination-async-delta-sharing-data-destination-create-request.js';
 /**
  * Representation of the 'DataDestinationAsyncCreateDataDestination' schema.
  */

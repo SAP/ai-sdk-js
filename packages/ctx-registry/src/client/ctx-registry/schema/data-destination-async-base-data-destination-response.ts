@@ -1,11 +1,11 @@
+import type { DataDestinationAsyncDataDestinationErrorMessage } from './data-destination-async-data-destination-error-message.js';
+import type { DataDestinationAsyncDataDestinationStatus } from './data-destination-async-data-destination-status.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { DataDestinationCommonLabels } from './data-destination-common-labels.js';
-import type { DataDestinationAsyncDataDestinationStatus } from './data-destination-async-data-destination-status.js';
-import type { DataDestinationAsyncDataDestinationErrorMessage } from './data-destination-async-data-destination-error-message.js';
 /**
  * Representation of the 'DataDestinationAsyncBaseDataDestinationResponse' schema.
  */

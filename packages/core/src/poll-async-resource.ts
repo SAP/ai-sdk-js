@@ -23,6 +23,12 @@ export interface PollAsyncResourceOptions<T> {
  * Polls an async resource until it completes, fails, or exceeds the attempt limit.
  * @typeParam T - The resource type returned by each poll.
  * @param options - Polling configuration.
+ * @param options.read - Function to read the current state of the resource.
+ * @param options.isComplete - Function to determine if the resource is in a completed state.
+ * @param options.getFailure - Optional function to determine if the resource is in a failed state and return an error message.
+ * @param options.maxAttempts - Maximum number of poll attempts before throwing a timeout error.
+ * @param options.intervalMs - Milliseconds to wait between poll attempts.
+ * @param options.sleep - Optional override for the sleep function, e.g. for testing.
  * @returns The resource in its completed state.
  * @throws Error if the resource enters a failure state or the attempt limit is exceeded.
  */
@@ -37,9 +43,15 @@ export async function pollAsyncResource<T>({
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const resource = await read();
     const failure = getFailure?.(resource);
-    if (failure) throw new Error(failure);
-    if (isComplete(resource)) return resource;
-    if (attempt < maxAttempts) await sleep(intervalMs);
+    if (failure) {
+      throw new Error(failure);
+    }
+    if (isComplete(resource)) {
+      return resource;
+    }
+    if (attempt < maxAttempts) {
+      await sleep(intervalMs);
+    }
   }
   throw new Error(
     `Async resource did not complete after ${maxAttempts} attempts`

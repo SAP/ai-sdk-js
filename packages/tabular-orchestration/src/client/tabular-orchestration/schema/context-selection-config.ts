@@ -4,10 +4,10 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 import type { ContextSelectionStrategyEnum } from './context-selection-strategy-enum.js';
-import type { SamplingRandomConfig } from './sampling-random-config.js';
-import type { SamplingHeuristicConfig } from './sampling-heuristic-config.js';
-import type { FilterConditions } from './filter-conditions.js';
 import type { FilterCondition } from './filter-condition.js';
+import type { FilterConditions } from './filter-conditions.js';
+import type { SamplingHeuristicConfig } from './sampling-heuristic-config.js';
+import type { SamplingRandomConfig } from './sampling-random-config.js';
 /**
  * Configuration for context selection.
  */

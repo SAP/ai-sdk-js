@@ -1,12 +1,11 @@
+import type { DataDestinationAsyncGetDataDestinations,
+  TabularArtifactAsyncTabularArtifactDetails,
+  ScenarioConfigurationAsyncScenarioConfigurationObject } from '@sap-ai-sdk/ctx-registry/internal.js';
 import { pollAsyncResource } from '@sap-ai-sdk/core';
 import {
   TabularArtifactAsyncSpecificationTabularArtifactsApi,
   DataDestinationAsyncSpecificationDataDestinationsApi,
   ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi
-} from '@sap-ai-sdk/ctx-registry/internal.js';
-import type {
-  TabularArtifactAsyncTabularArtifactDetails,
-  ScenarioConfigurationAsyncScenarioConfigurationObject
 } from '@sap-ai-sdk/ctx-registry/internal.js';
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 import type { TFMEnum } from '@sap-ai-sdk/tabular-orchestration';
@@ -24,7 +23,7 @@ const modelName: TFMEnum = 'sap-rpt-1.5';
  * List all data destinations in the resource group.
  * @returns List of data destinations.
  */
-export async function listDataDestinations() {
+export async function listDataDestinations(): Promise<DataDestinationAsyncGetDataDestinations> {
   return DataDestinationAsyncSpecificationDataDestinationsApi.getAllDataDestinations(
     {},
     headers
@@ -91,7 +90,7 @@ export async function deleteTabularArtifact(): Promise<void> {
           headers
         ).execute();
       } catch (error) {
-        if (getHttpStatus(error) === 404) return null;
+        if (getHttpStatus(error) === 404) {return null;}
         throw error;
       }
     },
@@ -113,7 +112,7 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
     )
       .execute()
       .catch(ignoreNotFound);
-  if (existing) return existing;
+  if (existing) {return existing;}
 
   await ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi.createScenarioConfiguration(
     scenarioConfigName,
@@ -171,19 +170,19 @@ export async function predict() {
 function getNameFromLocation(location: string, segment: string): string {
   const { pathname } = new URL(location, 'https://ctx-registry.invalid');
   const match = pathname.match(new RegExp(`/${segment}/([^/]+)$`));
-  if (!match) throw new Error(`Unexpected polling location: ${location}`);
+  if (!match) {throw new Error(`Unexpected polling location: ${location}`);}
   return decodeURIComponent(match[1]!);
 }
 
 function ignoreNotFound(error: unknown): undefined {
-  if (getHttpStatus(error) !== 404) throw error;
+  if (getHttpStatus(error) !== 404) {throw error;}
   return undefined;
 }
 
 function getHttpStatus(error: unknown): number | undefined {
-  if (!error || typeof error !== 'object') return undefined;
+  if (!error || typeof error !== 'object') {return undefined;}
   if ('status' in error && typeof error.status === 'number')
-    return error.status;
+    {return error.status;}
   if (
     'response' in error &&
     error.response &&
@@ -191,6 +190,6 @@ function getHttpStatus(error: unknown): number | undefined {
     'status' in error.response &&
     typeof error.response.status === 'number'
   )
-    return error.response.status;
+    {return error.response.status;}
   return undefined;
 }

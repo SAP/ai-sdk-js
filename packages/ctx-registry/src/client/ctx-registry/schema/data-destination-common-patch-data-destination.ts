@@ -1,3 +1,5 @@
+import type { DataDestinationCommonAzurePatchConfig } from './data-destination-common-azure-patch-config.js';
+import type { DataDestinationCommonGCSPatchConfig } from './data-destination-common-gcs-patch-config.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
@@ -5,8 +7,6 @@
  */
 import type { DataDestinationCommonLabels } from './data-destination-common-labels.js';
 import type { DataDestinationCommonS3PatchConfig } from './data-destination-common-s-3-patch-config.js';
-import type { DataDestinationCommonGCSPatchConfig } from './data-destination-common-gcs-patch-config.js';
-import type { DataDestinationCommonAzurePatchConfig } from './data-destination-common-azure-patch-config.js';
 /**
  * Representation of the 'DataDestinationCommonPatchDataDestination' schema.
  */

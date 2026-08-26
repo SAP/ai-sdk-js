@@ -1,3 +1,4 @@
+import type { DataDestinationAsyncDeltaSharingDataDestinationGetResponse } from './data-destination-async-delta-sharing-data-destination-get-response.js';
 /*
  * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
  *
@@ -5,7 +6,6 @@
  */
 import type { DataDestinationAsyncHDLDataDestinationGetResponse } from './data-destination-async-hdl-data-destination-get-response.js';
 import type { DataDestinationAsyncObjectStoreDataDestinationGetResponse } from './data-destination-async-object-store-data-destination-get-response.js';
-import type { DataDestinationAsyncDeltaSharingDataDestinationGetResponse } from './data-destination-async-delta-sharing-data-destination-get-response.js';
 /**
  * Representation of the 'DataDestinationAsyncGetDataDestination' schema.
  */

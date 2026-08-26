@@ -2,6 +2,7 @@ import {
   resolveDeployment,
   type ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
+
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 // Imported after `pnpm generate` — generated from spec/tabular-orchestration.yaml
