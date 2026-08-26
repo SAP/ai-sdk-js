@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -9,10 +10,12 @@ import {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
-import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-import * as z from 'zod/v4';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import * as z from 'zod/v4';
+
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -723,7 +726,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
 
-  // Routing tool calls to their corresponsing implementation
+  // Routing tool calls to their corresponding implementation
   const callFunction = (name: string, args: any): string => {
     switch (name) {
       case 'add':

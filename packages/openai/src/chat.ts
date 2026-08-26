@@ -1,4 +1,5 @@
 import { SapCompletions } from './completions.ts';
+
 import type { OpenAI } from 'openai';
 
 /**

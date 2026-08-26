@@ -31,8 +31,8 @@
     "@langchain/mcp-adapters": "1.1.4",
     "@langchain/textsplitters": "1.0.1",
     "@modelcontextprotocol/sdk": "1.30.0",
-    "@sap-cloud-sdk/resilience": "4.9.0",
-    "@sap-cloud-sdk/util": "4.9.0",
+    "@sap-cloud-sdk/resilience": "4.9.1",
+    "@sap-cloud-sdk/util": "4.9.1",
     "@types/express": "5.0.6",
     "express": "5.2.1",
     "langchain": "1.5.10",
@@ -50,7 +50,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
-    "@upstash/context7-mcp": "4.0.2",
+    "@upstash/context7-mcp": "4.0.3",
     "hyparquet-writer": "0.16.6"
   },
   "peerDependencies": {

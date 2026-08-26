@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { Template } from './template.js';
-import type { TemplateRef } from './template-ref.js';
 import type { LLMModelDetails } from './llm-model-details.js';
+import type { TemplateRef } from './template-ref.js';
+import type { Template } from './template.js';
 /**
  * Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.
  *

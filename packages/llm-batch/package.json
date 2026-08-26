@@ -42,8 +42,8 @@
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
-    "postgenerate": "pnpm update-imports && pnpm make-llm-batch-experimental && pnpm lint:fix",
-    "make-llm-batch-experimental": "node ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",
+    "postgenerate": "pnpm update-imports && pnpm postgenerate-batch && pnpm lint:fix",
+    "postgenerate-batch": "node ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/batch-service"
   },
   "dependencies": {

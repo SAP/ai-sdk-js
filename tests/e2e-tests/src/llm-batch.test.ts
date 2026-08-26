@@ -1,4 +1,3 @@
-import retry from 'async-retry';
 import {
   listBatches,
   createBatch,
@@ -10,6 +9,9 @@ import {
   uploadBatchInput,
   deleteFile
 } from '@sap-ai-sdk/sample-code';
+
+import retry from 'async-retry';
+
 import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();

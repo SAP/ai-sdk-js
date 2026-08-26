@@ -204,7 +204,7 @@
 
 ### Minor Changes
 
-- 6100bca: [Compatibility Note] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models
+- 6100bca: [Compatibility Note] Remove structured output handling for deprecated gpt-4 & gpt-3 models
 
 ### Patch Changes
 

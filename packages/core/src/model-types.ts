@@ -97,3 +97,16 @@ export type AiCoreOpenSourceEmbeddingModel =
  * SAP RPT models.
  */
 export type SapRptModel = LiteralUnion<'sap-rpt-1-small' | 'sap-rpt-1-large'>;
+
+/**
+ * Models supported for LLM batch processing.
+ * The full list is managed by running the `update-models` skill.
+ */
+export type LlmBatchModel = LiteralUnion<
+  | 'gpt-4.1'
+  | 'gpt-4.1-mini'
+  | 'gpt-4.1-nano'
+  | 'gpt-5'
+  | 'gpt-5.4'
+  | 'gpt-5.4-mini'
+>;

@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { Citation } from './citation.js';
 import type { LlmChoice } from './llm-choice.js';
 import type { TokenUsage } from './token-usage.js';
-import type { Citation } from './citation.js';
 /**
  * Output from LLM. Follows the OpenAI spec.
  */

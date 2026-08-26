@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { RTAScenarioId } from './rta-scenario-id.js';
 import type { RTAExecutableId } from './rta-executable-id.js';
 import type { RTAExecutionId } from './rta-execution-id.js';
+import type { RTAScenarioId } from './rta-scenario-id.js';
 /**
  * Execution
  */
