@@ -7,9 +7,11 @@ import { resilience } from '@sap-cloud-sdk/resilience';
 import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
 const schema = [
+  { name: 'PRODUCT_ID', dtype: 'uuid' },
   { name: 'PRODUCT', dtype: 'string' },
-  { name: 'PRICE', dtype: 'numeric' },
-  { name: 'PRODUCTION_DATE', dtype: 'date' },
+  { name: 'PRICE', dtype: 'double' },
+  { name: 'IN_STOCK', dtype: 'boolean' },
+  { name: 'LAST_UPDATED', dtype: 'datetime' },
   { name: '__row_idx__', dtype: 'string' },
   { name: 'SALESGROUP', dtype: 'string' }
 ] as const;
@@ -23,37 +25,47 @@ const data: PredictionData<typeof schema> = {
   index_column: '__row_idx__',
   rows: [
     {
+      PRODUCT_ID: '550e8400-e29b-41d4-a716-446655440000',
       PRODUCT: 'Laptop',
       PRICE: 999.99,
-      PRODUCTION_DATE: '2025-01-15',
+      IN_STOCK: true,
+      LAST_UPDATED: '2025-01-15T10:30:00',
       __row_idx__: '35',
       SALESGROUP: '[PREDICT]'
     },
     {
+      PRODUCT_ID: '550e8400-e29b-41d4-a716-446655440001',
       PRODUCT: 'Office Chair',
       PRICE: 142.99,
-      PRODUCTION_DATE: '2025-07-13',
+      IN_STOCK: true,
+      LAST_UPDATED: '2025-07-13T14:00:00',
       __row_idx__: '571',
       SALESGROUP: '[PREDICT]'
     },
     {
+      PRODUCT_ID: '550e8400-e29b-41d4-a716-446655440002',
       PRODUCT: 'Desktop Computer',
       PRICE: 921.5,
-      PRODUCTION_DATE: '2024-12-02',
+      IN_STOCK: false,
+      LAST_UPDATED: '2024-12-02T08:00:00',
       __row_idx__: '42',
       SALESGROUP: 'Electronics'
     },
     {
-      PRODUCT: 'Macbook',
+      PRODUCT_ID: '550e8400-e29b-41d4-a716-446655440003',
+      PRODUCT: 'MacBook',
       PRICE: 1220.99,
-      PRODUCTION_DATE: '2026-01-31',
+      IN_STOCK: true,
+      LAST_UPDATED: '2026-01-31T09:15:00',
       __row_idx__: '99',
       SALESGROUP: 'Electronics'
     },
     {
+      PRODUCT_ID: '550e8400-e29b-41d4-a716-446655440004',
       PRODUCT: 'Office Desk',
       PRICE: 750.5,
-      PRODUCTION_DATE: '2024-12-05',
+      IN_STOCK: false,
+      LAST_UPDATED: '2024-12-05T11:45:00',
       __row_idx__: '689',
       SALESGROUP: 'Furniture'
     }
@@ -146,4 +158,110 @@ export async function predictWithSchemaResilient(): Promise<PredictResponsePaylo
   return client.predictWithSchema(schema, data, {
     middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
   });
+}
+
+const columnarData: PredictionData<typeof schema> = {
+  prediction_config: {
+    target_columns: [
+      { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]' }
+    ]
+  },
+  index_column: '__row_idx__',
+  columns: {
+    PRODUCT_ID: [
+      '550e8400-e29b-41d4-a716-446655440000',
+      '550e8400-e29b-41d4-a716-446655440001',
+      '550e8400-e29b-41d4-a716-446655440002'
+    ],
+    PRODUCT: ['Laptop', 'Office Chair', 'Desktop Computer'],
+    PRICE: [999.99, 142.99, 921.5],
+    IN_STOCK: [true, true, false],
+    LAST_UPDATED: ['2025-01-15T10:30:00', '2025-07-13T14:00:00', '2024-12-02T08:00:00'],
+    __row_idx__: ['35', '571', '42'],
+    SALESGROUP: ['[PREDICT]', '[PREDICT]', 'Electronics']
+  }
+};
+
+/**
+ * Predict the sales group of products using the columnar data format.
+ * @returns The prediction results.
+ */
+export async function predictColumnarFormat(): Promise<PredictResponsePayload> {
+  const client = new RptClient('sap-rpt-1.5');
+  return client.predictWithSchema(schema, columnarData);
+}
+
+/**
+ * Predict the sales group of products with explainability.
+ * Returns column importance scores and relevant context rows per query row.
+ * @returns The prediction results including explanation data.
+ */
+export async function predictWithExplanations(): Promise<PredictResponsePayload> {
+  const client = new RptClient('sap-rpt-1.5');
+  return client.predictWithSchema(schema, {
+    ...data,
+    prediction_config: {
+      target_columns: [
+        { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]' }
+      ],
+      explanations: {
+        top_column_scores: 3,
+        top_relevant_context_rows: 2
+      }
+    }
+  });
+}
+
+const regressionSchema = [
+  { name: 'PRODUCT', dtype: 'string' },
+  { name: 'PRODUCTION_DATE', dtype: 'date' },
+  { name: '__row_idx__', dtype: 'string' },
+  { name: 'SALESGROUP', dtype: 'string' },
+  { name: 'PRICE', dtype: 'numeric' }
+] as const;
+
+const regressionData: PredictionData<typeof regressionSchema> = {
+  prediction_config: {
+    target_columns: [
+      {
+        name: 'PRICE',
+        prediction_placeholder: -1,
+        task_type: 'regression'
+      }
+    ]
+  },
+  index_column: '__row_idx__',
+  rows: [
+    {
+      PRODUCT: 'Laptop',
+      PRODUCTION_DATE: '2025-01-15',
+      __row_idx__: '35',
+      SALESGROUP: 'Electronics',
+      PRICE: -1
+    },
+    {
+      PRODUCT: 'Office Chair',
+      PRODUCTION_DATE: '2025-07-13',
+      __row_idx__: '571',
+      SALESGROUP: 'Furniture',
+      PRICE: -1
+    },
+    {
+      PRODUCT: 'Desktop Computer',
+      PRODUCTION_DATE: '2024-12-02',
+      __row_idx__: '42',
+      SALESGROUP: 'Electronics',
+      PRICE: 921.5
+    }
+  ]
+};
+
+/**
+ * Predict the price of products using regression with confidence intervals.
+ * The response includes a `confidence_interval` field with lower and upper bounds per prediction.
+ * @returns The prediction results including confidence intervals.
+ */
+export async function predictRegressionWithConfidenceIntervals(): Promise<PredictResponsePayload> {
+  const client = new RptClient('sap-rpt-1.5');
+  return client.predictWithSchema(regressionSchema, regressionData);
 }

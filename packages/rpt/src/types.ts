@@ -7,6 +7,7 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BodyPredictParquet,
   ColumnType as ColType,
+  ExplanationConfig,
   SchemaFieldConfig,
   TargetColumnConfig
 } from './client/rpt/index.ts';
@@ -104,6 +105,7 @@ interface PredictionConfig<T extends DataSchema> {
   target_columns: (Omit<TargetColumnConfig, 'name'> & {
     name: ColumnNames<T>;
   })[];
+  explanations?: ExplanationConfig;
 }
 
 /**

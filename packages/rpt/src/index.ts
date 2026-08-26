@@ -12,5 +12,7 @@ export type {
 export type {
   PredictResponseMetadata,
   PredictResponsePayload,
-  PredictResponseStatus
+  PredictResponseStatus,
+  ExplanationConfig,
+  ExplanationResult
 } from './client/rpt/schema/index.ts';
