@@ -197,15 +197,19 @@ export class RptClient {
       } satisfies PredictRequestPayload;
     }
 
-    return {
-      ...base,
-      columns: Object.fromEntries<(string | number | null)[]>(
-        Object.entries(columns).map(([k, vals]) => [
-          k,
-          vals.map(serializeBooleans)
-        ])
-      )
-    } satisfies PredictRequestPayload;
+    if (columns) {
+      return {
+        ...base,
+        columns: Object.fromEntries<(string | number | null)[]>(
+          Object.entries(columns).map(([k, vals]) => [
+            k,
+            vals.map(serializeBooleans)
+          ])
+        )
+      } satisfies PredictRequestPayload;
+    }
+
+    return base as unknown as PredictRequestPayload;
   }
 
   /**
