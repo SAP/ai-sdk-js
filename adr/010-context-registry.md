@@ -72,6 +72,14 @@ Nonparallel specifications require validation and reconciliation of conflicting 
 ### Question 2: Package Name
 
 The context registry is mostly vendor-neutral but retains SAP RPT ties and some breaking-change risk.
+
+The RPT ties are concentrated in the scenario-configuration and tabular-artifact resources, which mirror RPT's context-selection model rather than a generic registry:
+
+- `ContextSelectionStrategy` is a closed enum of `random` and `embedding`, both RPT context-selection strategies; a different provider may not select context the same way, or at all.
+- The scenario configuration is built around `tabularArtifacts` referenced by name, an RPT-specific grouping for in-context learning; TabPFN, for example, is stateless and carries its training rows inline per request instead.
+- Tabular artifacts carry `csnMetadata` with a `definitionType` of `DOCUMENT`, `REFERENCE`, or `AUTO`, reflecting RPT's CSN (CDS Standard Notation) metadata model; another provider's data intake need not follow CSN.
+- The data-destination and SQL-API resources are comparatively neutral (a named data store and a SQL surface), so the RPT coupling is not uniform across the registry.
+
 Because this risk is smaller than for prediction, a vendor-neutral package name is reasonable.
 
 **Recommendation: Option A.1.** Use `@sap-ai-sdk/ctx-registry`.
@@ -124,10 +132,19 @@ Asynchronous creation returns http `202 Accepted` and a `Location` URL whose sub
 The response lifecycle status is `PROCESSING`, `ACTIVE`, or `ERROR`; a helper should follow the location and expose terminal and failure states.
 The PoC's `wait-for-async-resource.mts` helper demonstrates this polling loop with the generated client.
 
-The exact helper API is still open:
+The current specifications only document the `Location` header, and the deployed service does not currently return `Retry-After`.
+The helper should therefore default to a configured interval but still honor `Retry-After` for any other services that return it, or if that change is made in the future.
+
+The helper could be a generic utility shipped in `@sap-ai-sdk/core` rather than a ctx-registry-specific function.
+The same `202` + `Location` + lifecycle-status pattern is already used by other asynchronous operations in the SDK, for example `VectorApi.createCollection()` in `@sap-ai-sdk/document-grounding`, which returns `202` with a `Location` header and is polled via the collection `status` field.
+A shared utility avoids duplicating polling, timeout, and terminal-state logic per service and keeps the contract in one place.
+
+The exact helper API is still open, but would do well to align with the existing `async-retry` package used elsewhere in the SDK, and should support cancellation via `AbortSignal`:
 
 ```ts
 // Note: Subject to change
+import { pollAsyncResource } from '@sap-ai-sdk/core';
+
 const artifact = await pollAsyncResource({
   read: () => client.get(pollingLocation),
   isComplete: current => current.status === 'ACTIVE',
@@ -143,6 +160,8 @@ for await (const current of watchAsyncResource(options)) {
   console.log(current.status);
 }
 ```
+
+The helper should accept a `Retry-After` value from both the initial `202` and each polling response and use it as the next interval when present, so that service-driven retry delays are respected automatically if the service starts sending them.
 
 #### Option C: Add a full set of convenience methods
 

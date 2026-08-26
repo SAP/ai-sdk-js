@@ -30,7 +30,7 @@ Supporting only SAP RPT at this stage is expected; the concern is that the contr
 Another model might require a different contract, such as training-and-test payloads or relational tables instead of RPT's scenario, context-selection, and flat-row model.
 The service could reconcile these differences server-side, but no finalized specification commits to doing so in a vendor-neutral way.
 Until or unless it does, adding a structurally different model could significantly change the public client and package boundary.
-The model-name extensibility concern shared by generated clients is tracked in [ADR-009](./009-tabular-orchestration-release-strategy.md).
+The model-name extensibility concern is discussed below in [Question 1: Client Architecture](#question-1-client-architecture).
 
 ## Decision
 
@@ -61,7 +61,13 @@ const request: PredictRequest = {
   },
   predictionConfig: {
     targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
-  }
+  },
+  // `modelConfig` is an additional optional property on the request.
+  // It is an untyped `Record<string, any>` that forwards arbitrary
+  // model-specific fields (e.g. RPT explainability overrides) to the TFM.
+  // A typed overlay could specialize it per model, e.g. map each `TFMEnum`
+  // value to its own config shape so `sap-rpt-1.5` yields RPT options.
+  modelConfig: { /* model-specific options */ }
 };
 
 await PredictApi.predictV1PredictPost(request, {
@@ -78,6 +84,16 @@ The RPT coupling is visible in the following:
 - Context selection and target-column semantics are neutral only if every model gives them the same meaning; other providers may not share RPT's limits, jointly predicted columns, or explainability model.
 
 Adding models to `TFMEnum` would therefore make the client appear agnostic while moving incompatibilities to runtime validation and the untyped `modelConfig`.
+A typed overlay could narrow `modelConfig` per model instead of leaving it fully open: a mapped type keyed by `TFMEnum` would give each model name its own config shape (e.g. `sap-rpt-1.5` → RPT explainability options).
+Adding a model then becomes a typed extension rather than another entry in an untyped bag.
+
+> **Open question for the service owners.** Before committing to a neutral client shape, we should ask the Tabular AI service owners:
+>
+> - whether the service is intended to become provider-neutral, and if so on what timeline;
+> - whether context-selection and target-column semantics are expected to keep the same meaning for other vendors.
+>
+> The available evidence suggests the contracts already diverge structurally: TabPFN sends a stateless `x_train`/`y_train`/`x_test`/`task_config` payload with no scenario, context selection, or artifact references, whereas RPT uses `scenarioConfigName`, `contextSelectionConfig`, and `predictionConfig`.
+> A neutral client that hides this difference would push it into runtime validation rather than types.
 
 #### Option A: Generic generated client only
 
