@@ -1,7 +1,8 @@
 import { expectType, expectAssignable } from 'tsd';
+
+import type { LlmBatchModel as LlmBatchModelFromCore } from '@sap-ai-sdk/core';
 import type { LlmBatchModel } from '@sap-ai-sdk/llm-batch';
 import type { BatchCreateRequest } from '@sap-ai-sdk/llm-batch';
-import type { LlmBatchModel as LlmBatchModelFromCore } from '@sap-ai-sdk/core';
 
 // LlmBatchModel accepts known model strings
 expectAssignable<LlmBatchModel>('gpt-4.1-nano');
