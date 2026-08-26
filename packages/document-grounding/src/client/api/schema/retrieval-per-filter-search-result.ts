@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { RetrievalDataRepositorySearchResult } from './retrieval-data-repository-search-result.js';
 /**
  * Representation of the 'RetrievalPerFilterSearchResult' schema.

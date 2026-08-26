@@ -1,8 +1,10 @@
-import { expectAssignable, expectType } from 'tsd';
 import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
+
+import { expectAssignable, expectType } from 'tsd';
+
 import type {
   AzureOpenAiEmbeddingResponse,
   AzureOpenAiChatCompletionResponse,

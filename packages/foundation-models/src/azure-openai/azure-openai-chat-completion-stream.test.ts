@@ -1,5 +1,6 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { parseFileToString } from '../../../../test-util/mock-http.ts';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.ts';
 

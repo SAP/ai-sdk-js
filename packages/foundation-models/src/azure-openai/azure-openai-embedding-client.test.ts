@@ -1,4 +1,5 @@
 import nock from 'nock';
+
 import {
   mockClientCredentialsGrantCall,
   mockInference,
@@ -6,6 +7,7 @@ import {
 } from '../../../../test-util/mock-http.ts';
 import { AzureOpenAiEmbeddingClient } from './azure-openai-embedding-client.ts';
 import { apiVersion } from './model-types.ts';
+
 import type {
   AzureOpenAiEmbeddingOutput,
   AzureOpenAiEmbeddingParameters

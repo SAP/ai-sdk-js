@@ -3,6 +3,7 @@ import {
   RetrievalApi,
   PipelinesApi
 } from '@sap-ai-sdk/document-grounding';
+
 import type {
   DataRepositoryType,
   DocumentsListResponse,

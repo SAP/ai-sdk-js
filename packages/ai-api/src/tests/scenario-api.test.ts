@@ -1,9 +1,11 @@
 import nock from 'nock';
-import { ScenarioApi } from '../client/AI_CORE_API/index.ts';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.ts';
+import { ScenarioApi } from '../client/AI_CORE_API/index.ts';
+
 import type { AiScenarioList } from '../client/AI_CORE_API/index.ts';
 
 describe('scenario', () => {

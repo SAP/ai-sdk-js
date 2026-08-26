@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ModuleConfigs } from './module-configs.js';
 /**
  * A list of module configurations. The first configuration in the list that succeeds will be used.

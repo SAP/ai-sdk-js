@@ -3,9 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiId } from './ai-id.js';
+
 import type { AiArtifactCreationResponseMessage } from './ai-artifact-creation-response-message.js';
 import type { AiArtifactUrl } from './ai-artifact-url.js';
+import type { AiId } from './ai-id.js';
 /**
  * Representation of the 'AiArtifactCreationResponse' schema.
  */

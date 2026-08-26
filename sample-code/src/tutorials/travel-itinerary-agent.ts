@@ -1,5 +1,9 @@
 // NOTE: ALL code changes in this file MUST be reflected in the documentation portal.
 
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import { tool } from '@langchain/core/tools';
 /* oxlint-disable no-console */
 import {
   StateGraph,
@@ -11,11 +15,10 @@ import {
   Command
 } from '@langchain/langgraph';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
-import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { tool } from '@langchain/core/tools';
 import * as z from 'zod/v4';
+
 import { mcpClient } from './mcp/mcp-adapter.ts';
+
 import type { AIMessage } from '@langchain/core/messages';
 /**
  * This example demonstrates how to create a travel itinerary assistant using LangGraph and MCP.

@@ -1,4 +1,5 @@
 import type { AzureOpenAiRealtimeModel } from '@sap-ai-sdk/core';
+
 import type { SapOpenAiBaseOptions } from '../types.ts';
 import type * as WS from 'ws';
 
