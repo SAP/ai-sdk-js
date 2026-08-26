@@ -32,7 +32,7 @@ Cons:
 
 ### RPT-1.0 Compatibility Behavior
 
-- The model name is **required** and determines the RPT generation (`sap-rpt-1-*` → RPT-1.0 behavior; `sap-rpt-1.5*` → RPT-1.5 behavior).
+- The model name is **required** and determines the RPT version (`sap-rpt-1-*` → RPT-1.0 behavior; `sap-rpt-1.5*` → RPT-1.5 behavior).
 
 - For RPT-1.0 model names, the SDK injects `parse_data_types: true` as a request default; explicit values always take precedence. If a `deploymentId` is passed without a `modelName`, generation detection is not possible and the workaround is skipped.
 
