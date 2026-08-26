@@ -42,6 +42,11 @@ export type DateTimeString = `${DateString}T${TimeString}`;
  */
 export type TimestampString = `${number}`;
 
+/**
+ * Represents a UUID string in the RFC 4122 format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.
+ */
+export type UuidString = `${string}-${string}-${string}-${string}-${string}`;
+
 interface ColTypeMap {
   numeric: number;
   integer: number;
@@ -58,7 +63,7 @@ interface ColTypeMap {
   boolean: boolean;
   string: string;
   largestring: string;
-  uuid: string;
+  uuid: UuidString;
 }
 
 /**
