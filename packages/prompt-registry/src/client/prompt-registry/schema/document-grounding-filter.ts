@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { DataRepositoryType } from './data-repository-type.js';
 import type { GroundingFilterId } from './grounding-filter-id.js';
 import type { GroundingFilterSearchConfiguration } from './grounding-filter-search-configuration.js';
-import type { DataRepositoryType } from './data-repository-type.js';
 import type { KeyValueListPair } from './key-value-list-pair.js';
 import type { SearchDocumentKeyValueListPair } from './search-document-key-value-list-pair.js';
 /**

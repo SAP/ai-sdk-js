@@ -1,14 +1,17 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import { SseStream } from '@sap-ai-sdk/core';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.ts';
 import { isMessageToolCall, mergeToolCallChunk } from './util/index.ts';
-import type { ToolCallAccumulator } from './util/index.ts';
+
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.ts';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiCreateChatCompletionStreamResponse
 } from './client/inference/schema/index.ts';
-import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.ts';
+import type { ToolCallAccumulator } from './util/index.ts';
 
 const logger = createLogger({
   package: 'foundation-models',

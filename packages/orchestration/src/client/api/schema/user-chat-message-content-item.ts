@@ -4,9 +4,9 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { ImageContentUrl } from './image-content-url.js';
-import type { FileContent } from './file-content.js';
 import type { CacheControl } from './cache-control.js';
+import type { FileContent } from './file-content.js';
+import type { ImageContentUrl } from './image-content-url.js';
 /**
  * Representation of the 'UserChatMessageContentItem' schema.
  */

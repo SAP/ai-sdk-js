@@ -4,11 +4,11 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { VectorSearchConfiguration } from './vector-search-configuration.js';
-import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
-import type { VectorSearchDocumentKeyValueListPair } from './vector-search-document-key-value-list-pair.js';
 import type { BinaryBooleanFilter } from './binary-boolean-filter.js';
 import type { ScopedKeyValueListPair } from './scoped-key-value-list-pair.js';
+import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
+import type { VectorSearchConfiguration } from './vector-search-configuration.js';
+import type { VectorSearchDocumentKeyValueListPair } from './vector-search-document-key-value-list-pair.js';
 /**
  * Representation of the 'VectorSearchFilter' schema.
  */
