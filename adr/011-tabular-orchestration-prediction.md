@@ -92,7 +92,7 @@ Adding a model then becomes a typed extension rather than another entry in an un
 > - whether the service is intended to become provider-neutral, and if so on what timeline;
 > - whether context-selection and target-column semantics are expected to keep the same meaning for other vendors.
 >
-> The available evidence suggests the contracts already diverge structurally: TabPFN sends a stateless `x_train`/`y_train`/`x_test`/`task_config` payload with no scenario, context selection, or artifact references, whereas RPT uses `scenarioConfigName`, `contextSelectionConfig`, and `predictionConfig`.
+> The available evidence suggests the contracts already diverge somewhat: TabPFN needs a test/train x/y split whereas RPT follows a more freeform shape`.
 > A neutral client that hides this difference would push it into runtime validation rather than types.
 
 #### Option A: Generic generated client only
