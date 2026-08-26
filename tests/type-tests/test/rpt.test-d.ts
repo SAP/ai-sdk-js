@@ -8,7 +8,7 @@ import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
  * Prediction with schema.
  */
 expectType<Promise<PredictResponsePayload>>(
-  new RptClient().predictWithSchema(
+  new RptClient('sap-rpt-1.5').predictWithSchema(
     [
       { name: 'PRODUCT', dtype: 'string' },
       { name: '__row_idx__', dtype: 'string' },
@@ -41,7 +41,7 @@ expectType<Promise<PredictResponsePayload>>(
  * Prediction without schema.
  */
 expectType<Promise<PredictResponsePayload>>(
-  new RptClient().predictWithoutSchema({
+  new RptClient('sap-rpt-1.5').predictWithoutSchema({
     prediction_config: {
       target_columns: [
         { name: 'SALESGROUP', prediction_placeholder: '[PREDICT]' }
@@ -67,7 +67,7 @@ expectType<Promise<PredictResponsePayload>>(
  * Prediction with schema and incorrect prediction config.
  */
 expectError(
-  new RptClient().predictWithSchema(
+  new RptClient('sap-rpt-1.5').predictWithSchema(
     [
       { name: 'PRODUCT', dtype: 'string' },
       { name: 'ID', dtype: 'string' },
