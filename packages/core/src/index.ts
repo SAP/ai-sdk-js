@@ -18,3 +18,7 @@ export type {
   LlmBatchModel
 } from './model-types.ts';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';
+export {
+  pollAsyncResource
+} from './poll-async-resource.ts';
+export type { PollAsyncResourceOptions } from './poll-async-resource.ts';

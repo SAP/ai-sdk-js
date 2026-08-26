@@ -72,3 +72,7 @@ knowledge-base/api-reference/
 
 # Local config files with credentials
 packages/llm-batch/config.json
+
+# OpenAPI specs for generated clients
+packages/ctx-registry/src/spec/*.yaml
+packages/tabular-orchestration/src/spec/*.yaml

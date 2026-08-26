@@ -1,0 +1,53 @@
+{
+  "name": "@sap-ai-sdk/tabular-orchestration",
+  "version": "2.15.0",
+  "description": "This package provides a client for SAP Tabular Foundation Model predictions via the orchestration service.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sap-ai-sdk",
+    "tabular-orchestration",
+    "tabpfn"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/tabular-orchestration"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "test": "vitest run",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/tabular-orchestration.yaml -o ./src/client -s ./src/spec/options-per-service.json && pnpm update-imports && pnpm lint:fix",
+    "update-imports": "node ../../scripts/update-imports.ts ./src/client/tabular-orchestration"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/http-client": "^4.8.0",
+    "@sap-cloud-sdk/openapi": "^4.8.0"
+  },
+  "devDependencies": {
+    "vitest": "4.1.10"
+  }
+}
