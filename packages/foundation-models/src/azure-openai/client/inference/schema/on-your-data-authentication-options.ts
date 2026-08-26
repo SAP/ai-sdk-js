@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiOnYourDataApiKeyAuthenticationOptions } from './on-your-data-api-key-authentication-options.js';
 import type { AzureOpenAiOnYourDataConnectionStringAuthenticationOptions } from './on-your-data-connection-string-authentication-options.js';
 import type { AzureOpenAiOnYourDataSystemAssignedManagedIdentityAuthenticationOptions } from './on-your-data-system-assigned-managed-identity-authentication-options.js';

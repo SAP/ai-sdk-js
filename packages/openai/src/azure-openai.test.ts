@@ -1,5 +1,6 @@
 import nock from 'nock';
 import { AzureOpenAI } from 'openai';
+
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,

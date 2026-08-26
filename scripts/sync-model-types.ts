@@ -193,12 +193,9 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
 
 function buildReleaseNote(
   added: string[],
-  removed: {
-    model: string;
-    replacement: string;
-    retirementDate: string;
-    isRetiredFromTable: boolean;
-  }[]
+  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[],
+  batchAdded: string[],
+  batchRemoved: string[]
 ): string {
   const parts: string[] = [];
 
@@ -234,6 +231,15 @@ function buildReleaseNote(
     parts.push(
       `Remove ${group.label} model${group.items.length > 1 ? 's' : ''} ${joined}.`
     );
+  }
+
+  if (batchAdded.length) {
+    const names = batchAdded.map(m => `\`${m}\``).join(', ');
+    parts.push(`Added ${names} to the batch model list.`);
+  }
+  if (batchRemoved.length) {
+    const names = batchRemoved.map(m => `\`${m}\``).join(', ');
+    parts.push(`Removed ${names} from the batch model list.`);
   }
 
   return parts.join(' ');
@@ -334,40 +340,55 @@ async function patchModelTypes(
   return changed;
 }
 
+/** Parsed structure of scripts/sap-models.json. */
+interface SapModelsFile {
+  models: ModelRow[];
+  batchModels: string[];
+}
+
 async function syncModelTypes(): Promise<void> {
   let rows: ModelRow[];
+  let batchModels: string[];
   try {
     const raw = await readFile(SAP_MODELS_PATH, 'utf8');
-    rows = JSON.parse(raw) as ModelRow[];
+    const data = JSON.parse(raw) as SapModelsFile;
+    rows = data.models;
+    batchModels = data.batchModels ?? [];
   } catch {
     console.error(`Error: could not read or parse ${SAP_MODELS_PATH}.`);
     process.exit(1);
   }
 
-  const { typeToActiveModels, retiredInfo, skippedRows } =
-    buildActiveModelMap(rows);
+  const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
+  typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
+
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
-  const allAdded = Object.entries(typeToActiveModels).flatMap(
-    ([typeName, activeModels]) => {
+  const batchCurrent = extractCurrentModels(currentContent, 'LlmBatchModel');
+  const batchNew = typeToActiveModels['LlmBatchModel'] ?? new Set<string>();
+  const batchAdded = [...batchNew].filter(m => !batchCurrent.has(m));
+  const batchRemoved = [...batchCurrent].filter(m => !batchNew.has(m));
+
+  const allAdded = Object.entries(typeToActiveModels)
+    .filter(([typeName]) => typeName !== 'LlmBatchModel')
+    .flatMap(([typeName, activeModels]) => {
       const current = extractCurrentModels(currentContent, typeName);
       return [...activeModels].filter(m => !current.has(m));
-    }
-  );
+    });
 
-  const allRemoved = Object.entries(typeToActiveModels).flatMap(
-    ([typeName, activeModels]) => {
-      const current = extractCurrentModels(currentContent, typeName);
-      return [...current]
-        .filter(m => !activeModels.has(m))
-        .map(m => ({
-          model: m,
-          replacement: retiredInfo[m]?.replacement ?? '',
-          retirementDate: retiredInfo[m]?.retirementDate ?? '',
-          isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
-        }));
-    }
-  );
+  const allRemoved = Object.entries(typeToActiveModels)
+    .filter(([typeName]) => typeName !== 'LlmBatchModel')
+    .flatMap(([typeName, activeModels]) => {
+    const current = extractCurrentModels(currentContent, typeName);
+    return [...current]
+      .filter(m => !activeModels.has(m))
+      .map(m => ({
+        model: m,
+        replacement: retiredInfo[m]?.replacement ?? '',
+        retirementDate: retiredInfo[m]?.retirementDate ?? '',
+        isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
+      }));
+  });
 
   const changed = await patchModelTypes(typeToActiveModels);
 
@@ -378,7 +399,7 @@ async function syncModelTypes(): Promise<void> {
 
   console.error(`\nPatched: ${MODEL_TYPES_PATH}`);
 
-  const releaseNote = buildReleaseNote(allAdded, allRemoved);
+  const releaseNote = buildReleaseNote(allAdded, allRemoved, batchAdded, batchRemoved);
   if (releaseNote) {
     console.log('\n--- Release Note ---');
     console.log(releaseNote);

@@ -1,8 +1,9 @@
-import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   CustomRequestConfig,
   RequestCompressionMiddlewareOptions
 } from '@sap-cloud-sdk/http-client';
+import type { Xor } from '@sap-cloud-sdk/util';
+
 import type {
   BodyPredictParquet,
   ColumnType as ColType,

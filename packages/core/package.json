@@ -38,10 +38,10 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@sap-cloud-sdk/connectivity": "^4.8.0",
-    "@sap-cloud-sdk/http-client": "^4.8.0",
-    "@sap-cloud-sdk/openapi": "^4.8.0",
-    "@sap-cloud-sdk/util": "^4.8.0"
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/http-client": "^4.9.1",
+    "@sap-cloud-sdk/openapi": "^4.9.1",
+    "@sap-cloud-sdk/util": "^4.9.1"
   },
   "devDependencies": {
     "vitest": "4.1.11"
