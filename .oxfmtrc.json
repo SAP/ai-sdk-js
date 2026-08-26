@@ -6,6 +6,31 @@
   "endOfLine": "lf",
   "printWidth": 80,
   "sortPackageJson": false,
+  "sortImports": {
+    "customGroups": [
+      {
+        "groupName": "sap-external",
+        "modifiers": ["value"],
+        "elementNamePattern": ["@sap-ai-sdk/**", "@sap-cloud-sdk/**"]
+      },
+      {
+        "groupName": "type-sap-external",
+        "modifiers": ["type"],
+        "elementNamePattern": ["@sap-ai-sdk/**", "@sap-cloud-sdk/**"]
+      }
+    ],
+    "groups": [
+      "builtin",
+      "sap-external",
+      "external",
+      ["internal", "subpath"],
+      ["parent", "sibling", "index"],
+      "style",
+      "unknown",
+      "type-sap-external",
+      "type"
+    ]
+  },
   "ignorePatterns": [
     "node_modules/",
     "dist/",

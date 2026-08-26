@@ -40,7 +40,7 @@ CAs
 myFunction
 rejectUnauthorized
 registerDestination
-ESLint
+oxlint
 CLIs
 GUIDs
 [AI|ai]
@@ -148,3 +148,5 @@ JSDoc
 impr
 [Oo]pen[Aa][Ii]
 breakpoints?
+[Rr]ealtime
+compat

@@ -1,9 +1,12 @@
 import { SseStream } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 import { mergeStreamResponse } from './util/index.ts';
-import type { CompletionPostResponseStreaming } from './client/api/schema/index.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+import type { CompletionPostResponseStreaming } from './client/api/schema/index.ts';
 import type { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 
 const logger = createLogger({

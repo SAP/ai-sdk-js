@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { FunctionObject } from './function-object.js';
+
 import type { CacheControl } from './cache-control.js';
+import type { FunctionObject } from './function-object.js';
 /**
  * Representation of the 'SchemasChatCompletionTool' schema.
  */

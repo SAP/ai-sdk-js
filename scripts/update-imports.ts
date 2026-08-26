@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 import { basename, resolve } from 'node:path';
 import { transformFilesInDirectory } from './util.ts';
 

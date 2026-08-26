@@ -1,15 +1,18 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import {
   type ChatCompletionRequest,
   type StreamOptions,
   type BaseStreamOptions,
   type ModuleStreamOptions,
-  type OrchestrationConfigRef,
+  type OrchestrationConfigRefById,
+  type OrchestrationConfigRefByName,
   type OrchestrationModuleConfig,
   type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
   type EmbeddingRequest
 } from '../orchestration-types.ts';
+
 import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
@@ -63,7 +66,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
  * @internal
  */
 export function constructCompletionPostRequestFromConfigReference(
-  configRef: OrchestrationConfigRef,
+  configRef: OrchestrationConfigRefById | OrchestrationConfigRefByName,
   request?: ChatCompletionRequest,
   stream?: boolean
 ):

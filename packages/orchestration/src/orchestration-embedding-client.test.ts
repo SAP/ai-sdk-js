@@ -1,4 +1,5 @@
 import nock from 'nock';
+
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -6,10 +7,11 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.ts';
-import { buildDpiMaskingProvider } from './util/masking.ts';
 import { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
+import { buildDpiMaskingProvider } from './util/masking.ts';
 import { constructEmbeddingPostRequest } from './util/module-config.ts';
+
 import type { EmbeddingsPostResponse } from './client/api/schema/index.ts';
 import type {
   EmbeddingModuleConfig,

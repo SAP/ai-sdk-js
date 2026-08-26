@@ -1,5 +1,6 @@
 import { getAiCoreDestination } from '@sap-ai-sdk/core';
 import { ErrorWithCause } from '@sap-cloud-sdk/util';
+
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
