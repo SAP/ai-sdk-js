@@ -1,31 +1,37 @@
-import { executeRequest } from '@sap-ai-sdk/core';
-import { createLogger } from '@sap-cloud-sdk/util';
-import yaml from 'yaml';
-import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import { OrchestrationStream } from './orchestration-stream.ts';
-import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+import { executeRequest } from '@sap-ai-sdk/core';
+import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
+
+import yaml from 'yaml';
+
 import { OrchestrationResponse } from './orchestration-response.ts';
-import {
-  constructCompletionPostRequest,
-  constructCompletionPostRequestFromJsonModuleConfig,
-  constructCompletionPostRequestFromConfigReference
-} from './util/index.ts';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+import { OrchestrationStream } from './orchestration-stream.ts';
 import {
   isConfigReference,
   isOrchestrationModuleConfigList,
   assertIsOrchestrationModuleConfigList
 } from './orchestration-types.ts';
-import type { Xor } from '@sap-cloud-sdk/util';
-import type { TemplatingChatMessage } from './client/api/schema/index.ts';
-import type {
-  HttpResponse,
-  CustomRequestConfig
-} from '@sap-cloud-sdk/http-client';
+import {
+  constructCompletionPostRequest,
+  constructCompletionPostRequestFromJsonModuleConfig,
+  constructCompletionPostRequestFromConfigReference
+} from './util/index.ts';
+
 import type {
   DeploymentIdConfig,
   ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type {
+  HttpResponse,
+  CustomRequestConfig
+} from '@sap-cloud-sdk/http-client';
+import type { Xor } from '@sap-cloud-sdk/util';
+
+import type { TemplatingChatMessage } from './client/api/schema/index.ts';
+import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 import type {
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
@@ -37,8 +43,6 @@ import type {
   BaseStreamOptions,
   OrchestrationRequestHeaders
 } from './orchestration-types.ts';
-import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
   package: 'orchestration',

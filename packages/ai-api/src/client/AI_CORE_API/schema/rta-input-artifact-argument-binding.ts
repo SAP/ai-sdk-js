@@ -5,8 +5,8 @@
  */
 
 import type { RTAArtifactName } from './rta-artifact-name.js';
-import type { RTAArtifactUrl } from './rta-artifact-url.js';
 import type { RTAArtifactSignature } from './rta-artifact-signature.js';
+import type { RTAArtifactUrl } from './rta-artifact-url.js';
 /**
  * Required for execution
  */

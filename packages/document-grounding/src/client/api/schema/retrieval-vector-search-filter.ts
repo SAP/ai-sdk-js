@@ -4,12 +4,12 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { RetrievalSearchConfiguration } from './retrieval-search-configuration.js';
 import type { DataRepositoryType } from './data-repository-type.js';
-import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
-import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
 import type { RetrievalBinaryBooleanFilter } from './retrieval-binary-boolean-filter.js';
+import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { RetrievalScopedKeyValueListPair } from './retrieval-scoped-key-value-list-pair.js';
+import type { RetrievalSearchConfiguration } from './retrieval-search-configuration.js';
+import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
 import type { VectorScoringConfiguration } from './vector-scoring-configuration.js';
 /**
  * Representation of the 'RetrievalVectorSearchFilter' schema.

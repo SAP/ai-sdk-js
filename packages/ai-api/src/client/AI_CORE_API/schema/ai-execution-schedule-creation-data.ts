@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { AiCron } from './ai-cron.js';
 import type { AiConfigurationId } from './ai-configuration-id.js';
+import type { AiCron } from './ai-cron.js';
 /**
  * Start and end an execution schedule.
  */

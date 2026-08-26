@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { ToolCallChunk } from './tool-call-chunk.js';
 import type { ReasoningBlock } from './reasoning-block.js';
+import type { ToolCallChunk } from './tool-call-chunk.js';
 /**
  * Representation of the 'ChatDelta' schema.
  */
