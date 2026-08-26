@@ -7,7 +7,7 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BodyPredictParquet,
   ColumnType as ColType,
-  ExplanationConfig,
+  PredictionConfig as ClientPredictionConfig,
   SchemaFieldConfig,
   TargetColumnConfig
 } from './client/rpt/index.ts';
@@ -101,12 +101,14 @@ export type ColumnType<T extends DataSchema> = {
  * Represents the type of the `prediction_config` property.
  * @template T - Type of the data schema.
  */
-interface PredictionConfig<T extends DataSchema> {
+type PredictionConfig<T extends DataSchema> = Omit<
+  ClientPredictionConfig,
+  'target_columns'
+> & {
   target_columns: (Omit<TargetColumnConfig, 'name'> & {
     name: ColumnNames<T>;
   })[];
-  explanations?: ExplanationConfig;
-}
+};
 
 /**
  * Representation of a schema defining the data types of each column.
