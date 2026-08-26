@@ -1,21 +1,24 @@
 import { resolve } from 'path';
-import { StringOutputParser } from '@langchain/core/output_parsers';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
+
 import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/langchain';
-import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
+
 import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
+import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
 import {
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
-import * as z from 'zod/v4';
-import { createAgent } from 'langchain';
+import { StringOutputParser } from '@langchain/core/output_parsers';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { tool } from '@langchain/core/tools';
+import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
+import { createAgent } from 'langchain';
+import * as z from 'zod/v4';
+
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 
 /**

@@ -4,12 +4,12 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { RetrievalSearchFilter } from './retrieval-search-filter.js';
-import type { RetrievalVectorSearchFilter } from './retrieval-vector-search-filter.js';
-import type { MergeStrategyScoreReuse } from './merge-strategy-score-reuse.js';
 import type { MergeStrategyReranker } from './merge-strategy-reranker.js';
+import type { MergeStrategyScoreReuse } from './merge-strategy-score-reuse.js';
 import type { PostProcessingObjectReference } from './post-processing-object-reference.js';
 import type { PostProcessingOperation } from './post-processing-operation.js';
+import type { RetrievalSearchFilter } from './retrieval-search-filter.js';
+import type { RetrievalVectorSearchFilter } from './retrieval-vector-search-filter.js';
 /**
  * Representation of the 'RetrievalSearchInput' schema.
  */

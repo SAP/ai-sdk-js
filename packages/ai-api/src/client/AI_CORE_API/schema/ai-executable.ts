@@ -4,12 +4,12 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { AiLabelList } from './ai-label-list.js';
+import type { AiExecutableArtifactList } from './ai-executable-artifact-list.js';
 import type { AiExecutableId } from './ai-executable-id.js';
+import type { AiExecutableParameterList } from './ai-executable-parameter-list.js';
+import type { AiLabelList } from './ai-label-list.js';
 import type { AiScenarioId } from './ai-scenario-id.js';
 import type { AiVersionId } from './ai-version-id.js';
-import type { AiExecutableParameterList } from './ai-executable-parameter-list.js';
-import type { AiExecutableArtifactList } from './ai-executable-artifact-list.js';
 /**
  * An ML executable consists of a set of ML tasks, flows between tasks, dependencies between tasks, models (or model versions?).
  *

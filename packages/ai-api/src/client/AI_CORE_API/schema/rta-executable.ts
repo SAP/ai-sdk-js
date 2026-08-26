@@ -5,11 +5,11 @@
  */
 
 import type { RTAExecutableId } from './rta-executable-id.js';
-import type { RTAScenarioId } from './rta-scenario-id.js';
 import type { RTAExecutableInputArtifactList } from './rta-executable-input-artifact-list.js';
 import type { RTAExecutableOutputArtifactList } from './rta-executable-output-artifact-list.js';
 import type { RTAExecutableParameterList } from './rta-executable-parameter-list.js';
 import type { RTALabelList } from './rta-label-list.js';
+import type { RTAScenarioId } from './rta-scenario-id.js';
 /**
  * Entity having labels
  */

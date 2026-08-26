@@ -1,7 +1,13 @@
 import { randomUUID } from 'node:crypto';
+
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-import { isInteropZodSchema } from '@langchain/core/utils/types';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import { isInteropZodSchema } from '@langchain/core/utils/types';
+
+import type {
+  AzureOpenAiChatCompletionParameters,
+  AzureOpenAiChatCompletionStreamChunkResponse
+} from '@sap-ai-sdk/foundation-models';
 import type {
   AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionTool,
@@ -15,11 +21,13 @@ import type {
   AzureOpenAiChatCompletionRequestMessage,
   AzureOpenAiChatCompletionMessageToolCallChunk
 } from '@sap-ai-sdk/foundation-models/internal.js';
-import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
+
+import type { AzureOpenAiChatClient } from './chat.ts';
 import type {
-  AzureOpenAiChatCompletionParameters,
-  AzureOpenAiChatCompletionStreamChunkResponse
-} from '@sap-ai-sdk/foundation-models';
+  AzureOpenAiChatCallOptions,
+  ChatAzureOpenAIToolType
+} from './types.ts';
+import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type {
   BaseMessage,
   FunctionMessage,
@@ -27,13 +35,8 @@ import type {
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { ChatResult } from '@langchain/core/outputs';
-import type { AzureOpenAiChatClient } from './chat.ts';
-import type {
-  AzureOpenAiChatCallOptions,
-  ChatAzureOpenAIToolType
-} from './types.ts';
-import type { ToolDefinition } from '@langchain/core/language_models/base';
 
 /**
  * Determines if the model is a reasoning model.
