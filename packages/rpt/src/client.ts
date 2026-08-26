@@ -1,8 +1,7 @@
 import {
   getFoundationModelDeploymentId,
   getResourceGroup,
-  isDeploymentIdConfig,
-  translateToFoundationModel
+  isDeploymentIdConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
 

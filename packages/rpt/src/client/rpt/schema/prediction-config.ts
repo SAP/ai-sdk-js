@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { TargetColumnConfig } from './target-column-config.js';
 import type { ExplanationConfig } from './explanation-config.js';
+import type { TargetColumnConfig } from './target-column-config.js';
 /**
  * Configuration of the prediction model.
  */
