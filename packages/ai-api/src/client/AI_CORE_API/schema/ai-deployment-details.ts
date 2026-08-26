@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AiScalingDetails } from './ai-scaling-details.js';
 import type { AiResourcesDetails } from './ai-resources-details.js';
 /**

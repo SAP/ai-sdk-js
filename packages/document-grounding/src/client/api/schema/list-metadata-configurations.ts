@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { MetadataConfigurationResponse } from './metadata-configuration-response.js';
 /**
  * Representation of the 'ListMetadataConfigurations' schema.

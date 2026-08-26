@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AiExecutableId } from './ai-executable-id.js';
 import type { AiModelVersionList } from './ai-model-version-list.js';
 import type { AiScenarioId } from './ai-scenario-id.js';

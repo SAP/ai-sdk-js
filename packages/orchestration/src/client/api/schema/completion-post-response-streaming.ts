@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ModuleResultsStreaming } from './module-results-streaming.js';
 import type { LLMModuleResultStreaming } from './llm-module-result-streaming.js';
 import type { ErrorStreaming } from './error-streaming.js';

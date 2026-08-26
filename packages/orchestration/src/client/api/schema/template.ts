@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { TemplatingChatMessage } from './templating-chat-message.js';
 import type { ResponseFormatText } from './response-format-text.js';
 import type { ResponseFormatJsonObject } from './response-format-json-object.js';

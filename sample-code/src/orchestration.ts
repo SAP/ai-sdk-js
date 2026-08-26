@@ -723,7 +723,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
 
-  // Routing tool calls to their corresponsing implementation
+  // Routing tool calls to their corresponding implementation
   const callFunction = (name: string, args: any): string => {
     switch (name) {
       case 'add':

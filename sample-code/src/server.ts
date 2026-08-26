@@ -1111,11 +1111,11 @@ app.get('/document-grounding/retrieve-documents', async (req, res) => {
       perFilterSearchResult => {
         res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
         perFilterSearchResult.results!.forEach(
-          retievalDataRepositorySearchResult => {
+          retrievalDataRepositorySearchResult => {
             res.write(
-              `    - Data repository: ${retievalDataRepositorySearchResult.dataRepository.title}\n`
+              `    - Data repository: ${retrievalDataRepositorySearchResult.dataRepository.title}\n`
             );
-            retievalDataRepositorySearchResult.dataRepository.documents.forEach(
+            retrievalDataRepositorySearchResult.dataRepository.documents.forEach(
               retrievalDocument => {
                 retrievalDocument.chunks.forEach(chunk => {
                   res.write(`      - Chunk: ${chunk.content}\n`);

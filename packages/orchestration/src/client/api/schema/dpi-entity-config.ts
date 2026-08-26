@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { DPIStandardEntity } from './dpi-standard-entity.js';
 import type { DPICustomEntity } from './dpi-custom-entity.js';
 /**
