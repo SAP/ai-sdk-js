@@ -33,26 +33,39 @@ export type TimeString =
   `${number}${number}:${number}${number}:${number}${number}`;
 
 /**
+ * Represents a datetime string in the format YYYY-MM-DDThh:mm:ss.
+ */
+export type DateTimeString = `${DateString}T${TimeString}`;
+
+/**
+ * Represents a timestamp as a numeric string with up to 7 digits (µs precision).
+ */
+export type TimestampString = `${number}`;
+
+interface ColTypeMap {
+  numeric: number;
+  integer: number;
+  int16: number;
+  int32: number;
+  int64: number;
+  uint8: number;
+  decimal: number;
+  double: number;
+  date: DateString;
+  time: TimeString;
+  datetime: DateTimeString;
+  timestamp: TimestampString;
+  boolean: boolean;
+  string: string;
+  largestring: string;
+  uuid: string;
+}
+
+/**
  * Maps the type from the spec to a TypeScript type.
  * @template T - Type of the data schema.
  */
-type TsType<T extends ColType> = T extends
-  | 'numeric'
-  | 'integer'
-  | 'int16'
-  | 'int32'
-  | 'int64'
-  | 'uint8'
-  | 'decimal'
-  | 'double'
-  ? number
-  : T extends 'date'
-    ? DateString
-    : T extends 'time'
-      ? TimeString
-      : T extends 'boolean'
-        ? boolean
-        : string;
+type TsType<T extends ColType> = ColTypeMap[T];
 
 /**
  * Represents the type of the `rows` property.
