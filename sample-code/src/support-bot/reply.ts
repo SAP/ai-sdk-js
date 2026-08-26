@@ -5,7 +5,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SDK_KNOWLEDGE } from './knowledge.ts';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 const PROVIDER_ID = 'sap-ai-core';
 const MODEL_ID = 'anthropic--claude-4.6-sonnet';
