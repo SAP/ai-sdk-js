@@ -14,11 +14,13 @@
 import { join } from 'node:path';
 
 import { parquetWriteFile } from 'hyparquet-writer';
-import type { ColumnSource, SchemaElement } from 'hyparquet-writer';
+
 import type {
   ColumnType,
   SchemaFieldConfig
 } from '@sap-ai-sdk/rpt/internal.js';
+
+import type { ColumnSource, SchemaElement } from 'hyparquet-writer';
 
 // ----- RPT schema types -----
 
@@ -90,7 +92,10 @@ function cdsFieldToParquetSchema(field: CdsField): SchemaElement {
   }
 }
 
-function encodeCdsValue(value: CdsValue<CdsField>, field: CdsField): string | number | Date {
+function encodeCdsValue(
+  value: CdsValue<CdsField>,
+  field: CdsField
+): string | number | Date {
   switch (field.type) {
     case 'cds.String':
       return value;
@@ -118,7 +123,10 @@ export function writeCdsRowsToParquet<T extends CdsSchema>(
     columnData: schema.map(field => ({
       name: field.name,
       data: rows.map(row =>
-        encodeCdsValue(row[field.name as keyof CdsRow<T>] as CdsValue<CdsField>, field)
+        encodeCdsValue(
+          row[field.name as keyof CdsRow<T>] as CdsValue<CdsField>,
+          field
+        )
       )
     })),
     schema: [
@@ -147,14 +155,44 @@ const cdsSchema = [
 ] as const satisfies CdsSchema;
 
 const predictRows = [
-  { PRODUCT: 'Laptop', PRICE: 999.99, PRODUCTION_DATE: '2025-01-15', __row_idx__: '35', SALESGROUP: '[PREDICT]' },
-  { PRODUCT: 'Office Chair', PRICE: 142.99, PRODUCTION_DATE: '2025-07-13', __row_idx__: '571', SALESGROUP: '[PREDICT]' }
+  {
+    PRODUCT: 'Laptop',
+    PRICE: 999.99,
+    PRODUCTION_DATE: '2025-01-15',
+    __row_idx__: '35',
+    SALESGROUP: '[PREDICT]'
+  },
+  {
+    PRODUCT: 'Office Chair',
+    PRICE: 142.99,
+    PRODUCTION_DATE: '2025-07-13',
+    __row_idx__: '571',
+    SALESGROUP: '[PREDICT]'
+  }
 ];
 
 const regularRows = [
-  { PRODUCT: 'Desktop Computer', PRICE: 921.5, PRODUCTION_DATE: '2024-12-02', __row_idx__: '42', SALESGROUP: 'Electronics' },
-  { PRODUCT: 'Macbook', PRICE: 1220.99, PRODUCTION_DATE: '2026-01-31', __row_idx__: '99', SALESGROUP: 'Electronics' },
-  { PRODUCT: 'Office Desk', PRICE: 750.5, PRODUCTION_DATE: '2024-12-05', __row_idx__: '689', SALESGROUP: 'Furniture' }
+  {
+    PRODUCT: 'Desktop Computer',
+    PRICE: 921.5,
+    PRODUCTION_DATE: '2024-12-02',
+    __row_idx__: '42',
+    SALESGROUP: 'Electronics'
+  },
+  {
+    PRODUCT: 'Macbook',
+    PRICE: 1220.99,
+    PRODUCTION_DATE: '2026-01-31',
+    __row_idx__: '99',
+    SALESGROUP: 'Electronics'
+  },
+  {
+    PRODUCT: 'Office Desk',
+    PRICE: 750.5,
+    PRODUCTION_DATE: '2024-12-05',
+    __row_idx__: '689',
+    SALESGROUP: 'Furniture'
+  }
 ];
 
 // ----- Script entry point -----
@@ -162,17 +200,30 @@ const regularRows = [
 function run(): void {
   const useCds = process.argv.includes('--cds');
   const includePredictRows = !process.argv.includes('--no-predict');
-  const data = includePredictRows ? [...predictRows, ...regularRows] : regularRows;
+  const data = includePredictRows
+    ? [...predictRows, ...regularRows]
+    : regularRows;
   const suffix = includePredictRows ? '' : '_no_predict';
 
   if (useCds) {
-    const filename = join(import.meta.dirname, `product_data_hana${suffix}.parquet`);
+    const filename = join(
+      import.meta.dirname,
+      `product_data_hana${suffix}.parquet`
+    );
     writeCdsRowsToParquet(filename, data, cdsSchema);
-    console.log(`Successfully exported ${data.length} rows (CDS/HANA format) to ${filename}`);
+    console.log(
+      `Successfully exported ${data.length} rows (CDS/HANA format) to ${filename}`
+    );
   } else {
     const filename = join(import.meta.dirname, `product_data${suffix}.parquet`);
-    writeRowsToParquet(filename, data as RowType<typeof rptSchema>[], rptSchema);
-    console.log(`Successfully exported ${data.length} rows (RPT format) to ${filename}`);
+    writeRowsToParquet(
+      filename,
+      data as RowType<typeof rptSchema>[],
+      rptSchema
+    );
+    console.log(
+      `Successfully exported ${data.length} rows (RPT format) to ${filename}`
+    );
   }
 }
 

@@ -7,9 +7,13 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 
 // Imported after `pnpm generate` — generated from spec/tabular-orchestration.yaml
 import type {
-  PredictRequest,
+  PredictRequest as GeneratedPredictRequest,
   PredictResponse
 } from './client/tabular-orchestration/index.ts';
+import type {
+  ModelConfigFor,
+  TabularOrchestrationPredictRequest
+} from './types.ts';
 
 const scenarioId = 'tabular-orchestration';
 
@@ -39,7 +43,12 @@ export class TabularOrchestrationClient {
    * @param body - The prediction request body.
    * @returns The prediction response.
    */
-  async predict(body: PredictRequest): Promise<PredictResponse> {
+  async predict<
+    ModelName extends string = string,
+    ModelConfig extends object = ModelConfigFor<ModelName>
+  >(
+    body: TabularOrchestrationPredictRequest<ModelName, NoInfer<ModelConfig>>
+  ): Promise<PredictResponse> {
     const deployment = await resolveDeployment({
       scenarioId,
       resourceGroup: this.resourceGroup,
@@ -54,7 +63,7 @@ export class TabularOrchestrationClient {
 
     const { PredictApi } =
       await import('./client/tabular-orchestration/index.ts');
-    return PredictApi.predictV1PredictPost(body, {
+    return PredictApi.predictV1PredictPost(body as GeneratedPredictRequest, {
       'ai-resource-group': this.resourceGroup
     }).execute({ url: deployment.deploymentUrl });
   }

@@ -1,14 +1,20 @@
-import type { DataDestinationAsyncGetDataDestinations,
-  TabularArtifactAsyncTabularArtifactDetails,
-  ScenarioConfigurationAsyncScenarioConfigurationObject } from '@sap-ai-sdk/ctx-registry/internal.js';
 import { pollAsyncResource } from '@sap-ai-sdk/core';
 import {
   TabularArtifactAsyncSpecificationTabularArtifactsApi,
   DataDestinationAsyncSpecificationDataDestinationsApi,
   ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi
 } from '@sap-ai-sdk/ctx-registry/internal.js';
-import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
-import type { TFMEnum } from '@sap-ai-sdk/tabular-orchestration';
+import {
+  TabularOrchestrationClient,
+  type PredictResponse
+} from '@sap-ai-sdk/tabular-orchestration';
+
+import type {
+  DataDestinationAsyncGetDataDestinations,
+  TabularArtifactAsyncTabularArtifactDetails,
+  ScenarioConfigurationAsyncScenarioConfigurationObject
+} from '@sap-ai-sdk/ctx-registry/internal.js';
+import type { TFMEnum } from '@sap-ai-sdk/tabular-orchestration/internal.js';
 
 const resourceGroup = 'default';
 const headers = { 'AI-Resource-Group': resourceGroup };
@@ -90,7 +96,9 @@ export async function deleteTabularArtifact(): Promise<void> {
           headers
         ).execute();
       } catch (error) {
-        if (getHttpStatus(error) === 404) {return null;}
+        if (getHttpStatus(error) === 404) {
+          return null;
+        }
         throw error;
       }
     },
@@ -112,7 +120,9 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
     )
       .execute()
       .catch(ignoreNotFound);
-  if (existing) {return existing;}
+  if (existing) {
+    return existing;
+  }
 
   await ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi.createScenarioConfiguration(
     scenarioConfigName,
@@ -134,7 +144,7 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
  * Run a prediction using a running tabular-orchestration deployment.
  * @returns The prediction response.
  */
-export async function predict() {
+export async function predict(): Promise<PredictResponse> {
   const client = new TabularOrchestrationClient({ resourceGroup });
 
   return client.predict({
@@ -170,26 +180,34 @@ export async function predict() {
 function getNameFromLocation(location: string, segment: string): string {
   const { pathname } = new URL(location, 'https://ctx-registry.invalid');
   const match = pathname.match(new RegExp(`/${segment}/([^/]+)$`));
-  if (!match) {throw new Error(`Unexpected polling location: ${location}`);}
+  if (!match) {
+    throw new Error(`Unexpected polling location: ${location}`);
+  }
   return decodeURIComponent(match[1]!);
 }
 
 function ignoreNotFound(error: unknown): undefined {
-  if (getHttpStatus(error) !== 404) {throw error;}
+  if (getHttpStatus(error) !== 404) {
+    throw error;
+  }
   return undefined;
 }
 
 function getHttpStatus(error: unknown): number | undefined {
-  if (!error || typeof error !== 'object') {return undefined;}
-  if ('status' in error && typeof error.status === 'number')
-    {return error.status;}
+  if (!error || typeof error !== 'object') {
+    return undefined;
+  }
+  if ('status' in error && typeof error.status === 'number') {
+    return error.status;
+  }
   if (
     'response' in error &&
     error.response &&
     typeof error.response === 'object' &&
     'status' in error.response &&
     typeof error.response.status === 'number'
-  )
-    {return error.response.status;}
+  ) {
+    return error.response.status;
+  }
   return undefined;
 }

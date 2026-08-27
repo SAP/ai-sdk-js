@@ -4,6 +4,7 @@ export type {
   PredictionData,
   RowType,
   ColumnType,
+  RptModelConfig,
   ParquetPayload,
   RptRequestOptions,
   RptRequestCompressionMiddlewareOptions

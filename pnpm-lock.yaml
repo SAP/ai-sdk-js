@@ -316,6 +316,9 @@ importers:
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../core
+      '@sap-ai-sdk/rpt':
+        specifier: workspace:^
+        version: link:../rpt
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.8.0
         version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -540,6 +543,9 @@ importers:
       '@sap-ai-sdk/rpt':
         specifier: workspace:^
         version: link:../../packages/rpt
+      '@sap-ai-sdk/tabular-orchestration':
+        specifier: workspace:^
+        version: link:../../packages/tabular-orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: ^4.9.1
         version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
