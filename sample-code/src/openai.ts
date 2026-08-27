@@ -4,6 +4,9 @@ import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 import { z } from 'zod';
 
+import type { ResponseStreamEvent } from 'openai/resources/responses/responses';
+import type { Stream } from 'openai/streaming';
+
 /**
  * Ask gpt-5.4 about the capital of France.
  * @returns The content of the response message.
@@ -107,7 +110,9 @@ export async function responsesApi(): Promise<string | undefined> {
  * Stream a response using the Responses API.
  * @returns The stream of response events.
  */
-export async function responsesApiStream() {
+export async function responsesApiStream(): Promise<
+  Stream<ResponseStreamEvent>
+> {
   const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
   return client.responses.create({
