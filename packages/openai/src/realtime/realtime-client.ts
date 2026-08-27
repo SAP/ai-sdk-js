@@ -56,7 +56,6 @@ export class SapOpenAiRealtimeWs extends OpenAIRealtimeWS {
   static {
     // Replace the inherited data property `url` with an accessor so we can
     // intercept the value set by the parent constructor and rewrite the path.
-    // TODO: Move to `buildRealtimeURL()` callback once openai/openai-node#2308 is released.
     Object.defineProperty(this.prototype, 'url', {
       get(this: SapOpenAiRealtimeWs) {
         return this._url;
@@ -121,7 +120,17 @@ export class SapOpenAiRealtimeWs extends OpenAIRealtimeWS {
       {
         model: 'gpt-realtime',
         options: wsOptions,
-        __resolvedApiKey: resolvedApiKey
+        __resolvedApiKey: resolvedApiKey,
+        buildRealtimeURL: () => {
+          const url = new URL(context.azureOptions.baseURL!);
+          url.protocol = 'wss:';
+          url.pathname = url.pathname.replace(/\/?$/, '') + '/v1/realtime';
+          url.searchParams.set(
+            'api-version',
+            context.azureOptions.apiVersion ?? '2024-10-21'
+          );
+          return url;
+        }
       },
       openAiClient
     );
