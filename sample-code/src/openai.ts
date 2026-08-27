@@ -107,9 +107,7 @@ export async function responsesApi(): Promise<string | undefined> {
  * Stream a response using the Responses API.
  * @returns The stream of response events.
  */
-export async function responsesApiStream(): Promise<
-  AsyncIterable<{ type: string; delta?: string }>
-> {
+export async function responsesApiStream() {
   const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
   return client.responses.create({
@@ -150,7 +148,7 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
     deployment: 'gpt-5.4-nano'
   });
 
-  let context =[
+  let context = toResponseInputItems([
     { role: 'user', content: 'What is the capital of France?' }
   ]);
 
@@ -158,7 +156,7 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
 
   context = [...context, ...toResponseInputItems(first.output)];
   context.push({
-    role: 'user',
+    role: 'user' as const,
     content: 'What is the population of that city?'
   });
 
