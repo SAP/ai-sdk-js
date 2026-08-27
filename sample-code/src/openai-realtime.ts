@@ -1,11 +1,13 @@
 /* oxlint-disable no-console, import/no-internal-modules */
 import { spawn, spawnSync } from 'node:child_process';
-import readline from 'node:readline';
-import { styleText } from 'node:util';
 import { readFile } from 'node:fs/promises';
 import { join, resolve as resolvePath } from 'node:path';
+import readline from 'node:readline';
+import { styleText } from 'node:util';
 import { zstdDecompressSync } from 'node:zlib';
+
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+
 import type { Writable } from 'node:stream';
 
 /**

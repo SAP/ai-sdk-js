@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { RTAScenarioId } from './rta-scenario-id.js';
 import type { RTALabelList } from './rta-label-list.js';
+import type { RTAScenarioId } from './rta-scenario-id.js';
 /**
  * Entity having labels
  */

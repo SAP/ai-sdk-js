@@ -1,4 +1,5 @@
 import { SapOpenAi } from '@sap-ai-sdk/openai';
+
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 import { z } from 'zod';

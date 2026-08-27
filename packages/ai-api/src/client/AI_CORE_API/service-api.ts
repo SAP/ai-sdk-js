@@ -5,6 +5,7 @@
  */
 
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
+
 import type { BckndServiceList, BckndExtendedService } from './schema/index.js';
 /**
  * Representation of the 'ServiceApi'.

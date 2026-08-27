@@ -1,9 +1,11 @@
 import nock from 'nock';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.ts';
 import { VectorApi } from '../client/api/index.ts';
+
 import type {
   Documents,
   CollectionsListResponse

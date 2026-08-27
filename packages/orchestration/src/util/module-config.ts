@@ -1,4 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import {
   type ChatCompletionRequest,
   type StreamOptions,
@@ -11,6 +12,7 @@ import {
   type EmbeddingModuleConfig,
   type EmbeddingRequest
 } from '../orchestration-types.ts';
+
 import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,

@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 import type { Document } from './document.js';
+import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
 /**
  * DataRepository schema returned by the Vector search endpoint
  */

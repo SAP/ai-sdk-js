@@ -1,10 +1,11 @@
 import { OpenAIRealtimeWS } from 'openai/realtime/ws';
-import type * as WS from 'ws';
 
-import { createSapOpenAiContext } from '../config.ts';
 import { SapAzureOpenAi } from '../azure-openai.ts';
+import { createSapOpenAiContext } from '../config.ts';
+
 import type { SapOpenAiContext } from '../types.ts';
 import type { SapOpenAiRealtimeInput } from './types.ts';
+import type * as WS from 'ws';
 
 /**
  * Rewrites a realtime WebSocket URL for SAP AI Core compatibility.

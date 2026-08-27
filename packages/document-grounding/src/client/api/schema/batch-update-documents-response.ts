@@ -4,8 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
-import type { DocumentMetadataUpdate } from './document-metadata-update.js';
 import type { DocumentMetadataUpdateError } from './document-metadata-update-error.js';
+import type { DocumentMetadataUpdate } from './document-metadata-update.js';
 /**
  * Representation of the 'BatchUpdateDocumentsResponse' schema.
  */

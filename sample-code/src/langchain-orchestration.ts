@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { StringOutputParser } from '@langchain/core/output_parsers';
+
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   orchestrationPromptCachingMiddleware
@@ -10,6 +10,14 @@ import {
   buildDpiMaskingProvider,
   buildLlamaGuard38BFilter
 } from '@sap-ai-sdk/orchestration';
+
+import {
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
+import { StringOutputParser } from '@langchain/core/output_parsers';
+import { tool } from '@langchain/core/tools';
 import {
   START,
   END,
@@ -17,24 +25,21 @@ import {
   StateGraph,
   MemorySaver
 } from '@langchain/langgraph';
-import { tool } from '@langchain/core/tools';
-import {
-  HumanMessage,
-  SystemMessage,
-  ToolMessage
-} from '@langchain/core/messages';
-import * as z from 'zod/v4';
 import { createAgent, createMiddleware } from 'langchain';
+import * as z from 'zod/v4';
+
 import { mcpClient } from './tutorials/mcp/mcp-adapter.ts';
+
+import type {
+  LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList
+} from '@sap-ai-sdk/langchain';
+
 import type {
   BaseMessage,
   AIMessageChunk,
   AIMessage
 } from '@langchain/core/messages';
-import type {
-  LangChainOrchestrationModuleConfig,
-  LangChainOrchestrationModuleConfigList
-} from '@sap-ai-sdk/langchain';
 
 interface PromptCachingInvocationResult {
   content: string;
