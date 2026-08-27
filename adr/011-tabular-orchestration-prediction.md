@@ -48,7 +48,7 @@ This should also be workable even if the specification is later revised to inclu
 
 #### Current Contract Analysis
 
-The service design deliberately places model-unique parameters in `modelConfig`.
+The service design places model-unique parameters in `modelConfig` by design.
 Adding a new TFM requires zero orchestration schema changes; the TFM integration team documents its own `modelConfig` fields separately.
 The generated SDK exposes `modelConfig` as `Record<string, any>`, which accurately reflects wire-level openness but gives consumers no IDE support or compile-time safety for vendor-specific fields.
 
@@ -180,7 +180,7 @@ await client.predict<'rpt-1', { temperature: number; myExtra: string }>({
 
 The registry is an interface, so provider modules extend it via declaration merging without touching the core type.
 Inference only works when the model-name literal is present at the call site; a `string`-typed variable widens `M` to `string`, degrading to the open bag—the same caveat applies to all literal-based approaches.
-The cost is a more complex type signature; in practice consumers rarely need to write `PredictRequest<…>` explicitly.
+The cost is a more complex type signature; in practice consumers do not need to write `PredictRequest<…>` explicitly.
 
 #### Option D: Typed builder functions per vendor
 

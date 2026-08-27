@@ -6,12 +6,15 @@ proposed
 
 ## Context
 
-The tabular orchestration context registry service is shared via nine separate OpenApi specifications.
-No combined specification is currently available at this time.
+The Context Registry is a service independent of the Tabular AI Orchestration service.
+Its current API is split across nine separate OpenApi specifications.
+No combined specification is currently available, though an upstream merged specification is planned — its location (AI API or a separate service spec) is still under discussion.
+This ADR is therefore blocked on that combined specification.
 The specifications cover health, provisioning, a SQL API, and three resources that each ship a synchronous and an asynchronous variant: data destinations, scenario configuration, and tabular artifacts.
 
-The synchronous and asynchronous variants are mutually exclusive deployments, so merging both into one client is not coherent.
-The synchronous client is considered legacy, and we can likely avoid supporting it in the SDK.
+The synchronous and asynchronous variants are mutually exclusive deployments.
+The asynchronous variant is the target deployment and the only one we need to support in the SDK.
+The final merged specification will contain only asynchronous endpoints.
 
 The asynchronous client still requires merging its resource specifications with the common health, provisioning, and SQL API specifications if we want to source from a single specification.
 They repeat some type definitions: every resource redefines `ApiError` and `DetailsErrorResponse`, while `ColumnInfo` and `Url` each appear more than once.

@@ -6,11 +6,11 @@ proposed
 
 ## Context
 
-Providing SDK clients for the Tabular Orchestration APIs is a significant undertaking.
-The Tabular Orchestration services have two main entry points:
+Providing SDK clients for the Tabular AI Orchestration and Context Registry services is a significant undertaking.
+These are two independent components maintained by separate teams:
 
-- the prediction client, generated from one OpenApi specification; and
-- the context-registry client, generated from nine specifications covering synchronous and asynchronous operations.
+- the **Tabular AI Orchestration** prediction client, generated from one OpenApi specification, handles virtual deployment in AI Core, routes requests to the prediction model, and performs context selection; and
+- the **Context Registry** client, generated from nine specifications covering synchronous and asynchronous operations, handles data destinations, tabular artifacts, tabular scenarios, and HANA DB.
 
 Neither requires the other: prediction can use existing scenario configuration names, while the context registry independently manages data destinations, tabular artifacts, and scenarios.
 An end-to-end workflow commonly uses both to create or discover context, configure a scenario, and submit a prediction.
