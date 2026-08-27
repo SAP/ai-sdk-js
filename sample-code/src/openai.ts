@@ -1,5 +1,6 @@
 import { SapOpenAi } from '@sap-ai-sdk/openai';
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
+import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 import { z } from 'zod';
 
 /**
@@ -148,13 +149,13 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
     deployment: 'gpt-5.4-nano'
   });
 
-  let context: any[] = [
+  let context = toResponseInputItems([
     { role: 'user', content: 'What is the capital of France?' }
-  ];
+  ]);
 
   const first = await client.responses.create({ input: context });
 
-  context = context.concat(first.output);
+  context = [...context, ...toResponseInputItems(first.output)];
   context.push({
     role: 'user',
     content: 'What is the population of that city?'
