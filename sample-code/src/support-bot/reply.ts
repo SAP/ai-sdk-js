@@ -1,11 +1,11 @@
 import { createOpencode } from '@opencode-ai/sdk';
 import type { TextPart } from '@opencode-ai/sdk';
-import { readFileSync, existsSync, symlinkSync, writeFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
+import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { resolve, dirname, delimiter } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SDK_KNOWLEDGE } from './knowledge.ts';
 
-const __dirname = import.meta.dirname;
+const __dirname = import.meta.dirname!;
 
 const PROVIDER_ID = 'sap-ai-core';
 const MODEL_ID = 'gpt-5.6-luna';
@@ -116,18 +116,11 @@ type OpencodeInstance = Awaited<ReturnType<typeof createOpencode>>;
 let opencodeInstance: OpencodeInstance | null = null;
 
 export async function initAgent(): Promise<void> {
-  // Ensure opencode binary is on PATH. The postinstall script has a bug where it
-  // names the binary opencode.exe on all platforms; create an `opencode` symlink if missing.
-  const binDir = resolve(__dirname, '../../../node_modules/opencode-ai/bin');
-  const exePath = resolve(binDir, 'opencode.exe');
-  const binPath = resolve(binDir, 'opencode');
-  if (existsSync(exePath) && !existsSync(binPath)) {
-    symlinkSync('opencode.exe', binPath);
-    console.log('[support-bot] created opencode symlink in bin/');
-  }
-  if (!process.env.PATH?.includes(binDir)) {
-    process.env.PATH = `${binDir}:${process.env.PATH ?? ''}`;
-  }
+  const binDir = resolve(
+    dirname(fileURLToPath(import.meta.resolve('opencode-ai/package.json'))),
+    'bin'
+  );
+  process.env.PATH = `${binDir}${delimiter}${process.env.PATH ?? ''}`;
 
   console.log('[support-bot] starting opencode server...');
   const config = JSON.parse(
@@ -307,15 +300,41 @@ function parseIssueBody(body: string) {
 
 // ── Entry point ───────────────────────────────────────────────────────────────
 
-const issueTitle = process.argv[2];
-const rawBody = process.argv[3] ?? '';
-const issueNumber = process.argv[4]
-  ? Number.parseInt(process.argv[4], 10)
-  : undefined;
+const issueNumberArg = process.argv[2];
+const issueNumber = issueNumberArg ? Number.parseInt(issueNumberArg, 10) : undefined;
 
-if (!issueTitle) {
-  console.log('Usage: node reply.ts "<title>" ["<body>"] [<issue_number>]');
+if (!issueNumber) {
+  console.log('Usage: node reply.ts <issue_number>');
   process.exit(1);
+}
+
+const localBodyFile = resolve(__dirname, 'issue-body.md');
+let issueTitle: string;
+let rawBody: string;
+
+if (existsSync(localBodyFile)) {
+  const content = readFileSync(localBodyFile, 'utf8').trim();
+  const newline = content.indexOf('\n');
+  issueTitle = newline === -1 ? content : content.slice(0, newline).trim();
+  rawBody = newline === -1 ? '' : content.slice(newline + 1).trim();
+  console.log('[support-bot] using local issue-body.md for title/body');
+} else {
+  const ghToken = process.env.GITHUB_TOKEN;
+  if (!ghToken) {
+    console.error('[support-bot] GITHUB_TOKEN is required when issue-body.md is not present');
+    process.exit(1);
+  }
+  const res = await fetch(
+    `https://api.github.com/repos/SAP/ai-sdk-js/issues/${issueNumber}`,
+    { headers: { Authorization: `Bearer ${ghToken}`, 'User-Agent': 'support-bot' } }
+  );
+  if (!res.ok) {
+    console.error(`[support-bot] failed to fetch issue #${issueNumber}: ${res.status}`);
+    process.exit(1);
+  }
+  const issue = (await res.json()) as { title: string; body: string | null };
+  issueTitle = issue.title;
+  rawBody = issue.body ?? '';
 }
 
 const { bugDescription, errorMessages, cleanBody } = parseIssueBody(rawBody);

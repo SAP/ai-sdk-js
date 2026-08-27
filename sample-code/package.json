@@ -19,7 +19,7 @@
     "local": "node --env-file-if-exists=.env src/server.ts",
     "agent-tutorial": "node --env-file-if-exists=.env src/tutorials/travel-itinerary-agent.ts",
     "realtime-demo": "node --env-file-if-exists=.env src/openai-realtime.ts",
-    "support-bot": "node --env-file-if-exists=.env src/support-bot/reply.ts \"$ISSUE_TITLE\" \"$(cat src/support-bot/issue-body.md)\" \"${ISSUE_NUMBER:-9999}\"",
+    "support-bot": "node --env-file-if-exists=.env src/support-bot/reply.ts \"${ISSUE_NUMBER:-9999}\"",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "oxlint && oxfmt --check .",

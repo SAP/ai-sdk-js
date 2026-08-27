@@ -1,5 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "bash": "deny"
+  },
   "provider": {
     "sap-ai-core": {
       "name": "SAP AI Core"
