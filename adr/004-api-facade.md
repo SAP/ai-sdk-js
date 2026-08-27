@@ -6,7 +6,7 @@ decided
 
 ## Context
 
-SAP Cloud SDK for AI generates client from OpenAPI specifiation of each service.
+SAP Cloud SDK for AI generates client from OpenAPI specification of each service.
 For packages like `ai-api`, `document-grounding`, and `prompt-registry`, the generated clients are directly used.
 However, for packages like `foundation-models` and `orchestration`, only the generated types are used, and the client is implemented manually to provide more convenient features.
 

@@ -1,6 +1,14 @@
 import { Responses } from 'openai/resources/responses/responses';
+
 import type { AzureOpenAiResponsesModel } from '@sap-ai-sdk/core';
+
+import type { WithOptionalModel } from './types.ts';
 import type { OpenAI } from 'openai';
+import type { APIPromise } from 'openai/api-promise';
+import type {
+  ExtractParsedContentFromParams,
+  ResponseCreateParamsWithTools
+} from 'openai/lib/ResponsesParser';
 import type {
   Response,
   ResponseStreamEvent,
@@ -9,13 +17,7 @@ import type {
   ResponseCreateParamsBase,
   ParsedResponse
 } from 'openai/resources/responses/responses';
-import type {
-  ExtractParsedContentFromParams,
-  ResponseCreateParamsWithTools
-} from 'openai/lib/ResponsesParser';
 import type { Stream } from 'openai/streaming';
-import type { APIPromise } from 'openai/api-promise';
-import type { WithOptionalModel } from './types.ts';
 
 type RequestOptions = Parameters<Responses['create']>[1];
 

@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ResponseChatMessage } from './response-chat-message.js';
+
 import type { ChoiceLogprobs } from './choice-logprobs.js';
+import type { ResponseChatMessage } from './response-chat-message.js';
 /**
  * Representation of the 'LlmChoice' schema.
  */
