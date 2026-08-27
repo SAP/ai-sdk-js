@@ -1680,6 +1680,8 @@ components:
       example: 0
 
     LlamaGuard38bFilterConfig:
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       required:
         - type
@@ -1696,7 +1698,8 @@ components:
           $ref: '#/components/schemas/LlamaGuard38b'
 
     LlamaGuard38b:
-      description: Filter configuration for Llama Guard 3 8B
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       additionalProperties: false
       minProperties: 1
