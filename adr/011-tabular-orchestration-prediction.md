@@ -4,8 +4,6 @@
 
 proposed
 
-## Context
-
 The prediction SDK is generated from one OpenApi specification, but the checked-in contract and the current Tabular Orchestration v2 documentation are not demonstrably the same.
 The checked-in specification identifies itself as version `1.6.0` and already uses `/v1/predict`, but it still:
 
@@ -18,39 +16,46 @@ The checked-in specification identifies itself as version `1.6.0` and already us
 The exact documentation and specification revisions used for this comparison have not been pinned.
 They must be captured before this ADR is accepted.
 
+The Tabular AI service is intentionally designed to be provider-neutral.
+The service contract is structured into a universal layer (model selection and `predictionConfig`), and a TFM-specific passthrough (`modelConfig`) for model-unique parameters that the orchestration service forwards without validation.
+Context-selection and target-column semantics are intended to hold the same meaning across all TFMs, as much as possible.
+
 ### Generated client
 
-The generated prediction client is usable but low-level.
-Its default operation name follows the specification's `operationId` (`PredictApi.predictV1PredictPost`), but the specification can replace it with `x-sap-cloud-sdk-operation-name`.
-The client-design concerns are the closed RPT-specific types (`TFMEnum`, `ContextSelectionConfig.filterConditions`, and untyped `ModelConfig`) and deployment handling.
-Prediction runs against a discovered deployment URL rather than the AI Core base destination, so consumers must resolve the deployment and override the destination URL or create a custom destination.
-Question 2 addresses this with a convenience layer.
+A PoC on branch `davidkna-sap/tab-orc-poc` has produced an initial `TabularOrchestrationClient` under `@sap-ai-sdk/tabular-orchestration`.
+It wraps the generated `PredictApi.predictV1PredictPost` operation, resolves the deployment URL internally, and injects the required `ai-resource-group` header, so consumers call `client.predict(body)` directly without AI Core boilerplate.
 
-Supporting only SAP RPT at this stage is expected; the concern is that the contract shape, not just its model list, is RPT-specific.
-Another model might require a different contract, such as training-and-test payloads or relational tables instead of RPT's scenario, context-selection, and flat-row model.
-The service could reconcile these differences server-side, but no finalized specification commits to doing so in a vendor-neutral way.
-Until or unless it does, adding a structurally different model could significantly change the public client and package boundary.
-The model-name extensibility concern is discussed below in [Question 1: Client Architecture](#question-1-client-architecture).
+Two contract issues remain from the PoC:
+- `TFMEnum` is still a closed string union of `sap-rpt-*` values.
+Because the service is designed to accept any registered model name, this should be widened to `string` (with known values as string-literal suggestions if the TypeScript version allows).
+- `modelConfig` is `Record<string, any>`, which accurately reflects wire-level openness but provides no IDE support or compile-time safety for vendor-specific fields.
+How to type this without coupling the shared request type to any one provider is the main remaining question, addressed in [Question 1: Vendor-Specific Feature Access](#question-1-vendor-specific-feature-access).
 
 ## Decision
 
 No decision has been accepted yet.
 
-The working direction is conditional: use a neutral generated client with typed provider profiles if the authoritative service contract is provider-neutral; otherwise publish an explicitly RPT-specific client.
-Provider-specific clients may share a small public interface, but do not require a shared orchestration transport because the SAP Cloud SDK already supplies the common http and destination infrastructure.
+The working direction is to ship a single neutral client under `@sap-ai-sdk/tabular-orchestration`.
+The open question is the design of typed vendor-specific `modelConfig` support, addressed below in [Question 1: Vendor-Specific Feature Access](#question-1-vendor-specific-feature-access).
 
 ## Discussion
 
-### Question 1: Client Architecture
+### Question 1: Vendor-Specific Feature Access
+
+Recommendation: Option C (generic request type with a config registry).
+The request type is parameterized on the model name and separately on the config type, with a conditional default that resolves from a registry.
+This should also be workable even if the specification is later revised to include a `modelConfig` schema, with some workaround to reconcile.
 
 #### Current Contract Analysis
 
-The current contract is RPT-first, even though its transport shape is presented as a Tabular Foundation Model API.
+The service design deliberately places model-unique parameters in `modelConfig`.
+Adding a new TFM requires zero orchestration schema changes; the TFM integration team documents its own `modelConfig` fields separately.
+The generated SDK exposes `modelConfig` as `Record<string, any>`, which accurately reflects wire-level openness but gives consumers no IDE support or compile-time safety for vendor-specific fields.
+
 The following example is representative of the current generated client:
 
 ```ts
 const request: PredictRequest = {
-  // The enum currently contains only SAP-RPT model names.
   modelName: 'sap-rpt-1.5',
   scenarioConfigName: 'product-prediction-scenario-lowercase',
   rows,
@@ -62,207 +67,160 @@ const request: PredictRequest = {
   predictionConfig: {
     targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
   },
-  // `modelConfig` is an additional optional property on the request.
-  // It is an untyped `Record<string, any>` that forwards arbitrary
-  // model-specific fields (e.g. RPT explainability overrides) to the TFM.
-  // A typed overlay could specialize it per model, e.g. map each `TFMEnum`
-  // value to its own config shape so `sap-rpt-1.5` yields RPT options.
-  modelConfig: { /* model-specific options */ }
+  // Untyped — no IDE completion or compile-time checking for RPT-specific fields.
+  modelConfig: { temperature: 0.8 }
 };
-
-await PredictApi.predictV1PredictPost(request, {
-  'ai-resource-group': resourceGroup
-}).execute(destination);
 ```
 
-The invocation and basic data contract are neutral: a model identifier, scenario, optional context and query rows, and target-column configuration.
-The RPT coupling is visible in the following:
+The orchestration layer and `predictionConfig` are already the correct shape for a neutral client.
+The unsolved problem is: how does a consumer know which `modelConfig` fields a given TFM accepts, and how does the SDK surface that without locking the shared request type to any one provider?
 
-- `modelName` is a closed `TFMEnum` containing only `sap-rpt-*` values.
-- `modelConfig` forwards arbitrary fields instead of describing a provider-independent capability.
-- The client does not represent explainability consistently: the OpenApi description directs model-specific fields to `modelConfig`.
-- Context selection and target-column semantics are neutral only if every model gives them the same meaning; other providers may not share RPT's limits, jointly predicted columns, or explainability model.
+#### Option A: Keep `modelConfig` fully untyped
 
-Adding models to `TFMEnum` would therefore make the client appear agnostic while moving incompatibilities to runtime validation and the untyped `modelConfig`.
-A typed overlay could narrow `modelConfig` per model instead of leaving it fully open: a mapped type keyed by `TFMEnum` would give each model name its own config shape (e.g. `sap-rpt-1.5` → RPT explainability options).
-Adding a model then becomes a typed extension rather than another entry in an untyped bag.
-
-> **Open question for the service owners.** Before committing to a neutral client shape, we should ask the Tabular AI service owners:
->
-> - whether the service is intended to become provider-neutral, and if so on what timeline;
-> - whether context-selection and target-column semantics are expected to keep the same meaning for other vendors.
->
-> The available evidence suggests the contracts already diverge somewhat: TabPFN needs a test/train x/y split whereas RPT follows a more freeform shape`.
-> A neutral client that hides this difference would push it into runtime validation rather than types.
-
-#### Option A: Generic generated client only
-
-If the service specification becomes genuinely provider-neutral, the generated surface
-could model only fields shared by all providers:
+Expose `modelConfig` as `Record<string, unknown>` in the public client and leave typing entirely to TFM-specific documentation.
 
 ```ts
-type CommonPredictionInput = {
-  scenarioConfigName: string;
-  rows: Row[];
-  targets: TargetColumn[];
-  context?: { rows?: Row[]; selection?: ContextSelection };
-};
-
-type TabularPredictionRequest = CommonPredictionInput & {
-  model: { provider: string; name: string; version?: string };
-  providerConfig?: Record<string, unknown>;
-};
-
-const client = new TabularOrchestrationClient({ destination });
 await client.predict({
-  model: { name: 'sap-rpt-1.5' },
-  scenarioConfigName: 'product-prediction-scenario-lowercase',
-  rows,
-  targets: [{ name: 'salesgroup', task: 'classification' }]
-});
-```
-
-This is the smallest neutral API, but `providerConfig` remains an untyped escape hatch for provider-scoped settings.
-It assumes providers share the same top-level request; a structurally different request fits only if the service reconciles it, potentially through context-registry selection.
-Without that reconciliation, the provider breaks the neutral shape rather than extending it.
-This suits a transport SDK and new providers, but not typed provider-specific features.
-
-Full harmonization may not be achievable: the existing Orchestration service already exposes provider-specific configuration.
-An untyped escape hatch is therefore necessary; the choice is how the public API bridges it.
-
-#### Option B: Neutral core with typed provider profiles
-
-A neutral core can preserve the shared request while provider packages own model names
-and optional features:
-
-```ts
-const client = new TabularOrchestrationClient({ destination });
-
-const rpt = new RptProvider(client);
-await rpt.predict({
-  model: 'sap-rpt-1.5',
+  modelName: 'rpt-1',
   scenarioConfigName,
   rows,
-  targets: [{ name: 'salesgroup', task: 'classification' }],
-  explanations: {
-    topColumnScores: 3,
-    topRelevantContextRows: 2
-  }
+  predictionConfig: { targetColumns: [{ name: 'salesgroup', task_type: 'classification' }] },
+  modelConfig: { temperature: 0.8, numSamples: 20 }  // accepted, but no compile-time check
 });
 ```
 
-The neutral generated client defines the shared operation and wire schema, while `RptProvider` owns RPT discovery, validation, naming, and conversion of typed options.
-A future provider can expose only its supported capabilities.
+This accurately reflects the wire contract and imposes no maintenance burden.
+The downside is that `modelConfig` is a documentation cliff: typos are silent, and there is no IDE completion for vendor-specific fields.
 
-#### Option C: Provider-specific clients sharing a minimal interface
+#### Option B: Discriminated union on `modelName`
 
-Each provider can have its own generated or handwritten client and request types while implementing a small interface for consumers that need to select a provider at runtime:
+Type the full request as a discriminated union so that a known `modelName` literal carries its `modelConfig` type:
 
 ```ts
-interface TabularPredictionClient<Input, Output> {
-  predict(input: Input): Promise<Output>;
+type PredictRequest =
+  | { modelName: 'rpt-1'; predictionConfig: PredictionConfig; modelConfig?: RptModelConfig }
+  | { modelName: string;  predictionConfig: PredictionConfig; modelConfig?: Record<string, unknown> };
+```
+
+This is useful for **narrowing on read**—when downstream code receives a `PredictRequest` and dispatches on `modelName`, TypeScript narrows `modelConfig` to the registered type:
+
+```ts
+function processRequest(req: PredictRequest) {
+  if (req.modelName === 'rpt-1') {
+    req.modelConfig?.temperature;  // typed as RptModelConfig field ✓
+  }
+}
+```
+
+It does **not** enforce the correct `modelConfig` shape at the call site.
+Because the `string` fallback covers every literal—including `'rpt-1'`—TypeScript checks the object literal against all union members and accepts it as long as it matches any one of them.
+`Record<string, unknown>` always matches, so a mistyped RPT config passes without error:
+
+```ts
+// ✗ Not caught — second union member accepts anything
+await client.predict({ modelName: 'rpt-1', modelConfig: { temperaature: 0.8 } });
+```
+
+The drawback is that the union grows with each vendor and cannot span package boundaries cleanly.
+
+#### Option C: Generic request type with a config registry
+
+Parameterize the request on the model name and separately on the config type, with a conditional default that resolves from a registry:
+
+```ts
+interface ModelConfigRegistry {
+  'rpt-1': RptModelConfig;
+  // Additional entries added by declaration merging from provider modules
 }
 
-const rpt = new RptOrchestrationClient({ destination });
-await rpt.predict({
-  model: 'sap-rpt-1.5',
-  scenarioConfigName,
-  rows,
-  targets: [{ name: 'salesgroup', task: 'classification' }],
-  explanations: { topColumnScores: 3 }
+// RptModelConfig must be compatible with Record<string, unknown> for the index
+// signature to hold — any plain object interface satisfies this.
+type DefaultModelConfig<M extends string> = M extends keyof ModelConfigRegistry
+  ? ModelConfigRegistry[M]
+  : Record<string, unknown>;
+
+type PredictRequest<M extends string = string, C = DefaultModelConfig<M>> = {
+  modelName: M;
+  predictionConfig: PredictionConfig;
+  modelConfig?: C;
+  // …
+};
+
+// Method signature — both params default, inference handles the common case
+async predict<M extends string = string, C = DefaultModelConfig<M>>(
+  body: PredictRequest<M, C>
+): Promise<PredictResponse>
+```
+
+Three call-site behaviors:
+
+```ts
+// Literal modelName → M inferred as 'rpt-1' → modelConfig typed as RptModelConfig
+// No explicit type params needed
+await client.predict({
+  modelName: 'rpt-1',
+  predictionConfig: { targetColumns: [{ name: 'salesgroup', task_type: 'classification' }] },
+  modelConfig: { temperaature: 0.8 }  // ✗ compile error — typo caught
 });
 
-const otherModel = new OtherModelOrchestrationClient({ destination });
-await otherModel.predict({
-  model: 'other',
-  scenarioConfigName,
-  rows,
-  targets: [{ name: 'salesgroup', task: 'classification' }]
+// Unknown model → M inferred as 'new-model' → modelConfig is Record<string, unknown>
+await client.predict({
+  modelName: 'new-model',
+  predictionConfig: { targetColumns: [{ name: 'col' }] },
+  modelConfig: { anything: true }  // ✓ open bag
+});
+
+// Explicit override — user-supplied config shape, bypasses registry
+await client.predict<'rpt-1', { temperature: number; myExtra: string }>({
+  modelName: 'rpt-1',
+  predictionConfig: { targetColumns: [{ name: 'salesgroup', task_type: 'classification' }] },
+  modelConfig: { temperature: 0.8, myExtra: 'x' }
 });
 ```
 
-The clients can expose unrelated provider-specific inputs and outputs.
-The interface standardizes only prediction, while authentication, destinations, and request execution remain with the SAP Cloud SDK.
-This supports polymorphic consumers without implying a shared wire contract, but adds little value if no such consumers exist.
+The registry is an interface, so provider modules extend it via declaration merging without touching the core type.
+Inference only works when the model-name literal is present at the call site; a `string`-typed variable widens `M` to `string`, degrading to the open bag—the same caveat applies to all literal-based approaches.
+The cost is a more complex type signature; in practice consumers rarely need to write `PredictRequest<…>` explicitly.
 
-#### Option D: Share nothing
+#### Option D: Typed builder functions per vendor
 
-Each future provider (if any) can ship a separate client, API, and package while reusing the SAP Cloud SDK runtime.
+Keep the request type simple (`modelConfig?: Record<string, unknown>`) and ship typed builder functions alongside each TFM integration that construct a well-typed `modelConfig` object:
 
-This is the simplest boundary for substantially different or independently evolving contracts, but multi-provider consumers must define their own abstraction.
-This option will avoid issues if the service does end up reconciling different provider contracts in a shared specification.
+```ts
+import { rptModelConfig } from '@sap-ai-sdk/tabular-orchestration';
 
-Models that share the RPT-style contract can still use a unified client, and consumers still access prediction inputs through the context-registry service.
+await client.predict({
+  modelName: 'rpt-1',
+  …,
+  modelConfig: rptModelConfig({ temperature: 0.8, numSamples: 20 })
+  //           ^^ returns Record<string, unknown> but validates inputs at call site
+});
+```
+
+The request type stays flat and stable; vendor-specific typing lives in the builder, not in the shared request.
+This is the lightest integration: the builder validates inputs at call time, but the result is still untyped at the request level—mistakes like passing `rptModelConfig(…)` to a non-RPT model are not caught by the type system.
 
 ### Question 2: Level of Convenience
 
-Recommended Option B: a thin convenience client that mirrors the current RPT client without becoming a full SDK.
+Resolved by the PoC: Option B (thin convenience client).
 
 #### Option A: Generated request builders only
 
 Expose the generated operation and schema types as the public API.
-Consumers perform deployment discovery, destination adjustment, and header selection explicitly, as in the PoC.
+Consumers perform deployment discovery, destination adjustment, and header selection explicitly.
 
-This minimizes maintenance and stays close to the service contract, but repeats AI Core integration code and exposes names such as `predictV1PredictPost`.
+This minimizes maintenance and stays close to the service contract, but requires consumers to implement deployment resolution to some degree, and to inject the `ai-resource-group` header for every request.
 
 #### Option B: Prediction convenience client
 
-Add a thin client with an API similar to the current RPT client.
+The PoC `TabularOrchestrationClient` wraps the generated operation and handles deployment resolution and header injection.
+The public surface is `predict(body)` with the same `PredictRequest` type directly; the generated client remains accessible for consumers that need lower-level control.
 
 ### Question 3: Package Boundary
 
-The package name must follow the architecture and contract decision rather than imply provider neutrality in advance.
+Resolved by the PoC: `@sap-ai-sdk/tabular-orchestration`.
 
-#### Option A: Release under a vendor-specific package
+The service contract is provider-neutral, so a vendor-neutral package name accurately reflects the API.
+Vendor-specific typed `modelConfig` shapes ship from this same package rather than separate provider packages.
+If a future TFM requires a structurally different request that the service does not reconcile, a sibling package can be introduced at that point; there is no need to pre-split now.
 
-```text
-@sap-ai-sdk/rpt-orchestration
-```
-
-**Pros:**
-
-- Accurately reflects the RPT coupling; a future client for a different model can live in a sibling package without a breaking rename.
-- Easier to deprecate if a major breaking change is required in the future.
-
-**Cons:**
-
-- Less discoverable; the vendor name becomes part of the public API surface.
-- Requires separate provider packages if several providers are added.
-
-#### Option B: Release provider entry points from a vendor-neutral package
-
-Use one package with provider-specific classes or subpath exports:
-
-```text
-@sap-ai-sdk/tabular-orchestration
-  -> export class RptOrchestrationClient
-```
-
-or:
-
-```text
-@sap-ai-sdk/tabular-orchestration/rpt
-```
-
-**Pros:** Keeps a neutral package boundary while making RPT specificity visible at the import or type level.
-
-**Cons:** Couples the neutral package release cycle to provider-specific APIs and can accumulate provider terminology in one package.
-
-#### Option C: Single vendor-neutral package and client
-
-```text
-@sap-ai-sdk/tabular-orchestration
-```
-
-This option assumes the authoritative specification becomes genuinely provider-neutral before release.
-If provider-specific behavior remains, the contingency is to introduce a typed provider entry point, deprecate the misleading neutral client, and preserve compatibility through an alias where possible.
-
-**Pros:**
-
-- Simplest public surface.
-- No provider-specific terminology if the service contract is actually uniform.
-
-**Cons:**
-
-- Conceals current RPT coupling.
-- May require a breaking rename if provider capabilities diverge.
