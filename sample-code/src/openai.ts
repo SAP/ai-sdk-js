@@ -106,7 +106,7 @@ export async function responsesApi(): Promise<string | undefined> {
  * @returns The stream of response events.
  */
 export async function responsesApiStream(): Promise<
-  AsyncIterable<{ type: string; delta?: string }>
+  AsyncIterable<{ type: string; delta?: unknown }>
 > {
   const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
