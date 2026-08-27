@@ -24,20 +24,20 @@ importers:
         specifier: workspace:^
         version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/generator-common':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/http-client':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/openapi-generator':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@types/node':
         specifier: 22.20.1
         version: 22.20.1
@@ -48,8 +48,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
       jose:
-        specifier: 6.2.9
-        version: 6.2.9
+        specifier: 6.2.10
+        version: 6.2.10
       knip:
         specifier: 6.32.2
         version: 6.32.2
@@ -60,8 +60,8 @@ importers:
         specifier: 14.0.17
         version: 14.0.17
       orval:
-        specifier: 8.24.0
-        version: 8.24.0(@typescript/typescript6@6.0.2)(prettier@3.9.6)
+        specifier: 8.26.0
+        version: 8.26.0(@typescript/typescript6@6.0.2)(prettier@3.9.6)
       oxfmt:
         specifier: 0.64.0
         version: 0.64.0
@@ -90,11 +90,11 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       vitest:
         specifier: 4.1.11
@@ -103,17 +103,17 @@ importers:
   packages/core:
     dependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/openapi':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       vitest:
         specifier: 4.1.11
@@ -138,14 +138,14 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       vitest:
         specifier: 4.1.11
@@ -166,11 +166,11 @@ importers:
         specifier: workspace:^
         version: link:../orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       '@langchain/core':
         specifier: 1.2.9
@@ -207,11 +207,11 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       '@types/ws':
         specifier: 8.18.1
@@ -238,18 +238,18 @@ importers:
         specifier: workspace:^
         version: link:../prompt-registry
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
     devDependencies:
       '@sap-cloud-sdk/connectivity':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/http-client':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       vitest:
         specifier: 4.1.11
         version: 4.1.11(@types/node@22.20.1)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
@@ -276,14 +276,14 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       vitest:
         specifier: 4.1.11
@@ -335,11 +335,11 @@ importers:
         specifier: 1.30.0
         version: 1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
       '@sap-cloud-sdk/resilience':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/util':
-        specifier: 4.9.0
-        version: 4.9.0
+        specifier: 4.9.1
+        version: 4.9.1
       '@types/express':
         specifier: 5.0.6
         version: 5.0.6
@@ -411,8 +411,8 @@ importers:
         specifier: workspace:^
         version: link:../../sample-code
       '@sap-cloud-sdk/util':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
     devDependencies:
       '@types/async-retry':
         specifier: ^1.4.9
@@ -431,31 +431,31 @@ importers:
     dependencies:
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.15.1-20260825013057.0(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(langchain@1.5.10(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))
+        version: 2.15.1-20260827023654.0(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(langchain@1.5.10(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))
       '@sap-ai-sdk/llm-batch':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/openai':
         specifier: canary
-        version: 2.15.1-20260825013057.0(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)
+        version: 2.15.1-20260827023654.0(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.15.1-20260825013057.0
+        version: 2.15.1-20260827023654.0
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
@@ -494,11 +494,11 @@ importers:
         specifier: workspace:^
         version: link:../../packages/rpt
       '@sap-cloud-sdk/connectivity':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       '@sap-cloud-sdk/http-client':
-        specifier: ^4.9.0
-        version: 4.9.0
+        specifier: ^4.9.1
+        version: 4.9.1
       tsd:
         specifier: ^0.33.0
         version: 0.33.0
@@ -1109,51 +1109,51 @@ packages:
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
-  '@orval/angular@8.24.0':
-    resolution: {integrity: sha512-tmDca47QJdB7+suSUdjki3oURBP/EHhHkvgbOmm4KPy2G0YBKHSEm/oMphE5fab4TBzMNEVoiBi5PnK7m6Hu3g==}
+  '@orval/angular@8.26.0':
+    resolution: {integrity: sha512-o+i+K5S0LyD0JTEN8MlEGgwkabt9t5w82jn0Hv2pBIYwu2Qyh+VM4OZ+Nx1xet+Rby4XSUMGESqCG5vmfzBE9w==}
 
-  '@orval/axios@8.24.0':
-    resolution: {integrity: sha512-cldt9cGeZrgNtUb4iLeyE8mLh1PJisfGhdw4jmR+d1ZQl6H2ZjS7mQ+e+KU1SbZ1dITHeuZUC9I9UwHtZ882gw==}
+  '@orval/axios@8.26.0':
+    resolution: {integrity: sha512-Hoj8zrOZuvS41K+IY49m8PS6P0H5lhN1h79FzkzODdf9CE2HlYsp9rDRhgx3087SdDFsgX94up1RU1Es6WvMDg==}
 
-  '@orval/core@8.24.0':
-    resolution: {integrity: sha512-2aHwQ+3wFNu4rjqMlITSqtsO8YLvvyk+hvBdyLmrKTdyk3De9gQBoMynnLwVU0V6MXgb2a7x7bd1nnRelGJHJA==}
+  '@orval/core@8.26.0':
+    resolution: {integrity: sha512-JbapBmuCssu8cIXBdkVvX4q2Wa40FlC2QMWvdY6jJPdJBUXWGu4TLn6/RGKMq2HuATCfCeWkPbl7eajB3phqjQ==}
     peerDependencies:
       '@faker-js/faker': '>=10'
     peerDependenciesMeta:
       '@faker-js/faker':
         optional: true
 
-  '@orval/effect@8.24.0':
-    resolution: {integrity: sha512-+0pj5Fy6mHpUva9AwIddfgNSQWfZKbt+4AsJVCU6YuhE7GBme0LppTpB6FCYl3GarbwE2PY8ApTQ8Wgt8hvO8Q==}
+  '@orval/effect@8.26.0':
+    resolution: {integrity: sha512-scX5ULwtWSv3KxGSTkSV9tpL+lz5zdY0a4Rm/I+CjzTlpacwTloRwtxz3BALFi/SVzuqwHWEwye9N8po+RyiCg==}
 
-  '@orval/fetch@8.24.0':
-    resolution: {integrity: sha512-Wfw4rkeTHhTmGyJYMCc3ar/rczymkskxN1g4+koVmmynhIziwlHJAaNXc4uwnbEhg6S/T0QGrX9OTGSmd+NDSg==}
+  '@orval/fetch@8.26.0':
+    resolution: {integrity: sha512-hA3vY7Sc0RkoH+XzdNwnY1xpAZKsYcxOf2/OpkvVgnBGAX6vIh41W3SMGo5STFFYcViTSU3MfsjPLuUWf2R7Eg==}
 
-  '@orval/hono@8.24.0':
-    resolution: {integrity: sha512-CTEg31oZwj1ZkFVaqg6V8fbc5qz9f72ScYQvk6EOGRbV7Q/hDhYDuWbpscw16epW9KcUlo3N3Zf20haMTLz4yw==}
+  '@orval/hono@8.26.0':
+    resolution: {integrity: sha512-5+9YbJdBGi5YP5ye/CH1RucdHZh/nFBmx5gHZXfLpLB2+U2DzocnUNfShRxopQBmAELJAZz1anU9ePCQrNiWOg==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@orval/mcp@8.24.0':
-    resolution: {integrity: sha512-nbO2sYmtdMkeBsl74BfpoaYYNrelbH+/0ss9xWXX6sW7IZoJK8NqhiaJ4idEuyQ/fF4g7fTBmsWipZdEUDLYdQ==}
+  '@orval/mcp@8.26.0':
+    resolution: {integrity: sha512-3MB5jHGFT8Kq+RfyAJaK6y192ordhWLOgu4SKIRClxd3gQYTjekK0LxfIFGnZ9A2ocRr0FxnC8fB+dlgwCEXrw==}
 
-  '@orval/mock@8.24.0':
-    resolution: {integrity: sha512-XjnZM/0WQdlh/+IGT3P/UjKvYzOm+89avkd5wadC0StBpHgGCnYWuENmoLdkbOBhAeyeL6l9Jp11+mOllU6MZw==}
+  '@orval/mock@8.26.0':
+    resolution: {integrity: sha512-HOTPhD7KGjQMpUAln/9WlvoOFMaNmSITMlqlgN6g4dwGECNgifL36qIW7FSN2Wo4l3Sa8BslIP5b8GCm1a/6ow==}
 
-  '@orval/query@8.24.0':
-    resolution: {integrity: sha512-E3biV70vHOUKJSn+no6nJAd6Pg40V4PnyHXtR/U7lAaPTAQPM7k9tKpRaGoIijogmmX6h06yOI687HU1N/RSJA==}
+  '@orval/query@8.26.0':
+    resolution: {integrity: sha512-wHI1Q7Lx/wYtfrR6OC2rW8IpEADfy95DcQJZ9vKpWCUs+e47V4b9QQatvjmHQBZLtd1yUxPYJbNwaWYwTFeDyg==}
 
-  '@orval/solid-start@8.24.0':
-    resolution: {integrity: sha512-X+T7GaHbe1GgR7ltpiFiw4F6klj2pGyCNqkHxTsc4SA/GwiFemBAyBXSdIhMTPU4JObehiFB4soojmS/WPnzBw==}
+  '@orval/solid-start@8.26.0':
+    resolution: {integrity: sha512-V8nD+oehJRmilLhsZdYPbcqugFsD166OoazxJI12WBX1Hrquhka6VOlKllFjVG5kp/6Z+ZBlfrNS8Cq7nbShxQ==}
 
-  '@orval/swr@8.24.0':
-    resolution: {integrity: sha512-7YBfqSUGpbZRm6siBm1vYa4qz7ukm+uimDfW6M1tOfCyySfve3SIMPMI0c/Sl7hmWdBZYcSYqRyasG7Nr9qBtg==}
+  '@orval/swr@8.26.0':
+    resolution: {integrity: sha512-krObsMunyV2SfmxKlzOOBBhCfvJK3ZJ9y2vkCd+69sTcKE/38tk2M/UGjOyVPBO4vWh4e3X6koq9f26f+O4HcA==}
 
-  '@orval/zod@8.24.0':
-    resolution: {integrity: sha512-TXK+tQbh9y/q2XlneOqmwg3B6BsbjnLJhkG1/1dMnK3EDdqbf5HSmYKndejJmloomgAdugv0OGyOgmBdSaeisg==}
+  '@orval/zod@8.26.0':
+    resolution: {integrity: sha512-tI1Rw34RL0ALs4q4T2C9kovlTY2c1DfoNWfvq94R9TTnezBm3hg+ZzahFKyrm2+gKzICe5baAQ5BUSNIYMYgjA==}
 
   '@oxc-parser/binding-android-arm-eabi@0.143.0':
     resolution: {integrity: sha512-n9uozULWflPqBtdmI8lAabLqGKNgLVNN0ZH8HfgCwpKGNtzRzauB76jTiW/3YLkcA7N1zskpi9GdVnZuu1SAvg==}
@@ -1763,20 +1763,20 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@sap-ai-sdk/ai-api@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-k86HdbAMiep4KWKijQh1m5VL0Gr0MPe7+jxnMqiISoriTdKy4CRlyxC2iiHp1TLOyhGdPUW7CEoq+873e4dWJQ==}
+  '@sap-ai-sdk/ai-api@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-bDNMMiX7K2+IruvXsPKLyqxqOXvpTpXdGZTIb1NI9eKJwuSGTnDgDNYTQ+ScLeCc/32TlV2m2uE7w0tHAXiL6g==}
 
-  '@sap-ai-sdk/core@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-z7ZN1FsAhw6p3m4ek8mqe8r6QdJdMy3kjLuyEMpnTaN3F1QA3UgXaocUBJzaWiYNUtUH1/LdSJB+Cd4bll9M1w==}
+  '@sap-ai-sdk/core@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-RJ0OQfsHszrra5hlKeOBdezfhEuL5h6uBB1nrY0Zbd9lyVfu1+InzVdiz3bBYqhuSJo+GQxHdioZ/7hAdaSHMw==}
 
-  '@sap-ai-sdk/document-grounding@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-r2yQm8wLakB3Y4Xav/3lugbyxg7E4TN4UjhP21A4Z6uCsFO/I2oK4a5Gp7Fo8UfFWJdfAIh1M5s/2hJBtOjfGg==}
+  '@sap-ai-sdk/document-grounding@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-uKybdC79ataah/dbnQ7pEknNSo989M8j1NIPl1ZSBCbmBtC85SshsDv9JGpcyEDxqpC/gkJbUHhxTmEyenV2cg==}
 
-  '@sap-ai-sdk/foundation-models@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-oMUKr1Tmqw39FQBMxDulqqO2u/uElFus1mrZcY1VIiT58Hsu45m9o8NdIwAjm1+IonlOK+I0jdioDJQoK61TvQ==}
+  '@sap-ai-sdk/foundation-models@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-vMfv7DoYtgjPGiXDRgGiY3TA+vGaCIpSY3dBAqlaU9YXrVzXGcDQFuVVVn63MTD4PPpA8Ys8xFuXnSA6kqgm6Q==}
 
-  '@sap-ai-sdk/langchain@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-ps/6ag17ffuBHafMGsj/aeFOn1BqabJq8SnxkIQEdZ04kTF/0XwEgq2uxnwLxmivIqsNAmd8NTykOYxpH/RJKA==}
+  '@sap-ai-sdk/langchain@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-6F+0ShCqdIZbXXTW+PHDLBVpPfHp7we2u8+GFCxiHsIzTweyY/qdVurD/FCfrGfwNjpIzzc21o1SNOKearNusw==}
     peerDependencies:
       '@langchain/core': ^1.2.3
       langchain: ^1.5.4
@@ -1784,11 +1784,11 @@ packages:
       langchain:
         optional: true
 
-  '@sap-ai-sdk/llm-batch@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-zwtCkTpvPqNLo1tlAnjp/tIz61gpP/1lt5DjsqSJ5WXXcm2FaS9iYvEuS5GRd4TTtjSefgoa8iT/HfohtvdhbQ==}
+  '@sap-ai-sdk/llm-batch@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-a2GY5vmIwjRcUDDPAmLV4jHT+N3h+n78ZHwnnU+t3om77Rd6w//FjzBLEt7g8pCqd5afflcpj6AN87NUzo5kIA==}
 
-  '@sap-ai-sdk/openai@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-O8TgEZmm+p2j9nNiIFiAZ61sgFLz54tB2fpsgHLtfyYlrnYxtCaP1tfE6fPXJmWHKLb7/SR0Te51/+YQHYgK2A==}
+  '@sap-ai-sdk/openai@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-imDBPTrTz2dF+7F/2nwl0FSi6XF7mffclgz96DvsWIzjyvD5Vfq+DErDXh2KMVqlHSHlKpWVh/8//q+8W+O57g==}
     peerDependencies:
       openai: ^6.49.0 || ^7.0.0
       ws: ^8.20.0
@@ -1796,36 +1796,36 @@ packages:
       ws:
         optional: true
 
-  '@sap-ai-sdk/orchestration@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-MJ+z13s0c9QNAbLtCrB4TazWgw1iMQTLi+pkxU9w2WgQ/wsnM3SrnU+ZuA/n8pWraMfJ3qKsy+oWJdYtx5y7Eg==}
+  '@sap-ai-sdk/orchestration@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-5aiM3s2CKeFplBoxsl7t54W4fJVkSkXkdzfAMaQfLPdNJHPPhYcOKg/GUqeGR3eUrbOt13kmdK2cXM7NEGhw+g==}
 
-  '@sap-ai-sdk/prompt-registry@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-gEcf1vEwA3UQqxlkvgkdkUf/YezOzQflrOwSBfRt/WkFl3pvqqSGeACFIuHTqBbJt7BbSvEh5LKYPirDxIaVaA==}
+  '@sap-ai-sdk/prompt-registry@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-Hv7ayDBDZSCAFcKKrDP3vepb3Mc0B0j/TjcyW3+ioUpnNEyn8Y0VsEttdJZ7i5COheSsMeooy/kwJRN4TOcwrg==}
 
-  '@sap-ai-sdk/rpt@2.15.1-20260825013057.0':
-    resolution: {integrity: sha512-YZgO9tIxbyz5HPovG+mnsUhiP2LOhguoXwNt+QKSSJ1LHfrSZsTFBv2vTP4064jVDb5CzpaxL7rcBOD54N//AQ==}
+  '@sap-ai-sdk/rpt@2.15.1-20260827023654.0':
+    resolution: {integrity: sha512-UV7bNr2PYWMfBayzZVk80UudNSoOMGyo9qMITD15a3TacBQCSKEa1Ep9LRHPHAQwZzwsKVBt0TzZDG1vQa36/Q==}
 
-  '@sap-cloud-sdk/connectivity@4.9.0':
-    resolution: {integrity: sha512-Irgl4u54hJja+Vx5n/FcIhCW1rcknoiHitBk12Ro66q7zon1PHfsOk6jx5sJMNNFg+8k8u11UXMcRgWPaDF5Yw==}
+  '@sap-cloud-sdk/connectivity@4.9.1':
+    resolution: {integrity: sha512-0deJBmdUd1LD1O3CX/wqYjTEKmnrnLsxnrSE8CyGtzbyomjjL1ePEXB3g6QUpQKmClVyOgJG/IbpyJFGGXXL5A==}
 
-  '@sap-cloud-sdk/generator-common@4.9.0':
-    resolution: {integrity: sha512-7OXOwuOXLJCQqS4glL1a1AUagH4OzEQSsGxpx6+CqWOpJK46qlaevZPBMk1jE0QcbKrwKsD5DCrr9V19KNGEtg==}
+  '@sap-cloud-sdk/generator-common@4.9.1':
+    resolution: {integrity: sha512-LmFDe6PHNnbQDA86PSJFzCsQgJkD0COw7Gj/NKFm7hDZrMSOksqrhF1wWkomdpDNDjF7vXEnhsaTrTtI+YxvyQ==}
 
-  '@sap-cloud-sdk/http-client@4.9.0':
-    resolution: {integrity: sha512-pHk48zl6EtTLR4OjCYBUKQSV6lwCXnk210JssWf8BJbLZph9hhKLpm86wgoYjFoqVYT+1b1TeaasMwte5bFuAw==}
+  '@sap-cloud-sdk/http-client@4.9.1':
+    resolution: {integrity: sha512-bsF8T/syitm+GI8eInOB1AfvHsTYJ8Qvg5dfGt5SGXEQjqV2amFEulPp7edNTzCLo0+BBbBa/jhvqLCvXSoV6A==}
 
-  '@sap-cloud-sdk/openapi-generator@4.9.0':
-    resolution: {integrity: sha512-e3eJpY+al6tl9MJkekWIBFTM++G9tSMbcCgN2qgcxFxtdJLzWRGP+XwmzWWBlzgHg9NauGp80z6i/94v0VjnYA==}
+  '@sap-cloud-sdk/openapi-generator@4.9.1':
+    resolution: {integrity: sha512-lcseFRowWwXkaYV+k8VtEMcH8GsfOATfiP6ZuAoIAHxOCI//Ihk69SbnuCixJyZv1uUMiv1mRXU+VXrIlNPlmg==}
     hasBin: true
 
-  '@sap-cloud-sdk/openapi@4.9.0':
-    resolution: {integrity: sha512-O268S0jyMxu+SJ/pGbSuyXJz8GkOIu3qj0t8RX43nEr7dl1RWNbLXHMN6bQcwDZy1SeH0omeS9J03i5gN7K/yA==}
+  '@sap-cloud-sdk/openapi@4.9.1':
+    resolution: {integrity: sha512-o46XbWWjo4piTPsLWPE9yuGCNS8jIj1GfZSJpaHdWDO6ZF+CqaUwF21UtGTg0SJggoe6AsJlhVObL7QA6urcJg==}
 
-  '@sap-cloud-sdk/resilience@4.9.0':
-    resolution: {integrity: sha512-8hf4C8gibq2R2lWxS98xb74qj5nzbQJ37jGn3DPILj9psI07KNwiAm9Qu0PPCCoBpUSj9CH6N63lQ53KMp1qxg==}
+  '@sap-cloud-sdk/resilience@4.9.1':
+    resolution: {integrity: sha512-14Hdd2VqEd3BarikR/ChZjquQuelC+CP69HKdMycADmmsuQEwaJkSXURW8cDl19bfx8Re1ldM/4Ig0gbCY4x/A==}
 
-  '@sap-cloud-sdk/util@4.9.0':
-    resolution: {integrity: sha512-G8Zcmn9E5ikLfycqrezkla5ClLDQhazDFQyK6cAUdIoogGgAXCIX80FDQ3gq3N/taXy+KDNS/is8rj6DrKXHyA==}
+  '@sap-cloud-sdk/util@4.9.1':
+    resolution: {integrity: sha512-1tuv+c6o2Y8/1F3UEdqiv3TPWzZDpCjxuDpAFtFBM8C+weum8ixgwc2YXEWvBzWvtSEl7C5L/o8jBqiuhcXF4w==}
 
   '@sap/cds-compiler@7.0.3':
     resolution: {integrity: sha512-scgBPK0TcobT0tXIQOEBTeVuGaxWthKeIQjhBoeLWcQXwVC3s61U3GFdbW56h01pXFwwUUSsxjzZN7all5lRyg==}
@@ -3029,8 +3029,8 @@ packages:
   jks-js@1.1.7:
     resolution: {integrity: sha512-BeiDRKsAi1NwEwgx2JB/9/0tar5BNGIv+foGm1G5GgiyR35s/iUnfd/BWqYd16mLDD8qTaAVBrIcOOuVqXJZNQ==}
 
-  jose@6.2.9:
-    resolution: {integrity: sha512-XrchZOFZUl/T3vTwRe8XK+cJrGtMF4th1ARnDfwbBXFKThGhlsxEE4Zu03AD/bjJSt/9jT/mxrOCkJWOg77aPA==}
+  jose@6.2.10:
+    resolution: {integrity: sha512-iiW7J9qRFlGxvCOIBDBDxFePQSn7ZMAnrYGhrrOo6siO/MIqwfyilLR27pkfDgUk+raLuzADS8A3S/KLBisc0g==}
 
   js-tiktoken@1.0.21:
     resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
@@ -3510,8 +3510,8 @@ packages:
     resolution: {integrity: sha512-sghtqL8Usj+et06Zui0nyn0R6FFsl7cyuoU+d7MctYU0nbS7Htzjleh+tWohFqk1Rp1srrFwbFa8Vxd0O64w6A==}
     engines: {node: ^26 || ^24 || ^22}
 
-  orval@8.24.0:
-    resolution: {integrity: sha512-dtrFTGJQCtTpvsFk7BEKzNsvjYW8SD0hFUyoC2dL4bWVHfKmujRWeMYgm3h9U/cJPZBpgG4UqLnfVY8/DbZpYw==}
+  orval@8.26.0:
+    resolution: {integrity: sha512-7mqHCS9+L05em1rrwHtp7g60E5PNmN8GWSr1KLrilNOPHwGZyV7CJrp7NPYBLG2HW9rPxbGQL2XisvNINJx3Gg==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -4915,7 +4915,7 @@ snapshots:
       express: 5.2.1
       express-rate-limit: 8.6.2(express@5.2.1)
       hono: 4.13.3
-      jose: 6.2.9
+      jose: 6.2.10
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
@@ -4978,23 +4978,23 @@ snapshots:
 
   '@open-draft/until@2.1.0': {}
 
-  '@orval/angular@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/angular@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/axios@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/axios@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/core@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/core@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
       '@scalar/openapi-types': 0.9.4
       acorn: 8.18.0
@@ -5012,27 +5012,27 @@ snapshots:
       - supports-color
       - typescript
 
-  '@orval/effect@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/effect@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
       remeda: 2.42.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/fetch@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/fetch@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/hono@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/hono@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/zod': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/zod': 8.26.0(@typescript/typescript6@6.0.2)
       fs-extra: 11.4.0
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -5040,55 +5040,55 @@ snapshots:
       - '@faker-js/faker'
       - supports-color
 
-  '@orval/mcp@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/mcp@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/zod': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/fetch': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/zod': 8.26.0(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/mock@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/mock@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
       remeda: 2.42.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/query@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/query@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/fetch': 8.26.0(@typescript/typescript6@6.0.2)
       remeda: 2.42.0
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/solid-start@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/solid-start@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/swr@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/swr@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/fetch': 8.26.0(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - supports-color
       - typescript
 
-  '@orval/zod@8.24.0(@typescript/typescript6@6.0.2)':
+  '@orval/zod@8.26.0(@typescript/typescript6@6.0.2)':
     dependencies:
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
       jsesc: 3.1.0
       remeda: 2.42.0
     transitivePeerDependencies:
@@ -5399,71 +5399,71 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sap-ai-sdk/ai-api@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/ai-api@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/core@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/http-client': 4.9.0
-      '@sap-cloud-sdk/openapi': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/http-client': 4.9.1
+      '@sap-cloud-sdk/openapi': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/document-grounding@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/foundation-models@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/foundation-models@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/http-client': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-ai-sdk/ai-api': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/http-client': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.15.1-20260825013057.0(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(langchain@1.5.10(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))':
+  '@sap-ai-sdk/langchain@2.15.1-20260827023654.0(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(langchain@1.5.10(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))':
     dependencies:
       '@langchain/core': 1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)
-      '@sap-ai-sdk/ai-api': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/foundation-models': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/orchestration': 2.15.1-20260825013057.0
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-ai-sdk/ai-api': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/foundation-models': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/orchestration': 2.15.1-20260827023654.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
     optionalDependencies:
       langchain: 1.5.10(@langchain/core@1.2.9(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/llm-batch@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/llm-batch@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/openai@2.15.1-20260825013057.0(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)':
+  '@sap-ai-sdk/openai@2.15.1-20260827023654.0(openai@7.5.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-ai-sdk/ai-api': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
       openai: 7.5.0(ws@8.21.3)(zod@4.4.3)
     optionalDependencies:
       ws: 8.21.3
@@ -5471,40 +5471,40 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/orchestration@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/prompt-registry': 2.15.1-20260825013057.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-ai-sdk/ai-api': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/prompt-registry': 2.15.1-20260827023654.0
+      '@sap-cloud-sdk/util': 4.9.1
       yaml: 2.9.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/prompt-registry@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
       zod: 4.4.3
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.15.1-20260825013057.0':
+  '@sap-ai-sdk/rpt@2.15.1-20260827023654.0':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.15.1-20260825013057.0
-      '@sap-ai-sdk/core': 2.15.1-20260825013057.0
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/http-client': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-ai-sdk/ai-api': 2.15.1-20260827023654.0
+      '@sap-ai-sdk/core': 2.15.1-20260827023654.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/http-client': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/connectivity@4.9.0':
+  '@sap-cloud-sdk/connectivity@4.9.1':
     dependencies:
-      '@sap-cloud-sdk/resilience': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/resilience': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
       '@sap/xsenv': 6.2.2
       '@sap/xssec': 4.15.0
       async-retry: 1.3.3
@@ -5516,9 +5516,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/generator-common@4.9.0':
+  '@sap-cloud-sdk/generator-common@4.9.1':
     dependencies:
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/util': 4.9.1
       fast-levenshtein: 3.0.0
       glob: 13.0.6
       prettier: 3.9.6
@@ -5529,22 +5529,22 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/http-client@4.9.0':
+  '@sap-cloud-sdk/http-client@4.9.1':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/resilience': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/resilience': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
       axios: 1.19.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/openapi-generator@4.9.0':
+  '@sap-cloud-sdk/openapi-generator@4.9.1':
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
-      '@sap-cloud-sdk/generator-common': 4.9.0
-      '@sap-cloud-sdk/openapi': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/generator-common': 4.9.1
+      '@sap-cloud-sdk/openapi': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
       content-type: 2.1.0
       js-yaml: 5.3.0
       openapi-types: 12.1.3
@@ -5554,20 +5554,20 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sap-cloud-sdk/openapi@4.9.0':
+  '@sap-cloud-sdk/openapi@4.9.1':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.9.0
-      '@sap-cloud-sdk/http-client': 4.9.0
-      '@sap-cloud-sdk/resilience': 4.9.0
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/connectivity': 4.9.1
+      '@sap-cloud-sdk/http-client': 4.9.1
+      '@sap-cloud-sdk/resilience': 4.9.1
+      '@sap-cloud-sdk/util': 4.9.1
       axios: 1.19.0
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/resilience@4.9.0':
+  '@sap-cloud-sdk/resilience@4.9.1':
     dependencies:
-      '@sap-cloud-sdk/util': 4.9.0
+      '@sap-cloud-sdk/util': 4.9.1
       async-retry: 1.3.3
       axios: 1.19.0
       opossum: 10.0.0
@@ -5575,7 +5575,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/util@4.9.0':
+  '@sap-cloud-sdk/util@4.9.1':
     dependencies:
       axios: 1.19.0
       logform: 2.7.0
@@ -5851,7 +5851,7 @@ snapshots:
       '@types/express': 5.0.6
       commander: 13.1.0
       express: 5.2.1
-      jose: 6.2.9
+      jose: 6.2.10
       undici: 7.29.0
       zod: 4.4.3
     transitivePeerDependencies:
@@ -6649,7 +6649,7 @@ snapshots:
       node-int64: 0.4.0
       node-rsa: 1.1.1
 
-  jose@6.2.9: {}
+  jose@6.2.10: {}
 
   js-tiktoken@1.0.21:
     dependencies:
@@ -7123,21 +7123,21 @@ snapshots:
 
   opossum@10.0.0: {}
 
-  orval@8.24.0(@typescript/typescript6@6.0.2)(prettier@3.9.6):
+  orval@8.26.0(@typescript/typescript6@6.0.2)(prettier@3.9.6):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
-      '@orval/angular': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/axios': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/core': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/effect': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/fetch': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/hono': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/mcp': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/mock': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/query': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/solid-start': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/swr': 8.24.0(@typescript/typescript6@6.0.2)
-      '@orval/zod': 8.24.0(@typescript/typescript6@6.0.2)
+      '@orval/angular': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/axios': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/core': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/effect': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/fetch': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/hono': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/mcp': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/mock': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/query': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/solid-start': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/swr': 8.26.0(@typescript/typescript6@6.0.2)
+      '@orval/zod': 8.26.0(@typescript/typescript6@6.0.2)
       '@scalar/json-magic': 0.12.20
       '@scalar/openapi-parser': 0.28.16
       '@scalar/openapi-types': 0.9.4

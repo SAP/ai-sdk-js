@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -9,10 +10,12 @@ import {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
-import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-import * as z from 'zod/v4';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import * as z from 'zod/v4';
+
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -62,7 +65,7 @@ export async function orchestrationChatCompletion(
 }
 
 /**
- * Ask ChatGPT through the orchestration service using resilience middleware.
+ * Ask the LLM through the orchestration service using resilience middleware.
  * Configures a 30-second timeout, circuit breaker, and one retry attempt.
  * @returns The orchestration service response.
  */
@@ -80,7 +83,7 @@ export async function orchestrationChatCompletionResilient(): Promise<Orchestrat
 }
 
 /**
- * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * Ask the LLM through the orchestration service about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.
@@ -139,7 +142,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
 }
 
 /**
- * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
+ * Ask the LLM through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
  * @param controller - The abort controller.
  * @returns The response from the orchestration service containing the response content.
  */
@@ -822,7 +825,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
 }
 
 /**
- * Ask ChatGPT to add two numbers using tools and stream the response.
+ * Ask the LLM to add two numbers using tools and stream the response.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.

@@ -1,10 +1,12 @@
 import nock from 'nock';
-import { DeploymentApi } from '../client/AI_CORE_API/index.ts';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall,
   mockDestination
 } from '../../../../test-util/mock-http.ts';
+import { DeploymentApi } from '../client/AI_CORE_API/index.ts';
+
 import type {
   AiDeploymentCreationRequest,
   AiDeploymentCreationResponse,
