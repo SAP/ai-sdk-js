@@ -4,7 +4,10 @@ import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 import { z } from 'zod';
 
-import type { ResponseStreamEvent } from 'openai/resources/responses/responses';
+import type {
+  ResponseInputItem,
+  ResponseStreamEvent
+} from 'openai/resources/responses/responses';
 import type { Stream } from 'openai/streaming';
 
 /**
@@ -153,9 +156,9 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
     deployment: 'gpt-5.4-nano'
   });
 
-  let context = toResponseInputItems([
-    { role: 'user', content: 'What is the capital of France?' }
-  ]);
+  let context: ResponseInputItem[] = [
+    { role: 'user' as const, content: 'What is the capital of France?' }
+  ];
 
   const first = await client.responses.create({ input: context });
 
