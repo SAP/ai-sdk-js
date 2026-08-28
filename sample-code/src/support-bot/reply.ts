@@ -298,7 +298,9 @@ function parseIssueBody(body: string) {
 // ── Entry point ───────────────────────────────────────────────────────────────
 
 const issueNumberArg = process.argv[2];
-const issueNumber = issueNumberArg ? Number.parseInt(issueNumberArg, 10) : undefined;
+const issueNumber = issueNumberArg
+  ? Number.parseInt(issueNumberArg, 10)
+  : undefined;
 
 if (!issueNumber) {
   console.log('Usage: node reply.ts <issue_number>');
@@ -318,15 +320,24 @@ if (existsSync(localBodyFile)) {
 } else {
   const ghToken = process.env.GITHUB_TOKEN;
   if (!ghToken) {
-    console.error('[support-bot] GITHUB_TOKEN is required when issue-body.md is not present');
+    console.error(
+      '[support-bot] GITHUB_TOKEN is required when issue-body.md is not present'
+    );
     process.exit(1);
   }
   const res = await fetch(
     `https://api.github.com/repos/SAP/ai-sdk-js/issues/${issueNumber}`,
-    { headers: { Authorization: `Bearer ${ghToken}`, 'User-Agent': 'support-bot' } }
+    {
+      headers: {
+        Authorization: `Bearer ${ghToken}`,
+        'User-Agent': 'support-bot'
+      }
+    }
   );
   if (!res.ok) {
-    console.error(`[support-bot] failed to fetch issue #${issueNumber}: ${res.status}`);
+    console.error(
+      `[support-bot] failed to fetch issue #${issueNumber}: ${res.status}`
+    );
     process.exit(1);
   }
   const issue = (await res.json()) as { title: string; body: string | null };
