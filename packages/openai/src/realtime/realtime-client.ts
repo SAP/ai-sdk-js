@@ -77,19 +77,16 @@ export class SapOpenAiRealtimeWs extends OpenAIRealtimeWS {
         __resolvedApiKey: resolvedApiKey,
         buildRealtimeURL: () => {
           const base = openAiClient.baseURL.replace(/\/$/, '');
-          let url: URL;
           try {
-            url = new URL(base + '/v1/realtime');
+            const url = new URL(base + '/v1/realtime');
+            url.protocol = 'wss';
+            url.searchParams.set('api-version', openAiClient.apiVersion);
+            return url;
           } catch {
             throw new Error(
               `Invalid SAP AI Core deployment URL: "${openAiClient.baseURL}". Ensure the deployment is resolved correctly before opening a Realtime connection.`
             );
           }
-          url.protocol = 'wss';
-          if (openAiClient.apiVersion) {
-            url.searchParams.set('api-version', openAiClient.apiVersion);
-          }
-          return url;
         }
       },
       openAiClient
