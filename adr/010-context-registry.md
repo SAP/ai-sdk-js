@@ -133,7 +133,7 @@ Add helpers for operations not well served by the raw generated client, e.g. pol
 
 Asynchronous creation returns http `202 Accepted` and a `Location` URL whose subsequent `GET` requests return http `200`.
 The response lifecycle status is `PROCESSING`, `ACTIVE`, or `ERROR`; a helper should follow the location and expose terminal and failure states.
-The PoC's `wait-for-async-resource.mts` helper demonstrates this polling loop with the generated client.
+The PoC `pollAsyncResource` helper in `@sap-ai-sdk/core` demonstrates this polling loop with the generated client.
 
 The current specifications only document the `Location` header, and the deployed service does not currently return `Retry-After`.
 The helper should therefore default to a configured interval but still honor `Retry-After` for any other services that return it, or if that change is made in the future.
@@ -142,29 +142,99 @@ The helper could be a generic utility shipped in `@sap-ai-sdk/core` rather than 
 The same `202` + `Location` + lifecycle-status pattern is already used by other asynchronous operations in the SDK, for example `VectorApi.createCollection()` in `@sap-ai-sdk/document-grounding`, which returns `202` with a `Location` header and is polled via the collection `status` field.
 A shared utility avoids duplicating polling, timeout, and terminal-state logic per service and keeps the contract in one place.
 
-The exact helper API is still open, but would do well to align with the existing `async-retry` package used elsewhere in the SDK, and should support cancellation via `AbortSignal`:
+The PoC already implements `pollAsyncResource` in `@sap-ai-sdk/core` and should support cancellation via `AbortSignal`:
 
 ```ts
-// Note: Subject to change
 import { pollAsyncResource } from '@sap-ai-sdk/core';
 
 const artifact = await pollAsyncResource({
-  read: () => client.get(pollingLocation),
+  read: () => TabularArtifactsApi.getTabularArtifact(artifactId, { 'ai-resource-group': rg }).execute(dest),
   isComplete: current => current.status === 'ACTIVE',
   getFailure: current =>
     current.status === 'ERROR' ? current.errorMessage : undefined,
+  maxAttempts: 60,
   intervalMs: 2_000,
-  timeoutMs: 120_000,
   signal
 });
 
-// It would also make sense to provide an async generator for streaming progress updates:
+// An async generator covers progress-reporting use cases:
 for await (const current of watchAsyncResource(options)) {
   console.log(current.status);
 }
 ```
 
 The helper should accept a `Retry-After` value from both the initial `202` and each polling response and use it as the next interval when present, so that service-driven retry delays are respected automatically if the service starts sending them.
+
+#### Option B.3: Polling integrated into the OpenAPI request builder
+
+Add a `.poll(options)` method directly to the `OpenApiRequestBuilder` returned by each generated operation so that consumers chain polling onto the creation call without a separate import.
+
+The `202` response includes a `Location` header; the request builder already holds the destination context needed to resolve it.
+A `.poll()` method could capture the `Location` from the raw response, construct the corresponding GET builder, and delegate to `pollAsyncResource` under the hood:
+
+```ts
+const artifact = await TabularArtifactsApi
+  .createTabularArtifact(body, { 'ai-resource-group': rg })
+  .poll({
+    isComplete: r => r.status === 'ACTIVE',
+    getFailure: r => r.status === 'ERROR' ? r.errorMessage : undefined,
+    maxAttempts: 60,
+    intervalMs: 2_000
+  })
+  .execute(dest);
+```
+
+**Pros:** Discovery is co-located with the create operation — consumers cannot miss polling; no separate import required; destination and headers do not need to be threaded through manually.
+
+**Cons:** Couples polling logic to the code-generated request builder layer, which currently contains no behavior beyond HTTP execution.
+Every generated client would inherit a new method, increasing the API surface even for operations that are not asynchronous.
+The builder must know which generated GET operation corresponds to the `Location` URL, requiring either convention-based routing or explicit annotation in the specification via `x-sap-cloud-sdk-*` extensions.
+The approach is harder to test in isolation than a plain function.
+
+#### Option B.4: User-driven polling helpers
+
+Rather than hiding polling inside a utility or the request builder, provide primitives that return intermediate state and leave the polling loop to the consumer.
+
+Two shapes are possible:
+
+**B.4a — Async generator (`watchAsyncResource`)**: yields each poll result as it arrives so the caller can react to intermediate states, log progress, or break early:
+
+```ts
+import { watchAsyncResource } from '@sap-ai-sdk/core';
+
+for await (const current of watchAsyncResource({
+  read: () => TabularArtifactsApi.getTabularArtifact(id, { 'ai-resource-group': rg }).execute(dest),
+  intervalMs: 2_000,
+  signal
+})) {
+  console.log('status:', current.status);
+  if (current.status === 'ACTIVE') break;
+  if (current.status === 'ERROR') throw new Error(current.errorMessage);
+}
+```
+
+**B.4b — Manual state check**: the consumer calls the generated GET operation directly on a timer of their choosing; the SDK only provides the terminal-state constants or a thin type guard:
+
+```ts
+import { isTerminalState } from '@sap-ai-sdk/core';
+
+while (true) {
+  const artifact = await TabularArtifactsApi.getTabularArtifact(id, { 'ai-resource-group': rg }).execute(dest);
+  if (isTerminalState(artifact)) break;
+  await sleep(2_000);
+}
+```
+
+**Pros:** Full control over backoff, cancellation, logging, and early exit; no hidden timeout or retry behavior to discover; async generator form composes naturally with `AbortSignal` and structured concurrency.
+
+**Cons:** Every consumer must re-implement loop control for the common case; the ergonomic gap over `pollAsyncResource` is largest when the only goal is "wait for completion".
+Progress reporting and early-exit during polling are likely rare in practice; the added API surface and maintenance cost may not be justified by actual usage.
+
+B.4a (async generator) has a structural tension with `Retry-After`.
+A demand-driven generator fires the next `read` when the consumer calls `next()`, so the inter-poll delay is controlled by the consumer, not the generator.
+There is no natural place inside the generator to honour a server-supplied `Retry-After` hint without sleeping *before* yielding — at which point the generator is no longer truly demand-driven and is indistinguishable from `pollAsyncResource` with a generator wrapper.
+The only escape is to yield a `{ value, retryAfter }` envelope and push the sleep back to the caller, but that recreates the loop-control burden the generator was meant to remove.
+A third option is to cache the `Retry-After` hint internally and sleep silently when `next()` is called before the hint expires, preserving demand-driven semantics from the outside.
 
 #### Option C: Add a full set of convenience methods
 

@@ -91,6 +91,7 @@ await client.predict({
 
 This accurately reflects the wire contract and imposes no maintenance burden.
 The downside is that `modelConfig` is a documentation cliff: typos are silent, and there is no IDE completion for vendor-specific fields.
+Any conditional-type machinery may be disproportionate complexity for a feature that is rarely needed — most consumers use a single known model and could simply assert the type themselves.
 
 #### Option B: Discriminated union on `modelName`
 
@@ -223,4 +224,3 @@ Resolved by the PoC: `@sap-ai-sdk/tabular-orchestration`.
 The service contract is provider-neutral, so a vendor-neutral package name accurately reflects the API.
 Vendor-specific typed `modelConfig` shapes ship from this same package rather than separate provider packages.
 If a future TFM requires a structurally different request that the service does not reconcile, a sibling package can be introduced at that point; there is no need to pre-split now.
-
