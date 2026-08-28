@@ -61,7 +61,7 @@ const AGENT_SYSTEM_PROMPT = [
   '  — the authoritative always-current type list.',
   '  Do NOT rely on examples in this system prompt; the file is the source of truth.',
   '',
-  '- TEMPLATE / PROMPT REGISTRY QUESTIONS (TemplateRef, messages_history, { {?placeholder}}):',
+  '- TEMPLATE / PROMPT REGISTRY QUESTIONS (TemplateRef, messages_history, {{?placeholder}}):',
   '  call github__get_file_contents with path="packages/orchestration/src/util/module-config.ts"',
   '  This file contains the exact routing logic: messages → messages_history when TemplateRef is used.',
   '',
@@ -109,9 +109,6 @@ const AGENT_SYSTEM_PROMPT = [
   '  Do NOT include dependency bumps, unrelated chore PRs, or the issue being answered itself.'
 ].join('\n');
 
-// Escape {{ to prevent potential template parsing issues in system prompts
-const esc = (s: string) => s.replaceAll('{{', '{ {');
-
 type OpencodeInstance = Awaited<ReturnType<typeof createOpencode>>;
 let opencodeInstance: OpencodeInstance | null = null;
 
@@ -154,7 +151,7 @@ export async function askBot(
       ? AGENT_SYSTEM_PROMPT
       : `${AGENT_SYSTEM_PROMPT}\n\n## Current issue\nYou are replying to GitHub issue #${currentIssueNumber}. Never cite, list, or describe #${currentIssueNumber} as a related or matching issue — it is the issue being answered, not a reference.`;
 
-  const question = ['Question: ' + esc(title), body ? esc(body) : null]
+  const question = ['Question: ' + title, body ? body : null]
     .filter(Boolean)
     .join('\n\n');
 
