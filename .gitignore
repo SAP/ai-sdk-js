@@ -74,3 +74,6 @@ knowledge-base/api-reference/
 # Local config files with credentials
 packages/llm-batch/config.json
 docs/agents
+
+# Support bot local test files
+sample-code/src/support-bot/issue-body.md
