@@ -1,6 +1,6 @@
 import { createOpencode } from '@opencode-ai/sdk';
 import type { TextPart } from '@opencode-ai/sdk';
-import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve, dirname, delimiter } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SDK_KNOWLEDGE } from './knowledge.ts';
@@ -113,11 +113,19 @@ type OpencodeInstance = Awaited<ReturnType<typeof createOpencode>>;
 let opencodeInstance: OpencodeInstance | null = null;
 
 export async function initAgent(): Promise<void> {
-  const binDir = resolve(
-    dirname(fileURLToPath(import.meta.resolve('opencode-ai/package.json'))),
-    'bin'
-  );
+  const pkgJsonUrl = import.meta.resolve('opencode-ai/package.json');
+  const pkgDir = dirname(fileURLToPath(pkgJsonUrl));
+  const binDir = resolve(pkgDir, 'bin');
+  console.log('[support-bot] opencode-ai pkgDir:', pkgDir);
+  console.log('[support-bot] binDir:', binDir);
+  console.log('[support-bot] binDir exists:', existsSync(binDir));
+  if (existsSync(binDir)) {
+    console.log('[support-bot] binDir contents:', readdirSync(binDir).join(', '));
+  }
+  const opencodeExe = resolve(binDir, 'opencode');
+  console.log('[support-bot] opencode binary exists:', existsSync(opencodeExe));
   process.env.PATH = `${binDir}${delimiter}${process.env.PATH ?? ''}`;
+  console.log('[support-bot] PATH:', process.env.PATH);
 
   console.log('[support-bot] starting opencode server...');
   const config = JSON.parse(
