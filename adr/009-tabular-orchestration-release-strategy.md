@@ -9,11 +9,11 @@ proposed
 Providing SDK clients for the Tabular AI Orchestration and Context Registry services is a significant undertaking.
 These are two independent components maintained by separate teams:
 
-- the **Tabular AI Orchestration** prediction client, generated from one OpenApi specification, handles virtual deployment in AI Core, routes requests to the prediction model, and performs context selection; and
-- the **Context Registry** client, generated from nine specifications covering synchronous and asynchronous operations, handles data destinations, tabular artifacts, tabular scenarios, and HANA DB.
+- the **Tabular AI Orchestration** prediction client handles virtual deployment in AI Core, routes requests to the prediction model, and performs context selection;
+- the **Context Registry** client handles data destinations, tabular artifacts, tabular scenarios, and HANA DB.
 
-Neither requires the other: prediction can use existing scenario configuration names, while the context registry independently manages data destinations, tabular artifacts, and scenarios.
-An end-to-end workflow commonly uses both to create or discover context, configure a scenario, and submit a prediction.
+Neither requires the other to be implemented or released first.
+An end-to-end workflow commonly uses both to prepare context and submit a prediction.
 
 ```mermaid
 flowchart TD
@@ -72,13 +72,13 @@ Release the context-registry client before the prediction client.
 
 - Establishes resource-management primitives before prediction workflows depend on them.
 - Gives users value for provisioning and managing data destinations, artifacts, and scenarios independently of prediction.
-- Exercises the more complex specification merge and asynchronous behavior first.
+- Exercises the more complex specification and asynchronous service behavior first.
 
 **Cons:**
 
 - Delays the primary prediction use case.
-- Requires resolving nine specifications, shared schemas, internal API elements, and polling behavior before the first release.
-- Users of the initial release cannot complete any predictions or verify that the configured registry resources meet their needs in a prediction scenario.
+- The client remains blocked until the Context Registry team provides the authoritative merged specification.
+- Users of the initial release cannot complete predictions or verify that configured registry resources meet their needs in a prediction scenario.
 
 #### Option C: Release Both Clients Together
 

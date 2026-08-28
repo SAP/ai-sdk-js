@@ -4,47 +4,45 @@
 
 proposed
 
-The prediction SDK is generated from one OpenApi specification, but the checked-in contract and the current Tabular Orchestration v2 documentation are not demonstrably the same.
-The checked-in specification identifies itself as version `1.6.0` and already uses `/v1/predict`, but it still:
+This ADR covers the currently available Tabular AI Orchestration specification only.
+The specification and generated client are not fully aligned:
 
-- generates a request builder that calls `/predict` rather than `/v1/predict`;
-- exposes only `sap-rpt-*` values through the closed `TFMEnum`;
-- includes `contextSelectionConfig.filterConditions`, which is absent from the referenced v2 documentation;
-- places heuristic `indexColumn` under `strategyConfig`, while the v2 documentation also describes a top-level location; and
-- requires the internal `ai-main-tenant` header.
+- the generated request builder does not use the path declared by the specification;
+- the closed `TFMEnum` exposes only `sap-rpt-*` values; and
+- the generated client requires internal http headers.
 
-The exact documentation and specification revisions used for this comparison have not been pinned.
-They must be captured before this ADR is accepted.
-
-The Tabular AI service is intentionally designed to be provider-neutral.
-The service contract is structured into a universal layer (model selection and `predictionConfig`), and a TFM-specific passthrough (`modelConfig`) for model-unique parameters that the orchestration service forwards without validation.
-Context-selection and target-column semantics are intended to hold the same meaning across all TFMs, as much as possible.
+The current contract is RPT-oriented.
+Its future extensibility is outside the scope of this ADR.
+Provider harmonization and broader typing are deferred until the service contract is stable.
 
 ### Generated client
 
 A PoC on branch `davidkna-sap/tab-orc-poc` has produced an initial `TabularOrchestrationClient` under `@sap-ai-sdk/tabular-orchestration`.
-It wraps the generated `PredictApi.predictV1PredictPost` operation, resolves the deployment URL internally, and injects the required `ai-resource-group` header, so consumers call `client.predict(body)` directly without AI Core boilerplate.
+It wraps the generated prediction operation, resolves the deployment URL internally, and injects the required `ai-resource-group` header, so consumers call `client.predict(body)` directly without AI Core boilerplate.
 
 Two contract issues remain from the PoC:
+
 - `TFMEnum` is still a closed string union of `sap-rpt-*` values.
-Because the service is designed to accept any registered model name, this should be widened to `string` (with known values as string-literal suggestions if the TypeScript version allows).
+  Because the service accepts registered model names, `TFMEnum` may need to be widened to `string` in a future contract.
 - `modelConfig` is `Record<string, any>`, which accurately reflects wire-level openness but provides no IDE support or compile-time safety for vendor-specific fields.
-How to type this without coupling the shared request type to any one provider is the main remaining question, addressed in [Question 1: Vendor-Specific Feature Access](#question-1-vendor-specific-feature-access).
+  How to type this without coupling the shared request type to one provider is the main remaining question, addressed in [Question 1: Vendor-Specific Feature Access](#question-1-vendor-specific-feature-access).
 
 ## Decision
 
-No decision has been accepted yet.
-
-The working direction is to ship a single neutral client under `@sap-ai-sdk/tabular-orchestration`.
-The open question is the design of typed vendor-specific `modelConfig` support, addressed below in [Question 1: Vendor-Specific Feature Access](#question-1-vendor-specific-feature-access).
+Use the generated client as the baseline for the currently available contract.
+The final convenience surface remains undecided; the thin client described below is only a PoC.
+The typing design is postponed, and no provider harmonization is proposed until the service contract is stable.
 
 ## Discussion
 
 ### Question 1: Vendor-Specific Feature Access
 
-Recommendation: Option C (generic request type with a config registry).
+**Status: postponed; proceed with no typing for vendor-specific fields (Option A)**
 The request type is parameterized on the model name and separately on the config type, with a conditional default that resolves from a registry.
 This should also be workable even if the specification is later revised to include a `modelConfig` schema, with some workaround to reconcile.
+
+<details>
+<summary>Click to expand the discussion of options</summary>
 
 #### Current Contract Analysis
 
@@ -84,8 +82,10 @@ await client.predict({
   modelName: 'rpt-1',
   scenarioConfigName,
   rows,
-  predictionConfig: { targetColumns: [{ name: 'salesgroup', task_type: 'classification' }] },
-  modelConfig: { temperature: 0.8, numSamples: 20 }  // accepted, but no compile-time check
+  predictionConfig: {
+    targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
+  },
+  modelConfig: { temperature: 0.8, numSamples: 20 } // accepted, but no compile-time check
 });
 ```
 
@@ -99,8 +99,16 @@ Type the full request as a discriminated union so that a known `modelName` liter
 
 ```ts
 type PredictRequest =
-  | { modelName: 'rpt-1'; predictionConfig: PredictionConfig; modelConfig?: RptModelConfig }
-  | { modelName: string;  predictionConfig: PredictionConfig; modelConfig?: Record<string, unknown> };
+  | {
+      modelName: 'rpt-1';
+      predictionConfig: PredictionConfig;
+      modelConfig?: RptModelConfig;
+    }
+  | {
+      modelName: string;
+      predictionConfig: PredictionConfig;
+      modelConfig?: Record<string, unknown>;
+    };
 ```
 
 This is useful for **narrowing on read**—when downstream code receives a `PredictRequest` and dispatches on `modelName`, TypeScript narrows `modelConfig` to the registered type:
@@ -108,7 +116,7 @@ This is useful for **narrowing on read**—when downstream code receives a `Pred
 ```ts
 function processRequest(req: PredictRequest) {
   if (req.modelName === 'rpt-1') {
-    req.modelConfig?.temperature;  // typed as RptModelConfig field ✓
+    req.modelConfig?.temperature; // typed as RptModelConfig field ✓
   }
 }
 ```
@@ -119,7 +127,7 @@ Because the `string` fallback covers every literal—including `'rpt-1'`—TypeS
 
 ```ts
 // ✗ Not caught — second union member accepts anything
-await client.predict({ modelName: 'rpt-1', modelConfig: { temperaature: 0.8 } });
+await client.predict({ modelName: 'rpt-1', modelConfig: { temperature: 0.8 } });
 ```
 
 The drawback is that the union grows with each vendor and cannot span package boundaries cleanly.
@@ -160,21 +168,25 @@ Three call-site behaviors:
 // No explicit type params needed
 await client.predict({
   modelName: 'rpt-1',
-  predictionConfig: { targetColumns: [{ name: 'salesgroup', task_type: 'classification' }] },
-  modelConfig: { temperaature: 0.8 }  // ✗ compile error — typo caught
+  predictionConfig: {
+    targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
+  },
+  modelConfig: { temperature: 0.8 } // ✗ compile error — typo caught
 });
 
 // Unknown model → M inferred as 'new-model' → modelConfig is Record<string, unknown>
 await client.predict({
   modelName: 'new-model',
   predictionConfig: { targetColumns: [{ name: 'col' }] },
-  modelConfig: { anything: true }  // ✓ open bag
+  modelConfig: { anything: true } // ✓ open bag
 });
 
 // Explicit override — user-supplied config shape, bypasses registry
 await client.predict<'rpt-1', { temperature: number; myExtra: string }>({
   modelName: 'rpt-1',
-  predictionConfig: { targetColumns: [{ name: 'salesgroup', task_type: 'classification' }] },
+  predictionConfig: {
+    targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
+  },
   modelConfig: { temperature: 0.8, myExtra: 'x' }
 });
 ```
@@ -201,9 +213,12 @@ await client.predict({
 The request type stays flat and stable; vendor-specific typing lives in the builder, not in the shared request.
 This is the lightest integration: the builder validates inputs at call time, but the result is still untyped at the request level—mistakes like passing `rptModelConfig(…)` to a non-RPT model are not caught by the type system.
 
+</details>
+
 ### Question 2: Level of Convenience
 
-Resolved by the PoC: Option B (thin convenience client).
+Recommendation: **Option B**: provide a thin convenience client that wraps the generated operation and handles deployment resolution and header injection.
+**No decision yet.**
 
 #### Option A: Generated request builders only
 
@@ -215,12 +230,10 @@ This minimizes maintenance and stays close to the service contract, but requires
 #### Option B: Prediction convenience client
 
 The PoC `TabularOrchestrationClient` wraps the generated operation and handles deployment resolution and header injection.
-The public surface is `predict(body)` with the same `PredictRequest` type directly; the generated client remains accessible for consumers that need lower-level control.
+The public surface is `predict(body)` with the same `PredictRequest` type directly; this is evidence for discussion, not a final API commitment.
 
 ### Question 3: Package Boundary
 
-Resolved by the PoC: `@sap-ai-sdk/tabular-orchestration`.
+Resolved by the service design: `@sap-ai-sdk/tabular-orchestration`.
 
 The service contract is provider-neutral, so a vendor-neutral package name accurately reflects the API.
-Vendor-specific typed `modelConfig` shapes ship from this same package rather than separate provider packages.
-If a future TFM requires a structurally different request that the service does not reconcile, a sibling package can be introduced at that point; there is no need to pre-split now.
