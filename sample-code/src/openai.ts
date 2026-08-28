@@ -1,7 +1,14 @@
 import { SapOpenAi } from '@sap-ai-sdk/openai';
 
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
+import { toResponseInputItems } from 'openai/lib/responses/ResponseInputItems';
 import { z } from 'zod';
+
+import type {
+  ResponseInputItem,
+  ResponseStreamEvent
+} from 'openai/resources/responses/responses';
+import type { Stream } from 'openai/streaming';
 
 /**
  * Ask gpt-5.4 about the capital of France.
@@ -107,7 +114,7 @@ export async function responsesApi(): Promise<string | undefined> {
  * @returns The stream of response events.
  */
 export async function responsesApiStream(): Promise<
-  AsyncIterable<{ type: string; delta?: string }>
+  Stream<ResponseStreamEvent>
 > {
   const client = await SapOpenAi.createClient('gpt-5.4-nano');
 
@@ -149,15 +156,15 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
     deployment: 'gpt-5.4-nano'
   });
 
-  let context: any[] = [
-    { role: 'user', content: 'What is the capital of France?' }
+  let context: ResponseInputItem[] = [
+    { role: 'user' as const, content: 'What is the capital of France?' }
   ];
 
   const first = await client.responses.create({ input: context });
 
-  context = context.concat(first.output);
+  context = [...context, ...toResponseInputItems(first.output)];
   context.push({
-    role: 'user',
+    role: 'user' as const,
     content: 'What is the population of that city?'
   });
 
