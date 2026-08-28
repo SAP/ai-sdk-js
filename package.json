@@ -36,6 +36,9 @@
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
     "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["opencode-ai"]
+  },
   "devDependencies": {
     "@actions/core": "3.0.1",
     "@blueoak/list": "15.0.0",
