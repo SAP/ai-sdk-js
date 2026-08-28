@@ -27,7 +27,8 @@ jobs:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
 
       - name: Install opencode binary
-        run: node node_modules/opencode-ai/postinstall.mjs
+        working-directory: ./sample-code/src/support-bot
+        run: node install-opencode.mjs
 
       - name: Generate answer
         id: answer
