@@ -15,6 +15,26 @@ These are two independent components maintained by separate teams:
 Neither requires the other: prediction can use existing scenario configuration names, while the context registry independently manages data destinations, tabular artifacts, and scenarios.
 An end-to-end workflow commonly uses both to create or discover context, configure a scenario, and submit a prediction.
 
+```mermaid
+flowchart TD
+    subgraph ctx ["@sap-ai-sdk/ctx-registry"]
+        DD[Data Destination]
+        TA[Tabular Artifact]
+        SC[Scenario Config Artifact]
+        DD --> TA --> SC
+    end
+
+    subgraph pred ["@sap-ai-sdk/tabular-orchestration"]
+        PC["TabularOrchestrationClient.predict(body)"]
+    end
+
+    SC -- scenarioConfigName --> PC
+    PC --> Result[Prediction Result]
+```
+
+The diagram shows the typical end-to-end path: a data destination is registered, tabular artifacts are uploaded and associated with it, a scenario configuration artifact ties them together, and the resulting `scenarioConfigName` is passed directly to the prediction client.
+The two core packages are independent — users who already have a scenario configuration name skip the context registry client entirely — but the end-to-end workflow requires both.
+
 Release order and implementation order are separate decisions.
 The prediction and context-registry clients can be tracked, implemented, reviewed, and released as independent efforts.
 
