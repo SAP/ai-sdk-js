@@ -37,6 +37,8 @@
     "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
   "devDependencies": {
+    "@actions/core": "3.0.1",
+    "@blueoak/list": "15.0.0",
     "@changesets/cli": "3.0.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
