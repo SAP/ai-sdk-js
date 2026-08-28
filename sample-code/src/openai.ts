@@ -153,8 +153,8 @@ export async function responsesApiMultiTurn(): Promise<string | undefined> {
     deployment: 'gpt-5.4-nano'
   });
 
-  let context = toResponseInputItems([
-    { role: 'user', content: 'What is the capital of France?' }
+  let context = [
+{ role: 'user' as const, content: 'What is the capital of France?' }
   ]);
 
   const first = await client.responses.create({ input: context });
