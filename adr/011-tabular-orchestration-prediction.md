@@ -91,7 +91,7 @@ await client.predict({
 
 This accurately reflects the wire contract and imposes no maintenance burden.
 The downside is that `modelConfig` is a documentation cliff: typos are silent, and there is no IDE completion for vendor-specific fields.
-Any conditional-type machinery may be disproportionate complexity for a feature that is rarely needed — most consumers use a single known model and could simply assert the type themselves.
+But any conditional-type machinery may be disproportionate complexity for a feature that is outside the happy-path of the orchestrated prediction workflow.
 
 #### Option B: Discriminated union on `modelName`
 

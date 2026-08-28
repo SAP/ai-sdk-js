@@ -165,7 +165,7 @@ for await (const current of watchAsyncResource(options)) {
 
 The helper should accept a `Retry-After` value from both the initial `202` and each polling response and use it as the next interval when present, so that service-driven retry delays are respected automatically if the service starts sending them.
 
-#### Option B.3: Polling integrated into the OpenAPI request builder
+#### Option B.3: Polling integrated into the OpenApi request builder
 
 Add a `.poll(options)` method directly to the `OpenApiRequestBuilder` returned by each generated operation so that consumers chain polling onto the creation call without a separate import.
 
@@ -186,7 +186,7 @@ const artifact = await TabularArtifactsApi
 
 **Pros:** Discovery is co-located with the create operation — consumers cannot miss polling; no separate import required; destination and headers do not need to be threaded through manually.
 
-**Cons:** Couples polling logic to the code-generated request builder layer, which currently contains no behavior beyond HTTP execution.
+**Cons:** Couples polling logic to the code-generated request builder layer, which currently contains no behavior beyond http execution.
 Every generated client would inherit a new method, increasing the API surface even for operations that are not asynchronous.
 The builder must know which generated GET operation corresponds to the `Location` URL, requiring either convention-based routing or explicit annotation in the specification via `x-sap-cloud-sdk-*` extensions.
 The approach is harder to test in isolation than a plain function.
@@ -197,7 +197,7 @@ Rather than hiding polling inside a utility or the request builder, provide prim
 
 Two shapes are possible:
 
-**B.4a — Async generator (`watchAsyncResource`)**: yields each poll result as it arrives so the caller can react to intermediate states, log progress, or break early:
+**B.4a — async generator (`watchAsyncResource`)**: yields each poll result as it arrives so the caller can react to intermediate states, log progress, or break:
 
 ```ts
 import { watchAsyncResource } from '@sap-ai-sdk/core';
@@ -225,7 +225,7 @@ while (true) {
 }
 ```
 
-**Pros:** Full control over backoff, cancellation, logging, and early exit; no hidden timeout or retry behavior to discover; async generator form composes naturally with `AbortSignal` and structured concurrency.
+**Pros:** Full control over back-off, cancellation, logging, and early exit; no hidden timeout or retry behavior to discover; async generator form composes naturally with `AbortSignal` and structured concurrency.
 
 **Cons:** Every consumer must re-implement loop control for the common case; the ergonomic gap over `pollAsyncResource` is largest when the only goal is "wait for completion".
 Progress reporting and early-exit during polling are likely rare in practice; the added API surface and maintenance cost may not be justified by actual usage.
