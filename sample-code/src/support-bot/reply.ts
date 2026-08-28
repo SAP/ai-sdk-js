@@ -118,6 +118,7 @@ export async function initAgent(): Promise<void> {
     'bin'
   );
   process.env.PATH = `${binDir}${delimiter}${process.env.PATH ?? ''}`;
+  console.log('[support-bot] binDir:', binDir, '| opencode exists:', existsSync(resolve(binDir, 'opencode')));
 
   console.log('[support-bot] starting opencode server...');
   const config = JSON.parse(
