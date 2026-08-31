@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { Error } from './error.js';
+
 import type { ErrorList } from './error-list.js';
+import type { Error } from './error.js';
 /**
  * Representation of the 'ErrorResponse' schema.
  */

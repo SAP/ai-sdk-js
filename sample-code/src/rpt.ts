@@ -1,7 +1,9 @@
 import { openAsBlob } from 'node:fs';
 import { join } from 'node:path';
-import { resilience } from '@sap-cloud-sdk/resilience';
+
 import { RptClient } from '@sap-ai-sdk/rpt';
+import { resilience } from '@sap-cloud-sdk/resilience';
+
 import type { PredictResponsePayload, PredictionData } from '@sap-ai-sdk/rpt';
 
 const schema = [

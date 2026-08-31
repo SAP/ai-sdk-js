@@ -1,8 +1,10 @@
 import { OrchestrationStreamResponse } from '../index.ts';
 import { mergeStreamResponse } from './stream.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { CompletionPostResponseStreaming } from '../internal.ts';
+
 import type { OrchestrationStreamChunkResponse } from '../index.ts';
+import type { CompletionPostResponseStreaming } from '../internal.ts';
 
 const llmBase = {
   id: 'orchestration-id-1',

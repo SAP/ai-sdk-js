@@ -1,15 +1,23 @@
 import { randomUUID } from 'node:crypto';
-import { StringOutputParser } from '@langchain/core/output_parsers';
+
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
 import {
   orchestrationPromptCachingMiddleware
-  // eslint-disable-next-line import-x/no-internal-modules
+  // oxlint-disable-next-line import/no-internal-modules
 } from '@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware';
 import {
   buildAzureContentSafetyFilter,
   buildDpiMaskingProvider,
   buildLlamaGuard38BFilter
 } from '@sap-ai-sdk/orchestration';
+
+import {
+  HumanMessage,
+  SystemMessage,
+  ToolMessage
+} from '@langchain/core/messages';
+import { StringOutputParser } from '@langchain/core/output_parsers';
+import { tool } from '@langchain/core/tools';
 import {
   START,
   END,
@@ -17,24 +25,21 @@ import {
   StateGraph,
   MemorySaver
 } from '@langchain/langgraph';
-import { tool } from '@langchain/core/tools';
-import {
-  HumanMessage,
-  SystemMessage,
-  ToolMessage
-} from '@langchain/core/messages';
-import * as z from 'zod/v4';
 import { createAgent, createMiddleware } from 'langchain';
+import * as z from 'zod/v4';
+
 import { mcpClient } from './tutorials/mcp/mcp-adapter.ts';
+
+import type {
+  LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList
+} from '@sap-ai-sdk/langchain';
+
 import type {
   BaseMessage,
   AIMessageChunk,
   AIMessage
 } from '@langchain/core/messages';
-import type {
-  LangChainOrchestrationModuleConfig,
-  LangChainOrchestrationModuleConfigList
-} from '@sap-ai-sdk/langchain';
 
 interface PromptCachingInvocationResult {
   content: string;
@@ -43,8 +48,8 @@ interface PromptCachingInvocationResult {
 }
 
 /**
- * Ask GPT about an introduction to SAP Cloud SDK.
- * @returns The answer from ChatGPT.
+ * Ask the LLM about an introduction to SAP Cloud SDK.
+ * @returns The answer from the LLM.
  */
 export async function invokeChain(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
@@ -67,8 +72,8 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
- * Ask GPT about SAP Cloud SDK using module fallback configurations.
- * @returns The answer from ChatGPT.
+ * Ask the LLM about SAP Cloud SDK using module fallback configurations.
+ * @returns The answer from the LLM.
  */
 export async function invokeChainWithFallbackConfigs(): Promise<string> {
   const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
@@ -685,7 +690,7 @@ interface Joke {
  * With Structured Output using `jsonSchema` option with `strict: true` if supported by the method.
  * @param method - The method to use for structured output. `jsonSchema` uses native structured output support, `jsonMode` forces JSON mode, and `functionCalling` uses tool calling.
  * @param includeRaw - If true, returns an object with both raw message and parsed result.
- * @returns The answer from GPT with exactly the structure defined in the schema.
+ * @returns The answer from the LLM with exactly the structure defined in the schema.
  */
 export async function invokeWithStructuredOutput<T extends boolean = false>(
   method: 'jsonSchema' | 'jsonMode' | 'functionCalling' = 'jsonSchema',

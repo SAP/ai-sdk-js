@@ -41,8 +41,8 @@ build/Release
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional eslint cache
-.eslintcache
+# Optional oxlint cache
+.oxlintcache
 
 # Output of 'npm pack'
 *.tgz

@@ -1,3 +1,4 @@
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import {
   realtimeTextToAudio,
   realtimeAudioToAudio,
@@ -8,7 +9,7 @@ import {
   type RealtimeAudioResult,
   type RealtimeToolCallResult
 } from '@sap-ai-sdk/sample-code';
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
 import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
@@ -93,7 +94,7 @@ describe('OpenAI Realtime API', () => {
   }, 60000);
 
   it('produces audio and transcript', async () => {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(
       `[realtime e2e] realtimeTextToAudio took ${elapsed}ms; ` +
         `audio=${result.audio.length} bytes, transcript=${JSON.stringify(
@@ -108,7 +109,7 @@ describe('OpenAI Realtime API', () => {
   it('produces non-silent PCM audio', () => {
     const { rms, entropy } = pcm16AudioMetrics(result.audio);
 
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(
       `[realtime e2e] audio quality: rms=${rms.toFixed(1)}, entropy=${entropy.toFixed(2)} bits`
     );
@@ -150,7 +151,7 @@ describe('OpenAI Realtime API with voice input', () => {
   }, 60000);
 
   it('responds to spoken input with the expected answer', async () => {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(
       `[realtime e2e] realtimeAudioToAudio took ${elapsed}ms; ` +
         `input=${inputPcm.length} bytes, output audio=${result.audio.length} bytes, ` +
@@ -163,7 +164,7 @@ describe('OpenAI Realtime API with voice input', () => {
   it('produces non-silent PCM audio in response', () => {
     const { rms, entropy } = pcm16AudioMetrics(result.audio);
 
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(
       '[realtime e2e] voice-input response audio quality: ' +
         `rms=${rms.toFixed(1)}, entropy=${entropy.toFixed(2)} bits`
@@ -201,7 +202,7 @@ describe('OpenAI Realtime API with tool calling', () => {
   }, 60000);
 
   it('invokes the get_weather tool with a location argument', () => {
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console
     console.log(
       `[realtime e2e] realtimeWithToolCalling took ${elapsed}ms; ` +
         `tool=${result.toolName}, args=${result.toolArguments}, ` +

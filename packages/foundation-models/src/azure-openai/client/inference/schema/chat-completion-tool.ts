@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiFunctionObject } from './function-object.js';
 /**
  * Representation of the 'AzureOpenAiChatCompletionTool' schema.
