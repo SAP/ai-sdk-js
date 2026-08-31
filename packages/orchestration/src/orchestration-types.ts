@@ -1,6 +1,6 @@
-import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel, EmbeddingModel } from './model-types.ts';
+import type { Xor } from '@sap-cloud-sdk/util';
+
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -32,6 +32,7 @@ import type {
   EncodingFormat,
   PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
+import type { ChatModel, EmbeddingModel } from './model-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.

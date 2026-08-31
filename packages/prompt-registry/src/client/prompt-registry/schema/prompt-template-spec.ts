@@ -4,11 +4,11 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { ChatCompletionTool } from './chat-completion-tool.js';
 import type { PromptTemplate } from './prompt-template.js';
-import type { ResponseFormatText } from './response-format-text.js';
 import type { ResponseFormatJsonObject } from './response-format-json-object.js';
 import type { ResponseFormatJsonSchema } from './response-format-json-schema.js';
-import type { ChatCompletionTool } from './chat-completion-tool.js';
+import type { ResponseFormatText } from './response-format-text.js';
 /**
  * Representation of the 'PromptTemplateSpec' schema.
  */

@@ -2,16 +2,22 @@
   "name": "@sap-ai-sdk/core",
   "version": "2.15.0",
   "description": "",
-  "license": "Apache-2.0",
   "keywords": [
-    "sap-ai-sdk",
-    "ai-core"
+    "ai-core",
+    "sap-ai-sdk"
   ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/core"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,12 +31,6 @@
       "default": "./dist/internal.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
@@ -38,10 +38,10 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@sap-cloud-sdk/connectivity": "^4.9.0",
-    "@sap-cloud-sdk/http-client": "^4.9.0",
-    "@sap-cloud-sdk/openapi": "^4.9.0",
-    "@sap-cloud-sdk/util": "^4.9.0"
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/http-client": "^4.9.1",
+    "@sap-cloud-sdk/openapi": "^4.9.1",
+    "@sap-cloud-sdk/util": "^4.9.1"
   },
   "devDependencies": {
     "vitest": "4.1.11"

@@ -1,10 +1,11 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import {
   assertHttpDestination,
   getServiceBinding,
   transformServiceBindingToDestination,
   useOrFetchDestination
 } from '@sap-cloud-sdk/connectivity';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import type {
   HttpDestination,
   HttpDestinationOrFetchOptions,

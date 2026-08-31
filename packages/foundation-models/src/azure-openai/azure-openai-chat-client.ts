@@ -1,17 +1,20 @@
-import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
 import {
   getFoundationModelDeploymentId,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { apiVersion, type AzureOpenAiChatModel } from './model-types.ts';
+import { type CustomRequestConfig, executeRequest } from '@sap-ai-sdk/core';
+
 import { AzureOpenAiChatCompletionResponse } from './azure-openai-chat-completion-response.ts';
 import { AzureOpenAiChatCompletionStreamResponse } from './azure-openai-chat-completion-stream-response.ts';
 import { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.ts';
-import type { AzureOpenAiChatCompletionParameters } from './azure-openai-chat-completion-types.ts';
+import { apiVersion, type AzureOpenAiChatModel } from './model-types.ts';
+
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
-import type { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.ts';
-import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+import type { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.ts';
+import type { AzureOpenAiChatCompletionParameters } from './azure-openai-chat-completion-types.ts';
 
 /**
  * Azure OpenAI client for chat completion.
