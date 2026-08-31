@@ -290,7 +290,7 @@
   - `PerFilterSearchError` was renamed to `RetrievalPerFilterSearchError`
   - `DataRepositorySearchResult` was renamed to `RetrievalDataRepositorySearchResult`
   - `SearchInput` was renamed to `RetrievalSearchInput` (e2c34f3)
-- [langchain] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models (6100bca)
+- [langchain] Remove structured output handling for deprecated gpt-4 & gpt-3 models (6100bca)
 
 ## New Features
 

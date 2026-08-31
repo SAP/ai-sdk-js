@@ -1,8 +1,10 @@
+import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+
 import { WebSocketServer } from 'ws';
+
+import type { Server } from 'node:http';
 import type WebSocket from 'ws';
 import type { RawData } from 'ws';
-import type { Server } from 'node:http';
-import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
 
 type Mode = 'text-to-audio' | 'speech' | 'speech-ptt';
 

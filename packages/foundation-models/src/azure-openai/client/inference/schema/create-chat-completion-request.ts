@@ -3,17 +3,18 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiChatCompletionsRequestCommon } from './chat-completions-request-common.js';
-import type { AzureOpenAiChatCompletionRequestMessage } from './chat-completion-request-message.js';
+
 import type { AzureOpenAiAzureChatExtensionConfiguration } from './azure-chat-extension-configuration.js';
-import type { AzureOpenAiParallelToolCalls } from './parallel-tool-calls.js';
-import type { AzureOpenAiResponseFormatText } from './response-format-text.js';
-import type { AzureOpenAiResponseFormatJsonObject } from './response-format-json-object.js';
-import type { AzureOpenAiResponseFormatJsonSchema } from './response-format-json-schema.js';
-import type { AzureOpenAiChatCompletionTool } from './chat-completion-tool.js';
-import type { AzureOpenAiChatCompletionToolChoiceOption } from './chat-completion-tool-choice-option.js';
 import type { AzureOpenAiChatCompletionFunctionCallOption } from './chat-completion-function-call-option.js';
 import type { AzureOpenAiChatCompletionFunctions } from './chat-completion-functions.js';
+import type { AzureOpenAiChatCompletionRequestMessage } from './chat-completion-request-message.js';
+import type { AzureOpenAiChatCompletionToolChoiceOption } from './chat-completion-tool-choice-option.js';
+import type { AzureOpenAiChatCompletionTool } from './chat-completion-tool.js';
+import type { AzureOpenAiChatCompletionsRequestCommon } from './chat-completions-request-common.js';
+import type { AzureOpenAiParallelToolCalls } from './parallel-tool-calls.js';
+import type { AzureOpenAiResponseFormatJsonObject } from './response-format-json-object.js';
+import type { AzureOpenAiResponseFormatJsonSchema } from './response-format-json-schema.js';
+import type { AzureOpenAiResponseFormatText } from './response-format-text.js';
 /**
  * Representation of the 'AzureOpenAiCreateChatCompletionRequest' schema.
  */

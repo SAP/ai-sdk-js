@@ -1,12 +1,29 @@
 /* oxlint-disable no-console */
-import express from 'express';
+
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+
 import {
   resolveDeploymentUrl,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
-import { attachRealtimeWs } from './openai-realtime-ws.ts';
+
+import express from 'express';
+
+import {
+  getDeployments,
+  getDeploymentsWithDestination,
+  createDeployment,
+  stopDeployments,
+  deleteDeployments
+} from './ai-api/deployment-api.ts';
+import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
+import {
+  createCollection,
+  createDocumentsWithTimestamp,
+  deleteCollection,
+  retrieveDocuments
+} from './document-grounding.ts';
 import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
@@ -14,6 +31,37 @@ import {
   computeEmbedding,
   chatCompletionWithFunctionCall
 } from './foundation-models/azure-openai.ts';
+import {
+  invokeChain,
+  invokeRagChain,
+  invoke,
+  invokeToolChain,
+  streamChain,
+  invokeWithStructuredOutputJsonSchema,
+  invokeReasoningWithMaxTokens
+} from './langchain-azure-openai.ts';
+import {
+  invokeChain as invokeChainOrchestration,
+  invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
+  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
+  invokeLangGraphChain as invokeLangGraphChainOrchestration,
+  invokeChainWithMasking,
+  invokeToolChain as invokeToolChainOrchestration,
+  streamChain as streamChainOrchestration,
+  invokeMcpToolChain as invokeMcpToolChainOrchestration,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
+  invokeDynamicModelAgent,
+  invokePromptCachingAgent
+} from './langchain-orchestration.ts';
+import {
+  listBatches,
+  createBatch,
+  getBatchById,
+  getBatchStatus,
+  cancelBatch,
+  deleteBatch
+} from './llm-batch.ts';
+import { attachRealtimeWs } from './openai-realtime-ws.ts';
 import {
   chatCompletion as openAiSdkChatCompletion,
   chatCompletionStream as openAiSdkChatCompletionStream,
@@ -54,64 +102,22 @@ import {
   chatCompletionStreamWithTools
 } from './orchestration.ts';
 import {
-  getDeployments,
-  getDeploymentsWithDestination,
-  createDeployment,
-  stopDeployments,
-  deleteDeployments
-} from './ai-api/deployment-api.ts';
-import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
-import {
-  invokeChain,
-  invokeRagChain,
-  invoke,
-  invokeToolChain,
-  streamChain,
-  invokeWithStructuredOutputJsonSchema,
-  invokeReasoningWithMaxTokens
-} from './langchain-azure-openai.ts';
-import {
-  invokeChain as invokeChainOrchestration,
-  invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
-  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
-  invokeLangGraphChain as invokeLangGraphChainOrchestration,
-  invokeChainWithMasking,
-  invokeToolChain as invokeToolChainOrchestration,
-  streamChain as streamChainOrchestration,
-  invokeMcpToolChain as invokeMcpToolChainOrchestration,
-  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  invokeDynamicModelAgent,
-  invokePromptCachingAgent
-} from './langchain-orchestration.ts';
-import {
-  createCollection,
-  createDocumentsWithTimestamp,
-  deleteCollection,
-  retrieveDocuments
-} from './document-grounding.ts';
-import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.ts';
-import {
-  listBatches,
-  createBatch,
-  getBatchById,
-  getBatchStatus,
-  cancelBatch,
-  deleteBatch
-} from './llm-batch.ts';
 import {
   predictAutomaticParsing,
   predictWithSchema,
   predictParquetBlob
 } from './rpt.ts';
+
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
-import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
   OrchestrationEmbeddingResponse,
   OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
+
+import type { AIMessageChunk } from '@langchain/core/messages';
 
 const app = express();
 const port = 8080;
@@ -1131,11 +1137,11 @@ app.get('/document-grounding/retrieve-documents', async (req, res) => {
       perFilterSearchResult => {
         res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
         perFilterSearchResult.results!.forEach(
-          retievalDataRepositorySearchResult => {
+          retrievalDataRepositorySearchResult => {
             res.write(
-              `    - Data repository: ${retievalDataRepositorySearchResult.dataRepository.title}\n`
+              `    - Data repository: ${retrievalDataRepositorySearchResult.dataRepository.title}\n`
             );
-            retievalDataRepositorySearchResult.dataRepository.documents.forEach(
+            retrievalDataRepositorySearchResult.dataRepository.documents.forEach(
               retrievalDocument => {
                 retrievalDocument.chunks.forEach(chunk => {
                   res.write(`      - Chunk: ${chunk.content}\n`);

@@ -1,9 +1,12 @@
-import { createLogger } from '@sap-cloud-sdk/util';
 import { LineDecoder, SSEDecoder } from '@sap-ai-sdk/core';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { parseFileToString } from '../../../test-util/mock-http.ts';
-import { OrchestrationStream } from './orchestration-stream.ts';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+import { OrchestrationStream } from './orchestration-stream.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
 import type { CompletionPostResponseStreaming } from './client/api/schema/index.ts';
 
 describe('Orchestration chat completion stream', () => {

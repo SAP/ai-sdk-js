@@ -1,3 +1,4 @@
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 import {
   realtimeTextToAudio,
   realtimeAudioToAudio,
@@ -8,7 +9,7 @@ import {
   type RealtimeAudioResult,
   type RealtimeToolCallResult
 } from '@sap-ai-sdk/sample-code';
-import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
+
 import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
