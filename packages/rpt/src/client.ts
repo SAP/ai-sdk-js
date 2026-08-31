@@ -1,7 +1,6 @@
 import {
   getFoundationModelDeploymentId,
-  getResourceGroup,
-  isDeploymentIdConfig
+  getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
 
@@ -22,18 +21,6 @@ import type {
   ParquetPayload
 } from './types.ts';
 
-// Detects RPT-1.0 model names to apply the parse_data_types backward-compat workaround.
-// When a deploymentId is passed without a modelName, detection is not possible and the workaround is skipped.
-function isRpt1Model(modelDeployment: ModelDeployment<SapRptModel>): boolean {
-  const model =
-    typeof modelDeployment === 'string'
-      ? modelDeployment
-      : isDeploymentIdConfig(modelDeployment)
-        ? undefined
-        : modelDeployment.modelName;
-
-  return !!model && ['sap-rpt-1-small', 'sap-rpt-1-large'].includes(model);
-}
 
 /**
  * Representation of an RPT client to make predictions.
@@ -174,13 +161,8 @@ export class RptClient {
             ])
           )
         : null,
-      ...restData,
-      // backwards compatibility with RPT-1.0
-      // TODO: Remove once RPT-1.0 is no longer supported
-      ...(isRpt1Model(this.modelDeployment) &&
-        predictionData.parse_data_types === undefined && {
-          parse_data_types: true
-        })
+      // Note: parse_data_types defaults to false server-side; pass true explicitly if needed.
+      ...restData
     };
 
     const serializeBooleans = (v: any) =>
