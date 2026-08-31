@@ -21,6 +21,11 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
+gitBranchLockfile: true
+mergeGitBranchLockfilesBranchPattern:
+  - main
+  - renovate/*
+
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
