@@ -74,5 +74,5 @@ knowledge-base/api-reference/
 packages/llm-batch/config.json
 
 # OpenAPI specs for generated clients
-packages/ctx-registry/src/spec/*.yaml
+packages/context-registry/src/spec/*.yaml
 packages/tabular-orchestration/src/spec/*.yaml

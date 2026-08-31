@@ -17,7 +17,7 @@ import type {
 } from './schema/index.js';
 /**
  * Representation of the 'DataDestinationAsyncSpecificationDataDestinationsApi'.
- * This API is part of the 'ctx-registry' service.
+ * This API is part of the 'context-registry' service.
  */
 export const DataDestinationAsyncSpecificationDataDestinationsApi = {
   _defaultBasePath: '/admin/tcr',

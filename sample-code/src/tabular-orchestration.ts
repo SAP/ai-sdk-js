@@ -5,7 +5,7 @@ import {
   TabularArtifactAsyncSpecificationTabularArtifactsApi,
   DataDestinationAsyncSpecificationDataDestinationsApi,
   ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi
-} from '@sap-ai-sdk/ctx-registry/internal.js';
+} from '@sap-ai-sdk/context-registry/internal.js';
 import {
   TabularOrchestrationClient,
   type PredictResponse
@@ -15,7 +15,7 @@ import type {
   DataDestinationAsyncGetDataDestinations,
   TabularArtifactAsyncTabularArtifactDetails,
   ScenarioConfigurationAsyncScenarioConfigurationObject
-} from '@sap-ai-sdk/ctx-registry/internal.js';
+} from '@sap-ai-sdk/context-registry/internal.js';
 import type { TFMEnum } from '@sap-ai-sdk/tabular-orchestration/internal.js';
 
 const resourceGroup = 'default';
@@ -194,7 +194,7 @@ export async function predict(): Promise<PredictResponse> {
 }
 
 function getNameFromLocation(location: string, segment: string): string {
-  const { pathname } = new URL(location, 'https://ctx-registry.invalid');
+  const { pathname } = new URL(location, 'https://context-registry.invalid');
   const match = pathname.match(new RegExp(`/${segment}/([^/]+)$`));
   if (!match) {
     throw new Error(`Unexpected polling location: ${location}`);

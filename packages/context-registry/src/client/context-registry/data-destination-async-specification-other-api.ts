@@ -5,20 +5,20 @@
  */
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 /**
- * Representation of the 'HealthSpecificationOtherApi'.
- * This API is part of the 'ctx-registry' service.
+ * Representation of the 'DataDestinationAsyncSpecificationOtherApi'.
+ * This API is part of the 'context-registry' service.
  */
-export const HealthSpecificationOtherApi = {
+export const DataDestinationAsyncSpecificationOtherApi = {
   _defaultBasePath: '/admin/tcr',
   /**
-   * Create a request builder for execution of get requests to the '/api/v1/healthz' endpoint.
+   * Create a request builder for execution of get requests to the '/health' endpoint.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
-  healthEndpointsHealthz: () =>
+  healthEndpointsGetContextRegistryHealth: () =>
     new OpenApiRequestBuilder<string>(
       'get',
-      '/api/v1/healthz',
+      '/health',
       {},
-      HealthSpecificationOtherApi._defaultBasePath
+      DataDestinationAsyncSpecificationOtherApi._defaultBasePath
     )
 };

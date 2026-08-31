@@ -1,7 +1,0 @@
-{
-  "src/spec/ctx-registry-async.yaml": {
-    "packageName": "ctx-registry",
-    "directoryName": "ctx-registry",
-    "basePath": "/admin/tcr"
-  }
-}

@@ -17,7 +17,7 @@ An end-to-end workflow commonly uses both to prepare context and submit a predic
 
 ```mermaid
 flowchart TD
-    subgraph ctx ["@sap-ai-sdk/ctx-registry"]
+    subgraph ctx ["@sap-ai-sdk/context-registry"]
         DD[Data Destination]
         TA[Tabular Artifact]
         SC[Scenario Config Artifact]

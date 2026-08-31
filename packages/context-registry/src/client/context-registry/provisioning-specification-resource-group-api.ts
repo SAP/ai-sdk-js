@@ -8,7 +8,7 @@ import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
 import type { ProvisioningResourceGroup } from './schema/index.js';
 /**
  * Representation of the 'ProvisioningSpecificationResourceGroupApi'.
- * This API is part of the 'ctx-registry' service.
+ * This API is part of the 'context-registry' service.
  */
 export const ProvisioningSpecificationResourceGroupApi = {
   _defaultBasePath: '/admin/tcr',

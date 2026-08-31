@@ -108,7 +108,7 @@ function encodeCdsValue(
 
 /**
  * Writes an array of CDS-typed row objects to a parquet file with an explicit schema.
- * Produces HANA-compatible output suitable for tabular artifacts in the ctx-registry.
+ * Produces HANA-compatible output suitable for tabular artifacts in the context-registry.
  * @param filename - Absolute path of the output file.
  * @param rows - The row data to write.
  * @param schema - CDS column definitions.

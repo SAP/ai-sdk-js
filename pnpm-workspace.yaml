@@ -9,7 +9,7 @@ packages:
   - packages/llm-batch
   - packages/prompt-registry
   - packages/rpt
-  - packages/ctx-registry
+  - packages/context-registry
   - packages/tabular-orchestration
   - sample-cap
   - sample-code

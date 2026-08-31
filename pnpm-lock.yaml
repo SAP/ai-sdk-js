@@ -119,7 +119,7 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@22.20.1)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
 
-  packages/ctx-registry:
+  packages/context-registry:
     dependencies:
       '@sap-ai-sdk/core':
         specifier: workspace:^
@@ -406,9 +406,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
-      '@sap-ai-sdk/ctx-registry':
+      '@sap-ai-sdk/context-registry':
         specifier: workspace:^
-        version: link:../packages/ctx-registry
+        version: link:../packages/context-registry
       '@sap-ai-sdk/document-grounding':
         specifier: workspace:^
         version: link:../packages/document-grounding

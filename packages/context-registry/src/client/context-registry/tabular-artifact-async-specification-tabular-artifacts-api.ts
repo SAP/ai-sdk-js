@@ -13,7 +13,7 @@ import type {
 } from './schema/index.js';
 /**
  * Representation of the 'TabularArtifactAsyncSpecificationTabularArtifactsApi'.
- * This API is part of the 'ctx-registry' service.
+ * This API is part of the 'context-registry' service.
  */
 export const TabularArtifactAsyncSpecificationTabularArtifactsApi = {
   _defaultBasePath: '/admin/tcr',

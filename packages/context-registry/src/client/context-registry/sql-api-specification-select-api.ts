@@ -11,7 +11,7 @@ import type {
 } from './schema/index.js';
 /**
  * Representation of the 'SqlApiSpecificationSELECTApi'.
- * This API is part of the 'ctx-registry' service.
+ * This API is part of the 'context-registry' service.
  */
 export const SqlApiSpecificationSELECTApi = {
   _defaultBasePath: '/admin/tcr',
