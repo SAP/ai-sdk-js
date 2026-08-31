@@ -284,21 +284,20 @@ export async function resolveDeploymentUrlForModel(
  * Get the deployment ID for a foundation model scenario.
  * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
  * @param executableId - The scenario ID.
- * @param destination - The destination to use for the request.
- * @param requestConfig - The request configuration.
+ * @param options - Optional destination and request configuration.
  * @returns The ID of the deployment, if found.
  * @internal
  */
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
   executableId: string,
-  destination?: HttpDestinationOrFetchOptions,
-  requestConfig?: CustomRequestConfig
+  options?: Pick<DeploymentResolutionOptions, 'destination' | 'requestConfig'>
 ): Promise<string> {
   if (isDeploymentIdConfig(modelDeployment)) {
     return modelDeployment.deploymentId;
   }
 
+  const { destination, requestConfig } = options || {};
   return resolveDeploymentId({
     scenarioId: 'foundation-models',
     executableId,
@@ -312,23 +311,20 @@ export async function getFoundationModelDeploymentId(
 /**
  * Get the deployment ID for an orchestration scenario.
  * @param deploymentConfig - The deployment configuration (resource group or deployment ID).
- * @param destination - The destination to use for the request.
- * @param requestConfig - The request configuration.
+ * @param options - Optional destination and request configuration.
  * @returns The ID of the deployment, if found.
  * @internal
  */
 export async function getOrchestrationDeploymentId(
   deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
-  destination?: HttpDestinationOrFetchOptions,
-  requestConfig?: CustomRequestConfig
+  options?: Pick<DeploymentResolutionOptions, 'destination' | 'requestConfig'>
 ): Promise<string> {
   if (isDeploymentIdConfig(deploymentConfig)) {
     return deploymentConfig.deploymentId;
   }
-
+  const { destination, requestConfig } = options || {};
   return resolveDeploymentId({
     scenarioId: 'orchestration',
-    ...deploymentConfig,
     destination,
     requestConfig
   });

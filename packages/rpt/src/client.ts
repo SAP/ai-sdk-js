@@ -160,7 +160,7 @@ export class RptClient {
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
       'aicore-sap',
-      this.destination
+      { destination: this.destination }
     );
 
     const resourceGroup = getResourceGroup(this.modelDeployment);

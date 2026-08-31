@@ -62,8 +62,7 @@ export class OrchestrationEmbeddingClient {
 
     const deploymentId = await getOrchestrationDeploymentId(
       this.deploymentConfig || {},
-      this.destination,
-      requestConfig
+      { destination: this.destination, requestConfig }
     );
 
     if (!deploymentId) {
