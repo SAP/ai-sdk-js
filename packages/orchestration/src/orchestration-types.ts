@@ -1,6 +1,6 @@
-import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel, EmbeddingModel } from './model-types.ts';
+import type { Xor } from '@sap-cloud-sdk/util';
+
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -32,6 +32,7 @@ import type {
   EncodingFormat,
   PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
+import type { ChatModel, EmbeddingModel } from './model-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
@@ -239,7 +240,7 @@ export interface OrchestrationModuleConfig {
    */
   masking?: MaskingModule;
   /**
-   * Grounding module configuraton.
+   * Grounding module configuration.
    */
   grounding?: GroundingModule;
   /**
@@ -271,18 +272,9 @@ export type OrchestrationModuleConfigList = [
 ];
 
 /**
- * Reference to an orchestration configuration created via the Prompt Registry API.
- * Use this to reference a pre-configured orchestration setup without
- * defining the full configuration in code. The configuration must be
- * created via the Prompt Registry API before it can be referenced.
- * Reference by ID.
+ * Reference to an orchestration configuration by scenario, name and version.
  * @example
- * const configRef: OrchestrationConfigRef = {
- *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
- * };
- * Reference by scenario, name and version.
- * @example
- * const configRef: OrchestrationConfigRef = {
+ * const configRef: OrchestrationConfigRefByName = {
  *   scenario: 'customer-support',
  *   name: 'example-orchestration-config',
  *   version: '0.0.1'
@@ -299,19 +291,43 @@ export type OrchestrationConfigRefOverride = Omit<
   stream?: Omit<GlobalStreamOptions, 'enabled'>;
 };
 
+/**
+ * Reference to an orchestration configuration by its unique ID.
+ * @example
+ * const configRef: OrchestrationConfigRefById = {
+ *   id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+ * };
+ */
+export type OrchestrationConfigRefById = {
+  /** Orchestration configuration ID. */
+  id: string;
+} & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: OrchestrationConfigRefOverride;
+};
+
+export type OrchestrationConfigRefByName = {
+  /** Scenario identifier. */
+  scenario: string;
+  /** Configuration name. */
+  name: string;
+  /** Configuration version. */
+  version: string;
+} & {
+  /**
+   * Optional partial configuration to override parts of the stored orchestration config at request time.
+   */
+  overrideConfig?: OrchestrationConfigRefOverride;
+};
+/**
+ * @deprecated Since v2.14.0. Use {@link OrchestrationConfigRefById} or {@link OrchestrationConfigRefByName} instead.
+ * Reference to an orchestration configuration created via the Prompt Registry API.
+ */
 export type OrchestrationConfigRef = Xor<
-  {
-    /** Orchestration configuration ID. */
-    id: string;
-  },
-  {
-    /** Scenario identifier. */
-    scenario: string;
-    /** Configuration name. */
-    name: string;
-    /** Configuration version. */
-    version: string;
-  }
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName
 > & {
   /**
    * Optional partial configuration to override parts of the stored orchestration config at request time.
@@ -329,8 +345,9 @@ export function isConfigReference(
     | OrchestrationModuleConfig
     | OrchestrationModuleConfigList
     | string
-    | OrchestrationConfigRef
-): config is OrchestrationConfigRef {
+    | OrchestrationConfigRefById
+    | OrchestrationConfigRefByName
+): config is OrchestrationConfigRefById | OrchestrationConfigRefByName {
   return (
     typeof config === 'object' &&
     !Array.isArray(config) &&
@@ -350,7 +367,8 @@ export function assertIsOrchestrationModuleConfigList(
     | OrchestrationModuleConfig
     | OrchestrationModuleConfigList
     | string
-    | OrchestrationConfigRef
+    | OrchestrationConfigRefById
+    | OrchestrationConfigRefByName
 ): asserts config is OrchestrationModuleConfigList {
   if (!Array.isArray(config)) {
     throw new TypeError('Configuration must be an array for module fallback.');
@@ -387,7 +405,8 @@ export function isOrchestrationModuleConfigList(
     | OrchestrationModuleConfig
     | OrchestrationModuleConfigList
     | string
-    | OrchestrationConfigRef
+    | OrchestrationConfigRefById
+    | OrchestrationConfigRefByName
 ): config is OrchestrationModuleConfigList {
   try {
     assertIsOrchestrationModuleConfigList(config);

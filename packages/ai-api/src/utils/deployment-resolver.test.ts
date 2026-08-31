@@ -1,17 +1,18 @@
 import nock from 'nock';
+
 import {
   mockClientCredentialsGrantCall,
   aiCoreDestination,
   mockDeploymentsList
 } from '../../../../test-util/mock-http.ts';
 import { type AiDeployment } from '../client/AI_CORE_API/index.ts';
+import { deploymentCache } from './deployment-cache.ts';
 import {
   getAllDeployments,
   resolveDeploymentId,
   resolveDeploymentUrlById,
   resolveDeploymentUrlForModel
 } from './deployment-resolver.ts';
-import { deploymentCache } from './deployment-cache.ts';
 
 describe('deployment resolver', () => {
   beforeEach(() => {

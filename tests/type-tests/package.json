@@ -18,9 +18,10 @@
     "@sap-ai-sdk/openai": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
+    "@sap-ai-sdk/llm-batch": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.8.0",
-    "@sap-cloud-sdk/http-client": "^4.8.0",
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/http-client": "^4.9.1",
     "tsd": "^0.33.0"
   }
 }

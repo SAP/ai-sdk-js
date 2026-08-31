@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './create-pipeline.js';
 export * from './manual-pipeline-trigger.js';
 export * from './ms-share-point-pipeline-create-request.js';

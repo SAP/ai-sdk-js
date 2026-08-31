@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "description": "",
   "license": "Apache-2.0",
   "keywords": [
@@ -19,6 +19,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./orchestration/prompt-caching-middleware": {
+      "types": "./dist/orchestration/prompt-caching-middleware/index.d.ts",
+      "default": "./dist/orchestration/prompt-caching-middleware/index.js"
     },
     "./internal.js": {
       "types": "./dist/internal.d.ts",
@@ -42,16 +46,23 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.8.0",
-    "@sap-cloud-sdk/util": "^4.8.0"
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/util": "^4.9.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.5",
-    "@langchain/langgraph": "1.4.9",
-    "vitest": "4.1.10",
+    "@langchain/core": "1.2.9",
+    "@langchain/langgraph": "1.4.13",
+    "langchain": "1.5.10",
+    "vitest": "4.1.11",
     "zod": "4.4.3"
   },
   "peerDependencies": {
-    "@langchain/core": "^1.2.3"
+    "@langchain/core": "^1.2.3",
+    "langchain": "^1.5.4"
+  },
+  "peerDependenciesMeta": {
+    "langchain": {
+      "optional": true
+    }
   }
 }

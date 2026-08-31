@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { SFTPConfiguration } from './sftp-configuration.js';
+
 import type { MetaData } from './meta-data.js';
+import type { SFTPConfiguration } from './sftp-configuration.js';
 /**
  * Representation of the 'SFTPPipelineCreateRequest' schema.
  */

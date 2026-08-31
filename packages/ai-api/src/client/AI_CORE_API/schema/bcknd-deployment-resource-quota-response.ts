@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndDeploymentUsage } from './bcknd-deployment-usage.js';
+
 import type { BckndDeploymentQuotaItem } from './bcknd-deployment-quota-item.js';
+import type { BckndDeploymentUsage } from './bcknd-deployment-usage.js';
 /**
  * Representation of the 'BckndDeploymentResourceQuotaResponse' schema.
  */

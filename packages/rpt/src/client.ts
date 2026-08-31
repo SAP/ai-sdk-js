@@ -3,20 +3,23 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 import { compress as compressMiddleware } from '@sap-cloud-sdk/http-client';
+
 import { RptApi } from './internal.ts';
+
+import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
+import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
+import type {
+  PredictRequestPayload,
+  PredictResponsePayload
+} from './client/rpt/index.ts';
 import type {
   DataSchema,
   PredictionData,
   RptRequestOptions,
   ParquetPayload
 } from './types.ts';
-import type {
-  PredictRequestPayload,
-  PredictResponsePayload
-} from './client/rpt/index.ts';
-import type { SapRptModel } from '@sap-ai-sdk/core/internal.js';
-import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * Representation of an RPT client to make predictions.
