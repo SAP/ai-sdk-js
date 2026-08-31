@@ -48,8 +48,8 @@ interface PromptCachingInvocationResult {
 }
 
 /**
- * Ask GPT about an introduction to SAP Cloud SDK.
- * @returns The answer from ChatGPT.
+ * Ask the LLM about an introduction to SAP Cloud SDK.
+ * @returns The answer from the LLM.
  */
 export async function invokeChain(): Promise<string> {
   const orchestrationConfig: LangChainOrchestrationModuleConfig = {
@@ -72,8 +72,8 @@ export async function invokeChain(): Promise<string> {
 }
 
 /**
- * Ask GPT about SAP Cloud SDK using module fallback configurations.
- * @returns The answer from ChatGPT.
+ * Ask the LLM about SAP Cloud SDK using module fallback configurations.
+ * @returns The answer from the LLM.
  */
 export async function invokeChainWithFallbackConfigs(): Promise<string> {
   const orchestrationConfigs: LangChainOrchestrationModuleConfigList = [
@@ -690,7 +690,7 @@ interface Joke {
  * With Structured Output using `jsonSchema` option with `strict: true` if supported by the method.
  * @param method - The method to use for structured output. `jsonSchema` uses native structured output support, `jsonMode` forces JSON mode, and `functionCalling` uses tool calling.
  * @param includeRaw - If true, returns an object with both raw message and parsed result.
- * @returns The answer from GPT with exactly the structure defined in the schema.
+ * @returns The answer from the LLM with exactly the structure defined in the schema.
  */
 export async function invokeWithStructuredOutput<T extends boolean = false>(
   method: 'jsonSchema' | 'jsonMode' | 'functionCalling' = 'jsonSchema',

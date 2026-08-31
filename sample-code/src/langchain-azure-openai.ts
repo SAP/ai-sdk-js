@@ -44,7 +44,7 @@ export async function invoke(): Promise<string> {
 
 /**
  * Ask GPT about the capital of France.
- * @returns The answer from GPT-o3.
+ * @returns The answer from GPT.
  */
 export async function invokeReasoningWithMaxTokens(): Promise<string> {
   // initialize client with options
