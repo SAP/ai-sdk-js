@@ -14,7 +14,7 @@ import type {
  * This API is part of the 'ctx-registry' service.
  */
 export const SqlApiSpecificationSELECTApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Executes a read-only SQL query via SQL_SELECT_USER.  Only SELECT statements (including CTEs introduced with WITH) are accepted. All user-supplied filter values must be passed as named bind parameters.
    * Pagination modes:

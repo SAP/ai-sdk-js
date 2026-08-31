@@ -20,7 +20,7 @@ import type {
  * This API is part of the 'ctx-registry' service.
  */
 export const DataDestinationAsyncSpecificationDataDestinationsApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Get all data destinations in the tenant (resource group)
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.

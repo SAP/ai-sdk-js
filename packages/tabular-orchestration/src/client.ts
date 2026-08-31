@@ -2,14 +2,12 @@ import {
   resolveDeployment,
   type ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { executeRequest } from '@sap-ai-sdk/core';
 
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 // Imported after `pnpm generate` — generated from spec/tabular-orchestration.yaml
-import type {
-  PredictRequest as GeneratedPredictRequest,
-  PredictResponse
-} from './client/tabular-orchestration/index.ts';
+import type { PredictResponse } from './client/tabular-orchestration/index.ts';
 import type {
   ModelConfigFor,
   TabularOrchestrationPredictRequest
@@ -55,16 +53,15 @@ export class TabularOrchestrationClient {
       destination: this.destination
     });
 
-    if (!deployment.deploymentUrl) {
-      throw new Error(
-        `Deployment '${deployment.id}' for scenario '${scenarioId}' has no deployment URL. Ensure the deployment is running.`
-      );
-    }
-
-    const { PredictApi } =
-      await import('./client/tabular-orchestration/index.ts');
-    return PredictApi.predictV1PredictPost(body as GeneratedPredictRequest, {
-      'ai-resource-group': this.resourceGroup
-    }).execute({ url: deployment.deploymentUrl });
+    const response = await executeRequest(
+      {
+        url: `/inference/deployments/${deployment.id}/predict`,
+        resourceGroup: this.resourceGroup
+      },
+      body,
+      {},
+      this.destination
+    );
+    return response.data as PredictResponse;
   }
 }

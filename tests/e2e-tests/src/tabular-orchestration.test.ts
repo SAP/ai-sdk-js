@@ -20,7 +20,7 @@ describe('tabular-orchestration', () => {
     const artifact = await createTabularArtifact();
     expect(artifact.status).toBe('ACTIVE');
     await deleteTabularArtifact();
-  });
+  }, 180_000);
 
   it('should get or create a scenario configuration', async () => {
     const config = await getOrCreateScenarioConfiguration();

@@ -11,7 +11,7 @@ import type { ProvisioningResourceGroup } from './schema/index.js';
  * This API is part of the 'ctx-registry' service.
  */
 export const ProvisioningSpecificationResourceGroupApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Get details of about a resourceGroup
    * @param tenantId - Id of a main tenant, which corresponds to the SCP subaccount id

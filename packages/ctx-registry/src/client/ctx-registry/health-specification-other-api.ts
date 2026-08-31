@@ -9,7 +9,7 @@ import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
  * This API is part of the 'ctx-registry' service.
  */
 export const HealthSpecificationOtherApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Create a request builder for execution of get requests to the '/api/v1/healthz' endpoint.
    * @returns The request builder, use the `execute()` method to trigger the request.

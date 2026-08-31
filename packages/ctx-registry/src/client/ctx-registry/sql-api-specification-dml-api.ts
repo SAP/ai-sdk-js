@@ -16,7 +16,7 @@ import type {
  * This API is part of the 'ctx-registry' service.
  */
 export const SqlApiSpecificationDMLApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Executes a single DML statement (INSERT, UPDATE, DELETE, UPSERT, MERGE) against the caller's tenant schema via SQL_DML_USER.  Any DDL or SELECT keyword causes a 400 INVALID_SQL_CLASS error.  All data values must be supplied as named bind parameters (:name); inline literals are rejected.
    *

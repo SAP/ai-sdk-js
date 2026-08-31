@@ -20,7 +20,7 @@ import type {
  * This API is part of the 'ctx-registry' service.
  */
 export const SqlApiSpecificationDDLApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Executes a DDL statement (CREATE TABLE/INDEX/VIEW, ALTER TABLE, DROP TABLE/INDEX/VIEW, GRANT, REVOKE) via SQL_DDL_USER. After a successful CREATE TABLE the service automatically grants INSERT/UPDATE/DELETE to SQL_DML_USER and SELECT to SQL_SELECT_USER, and registers the table in the internal registry. Schema-level operations (CREATE SCHEMA, DROP SCHEMA) are rejected.
    *

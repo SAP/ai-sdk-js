@@ -26,6 +26,8 @@ export interface PollAsyncResourceOptions<T, ReadT = T> {
   initialRetryAfter?: string;
   /** Returns the Retry-After header value from a polling response, if available. */
   getRetryAfter?: (response: ReadT) => string | undefined;
+  /** Called after each poll attempt with the attempt number and current resource. */
+  onPoll?: (attempt: number, resource: T) => void;
   /** Signal that cancels polling and waiting. */
   signal?: AbortSignal;
   /** Override the sleep function, e.g. for testing. */
@@ -64,6 +66,7 @@ export async function pollAsyncResource<T, ReadT = T>({
   getResource,
   isComplete,
   getFailure,
+  onPoll,
   maxAttempts = DEFAULT_MAX_ATTEMPTS,
   intervalMs = DEFAULT_INTERVAL_MS,
   initialRetryAfter,
@@ -88,6 +91,7 @@ export async function pollAsyncResource<T, ReadT = T>({
     if (failure) {
       throw new Error(failure);
     }
+    onPoll?.(attempt, resource);
     if (isComplete(resource)) {
       return resource;
     }

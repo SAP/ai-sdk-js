@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { pollAsyncResource } from '@sap-ai-sdk/core';
 import {
   TabularArtifactAsyncSpecificationTabularArtifactsApi,
@@ -19,10 +21,11 @@ import type { TFMEnum } from '@sap-ai-sdk/tabular-orchestration/internal.js';
 const resourceGroup = 'default';
 const headers = { 'AI-Resource-Group': resourceGroup };
 
-const artifactName = 'sample-tabular-artifact';
-const dataDestinationName = 'sample-data-destination';
-const artifactPath = '/data/product_data.parquet';
-const scenarioConfigName = 'sample-scenario-config';
+const artifactName = 'ai-sdk-tabular-artifact';
+const transientArtifactName = `ai-sdk-tabular-artifact-${Date.now()}`;
+const dataDestinationName = 'ai-sdk-hdl-destination';
+const artifactPath = '/data/product_data_hana_lowercase.parquet';
+const scenarioConfigName = 'product-prediction-scenario-lowercase';
 const modelName: TFMEnum = 'sap-rpt-1.5';
 
 /**
@@ -43,7 +46,7 @@ export async function listDataDestinations(): Promise<DataDestinationAsyncGetDat
 export async function createTabularArtifact(): Promise<TabularArtifactAsyncTabularArtifactDetails> {
   const response =
     await TabularArtifactAsyncSpecificationTabularArtifactsApi.createTabularArtifact(
-      artifactName,
+      transientArtifactName,
       {
         dataDestinationName,
         type: 'PARQUET',
@@ -74,6 +77,8 @@ export async function createTabularArtifact(): Promise<TabularArtifactAsyncTabul
       resource.status === 'ERROR'
         ? (resource.errorMessage ?? 'Tabular artifact creation failed')
         : undefined,
+    onPoll: (attempt, resource) =>
+      console.log(`[${attempt}] Tabular artifact status: ${resource.status}`),
     intervalMs: 2_000,
     maxAttempts: 60
   });
@@ -84,7 +89,7 @@ export async function createTabularArtifact(): Promise<TabularArtifactAsyncTabul
  */
 export async function deleteTabularArtifact(): Promise<void> {
   await TabularArtifactAsyncSpecificationTabularArtifactsApi.deleteTabularArtifact(
-    artifactName,
+    transientArtifactName,
     headers
   ).execute();
 
@@ -92,7 +97,7 @@ export async function deleteTabularArtifact(): Promise<void> {
     read: async () => {
       try {
         return await TabularArtifactAsyncSpecificationTabularArtifactsApi.getTabularArtifactByName(
-          artifactName,
+          transientArtifactName,
           headers
         ).execute();
       } catch (error) {
@@ -102,7 +107,11 @@ export async function deleteTabularArtifact(): Promise<void> {
         throw error;
       }
     },
-    isComplete: resource => resource === null,
+    isComplete: resource => resource === null || resource.status === 'DELETING',
+    onPoll: (attempt, resource) =>
+      console.log(
+        `[${attempt}] Tabular artifact status: ${resource?.status ?? 'gone'}`
+      ),
     intervalMs: 2_000,
     maxAttempts: 60
   });
@@ -153,24 +162,31 @@ export async function predict(): Promise<PredictResponse> {
     contextSelectionConfig: {
       numRows: 3,
       strategy: 'random',
-      strategyConfigs: { indexColumn: '__row_idx__', deterministic: true }
+      strategyConfigs: { indexColumn: 'id', deterministic: true }
     },
     predictionConfig: {
       targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
     },
     rows: [
       {
-        product: 'Laptop',
-        price: 999.99,
-        production_date: '2025-01-15',
-        __row_idx__: 'prediction-1',
+        product: 'Desktop Computer',
+        price: 921.5,
+        date: '2024-12-02',
+        id: '42',
         salesgroup: '[PREDICT]'
       },
       {
-        product: 'Office Chair',
-        price: 142.99,
-        production_date: '2025-07-13',
-        __row_idx__: 'prediction-2',
+        product: 'Macbook',
+        price: 1220.99,
+        date: '2026-01-31',
+        id: '99',
+        salesgroup: '[PREDICT]'
+      },
+      {
+        product: 'Office Desk',
+        price: 750.5,
+        date: '2024-12-05',
+        id: '689',
         salesgroup: '[PREDICT]'
       }
     ]
@@ -208,6 +224,9 @@ function getHttpStatus(error: unknown): number | undefined {
     typeof error.response.status === 'number'
   ) {
     return error.response.status;
+  }
+  if ('cause' in error) {
+    return getHttpStatus(error.cause);
   }
   return undefined;
 }

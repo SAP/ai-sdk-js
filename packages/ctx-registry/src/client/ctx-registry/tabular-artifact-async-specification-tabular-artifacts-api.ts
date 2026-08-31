@@ -16,7 +16,7 @@ import type {
  * This API is part of the 'ctx-registry' service.
  */
 export const TabularArtifactAsyncSpecificationTabularArtifactsApi = {
-  _defaultBasePath: '/v2/admin/tcr',
+  _defaultBasePath: '/admin/tcr',
   /**
    * Retrieve details of a specific Tabular Artifact by name including schema metadata.
    *

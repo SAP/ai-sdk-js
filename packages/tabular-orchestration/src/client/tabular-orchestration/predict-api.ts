@@ -27,7 +27,7 @@ export const PredictApi = {
   ) =>
     new OpenApiRequestBuilder<PredictResponse>(
       'post',
-      '/v1/predict',
+      '/predict',
       {
         body,
         headerParameters: {

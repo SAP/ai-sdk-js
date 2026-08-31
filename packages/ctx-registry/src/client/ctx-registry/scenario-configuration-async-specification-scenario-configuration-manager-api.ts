@@ -19,7 +19,7 @@ import type {
  */
 export const ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi =
   {
-    _defaultBasePath: '/v2/admin/tcr',
+    _defaultBasePath: '/admin/tcr',
     /**
      * Get all scenario configurations in the tenant (resource group)
      * @param queryParameters - Object containing the following keys: $top, $skip, $count.
