@@ -1,43 +1,48 @@
-import { executeRequest } from '@sap-ai-sdk/core';
-import { createLogger } from '@sap-cloud-sdk/util';
-import yaml from 'yaml';
-import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import { OrchestrationStream } from './orchestration-stream.ts';
-import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+import { executeRequest } from '@sap-ai-sdk/core';
+import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
+
+import yaml from 'yaml';
+
 import { OrchestrationResponse } from './orchestration-response.ts';
-import {
-  constructCompletionPostRequest,
-  constructCompletionPostRequestFromJsonModuleConfig,
-  constructCompletionPostRequestFromConfigReference
-} from './util/index.ts';
+import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+import { OrchestrationStream } from './orchestration-stream.ts';
 import {
   isConfigReference,
   isOrchestrationModuleConfigList,
   assertIsOrchestrationModuleConfigList
 } from './orchestration-types.ts';
-import type { Xor } from '@sap-cloud-sdk/util';
-import type { TemplatingChatMessage } from './client/api/schema/index.ts';
-import type {
-  HttpResponse,
-  CustomRequestConfig
-} from '@sap-cloud-sdk/http-client';
+import {
+  constructCompletionPostRequest,
+  constructCompletionPostRequestFromJsonModuleConfig,
+  constructCompletionPostRequestFromConfigReference
+} from './util/index.ts';
+
 import type {
   DeploymentIdConfig,
   ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type {
+  HttpResponse,
+  CustomRequestConfig
+} from '@sap-cloud-sdk/http-client';
+import type { Xor } from '@sap-cloud-sdk/util';
+
+import type { TemplatingChatMessage } from './client/api/schema/index.ts';
+import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 import type {
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
-  OrchestrationConfigRef,
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName,
   ChatCompletionRequest,
   RequestOptions,
   StreamOptions,
   BaseStreamOptions,
   OrchestrationRequestHeaders
 } from './orchestration-types.ts';
-import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -55,29 +60,90 @@ export class OrchestrationClient {
   private config:
     | string
     | Xor<
-        OrchestrationConfigRef,
-        OrchestrationModuleConfig | OrchestrationModuleConfigList
-      >;
+        OrchestrationConfigRefById,
+        Xor<OrchestrationConfigRefByName, OrchestrationModuleConfig>
+      >
+    | OrchestrationModuleConfigList;
   private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
   private destination?: HttpDestinationOrFetchOptions;
 
+  /* oxlint-disable typescript/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
-   * Creates an instance of the orchestration client.
-   * @param config - Orchestration configuration. Can be:
-   * - An `OrchestrationModuleConfig` object for inline configuration
-   * - An `OrchestrationModuleConfigList` array for module fallback (tries each config in order until one succeeds)
-   * - A JSON string obtained from AI Launchpad
-   * - An object of type`OrchestrationConfigRef` to reference a stored configuration by ID or name.
+   * Creates an instance of the orchestration client with an inline module configuration.
+   * @param config - A single orchestration module configuration.
    * @param deploymentConfig - Deployment configuration.
    * @param destination - The destination to use for the request.
    */
   constructor(
+    config: OrchestrationModuleConfig,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+
+  /**
+   * Creates an instance of the orchestration client referencing a stored configuration by its unique ID.
+   * @param configRef - An object with the configuration `id`.
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    configRef: OrchestrationConfigRefById,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client referencing a stored configuration by scenario, name and version.
+   * @param configRef - An object with `scenario`, `name`, and `version`.
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    configRef: OrchestrationConfigRefByName,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client with a JSON string configuration.
+   * @param config - A JSON string obtained from AI Launchpad.
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    config: string,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /**
+   * Creates an instance of the orchestration client with an inline module configuration.
+   * @param config - A list for module fallback (tries each config in order until one succeeds).
+   * @param deploymentConfig - Deployment configuration.
+   * @param destination - The destination to use for the request.
+   */
+  constructor(
+    configs: OrchestrationModuleConfigList,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  constructor(
     config:
       | string
       | Xor<
-          OrchestrationConfigRef,
-          OrchestrationModuleConfig | OrchestrationModuleConfigList
-        >,
+          OrchestrationConfigRefById,
+          Xor<OrchestrationConfigRefByName, OrchestrationModuleConfig>
+        >
+      | OrchestrationModuleConfigList,
+    deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
+    destination?: HttpDestinationOrFetchOptions
+  );
+  /* oxlint-enable typescript/unified-signatures */
+  constructor(
+    config:
+      | string
+      | Xor<
+          OrchestrationConfigRefById,
+          Xor<OrchestrationConfigRefByName, OrchestrationModuleConfig>
+        >
+      | OrchestrationModuleConfigList,
     deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig,
     destination?: HttpDestinationOrFetchOptions
   ) {
@@ -155,7 +221,7 @@ export class OrchestrationClient {
       if (isConfigReference(this.config)) {
         if (options) {
           logger.warn(
-            'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+            'Request-level stream options (promptTemplating, outputFiltering, global, and overrides) are ignored when using an orchestration config reference. Configure supported streaming settings via OrchestrationConfigRef.config or in the stored orchestration configuration. Per-fallback stream overrides are not supported for config references.'
           );
         }
         if (request?.messages?.length) {
@@ -193,7 +259,8 @@ export class OrchestrationClient {
         : isConfigReference(this.config)
           ? constructCompletionPostRequestFromConfigReference(
               this.config,
-              request
+              request,
+              stream
             )
           : isOrchestrationModuleConfigList(this.config)
             ? constructCompletionPostRequest(

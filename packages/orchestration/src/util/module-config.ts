@@ -1,15 +1,18 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import {
   type ChatCompletionRequest,
   type StreamOptions,
   type BaseStreamOptions,
   type ModuleStreamOptions,
-  type OrchestrationConfigRef,
+  type OrchestrationConfigRefById,
+  type OrchestrationConfigRefByName,
   type OrchestrationModuleConfig,
   type OrchestrationModuleConfigList,
   type EmbeddingModuleConfig,
   type EmbeddingRequest
 } from '../orchestration-types.ts';
+
 import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
@@ -18,6 +21,7 @@ import type {
   ModuleConfigs,
   OrchestrationConfig,
   OutputFilteringConfig,
+  PartialOrchestrationConfig,
   Template,
   PromptTemplatingModuleConfig,
   TemplateRef,
@@ -62,8 +66,9 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
  * @internal
  */
 export function constructCompletionPostRequestFromConfigReference(
-  configRef: OrchestrationConfigRef,
-  request?: ChatCompletionRequest
+  configRef: OrchestrationConfigRefById | OrchestrationConfigRefByName,
+  request?: ChatCompletionRequest,
+  stream?: boolean
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
@@ -74,8 +79,18 @@ export function constructCompletionPostRequestFromConfigReference(
     ...(request?.messages || [])
   ];
 
+  const { overrideConfig, ...configReference } = configRef;
+  const partialConfig: PartialOrchestrationConfig = {
+    ...overrideConfig,
+    stream: {
+      ...overrideConfig?.stream,
+      enabled: stream === true
+    }
+  };
+
   return {
-    config_ref: configRef,
+    config_ref: configReference,
+    config: partialConfig,
     ...(request?.placeholderValues && {
       placeholder_values: request.placeholderValues
     }),

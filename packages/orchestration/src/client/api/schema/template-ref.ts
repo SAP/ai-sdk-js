@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { TemplateRefByID } from './template-ref-by-id.js';
 import type { TemplateRefByScenarioNameVersion } from './template-ref-by-scenario-name-version.js';
 /**

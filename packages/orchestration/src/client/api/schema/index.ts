@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './completion-post-request.js';
 export * from './embeddings-post-request.js';
 export * from './embeddings-orchestration-config.js';
@@ -45,7 +46,9 @@ export * from './tool-call-chunk.js';
 export * from './completion-post-response.js';
 export * from './completion-post-response-streaming.js';
 export * from './orchestration-config.js';
+export * from './partial-orchestration-config.js';
 export * from './module-configs.js';
+export * from './partial-module-configs.js';
 export * from './module-configs-list.js';
 export * from './module-results-base.js';
 export * from './module-results.js';
@@ -60,6 +63,7 @@ export * from './llm-choice.js';
 export * from './llm-choice-streaming.js';
 export * from './token-usage.js';
 export * from './prompt-templating-module-config.js';
+export * from './partial-prompt-templating-module-config.js';
 export * from './llm-model-details.js';
 export * from './template.js';
 export * from './response-format-text.js';
@@ -120,3 +124,4 @@ export * from './completion-request-configuration-reference-by-id.js';
 export * from './completion-request-configuration-reference-by-id-config-ref.js';
 export * from './completion-request-configuration-reference-by-name-scenario-version.js';
 export * from './completion-request-configuration-reference-by-name-scenario-version-config-ref.js';
+export * from './reasoning-block.js';

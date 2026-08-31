@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { BasePipelineResponse } from './base-pipeline-response.js';
 import type { S3Configuration } from './s-3-configuration.js';
 /**

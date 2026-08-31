@@ -3,7 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
+
 import type {
   PredictRequestPayload,
   PredictResponsePayload,
@@ -48,23 +50,23 @@ export const RptApi = {
           prediction_config: {
             contentType: 'application/json',
             isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'application/json' }]
+            parsedContentTypes: [{ type: 'application/json', parameters: {} }]
           },
           index_column: {
             contentType: 'text/plain',
             isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
+            parsedContentTypes: [{ type: 'text/plain', parameters: {} }]
           },
           parse_data_types: {
             contentType: 'text/plain',
             isImplicit: true,
-            parsedContentTypes: [{ parameters: {}, type: 'text/plain' }]
+            parsedContentTypes: [{ type: 'text/plain', parameters: {} }]
           },
           file: {
             contentType: 'application/vnd.apache.parquet',
             isImplicit: false,
             parsedContentTypes: [
-              { parameters: {}, type: 'application/vnd.apache.parquet' }
+              { type: 'application/vnd.apache.parquet', parameters: {} }
             ]
           }
         },

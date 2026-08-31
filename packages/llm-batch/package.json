@@ -1,22 +1,24 @@
 {
   "name": "@sap-ai-sdk/llm-batch",
-  "version": "2.13.0",
-  "publishConfig": {
-    "tag": "beta",
-    "access": "public"
-  },
+  "version": "2.15.0",
   "description": "",
-  "license": "Apache-2.0",
   "keywords": [
-    "sap-ai-sdk",
     "ai-api",
-    "llm-batch"
+    "llm-batch",
+    "sap-ai-sdk"
   ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/llm-batch"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,26 +32,24 @@
       "default": "./dist/internal.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  },
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/batch-service.yaml -o ./src/client",
-    "postgenerate": "pnpm update-imports && pnpm make-llm-batch-experimental && pnpm lint:fix",
-    "make-llm-batch-experimental": "node ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service/batches-api.ts",
+    "postgenerate": "pnpm update-imports && pnpm postgenerate-batch && pnpm lint:fix",
+    "postgenerate-batch": "node ../../scripts/postgenerate-llm-batch.ts ./src/client/batch-service",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/batch-service"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^"
   },
   "devDependencies": {
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   }
 }

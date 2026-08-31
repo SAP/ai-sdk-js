@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { EmbeddingsModelConfig } from './embeddings-model-config.js';
 import type { MaskingModuleConfig } from './masking-module-config.js';
 /**

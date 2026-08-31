@@ -1,23 +1,25 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.13.0",
-  "publishConfig": {
-    "tag": "beta",
-    "access": "public"
-  },
+  "version": "2.15.0",
   "description": "SAP AI SDK integration with the official OpenAI npm package for Azure OpenAI on SAP AI Core",
-  "license": "Apache-2.0",
   "keywords": [
-    "sap-ai-sdk",
-    "openai",
     "azure-openai",
-    "foundation-models"
+    "foundation-models",
+    "openai",
+    "sap-ai-sdk"
   ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/openai"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,14 +31,20 @@
     "./internal.js": {
       "types": "./dist/internal.d.ts",
       "default": "./dist/internal.js"
+    },
+    "./realtime": {
+      "types": "./dist/realtime/index.d.ts",
+      "default": "./dist/realtime/index.js"
+    },
+    "./realtime/internal.js": {
+      "types": "./dist/realtime/internal.d.ts",
+      "default": "./dist/realtime/internal.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  },
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
@@ -46,14 +54,22 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.7.0",
-    "@sap-cloud-sdk/util": "^4.7.0"
-  },
-  "peerDependencies": {
-    "openai": "^6.49.0 || ^7.0.0"
+    "@sap-cloud-sdk/connectivity": "^4.9.1",
+    "@sap-cloud-sdk/util": "^4.9.1"
   },
   "devDependencies": {
-    "openai": "7.3.0",
-    "vitest": "4.1.10"
+    "@types/ws": "8.18.1",
+    "openai": "7.4.0",
+    "vitest": "4.1.11",
+    "ws": "8.21.3"
+  },
+  "peerDependencies": {
+    "openai": "^6.49.0 || ^7.0.0",
+    "ws": "^8.20.0"
+  },
+  "peerDependenciesMeta": {
+    "ws": {
+      "optional": true
+    }
   }
 }

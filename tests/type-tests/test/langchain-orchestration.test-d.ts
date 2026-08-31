@@ -1,5 +1,7 @@
-import { expectAssignable, expectError, expectType } from 'tsd';
 import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+
+import { expectAssignable, expectError, expectType } from 'tsd';
+
 import type {
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationModuleConfigList,
