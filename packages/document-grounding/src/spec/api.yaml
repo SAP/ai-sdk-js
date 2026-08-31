@@ -470,6 +470,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/PipelineDocumentResponse'
 
+  '/pipelines/{pipelineId}/documents/{documentId}/presignedUrl':
+    post:
+      tags:
+        - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.generate_document_presigned_url
+      summary: Generate Presigned URL for Pipeline Document
+      description: Generate a presigned S3 URL for a specific document in a pipeline.
+      x-sap-cloud-sdk-operation-name: generateDocumentPresignedUrl
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: pipelineId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the pipeline
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the document
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PresignedUrlRequest'
+      responses:
+        '200':
+          description: Returns a presigned URL for the document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresignedUrlResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
   '/pipelines/trigger':
     post:
       tags:
@@ -2170,6 +2215,22 @@ components:
         lastUpdatedTimestamp:
           type: string
           example: '2024-02-15T12:45:00Z'
+    PresignedUrlRequest:
+      type: object
+      properties:
+        expirationSecs:
+          type: integer
+          minimum: 600
+          maximum: 604800
+          description: "Expiration time in seconds for the presigned URL (600–604800). If omitted, the destination's presign_expiration_secs setting is used."
+          example: 3600
+    PresignedUrlResponse:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The presigned URL to access the document.
+          example: 'https://s3.amazonaws.com/bucket/key?signature=abc123'
     searchPipeline:
       type: object
       properties:
