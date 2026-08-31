@@ -93,7 +93,7 @@ describe('SapOpenAiRealtimeWs', () => {
     const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
 
     expect(client.url.toString()).toBe(
-      'wss://api.ai.ml.hana.ondemand.com/v2/inference/deployments/dep-realtime/v1/realtime?api-version=2024-10-21'
+      'wss://api.ai.ml.hana.ondemand.com/v2/inference/deployments/dep-realtime/v1/realtime?model=gpt-realtime'
     );
     const socket = MockWebSocket.instances[0];
     expect(socket.url).toBe(client.url.toString());
