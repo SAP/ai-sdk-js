@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 
-import { pollAsyncResource } from '@sap-ai-sdk/core';
 import {
   TabularArtifactAsyncSpecificationTabularArtifactsApi,
   DataDestinationAsyncSpecificationDataDestinationsApi,
   ScenarioConfigurationAsyncSpecificationScenarioConfigurationManagerApi
 } from '@sap-ai-sdk/context-registry/internal.js';
+import { pollAsyncResource } from '@sap-ai-sdk/core';
 import {
   TabularOrchestrationClient,
   type PredictResponse
