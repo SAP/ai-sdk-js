@@ -35,7 +35,7 @@ Cons:
 - The model name is **required** and determines the RPT version (`sap-rpt-1-*` → RPT-1.0 behavior; `sap-rpt-1.5*` → RPT-1.5 behavior).
 
 - For RPT-1.0 model names, the SDK injects `parse_data_types: true` as a request default; explicit values always take precedence.
-If a `deploymentId` is passed without a `modelName`, generation detection is not possible and the workaround is skipped.
+  If a `deploymentId` is passed without a `modelName`, generation detection is not possible and the workaround is skipped.
 
 - All TypeScript types are RPT-1.5 types regardless of model name — RPT-1.0 consumers passing 1.5-only fields (e.g. `explanations`) will compile but receive a server-side error.
 
@@ -44,7 +44,7 @@ If a `deploymentId` is passed without a `modelName`, generation detection is not
 <!-- prettier-ignore -->
 | Change | SDK handling | Consumer impact |
 | ------ | ------------ | --------------- |
-| `predict_parquet`: `parse_data_types` default flips `true` → `false` | Follow the spec | None for RPT-1.0 consumers (SDK injects `parse_data_types: true`); RPT-1.5 consumers default to `false` |
+| `predict_parquet`: `parse_data_types` default flips `true` → `false` | Follow the spec | defaults to `false` - default changed for RPT-1.0 consumers |
 | `TargetColumnConfig` and `SchemaFieldConfig` gain `additionalProperties: false` | No action — enforced by the server | Extra properties now cause validation errors |
 | `PredictRequestPayload`: `rows`/`columns` become strictly required via `oneOf` | No action — `PredictionData<T>` already enforces this via `Xor<>` | None |
 
