@@ -390,8 +390,8 @@ importers:
         specifier: 4.0.3
         version: 4.0.3(hono@4.13.3)(supports-color@7.2.0)
       hyparquet-writer:
-        specifier: 0.16.6
-        version: 0.16.6
+        specifier: 0.16.7
+        version: 0.16.7
 
   tests/e2e-tests:
     dependencies:
@@ -2896,11 +2896,11 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  hyparquet-writer@0.16.6:
-    resolution: {integrity: sha512-KK3FhIf/yPhDi63rAEV6Di9tLZXDGYqXcOMVS2Ssm5zerEkrfc71REfGCFcEKtiiATGzd9kq5uWcy8JeCapQVQ==}
+  hyparquet-writer@0.16.7:
+    resolution: {integrity: sha512-sx6aR2HZhrr6QUlnCKMq2CRfnS2w88fz+St0w5GwRGQupVEPjN0qnG+0hq3XdrEStFUsFkds4FZ95HTjHI4+aQ==}
 
-  hyparquet@1.28.1:
-    resolution: {integrity: sha512-04PlyhYZpNDVaOjJNX4SP00beWf9Y9vXEOEQXSMFqVQNzxGxTmsJOQgBjar8VzLpT6E2kxNiWKL539e1dHcOVA==}
+  hyparquet@1.29.2:
+    resolution: {integrity: sha512-2LxinZ8X0JqToST+9OXcy9t3t5Q7ZneMTkSqUx/36Hv18pCTk/N71IWZc7APTSNG1Me39l/jjEvzZSZ0R+Knbw==}
 
   hyperdyperid@1.2.0:
     resolution: {integrity: sha512-Y93lCzHYgGWdrJ66yIktxiaGULYc6oGiABxhcO5AufBeOyoIdZF7bIfLaOrbM0iGIOXQQgxxRrFEnb+Y6w1n4A==}
@@ -6554,11 +6554,11 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  hyparquet-writer@0.16.6:
+  hyparquet-writer@0.16.7:
     dependencies:
-      hyparquet: 1.28.1
+      hyparquet: 1.29.2
 
-  hyparquet@1.28.1: {}
+  hyparquet@1.29.2: {}
 
   hyperdyperid@1.2.0: {}
 
