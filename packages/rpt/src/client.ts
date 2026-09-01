@@ -113,24 +113,6 @@ export class RptClient {
   }
 
   /**
-   * Check the health of the RPT inference service.
-   * @param requestConfig - Custom request configuration.
-   * @returns Empty object on success.
-   */
-  async health(
-    requestConfig: RptRequestOptions = {}
-  ): Promise<Record<string, never>> {
-    const { resourceGroup, deploymentId } =
-      await this.getResourceGroupAndDeploymentId();
-
-    return RptApi.health()
-      .setBasePath(`/inference/deployments/${deploymentId}`)
-      .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
-      .addCustomRequestConfiguration(requestConfig)
-      .execute(this.destination);
-  }
-
-  /**
    * Predict based on data schema and prediction data.
    * @param predictionData - Data to base prediction on.
    * @param dataSchema - Prediction data follows this schema.

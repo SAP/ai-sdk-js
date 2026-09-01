@@ -269,12 +269,3 @@ export async function predictRegressionWithConfidenceIntervals(): Promise<Predic
   const client = new RptClient('sap-rpt-1.5');
   return client.predictWithSchema(regressionSchema, regressionData);
 }
-
-/**
- * Check the health of the RPT inference service.
- * @returns Empty object on success.
- */
-export async function rptHealth(): Promise<Record<string, never>> {
-  const client = new RptClient('sap-rpt-1.5');
-  return client.health();
-}
