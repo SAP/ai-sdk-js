@@ -1,12 +1,13 @@
 packages:
   - packages/ai-api
+  - packages/context-registry
   - packages/core
   - packages/document-grounding
   - packages/foundation-models
-  - packages/openai
   - packages/langchain
-  - packages/orchestration
   - packages/llm-batch
+  - packages/openai
+  - packages/orchestration
   - packages/prompt-registry
   - packages/rpt
   - sample-cap
@@ -21,10 +22,10 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-gitBranchLockfile: true
-mergeGitBranchLockfilesBranchPattern:
-  - main
-  - renovate/*
+# gitBranchLockfile: true
+# mergeGitBranchLockfilesBranchPattern:
+#   - main
+#   - renovate/*
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760

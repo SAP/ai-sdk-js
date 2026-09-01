@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 /**
- * This script generates a parquet file containing product data.
- * By default, the generated file includes cells with '[PREDICT]'-placeholders for prediction with SAP RPT.
- * Use the --no-predict flag to exclude rows with '[PREDICT]' placeholders.
- * @example
- * node generate-parquet.ts                    // Include all data (with [PREDICT] placeholders)
- * node generate-parquet.ts --no-predict       // Exclude rows with [PREDICT] placeholders
+ * This script generates parquet files containing product data.
+ *
+ * RPT format (simple, type-inferred):
+ *   node generate-parquet.ts                    // Include [PREDICT] rows
+ *   node generate-parquet.ts --no-predict       // Exclude [PREDICT] rows
+ *
+ * CDS/HANA format (explicit Parquet schema, DECIMAL and DATE encoded for HANA):
+ *   node generate-parquet.ts --cds              // CDS-typed output for tabular artifacts
  */
 /* oxlint-disable no-console */
 
@@ -13,13 +15,14 @@ import { join } from 'node:path';
 
 import { parquetWriteFile } from 'hyparquet-writer';
 
-import type { RowType } from '@sap-ai-sdk/rpt';
 import type {
   ColumnType,
   SchemaFieldConfig
 } from '@sap-ai-sdk/rpt/internal.js';
 
-import type { ColumnSource } from 'hyparquet-writer';
+import type { ColumnSource, SchemaElement } from 'hyparquet-writer';
+
+// ----- RPT schema types -----
 
 type DataSchema = readonly ({ name: string } & SchemaFieldConfig)[];
 
@@ -29,12 +32,6 @@ const rptToParquetType: Record<ColumnType, ColumnSource['type']> = {
   date: 'STRING'
 };
 
-/**
- * Converts an array of row objects into the column-oriented format expected by {@link parquetWriteFile}.
- * @param rows - The row data to write.
- * @param schema - Column definitions describing the name and parquet type of each column.
- * @returns Column data in the format expected by {@link parquetWriteFile}.
- */
 function rowsToColumnData<T extends DataSchema>(
   rows: RowType<T>[],
   schema: T
@@ -47,7 +44,7 @@ function rowsToColumnData<T extends DataSchema>(
 }
 
 /**
- * Writes an array of row objects to a parquet file.
+ * Writes an array of row objects to a parquet file using RPT column types.
  * @param filename - Absolute path of the output file.
  * @param rows - The row data to write.
  * @param schema - Column definitions describing the name and parquet type of each column.
@@ -60,9 +57,88 @@ export function writeRowsToParquet<T extends DataSchema>(
   parquetWriteFile({ filename, columnData: rowsToColumnData(rows, schema) });
 }
 
+// ----- CDS schema types (for HANA-compatible tabular artifacts) -----
+
+type CdsField =
+  | { name: string; type: 'cds.String'; length?: number }
+  | { name: string; type: 'cds.Decimal'; precision: number; scale: number }
+  | { name: string; type: 'cds.Date' };
+
+type CdsSchema = readonly CdsField[];
+
+type CdsValue<T extends CdsField> = T extends { type: 'cds.Decimal' }
+  ? number
+  : string;
+
+type CdsRow<T extends CdsSchema> = {
+  [Field in T[number] as Field['name']]: CdsValue<Field>;
+};
+
+function cdsFieldToParquetSchema(field: CdsField): SchemaElement {
+  const common = { name: field.name, repetition_type: 'REQUIRED' as const };
+  switch (field.type) {
+    case 'cds.String':
+      return { ...common, type: 'BYTE_ARRAY', converted_type: 'UTF8' };
+    case 'cds.Decimal':
+      return {
+        ...common,
+        type: 'INT64',
+        converted_type: 'DECIMAL',
+        precision: field.precision,
+        scale: field.scale
+      };
+    case 'cds.Date':
+      return { ...common, type: 'INT32', converted_type: 'DATE' };
+  }
+}
+
+function encodeCdsValue(
+  value: CdsValue<CdsField>,
+  field: CdsField
+): string | number | Date {
+  switch (field.type) {
+    case 'cds.String':
+      return value;
+    case 'cds.Decimal':
+      return Number(value);
+    case 'cds.Date':
+      return new Date(`${value}T00:00:00Z`);
+  }
+}
+
+/**
+ * Writes an array of CDS-typed row objects to a parquet file with an explicit schema.
+ * Produces HANA-compatible output suitable for tabular artifacts in the context-registry.
+ * @param filename - Absolute path of the output file.
+ * @param rows - The row data to write.
+ * @param schema - CDS column definitions.
+ */
+export function writeCdsRowsToParquet<T extends CdsSchema>(
+  filename: string,
+  rows: readonly CdsRow<T>[],
+  schema: T
+): void {
+  parquetWriteFile({
+    filename,
+    columnData: schema.map(field => ({
+      name: field.name,
+      data: rows.map(row =>
+        encodeCdsValue(
+          row[field.name as keyof CdsRow<T>] as CdsValue<CdsField>,
+          field
+        )
+      )
+    })),
+    schema: [
+      { name: 'root', num_children: schema.length },
+      ...schema.map(cdsFieldToParquetSchema)
+    ]
+  });
+}
+
 // ----- Data -----
 
-const predictSchema = [
+const rptSchema = [
   { name: 'PRODUCT', dtype: 'string' },
   { name: 'PRICE', dtype: 'numeric' },
   { name: 'PRODUCTION_DATE', dtype: 'date' },
@@ -70,7 +146,15 @@ const predictSchema = [
   { name: 'SALESGROUP', dtype: 'string' }
 ] as const satisfies DataSchema;
 
-const predictRows: RowType<typeof predictSchema>[] = [
+const cdsSchema = [
+  { name: 'PRODUCT', type: 'cds.String', length: 100 },
+  { name: 'PRICE', type: 'cds.Decimal', precision: 15, scale: 2 },
+  { name: 'PRODUCTION_DATE', type: 'cds.Date' },
+  { name: '__row_idx__', type: 'cds.String', length: 100 },
+  { name: 'SALESGROUP', type: 'cds.String', length: 100 }
+] as const satisfies CdsSchema;
+
+const predictRows = [
   {
     PRODUCT: 'Laptop',
     PRICE: 999.99,
@@ -87,7 +171,7 @@ const predictRows: RowType<typeof predictSchema>[] = [
   }
 ];
 
-const regularRows: RowType<typeof predictSchema>[] = [
+const regularRows = [
   {
     PRODUCT: 'Desktop Computer',
     PRICE: 921.5,
@@ -112,22 +196,35 @@ const regularRows: RowType<typeof predictSchema>[] = [
 ];
 
 // ----- Script entry point -----
+
 function run(): void {
+  const useCds = process.argv.includes('--cds');
   const includePredictRows = !process.argv.includes('--no-predict');
   const data = includePredictRows
     ? [...predictRows, ...regularRows]
     : regularRows;
-  const filename = includePredictRows
-    ? 'product_data.parquet'
-    : 'product_data_no_predict.parquet';
+  const suffix = includePredictRows ? '' : '_no_predict';
 
-  const outputPath = join(import.meta.dirname, filename);
-
-  writeRowsToParquet(outputPath, data, predictSchema);
-
-  console.log(
-    `Successfully exported ${data.length} rows to ${outputPath}${includePredictRows ? ' (including [PREDICT] rows)' : ' (excluding [PREDICT] rows)'}`
-  );
+  if (useCds) {
+    const filename = join(
+      import.meta.dirname,
+      `product_data_hana${suffix}.parquet`
+    );
+    writeCdsRowsToParquet(filename, data, cdsSchema);
+    console.log(
+      `Successfully exported ${data.length} rows (CDS/HANA format) to ${filename}`
+    );
+  } else {
+    const filename = join(import.meta.dirname, `product_data${suffix}.parquet`);
+    writeRowsToParquet(
+      filename,
+      data as RowType<typeof rptSchema>[],
+      rptSchema
+    );
+    console.log(
+      `Successfully exported ${data.length} rows (RPT format) to ${filename}`
+    );
+  }
 }
 
 run();
