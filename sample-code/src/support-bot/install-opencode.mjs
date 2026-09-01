@@ -14,6 +14,10 @@ if (result.status !== 0) process.exit(result.status ?? 1);
 // Ensure the `opencode` symlink exists on non-Windows (pnpm may not preserve tarball symlinks)
 const symlink = join(binDir, 'opencode');
 const target = join(binDir, 'opencode.exe');
-if (process.platform !== 'win32' && !existsSync(symlink) && existsSync(target)) {
+if (
+  process.platform !== 'win32' &&
+  !existsSync(symlink) &&
+  existsSync(target)
+) {
   symlinkSync('opencode.exe', symlink);
 }
