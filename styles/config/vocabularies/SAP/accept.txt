@@ -75,6 +75,7 @@ namespace
 hostname
 multithreading
 https?
+gzip
 www
 semver
 XML
