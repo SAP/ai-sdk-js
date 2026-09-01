@@ -2,7 +2,7 @@
 '@sap-ai-sdk/rpt': minor
 ---
 
-[compat] **Require model name in `RptClient` constructor.**
+[compat] Require model name in `RptClient` constructor.
 Remove the default model name.
 Pass one of the four known model names explicitly:
 
