@@ -7,6 +7,7 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BodyPredictParquet,
   ColumnType as ColType,
+  PredictRequestPayload,
   SchemaFieldConfig
 } from './client/rpt/index.ts';
 
@@ -58,6 +59,19 @@ export type RowType<T extends DataSchema> = T extends readonly any[]
 export type ColumnType<T extends DataSchema> = {
   [P in keyof RowType<T>]: RowType<T>[P][];
 };
+
+type DeepPartial<T> = T extends readonly unknown[]
+  ? T
+  : T extends object
+    ? { [Key in keyof T]?: DeepPartial<T[Key]> }
+    : T;
+
+/**
+ * RPT-specific configuration merged into the generated prediction payload by
+ * the Tabular Orchestration service.
+ */
+export type RptModelConfig = DeepPartial<PredictRequestPayload> &
+  Record<string, unknown>;
 
 //
 // This could be simplified, if `TargetColumnConfig` in the spec would set `additionalProperties` to `false`.

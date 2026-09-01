@@ -9,6 +9,8 @@ packages:
   - packages/llm-batch
   - packages/prompt-registry
   - packages/rpt
+  - packages/context-registry
+  - packages/tabular-orchestration
   - sample-cap
   - sample-code
   - tests/e2e-tests

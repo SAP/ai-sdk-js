@@ -17,6 +17,7 @@
     "@sap-ai-sdk/openai": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
+    "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "^4.9.1",
     "@sap-cloud-sdk/http-client": "^4.9.1",
     "tsd": "^0.33.0"
