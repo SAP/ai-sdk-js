@@ -4,8 +4,7 @@ import {
   predictWithSchemaResilient,
   predictAutomaticParsing,
   predictParquetBlob,
-  predictParquetFile,
-  rptHealth
+  predictParquetFile
 } from '@sap-ai-sdk/sample-code';
 
 import { loadEnv } from './utils/load-env.ts';
@@ -61,10 +60,5 @@ describe('rpt', () => {
     const { predictions } = await predictWithSchemaResilient();
 
     verifyPredictions(predictions);
-  });
-
-  it('should return healthy status', async () => {
-    const result = await rptHealth();
-    expect(result).toEqual({});
   });
 });
