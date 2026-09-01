@@ -13,7 +13,7 @@ export type TargetColumnConfig = {
    */
   name: string;
   /**
-   * The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.
+   * The prediction placeholder in any column for which to predict a value. The model will predict a value for all table cells containing this value.
    */
   prediction_placeholder: string | number | null;
   /**

@@ -7,7 +7,7 @@
 /**
  * Supported column data types for the data schema.
  *
- * Includes base types (string, numeric, date) and additional types
+ * Includes base types (string, numeric, date, time) and additional types
  * derived from SAP CDS (https://cap.cloud.sap/docs/cds/types#core-built-in-types).
  * Additional types are mapped to the corresponding base type internally.
  * All values are lowercase for case-insensitive matching.
@@ -16,6 +16,7 @@ export type ColumnType =
   | 'string'
   | 'numeric'
   | 'date'
+  | 'time'
   | 'boolean'
   | 'largestring'
   | 'uuid'
@@ -26,6 +27,5 @@ export type ColumnType =
   | 'uint8'
   | 'decimal'
   | 'double'
-  | 'time'
   | 'datetime'
   | 'timestamp';

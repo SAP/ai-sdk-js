@@ -89,5 +89,16 @@ export const RptApi = {
         headerParameters: { 'content-type': 'multipart/form-data' }
       },
       RptApi._defaultBasePath
+    ),
+  /**
+   * Create a request builder for execution of get requests to the '/health' endpoint.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  health: () =>
+    new OpenApiRequestBuilder<any>(
+      'get',
+      '/health',
+      {},
+      RptApi._defaultBasePath
     )
 };

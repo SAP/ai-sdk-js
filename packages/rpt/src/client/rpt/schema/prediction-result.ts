@@ -14,10 +14,11 @@ export type PredictionResult = {
   prediction: string | number;
   /**
    * The confidence of the prediction (null for regression predictions).
+   * Maximum: 1.
    */
   confidence?: number | null;
   /**
-   * Lower and upper bounds of the prediction confidence interval (null for classification predictions).
+   * Lower and upper bounds of the confidence interval (null for classification predictions).
    */
   confidence_interval?: [number, number] | null;
 } & Record<string, any>;

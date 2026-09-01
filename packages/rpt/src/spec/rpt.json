@@ -3,7 +3,7 @@
   "info": {
     "title": "SAP RPT",
     "description": "A REST API for in-context learning with SAP RPT models.",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "servers": [
     {
@@ -11,25 +11,9 @@
     }
   ],
   "paths": {
-    "/health": {
-      "get": {
-        "summary": "Health Check",
-        "operationId": "health",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/predict": {
       "post": {
-        "summary": "Make predictions from JSON (optionally gzip-compressed).",
+        "summary": "Make in-context predictions for specified target columns based on provided table data JSON (optionally gzip-compressed).",
         "operationId": "predict",
         "responses": {
           "200": {
@@ -319,7 +303,7 @@
           {
             "name": "Content-Encoding",
             "in": "header",
-            "description": "Content encoding of the request body. Use 'gzip' for gzip-compressed payloads. Use compression level 1.",
+            "description": "Content encoding of the request body. Use 'gzip' for gzip-compressed payloads (recommended compression level 1).",
             "required": false,
             "schema": {
               "type": "string",
@@ -454,7 +438,7 @@
                   "detail": [
                     {
                       "loc": [],
-                      "msg": "Request body too large (>10485760 bytes)",
+                      "msg": "Request body too large (>576716800 bytes)",
                       "type": "value_error"
                     }
                   ]
@@ -515,6 +499,22 @@
           }
         }
       }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -530,11 +530,11 @@
             "type": "string",
             "title": "Prediction Config",
             "description": "JSON string containing the prediction configuration (see PredictionConfig schema).",
-            "example": "{\"target_columns\":[{\"name\": \"PRICE\",\"prediction_placeholder\": null,\"task_type\": \"regression\"}]}",
             "contentMediaType": "application/json",
             "contentSchema": {
               "$ref": "#/components/schemas/PredictionConfig"
-            }
+            },
+            "example": "{\"target_columns\":[{\"name\": \"PRICE\",\"prediction_placeholder\": null,\"task_type\": \"regression\"}]}"
           },
           "index_column": {
             "type": "string",
@@ -608,12 +608,18 @@
           "num_predictions": {
             "type": "integer",
             "title": "Num Predictions",
-            "description": "Number of table cells containing the specified placeholder value."
+            "description": "Number of table cells containing the specified prediction placeholder."
           },
           "num_query_rows": {
             "type": "integer",
             "title": "Num Query Rows",
             "description": "Number of rows for which a prediction was made."
+          },
+          "context_mode": {
+            "type": "string",
+            "title": "Context Mode",
+            "description": "The context mode used for this prediction request.",
+            "default": "default"
           }
         },
         "type": "object",
@@ -717,14 +723,14 @@
           "confidence": {
             "anyOf": [
               {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1
+                "type": "number"
               },
               {
                 "type": "null"
               }
             ],
+            "maximum": 1,
+            "minimum": 0,
             "title": "Confidence",
             "description": "The confidence of the prediction (null for regression predictions)."
           },
@@ -748,7 +754,7 @@
               }
             ],
             "title": "Confidence Interval",
-            "description": "Lower and upper bounds of the prediction confidence interval (null for classification predictions)."
+            "description": "Lower and upper bounds of the confidence interval (null for classification predictions)."
           }
         },
         "additionalProperties": true,
@@ -758,11 +764,12 @@
         "description": "A single prediction result for a single column in a single row."
       },
       "ColumnType": {
-        "description": "Supported column data types for the data schema.\n\nIncludes base types (string, numeric, date) and additional types\nderived from SAP CDS (https://cap.cloud.sap/docs/cds/types#core-built-in-types).\nAdditional types are mapped to the corresponding base type internally.\nAll values are lowercase for case-insensitive matching.",
+        "description": "Supported column data types for the data schema.\n\nIncludes base types (string, numeric, date, time) and additional types\nderived from SAP CDS (https://cap.cloud.sap/docs/cds/types#core-built-in-types).\nAdditional types are mapped to the corresponding base type internally.\nAll values are lowercase for case-insensitive matching.",
         "enum": [
           "string",
           "numeric",
           "date",
+          "time",
           "boolean",
           "largestring",
           "uuid",
@@ -773,7 +780,6 @@
           "uint8",
           "decimal",
           "double",
-          "time",
           "datetime",
           "timestamp"
         ],
@@ -815,6 +821,13 @@
             "title": "Target Columns",
             "type": "array"
           },
+          "context_mode": {
+            "default": "default",
+            "description": "Context mode for predictions. Set it to \"default\" for the best balance between accuracy and latency/cost. Set it to \"deep\" for higher accuracy with >8k context rows at increased latency and cost (only for \"sap-rpt-1.6-large\").",
+            "enum": ["default", "deep"],
+            "title": "Context Mode",
+            "type": "string"
+          },
           "explanations": {
             "$ref": "#/components/schemas/ExplanationConfig",
             "description": "Optional configuration for explainability outputs (column scores and relevant context rows)."
@@ -830,7 +843,7 @@
         "properties": {
           "dtype": {
             "$ref": "#/components/schemas/ColumnType",
-            "description": "The data type of the column. Supports base types (string, numeric, date) and extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base types internally. Case-insensitive."
+            "description": "The data type of the column. Supports base types (string, numeric, date, time) and extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base types internally. Case-insensitive."
           }
         },
         "required": ["dtype"],
@@ -858,7 +871,7 @@
                 "type": "null"
               }
             ],
-            "description": "The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.",
+            "description": "The prediction placeholder in any column for which to predict a value. The model will predict a value for all table cells containing this value.",
             "title": "Prediction Placeholder"
           },
           "task_type": {
@@ -900,7 +913,7 @@
             "properties": {
               "prediction_config": {
                 "$ref": "#/components/schemas/PredictionConfig",
-                "description": "Configuration of target columns and placeholder value."
+                "description": "Configuration of target columns and prediction placeholders."
               },
               "index_column": {
                 "anyOf": [
@@ -970,7 +983,7 @@
             "properties": {
               "prediction_config": {
                 "$ref": "#/components/schemas/PredictionConfig",
-                "description": "Configuration of target columns and placeholder value."
+                "description": "Configuration of target columns and prediction placeholders."
               },
               "index_column": {
                 "anyOf": [
@@ -1036,7 +1049,7 @@
             "additionalProperties": false
           }
         ],
-        "description": "Users need to specify a list of rows, which contains both the context rows and the rows for which to predict a label, and a mapping of column names to placeholder values. The model will predict the value for any column specified in `target_columns` for all rows that have the prediction placeholder in that column. Either \"rows\" or \"columns\" must be provided, but not both."
+        "description": "Users need to specify a list of rows, which contains both the context rows and the rows for which to predict a label, and a mapping of column names to prediction placeholder values. The model will predict the value for any column specified in `target_columns` for all rows that have the placeholder value in that column. Either \"rows\" or \"columns\" must be provided, but not both."
       }
     }
   },
