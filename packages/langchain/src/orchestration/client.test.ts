@@ -1,6 +1,5 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
-import nock from 'nock';
 
 import { type AIMessageChunk } from '@langchain/core/messages';
 import {
