@@ -138,7 +138,7 @@ for await (const current of watchAsyncResource(options)) {
 
 The helper should accept a `Retry-After` value from both the initial `202` and each polling response and use it as the next interval when present, so that service-driven retry delays are respected automatically if the service starts sending them.
 
-#### Future option B.3: Polling integrated into the OpenApi request builder
+#### Future option B.1: Polling integrated into the OpenApi request builder
 
 Add a `.poll(options)` method directly to the `OpenApiRequestBuilder` returned by each generated operation so that consumers chain polling onto the creation call without a separate import.
 
@@ -168,13 +168,13 @@ The best target for polling helpers may be a generic utility in `@sap-ai-sdk/cor
 Even this design could be specific to the context-registry and prompt-registry use cases.
 It might be incompatible with other future asynchronous operations in the SDK.
 
-#### Future option B.4: User-driven polling helpers
+#### Future option B.2: User-driven polling helpers
 
 Rather than hiding polling inside a utility or the request builder, provide primitives that return intermediate state and leave the polling loop to the consumer.
 
 Two shapes are possible:
 
-**B.4a — async generator (`watchAsyncResource`)**: yields each poll result as it arrives so the caller can react to intermediate states, log progress, or break:
+**B.2a — async generator (`watchAsyncResource`)**: yields each poll result as it arrives so the caller can react to intermediate states, log progress, or break:
 
 ```ts
 import { watchAsyncResource } from '@sap-ai-sdk/core';
@@ -193,7 +193,7 @@ for await (const current of watchAsyncResource({
 }
 ```
 
-**B.4b — Manual state check**: the consumer calls the generated GET operation directly on a timer of their choosing; the SDK only provides the terminal-state constants or a thin type guard:
+**B.2b — Manual state check**: the consumer calls the generated GET operation directly on a timer of their choosing; the SDK only provides the terminal-state constants or a thin type guard:
 
 ```ts
 import { isTerminalState } from '@sap-ai-sdk/core';
@@ -215,7 +215,7 @@ The async generator form composes naturally with `AbortSignal` and structured co
 Progress reporting and exiting before completion during polling are likely rare in practice.
 The added API surface and maintenance cost may not be justified by actual usage.
 
-B.4a (async generator) has a structural tension with `Retry-After`.
+B.2a (async generator) has a structural tension with `Retry-After`.
 A demand-driven generator fires the next `read` when the consumer calls `next()`, so the inter-poll delay is controlled by the consumer, not the generator.
 There is no natural place inside the generator to honour a server-supplied `Retry-After` hint without sleeping _before_ yielding — at which point the generator is no longer truly demand-driven and is indistinguishable from `pollAsyncResource` with a generator wrapper.
 The only escape is to yield a `{ value, retryAfter }` envelope and push the sleep back to the caller, but that recreates the loop-control burden the generator was meant to remove.
