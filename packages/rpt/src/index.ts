@@ -1,13 +1,16 @@
 export * from './client.ts';
 export type {
+  ColumnType,
   DateString,
-  TimeString,
+  DateTimeString,
+  ParquetPayload,
   PredictionData,
   RowType,
-  ColumnType,
-  ParquetPayload,
   RptRequestOptions,
-  RptRequestCompressionMiddlewareOptions
+  RptRequestCompressionMiddlewareOptions,
+  TimestampString,
+  TimeString,
+  UuidString
 } from './types.ts';
 export type {
   PredictResponseMetadata,
