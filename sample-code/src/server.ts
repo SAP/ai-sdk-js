@@ -1315,9 +1315,7 @@ app.get('/rpt/predict-explanations', async (req, res) => {
   try {
     const data = await predictWithExplanations();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
-    res.write(
-      `Explanations: ${JSON.stringify(data.explanations, null, 2)}\n`
-    );
+    res.write(`Explanations: ${JSON.stringify(data.explanations, null, 2)}\n`);
 
     res.end();
   } catch (error: any) {
