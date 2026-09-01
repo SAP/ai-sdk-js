@@ -387,8 +387,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/rpt
       '@upstash/context7-mcp':
-        specifier: 4.0.3
-        version: 4.0.3(hono@4.13.3)
+        specifier: 4.0.4
+        version: 4.0.4(hono@4.13.3)
       hyparquet-writer:
         specifier: 0.16.8
         version: 0.16.8
@@ -2231,8 +2231,8 @@ packages:
     resolution: {integrity: sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==}
     hasBin: true
 
-  '@upstash/context7-mcp@4.0.3':
-    resolution: {integrity: sha512-aLXIM12D4I+2Bw25cM4cUJLN3zhoBhx0hO2nGW2tCq9r8SnDhInO/w953xBlVwDfw7bHYXbFS1ae3OaeLk3asw==}
+  '@upstash/context7-mcp@4.0.4':
+    resolution: {integrity: sha512-7SO1no1tabPvC8OK8j1BBrUTysoCoUP/wHhzBTD53CDqJFKuPBxWH5MBl708vX1UwY3Ymd183SM4zLgJmwqYag==}
     engines: {node: '>=20.18.1'}
     hasBin: true
 
@@ -5778,7 +5778,7 @@ snapshots:
     dependencies:
       '@typescript/old': typescript@6.0.3
 
-  '@upstash/context7-mcp@4.0.3(hono@4.13.3)':
+  '@upstash/context7-mcp@4.0.4(hono@4.13.3)':
     dependencies:
       '@modelcontextprotocol/node': 2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.3)
       '@modelcontextprotocol/server': 2.0.0
