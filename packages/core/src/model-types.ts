@@ -93,7 +93,7 @@ export type AiCoreOpenSourceEmbeddingModel =
   LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
 
 /**
- * All SAP RPT models.
+ * SAP RPT models.
  */
 export type SapRptModel = LiteralUnion<
   'sap-rpt-1.5' | 'sap-rpt-1.5-large' | 'sap-rpt-1-small' | 'sap-rpt-1-large'
