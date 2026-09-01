@@ -22,6 +22,7 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
+# Re-evaluate in the future, this lead to lockfile errors.
 # gitBranchLockfile: true
 # mergeGitBranchLockfilesBranchPattern:
 #   - main
