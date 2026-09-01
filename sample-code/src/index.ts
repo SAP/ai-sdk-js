@@ -86,7 +86,8 @@ export {
   predictParquetFile,
   predictParquetBlob,
   predictWithSchemaCompressed,
-  predictWithSchemaResilient
+  predictWithSchemaResilient,
+  rptHealth
 } from './rpt.ts';
 
 export {

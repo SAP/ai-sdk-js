@@ -103,7 +103,8 @@ import {
 import {
   predictAutomaticParsing,
   predictWithSchema,
-  predictParquetBlob
+  predictParquetBlob,
+  rptHealth
 } from './rpt.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
@@ -1254,6 +1255,17 @@ app.get('/rpt/predict-parquet', async (_req, res) => {
   try {
     const data = await predictParquetBlob();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/health', async (_req, res) => {
+  try {
+    const data = await rptHealth();
+    res.write(`Health: ${JSON.stringify(data)}\n`);
 
     res.end();
   } catch (error: any) {
