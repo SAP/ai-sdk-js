@@ -390,8 +390,8 @@ importers:
         specifier: 4.0.3
         version: 4.0.3(hono@4.13.3)(supports-color@7.2.0)
       hyparquet-writer:
-        specifier: 0.16.7
-        version: 0.16.7
+        specifier: 0.16.8
+        version: 0.16.8
 
   tests/e2e-tests:
     dependencies:
@@ -2896,8 +2896,8 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  hyparquet-writer@0.16.7:
-    resolution: {integrity: sha512-sx6aR2HZhrr6QUlnCKMq2CRfnS2w88fz+St0w5GwRGQupVEPjN0qnG+0hq3XdrEStFUsFkds4FZ95HTjHI4+aQ==}
+  hyparquet-writer@0.16.8:
+    resolution: {integrity: sha512-kmZ7cLx2jVEbCNKRkQwRnVYx9VHYSpGqq4qGg5QIe5n6kT6VPi79o+CCEZnbVQjKaPfd82qF+0Fe8QiASseYpw==}
 
   hyparquet@1.29.2:
     resolution: {integrity: sha512-2LxinZ8X0JqToST+9OXcy9t3t5Q7ZneMTkSqUx/36Hv18pCTk/N71IWZc7APTSNG1Me39l/jjEvzZSZ0R+Knbw==}
@@ -6554,7 +6554,7 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  hyparquet-writer@0.16.7:
+  hyparquet-writer@0.16.8:
     dependencies:
       hyparquet: 1.29.2
 
