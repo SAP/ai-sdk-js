@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/rpt': major
+'@sap-ai-sdk/rpt': minor
 ---
 
 [compat] **Change `parse_data_types` default.** The server default changed from `true` to `false`.

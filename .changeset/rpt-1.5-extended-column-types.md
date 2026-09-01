@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/rpt': major
+'@sap-ai-sdk/rpt': minor
 ---
 
 [feat] **Extended column types.** Expand `ColumnType` from 3 to 16 values (`integer`, `int16`, `int32`, `int64`, `uint8`, `decimal`, `double`, `boolean`, `largestring`, `uuid`, `time`, `datetime`, `timestamp`).

@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/rpt': major
+'@sap-ai-sdk/rpt': minor
 ---
 
 [compat] **Widen `TargetColumnConfig.prediction_placeholder` to accept `null`.**

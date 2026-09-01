@@ -1,5 +1,5 @@
 ---
-'@sap-ai-sdk/rpt': major
+'@sap-ai-sdk/rpt': minor
 ---
 
 [compat] **Deprecate `sap-rpt-1-small` and `sap-rpt-1-large`.**
