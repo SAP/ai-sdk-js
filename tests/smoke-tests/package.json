@@ -1,10 +1,10 @@
 {
-  "type": "module",
   "name": "@sap-ai-sdk/smoke-tests",
-  "version": "2.13.0",
+  "version": "2.14.0",
+  "private": "true",
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "private": "true",
   "scripts": {
     "start": "sap-ai-sdk-sample-server",
     "local": "node --env-file=.env node_modules/.bin/sap-ai-sdk-sample-server",
@@ -32,6 +32,6 @@
     "vitest": "^4.1.10"
   },
   "engines": {
-    "node": "22.x || 24.x"
+    "node": ">=22"
   }
 }

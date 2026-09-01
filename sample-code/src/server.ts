@@ -1,9 +1,25 @@
-/* eslint-disable no-console */
-import express from 'express';
 import {
   resolveDeploymentUrl,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
+
+/* oxlint-disable no-console */
+import express from 'express';
+
+import {
+  getDeployments,
+  getDeploymentsWithDestination,
+  createDeployment,
+  stopDeployments,
+  deleteDeployments
+} from './ai-api/deployment-api.ts';
+import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
+import {
+  createCollection,
+  createDocumentsWithTimestamp,
+  deleteCollection,
+  retrieveDocuments
+} from './document-grounding.ts';
 import {
   chatCompletion,
   chatCompletionStream as azureChatCompletionStream,
@@ -11,6 +27,36 @@ import {
   computeEmbedding,
   chatCompletionWithFunctionCall
 } from './foundation-models/azure-openai.ts';
+import {
+  invokeChain,
+  invokeRagChain,
+  invoke,
+  invokeToolChain,
+  streamChain,
+  invokeWithStructuredOutputJsonSchema,
+  invokeReasoningWithMaxTokens
+} from './langchain-azure-openai.ts';
+import {
+  invokeChain as invokeChainOrchestration,
+  invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
+  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
+  invokeLangGraphChain as invokeLangGraphChainOrchestration,
+  invokeChainWithMasking,
+  invokeToolChain as invokeToolChainOrchestration,
+  streamChain as streamChainOrchestration,
+  invokeMcpToolChain as invokeMcpToolChainOrchestration,
+  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
+  invokeDynamicModelAgent,
+  invokePromptCachingAgent
+} from './langchain-orchestration.ts';
+import {
+  listBatches,
+  createBatch,
+  getBatchById,
+  getBatchStatus,
+  cancelBatch,
+  deleteBatch
+} from './llm-batch.ts';
 import {
   chatCompletion as openAiSdkChatCompletion,
   chatCompletionStream as openAiSdkChatCompletionStream,
@@ -45,66 +91,28 @@ import {
   orchestrationSapAbapChatCompletion,
   orchestrationWithFallbackConfigs,
   orchestrationSonarWithCitations,
-  orchestrationCacheControl
+  orchestrationCacheControl,
+  orchestrationReasoningContent,
+  orchestrationReasoningContentStream,
+  chatCompletionStreamWithTools
 } from './orchestration.ts';
-import {
-  getDeployments,
-  getDeploymentsWithDestination,
-  createDeployment,
-  stopDeployments,
-  deleteDeployments
-} from './ai-api/deployment-api.ts';
-import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
-import {
-  invokeChain,
-  invokeRagChain,
-  invoke,
-  invokeToolChain,
-  streamChain,
-  invokeWithStructuredOutputJsonSchema,
-  invokeReasoningWithMaxTokens
-} from './langchain-azure-openai.ts';
-import {
-  invokeChain as invokeChainOrchestration,
-  invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
-  invokeChainWithOutputFilter as invokeChainWithOutputFilterOrchestration,
-  invokeLangGraphChain as invokeLangGraphChainOrchestration,
-  invokeChainWithMasking,
-  invokeToolChain as invokeToolChainOrchestration,
-  streamChain as streamChainOrchestration,
-  invokeMcpToolChain as invokeMcpToolChainOrchestration,
-  invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
-  invokeDynamicModelAgent
-} from './langchain-orchestration.ts';
-import {
-  createCollection,
-  createDocumentsWithTimestamp,
-  deleteCollection,
-  retrieveDocuments
-} from './document-grounding.ts';
 import {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.ts';
 import {
-  listBatches,
-  createBatch,
-  getBatchById,
-  getBatchStatus,
-  cancelBatch,
-  deleteBatch
-} from './llm-batch.ts';
-import {
   predictAutomaticParsing,
   predictWithSchema,
   predictParquetBlob
 } from './rpt.ts';
+
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
-import type { AIMessageChunk } from '@langchain/core/messages';
 import type {
   OrchestrationEmbeddingResponse,
   OrchestrationResponse
 } from '@sap-ai-sdk/orchestration';
+
+import type { AIMessageChunk } from '@langchain/core/messages';
 
 const app = express();
 const port = 8080;
@@ -466,7 +474,8 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       sapAbap: orchestrationSapAbapChatCompletion,
       fallbackModules: orchestrationWithFallbackConfigs,
       sonarWithCitations: orchestrationSonarWithCitations,
-      cacheControl: orchestrationCacheControl
+      cacheControl: orchestrationCacheControl,
+      reasoningContent: orchestrationReasoningContent
     }[sampleCase] || orchestrationChatCompletion;
 
   try {
@@ -545,6 +554,17 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
             `Response: ${second.getContent()}\n` +
             `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
             `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
+        );
+    } else if (sampleCase === 'reasoningContent') {
+      const reasoningResult = result as OrchestrationResponse;
+      const reasoning = reasoningResult.getReasoningContent();
+      res
+        .header('Content-Type', 'text/plain')
+        .send(
+          '--- Reasoning ---\n' +
+            `${reasoning ? reasoning.join('\n') : '(none)'}\n\n` +
+            '--- Answer ---\n' +
+            `${reasoningResult.getContent()}`
         );
     } else {
       res
@@ -656,6 +676,98 @@ app.get(
     }
   }
 );
+
+app.post(
+  '/orchestration-stream/chat-completion-stream-tools',
+  express.json(),
+  async (req, res) => {
+    const controller = new AbortController();
+    try {
+      const response = await chatCompletionStreamWithTools(
+        controller,
+        req.body
+      );
+
+      // Set headers for event stream.
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Connection', 'keep-alive');
+      res.flushHeaders();
+
+      let connectionAlive = true;
+
+      // Abort the stream if the client connection is closed.
+      res.on('close', () => {
+        controller.abort();
+        connectionAlive = false;
+        res.end();
+      });
+
+      // Stream the delta content.
+      for await (const chunk of response.stream) {
+        if (!connectionAlive) {
+          break;
+        }
+        res.write(chunk.getDeltaContent() + '\n');
+      }
+
+      // Write the finish reason and token usage after the stream ends.
+      if (connectionAlive) {
+        const finishReason = response.getFinishReason();
+        const tokenUsage = response.getTokenUsage();
+        res.write('\n\n---------------------------\n');
+        res.write(`Finish reason: ${finishReason}\n`);
+        res.write('Token usage:\n');
+        res.write(`  - Completion tokens: ${tokenUsage?.completion_tokens}\n`);
+        res.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
+        res.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
+      }
+    } catch (error: any) {
+      sendError(res, error, false);
+    } finally {
+      res.end();
+    }
+  }
+);
+
+app.get('/orchestration-stream/reasoning-content', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const response = await orchestrationReasoningContentStream(controller);
+
+    // Set headers for event stream.
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+
+    // Abort the stream if the client connection is closed.
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    // Stream the delta reasoning content and the delta answer content.
+    for await (const chunk of response.stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      const deltaReasoning = chunk.getDeltaReasoningContent();
+      if (deltaReasoning) {
+        deltaReasoning.forEach(block => res.write(`[reasoning] ${block}\n`));
+      }
+      const deltaContent = chunk.getDeltaContent();
+      if (deltaContent) {
+        res.write(deltaContent);
+      }
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
 
 /* LangChain */
 app.get('/langchain/invoke', async (req, res) => {
@@ -813,6 +925,25 @@ app.get('/langchain/invoke-dynamic-model-agent', async (req, res) => {
     res
       .header('Content-Type', 'text/plain')
       .send(await invokeDynamicModelAgent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-prompt-caching-agent', async (req, res) => {
+  try {
+    const [first, second] = await invokePromptCachingAgent();
+
+    let response = '--- First call (cache write) ---\n';
+    response += `Response: ${first.content}\ncacheCreationTokens: ${first.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${first.cachedTokens ?? 0}\n\n`;
+
+    response += '--- Second call (cache read) ---\n';
+    response += `Response: ${second.content}\n`;
+    response += `Cache tokens created: ${second.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${second.cachedTokens ?? 0}\n`;
+
+    res.header('Content-Type', 'text/plain').send(response);
   } catch (error: any) {
     sendError(res, error);
   }
@@ -984,11 +1115,11 @@ app.get('/document-grounding/retrieve-documents', async (req, res) => {
       perFilterSearchResult => {
         res.write(`  - Filter: ${perFilterSearchResult.filterId}\n`);
         perFilterSearchResult.results!.forEach(
-          retievalDataRepositorySearchResult => {
+          retrievalDataRepositorySearchResult => {
             res.write(
-              `    - Data repository: ${retievalDataRepositorySearchResult.dataRepository.title}\n`
+              `    - Data repository: ${retrievalDataRepositorySearchResult.dataRepository.title}\n`
             );
-            retievalDataRepositorySearchResult.dataRepository.documents.forEach(
+            retrievalDataRepositorySearchResult.dataRepository.documents.forEach(
               retrievalDocument => {
                 retrievalDocument.chunks.forEach(chunk => {
                   res.write(`      - Chunk: ${chunk.content}\n`);

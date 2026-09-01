@@ -28,6 +28,41 @@
 
 -
 
+# 2.15.0
+## Compatibility Notes
+
+- [orchestration] Deprecate `OrchestrationConfigRef` — use `OrchestrationConfigRefById` or `OrchestrationConfigRefByName` instead. (b61cb53)
+
+## New Features
+
+- [core, openai] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export. (a5407c8)
+- [langchain] Add `orchestrationPromptCachingMiddleware()` middleware for the LangChain Orchestration client, exported from `@sap-ai-sdk/langchain/orchestration/prompt-caching-middleware`.
+  It enables automatic cache control for orchestration requests.
+  The middleware requires the optional `langchain` peer dependency to be installed. (070b309)
+- [orchestration] Split `OrchestrationConfigRef` into `OrchestrationConfigRefById` and `OrchestrationConfigRefByName`. (b61cb53)
+
+# 2.14.0
+## New Features
+
+- [core, orchestration] Add `GcpVertexAiEmbeddingModel` type with `gemini-embedding` to `@sap-ai-sdk/core`.
+  Add `GcpVertexAiEmbeddingModel` to the `EmbeddingModel` union in `@sap-ai-sdk/orchestration`. (cca7edd)
+- [orchestration] Add reasoning content support to the Orchestration client.
+  `reasoning_content` fields were added on response, streaming delta, and assistant message types.
+  The `getReasoningContent()` and `getDeltaReasoningContent()` convenience functions return the reasoning text from model responses. (b986b70)
+- [orchestration] Added `overrideConfig` field to `OrchestrationConfigRef` to pass a `PartialOrchestrationConfig` that overrides parts of the stored orchestration configuration at request time.
+  Streaming via `.stream()` now automatically sets `stream.enabled = true` in the partial configuration override, so clients using a stored orchestration configuration reference no longer require streaming to be pre-configured in the stored configuration. (b986b70)
+- [prompt-registry] prompt-registry: Update generated client to latest specification. (a268597)
+
+## Fixed Issues
+
+- [langchain] Skip tool and assistant messages when applying `cache_control`, using the last applicable message (system, user, or developer) instead.
+  Some models do not support `cache_control` on `tool` messages. (4003a12)
+- [openai] Fix OpenAI client types to allow passing objects with model deployment details (model name + model version, deployment ID and/or resource group) instead of just model names. (016edcd)
+
+## Improvements
+
+- [core] Add `anthropic--claude-4.5-opus`, `anthropic--claude-4.8-opus`, `gemini-3.5-flash`, `gemini-embedding` to the available model list. (cca7edd)
+
 # 2.13.0
 ## New Features
 
@@ -255,7 +290,7 @@
   - `PerFilterSearchError` was renamed to `RetrievalPerFilterSearchError`
   - `DataRepositorySearchResult` was renamed to `RetrievalDataRepositorySearchResult`
   - `SearchInput` was renamed to `RetrievalSearchInput` (e2c34f3)
-- [langchain] Remove structured ouput handling for deprecated gpt-4 & gpt-3 models (6100bca)
+- [langchain] Remove structured output handling for deprecated gpt-4 & gpt-3 models (6100bca)
 
 ## New Features
 

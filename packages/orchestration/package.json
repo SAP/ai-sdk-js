@@ -1,18 +1,24 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "2.13.0",
+  "version": "2.15.0",
   "description": "",
-  "license": "Apache-2.0",
   "keywords": [
-    "sap-ai-sdk",
+    "llm-access",
     "orchestration",
-    "llm-access"
+    "sap-ai-sdk"
   ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/orchestration"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,12 +32,6 @@
       "default": "./dist/internal.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
@@ -45,12 +45,12 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
-    "@sap-cloud-sdk/util": "^4.7.0",
+    "@sap-cloud-sdk/util": "^4.9.1",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@sap-cloud-sdk/connectivity": "4.7.0",
-    "@sap-cloud-sdk/http-client": "4.7.0",
-    "vitest": "4.1.10"
+    "@sap-cloud-sdk/connectivity": "4.9.1",
+    "@sap-cloud-sdk/http-client": "4.9.1",
+    "vitest": "4.1.11"
   }
 }

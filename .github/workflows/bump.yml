@@ -81,7 +81,7 @@ jobs:
       - name: Update release notes file
         id: update-notes
         run: |
-          pnpm tsx --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; addCurrentChangelog()"
+          node --input-type=module --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; await addCurrentChangelog();"
 
       - name: Open release notes PR
         id: open-pr

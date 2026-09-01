@@ -1,5 +1,7 @@
-import { expectError, expectType } from 'tsd';
 import { RptClient } from '@sap-ai-sdk/rpt';
+
+import { expectError, expectType } from 'tsd';
+
 import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
 
 /**

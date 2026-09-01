@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 import { execFile } from 'node:child_process';
 import {
   copyFile,

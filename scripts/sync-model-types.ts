@@ -3,7 +3,7 @@
  * LiteralUnion type blocks in packages/core/src/model-types.ts.
  * Run: node scripts/sync-model-types.ts
  */
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -86,9 +86,11 @@ const EMBEDDING_TYPE_MAP: Record<string, string> = {
 
 // Per-model type overrides for models whose executableId is missing in SAP Notes.
 const MODEL_NAME_TO_TYPE: Record<string, string> = {
+  'mistralai--mistral-medium': 'AiCoreOpenSourceChatModel',
   'mistralai--mistral-medium-instruct': 'AiCoreOpenSourceChatModel',
   'mistralai--mistral-small': 'AiCoreOpenSourceChatModel',
-  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel'
+  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel',
+  'gemini-embedding-2': 'GcpVertexAiEmbeddingModel'
 };
 
 function resolveTypeName(row: ModelRow): string | null {
@@ -192,7 +194,9 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
 
 function buildReleaseNote(
   added: string[],
-  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[]
+  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[],
+  batchAdded: string[],
+  batchRemoved: string[]
 ): string {
   const parts: string[] = [];
 
@@ -224,6 +228,15 @@ function buildReleaseNote(
     const last = descriptions.pop();
     const joined = descriptions.length ? `${descriptions.join(', ')} and ${last}` : last;
     parts.push(`Remove ${group.label} model${group.items.length > 1 ? 's' : ''} ${joined}.`);
+  }
+
+  if (batchAdded.length) {
+    const names = batchAdded.map(m => `\`${m}\``).join(', ');
+    parts.push(`Added ${names} to the batch model list.`);
+  }
+  if (batchRemoved.length) {
+    const names = batchRemoved.map(m => `\`${m}\``).join(', ');
+    parts.push(`Removed ${names} from the batch model list.`);
   }
 
   return parts.join(' ');
@@ -317,25 +330,45 @@ async function patchModelTypes(
   return changed;
 }
 
+/** Parsed structure of scripts/sap-models.json. */
+interface SapModelsFile {
+  models: ModelRow[];
+  batchModels: string[];
+}
+
 async function syncModelTypes(): Promise<void> {
   let rows: ModelRow[];
+  let batchModels: string[];
   try {
     const raw = await readFile(SAP_MODELS_PATH, 'utf8');
-    rows = JSON.parse(raw) as ModelRow[];
+    const data = JSON.parse(raw) as SapModelsFile;
+    rows = data.models;
+    batchModels = data.batchModels ?? [];
   } catch {
     console.error(`Error: could not read or parse ${SAP_MODELS_PATH}.`);
     process.exit(1);
   }
 
   const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
+  typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
+
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
-  const allAdded = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...activeModels].filter(m => !current.has(m));
-  });
+  const batchCurrent = extractCurrentModels(currentContent, 'LlmBatchModel');
+  const batchNew = typeToActiveModels['LlmBatchModel'] ?? new Set<string>();
+  const batchAdded = [...batchNew].filter(m => !batchCurrent.has(m));
+  const batchRemoved = [...batchCurrent].filter(m => !batchNew.has(m));
 
-  const allRemoved = Object.entries(typeToActiveModels).flatMap(([typeName, activeModels]) => {
+  const allAdded = Object.entries(typeToActiveModels)
+    .filter(([typeName]) => typeName !== 'LlmBatchModel')
+    .flatMap(([typeName, activeModels]) => {
+      const current = extractCurrentModels(currentContent, typeName);
+      return [...activeModels].filter(m => !current.has(m));
+    });
+
+  const allRemoved = Object.entries(typeToActiveModels)
+    .filter(([typeName]) => typeName !== 'LlmBatchModel')
+    .flatMap(([typeName, activeModels]) => {
     const current = extractCurrentModels(currentContent, typeName);
     return [...current]
       .filter(m => !activeModels.has(m))
@@ -356,7 +389,7 @@ async function syncModelTypes(): Promise<void> {
 
   console.error(`\nPatched: ${MODEL_TYPES_PATH}`);
 
-  const releaseNote = buildReleaseNote(allAdded, allRemoved);
+  const releaseNote = buildReleaseNote(allAdded, allRemoved, batchAdded, batchRemoved);
   if (releaseNote) {
     console.log('\n--- Release Note ---');
     console.log(releaseNote);

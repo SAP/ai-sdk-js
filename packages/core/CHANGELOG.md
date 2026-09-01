@@ -1,5 +1,19 @@
 # @sap-ai-sdk/core
 
+## 2.15.0
+
+### Minor Changes
+
+- a5407c8: [feat] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export.
+
+## 2.14.0
+
+### Minor Changes
+
+- cca7edd: [Improvement] Add `anthropic--claude-4.5-opus`, `anthropic--claude-4.8-opus`, `gemini-3.5-flash`, `gemini-embedding` to the available model list.
+- cca7edd: [feat] Add `GcpVertexAiEmbeddingModel` type with `gemini-embedding` to `@sap-ai-sdk/core`.
+  Add `GcpVertexAiEmbeddingModel` to the `EmbeddingModel` union in `@sap-ai-sdk/orchestration`.
+
 ## 2.13.0
 
 ### Minor Changes

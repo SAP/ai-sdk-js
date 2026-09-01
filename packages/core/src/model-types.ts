@@ -4,7 +4,6 @@ type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>);
  * Azure OpenAI models for chat completion.
  */
 export type AzureOpenAiChatModel = LiteralUnion<
-  | 'gpt-4.1-nano'
   | 'gpt-5'
   | 'gpt-5-mini'
   | 'gpt-5-nano'
@@ -13,6 +12,9 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-5.4-nano'
   | 'gpt-5.5'
   | 'gpt-5.1'
+  | 'gpt-5.6-sol'
+  | 'gpt-5.6-terra'
+  | 'gpt-5.6-luna'
 >;
 
 /**
@@ -29,14 +31,16 @@ export type AzureOpenAiEmbeddingModel = LiteralUnion<
 >;
 
 /**
+ * Azure OpenAI models for the Realtime (speech-to-speech) API.
+ * Currently only `gpt-realtime` is supported by SAP AI Core; other realtime scenarios (e.g. transcription, translation) are not fully supported.
+ */
+export type AzureOpenAiRealtimeModel = LiteralUnion<'gpt-realtime'>;
+
+/**
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  | 'gemini-2.5-flash'
-  | 'gemini-2.5-flash-lite'
-  | 'gemini-2.5-pro'
-  | 'gemini-3.1-flash-lite'
-  | 'gemini-3.5-flash'
+  'gemini-2.5-flash-lite' | 'gemini-3.1-flash-lite' | 'gemini-3.5-flash'
 >;
 
 /**
@@ -78,6 +82,7 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
   | 'mistralai--mistral-large-instruct'
   | 'mistralai--mistral-medium-instruct'
   | 'mistralai--mistral-small'
+  | 'mistralai--mistral-medium'
   | 'sap-abap-1'
 >;
 
@@ -90,4 +95,19 @@ export type AiCoreOpenSourceEmbeddingModel =
 /**
  * SAP RPT models.
  */
-export type SapRptModel = LiteralUnion<'sap-rpt-1-small' | 'sap-rpt-1-large'>;
+export type SapRptModel = LiteralUnion<
+  'sap-rpt-1-small' | 'sap-rpt-1-large' | 'sap-rpt-1.5' | 'sap-rpt-1.5-large'
+>;
+
+/**
+ * Models supported for LLM batch processing.
+ * The full list is managed by running the `update-models` skill.
+ */
+export type LlmBatchModel = LiteralUnion<
+  | 'gpt-4.1'
+  | 'gpt-4.1-mini'
+  | 'gpt-4.1-nano'
+  | 'gpt-5'
+  | 'gpt-5.4'
+  | 'gpt-5.4-mini'
+>;

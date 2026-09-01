@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -9,10 +10,12 @@ import {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
-import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-import * as z from 'zod/v4';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import * as z from 'zod/v4';
+
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -62,7 +65,7 @@ export async function orchestrationChatCompletion(
 }
 
 /**
- * Ask ChatGPT through the orchestration service using resilience middleware.
+ * Ask the LLM through the orchestration service using resilience middleware.
  * Configures a 30-second timeout, circuit breaker, and one retry attempt.
  * @returns The orchestration service response.
  */
@@ -80,7 +83,7 @@ export async function orchestrationChatCompletionResilient(): Promise<Orchestrat
 }
 
 /**
- * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * Ask the LLM through the orchestration service about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.
@@ -139,7 +142,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
 }
 
 /**
- * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
+ * Ask the LLM through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
  * @param controller - The abort controller.
  * @returns The response from the orchestration service containing the response content.
  */
@@ -723,7 +726,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
 
-  // Routing tool calls to their corresponsing implementation
+  // Routing tool calls to their corresponding implementation
   const callFunction = (name: string, args: any): string => {
     switch (name) {
       case 'add':
@@ -822,7 +825,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
 }
 
 /**
- * Ask ChatGPT to add two numbers using tools and stream the response.
+ * Ask the LLM to add two numbers using tools and stream the response.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.
@@ -1318,4 +1321,75 @@ export async function orchestrationCacheControl(): Promise<
   );
 
   return [first, second];
+}
+
+/**
+ * Demonstrates reasoning content support using the harmonized reasoning_effort parameter.
+ * Performs a follow-up turn passing the full message history so the model
+ * keeps the reasoning context from the first turn.
+ * @param signal - An optional AbortSignal to cancel the request.
+ * @returns The orchestration service response from the first turn, which carries the reasoning content.
+ */
+export async function orchestrationReasoningContent(
+  signal?: AbortSignal
+): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gemini-3.5-flash',
+        // reasoning_effort is harmonized across providers; orchestration maps it
+        // to each model's native reasoning configuration.
+        params: { reasoning_effort: 'high' }
+      }
+    }
+  });
+
+  const response = await orchestrationClient.chatCompletion(
+    {
+      messages: [
+        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+      ]
+    },
+    { signal }
+  );
+
+  // Pass full message history (includes reasoning blocks) to maintain context.
+  await orchestrationClient.chatCompletion(
+    {
+      messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+      messagesHistory: response.getAllMessages()
+    },
+    { signal }
+  );
+
+  // Return the first-turn response so the caller can read its reasoning content.
+  return response;
+}
+
+/**
+ * Demonstrates reasoning content support with streaming using the harmonized reasoning_effort parameter.
+ * @param controller - The AbortController to cancel the stream.
+ * @returns The orchestration stream response.
+ */
+export async function orchestrationReasoningContentStream(
+  controller: AbortController
+): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: {
+        name: 'gemini-3.5-flash',
+        // reasoning_effort is harmonized across providers; orchestration maps it
+        // to each model's native reasoning configuration.
+        params: { reasoning_effort: 'high' }
+      }
+    }
+  });
+  return orchestrationClient.stream(
+    {
+      messages: [
+        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+      ]
+    },
+    controller.signal
+  );
 }

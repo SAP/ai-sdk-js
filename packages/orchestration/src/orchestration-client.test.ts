@@ -1,9 +1,11 @@
-import nock from 'nock';
-import { createLogger } from '@sap-cloud-sdk/util';
 import {
   resolveDeploymentId,
   getOrchestrationDeploymentId
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
+
+import nock from 'nock';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall,
@@ -24,6 +26,7 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
 } from './util/index.ts';
+
 import type { CompletionPostResponse } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
@@ -1117,6 +1120,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
             placeholder_values: prompt.placeholderValues
           }
         },
@@ -1162,6 +1166,7 @@ describe('orchestration service client', () => {
               name: configRef.name,
               version: configRef.version
             },
+            config: { stream: { enabled: false } },
             placeholder_values: prompt.placeholderValues,
             messages_history: prompt.messagesHistory
           }
@@ -1196,7 +1201,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
           }
         },
         {
@@ -1221,7 +1227,7 @@ describe('orchestration service client', () => {
       }
     });
 
-    it('warns when stream options are provided with config reference', async () => {
+    it('warns when unsupported stream options (BaseStreamOptions fields) are provided with config reference', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'
@@ -1241,7 +1247,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
           }
         },
         {
@@ -1258,8 +1265,125 @@ describe('orchestration service client', () => {
       });
 
       expect(warnSpy).toHaveBeenCalledWith(
-        'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+        'Request-level stream options (promptTemplating, outputFiltering, global, and overrides) are ignored when using an orchestration config reference. Configure supported streaming settings via OrchestrationConfigRef.config or in the stored orchestration configuration. Per-fallback stream overrides are not supported for config references.'
       );
+    });
+
+    it('sends stream.enabled=true in config when streaming with config reference', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream();
+
+      for await (const chunk of response.stream) {
+        expect(chunk).toBeDefined();
+        break;
+      }
+    });
+
+    it('merges config stream options with stream.enabled=true', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id',
+        overrideConfig: {
+          stream: { chunk_size: 100 }
+        }
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: { stream: { chunk_size: 100, enabled: true } }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream();
+
+      for await (const chunk of response.stream) {
+        expect(chunk).toBeDefined();
+        break;
+      }
+    });
+
+    it('sends config in chatCompletion request body', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id',
+        overrideConfig: {
+          modules: {
+            prompt_templating: {
+              model: {
+                name: 'gpt-5.4-nano',
+                version: '1',
+                params: {}
+              }
+            }
+          }
+        }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: {
+              ...configRef.overrideConfig,
+              stream: { enabled: false }
+            }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(
+        configRef
+      ).chatCompletion();
+      expect(response).toBeInstanceOf(OrchestrationResponse);
     });
 
     it('logs warn and routes messages to messages_history when using config reference by ID', async () => {
@@ -1283,6 +1407,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
             messages_history: [{ role: 'user', content: 'test' }]
           }
         },
@@ -1325,6 +1450,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } },
             messages_history: [{ role: 'user', content: 'test' }]
           }
         },
@@ -1406,7 +1532,7 @@ describe('orchestration service client', () => {
       expect(response).toBeInstanceOf(OrchestrationResponse);
     });
 
-    it('throws error when server returns non-streaming JSON response for config reference without streaming enabled', async () => {
+    it('throws error when server returns non-streaming JSON response for config reference', async () => {
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id-without-streaming'
       };
@@ -1418,11 +1544,11 @@ describe('orchestration service client', () => {
       );
 
       // Mock the inference endpoint to return non-SSE formatted response
-      // This simulates a config reference where streaming is not enabled
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
           }
         },
         {

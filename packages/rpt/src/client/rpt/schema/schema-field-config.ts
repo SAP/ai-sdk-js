@@ -3,10 +3,14 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ColumnType } from './column-type.js';
 /**
  * Configuration for a single field in the input data schema.
  */
 export type SchemaFieldConfig = {
+  /**
+   * The data type of the target column. Supported types are ['string', 'numeric', 'date'].
+   */
   dtype: ColumnType;
 } & Record<string, any>;
