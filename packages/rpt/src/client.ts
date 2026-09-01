@@ -21,7 +21,6 @@ import type {
   ParquetPayload
 } from './types.ts';
 
-
 /**
  * Representation of an RPT client to make predictions.
  * @experimental This class is experimental and may change at any time without prior notice.
