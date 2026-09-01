@@ -18,7 +18,6 @@ const resourceGroup = 'default';
 const headers = { 'AI-Resource-Group': resourceGroup };
 
 const artifactName = 'ai-sdk-tabular-artifact';
-const transientArtifactName = `ai-sdk-tabular-artifact-${Date.now()}`;
 const dataDestinationName = 'ai-sdk-hdl-destination';
 const artifactPath = '/data/product_data_hana_lowercase.parquet';
 const scenarioConfigName = 'product-prediction-scenario-lowercase';
@@ -33,11 +32,14 @@ export async function listDataDestinations(): Promise<GetDataDestinations> {
 
 /**
  * Create a tabular artifact asynchronously and poll until active.
+ * @param name - The name to assign to the artifact.
  * @returns The completed tabular artifact.
  */
-export async function createTabularArtifact(): Promise<TabularArtifactDetails> {
+export async function createTabularArtifact(
+  name: string
+): Promise<TabularArtifactDetails> {
   const response = await TabularArtifactsApi.createTabularArtifact(
-    transientArtifactName,
+    name,
     {
       dataDestinationName,
       type: 'PARQUET',
@@ -57,7 +59,7 @@ export async function createTabularArtifact(): Promise<TabularArtifactDetails> {
   }
   const pollingName = getNameFromLocation(location, 'tabularArtifacts');
 
-  return pollAsyncResource({
+  const artifact = await pollAsyncResource<TabularArtifactDetails>({
     read: () =>
       TabularArtifactsApi.getTabularArtifactByName(
         pollingName,
@@ -73,22 +75,21 @@ export async function createTabularArtifact(): Promise<TabularArtifactDetails> {
     intervalMs: 2_000,
     maxAttempts: 60
   });
+  return artifact;
 }
 
 /**
  * Delete a tabular artifact and poll until it is gone.
+ * @param name - The name of the artifact to delete, as returned by {@link createTabularArtifact}.
  */
-export async function deleteTabularArtifact(): Promise<void> {
-  await TabularArtifactsApi.deleteTabularArtifact(
-    transientArtifactName,
-    headers
-  ).execute();
+export async function deleteTabularArtifact(name: string): Promise<void> {
+  await TabularArtifactsApi.deleteTabularArtifact(name, headers).execute();
 
   await pollAsyncResource<TabularArtifactDetails | null>({
     read: async () => {
       try {
         return await TabularArtifactsApi.getTabularArtifactByName(
-          transientArtifactName,
+          name,
           headers
         ).execute();
       } catch (error) {

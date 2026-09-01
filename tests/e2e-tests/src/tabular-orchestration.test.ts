@@ -16,9 +16,10 @@ describe('tabular-orchestration', () => {
   });
 
   it('should create, poll, and delete a tabular artifact', async () => {
-    const artifact = await createTabularArtifact();
+    const name = `ai-sdk-tabular-artifact-${Date.now()}`;
+    const artifact = await createTabularArtifact(name);
     expect(artifact.status).toBe('ACTIVE');
-    await deleteTabularArtifact();
+    await deleteTabularArtifact(name);
   }, 180_000);
 
   it('should get or create a scenario configuration', async () => {
