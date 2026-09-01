@@ -10,7 +10,7 @@ import type { ColumnType } from './column-type.js';
  */
 export type SchemaFieldConfig = {
   /**
-   * The data type of the column. Supports base types (string, numeric, date) and extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base types internally. Case-insensitive.
+   * The data type of the column. Supports base types (string, numeric, date, time) and extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base types internally. Case-insensitive.
    */
   dtype: ColumnType;
 };
