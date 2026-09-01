@@ -1,7 +1,8 @@
+import * as httpClient from '@sap-cloud-sdk/http-client';
+
 import nock from 'nock';
 import { vi } from 'vitest';
 
-import * as httpClient from '@sap-cloud-sdk/http-client';
 import {
   mockInference,
   mockClientCredentialsGrantCall,
@@ -226,7 +227,9 @@ describe('rpt compression', () => {
     await new RptClient('sap-rpt-1-small').predictWithoutSchema({} as any);
 
     expect(compressSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ compressOptions: expect.objectContaining({ level: 1 }) })
+      expect.objectContaining({
+        compressOptions: expect.objectContaining({ level: 1 })
+      })
     );
   });
 
@@ -246,7 +249,9 @@ describe('rpt compression', () => {
     });
 
     expect(compressSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ compressOptions: expect.objectContaining({ level: 6 }) })
+      expect.objectContaining({
+        compressOptions: expect.objectContaining({ level: 6 })
+      })
     );
   });
 });
