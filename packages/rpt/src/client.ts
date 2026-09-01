@@ -178,7 +178,6 @@ export class RptClient {
             ])
           )
         : null,
-      // Note: parse_data_types defaults to false server-side; pass true explicitly if needed.
       ...restData
     };
 

@@ -31,8 +31,7 @@ describe('rpt', () => {
             product: { dtype: 'string' },
             id: { dtype: 'numeric' },
             production_date: { dtype: 'date' }
-          },
-          parse_data_types: true
+          }
         }
       },
       {
@@ -66,8 +65,7 @@ describe('rpt', () => {
     const requestSpy = mockInference(
       {
         data: {
-          data_schema: null,
-          parse_data_types: true
+          data_schema: null
         }
       },
       {
@@ -145,23 +143,6 @@ describe('rpt', () => {
     );
 
     await new RptClient('sap-rpt-1.5').predictWithoutSchema({} as any);
-    expect(requestSpy.isDone()).toBe(true);
-  });
-
-  it('should inject parse_data_types for RPT-1.0 model specified as object', async () => {
-    mockDeploymentsList(
-      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
-      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
-    );
-    const requestSpy = mockInference(
-      { data: { data_schema: null, parse_data_types: true } },
-      { data: 'ok', status: 200 },
-      { url: 'inference/deployments/1234/predict' }
-    );
-
-    await new RptClient({ modelName: 'sap-rpt-1-small' }).predictWithoutSchema(
-      {} as any
-    );
     expect(requestSpy.isDone()).toBe(true);
   });
 
