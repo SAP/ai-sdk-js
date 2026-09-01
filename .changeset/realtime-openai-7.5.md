@@ -2,4 +2,4 @@
 '@sap-ai-sdk/openai': minor
 ---
 
-[compat] The minimum required openai package version was raised to 7.5.0.
+[compat] Raise the minimum required openai package version to 7.5.0.
