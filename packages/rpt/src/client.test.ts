@@ -1,5 +1,7 @@
 import nock from 'nock';
+import { vi } from 'vitest';
 
+import * as httpClient from '@sap-cloud-sdk/http-client';
 import {
   mockInference,
   mockClientCredentialsGrantCall,
@@ -194,5 +196,57 @@ describe('rpt', () => {
       columns: { active: [true, false] }
     } as any);
     expect(requestSpy.isDone()).toBe(true);
+  });
+});
+
+describe('rpt compression', () => {
+  let compressSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+    compressSpy = vi.spyOn(httpClient, 'compress');
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    vi.restoreAllMocks();
+  });
+
+  it('should default to compression level 1', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
+    mockInference(
+      () => true,
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/1234/predict' }
+    );
+
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema({} as any);
+
+    expect(compressSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ compressOptions: expect.objectContaining({ level: 1 }) })
+    );
+  });
+
+  it('should allow overriding the compression level', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
+    mockInference(
+      () => true,
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/1234/predict' }
+    );
+
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema({} as any, {
+      compress: { mode: 'always', compressOptions: { level: 6 } }
+    });
+
+    expect(compressSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ compressOptions: expect.objectContaining({ level: 6 }) })
+    );
   });
 });

@@ -133,7 +133,10 @@ export class RptClient {
 
     if (compress?.mode !== 'never') {
       customRequestConfig.middleware = [
-        compressMiddleware(compress),
+        compressMiddleware({
+          ...compress,
+          compressOptions: { level: 1, ...compress?.compressOptions }
+        }),
         ...(customRequestConfig.middleware || [])
       ];
     }
