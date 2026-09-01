@@ -19,12 +19,14 @@
     "local": "node --env-file-if-exists=.env src/server.ts",
     "agent-tutorial": "node --env-file-if-exists=.env src/tutorials/travel-itinerary-agent.ts",
     "realtime-demo": "node --env-file-if-exists=.env src/openai-realtime.ts",
+    "support-bot": "node --env-file-if-exists=.env src/support-bot/reply.ts \"${ISSUE_NUMBER:-9999}\"",
     "compile": "tsc",
     "dev": "tsc -w",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
+    "@opencode-ai/sdk": "^1.18.4",
     "@langchain/classic": "1.0.42",
     "@langchain/core": "1.2.7",
     "@langchain/langgraph": "1.4.9",
@@ -36,6 +38,7 @@
     "@types/express": "5.0.6",
     "express": "5.2.1",
     "langchain": "1.5.8",
+    "opencode-ai": "^1.18.4",
     "openai": "7.4.0",
     "zod": "4.4.3"
   },

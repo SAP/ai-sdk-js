@@ -8,13 +8,6 @@ on:
       issue_number:
         description: 'Issue number to test with'
         required: true
-      issue_title:
-        description: 'Issue title'
-        required: true
-      issue_body:
-        description: 'Issue body'
-        required: false
-        default: ''
 
 permissions: {}
 
@@ -32,21 +25,21 @@ jobs:
 
     steps:
       - uses: sap/cloud-sdk-js/.github/actions/setup@main
-        with:
-          registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
+
+      - name: Install opencode binary
+        working-directory: ./sample-code/src/support-bot
+        run: node install-opencode.mjs
 
       - name: Generate answer
         id: answer
         timeout-minutes: 5
-        working-directory: ./sample-code
+        working-directory: ./sample-code/src/support-bot
         env:
           AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_TITLE: ${{ github.event.inputs.issue_title || github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.inputs.issue_body || github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
         run: |
-          pnpm exec node src/support-bot/reply.ts "$ISSUE_TITLE" "$ISSUE_BODY" "$ISSUE_NUMBER" > /tmp/answer.md
+          node reply.ts "$ISSUE_NUMBER"
 
       - name: Build Slack payload
         env:

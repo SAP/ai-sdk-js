@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "bash": "deny"
+  },
+  "provider": {
+    "sap-ai-core": {
+      "name": "SAP AI Core"
+    }
+  },
+  "mcp": {
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/readonly",
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_TOKEN}",
+        "X-MCP-Toolsets": "repos,issues,code_search"
+      },
+      "enabled": true
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true
+    }
+  }
+}
