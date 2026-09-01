@@ -176,7 +176,11 @@ const columnarData: PredictionData<typeof schema> = {
     PRODUCT: ['Laptop', 'Office Chair', 'Desktop Computer'],
     PRICE: [999.99, 142.99, 921.5],
     IN_STOCK: [true, true, false],
-    LAST_UPDATED: ['2025-01-15T10:30:00', '2025-07-13T14:00:00', '2024-12-02T08:00:00'],
+    LAST_UPDATED: [
+      '2025-01-15T10:30:00',
+      '2025-07-13T14:00:00',
+      '2024-12-02T08:00:00'
+    ],
     __row_idx__: ['35', '571', '42'],
     SALESGROUP: ['[PREDICT]', '[PREDICT]', 'Electronics']
   }
