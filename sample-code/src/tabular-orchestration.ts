@@ -164,14 +164,14 @@ function getHttpStatus(error: unknown): number | undefined {
   if ('status' in error && typeof error.status === 'number') {
     return error.status;
   }
+  const response = 'response' in error ? error.response : undefined;
   if (
-    'response' in error &&
-    error.response &&
-    typeof error.response === 'object' &&
-    'status' in error.response &&
-    typeof error.response.status === 'number'
+    response &&
+    typeof response === 'object' &&
+    'status' in response &&
+    typeof response.status === 'number'
   ) {
-    return error.response.status;
+    return response.status;
   }
   if ('cause' in error) {
     return getHttpStatus(error.cause);

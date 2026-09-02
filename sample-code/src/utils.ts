@@ -39,41 +39,26 @@ export interface PollAsyncResourceOptions<T, ReadT = T> {
  * @typeParam T - The resource type returned by the polling helper.
  * @typeParam ReadT - The value returned by the read function.
  * @param options - Polling configuration.
- * @param options.read - Function to read the current state of the resource.
- * @param options.getResource - Optional function to extract the resource from the read response.
- * @param options.isComplete - Function to determine if the resource is in a completed state.
- * @param options.getFailure - Optional function to determine if the resource is in a failed state and return an error message.
- * @param options.maxAttempts - Maximum number of poll attempts before throwing a timeout error. Defaults to 10.
- * @param options.intervalMs - Milliseconds to wait between poll attempts. Defaults to 1,000.
- * @param options.initialRetryAfter - Retry-After header value from the initial asynchronous response.
- * @param options.getRetryAfter - Function to return the Retry-After header value from a polling response, if available.
- * @param options.signal - Signal that cancels polling and waiting.
- * @param options.sleep - Optional override for the sleep function, e.g. for testing.
  * @returns The resource in its completed state.
  * @throws Error if the resource enters a failure state or the attempt limit is exceeded.
  * @throws If the signal is aborted.
  */
-export function pollAsyncResource<T>(
-  options: PollAsyncResourceOptions<T, T> & { getResource?: undefined }
-): Promise<T>;
-export function pollAsyncResource<T, ReadT>(
-  options: PollAsyncResourceOptions<T, ReadT> & {
-    getResource: (response: ReadT) => T;
-  }
-): Promise<T>;
-export async function pollAsyncResource<T, ReadT = T>({
-  read,
-  getResource,
-  isComplete,
-  getFailure,
-  onPoll,
-  maxAttempts = DEFAULT_MAX_ATTEMPTS,
-  intervalMs = DEFAULT_INTERVAL_MS,
-  initialRetryAfter,
-  getRetryAfter,
-  signal,
-  sleep = sleepWithSignal
-}: PollAsyncResourceOptions<T, ReadT>): Promise<T> {
+export async function pollAsyncResource<T, ReadT = T>(
+  options: PollAsyncResourceOptions<T, ReadT>
+): Promise<T> {
+  const {
+    read,
+    getResource,
+    isComplete,
+    getFailure,
+    onPoll,
+    maxAttempts = DEFAULT_MAX_ATTEMPTS,
+    intervalMs = DEFAULT_INTERVAL_MS,
+    initialRetryAfter,
+    getRetryAfter,
+    signal,
+    sleep = sleepWithSignal
+  } = options;
   const extractResource =
     getResource ?? ((response: ReadT): T => response as unknown as T);
 
@@ -134,6 +119,8 @@ function parseRetryAfter(value: string | undefined): number | undefined {
     return Number.isFinite(milliseconds) ? milliseconds : undefined;
   }
 
+  // HTTP-date must be in RFC 7231 IMF-fixdate format (always GMT).
+  // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After
   if (
     !/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} GMT$/.test(
       trimmedValue
