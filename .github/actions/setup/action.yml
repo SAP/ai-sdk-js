@@ -18,29 +18,10 @@ inputs:
   package-manager-cache:
     description: 'Whether to enable caching for pnpm. Set to false to disable caching.'
     default: 'true'
-  ref:
-    description: 'The GitHub ref to checkout'
-    default: ${{ github.ref }}
-  token:
-    description: 'The GitHub token to use for checkout'
-    default: ${{ github.token }}
-  persist-credentials:
-    description: 'Whether to configure the token or SSH key with the local git config'
-    default: 'false'
-  allow-unsafe-pr-checkout:
-    description: 'Whether to allow checkout for pull_request_target and workflow_run'
-    default: 'false'
 
 runs:
   using: 'composite'
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      with:
-        ref: ${{ inputs.ref }}
-        token: ${{ inputs.token }}
-        persist-credentials: ${{ inputs.persist-credentials }}
-        allow-unsafe-pr-checkout: ${{ inputs.allow-unsafe-pr-checkout }}
     - name: Setup pnpm
       uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
     - name: Setup Node.js

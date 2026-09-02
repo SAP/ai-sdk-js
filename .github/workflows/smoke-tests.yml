@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: read
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup
       - name: Update smoke test dependencies
         # Always use latest SDK packages for smoke tests to ensure they are tested against the latest version.
