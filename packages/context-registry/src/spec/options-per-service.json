@@ -2,6 +2,6 @@
   "src/spec/context-registry.yaml": {
     "packageName": "context-registry",
     "directoryName": "context-registry",
-    "basePath": "/admin/tcr"
+    "basePath": "/tcr"
   }
 }

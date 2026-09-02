@@ -19,7 +19,7 @@ import type {
  * This API is part of the 'context-registry' service.
  */
 export const ScenarioConfigurationManagerApi = {
-  _defaultBasePath: '/admin/tcr',
+  _defaultBasePath: '/tcr',
   /**
    * Get all scenario configurations in the tenant (resource group)
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.

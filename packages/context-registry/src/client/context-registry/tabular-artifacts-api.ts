@@ -17,7 +17,7 @@ import type {
  * This API is part of the 'context-registry' service.
  */
 export const TabularArtifactsApi = {
-  _defaultBasePath: '/admin/tcr',
+  _defaultBasePath: '/tcr',
   /**
    * Retrieve list of Tabular Artifacts with pagination
    * @param queryParameters - Object containing the following keys: $top, $skip, $count.

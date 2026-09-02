@@ -16,29 +16,12 @@ tags:
     description: Manage scenario configurations for context selection
 
 servers:
-  - url: 'https://api.ai.{region}.ml.hana.ondemand.com/v2/tcr'
+  - url: 'https://{landscapehost}/v2/tcr'
     description: Production endpoint for SAP AI Core
     variables:
-      region:
-        enum:
-          - prod.eu-central-1.aws
-          - prodeuonly.eu-central-1.aws
-          - prod.us-east-1.aws
-          - prod.ap-northeast-1.aws
-          - prod.ap-southeast-2.aws
-          - prod-eu20.westeurope.azure
-          - prod-eu30.europe-west3.gcp
-          - prod-us21.eastus.azure
-          - prod-us30.us-central1.gcp
-          - prod-ap20.australiaeast.azure
-          - prod-ap11.ap-southeast-1.aws
-          - prod-ap30.australia-southeast1.gcp
-          - prod-br10.sa-east-1.aws
-          - prod-ap21.southeastasia.azure
-          - prod-eu01.eu-de-1.sapcc
-          - prod-us20.westus2.azure
-          - prod-in30.asia-south1.gcp
-        default: prod.eu-central-1.aws
+      landscapehost:
+        default: api.ai.prod.eu-central-1.aws.ml.hana.ondemand.com
+        description: SAP AI Core landscape host (e.g., api.ai.prod.eu-central-1.aws.ml.hana.ondemand.com, api.ai.prod.us-east-1.aws.ml.hana.ondemand.com)
 
 security:
   - Oauth2: []
