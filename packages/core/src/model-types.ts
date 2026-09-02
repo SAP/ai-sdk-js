@@ -94,7 +94,7 @@ export type AiCoreOpenSourceEmbeddingModel =
 
 /**
  * SAP RPT models.
- * @remarks `sap-rpt-1-small` and `sap-rpt-1-large` are deprecated and will be removed no earlier than 2026-12-31. Use `sap-rpt-1.5` or `sap-rpt-1.5-large` instead.
+ * @remarks `sap-rpt-1-small` and `sap-rpt-1-large` are deprecated and will be removed 2026-12-31. Use `sap-rpt-1.5` or `sap-rpt-1.5-large` instead.
  */
 export type SapRptModel = LiteralUnion<
   'sap-rpt-1.5' | 'sap-rpt-1.5-large' | 'sap-rpt-1-small' | 'sap-rpt-1-large'
