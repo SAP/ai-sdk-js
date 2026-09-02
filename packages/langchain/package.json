@@ -54,7 +54,7 @@
     "@langchain/langgraph": "1.4.13",
     "langchain": "1.5.10",
     "vitest": "4.1.11",
-    "zod": "4.5.1"
+    "zod": "4.5.2"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.3",
