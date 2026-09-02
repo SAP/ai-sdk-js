@@ -59,7 +59,7 @@ const instructions =
   'You are a helpful assistant. Respond only in English. ' +
   'When asked about weather, use the get_weather tool and summarize the result in one short sentence.';
 
-function buildSessionUpdate(mode: Mode, voice = 'alloy') {
+function buildSessionUpdate(mode: Mode, voice = 'marin') {
   return {
     type: 'session.update' as const,
     session: {
