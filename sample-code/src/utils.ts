@@ -13,7 +13,7 @@ export interface PollAsyncResourceOptions<T, ReadT = T> {
   /** Fetches the current state of the resource. */
   read: (signal?: AbortSignal) => Promise<ReadT>;
   /** Extracts the resource from the value returned by the read function. */
-  getResource?: (response: ReadT) => T;
+  getResource?: (response: ReadT) => T | Promise<T>;
   /** Returns true when the resource has reached a successful terminal state. */
   isComplete: (resource: T) => boolean;
   /** Returns an error message string if the resource is in a failed state, undefined otherwise. */
@@ -71,7 +71,7 @@ export async function pollAsyncResource<T, ReadT = T>(
     signal?.throwIfAborted();
     const response = await read(signal);
     signal?.throwIfAborted();
-    const resource = extractResource(response);
+    const resource = await extractResource(response);
     const failure = getFailure?.(resource);
     if (failure) {
       throw new Error(failure);
