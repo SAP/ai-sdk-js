@@ -28,12 +28,7 @@ Pros:
 
 Cons:
 
-- The package must maintain version-detection and request-patching logic until the RPT-1.0 retirement date (no earlier than 2026-12-31).
-
-### RPT-1.0 Compatibility Behavior
-
-- The model name is **required** and determines the RPT version.
-
+- Breaking change: The model name is **required** and determines the RPT version.
 - All TypeScript types are RPT-1.5 types regardless of model name — RPT-1.0 consumers passing 1.5-only fields (e.g. `explanations`) will compile but receive a server-side error.
 
 ### Behavioral Changes and SDK Handling
