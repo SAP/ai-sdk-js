@@ -51,7 +51,7 @@
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "4.1.11",
     "jose": "6.2.10",
-    "knip": "6.32.3",
+    "knip": "6.33.0",
     "memfs": "4.68.1",
     "nock": "14.0.17",
     "orval": "8.26.0",
@@ -61,6 +61,6 @@
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vitest": "4.1.11",
-    "zod": "4.4.3"
+    "zod": "4.5.2"
   }
 }
