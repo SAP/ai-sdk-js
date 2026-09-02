@@ -32,8 +32,7 @@ Cons:
 
 ### RPT-1.0 Compatibility Behavior
 
-- The model name is **required** and determines the RPT version (`sap-rpt-1-*` → RPT-1.0 behavior; `sap-rpt-1.5*` → RPT-1.5 behavior).
-  If a `deploymentId` is passed without a `modelName`, generation detection is not possible and the workaround is skipped.
+- The model name is **required** and determines the RPT version.
 
 - All TypeScript types are RPT-1.5 types regardless of model name — RPT-1.0 consumers passing 1.5-only fields (e.g. `explanations`) will compile but receive a server-side error.
 
