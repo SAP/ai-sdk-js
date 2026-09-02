@@ -3,6 +3,8 @@ name: Refresh Context7 Docs
 on:
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
