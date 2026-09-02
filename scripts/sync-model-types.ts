@@ -8,8 +8,11 @@
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { format as oxfmt } from 'oxfmt';
+
 import { ScenarioApi } from '@sap-ai-sdk/ai-api';
+
+import { format as oxfmt } from 'oxfmt';
+
 import { transformFile } from './util.ts';
 
 /** A single row from the SAP Notes model table. */
@@ -86,9 +89,11 @@ const EMBEDDING_TYPE_MAP: Record<string, string> = {
 
 // Per-model type overrides for models whose executableId is missing in SAP Notes.
 const MODEL_NAME_TO_TYPE: Record<string, string> = {
+  'mistralai--mistral-medium': 'AiCoreOpenSourceChatModel',
   'mistralai--mistral-medium-instruct': 'AiCoreOpenSourceChatModel',
   'mistralai--mistral-small': 'AiCoreOpenSourceChatModel',
-  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel'
+  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel',
+  'gemini-embedding-2': 'GcpVertexAiEmbeddingModel'
 };
 
 function resolveTypeName(row: ModelRow): string | null {
@@ -193,7 +198,12 @@ function extractCurrentModels(content: string, typeName: string): Set<string> {
 
 function buildReleaseNote(
   added: string[],
-  removed: { model: string; replacement: string; retirementDate: string; isRetiredFromTable: boolean }[],
+  removed: {
+    model: string;
+    replacement: string;
+    retirementDate: string;
+    isRetiredFromTable: boolean;
+  }[],
   batchAdded: string[],
   batchRemoved: string[]
 ): string {
@@ -359,7 +369,8 @@ async function syncModelTypes(): Promise<void> {
     process.exit(1);
   }
 
-  const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
+  const { typeToActiveModels, retiredInfo, skippedRows } =
+    buildActiveModelMap(rows);
   typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
 
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
@@ -379,16 +390,16 @@ async function syncModelTypes(): Promise<void> {
   const allRemoved = Object.entries(typeToActiveModels)
     .filter(([typeName]) => typeName !== 'LlmBatchModel')
     .flatMap(([typeName, activeModels]) => {
-    const current = extractCurrentModels(currentContent, typeName);
-    return [...current]
-      .filter(m => !activeModels.has(m))
-      .map(m => ({
-        model: m,
-        replacement: retiredInfo[m]?.replacement ?? '',
-        retirementDate: retiredInfo[m]?.retirementDate ?? '',
-        isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
-      }));
-  });
+      const current = extractCurrentModels(currentContent, typeName);
+      return [...current]
+        .filter(m => !activeModels.has(m))
+        .map(m => ({
+          model: m,
+          replacement: retiredInfo[m]?.replacement ?? '',
+          retirementDate: retiredInfo[m]?.retirementDate ?? '',
+          isRetiredFromTable: retiredInfo[m]?.isRetiredFromTable ?? false
+        }));
+    });
 
   const changed = await patchModelTypes(typeToActiveModels);
 
@@ -399,7 +410,12 @@ async function syncModelTypes(): Promise<void> {
 
   console.error(`\nPatched: ${MODEL_TYPES_PATH}`);
 
-  const releaseNote = buildReleaseNote(allAdded, allRemoved, batchAdded, batchRemoved);
+  const releaseNote = buildReleaseNote(
+    allAdded,
+    allRemoved,
+    batchAdded,
+    batchRemoved
+  );
   if (releaseNote) {
     console.log('\n--- Release Note ---');
     console.log(releaseNote);

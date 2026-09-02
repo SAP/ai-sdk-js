@@ -1,5 +1,6 @@
-import type { SnapshotSerializer } from 'vitest';
 import { isErrorWithCause } from '@sap-cloud-sdk/util';
+
+import type { SnapshotSerializer } from 'vitest';
 
 export default {
   test(val) {

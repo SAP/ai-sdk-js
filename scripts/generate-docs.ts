@@ -1,9 +1,10 @@
+import { execFile } from 'node:child_process';
 /* oxlint-disable no-console */
 import { readFile, rename, readdir, stat } from 'node:fs/promises';
 import { resolve, basename, extname, dirname } from 'node:path';
-import { deflate, inflate } from 'node:zlib';
 import { promisify } from 'node:util';
-import { execFile } from 'node:child_process';
+import { deflate, inflate } from 'node:zlib';
+
 import { transformFile } from './util.ts';
 
 const execFileP = promisify(execFile);

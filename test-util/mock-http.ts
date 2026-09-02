@@ -1,18 +1,21 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import nock from 'nock';
+
+import {
+  type FoundationModel,
+  type DeploymentResolutionOptions
+} from '@sap-ai-sdk/ai-api/internal.js';
+import { type EndpointOptions } from '@sap-ai-sdk/core';
 import {
   registerDestination,
   type DestinationAuthToken,
   type HttpDestination,
   type ServiceCredentials
 } from '@sap-cloud-sdk/connectivity';
-import { type EndpointOptions } from '@sap-ai-sdk/core';
-import {
-  type FoundationModel,
-  type DeploymentResolutionOptions
-} from '@sap-ai-sdk/ai-api/internal.js';
+
+import nock from 'nock';
+
 import { dummyToken } from './mock-jwt.ts';
 
 // Get the directory of this file

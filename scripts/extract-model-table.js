@@ -77,29 +77,40 @@
 
   function findBatchTable() {
     // Find the first table after the "Batch Consumption Supported Models" heading
-     const headingWalker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_ELEMENT,
-        el => el.matches('strong, b, h1, h2, h3, h4, h5, h6') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
-      );
+    const headingWalker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_ELEMENT,
+      el =>
+        el.matches('strong, b, h1, h2, h3, h4, h5, h6')
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_SKIP
+    );
 
-    let heading = headingWalker.nextNode()
-    for (; !heading.textContent.trim().toLowerCase().includes('batch consumption'); heading = headingWalker.nextNode()) {}
-  
+    let heading = headingWalker.nextNode();
+    for (
+      ;
+      !heading.textContent.trim().toLowerCase().includes('batch consumption');
+      heading = headingWalker.nextNode()
+    ) {
+      // consume iterator
+    }
+
     const walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_ELEMENT,
-      el => el.matches('table') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+      el =>
+        el.matches('table') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
     );
-  
+
     walker.currentNode = heading;
-    return walker.nextNode()
-  
+    return walker.nextNode();
   }
 
   function extractBatchRows(allRows) {
     return allRows.slice(1).reduce((rows, row) => {
-      const cells = Array.from(row.querySelectorAll('td')).map(td => clean(td.textContent));
+      const cells = Array.from(row.querySelectorAll('td')).map(td =>
+        clean(td.textContent)
+      );
       const model = cells[0];
       if (model) rows.push(model);
       return rows;
@@ -163,4 +174,4 @@
     : [];
 
   return { active, retired, batch };
-})()
+})();

@@ -133,9 +133,7 @@ const client = createAzureOpenAIClient({
 });
 client.chat.completions.create({
   // model: "gpt-5", // No need to specify the model again, as the function was overridden to hide this parameter
-  messages: [
-    { role: "user", content: "Hello world" }
-  ]
+  messages: [{ role: 'user', content: 'Hello world' }]
 });
 ```
 

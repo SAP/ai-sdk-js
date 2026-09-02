@@ -1,5 +1,6 @@
-import * as zodV4 from 'zod/v4';
 import * as zodV3 from 'zod/v3';
+import * as zodV4 from 'zod/v4';
+
 import type { ChatCompletionTool } from '../packages/orchestration/src/client/api/schema/index.ts';
 
 /**

@@ -1,9 +1,10 @@
+import { join } from 'node:path';
+
 import {
   defineProject,
   mergeConfig,
   type UserWorkspaceConfig
 } from 'vitest/config';
-import { join } from 'node:path';
 
 const errorWithCauseSerializer = join(
   import.meta.dirname,
