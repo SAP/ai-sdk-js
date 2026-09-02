@@ -22,7 +22,7 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-# Re-evaluate in the future, this lead to lockfile errors.
+# This is causing issues in CI, disable for now
 # gitBranchLockfile: true
 # mergeGitBranchLockfilesBranchPattern:
 #   - main
@@ -40,4 +40,5 @@ shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - 'picomatch@4.0.5'
+  - 'undici-types@6.21.0'
 trustPolicyIgnoreAfter: 131400 # 3 months
