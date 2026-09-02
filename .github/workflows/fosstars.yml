@@ -58,6 +58,7 @@ jobs:
             --failOnCVSS 7
             --disableYarnAudit
             --exclude '**/.local/pnpm/**'
+            --exclude '**/.github/actions/**'
             --nodeAuditSkipDevDependencies
             --pnpm /github/workspace/.local/pnpm/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}

@@ -39,7 +39,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "10"
+      "version": "10.15.0"
     }
   },
   "devDependencies": {

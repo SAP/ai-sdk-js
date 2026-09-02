@@ -65,7 +65,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - name: Checkout current repository
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
