@@ -65,6 +65,15 @@ jobs:
     secrets: &spec-update-secrets
       GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
+  update-context-registry:
+    permissions: *spec-update-permissions
+    uses: ./.github/workflows/spec-update.yaml
+    with:
+      service: context-registry
+      ref: main
+      create-pr: true
+    secrets: *spec-update-secrets
+
   update-document-grounding:
     permissions: *spec-update-permissions
     uses: ./.github/workflows/spec-update.yaml
@@ -97,6 +106,7 @@ jobs:
     needs:
       - get-orchestration-reference
       - update-ai-api
+      - update-context-registry
       - update-document-grounding
       - update-prompt-registry
       - update-orchestration
