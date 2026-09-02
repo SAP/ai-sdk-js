@@ -6,9 +6,8 @@ rules:
   dangerous-triggers:
     ignore:
       - dependabot-pnpm-lock.yml
-  # allow unpinned references to own repositories
+  # allow unpinned references to own repository
   unpinned-uses:
     config:
       policies:
         'sap/ai-sdk-js/*': any
-        'sap/cloud-sdk-js/*': any

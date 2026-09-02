@@ -58,7 +58,7 @@
             "pinDigests": false
         },
         {
-            "matchPackageNames": ["@sap-cloud-sdk/**", "sap/cloud-sdk-js", "sap/cloud-sdk-js/**"],
+            "matchPackageNames": ["@sap-cloud-sdk/**"],
             "groupName": "sap-cloud-sdk",
             "minimumReleaseAge": null,
             "pinDigests": false

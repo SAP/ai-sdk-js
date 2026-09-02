@@ -20,7 +20,7 @@ jobs:
         node-version: [26, 24, 22]
 
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: ./.github/actions/setup
         with:
           node-version: ${{ matrix.node-version }}
       # type-check can run in parallel to unit tests
@@ -50,7 +50,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: ./.github/actions/setup
       - name: Enforce generated code is up to date
         shell: bash
         run: |
@@ -74,14 +74,14 @@ jobs:
       # Independent read-only checks — run them concurrently.
       - parallel:
           - name: Check public API
-            uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
+            uses: ./.github/actions/check-public-api
             with:
               force_internal_exports: 'false'
               ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?'
           - name: Check dependencies
             run: pnpm check:deps --reporter=github-actions
           - name: License Check
-            uses: sap/cloud-sdk-js/.github/actions/check-license@main
+            uses: ./.github/actions/check-license
           - name: API Doc Check
             run: pnpm doc
       - wait-all:

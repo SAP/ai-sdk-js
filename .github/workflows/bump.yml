@@ -23,23 +23,23 @@ jobs:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: ./.github/actions/setup
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
           persist-credentials: true
       - name: Bump version
         id: bump
-        uses: sap/cloud-sdk-js/.github/actions/changesets-fixed-version-bump@main
+        uses: ./.github/actions/changesets-fixed-version-bump
         with:
           majorVersion: ${{ inputs.majorVersion }}
       - name: Merge and write changelogs
         id: merge-changelogs
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+        uses: ./.github/actions/merge-and-write-changelogs
       - name: Commit and tag
-        uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
+        uses: ./.github/actions/commit-and-tag
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}
@@ -64,7 +64,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - name: Checkout current repository
-        uses: sap/cloud-sdk-js/.github/actions/setup@main
+        uses: ./.github/actions/setup
         with:
           node-version: ${{ vars.DEFAULT_NODE_VERSION }}
       - name: Fetch full commit history (blobless)

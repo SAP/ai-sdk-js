@@ -34,7 +34,7 @@ jobs:
       # issues: write
 
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: ./.github/actions/setup
         with:
           registry-token: ${{ secrets.NPM_TOKEN_ARTIFACTORY }}
 

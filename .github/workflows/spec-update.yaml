@@ -77,7 +77,7 @@ jobs:
       CREATE_PR: ${{ inputs.create-pr }}
       BRANCH: spec-update/${{ inputs.service }}/${{ inputs.ref }}
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: ./.github/actions/setup
         with:
           persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
