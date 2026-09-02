@@ -654,16 +654,16 @@
               aria-label="AI voice"
             >
               <optgroup label="Voice">
-              <option value="alloy">Alloy</option>
-              <option value="ash">Ash</option>
-              <option value="ballad">Ballad</option>
-              <option value="coral">Coral</option>
-              <option value="echo">Echo</option>
-              <option value="sage">Sage</option>
-              <option value="shimmer">Shimmer</option>
-              <option value="verse">Verse</option>
-              <option value="marin" selected>Marin</option>
-              <option value="cedar">Cedar</option>
+                <option value="alloy">Alloy</option>
+                <option value="ash">Ash</option>
+                <option value="ballad">Ballad</option>
+                <option value="coral">Coral</option>
+                <option value="echo">Echo</option>
+                <option value="sage">Sage</option>
+                <option value="shimmer">Shimmer</option>
+                <option value="verse">Verse</option>
+                <option value="marin" selected>Marin</option>
+                <option value="cedar">Cedar</option>
               </optgroup>
             </select>
 
@@ -863,8 +863,14 @@
           /buffer too small|buffer only has/i,
           'Hold the mic button longer before releasing — at least 100ms of audio is required.'
         ],
-        [/no audio|no speech/i, 'No audio detected. Check your microphone and try again.'],
-        [/rate limit/i, 'Rate limit reached. Please wait a moment before sending.']
+        [
+          /no audio|no speech/i,
+          'No audio detected. Check your microphone and try again.'
+        ],
+        [
+          /rate limit/i,
+          'Rate limit reached. Please wait a moment before sending.'
+        ]
       ];
 
       function showError(msg) {
