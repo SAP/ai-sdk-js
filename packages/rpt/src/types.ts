@@ -131,7 +131,6 @@ export type PredictionData<T extends DataSchema> = {
   index_column?: ColumnNames<T>;
   /**
    * Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
-   * The RPT-1.5 server default is `false`. The SDK automatically uses `true` for RPT-1.0 model names unless explicitly overridden.
    */
   parse_data_types?: boolean;
 } & Xor<
