@@ -78,7 +78,7 @@ export async function pollAsyncResource<T, ReadT = T>({
     getResource ?? ((response: ReadT): T => response as unknown as T);
 
   signal?.throwIfAborted();
-  if (maxAttempts > 0 && initialRetryAfter !== undefined) {
+  if (maxAttempts && initialRetryAfter) {
     await sleep(parseRetryAfter(initialRetryAfter) ?? intervalMs, signal);
   }
 
@@ -110,7 +110,7 @@ async function sleepWithSignal(
   ms: number,
   signal?: AbortSignal
 ): Promise<void> {
-  for (let remaining = ms; remaining > 0;) {
+  for (let remaining = ms; remaining;) {
     const currentDelay = Math.min(remaining, MAX_TIMER_DELAY_MS);
     try {
       await delay(currentDelay, undefined, { signal });
