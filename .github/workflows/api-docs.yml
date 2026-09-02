@@ -15,7 +15,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: ./.github/actions/setup
       - name: Generate API documentation
         run: |
           pnpm generate

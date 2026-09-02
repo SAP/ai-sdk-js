@@ -36,6 +36,12 @@
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
     "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "10"
+    }
+  },
   "devDependencies": {
     "@changesets/cli": "3.0.1",
     "@sap-ai-sdk/ai-api": "workspace:^",
