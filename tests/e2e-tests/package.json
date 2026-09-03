@@ -1,9 +1,6 @@
 {
-  "type": "module",
   "name": "@sap-ai-sdk/e2e-tests",
   "version": "2.14.0",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "private": "true",
   "files": [
     "dist/**/*.js",
@@ -11,6 +8,15 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map"
   ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "cleanup-deployments": "node ./src/utils/cleanup-deployments.ts",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
+  },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -18,12 +24,6 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/sample-code": "workspace:^",
     "@sap-cloud-sdk/util": "^4.9.1"
-  },
-  "scripts": {
-    "test": "vitest run",
-    "cleanup-deployments": "node ./src/utils/cleanup-deployments.ts",
-    "lint": "oxlint && oxfmt --check .",
-    "lint:fix": "oxlint --fix && oxfmt ."
   },
   "devDependencies": {
     "@types/async-retry": "^1.4.9",
