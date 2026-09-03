@@ -484,20 +484,27 @@ export class OrchestrationClient extends BaseChatModel<
     configs: LangChainOrchestrationModuleConfig[],
     hasMessages: boolean
   ): void {
+    if (
+      this.isFirstCall ||
+      (this.hasWarnedTemplateRef && this.hasWarnedInlineTemplate)
+    ) {
+      this.isFirstCall = false;
+      return;
+    }
+
     const hasTemplateRef = configs.some(
       c =>
         typeof c.promptTemplating.prompt === 'object' &&
         isTemplateRef(c.promptTemplating.prompt)
     );
+    // To avoid rechecking if there is a TemplateRef next time.
+    if (!hasTemplateRef) {
+      this.hasWarnedTemplateRef = true;
+    }
     // Only warn from the second call onward — the first call may be intentional
     // (e.g. a single-node LangGraph client that knowingly routes messages to messages_history).
     // Users following the two-client pattern will never see this warning.
-    if (
-      hasTemplateRef &&
-      hasMessages &&
-      !this.isFirstCall &&
-      !this.hasWarnedTemplateRef
-    ) {
+    if (hasTemplateRef && hasMessages && !this.hasWarnedTemplateRef) {
       this.hasWarnedTemplateRef = true;
       logger.warn(
         'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
@@ -513,14 +520,13 @@ export class OrchestrationClient extends BaseChatModel<
         Array.isArray((c.promptTemplating.prompt as any).template) &&
         (c.promptTemplating.prompt as any).template.length > 0
     );
+    // To avoid rechecking if there is a inline template next time.
+    if (!hasInlineTemplate) {
+      this.hasWarnedInlineTemplate = true;
+    }
     // Only warn from the second call onward — the first call is always legitimate.
     // Users following the two-client pattern will never see this warning.
-    if (
-      hasInlineTemplate &&
-      hasMessages &&
-      !this.isFirstCall &&
-      !this.hasWarnedInlineTemplate
-    ) {
+    if (hasInlineTemplate && hasMessages && !this.hasWarnedInlineTemplate) {
       this.hasWarnedInlineTemplate = true;
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +

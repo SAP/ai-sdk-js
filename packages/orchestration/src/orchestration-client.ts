@@ -365,7 +365,7 @@ export class OrchestrationClient {
    * @param request - The chat completion request to check.
    */
   private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
-    if (!request?.messages?.length) {
+    if (!request?.messages?.length || this.hasWarnedInlineTemplateReuse) {
       return;
     }
     const configs: OrchestrationModuleConfig[] = Array.isArray(this.config)
@@ -381,7 +381,9 @@ export class OrchestrationClient {
         Array.isArray((c.promptTemplating.prompt as any).template) &&
         (c.promptTemplating.prompt as any).template.length > 0
     );
+    // To enable short circuit above.
     if (!hasInlineTemplate) {
+      this.hasWarnedInlineTemplateReuse = true;
       return;
     }
     if (!this.hasSeenInlineTemplateCall) {
