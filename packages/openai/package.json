@@ -59,12 +59,12 @@
   },
   "devDependencies": {
     "@types/ws": "8.18.1",
-    "openai": "7.4.0",
+    "openai": "7.5.0",
     "vitest": "4.1.11",
     "ws": "8.21.3"
   },
   "peerDependencies": {
-    "openai": "^6.49.0 || ^7.0.0",
+    "openai": "^7.5.0",
     "ws": "^8.20.0"
   },
   "peerDependenciesMeta": {
