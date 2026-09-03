@@ -216,6 +216,27 @@ export async function predictWithExplanations(): Promise<PredictResponsePayload>
   });
 }
 
+/**
+ * Predict the sales group of products returning the top 3 predictions per row.
+ * Setting `top_k` on a classification target column returns multiple ranked predictions instead of a single one.
+ * @returns The prediction results including the top K predictions per row.
+ */
+export async function predictWithTopK(): Promise<PredictResponsePayload> {
+  const client = new RptClient('sap-rpt-1.5');
+  return client.predictWithSchema(schema, {
+    ...data,
+    prediction_config: {
+      target_columns: [
+        {
+          name: 'SALESGROUP',
+          prediction_placeholder: '[PREDICT]',
+          top_k: 3
+        }
+      ]
+    }
+  });
+}
+
 const regressionSchema = [
   { name: 'PRODUCT', dtype: 'string' },
   { name: 'PRODUCTION_DATE', dtype: 'date' },

@@ -176,7 +176,7 @@ export class RptClient {
             Object.entries(row).map(([k, v]) => [k, serializeBooleans(v)])
           )
         )
-      } satisfies PredictRequestPayload;
+      };
     }
 
     if (columns) {
@@ -188,10 +188,12 @@ export class RptClient {
             vals.map(serializeBooleans)
           ])
         )
-      } satisfies PredictRequestPayload;
+      };
     }
 
-    return base as unknown as PredictRequestPayload;
+    throw new Error(
+      'Could not build body: either rows or columns must be provided.'
+    );
   }
 
   /**
