@@ -60,7 +60,6 @@ jobs:
             --disableYarnAudit
             --disablePnpmAudit
             --exclude '**/.local/pnpm/**'
-            --exclude '**/.github/actions/**'
             --nodeAuditSkipDevDependencies
             --pnpm /github/workspace/.local/pnpm/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
