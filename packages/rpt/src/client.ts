@@ -23,7 +23,6 @@ import type {
 
 /**
  * Representation of an RPT client to make predictions.
- * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class RptClient {
   private modelDeployment: ModelDeployment<SapRptModel>;
