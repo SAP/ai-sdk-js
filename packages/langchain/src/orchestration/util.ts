@@ -62,8 +62,8 @@ export function mapToolToOrchestrationFunction(
         // Notice that LangChain ToolDefinition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-          strict: tool.function.strict
-        }))
+            strict: tool.function.strict
+          }))
     };
   }
   // StructuredTool like object
@@ -181,15 +181,15 @@ function cloneMessageContent<TContent>(content: TContent): TContent {
 function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
   const content = Array.isArray(message.content)
     ? message.content.map(item => ({
-      ...item,
-      ...(item.type === 'image_url' && typeof item.image_url === 'string'
-        ? {
-          image_url: {
-            url: item.image_url
-          }
-        }
-        : {})
-    }))
+        ...item,
+        ...(item.type === 'image_url' && typeof item.image_url === 'string'
+          ? {
+              image_url: {
+                url: item.image_url
+              }
+            }
+          : {})
+      }))
     : message.content;
 
   return {
