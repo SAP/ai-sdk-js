@@ -7,7 +7,9 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type {
   BodyPredictParquet,
   ColumnType as ColType,
-  SchemaFieldConfig
+  PredictionConfig as ClientPredictionConfig,
+  SchemaFieldConfig,
+  TargetColumnConfig
 } from './client/rpt/index.ts';
 
 /**
@@ -26,14 +28,50 @@ export type DateString =
   `${number}${number}${number}${number}-${number}${number}-${number}${number}`;
 
 /**
- * Maps the type from the spec ('numeric', 'string', 'date') to a TypeScript type.
+ * Represents a time string in the format hh:mm:ss.
+ */
+export type TimeString =
+  `${number}${number}:${number}${number}:${number}${number}`;
+
+/**
+ * Represents a datetime string in the format YYYY-MM-DDThh:mm:ss.
+ */
+export type DateTimeString = `${DateString}T${TimeString}`;
+
+/**
+ * Represents a timestamp as a numeric string with up to 7 digits (µs precision).
+ */
+export type TimestampString = `${number}`;
+
+/**
+ * Represents a UUID string in the RFC 4122 format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.
+ */
+export type UuidString = `${string}-${string}-${string}-${string}-${string}`;
+
+interface ColTypeMap {
+  numeric: number;
+  integer: number;
+  int16: number;
+  int32: number;
+  int64: number;
+  uint8: number;
+  decimal: number;
+  double: number;
+  date: DateString;
+  time: TimeString;
+  datetime: DateTimeString;
+  timestamp: TimestampString;
+  boolean: boolean;
+  string: string;
+  largestring: string;
+  uuid: UuidString;
+}
+
+/**
+ * Maps the type from the spec to a TypeScript type.
  * @template T - Type of the data schema.
  */
-type TsType<T extends ColType> = T extends 'numeric'
-  ? number
-  : T extends 'date'
-    ? DateString
-    : string;
+type TsType<T extends ColType> = ColTypeMap[T];
 
 /**
  * Represents the type of the `rows` property.
@@ -59,34 +97,18 @@ export type ColumnType<T extends DataSchema> = {
   [P in keyof RowType<T>]: RowType<T>[P][];
 };
 
-//
-// This could be simplified, if `TargetColumnConfig` in the spec would set `additionalProperties` to `false`.
-// Then it could be replaced with:.
-// ```
-// type PredictionConfig<T extends DataSchema> = {target_columns: (Omit<TargetColumnConfig, 'name'> & {name: ColNames<T>;})[]}
-// ```
-//
-
 /**
  * Represents the type of the `prediction_config` property.
  * @template T - Type of the data schema.
  */
-interface PredictionConfig<T extends DataSchema> {
-  target_columns: {
-    /**
-     * The name of the target column.
-     */
+type PredictionConfig<T extends DataSchema> = Omit<
+  ClientPredictionConfig,
+  'target_columns'
+> & {
+  target_columns: (Omit<TargetColumnConfig, 'name'> & {
     name: ColumnNames<T>;
-    /**
-     * The placeholder value in any column for which to predict a value. The model will predict a value for all table cells containing this value.
-     */
-    prediction_placeholder: string | number;
-    /**
-     * The type of prediction task for this column. If not provided, the model will infer the task type from the data.
-     */
-    task_type?: 'classification' | 'regression';
-  }[];
-}
+  })[];
+};
 
 /**
  * Representation of a schema defining the data types of each column.
@@ -109,7 +131,6 @@ export type PredictionData<T extends DataSchema> = {
   index_column?: ColumnNames<T>;
   /**
    * Whether to parse the data types of the columns. If set to True, numeric columns will be parsed to float or integer and dates in ISO format YYYY-MM-DD will be parsed.
-   * Default: true.
    */
   parse_data_types?: boolean;
 } & Xor<

@@ -75,6 +75,7 @@ namespace
 hostname
 multithreading
 https?
+gzip
 www
 semver
 XML
@@ -150,3 +151,7 @@ impr
 breakpoints?
 [Rr]ealtime
 compat
+repo
+[Bb]ackport(ed|ing)?
+[Ee]xplainability
+RPT
