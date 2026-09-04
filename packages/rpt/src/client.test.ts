@@ -150,7 +150,9 @@ describe('rpt', () => {
       { url: 'inference/deployments/5678/predict' }
     );
 
-    await new RptClient('sap-rpt-1.5').predictWithoutSchema({ rows: [] } as any);
+    await new RptClient('sap-rpt-1.5').predictWithoutSchema({
+      rows: []
+    } as any);
     expect(requestSpy.isDone()).toBe(true);
   });
 
@@ -161,9 +163,9 @@ describe('rpt', () => {
       { url: 'inference/deployments/1234/predict' }
     );
 
-    await new RptClient({ deploymentId: '1234' }).predictWithoutSchema(
-      { rows: [] } as any
-    );
+    await new RptClient({ deploymentId: '1234' }).predictWithoutSchema({
+      rows: []
+    } as any);
     expect(requestSpy.isDone()).toBe(true);
   });
 
