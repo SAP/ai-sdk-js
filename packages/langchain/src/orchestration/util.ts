@@ -15,7 +15,6 @@ import type {
   ChatMessage,
   ChatMessageContent,
   CompletionPostResponse,
-  DeveloperChatMessage,
   FunctionObject,
   MessageToolCalls,
   SystemChatMessage,
@@ -63,8 +62,8 @@ export function mapToolToOrchestrationFunction(
         // Notice that LangChain ToolDefinition does not have strict property.
         ('strict' in tool.function &&
           tool.function.strict !== undefined && {
-            strict: tool.function.strict
-          }))
+          strict: tool.function.strict
+        }))
     };
   }
   // StructuredTool like object
@@ -182,15 +181,15 @@ function cloneMessageContent<TContent>(content: TContent): TContent {
 function mapHumanMessageToChatMessage(message: HumanMessage): UserChatMessage {
   const content = Array.isArray(message.content)
     ? message.content.map(item => ({
-        ...item,
-        ...(item.type === 'image_url' && typeof item.image_url === 'string'
-          ? {
-              image_url: {
-                url: item.image_url
-              }
-            }
-          : {})
-      }))
+      ...item,
+      ...(item.type === 'image_url' && typeof item.image_url === 'string'
+        ? {
+          image_url: {
+            url: item.image_url
+          }
+        }
+        : {})
+    }))
     : message.content;
 
   return {
@@ -274,50 +273,31 @@ export function applyCacheControlToLastMessage(
   messages: ChatMessage[],
   cacheControl: CacheControl
 ): void {
-  const idx = messages.findLastIndex(messageSupportsCacheControl);
-  if (idx === -1) {
+  const message = messages.findLast(messageSupportsCacheControl);
+  if (!message) {
     return;
   }
-  const message = messages[idx];
 
-  if (typeof message.content === 'string') {
-    if (message.role === 'system' || message.role === 'developer') {
-      (message as SystemChatMessage | DeveloperChatMessage).content = [
-        {
-          type: 'text',
-          text: message.content,
-          cache_control: cacheControl
-        }
-      ];
-      return;
+  if (Array.isArray(message.content)) {
+    const isUserMessage = message.role === 'user';
+    const block = message.content.findLast(
+      b =>
+        b &&
+        typeof b === 'object' &&
+        (b.type === 'text' ||
+          (isUserMessage && (b.type === 'image_url' || b.type === 'file')))
+    );
+    if (block) {
+      block.cache_control = cacheControl;
     }
-
-    if (message.role === 'user') {
-      (message as UserChatMessage).content = [
-        {
-          type: 'text',
-          text: message.content,
-          cache_control: cacheControl
-        }
-      ];
-    }
-    return;
-  }
-
-  if (!Array.isArray(message.content)) {
-    return;
-  }
-
-  const isUserMessage = message.role === 'user';
-  const block = message.content.findLast(
-    b =>
-      b &&
-      typeof b === 'object' &&
-      (b.type === 'text' ||
-        (isUserMessage && (b.type === 'image_url' || b.type === 'file')))
-  );
-  if (block) {
-    (block as { cache_control?: CacheControl }).cache_control = cacheControl;
+  } else if (typeof message.content === 'string') {
+    message.content = [
+      {
+        type: 'text',
+        text: message.content,
+        cache_control: cacheControl
+      }
+    ];
   }
 }
 
