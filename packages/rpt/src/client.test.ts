@@ -34,7 +34,8 @@ describe('rpt', () => {
             product: { dtype: 'string' },
             id: { dtype: 'numeric' },
             production_date: { dtype: 'date' }
-          }
+          },
+          rows: []
         }
       },
       {
@@ -52,7 +53,7 @@ describe('rpt', () => {
         { name: 'id', dtype: 'numeric' },
         { name: 'production_date', dtype: 'date' }
       ],
-      {} as any
+      { rows: [] } as any
     );
     expect(requestSpy.isDone()).toBe(true);
   });
@@ -68,7 +69,8 @@ describe('rpt', () => {
     const requestSpy = mockInference(
       {
         data: {
-          data_schema: null
+          data_schema: null,
+          rows: []
         }
       },
       {
@@ -80,7 +82,9 @@ describe('rpt', () => {
       }
     );
 
-    await new RptClient('sap-rpt-1-small').predictWithoutSchema({} as any);
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema({
+      rows: []
+    } as any);
     expect(requestSpy.isDone()).toBe(true);
   });
 
@@ -123,13 +127,14 @@ describe('rpt', () => {
       { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
     );
     const requestSpy = mockInference(
-      { data: { data_schema: null, parse_data_types: false } },
+      { data: { data_schema: null, parse_data_types: false, rows: [] } },
       { data: 'ok', status: 200 },
       { url: 'inference/deployments/1234/predict' }
     );
 
     await new RptClient('sap-rpt-1-small').predictWithoutSchema({
-      parse_data_types: false
+      parse_data_types: false,
+      rows: []
     } as any);
     expect(requestSpy.isDone()).toBe(true);
   });
@@ -140,24 +145,24 @@ describe('rpt', () => {
       { id: '5678', model: { name: 'sap-rpt-1.5', version: 'latest' } }
     );
     const requestSpy = mockInference(
-      { data: { data_schema: null } },
+      { data: { data_schema: null, rows: [] } },
       { data: 'ok', status: 200 },
       { url: 'inference/deployments/5678/predict' }
     );
 
-    await new RptClient('sap-rpt-1.5').predictWithoutSchema({} as any);
+    await new RptClient('sap-rpt-1.5').predictWithoutSchema({ rows: [] } as any);
     expect(requestSpy.isDone()).toBe(true);
   });
 
   it('should not inject parse_data_types when only a deployment ID is given', async () => {
     const requestSpy = mockInference(
-      { data: { data_schema: null } },
+      { data: { data_schema: null, rows: [] } },
       { data: 'ok', status: 200 },
       { url: 'inference/deployments/1234/predict' }
     );
 
     await new RptClient({ deploymentId: '1234' }).predictWithoutSchema(
-      {} as any
+      { rows: [] } as any
     );
     expect(requestSpy.isDone()).toBe(true);
   });
@@ -224,7 +229,9 @@ describe('rpt compression', () => {
       { url: 'inference/deployments/1234/predict' }
     );
 
-    await new RptClient('sap-rpt-1-small').predictWithoutSchema({} as any);
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema({
+      rows: []
+    } as any);
 
     expect(compressSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -244,9 +251,12 @@ describe('rpt compression', () => {
       { url: 'inference/deployments/1234/predict' }
     );
 
-    await new RptClient('sap-rpt-1-small').predictWithoutSchema({} as any, {
-      compress: { mode: 'always', compressOptions: { level: 6 } }
-    });
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema(
+      { rows: [] } as any,
+      {
+        compress: { mode: 'always', compressOptions: { level: 6 } }
+      }
+    );
 
     expect(compressSpy).toHaveBeenCalledWith(
       expect.objectContaining({
