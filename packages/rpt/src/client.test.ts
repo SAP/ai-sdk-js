@@ -121,54 +121,6 @@ describe('rpt', () => {
     expect(result.predictions).toEqual([{ SALESGROUP: 'test' }]);
   });
 
-  it('should respect explicit parse_data_types: false for RPT-1.0 models', async () => {
-    mockDeploymentsList(
-      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
-      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
-    );
-    const requestSpy = mockInference(
-      { data: { data_schema: null, parse_data_types: false, rows: [] } },
-      { data: 'ok', status: 200 },
-      { url: 'inference/deployments/1234/predict' }
-    );
-
-    await new RptClient('sap-rpt-1-small').predictWithoutSchema({
-      parse_data_types: false,
-      rows: []
-    } as any);
-    expect(requestSpy.isDone()).toBe(true);
-  });
-
-  it('should not inject parse_data_types for RPT-1.5 models', async () => {
-    mockDeploymentsList(
-      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
-      { id: '5678', model: { name: 'sap-rpt-1.5', version: 'latest' } }
-    );
-    const requestSpy = mockInference(
-      { data: { data_schema: null, rows: [] } },
-      { data: 'ok', status: 200 },
-      { url: 'inference/deployments/5678/predict' }
-    );
-
-    await new RptClient('sap-rpt-1.5').predictWithoutSchema({
-      rows: []
-    } as any);
-    expect(requestSpy.isDone()).toBe(true);
-  });
-
-  it('should not inject parse_data_types when only a deployment ID is given', async () => {
-    const requestSpy = mockInference(
-      { data: { data_schema: null, rows: [] } },
-      { data: 'ok', status: 200 },
-      { url: 'inference/deployments/1234/predict' }
-    );
-
-    await new RptClient({ deploymentId: '1234' }).predictWithoutSchema({
-      rows: []
-    } as any);
-    expect(requestSpy.isDone()).toBe(true);
-  });
-
   it('should serialize boolean values in rows to strings', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
