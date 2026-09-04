@@ -23,9 +23,11 @@ jobs:
       checks: write
       contents: write
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
       # OWASP runs in Docker and cannot see the runner's pnpm install. Put the
-      # standalone pnpm 11 bundle in the mounted workspace instead.
+      # standalone pnpm bundle in the mounted workspace instead.
+      # Keep this version in sync with devEngines.packageManager.version in package.json.
       - name: Install pnpm for OWASP container
         shell: bash
         env:
@@ -56,6 +58,7 @@ jobs:
           args: >
             --failOnCVSS 7
             --disableYarnAudit
+            --disablePnpmAudit
             --exclude '**/.local/pnpm/**'
             --nodeAuditSkipDevDependencies
             --pnpm /github/workspace/.local/pnpm/pnpm

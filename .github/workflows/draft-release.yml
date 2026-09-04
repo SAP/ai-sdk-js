@@ -12,10 +12,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
       - name: Get Changelog
         id: get-changelog
-        uses: sap/cloud-sdk-js/.github/actions/get-changelog@main
+        uses: ./.github/actions/get-changelog
       - name: Create Draft Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
