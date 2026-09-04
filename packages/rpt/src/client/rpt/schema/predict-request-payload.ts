@@ -7,12 +7,12 @@
 import type { PredictionConfig } from './prediction-config.js';
 import type { SchemaFieldConfig } from './schema-field-config.js';
 /**
- * Users need to specify a list of rows, which contains both the context rows and the rows for which to predict a label, and a mapping of column names to placeholder values. The model will predict the value for any column specified in `target_columns` for all rows that have the prediction placeholder in that column. Either "rows" or "columns" must be provided, but not both.
+ * Users need to specify a list of rows, which contains both the context rows and the rows for which to predict a label, and a mapping of column names to prediction placeholder values. The model will predict the value for any column specified in `target_columns` for all rows that have the placeholder value in that column. Either "rows" or "columns" must be provided, but not both.
  */
 export type PredictRequestPayload =
   | {
       /**
-       * Configuration of target columns and placeholder value.
+       * Configuration of target columns and prediction placeholders.
        */
       prediction_config: PredictionConfig;
       /**
@@ -35,7 +35,7 @@ export type PredictRequestPayload =
     }
   | {
       /**
-       * Configuration of target columns and placeholder value.
+       * Configuration of target columns and prediction placeholders.
        */
       prediction_config: PredictionConfig;
       /**

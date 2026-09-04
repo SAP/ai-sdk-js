@@ -17,11 +17,16 @@ export type PredictResponseMetadata = {
    */
   num_rows: number;
   /**
-   * Number of table cells containing the specified placeholder value.
+   * Number of table cells containing the specified prediction placeholder.
    */
   num_predictions: number;
   /**
    * Number of rows for which a prediction was made.
    */
   num_query_rows: number;
+  /**
+   * The context mode used for this prediction request.
+   * Default: "default".
+   */
+  context_mode?: string;
 } & Record<string, any>;
