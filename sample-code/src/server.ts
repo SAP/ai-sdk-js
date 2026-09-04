@@ -109,7 +109,8 @@ import {
   predictParquetFile,
   predictColumnarFormat,
   predictWithExplanations,
-  predictRegressionWithConfidenceIntervals
+  predictRegressionWithConfidenceIntervals,
+  predictWithTopK
 } from './rpt.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
@@ -1326,6 +1327,17 @@ app.get('/rpt/predict-explanations', async (req, res) => {
 app.get('/rpt/predict-regression', async (req, res) => {
   try {
     const data = await predictRegressionWithConfidenceIntervals();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-top-k', async (req, res) => {
+  try {
+    const data = await predictWithTopK();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
