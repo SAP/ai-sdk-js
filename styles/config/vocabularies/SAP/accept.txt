@@ -25,6 +25,9 @@ JCo
 OAuth
 API's
 SDK's
+RPT's
+explainability
+subpath
 SAMLAssertion
 zoneId
 CRDs
@@ -47,6 +50,7 @@ GUIDs
 Blust
 Streifeneder
 ESM
+PoC
 
 subaccount
 microservices
@@ -123,6 +127,8 @@ subscribable
 Sandeep
 browserified
 untrusted
+async
+handwrite
 
 v2
 v4
@@ -150,3 +156,5 @@ impr
 breakpoints?
 [Rr]ealtime
 compat
+passthrough
+TFMs?
