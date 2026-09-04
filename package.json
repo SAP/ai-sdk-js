@@ -54,13 +54,13 @@
     "knip": "6.33.0",
     "memfs": "4.68.2",
     "nock": "14.0.17",
-    "orval": "8.26.0",
+    "orval": "8.27.0",
     "oxfmt": "0.65.0",
     "oxlint": "1.80.0",
     "oxlint-tsgolint": "7.0.2001",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vitest": "4.1.11",
-    "zod": "4.5.2"
+    "zod": "4.5.4"
   }
 }
