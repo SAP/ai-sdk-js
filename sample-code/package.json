@@ -37,6 +37,7 @@
     "express": "5.2.1",
     "langchain": "1.5.10",
     "openai": "7.5.0",
+    "ws": "8.21.3",
     "zod": "4.5.4"
   },
   "devDependencies": {
@@ -50,6 +51,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
+    "@types/ws": "8.18.1",
     "@upstash/context7-mcp": "4.0.4",
     "hyparquet-writer": "0.16.9"
   },

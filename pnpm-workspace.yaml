@@ -21,7 +21,7 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-gitBranchLockfile: true
+# gitBranchLockfile: true
 mergeGitBranchLockfilesBranchPattern:
   - main
   - renovate/*
