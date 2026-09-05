@@ -46,7 +46,11 @@ async function transformFilesInCanonicalDirectory(
       const fileStats = await stat(canonicalPath);
 
       if (fileStats.isDirectory() && includeDir(canonicalPath)) {
-        await transformFilesInCanonicalDirectory(canonicalPath, transformFn, opts);
+        await transformFilesInCanonicalDirectory(
+          canonicalPath,
+          transformFn,
+          opts
+        );
       } else if (fileStats.isFile() && includeFile(canonicalPath)) {
         await transformCanonicalFile(canonicalPath, transformFn);
       }
@@ -63,10 +67,7 @@ export async function transformFile(
   filePath: string,
   transformFn: (file: string) => Promise<string> | string
 ): Promise<void> {
-  await transformCanonicalFile(
-    await validatePathInRepo(filePath),
-    transformFn
-  );
+  await transformCanonicalFile(await validatePathInRepo(filePath), transformFn);
 }
 
 /**

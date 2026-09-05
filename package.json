@@ -1,11 +1,11 @@
 {
   "name": "sap-ai-sdk",
   "version": "2.15.0",
+  "private": true,
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
   "repository": "github:SAP/ai-sdk-js",
-  "private": true,
   "type": "module",
   "scripts": {
     "postinstall": "pnpm compile",
@@ -15,8 +15,8 @@
     "test:e2e": "pnpm e2e-tests test",
     "test:smoke": "pnpm smoke-tests test",
     "typecheck": "tsc --project tsconfig.json",
-    "lint": "pnpm -r run lint && pnpm typecheck",
-    "lint:fix": "pnpm -r run lint:fix && pnpm typecheck",
+    "lint": "oxlint . && oxfmt --check . && pnpm typecheck",
+    "lint:fix": "oxlint --fix . && oxfmt . && pnpm typecheck",
     "generate": "pnpm -r run generate",
     "apply-patches": "pnpm -r run --if-present apply-patches",
     "doc": "node scripts/generate-docs.ts",
