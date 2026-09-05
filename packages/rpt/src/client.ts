@@ -198,13 +198,17 @@ export class RptClient {
 
   /**
    * Gets the resource group and deployment ID for the RPT model.
+   * @param requestConfig - Request configuration for the RPT request.
    * @returns Object containing resource group and deployment ID.
    */
-  private async getResourceGroupAndDeploymentId() {
+  private async getResourceGroupAndDeploymentId(
+    requestConfig?: RptRequestOptions
+  ) {
     const deploymentId = await getFoundationModelDeploymentId(
       this.modelDeployment,
       'aicore-sap',
-      this.destination
+      // May contain `compress` option, but `getFoundationModelDeploymentId` does not use it, so it's safe to pass the whole requestConfig.
+      { destination: this.destination, requestConfig }
     );
 
     const resourceGroup = getResourceGroup(this.modelDeployment);
