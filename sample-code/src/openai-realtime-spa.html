@@ -768,6 +768,67 @@
       let currentAiBubble = null;
       let responseInProgress = false;
       let pendingAction = null;
+      let voiceBubbleCounter = 0;
+      let pcmChunks = []; // Int16Array chunks for current utterance
+
+      // ── WAV encoding ───────────────────────────────────────────────
+      function encodeWav(chunks) {
+        let totalSamples = 0;
+        for (const c of chunks) totalSamples += c.length;
+        const dataBytes = totalSamples * 2;
+        const buf = new ArrayBuffer(44 + dataBytes);
+        const view = new DataView(buf);
+        const write = (off, str) => {
+          for (let i = 0; i < str.length; i++)
+            view.setUint8(off + i, str.charCodeAt(i));
+        };
+        write(0, 'RIFF');
+        view.setUint32(4, 36 + dataBytes, true);
+        write(8, 'WAVE');
+        write(12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true); // PCM
+        view.setUint16(22, 1, true); // mono
+        view.setUint32(24, 24000, true); // sample rate
+        view.setUint32(28, 48000, true); // byte rate
+        view.setUint16(32, 2, true); // block align
+        view.setUint16(34, 16, true); // bits/sample
+        write(36, 'data');
+        view.setUint32(40, dataBytes, true);
+        let offset = 44;
+        for (const c of chunks) {
+          for (let i = 0; i < c.length; i++) {
+            view.setInt16(offset, c[i], true);
+            offset += 2;
+          }
+        }
+        return buf;
+      }
+
+      function sendForTranscription(bubbleId, chunks) {
+        if (!chunks.length) return;
+        const wav = encodeWav(chunks);
+        fetch(
+          `/openai-realtime/transcribe?id=${encodeURIComponent(bubbleId)}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'audio/wav' },
+            body: wav
+          }
+        )
+          .then(r => (r.ok ? r.json() : null))
+          .then(data => {
+            if (!data?.text) return;
+            const el = document.getElementById(data.id);
+            if (el) {
+              el.textContent = data.text;
+              el.classList.remove('placeholder');
+            }
+          })
+          .catch(() => {
+            /* transcription best-effort */
+          });
+      }
 
       // ── Speech recognition ─────────────────────────────────────────
       const SpeechRecognition =
@@ -806,7 +867,10 @@
       function startVoiceBubble() {
         if (!SpeechRecognition) return;
         voiceTranscript = '';
+        pcmChunks = [];
+        const bubbleId = `voice-bubble-${++voiceBubbleCounter}`;
         voiceBubble = appendBubble('user-voice');
+        voiceBubble.id = bubbleId;
         voiceBubble.classList.add('placeholder');
         voiceBubble.textContent = '…';
         initRecognition();
@@ -830,9 +894,13 @@
         } catch {
           /* ignore */
         }
+        const bubbleId = voiceBubble.id;
+        const chunksToSend = pcmChunks.slice();
         // keep bubble even without transcript — shows user that speech was detected
         voiceBubble = null;
         voiceTranscript = '';
+        pcmChunks = [];
+        sendForTranscription(bubbleId, chunksToSend);
       }
 
       // ── DOM ────────────────────────────────────────────────────────
@@ -1152,6 +1220,7 @@
             }
           } else if (msg.type === 'speech_started') {
             player?.reset();
+            pcmChunks = [];
             setStatus('Listening…', 'connecting');
             startVoiceBubble();
           } else if (msg.type === 'speech_stopped') {
@@ -1273,6 +1342,7 @@
         workletNode.port.onmessage = ev => {
           if (!ws || ws.readyState !== WebSocket.OPEN) return;
           if (pttToggle.checked && !pttActive) return;
+          pcmChunks.push(new Int16Array(ev.data));
           ws.send(ev.data);
         };
       }

@@ -7,6 +7,7 @@ import {
   resolveDeploymentUrl,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
 import express from 'express';
 
@@ -132,6 +133,41 @@ server.on('error', (error: Error) => {
 });
 
 attachRealtimeWs(server);
+
+app.post(
+  '/openai-realtime/transcribe',
+  express.raw({ type: 'audio/wav', limit: '10mb' }),
+  async (req, res) => {
+    const id = req.query.id as string | undefined;
+    try {
+      const wavBase64 = (req.body as Buffer).toString('base64');
+      const fileData = `data:audio/wav;base64,${wavBase64}`;
+      const orchestrationClient = new OrchestrationClient({
+        promptTemplating: { model: { name: 'gemini-3.5-flash' } }
+      });
+      const result = await orchestrationClient.chatCompletion({
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: 'Transcribe the spoken words in the audio. Return only the transcript, no other text.'
+              },
+              {
+                type: 'file',
+                file: { file_data: fileData, filename: 'speech.wav' }
+              }
+            ]
+          }
+        ]
+      });
+      res.json({ id, text: result.getContent() ?? '' });
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 app.get('/openai-realtime', async (_req, res) => {
   const html = await readFile(
