@@ -34,7 +34,7 @@ export type LLMModelDetails = {
    */
   params?: Record<string, any>;
   /**
-   * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+   * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
    * Default: 600.
    * Maximum: 1200.
    * Minimum: 1.
