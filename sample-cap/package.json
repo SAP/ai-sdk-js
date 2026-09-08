@@ -22,8 +22,8 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap/cds": "^10.0.4",
-    "@sap/xssec": "^4.13.3",
+    "@sap/cds": "^10.0.6",
+    "@sap/xssec": "^4.15.0",
     "express": "^5.2.1"
   },
   "devDependencies": {
