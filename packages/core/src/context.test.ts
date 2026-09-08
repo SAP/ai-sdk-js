@@ -43,7 +43,7 @@ describe('context', () => {
   it('should inject the default agent timeout for a client-secret service binding', async () => {
     mockClientCredentialsGrantCall();
     const destination = await getAiCoreDestination();
-    expect(destination.agentOptions?.timeout).toBe(720000);
+    expect(destination.agentOptions?.timeout).toBe(1201000);
     // Keep-alive is disabled to avoid stale-socket reuse with the long timeout.
     expect(destination.agentOptions?.keepAlive).toBe(false);
   });
@@ -58,7 +58,7 @@ describe('context', () => {
       mtlsKeyPair: { cert: 'cert', key: 'key' }
     } as HttpDestination);
     const destination = await getAiCoreDestination();
-    expect(destination.agentOptions?.timeout).toBe(720000);
+    expect(destination.agentOptions?.timeout).toBe(1201000);
   });
 
   it('should return a user-provided destination unchanged without injecting agentOptions', async () => {
