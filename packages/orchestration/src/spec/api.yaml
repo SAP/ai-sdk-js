@@ -1148,6 +1148,10 @@ components:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
           example: stop
+        provider_specific_fields:
+          type: object
+          description: "Provider-specific fields not representable in the OpenAI schema. When not identical, includes 'finish_reason' with the raw, unmapped finish reason string from the provider."
+          additionalProperties: true
     LLMChoiceStreaming:
       type: object
       required:
@@ -1164,6 +1168,10 @@ components:
         finish_reason:
           type: string
           description: Reason for stopping the model
+        provider_specific_fields:
+          type: object
+          description: "Provider-specific fields not representable in the OpenAI schema. When not identical, includes 'finish_reason' with the raw, unmapped finish reason string from the provider."
+          additionalProperties: true
 
     # Copied from the azure openai spec https://github.com/Azure/azure-rest-api-specs/blob/91e3aca0bfa4b59a9f578959d0b214a26b90df40/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2025-02-01-preview/inference.yaml#L4615-L4669
     TokenUsage:
@@ -1610,6 +1618,8 @@ components:
           example: azure_content_safety
         config:
           $ref: '#/components/schemas/AzureContentSafetyInput'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
 
     AzureContentSafetyOutputFilterConfig:
       type: object
@@ -1672,6 +1682,8 @@ components:
       example: 0
 
     LlamaGuard38bFilterConfig:
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       required:
         - type
@@ -1686,9 +1698,12 @@ components:
           example: llama_guard_3_8b
         config:
           $ref: '#/components/schemas/LlamaGuard38b'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
 
     LlamaGuard38b:
-      description: Filter configuration for Llama Guard 3 8B
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       additionalProperties: false
       minProperties: 1
@@ -2431,6 +2446,49 @@ components:
         signature:
           type: string
           default: ''
+
+    InputFilterTargetSelector:
+      oneOf:
+        - $ref: '#/components/schemas/AfterLastRoleTargetSelector'
+        - $ref: '#/components/schemas/LastMessagesTargetSelector'
+      description: >
+        Declarative selector for scoping input filtering to a subset of the combined
+        message list (messages_history prepended to template). Exactly one strategy
+        key must be present; combining keys from different strategies returns 400 Bad Request.
+        If omitted, all configured input content is filtered (backward compatible).
+
+    AfterLastRoleTargetSelector:
+      type: object
+      additionalProperties: false
+      required:
+        - after_last_role
+      properties:
+        after_last_role:
+          type: string
+          description: >
+            Filter all messages after the last message with this role in the combined
+            message list. If no message with this role exists, or the role is the last
+            message, the filter is individually skipped.
+          enum:
+            - system
+            - user
+            - assistant
+            - developer
+            - tool
+
+    LastMessagesTargetSelector:
+      type: object
+      additionalProperties: false
+      required:
+        - last_messages
+      properties:
+        last_messages:
+          type: integer
+          minimum: 1
+          description: >
+            Number of messages from the end of the combined message list to include
+            in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request).
+            If larger than the message list length, all messages are filtered.
 
   responses:
     BadRequest:

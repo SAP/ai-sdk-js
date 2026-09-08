@@ -125,3 +125,6 @@ export * from './completion-request-configuration-reference-by-id-config-ref.js'
 export * from './completion-request-configuration-reference-by-name-scenario-version.js';
 export * from './completion-request-configuration-reference-by-name-scenario-version-config-ref.js';
 export * from './reasoning-block.js';
+export * from './input-filter-target-selector.js';
+export * from './after-last-role-target-selector.js';
+export * from './last-messages-target-selector.js';
