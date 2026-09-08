@@ -9,7 +9,7 @@
  */
 export type GraniteGuardian41 = {
   /**
-   * Enable reasoning (think) mode for Granite Guardian. Applies to every configured category. Returns reasoning content when enabled.
+   * Enable reasoning (think) mode for Granite Guardian. Applies to every configured category. Returns reasoning content when enabled, e.g. 'harm': {'verdict': true, 'reasoning': '...'}
    */
   enable_reasoning?: boolean;
   /**
