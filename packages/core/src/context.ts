@@ -18,9 +18,9 @@ const logger = createLogger({
   messageContext: 'context'
 });
 
-// Default HTTP agent socket timeout for AI Core requests (12 min), overriding the
+// Default HTTP agent socket timeout for AI Core requests (1,200s + 1s leeway), overriding the
 // Cloud SDK default of 5s, which is too short for chat/streaming completions.
-const DEFAULT_AGENT_TIMEOUT = 720_000;
+const DEFAULT_AGENT_TIMEOUT = 1_200_000 + 1e3;
 
 // Disabled so the long timeout above does not keep stale pooled sockets alive past
 // a load balancer's idle timeout, which would cause ECONNRESET on reuse.
