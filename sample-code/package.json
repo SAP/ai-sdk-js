@@ -27,7 +27,7 @@
   "dependencies": {
     "@langchain/classic": "1.0.46",
     "@langchain/core": "1.2.9",
-    "@langchain/langgraph": "1.4.13",
+    "@langchain/langgraph": "1.4.14",
     "@langchain/mcp-adapters": "1.1.4",
     "@langchain/textsplitters": "1.0.1",
     "@modelcontextprotocol/sdk": "1.30.0",
