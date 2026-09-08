@@ -9,7 +9,7 @@
  */
 export type PredictResponseStatus = {
   /**
-   * Status code (zero means success, other status codes indicate warnings)
+   * Status code (zero means success, other status codes indicate warnings or errors)
    */
   code: number;
   /**

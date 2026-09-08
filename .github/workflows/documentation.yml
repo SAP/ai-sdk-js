@@ -37,7 +37,7 @@ jobs:
         with:
           # version of 'vale' to use
           # see https://github.com/vale-cli/vale for all releases
-          version: 3.18.0
+          version: 3.19.0
           # changed files. computed in the step above
           files: ${{ steps.changed-files.outputs.changed-files }}
           # the separator for the file list. we are using a comma (see step above)
