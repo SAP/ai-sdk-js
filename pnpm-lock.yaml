@@ -387,8 +387,8 @@ importers:
         specifier: workspace:^
         version: link:../packages/rpt
       '@upstash/context7-mcp':
-        specifier: 4.0.4
-        version: 4.0.4(hono@4.13.3)(supports-color@7.2.0)
+        specifier: 4.0.5
+        version: 4.0.5(hono@4.13.3)(supports-color@7.2.0)
       hyparquet-writer:
         specifier: 0.16.9
         version: 0.16.9
@@ -2231,8 +2231,8 @@ packages:
     resolution: {integrity: sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==}
     hasBin: true
 
-  '@upstash/context7-mcp@4.0.4':
-    resolution: {integrity: sha512-7SO1no1tabPvC8OK8j1BBrUTysoCoUP/wHhzBTD53CDqJFKuPBxWH5MBl708vX1UwY3Ymd183SM4zLgJmwqYag==}
+  '@upstash/context7-mcp@4.0.5':
+    resolution: {integrity: sha512-PHDDdCiu/H9d37R//g/s50f5/EBvGECABExSgz0ESsdpeEoPCfWj34xd21r/3zakWTapOOwqManMwd9j9W2Xow==}
     engines: {node: '>=20.18.1'}
     hasBin: true
 
@@ -5785,14 +5785,14 @@ snapshots:
     dependencies:
       '@typescript/old': typescript@6.0.3
 
-  '@upstash/context7-mcp@4.0.4(hono@4.13.3)(supports-color@7.2.0)':
+  '@upstash/context7-mcp@4.0.5(hono@4.13.3)(supports-color@7.2.0)':
     dependencies:
       '@modelcontextprotocol/node': 2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.3)
       '@modelcontextprotocol/server': 2.0.0
       '@types/express': 5.0.6
       commander: 13.1.0
       express: 5.2.1(supports-color@7.2.0)
-      jose: 6.2.10
+      jose: 6.2.11
       undici: 7.29.0
       zod: 4.5.4
     transitivePeerDependencies:
