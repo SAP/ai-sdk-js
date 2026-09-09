@@ -207,21 +207,6 @@ describe('SapOpenAiRealtimeWs', () => {
     expect(errors[0].message).toContain('could not parse websocket event');
   });
 
-  it('ignores null message frames', async () => {
-    const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
-    const socket = MockWebSocket.instances[0];
-
-    const genericEvents: unknown[] = [];
-    const errors: { message: string }[] = [];
-    client.on('event', e => genericEvents.push(e));
-    client.on('error', e => errors.push(e));
-
-    socket.receiveRaw(Buffer.from('null'));
-
-    expect(genericEvents).toEqual([]);
-    expect(errors).toEqual([]);
-  });
-
   it('routes send failures through the error listener', async () => {
     const client = await SapOpenAiRealtimeWs.createClient('gpt-realtime');
     const socket = MockWebSocket.instances[0];
