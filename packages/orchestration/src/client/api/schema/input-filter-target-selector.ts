@@ -7,7 +7,7 @@
 import type { AfterLastRoleTargetSelector } from './after-last-role-target-selector.js';
 import type { LastMessagesTargetSelector } from './last-messages-target-selector.js';
 /**
- * Declarative selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). Exactly one strategy key must be present; combining keys from different strategies returns 400 Bad Request. If omitted, all configured input content is filtered (backward compatible).
+ * Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.
  *
  */
 export type InputFilterTargetSelector =

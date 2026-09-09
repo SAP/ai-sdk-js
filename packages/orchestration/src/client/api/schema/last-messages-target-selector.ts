@@ -9,7 +9,7 @@
  */
 export type LastMessagesTargetSelector = {
   /**
-   * Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If larger than the message list length, all messages are filtered.
+   * Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.
    *
    * Minimum: 1.
    */

@@ -9,7 +9,7 @@
  */
 export type AfterLastRoleTargetSelector = {
   /**
-   * Filter all messages after the last message with this role in the combined message list. If no message with this role exists, or the role is the last message, the filter is individually skipped.
+   * Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.
    *
    */
   after_last_role: 'system' | 'user' | 'assistant' | 'developer' | 'tool';
