@@ -112,5 +112,5 @@ jobs:
         run: |
           curl -fs -X POST https://context7.com/api/v1/refresh \
             -H "Content-Type: application/json" \
-            -H "Authorization: ${{ secrets.CONTEXT7_API_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.CONTEXT7_API_KEY }}" \
             -d '{"libraryName": "/sap/ai-sdk-js"}'
