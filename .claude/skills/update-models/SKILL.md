@@ -17,7 +17,7 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
 
 2. **Extract the model tables** (then close the browser tab when done):
    - Read `scripts/extract-model-table.js` and pass its contents as the function body to `browser_evaluate`.
-   - The script returns either `{ active: [...], retired: [...] }` (success) or `{ error: '...' }` (failure).
+   - The script returns either `{ active: [...], retired: [...], batch: [...] }` (success) or `{ error: '...' }` (failure).
     - If the result is an error or `result.active` is empty, the session has expired — tell the user to log in to me.sap.com in the Playwright browser window and wait for their confirmation, then retry.
     - On success, **sync models into `scripts/sap-models.json`**:
        - **Remove duplicate scraped rows, keeping the latest version first**: both tables include a `Version` column.
@@ -31,6 +31,16 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
        - **Do not remove** any entries from `sap-models.json` — retired models stay in the file with `retired: "yes"`.
        - If both `result.active` and `result.retired` list a model (after per-table de-duplication), treat it as retired.
        - After merging, **verify no duplicate `model` values exist** in `sap-models.json`. If any remain, remove the older/less-complete entry and report the duplicate removal to the user.
+    - **Sync batch models into the `batchModels` key of `scripts/sap-models.json`**:
+       - `result.batch` is a string array of model names from the SAP Notes "Batch Consumption Supported Models" section.
+       - **The SAP Notes batch list is authoritatively incomplete** — the LLM batch service supports models not listed there.
+         The `batchModels` key in `sap-models.json` is the ground truth and must never be shrunk by a scrape.
+       - Merge non-destructively: take the **union** of the existing `batchModels` array and `result.batch`, de-duplicated and sorted ascending.
+         **Add** any scraped model not already in the array.
+       - **Never auto-remove** a model that is in `batchModels` but absent from `result.batch` — it is likely a service-only model the SAP Notes omit.
+         Instead, **list those models to the user** and let them decide whether to remove any.
+         Only remove on explicit user confirmation.
+       - If `result.batch` is empty (section not found), keep `batchModels` unchanged and warn the user.
    - **Close the browser tab** using `browser_close` to avoid stale session issues on future runs.
 
 3. **Patch model-types.ts** by running the sync script:

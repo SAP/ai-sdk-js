@@ -1,5 +1,7 @@
-import retry from 'async-retry';
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+
+import retry from 'async-retry';
+
 import type { AiDeployment } from '@sap-ai-sdk/ai-api';
 
 /**

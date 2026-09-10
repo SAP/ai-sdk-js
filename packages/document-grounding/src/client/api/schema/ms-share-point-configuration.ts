@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { SharePointConfig } from './share-point-config.js';
 /**
  * Representation of the 'MSSharePointConfiguration' schema.

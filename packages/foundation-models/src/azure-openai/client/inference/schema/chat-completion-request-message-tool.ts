@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiChatCompletionRequestMessage } from './chat-completion-request-message.js';
 /**
  * Representation of the 'AzureOpenAiChatCompletionRequestMessageTool' schema.

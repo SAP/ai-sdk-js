@@ -1,9 +1,11 @@
-import nock from 'nock';
-import { createLogger } from '@sap-cloud-sdk/util';
 import {
   resolveDeploymentId,
   getOrchestrationDeploymentId
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
+
+import nock from 'nock';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall,
@@ -24,6 +26,7 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
 } from './util/index.ts';
+
 import type { CompletionPostResponse } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
@@ -1117,6 +1120,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
             placeholder_values: prompt.placeholderValues
           }
         },
@@ -1162,6 +1166,7 @@ describe('orchestration service client', () => {
               name: configRef.name,
               version: configRef.version
             },
+            config: { stream: { enabled: false } },
             placeholder_values: prompt.placeholderValues,
             messages_history: prompt.messagesHistory
           }
@@ -1196,7 +1201,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
           }
         },
         {
@@ -1221,7 +1227,7 @@ describe('orchestration service client', () => {
       }
     });
 
-    it('warns when stream options are provided with config reference', async () => {
+    it('warns when unsupported stream options (BaseStreamOptions fields) are provided with config reference', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'
@@ -1241,7 +1247,8 @@ describe('orchestration service client', () => {
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
           }
         },
         {
@@ -1258,17 +1265,134 @@ describe('orchestration service client', () => {
       });
 
       expect(warnSpy).toHaveBeenCalledWith(
-        'Stream options are not supported when using an orchestration config reference. Streaming is only supported if the referenced config has streaming configured.'
+        'Request-level stream options (promptTemplating, outputFiltering, global, and overrides) are ignored when using an orchestration config reference. Configure supported streaming settings via OrchestrationConfigRef.config or in the stored orchestration configuration. Per-fallback stream overrides are not supported for config references.'
       );
     });
 
-    it('logs debug and routes messages to messages_history when using config reference by ID', async () => {
+    it('sends stream.enabled=true in config when streaming with config reference', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id'
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream();
+
+      for await (const chunk of response.stream) {
+        expect(chunk).toBeDefined();
+        break;
+      }
+    });
+
+    it('merges config stream options with stream.enabled=true', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id',
+        overrideConfig: {
+          stream: { chunk_size: 100 }
+        }
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: { stream: { chunk_size: 100, enabled: true } }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).stream();
+
+      for await (const chunk of response.stream) {
+        expect(chunk).toBeDefined();
+        break;
+      }
+    });
+
+    it('sends config in chatCompletion request body', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'test-config-id',
+        overrideConfig: {
+          modules: {
+            prompt_templating: {
+              model: {
+                name: 'gpt-5.4-nano',
+                version: '1',
+                params: {}
+              }
+            }
+          }
+        }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: {
+              ...configRef.overrideConfig,
+              stream: { enabled: false }
+            }
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(
+        configRef
+      ).chatCompletion();
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+    });
+
+    it('logs warn and routes messages to messages_history when using config reference by ID', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'
       });
 
-      const debugSpy = vi.spyOn(logger, 'debug');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1283,6 +1407,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
             messages_history: [{ role: 'user', content: 'test' }]
           }
         },
@@ -1299,8 +1424,8 @@ describe('orchestration service client', () => {
         messages: [{ role: 'user', content: 'test' }]
       });
 
-      expect(debugSpy).toHaveBeenCalledWith(
-        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('cannot be extended inline')
       );
     });
 
@@ -1310,7 +1435,7 @@ describe('orchestration service client', () => {
         messageContext: 'orchestration-client'
       });
 
-      const debugSpy = vi.spyOn(logger, 'debug');
+      const warnSpy = vi.spyOn(logger, 'warn');
 
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id'
@@ -1325,6 +1450,7 @@ describe('orchestration service client', () => {
         {
           data: {
             config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } },
             messages_history: [{ role: 'user', content: 'test' }]
           }
         },
@@ -1351,8 +1477,8 @@ describe('orchestration service client', () => {
         break;
       }
 
-      expect(debugSpy).toHaveBeenCalledWith(
-        'Messages provided with an orchestration config reference will be sent as messages_history.'
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('cannot be extended inline')
       );
     });
 
@@ -1406,7 +1532,7 @@ describe('orchestration service client', () => {
       expect(response).toBeInstanceOf(OrchestrationResponse);
     });
 
-    it('throws error when server returns non-streaming JSON response for config reference without streaming enabled', async () => {
+    it('throws error when server returns non-streaming JSON response for config reference', async () => {
       const configRef: OrchestrationConfigRef = {
         id: 'test-config-id-without-streaming'
       };
@@ -1418,11 +1544,11 @@ describe('orchestration service client', () => {
       );
 
       // Mock the inference endpoint to return non-SSE formatted response
-      // This simulates a config reference where streaming is not enabled
       mockInference(
         {
           data: {
-            config_ref: { id: configRef.id }
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: true } }
           }
         },
         {
@@ -1442,6 +1568,323 @@ describe('orchestration service client', () => {
           /* empty */
         }
       }).rejects.toThrowErrorMatchingSnapshot();
+    });
+  });
+
+  describe('template warnings', () => {
+    const configWithInlineTemplate: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: {} },
+        prompt: {
+          template: [
+            { role: 'system', content: 'You are a helpful assistant.' }
+          ]
+        }
+      }
+    };
+
+    function getLoggerSpies() {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-client'
+      });
+      return {
+        warnSpy: vi.spyOn(logger, 'warn'),
+        infoSpy: vi.spyOn(logger, 'info')
+      };
+    }
+
+    describe('inline template', () => {
+      it('emits info on first call when template and messages are both provided', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { infoSpy, warnSpy } = getLoggerSpies();
+
+        await new OrchestrationClient(configWithInlineTemplate).chatCompletion({
+          messages: [{ role: 'user', content: 'Hello' }]
+        });
+
+        expect(infoSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('emits warn on second call when reusing the same client', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.chatCompletion({
+          messages: [{ role: 'user', content: 'First message' }]
+        });
+        await client.chatCompletion({
+          messages: [{ role: 'user', content: 'Second message' }]
+        });
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('does not emit warn again after second call', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            { url: 'inference/deployments/1234/v2/completion' }
+          );
+        }
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          await client.chatCompletion({
+            messages: [{ role: 'user', content }]
+          });
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
+        ).toHaveLength(1);
+      });
+
+      it('does not emit warn when reusing without messages', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.chatCompletion({});
+        await client.chatCompletion({});
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('emits info on first stream() call when template and messages are both provided', async () => {
+        mockInference(
+          () => true,
+          { data: streamMockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { infoSpy, warnSpy } = getLoggerSpies();
+
+        const response = await new OrchestrationClient(
+          configWithInlineTemplate
+        ).stream({ messages: [{ role: 'user', content: 'Hello' }] });
+        for await (const _ of response.stream) {
+          /* noop */
+        }
+
+        expect(infoSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('emits warn on second stream() call when reusing the same client', async () => {
+        for (let i = 0; i < 2; i++) {
+          mockInference(
+            () => true,
+            { data: streamMockResponse, status: 200 },
+            { url: 'inference/deployments/1234/v2/completion' }
+          );
+        }
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second']) {
+          const response = await client.stream({
+            messages: [{ role: 'user', content }]
+          });
+          for await (const _ of response.stream) {
+            /* noop */
+          }
+        }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('does not emit warn again after second stream() call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: streamMockResponse, status: 200 },
+            { url: 'inference/deployments/1234/v2/completion' }
+          );
+        }
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          const response = await client.stream({
+            messages: [{ role: 'user', content }]
+          });
+          for await (const _ of response.stream) {
+            /* noop */
+          }
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
+        ).toHaveLength(1);
+      });
+    });
+
+    describe('config reference', () => {
+      it('warns with full guidance when messages are passed alongside a config reference in chatCompletion', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        const configRef: OrchestrationConfigRef = { id: 'test-config-id' };
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        await new OrchestrationClient(configRef).chatCompletion({
+          messages: [{ role: 'user', content: 'Hello' }]
+        });
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('cannot be extended inline')
+        );
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('two separate clients')
+        );
+      });
+
+      it('does not warn again on repeated chatCompletion calls with config reference', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        const configRef: OrchestrationConfigRef = { id: 'test-config-id' };
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            { url: 'inference/deployments/1234/v2/completion' }
+          );
+        }
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configRef);
+        for (const content of ['First', 'Second', 'Third']) {
+          await client.chatCompletion({
+            messages: [{ role: 'user', content }]
+          });
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('cannot be extended inline')
+          )
+        ).toHaveLength(1);
+      });
+
+      it('warns with full guidance when messages are passed alongside a config reference in stream', async () => {
+        const configRef: OrchestrationConfigRef = { id: 'test-config-id' };
+        mockInference(
+          () => true,
+          { data: streamMockResponse, status: 200 },
+          { url: 'inference/deployments/1234/v2/completion' }
+        );
+        const { warnSpy } = getLoggerSpies();
+
+        const response = await new OrchestrationClient(configRef).stream({
+          messages: [{ role: 'user', content: 'Hello' }]
+        });
+        for await (const _ of response.stream) {
+          /* noop */
+        }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('cannot be extended inline')
+        );
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('two separate clients')
+        );
+      });
+
+      it('does not warn again on repeated stream() calls with config reference', async () => {
+        const configRef: OrchestrationConfigRef = { id: 'test-config-id' };
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: streamMockResponse, status: 200 },
+            { url: 'inference/deployments/1234/v2/completion' }
+          );
+        }
+        const { warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configRef);
+        for (const content of ['First', 'Second', 'Third']) {
+          const response = await client.stream({
+            messages: [{ role: 'user', content }]
+          });
+          for await (const _ of response.stream) {
+            /* noop */
+          }
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('cannot be extended inline')
+          )
+        ).toHaveLength(1);
+      });
     });
   });
 

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureContentSafetyInput } from './azure-content-safety-input.js';
 /**
  * Representation of the 'AzureContentSafetyInputFilterConfig' schema.

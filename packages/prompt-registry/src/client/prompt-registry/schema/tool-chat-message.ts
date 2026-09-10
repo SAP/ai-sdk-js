@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ChatMessageContent } from './chat-message-content.js';
 /**
  * Representation of the 'ToolChatMessage' schema.

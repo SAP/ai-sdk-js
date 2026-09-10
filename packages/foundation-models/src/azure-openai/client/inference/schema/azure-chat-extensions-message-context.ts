@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiCitation } from './citation.js';
 /**
  *   A representation of the additional context information available when Azure OpenAI chat extensions are involved

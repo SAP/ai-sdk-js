@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './batch-create-request.js';
 export * from './batch-create-response.js';
 export * from './batch-list-response.js';

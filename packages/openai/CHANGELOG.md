@@ -1,5 +1,27 @@
 # @sap-ai-sdk/openai
 
+## 2.15.0
+
+### Minor Changes
+
+- a5407c8: [feat] Add experimental OpenAI Realtime API (speech-to-speech) support for `gpt-realtime` via the `@sap-ai-sdk/openai/realtime` sub-path export.
+
+### Patch Changes
+
+- Updated dependencies [a5407c8]
+  - @sap-ai-sdk/core@2.15.0
+  - @sap-ai-sdk/ai-api@2.15.0
+
+## 2.14.0
+
+### Patch Changes
+
+- 016edcd: [fix] Fix OpenAI client types to allow passing objects with model deployment details (model name + model version, deployment ID and/or resource group) instead of just model names.
+- Updated dependencies [cca7edd]
+- Updated dependencies [cca7edd]
+  - @sap-ai-sdk/core@2.14.0
+  - @sap-ai-sdk/ai-api@2.14.0
+
 ## 2.13.0
 
 ### Minor Changes

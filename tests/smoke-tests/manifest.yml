@@ -1,7 +1,7 @@
 applications:
   - name: smoke-test-app
     path: .
-    memory: 256M
+    memory: 512M
     buildpacks:
       - nodejs_buildpack
     services:

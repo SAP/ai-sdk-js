@@ -1,10 +1,24 @@
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { readdir, readFile, realpath, stat, writeFile } from 'node:fs/promises';
+import { join, sep } from 'node:path';
 
-/**
- * @internal
- */
-export async function transformFile(
+const repoRootPath = realpath(join(import.meta.dirname, '..')).then(
+  path => path + sep
+);
+
+async function validatePathInRepo(path: string): Promise<string> {
+  const [canonicalPath, canonicalRepoRootPath] = await Promise.all([
+    realpath(path),
+    repoRootPath
+  ]);
+
+  if (!canonicalPath.startsWith(canonicalRepoRootPath)) {
+    throw new Error(`Access denied: ${path} is outside the repository root.`);
+  }
+
+  return canonicalPath;
+}
+
+async function transformCanonicalFile(
   filePath: string,
   transformFn: (file: string) => Promise<string> | string
 ): Promise<void> {
@@ -13,10 +27,7 @@ export async function transformFile(
   await writeFile(filePath, transformedFile, { encoding: 'utf8' });
 }
 
-/**
- * @internal
- */
-export async function transformFilesInDirectory(
+async function transformFilesInCanonicalDirectory(
   dirPath: string,
   transformFn: (file: string) => Promise<string> | string,
   opts?: {
@@ -31,15 +42,47 @@ export async function transformFilesInDirectory(
     const filePath = join(dirPath, file);
 
     try {
-      const fileStats = await stat(filePath);
+      const canonicalPath = await validatePathInRepo(filePath);
+      const fileStats = await stat(canonicalPath);
 
-      if (fileStats.isDirectory() && includeDir(filePath)) {
-        await transformFilesInDirectory(filePath, transformFn, opts); // Recursive traversal for directories
-      } else if (fileStats.isFile() && includeFile(filePath)) {
-        await transformFile(filePath, transformFn);
+      if (fileStats.isDirectory() && includeDir(canonicalPath)) {
+        await transformFilesInCanonicalDirectory(canonicalPath, transformFn, opts);
+      } else if (fileStats.isFile() && includeFile(canonicalPath)) {
+        await transformCanonicalFile(canonicalPath, transformFn);
       }
     } catch (err) {
       throw new Error(`Error processing ${filePath}: ${err}`, { cause: err });
     }
   }
+}
+
+/**
+ * @internal
+ */
+export async function transformFile(
+  filePath: string,
+  transformFn: (file: string) => Promise<string> | string
+): Promise<void> {
+  await transformCanonicalFile(
+    await validatePathInRepo(filePath),
+    transformFn
+  );
+}
+
+/**
+ * @internal
+ */
+export async function transformFilesInDirectory(
+  dirPath: string,
+  transformFn: (file: string) => Promise<string> | string,
+  opts?: {
+    includeDir?: (dirPath: string) => boolean;
+    includeFile?: (filePath: string) => boolean;
+  }
+): Promise<void> {
+  await transformFilesInCanonicalDirectory(
+    await validatePathInRepo(dirPath),
+    transformFn,
+    opts
+  );
 }

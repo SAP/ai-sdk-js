@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { DocumentWithoutChunks } from './document-without-chunks.js';
 /**
  * A response containing documents retrieved from the server.

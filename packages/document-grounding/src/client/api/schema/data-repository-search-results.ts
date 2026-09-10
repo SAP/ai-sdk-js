@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { DataRepositoryPerFilterSearchResult } from './data-repository-per-filter-search-result.js';
 import type { PerFilterSearchResultWithError } from './per-filter-search-result-with-error.js';
 /**

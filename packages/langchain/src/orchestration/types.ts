@@ -1,3 +1,4 @@
+import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type {
   OrchestrationModuleConfig as OrchestrationModuleConfigWithStringTemplating,
   PromptTemplate,
@@ -13,12 +14,12 @@ import type {
   TemplateRef
 } from '@sap-ai-sdk/orchestration/internal.js';
 import type { Xor } from '@sap-cloud-sdk/util';
+
 import type {
   BaseChatModelCallOptions,
   BaseChatModelParams,
   BindToolsInput
 } from '@langchain/core/language_models/chat_models';
-import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 
 /**
  * Tool type for LangChain Orchestration client.

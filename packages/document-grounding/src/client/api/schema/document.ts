@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RetrievalDocumentKeyValueListPair } from './retrieval-document-key-value-list-pair.js';
+
 import type { RetrievalChunk } from './retrieval-chunk.js';
+import type { RetrievalDocumentKeyValueListPair } from './retrieval-document-key-value-list-pair.js';
 /**
  * Representation of the 'Document' schema.
  */

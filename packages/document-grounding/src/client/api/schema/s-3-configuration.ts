@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { IncludePathsArray } from './include-paths-array.js';
 /**
  * Representation of the 'S3Configuration' schema.

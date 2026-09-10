@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { SAPDocumentTranslationOutputTargetLanguage } from './sap-document-translation-output-target-language.js';
 /**
  * Representation of the 'SAPDocumentTranslationOutput' schema.

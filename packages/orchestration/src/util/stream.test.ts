@@ -1,8 +1,10 @@
 import { OrchestrationStreamResponse } from '../index.ts';
 import { mergeStreamResponse } from './stream.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { CompletionPostResponseStreaming } from '../internal.ts';
+
 import type { OrchestrationStreamChunkResponse } from '../index.ts';
+import type { CompletionPostResponseStreaming } from '../internal.ts';
 
 const llmBase = {
   id: 'orchestration-id-1',
@@ -659,6 +661,206 @@ describe('stream-util', () => {
         response._data.final_result?.choices[0].logprobs?.content?.[0]?.token ??
           ''
       ).toBe(' message');
+    });
+  });
+
+  describe('mergeReasoningBlocks', () => {
+    it('concatenates reasoning content across chunks', () => {
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          emptyHttpResponse
+        );
+      response._data = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '',
+                reasoning_content: [{ content: 'Step 1: ', signature: '' }]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      };
+
+      const chunk: CompletionPostResponseStreaming = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: '',
+                reasoning_content: [
+                  { content: 'analyze the input.', signature: '' }
+                ]
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mergeStreamResponse(response, chunk);
+
+      expect(
+        response._data.final_result?.choices[0].message.reasoning_content
+      ).toEqual([{ content: 'Step 1: analyze the input.', signature: '' }]);
+    });
+
+    it('replaces signature on subsequent blocks', () => {
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          emptyHttpResponse
+        );
+      response._data = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '',
+                reasoning_content: [{ content: '', signature: 'firstSig==' }]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      };
+
+      const chunk: CompletionPostResponseStreaming = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: '',
+                reasoning_content: [{ content: '', signature: 'completeSig==' }]
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mergeStreamResponse(response, chunk);
+
+      expect(
+        response._data.final_result?.choices[0].message.reasoning_content
+      ).toEqual([{ content: '', signature: 'completeSig==' }]);
+    });
+
+    it('preserves existing signature when incoming signature is empty', () => {
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          emptyHttpResponse
+        );
+      response._data = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '',
+                reasoning_content: [
+                  { content: '', signature: 'encryptedSig==' }
+                ]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      };
+
+      const chunk: CompletionPostResponseStreaming = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: '',
+                reasoning_content: [{ content: 'final text', signature: '' }]
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mergeStreamResponse(response, chunk);
+
+      expect(
+        response._data.final_result?.choices[0].message.reasoning_content
+      ).toEqual([{ content: 'final text', signature: 'encryptedSig==' }]);
+    });
+
+    it('handles existing blocks count greater than incoming', () => {
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          emptyHttpResponse
+        );
+      response._data = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              message: {
+                role: 'assistant',
+                content: '',
+                reasoning_content: [
+                  { content: 'block A: ', signature: '' },
+                  { content: 'block B', signature: '' }
+                ]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      };
+
+      const chunk: CompletionPostResponseStreaming = {
+        request_id: 'test-id',
+        final_result: {
+          ...llmBase,
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: '',
+                reasoning_content: [{ content: 'continued', signature: '' }]
+              },
+              finish_reason: 'stop'
+            }
+          ]
+        }
+      };
+
+      mergeStreamResponse(response, chunk);
+
+      expect(
+        response._data.final_result?.choices[0].message.reasoning_content
+      ).toEqual([
+        { content: 'block A: continued', signature: '' },
+        { content: 'block B', signature: '' }
+      ]);
     });
   });
 });

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ChatDelta } from './chat-delta.js';
 import type { ChoiceLogprobs } from './choice-logprobs.js';
 /**

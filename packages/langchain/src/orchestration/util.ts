@@ -1,11 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import { isInteropZodSchema } from '@langchain/core/utils/types';
-import { toJsonSchema } from '@langchain/core/utils/json_schema';
+
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
-import type { Xor } from '@sap-cloud-sdk/util';
-import type { ToolDefinition } from '@langchain/core/language_models/base';
-import type { ChatOrchestrationToolType } from './types.ts';
-import type { ChatResult } from '@langchain/core/outputs';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import { isInteropZodSchema } from '@langchain/core/utils/types';
+
 import type {
   OrchestrationStreamChunkResponse,
   PromptTemplate
@@ -17,7 +15,6 @@ import type {
   ChatMessage,
   ChatMessageContent,
   CompletionPostResponse,
-  DeveloperChatMessage,
   FunctionObject,
   MessageToolCalls,
   SystemChatMessage,
@@ -27,13 +24,18 @@ import type {
   TemplateRef,
   ToolCallChunk as OrchestrationToolCallChunk
 } from '@sap-ai-sdk/orchestration/internal.js';
-import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
+import type { Xor } from '@sap-cloud-sdk/util';
+
+import type { ChatOrchestrationToolType } from './types.ts';
+import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type {
   BaseMessage,
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
+import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
+import type { ChatResult } from '@langchain/core/outputs';
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -216,17 +218,25 @@ function mapSystemMessageToOrchestrationSystemMessage(
 function mapToolMessageToOrchestrationToolMessage(
   message: ToolMessage
 ): ToolChatMessage {
-  if (
-    typeof message.content !== 'string' &&
-    message.content.some(content => content.type !== 'text')
-  ) {
-    throw new Error(
-      'The content type of tool message can only be "text" in the Orchestration Client.'
-    );
+  const { content } = message;
+
+  if (typeof content !== 'string') {
+    if (!content?.length) {
+      return { role: 'tool', content: '', tool_call_id: message.tool_call_id };
+    }
+    if (
+      !Array.isArray(content) ||
+      content.some(block => block.type !== 'text')
+    ) {
+      throw new Error(
+        'The content type of tool message can only be "text" in the Orchestration Client.'
+      );
+    }
   }
+
   return {
     role: 'tool',
-    content: cloneMessageContent(message.content) as ChatMessageContent,
+    content: cloneMessageContent(content) as ChatMessageContent,
     tool_call_id: message.tool_call_id
   };
 }
@@ -263,50 +273,31 @@ export function applyCacheControlToLastMessage(
   messages: ChatMessage[],
   cacheControl: CacheControl
 ): void {
-  const idx = messages.findLastIndex(messageSupportsCacheControl);
-  if (idx === -1) {
+  const message = messages.findLast(messageSupportsCacheControl);
+  if (!message) {
     return;
   }
-  const message = messages[idx];
 
-  if (typeof message.content === 'string') {
-    if (message.role === 'system' || message.role === 'developer') {
-      (message as SystemChatMessage | DeveloperChatMessage).content = [
-        {
-          type: 'text',
-          text: message.content,
-          cache_control: cacheControl
-        }
-      ];
-      return;
+  if (Array.isArray(message.content)) {
+    const isUserMessage = message.role === 'user';
+    const block = message.content.findLast(
+      b =>
+        b &&
+        typeof b === 'object' &&
+        (b.type === 'text' ||
+          (isUserMessage && (b.type === 'image_url' || b.type === 'file')))
+    );
+    if (block) {
+      block.cache_control = cacheControl;
     }
-
-    if (message.role === 'user') {
-      (message as UserChatMessage).content = [
-        {
-          type: 'text',
-          text: message.content,
-          cache_control: cacheControl
-        }
-      ];
-    }
-    return;
-  }
-
-  if (!Array.isArray(message.content)) {
-    return;
-  }
-
-  const isUserMessage = message.role === 'user';
-  const block = message.content.findLast(
-    b =>
-      b &&
-      typeof b === 'object' &&
-      (b.type === 'text' ||
-        (isUserMessage && (b.type === 'image_url' || b.type === 'file')))
-  );
-  if (block) {
-    (block as { cache_control?: CacheControl }).cache_control = cacheControl;
+  } else if (typeof message.content === 'string') {
+    message.content = [
+      {
+        type: 'text',
+        text: message.content,
+        cache_control: cacheControl
+      }
+    ];
   }
 }
 
@@ -430,7 +421,7 @@ export function mapOutputToChatResult(
 /**
  * @internal
  */
-export function isToolDefinitionLike(
+function isToolDefinitionLike(
   tool: ChatOrchestrationToolType
 ): tool is ChatCompletionTool | ToolDefinition {
   return (

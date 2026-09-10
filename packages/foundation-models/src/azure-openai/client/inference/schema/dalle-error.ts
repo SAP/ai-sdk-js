@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiErrorBase } from './error-base.js';
+
 import type { AzureOpenAiDalleInnerError } from './dalle-inner-error.js';
+import type { AzureOpenAiErrorBase } from './error-base.js';
 /**
  * Representation of the 'AzureOpenAiDalleError' schema.
  */

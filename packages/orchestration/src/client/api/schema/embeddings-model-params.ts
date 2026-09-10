@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { EncodingFormat } from './encoding-format.js';
 /**
  * Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.

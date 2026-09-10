@@ -31,9 +31,8 @@ jobs:
           repositories: ai-sdk
           permission-contents: read
           permission-pull-requests: read
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
-          pnpm-version: ''
           package-manager-cache: false
       - name: Determine Release Notes PR Branch Name
         id: determine-branch-name
@@ -76,10 +75,8 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
-          pnpm-version: ''
-          node-version: 24 # Will install npm 11 needed for trusted publishing
           package-manager-cache: false
       - name: publish
         run: |

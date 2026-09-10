@@ -245,7 +245,7 @@ Once the streaming is done, finish reason and token usage are printed out.
 
 `GET /orchestration-stream/chat-completion-stream-json`
 
-Get a chat completion response with streaming with a JSON Module Config initalized client.
+Get a chat completion response with streaming with a JSON Module Config initialized client.
 
 The response header is set with `Content-Type: text/event-stream` to stream the text.
 

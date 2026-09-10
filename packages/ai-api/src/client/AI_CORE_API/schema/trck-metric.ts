@@ -3,10 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
+import type { TrckLabelList } from './trck-label-list.js';
 import type { TrckMetricName } from './trck-metric-name.js';
 import type { TrckMetricValue } from './trck-metric-value.js';
 import type { TrckTimestamp } from './trck-timestamp.js';
-import type { TrckLabelList } from './trck-label-list.js';
 /**
  * Key-value metrics, where the value is numeric. Metric can also have optional step and label fields.
  */

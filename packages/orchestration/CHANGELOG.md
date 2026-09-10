@@ -1,5 +1,40 @@
 # @sap-ai-sdk/orchestration
 
+## 2.15.0
+
+### Minor Changes
+
+- b61cb53: [compat] Deprecate `OrchestrationConfigRef` — use `OrchestrationConfigRefById` or `OrchestrationConfigRefByName` instead.
+- b61cb53: [feat] Split `OrchestrationConfigRef` into `OrchestrationConfigRefById` and `OrchestrationConfigRefByName`.
+
+### Patch Changes
+
+- Updated dependencies [a5407c8]
+  - @sap-ai-sdk/core@2.15.0
+  - @sap-ai-sdk/ai-api@2.15.0
+  - @sap-ai-sdk/prompt-registry@2.15.0
+
+## 2.14.0
+
+### Minor Changes
+
+- b986b70: [feat] Add reasoning content support to the Orchestration client.
+  `reasoning_content` fields were added on response, streaming delta, and assistant message types.
+  The `getReasoningContent()` and `getDeltaReasoningContent()` convenience functions return the reasoning text from model responses.
+- b986b70: [feat] Added `overrideConfig` field to `OrchestrationConfigRef` to pass a `PartialOrchestrationConfig` that overrides parts of the stored orchestration configuration at request time.
+  Streaming via `.stream()` now automatically sets `stream.enabled = true` in the partial configuration override, so clients using a stored orchestration configuration reference no longer require streaming to be pre-configured in the stored configuration.
+- cca7edd: [feat] Add `GcpVertexAiEmbeddingModel` type with `gemini-embedding` to `@sap-ai-sdk/core`.
+  Add `GcpVertexAiEmbeddingModel` to the `EmbeddingModel` union in `@sap-ai-sdk/orchestration`.
+
+### Patch Changes
+
+- Updated dependencies [cca7edd]
+- Updated dependencies [a268597]
+- Updated dependencies [cca7edd]
+  - @sap-ai-sdk/core@2.14.0
+  - @sap-ai-sdk/prompt-registry@2.14.0
+  - @sap-ai-sdk/ai-api@2.14.0
+
 ## 2.13.0
 
 ### Patch Changes

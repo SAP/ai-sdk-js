@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ErrorStreaming } from './error-streaming.js';
+
 import type { ErrorStreamingList } from './error-streaming-list.js';
+import type { ErrorStreaming } from './error-streaming.js';
 /**
  * Representation of the 'ErrorResponseStreaming' schema.
  */

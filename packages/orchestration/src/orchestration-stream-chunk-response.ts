@@ -52,6 +52,18 @@ export class OrchestrationStreamChunkResponse {
   }
 
   /**
+   * Parses the chunk response and returns the incremental reasoning content delta for this chunk.
+   * Returns only the user-visible reasoning text; encrypted or redacted reasoning blocks are excluded.
+   * To get the fully accumulated reasoning content after streaming completes, use {@link getReasoningContent} on the stream response instead.
+   * @param choiceIndex - The index of the choice to parse.
+   * @returns The content of each reasoning block delta as an array, or undefined if not present.
+   */
+  getDeltaReasoningContent(choiceIndex = 0): string[] | undefined {
+    const blocks = this.findChoiceByIndex(choiceIndex)?.delta.reasoning_content;
+    return blocks?.map(b => b.content ?? '');
+  }
+
+  /**
    * Gets the intermediate results from the chunk.
    * @returns The intermediate results.
    */

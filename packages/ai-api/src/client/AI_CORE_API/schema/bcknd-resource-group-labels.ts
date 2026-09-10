@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { BckndResourceGroupLabel } from './bcknd-resource-group-label.js';
 /**
  * Arbitrary labels as meta information

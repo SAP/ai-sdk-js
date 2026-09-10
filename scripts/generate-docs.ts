@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 import { readFile, rename, readdir, stat } from 'node:fs/promises';
 import { resolve, basename, extname, dirname } from 'node:path';
 import { deflate, inflate } from 'node:zlib';

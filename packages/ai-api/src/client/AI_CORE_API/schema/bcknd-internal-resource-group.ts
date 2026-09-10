@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { BckndInternalResourceGroupLabels } from './bcknd-internal-resource-group-labels.js';
+
 import type { BckndInternalResourceGroupAnnotations } from './bcknd-internal-resource-group-annotations.js';
+import type { BckndInternalResourceGroupLabels } from './bcknd-internal-resource-group-labels.js';
 /**
  * Representation of the 'BckndInternalResourceGroup' schema.
  */

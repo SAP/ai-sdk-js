@@ -2,8 +2,9 @@ import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/foundation-models';
-import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import type {
   AzureOpenAiChatCompletionResponse,
   AzureOpenAiEmbeddingResponse,

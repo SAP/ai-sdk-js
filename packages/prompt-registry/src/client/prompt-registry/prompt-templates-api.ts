@@ -3,7 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
+
 import type {
   PromptTemplateListResponse,
   PromptTemplatePostRequest,
@@ -177,7 +179,7 @@ export const PromptTemplatesApi = {
             contentType: 'application/octet-stream',
             isImplicit: true,
             parsedContentTypes: [
-              { parameters: {}, type: 'application/octet-stream' }
+              { type: 'application/octet-stream', parameters: {} }
             ]
           }
         },

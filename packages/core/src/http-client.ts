@@ -1,5 +1,7 @@
 import { Readable } from 'node:stream';
 import { json } from 'node:stream/consumers';
+
+import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
 import {
   ErrorWithCause,
   mergeIgnoreCase,
@@ -7,8 +9,9 @@ import {
   removeLeadingSlashes,
   removeTrailingSlashes
 } from '@sap-cloud-sdk/util';
-import { executeHttpRequest } from '@sap-cloud-sdk/http-client';
+
 import { getAiCoreDestination } from './context.ts';
+
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type {
   HttpRequestConfig,

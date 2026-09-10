@@ -1,4 +1,5 @@
 import { ErrorWithCause } from '@sap-cloud-sdk/util';
+
 import {
   type AiDeployment,
   DeploymentApi
@@ -9,6 +10,7 @@ import {
   translateToFoundationModel,
   type FoundationModel
 } from './model.ts';
+
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { TrckCustomInfoObject } from './trck-custom-info-object.js';
 /**
  * Representation of the 'TrckCustomInfoObjectList' schema.

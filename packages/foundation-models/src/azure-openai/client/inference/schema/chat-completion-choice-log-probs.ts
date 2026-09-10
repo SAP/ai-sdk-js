@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiChatCompletionTokenLogprob } from './chat-completion-token-logprob.js';
 /**
  * Log probability information for the choice.

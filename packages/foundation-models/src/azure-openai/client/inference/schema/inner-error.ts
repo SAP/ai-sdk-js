@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiInnerErrorCode } from './inner-error-code.js';
+
 import type { AzureOpenAiContentFilterPromptResults } from './content-filter-prompt-results.js';
+import type { AzureOpenAiInnerErrorCode } from './inner-error-code.js';
 /**
  * Inner error with additional details.
  */

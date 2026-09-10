@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { ModuleResults } from './module-results.js';
 /**
  * Representation of the 'Error' schema.

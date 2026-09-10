@@ -1,5 +1,5 @@
-import type { ModelConfig } from './deployment-resolver.ts';
 import type { AiDeployment } from '../client/AI_CORE_API/index.ts';
+import type { ModelConfig } from './deployment-resolver.ts';
 
 /**
  * A foundation model is identified by its name and optionally a version.

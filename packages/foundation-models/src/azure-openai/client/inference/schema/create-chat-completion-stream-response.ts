@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiChatCompletionStreamResponseDelta } from './chat-completion-stream-response-delta.js';
 import type { AzureOpenAiChatCompletionTokenLogprob } from './chat-completion-token-logprob.js';
 /**

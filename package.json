@@ -1,6 +1,6 @@
 {
   "name": "sap-ai-sdk",
-  "version": "2.13.0",
+  "version": "2.15.0",
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
@@ -10,7 +10,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11",
+      "version": "^12",
       "onFail": "download"
     }
   },
@@ -42,33 +42,32 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests run",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code run",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
-    "check:deps": "pnpm -r -F !. -F !./tests/smoke-tests -F !./sample-cap exec depcheck --ignores=\"nock,@modelcontextprotocol/server-github,@upstash/context7-mcp\" --quiet"
+    "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
   "devDependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "4.7.0",
-    "@sap-cloud-sdk/generator-common": "4.7.0",
-    "@sap-cloud-sdk/http-client": "4.7.0",
-    "@sap-cloud-sdk/openapi-generator": "4.7.0",
-    "@sap-cloud-sdk/util": "4.7.0",
-    "@types/mock-fs": "4.13.4",
+    "@sap-cloud-sdk/connectivity": "4.9.1",
+    "@sap-cloud-sdk/generator-common": "4.9.1",
+    "@sap-cloud-sdk/http-client": "4.9.1",
+    "@sap-cloud-sdk/openapi-generator": "4.9.1",
+    "@sap-cloud-sdk/util": "4.9.1",
     "@types/node": "22.20.1",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "4.1.10",
-    "depcheck": "1.4.7",
-    "jose": "6.2.4",
-    "mock-fs": "5.5.0",
-    "nock": "14.0.16",
-    "orval": "8.22.0",
-    "oxlint": "1.74.0",
-    "oxlint-tsgolint": "0.25.0",
-    "oxfmt": "0.59.0",
+    "@vitest/coverage-v8": "5.0.0",
+    "jose": "6.2.12",
+    "knip": "6.34.0",
+    "memfs": "4.71.0",
+    "nock": "14.0.17",
+    "orval": "8.27.0",
+    "oxfmt": "0.66.0",
+    "oxlint": "1.81.0",
+    "oxlint-tsgolint": "7.0.2001",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vitest": "4.1.10",
-    "zod": "4.4.3"
+    "vitest": "5.0.0",
+    "zod": "4.5.4"
   }
 }

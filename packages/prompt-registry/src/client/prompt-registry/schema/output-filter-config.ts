@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureContentSafetyOutputFilterConfig } from './azure-content-safety-output-filter-config.js';
 import type { LlamaGuard38BFilterConfig } from './llama-guard-38-b-filter-config.js';
 /**

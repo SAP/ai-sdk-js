@@ -1,4 +1,5 @@
 import nock from 'nock';
+
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -8,6 +9,7 @@ import {
 } from '../../../../test-util/mock-http.ts';
 import { AzureOpenAiChatClient } from './azure-openai-chat-client.ts';
 import { apiVersion } from './model-types.ts';
+
 import type { AzureOpenAiCreateChatCompletionResponse } from './client/inference/schema/index.ts';
 
 describe('Azure OpenAI chat client', () => {

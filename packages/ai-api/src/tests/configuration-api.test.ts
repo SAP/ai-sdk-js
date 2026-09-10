@@ -1,9 +1,11 @@
 import nock from 'nock';
-import { ConfigurationApi } from '../client/AI_CORE_API/index.ts';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.ts';
+import { ConfigurationApi } from '../client/AI_CORE_API/index.ts';
+
 import type {
   AiConfigurationBaseData,
   AiConfigurationCreationResponse,

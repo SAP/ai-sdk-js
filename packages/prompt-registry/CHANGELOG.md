@@ -1,5 +1,24 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies [a5407c8]
+  - @sap-ai-sdk/core@2.15.0
+
+## 2.14.0
+
+### Minor Changes
+
+- a268597: [feat] prompt-registry: Update generated client to latest specification.
+
+### Patch Changes
+
+- Updated dependencies [cca7edd]
+- Updated dependencies [cca7edd]
+  - @sap-ai-sdk/core@2.14.0
+
 ## 2.13.0
 
 ### Patch Changes

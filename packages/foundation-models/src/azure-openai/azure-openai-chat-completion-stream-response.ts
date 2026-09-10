@@ -1,12 +1,15 @@
 import { createLogger, pickValueIgnoreCase } from '@sap-cloud-sdk/util';
+
 import { type ToolCallAccumulator } from './util/index.ts';
+
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
+import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.ts';
 import type {
   AzureOpenAiChatCompletionMessageToolCalls,
   AzureOpenAiCompletionUsage,
   AzureOpenAiCreateChatCompletionStreamResponse
 } from './client/inference/schema/index.ts';
-import type { AzureOpenAiChatCompletionStream } from './azure-openai-chat-completion-stream.ts';
-import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const logger = createLogger({
   package: 'foundation-models',
@@ -44,7 +47,7 @@ export class AzureOpenAiChatCompletionStreamResponse<T> {
    * Creates an Azure OpenAI chat completion stream response.
    * @param rawResponse - The raw HTTP response. SSE data is not part of the immediate response.
    */
-  // eslint-disable-next-line @typescript-eslint/unified-signatures
+  // oxlint-disable-next-line typescript/unified-signatures
   constructor(rawResponse: HttpResponse);
 
   constructor(rawResponse?: HttpResponse) {

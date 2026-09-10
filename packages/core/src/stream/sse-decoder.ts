@@ -67,12 +67,12 @@ export class SSEDecoder {
     }
 
     const [fieldname, _, value] = partition(line, ':');
-    const trimedValue = value.startsWith(' ') ? value.substring(1) : value;
+    const trimmedValue = value.startsWith(' ') ? value.substring(1) : value;
 
     if (fieldname === 'event') {
-      this.event = trimedValue;
+      this.event = trimmedValue;
     } else if (fieldname === 'data') {
-      this.data.push(trimedValue);
+      this.data.push(trimmedValue);
     } else {
       throw new Error(`Invalid SSE payload: ${line}`);
     }

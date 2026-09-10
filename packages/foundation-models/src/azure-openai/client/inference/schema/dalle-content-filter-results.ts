@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AzureOpenAiContentFilterSeverityResult } from './content-filter-severity-result.js';
 /**
  * Information about the content filtering results.

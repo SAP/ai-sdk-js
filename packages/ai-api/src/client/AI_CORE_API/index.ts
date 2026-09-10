@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './artifact-api.js';
 export * from './configuration-api.js';
 export * from './deployment-api.js';

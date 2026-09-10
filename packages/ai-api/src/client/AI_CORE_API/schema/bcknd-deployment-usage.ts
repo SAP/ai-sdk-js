@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { BckndUsageResourcePlanItem } from './bcknd-usage-resource-plan-item.js';
 /**
  * Representation of the 'BckndDeploymentUsage' schema.

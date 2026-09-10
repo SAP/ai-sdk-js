@@ -1,4 +1,5 @@
 import assert from 'assert';
+
 import {
   SseStream,
   _iterSseMessages,

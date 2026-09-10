@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './trck-get-metric-resource.js';
 export * from './trck-metric-resource.js';
 export * from './trck-get-metric-resource-list.js';

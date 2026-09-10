@@ -1,12 +1,15 @@
+import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+
 import {
   AIMessage,
   FunctionMessage,
   AIMessageChunk,
   HumanMessage,
   SystemMessage,
-  ToolMessage
+  ToolMessage,
+  type ToolMessageFields
 } from '@langchain/core/messages';
-import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+
 import {
   addNumbersSchema,
   addNumbersSchemaV3
@@ -18,8 +21,7 @@ import {
   mapToolToOrchestrationFunction,
   applyCacheControlToLastMessage
 } from './util.ts';
-import type { OrchestrationMessage } from './orchestration-message.ts';
-import type { ToolCallChunk } from '@langchain/core/messages/tool';
+
 import type {
   CacheControl,
   ChatMessage,
@@ -30,6 +32,9 @@ import type {
   FunctionObject,
   TokenUsage
 } from '@sap-ai-sdk/orchestration/internal.js';
+
+import type { OrchestrationMessage } from './orchestration-message.ts';
+import type { ToolCallChunk } from '@langchain/core/messages/tool';
 
 describe('mapLangChainMessagesToOrchestrationMessages', () => {
   it('should map an array of LangChain messages to Orchestration messages', () => {
@@ -157,6 +162,58 @@ describe('mapBaseMessageToChatMessage', () => {
     expect(result[0]).toEqual({
       role: 'tool',
       content: 'Tool message content',
+      tool_call_id: 'tool_call_id'
+    });
+  });
+
+  it('should coerce empty array content [] to empty string for ToolMessage', () => {
+    const toolMessage = new ToolMessage({
+      content: [],
+      tool_call_id: 'tool_call_id'
+    });
+    const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
+    expect(result[0]).toEqual({
+      role: 'tool',
+      content: '',
+      tool_call_id: 'tool_call_id'
+    });
+  });
+
+  it('should coerce null content to empty string for ToolMessage', () => {
+    const toolMessage = new ToolMessage({
+      content: null,
+      tool_call_id: 'tool_call_id'
+    } as unknown as ToolMessageFields);
+    const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
+    expect(result[0]).toEqual({
+      role: 'tool',
+      content: '',
+      tool_call_id: 'tool_call_id'
+    });
+  });
+
+  it('should coerce undefined content to empty string for ToolMessage', () => {
+    const toolMessage = new ToolMessage({
+      content: undefined,
+      tool_call_id: 'tool_call_id'
+    } as ToolMessageFields);
+    const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
+    expect(result[0]).toEqual({
+      role: 'tool',
+      content: '',
+      tool_call_id: 'tool_call_id'
+    });
+  });
+
+  it('should coerce non-array object content to empty string for ToolMessage', () => {
+    const toolMessage = new ToolMessage({
+      content: {} as unknown as ToolMessageFields['content'],
+      tool_call_id: 'tool_call_id'
+    } as ToolMessageFields);
+    const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
+    expect(result[0]).toEqual({
+      role: 'tool',
+      content: '',
       tool_call_id: 'tool_call_id'
     });
   });

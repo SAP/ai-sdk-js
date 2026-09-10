@@ -1,12 +1,14 @@
 import { OpenApiRequestBuilder as CloudSDKOpenApiRequestBuilder } from '@sap-cloud-sdk/openapi';
+
 import { executeRequest } from './http-client.ts';
+
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import type { OpenApiRequestParameters } from '@sap-cloud-sdk/openapi';
 import type {
   HttpResponse,
   Method,
   CustomRequestConfig
 } from '@sap-cloud-sdk/http-client';
+import type { OpenApiRequestParameters } from '@sap-cloud-sdk/openapi';
 
 /**
  * Request builder for OpenAPI requests.

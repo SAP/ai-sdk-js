@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { SAPDocumentTranslationApplyToSelector } from './sap-document-translation-apply-to-selector.js';
 /**
  * Representation of the 'SAPDocumentTranslationInput' schema.

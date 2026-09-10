@@ -9,6 +9,12 @@ export default defineConfig({
     },
     projects: [
       'packages/*/vitest.config.ts',
+      {
+        test: {
+          name: 'scripts',
+          include: ['scripts/**/*.test.ts'],
+        },
+      },
     ],
   },
 });

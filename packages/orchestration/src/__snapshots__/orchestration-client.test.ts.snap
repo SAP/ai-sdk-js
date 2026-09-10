@@ -8,7 +8,7 @@ ErrorWithCause {
 }
 `;
 
-exports[`orchestration service client > config reference support > throws error when server returns non-streaming JSON response for config reference without streaming enabled 1`] = `
+exports[`orchestration service client > config reference support > throws error when server returns non-streaming JSON response for config reference 1`] = `
 ErrorWithCause {
   "message": "Error while iterating over SSE stream.",
   "cause": [Error: Invalid SSE payload: {],

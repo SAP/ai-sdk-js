@@ -1,4 +1,5 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+
 import type {
   AiDeploymentBulkModificationResponse,
   AiDeploymentCreationResponse,

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { UserChatMessageContentItem } from './user-chat-message-content-item.js';
 /**
  * Representation of the 'UserChatMessageContent' schema.

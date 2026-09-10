@@ -1,7 +1,8 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
 import { getDeployments, createDeployment } from '@sap-ai-sdk/sample-code';
-import { loadEnv } from './utils/load-env.ts';
+
 import { configurationId, resourceGroup } from './utils/ai-api-utils.ts';
+import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
 

@@ -1,8 +1,9 @@
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { parseEnv } from 'node:util';
+
 import type { ChildProcess } from 'node:child_process';
 
 const port = process.env.SMOKE_TEST_PORT ?? '8080';

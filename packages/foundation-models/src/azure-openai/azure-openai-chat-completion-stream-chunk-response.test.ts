@@ -1,5 +1,6 @@
 import { parseMockResponse } from '../../../../test-util/mock-http.ts';
 import { AzureOpenAiChatCompletionStreamChunkResponse } from './azure-openai-chat-completion-stream-chunk-response.ts';
+
 import type { AzureOpenAiCreateChatCompletionStreamResponse } from './client/inference/schema/index.ts';
 
 describe('OpenAI chat completion stream chunk response', () => {
