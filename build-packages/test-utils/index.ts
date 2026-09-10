@@ -1,6 +1,6 @@
 // eslint-disable-next-line import-x/no-internal-modules
 import { replacePlugin } from 'rolldown/plugins';
-import type { jest } from '@jest/globals';
+import { vi } from 'vitest';
 import type { RolldownOptions } from 'rolldown';
 
 /**
@@ -8,29 +8,29 @@ import type { RolldownOptions } from 'rolldown';
  * Must be called before any dynamic `import()` of modules that use `fs`.
  * @internal
  */
-export function mockFsWithMemfs(j: typeof jest): void {
-  j.unstable_mockModule('fs', () =>
+export function mockFsWithMemfs(): void {
+  vi.mock('fs', () =>
     import('memfs').then(m => ({
       ...m.fs,
       default: m.fs,
       __esModule: true
     }))
   );
-  j.unstable_mockModule('fs/promises', () =>
+  vi.mock('fs/promises', () =>
     import('memfs').then(m => ({
       ...m.fs.promises,
       default: m.fs.promises,
       __esModule: true
     }))
   );
-  j.unstable_mockModule('node:fs', () =>
+  vi.mock('node:fs', () =>
     import('memfs').then(m => ({
       ...m.fs,
       default: m.fs,
       __esModule: true
     }))
   );
-  j.unstable_mockModule('node:fs/promises', () =>
+  vi.mock('node:fs/promises', () =>
     import('memfs').then(m => ({
       ...m.fs.promises,
       default: m.fs.promises,
