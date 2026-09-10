@@ -109,7 +109,14 @@ import {
 import {
   predictAutomaticParsing,
   predictWithSchema,
-  predictParquetBlob
+  predictWithSchemaCompressed,
+  predictWithSchemaResilient,
+  predictParquetBlob,
+  predictParquetFile,
+  predictColumnarFormat,
+  predictWithExplanations,
+  predictRegressionWithConfidenceIntervals,
+  predictWithTopK
 } from './rpt.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
@@ -1311,6 +1318,84 @@ app.get('/rpt/predict-automatic', async (req, res) => {
 app.get('/rpt/predict-parquet', async (_req, res) => {
   try {
     const data = await predictParquetBlob();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-compressed', async (req, res) => {
+  try {
+    const data = await predictWithSchemaCompressed();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-parquet-file', async (_req, res) => {
+  try {
+    const data = await predictParquetFile();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-resilient', async (req, res) => {
+  try {
+    const data = await predictWithSchemaResilient();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-columnar', async (req, res) => {
+  try {
+    const data = await predictColumnarFormat();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-explanations', async (req, res) => {
+  try {
+    const data = await predictWithExplanations();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+    res.write(`Explanations: ${JSON.stringify(data.explanations, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-regression', async (req, res) => {
+  try {
+    const data = await predictRegressionWithConfidenceIntervals();
+    res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
+
+    res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/rpt/predict-top-k', async (req, res) => {
+  try {
+    const data = await predictWithTopK();
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
