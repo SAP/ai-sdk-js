@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { setFailed, info } from '@actions/core';
 import { getPackages } from '@manypkg/get-packages';
-import { messageTypes, type MessageType } from '../changeset-types.js';
+import { messageTypes, type MessageType } from '../changeset-types.ts';
 
 interface Change {
   packageNames: string[];

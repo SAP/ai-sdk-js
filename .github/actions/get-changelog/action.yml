@@ -3,6 +3,12 @@ description: 'Gets the current changelog'
 outputs:
   changelog:
     description: 'The current changelog'
+    value: ${{ steps.run.outputs.changelog }}
 runs:
-  using: 'node24'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: Run get-changelog
+      id: run
+      shell: bash
+      working-directory: ${{ github.workspace }}/build-packages/get-changelog
+      run: node index.ts

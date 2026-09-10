@@ -5,5 +5,11 @@ inputs:
     description: 'Changed files in the .changeset directory on the current PR.'
     required: true
 runs:
-  using: 'node24'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: Run check-pr
+      shell: bash
+      working-directory: ${{ github.workspace }}/build-packages/check-pr
+      env:
+        INPUT_CHANGED-FILES: ${{ inputs.changed-files }}
+      run: node index.ts

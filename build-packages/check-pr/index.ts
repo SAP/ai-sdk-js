@@ -1,6 +1,6 @@
 import { setFailed } from '@actions/core';
 import { context } from '@actions/github';
-import { validateTitle, validateBody } from './validators.js';
+import { validateTitle, validateBody } from './validators.ts';
 
 try {
   validateTitle(context.payload.pull_request?.title);

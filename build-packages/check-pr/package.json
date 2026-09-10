@@ -5,17 +5,8 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "compile": "tsc -p tsconfig.json",
-    "postcompile": "rolldown -c rolldown.config.ts"
-  },
   "dependencies": {
     "@actions/core": "^3.0.0",
     "@actions/github": "^9.1.0"
-  },
-  "devDependencies": {
-    "@typescript/native": "npm:typescript@7.0.2",
-    "@sap-ai-sdk/test-util-build-internal": "workspace:^",
-    "rolldown": "1.2.5"
   }
 }
