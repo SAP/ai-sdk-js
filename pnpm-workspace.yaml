@@ -35,10 +35,12 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-gitBranchLockfile: true
-mergeGitBranchLockfilesBranchPattern:
-  - main
-  - renovate/*
+# TODO: Fix, actions/setup uses detached HEAD,
+# which breaks gitBranchLockfile functionality.
+# gitBranchLockfile: true
+# mergeGitBranchLockfilesBranchPattern:
+#   - main
+#   - renovate/*
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
