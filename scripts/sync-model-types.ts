@@ -86,9 +86,11 @@ const EMBEDDING_TYPE_MAP: Record<string, string> = {
 
 // Per-model type overrides for models whose executableId is missing in SAP Notes.
 const MODEL_NAME_TO_TYPE: Record<string, string> = {
+  'mistralai--mistral-medium': 'AiCoreOpenSourceChatModel',
   'mistralai--mistral-medium-instruct': 'AiCoreOpenSourceChatModel',
   'mistralai--mistral-small': 'AiCoreOpenSourceChatModel',
-  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel'
+  'mistralai--mistral-small-instruct': 'AiCoreOpenSourceChatModel',
+  'gemini-embedding-2': 'GcpVertexAiEmbeddingModel'
 };
 
 function resolveTypeName(row: ModelRow): string | null {
