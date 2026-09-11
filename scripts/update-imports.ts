@@ -1,5 +1,6 @@
 /* oxlint-disable no-console */
 import { basename, resolve } from 'node:path';
+
 import { transformFilesInDirectory } from './util.ts';
 
 // Entry point: Get the root directory from command-line arguments

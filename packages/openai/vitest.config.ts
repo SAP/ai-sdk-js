@@ -2,7 +2,7 @@ import { definePackageConfig } from '../../vitest.shared.ts';
 
 const config = definePackageConfig('openai');
 
-config.test.server = {
+config.test!.server = {
   deps: {
     inline: ['openai', 'ws']
   }

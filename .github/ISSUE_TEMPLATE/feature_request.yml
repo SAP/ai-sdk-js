@@ -1,7 +1,7 @@
 name: Feature Request
 description: Request a new feature to help your project using the SAP Cloud SDK for AI (JavaScript / TypeScript).
 title: '<title>'
-labels: 
+labels:
   - feature request
 body:
   - type: markdown
@@ -12,37 +12,37 @@ body:
         Issue for SAP AI Core services (Orchestration, Grounding, Prompt Registry, ...), please refer to the [SAP AI Core Support Process](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process).
   - type: checkboxes
     attributes:
-      label: "Checklist"
-      description: "Before submitting your issue, please make sure to check the following:"
+      label: 'Checklist'
+      description: 'Before submitting your issue, please make sure to check the following:'
       options:
-        - label: "My issue is not an [AI Core service issue](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process), but an SDK issue."
+        - label: 'My issue is not an [AI Core service issue](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process), but an SDK issue.'
           required: true
-        - label: "My issue is a JS/TS related issue, not a [Java related issue](https://github.com/SAP/ai-sdk-java/issues)."
+        - label: 'My issue is a JS/TS related issue, not a [Java related issue](https://github.com/SAP/ai-sdk-java/issues).'
           required: true
-        - label: "My issue is not [already reported or documented](https://github.com/SAP/ai-sdk-js/issues)."
+        - label: 'My issue is not [already reported or documented](https://github.com/SAP/ai-sdk-js/issues).'
           required: true
   - type: textarea
     attributes:
-      label: "Describe the Problem"
+      label: 'Describe the Problem'
       description: A clear and concise description of what the problem is, e.g., I'm always frustrated when [...]
     validations:
       required: true
   - type: textarea
     attributes:
-      label: "Propose a Solution"
+      label: 'Propose a Solution'
       description: A clear and concise description of what you want to happen.
     validations:
       required: true
   - type: textarea
     attributes:
-      label: "Describe Alternatives"
+      label: 'Describe Alternatives'
       description: A clear and concise description of any alternative solutions or features you've considered.
     validations:
       required: false
   - type: dropdown
     attributes:
-      label: "Affected Development Phase"
-      description: "Choose the development phase affected by this issue."
+      label: 'Affected Development Phase'
+      description: 'Choose the development phase affected by this issue.'
       multiple: false
       options:
         - Getting Started
@@ -53,8 +53,8 @@ body:
       required: true
   - type: dropdown
     attributes:
-      label: "Impact"
-      description: "Choose the impact severity."
+      label: 'Impact'
+      description: 'Choose the impact severity.'
       multiple: false
       options:
         - No Impact
@@ -65,13 +65,13 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: "Timeline"
-      description: "Please briefly state your timeline, e.g., Go-Live in 12 weeks."
+      label: 'Timeline'
+      description: 'Please briefly state your timeline, e.g., Go-Live in 12 weeks.'
     validations:
       required: false
   - type: textarea
     attributes:
-      label: "Additional Context"
-      description: "Add any other context about the feature request here."
+      label: 'Additional Context'
+      description: 'Add any other context about the feature request here.'
     validations:
       required: false

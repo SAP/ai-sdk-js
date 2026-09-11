@@ -1,6 +1,6 @@
+import { execFile } from 'node:child_process';
 /* oxlint-disable no-console */
 import { readdir, realpath } from 'node:fs/promises';
-import { execFile } from 'node:child_process';
 import { join, sep } from 'node:path';
 import { promisify } from 'node:util';
 
