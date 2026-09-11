@@ -20,7 +20,7 @@ jobs:
         node-version: [26, 24, 22]
 
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
           node-version: ${{ matrix.node-version }}
       # type-check can run in parallel to unit tests
@@ -50,7 +50,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
       - name: Enforce generated code is up to date
         shell: bash
         run: |
