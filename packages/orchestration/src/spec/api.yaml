@@ -1775,6 +1775,8 @@ components:
           example: granite_guardian_4_1
         config:
           $ref: '#/components/schemas/GraniteGuardian41'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
 
     GraniteGuardian41:
       description: Configuration for IBM Granite Guardian 4.1 filter provider.

@@ -5,6 +5,7 @@
  */
 
 import type { GraniteGuardian41 } from './granite-guardian-41.js';
+import type { InputFilterTargetSelector } from './input-filter-target-selector.js';
 /**
  * Filter configuration for IBM Granite Guardian filter provider.
  */
@@ -15,4 +16,5 @@ export type GraniteGuardianFilterConfig = {
    */
   type: 'granite_guardian_4_1';
   config: GraniteGuardian41;
+  target_selector?: InputFilterTargetSelector;
 };
