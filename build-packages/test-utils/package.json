@@ -1,0 +1,21 @@
+{
+  "name": "@sap-ai-sdk/test-util-build-internal",
+  "version": "1.0.0",
+  "description": "Shared build utilities for SAP AI SDK GitHub Actions",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "main": "./lib/index.js",
+  "scripts": {
+    "compile": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "vitest": "^4.1.11",
+    "memfs": "^4.57.2"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "memfs": "4.68.1"
+  }
+}

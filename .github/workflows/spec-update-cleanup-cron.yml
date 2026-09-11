@@ -58,7 +58,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
-    uses: ./.github/workflows/spec-update-cleanup.yaml
+    uses: $/.github/workflows/spec-update-cleanup.yaml
     with:
       service: ${{ matrix.service }}
       ref: ${{ matrix.ref }}
