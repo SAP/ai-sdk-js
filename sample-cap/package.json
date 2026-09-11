@@ -27,7 +27,7 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
-    "@sap/cds-dk": "10.0.7"
+    "@sap/cds-dk": "10.1.0"
   },
   "cds": {
     "requires": {
