@@ -11,7 +11,12 @@ const config = {
           ...(info.title ? [info.title] : []),
           ...(info.description ? [info.description] : []),
           ...(info.version ? [`OpenAPI spec version: ${info.version}`] : [])
-        ]
+        ],
+        zod: {
+          // Prefer Mini for more tree-shakeable generated schemas.
+          variant: 'mini',
+          version: 4
+        }
       }
     },
     input: {
