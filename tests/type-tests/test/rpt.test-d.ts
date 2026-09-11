@@ -115,9 +115,21 @@ expectType<Promise<PredictResponsePayload>>(
         target_columns: [{ name: 'PRICE', prediction_placeholder: null }]
       },
       index_column: '__row_idx__',
-      rows: [{ PRICE: 25.0, __row_idx__: '1' }]
+      rows: [{ PRICE: null, __row_idx__: '1' }]
     }
   )
+);
+
+/**
+ * Prediction without schema and null values in columns.
+ */
+expectType<Promise<PredictResponsePayload>>(
+  new RptClient('sap-rpt-1.5').predictWithoutSchema({
+    prediction_config: {
+      target_columns: [{ name: 'PRICE', prediction_placeholder: null }]
+    },
+    columns: { PRICE: [25.0, null] }
+  })
 );
 
 /**
