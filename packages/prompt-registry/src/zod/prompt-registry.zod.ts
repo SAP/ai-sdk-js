@@ -407,7 +407,7 @@ export const RegistryControllerPromptControllerImportPromptTemplateHeader = zod.
 })
 
 export const RegistryControllerPromptControllerImportPromptTemplateBody = zod.object({
-  "file": zod.instanceof(File).optional()
+  "file": zod.instanceof(Blob).optional()
 })
 
 export const RegistryControllerPromptControllerImportPromptTemplateResponse = zod.object({
@@ -3721,7 +3721,7 @@ export const RegistryControllerOrchestrationConfigControllerImportOrchestrationC
 })
 
 export const RegistryControllerOrchestrationConfigControllerImportOrchestrationConfigBody = zod.object({
-  "file": zod.instanceof(File).optional()
+  "file": zod.instanceof(Blob).optional()
 })
 
 export const RegistryControllerOrchestrationConfigControllerImportOrchestrationConfigResponse = zod.object({
