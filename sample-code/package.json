@@ -20,7 +20,7 @@
     "agent-tutorial": "node --env-file-if-exists=.env src/tutorials/travel-itinerary-agent.ts",
     "realtime-demo": "node --env-file-if-exists=.env src/openai-realtime.ts",
     "support-bot": "node --env-file-if-exists=.env src/support-bot/reply.ts \"${ISSUE_NUMBER:-9999}\"",
-    "compile": "tsc",
+    "compile": "tsc && tsc --project src/support-bot/tsconfig.json",
     "dev": "tsc -w",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."

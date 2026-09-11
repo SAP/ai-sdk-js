@@ -143,7 +143,12 @@ export async function askBot(
   }
   const client = opencodeInstance.client;
   const session = await client.session.create({ body: {} });
-  const id = session.data!.id;
+  if (!session.data) {
+    throw new Error(
+      `Failed to create opencode session: ${JSON.stringify(session.error)}`
+    );
+  }
+  const id = session.data.id;
   const model = { providerID: PROVIDER_ID, modelID: MODEL_ID };
 
   const systemPrompt =
