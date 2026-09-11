@@ -4,6 +4,12 @@ importers:
 
   .:
     devDependencies:
+      '@actions/core':
+        specifier: 3.0.1
+        version: 3.0.1
+      '@blueoak/list':
+        specifier: 15.0.0
+        version: 15.0.0
       '@changesets/cli':
         specifier: 3.0.0
         version: 3.0.0
@@ -330,6 +336,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: 1.30.0
         version: 1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
+      '@opencode-ai/sdk':
+        specifier: ^1.18.4
+        version: 1.18.19
       '@sap-cloud-sdk/resilience':
         specifier: 4.8.0
         version: 4.8.0
@@ -348,6 +357,9 @@ importers:
       openai:
         specifier: 7.4.0
         version: 7.4.0(ws@8.21.3)(zod@4.4.3)
+      opencode-ai:
+        specifier: ^1.18.4
+        version: 1.18.19
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -492,6 +504,18 @@ importers:
 
 packages:
 
+  '@actions/core@3.0.1':
+    resolution: {integrity: sha512-a6d/Nwahm9fliVGRhdhofo40HjHQasUPusmc7vBfyky+7Z+P2A1J68zyFVaNcEclc/Se+eO595oAr5nwEIoIUA==}
+
+  '@actions/exec@3.0.0':
+    resolution: {integrity: sha512-6xH/puSoNBXb72VPlZVm7vQ+svQpFyA96qdDBvhB8eNZOE8LtPf9L4oAsfzK/crCL8YZ+19fKYVnM63Sl+Xzlw==}
+
+  '@actions/http-client@4.0.1':
+    resolution: {integrity: sha512-+Nvd1ImaOZBSoPbsUtEhv+1z99H12xzncCkz0a3RuehINE81FZSe2QTj3uvAPTcJX/SCzUQHQ0D1GrPMbrPitg==}
+
+  '@actions/io@3.0.2':
+    resolution: {integrity: sha512-nRBchcMM+QK1pdjO7/idu86rbJI5YHUKCvKs0KxnSYbVe3F51UfGxuZX4Qy/fWlp6l7gWFwIkrOzN+oUK03kfw==}
+
   '@apidevtools/json-schema-ref-parser@14.0.1':
     resolution: {integrity: sha512-Oc96zvmxx1fqoSEdUmfmvvb59/KDOnUoJ7s2t7bISyAn0XEz57LCCw8k2Y4Pf3mwKaZLMciESALORLgfe2frCw==}
     engines: {node: '>= 16'}
@@ -532,6 +556,9 @@ packages:
   '@bcoe/v8-coverage@1.0.2':
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
+
+  '@blueoak/list@15.0.0':
+    resolution: {integrity: sha512-xW5Xb9Fr3WtYAOwavxxWL0CaJK/ReT+HKb5/R6dR1p9RVJ55MTdaxPdeTKY2ukhFchv2YHPMM8YuZyfyLqxedg==}
 
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
@@ -1063,6 +1090,9 @@ packages:
 
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
+
+  '@opencode-ai/sdk@1.18.19':
+    resolution: {integrity: sha512-AnszRg7cJ3PA6/06mkqdTJDKn9NJuV26AJMWbKEgRsznbJvrhf3PT8UhQQOhyKQYCygx9ZOxyKMIPVOQdMSS1A==}
 
   '@orval/angular@8.24.0':
     resolution: {integrity: sha512-tmDca47QJdB7+suSUdjki3oURBP/EHhHkvgbOmm4KPy2G0YBKHSEm/oMphE5fab4TBzMNEVoiBi5PnK7m6Hu3g==}
@@ -3409,6 +3439,75 @@ packages:
   openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
 
+  opencode-ai@1.18.19:
+    resolution: {integrity: sha512-+lD0mLSZdnS3hzDFmrhH1epH6pXY2KRCGTNE+/i6sXmontPd+CEO8ruWOhE/myutLLhvaiPa249ZAaK6p5nlww==}
+    cpu: [arm64, x64]
+    os: [darwin, linux, win32]
+    hasBin: true
+
+  opencode-darwin-arm64@1.18.19:
+    resolution: {integrity: sha512-Z4WmQzW6rj5Z4T3iv2kJr6Evhckxw3Mco8nsDE26vzZE4HjbdO2pF9NRFchzS24ippMKZNkR0XyCT4uI3VcZRg==}
+    cpu: [arm64]
+    os: [darwin]
+
+  opencode-darwin-x64-baseline@1.18.19:
+    resolution: {integrity: sha512-Gr+yMuW/5ixFGV5Z18VOmPRjRuMMsM6WY74GE2DqkFvAv2sLwUT3Ap5jWPNoo2oHAJztF0JptsJJHWjA2hN8Lg==}
+    cpu: [x64]
+    os: [darwin]
+
+  opencode-darwin-x64@1.18.19:
+    resolution: {integrity: sha512-zO57azxkOmsE82ElHJDLCDZKYbIIKC9QYEq3VRxy1BmcNBwnkgNTJmMoS7MtwgM3Zbh9WIqRHNmB16RaVGd8qQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  opencode-linux-arm64-musl@1.18.19:
+    resolution: {integrity: sha512-tADuh/RW576kjtRf/NIXyM7HUP9FUxrLDkyQRI38Pu5nwew2biDdC9ll9JolHgLqL/KbzE44abjAf1PfO/w+kg==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  opencode-linux-arm64@1.18.19:
+    resolution: {integrity: sha512-sHWJ5LLh8MG3wPIAg2pdpDdYV1gzlP7jAOoBfwkyks7dr0h2NFv3TRea5N8X4ZM11GkoVrlpSQddAgk5zUmDlg==}
+    cpu: [arm64]
+    os: [linux]
+
+  opencode-linux-x64-baseline-musl@1.18.19:
+    resolution: {integrity: sha512-gBhHTJnn2ntHCVdINqhSlRAPsYcYqOGXOXIXqlGMgpHFUHOwgyorZqha3uSGjb7lsUjOB6z7Fev7ZQ/KkDhKhQ==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  opencode-linux-x64-baseline@1.18.19:
+    resolution: {integrity: sha512-bvGsC/IIQ1eDT7hNbgpSRbgONzdQ5wm5SLC59J/oNePkaIgR2YozdSQ4eFSOV0zxwmWPCoGL5JgZBUzyKBx92g==}
+    cpu: [x64]
+    os: [linux]
+
+  opencode-linux-x64-musl@1.18.19:
+    resolution: {integrity: sha512-SiZvUiwpinFdO5dir/xewbBAFMMfV/GQMeDZdAsnic9mJzO3DdE9XbbjHmvPEpiwD9oBW5PUtrHGs/Dyp/VUQA==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  opencode-linux-x64@1.18.19:
+    resolution: {integrity: sha512-WR7OBWKvks6HvZse/ytaAttGSji6YfHz91IenEMBMA6PoetU33tJfxSnlYrwlK7fCZc68AJK1theTNVVv+7Q3w==}
+    cpu: [x64]
+    os: [linux]
+
+  opencode-windows-arm64@1.18.19:
+    resolution: {integrity: sha512-T3Q2ud2sEst3tr2q6KnhnR7LqXHb0nCTGMK9B76wLN2Z39Ivw8YhMhru76n0RyPKgu8Yiy9rbwn4M7ND9zXfYQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  opencode-windows-x64-baseline@1.18.19:
+    resolution: {integrity: sha512-Y9ETZMUnGw0R1oMzPvMDVi48s9xWgBUPYoC1ue6wBe30RJ4lOTQJUN9CUybNFXnED73H56ar25dvozuetO9J+g==}
+    cpu: [x64]
+    os: [win32]
+
+  opencode-windows-x64@1.18.19:
+    resolution: {integrity: sha512-+8b7eP8YtSBlDNNC6pKdWqmXzWplxRGGwmRsxhO34onjIwH2XAIbKsAtnFoA5GZjHoGmfNE77YXNs0IcLIDaaQ==}
+    cpu: [x64]
+    os: [win32]
+
   opossum@10.0.0:
     resolution: {integrity: sha512-sghtqL8Usj+et06Zui0nyn0R6FFsl7cyuoU+d7MctYU0nbS7Htzjleh+tWohFqk1Rp1srrFwbFa8Vxd0O64w6A==}
     engines: {node: ^26 || ^24 || ^22}
@@ -3922,6 +4021,10 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
+  tunnel@0.0.6:
+    resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
+    engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
+
   type-fest@0.18.1:
     resolution: {integrity: sha512-OIAYXk8+ISY+qTOwkHtKqzAuxchoMiD9Udx+FSGQDuiRR+PJKJHc2NJAXlbhkGwTt/4/nKZxELY1w3ReWOL8mw==}
     engines: {node: '>=10'}
@@ -3985,6 +4088,10 @@ packages:
 
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
+  undici@6.28.0:
+    resolution: {integrity: sha512-LIY910g9TI13YS95lrMFrs8Rm/u/irgHeTWoKCoteeJ04CUJ92eEfj0rVn+7VKMPBpUPiUoBKfhNyLI23EE/KA==}
+    engines: {node: '>=18.17'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -4195,6 +4302,22 @@ packages:
 
 snapshots:
 
+  '@actions/core@3.0.1':
+    dependencies:
+      '@actions/exec': 3.0.0
+      '@actions/http-client': 4.0.1
+
+  '@actions/exec@3.0.0':
+    dependencies:
+      '@actions/io': 3.0.2
+
+  '@actions/http-client@4.0.1':
+    dependencies:
+      tunnel: 0.0.6
+      undici: 6.28.0
+
+  '@actions/io@3.0.2': {}
+
   '@apidevtools/json-schema-ref-parser@14.0.1':
     dependencies:
       '@types/json-schema': 7.0.15
@@ -4234,6 +4357,8 @@ snapshots:
       '@babel/helper-validator-identifier': 7.29.7
 
   '@bcoe/v8-coverage@1.0.2': {}
+
+  '@blueoak/list@15.0.0': {}
 
   '@cfworker/json-schema@4.1.1': {}
 
@@ -4788,6 +4913,10 @@ snapshots:
       outvariant: 1.4.3
 
   '@open-draft/until@2.1.0': {}
+
+  '@opencode-ai/sdk@1.18.19':
+    dependencies:
+      cross-spawn: 7.0.6
 
   '@orval/angular@8.24.0(@typescript/typescript6@6.0.2)':
     dependencies:
@@ -6853,6 +6982,57 @@ snapshots:
 
   openapi-types@12.1.3: {}
 
+  opencode-ai@1.18.19:
+    optionalDependencies:
+      opencode-darwin-arm64: 1.18.19
+      opencode-darwin-x64: 1.18.19
+      opencode-darwin-x64-baseline: 1.18.19
+      opencode-linux-arm64: 1.18.19
+      opencode-linux-arm64-musl: 1.18.19
+      opencode-linux-x64: 1.18.19
+      opencode-linux-x64-baseline: 1.18.19
+      opencode-linux-x64-baseline-musl: 1.18.19
+      opencode-linux-x64-musl: 1.18.19
+      opencode-windows-arm64: 1.18.19
+      opencode-windows-x64: 1.18.19
+      opencode-windows-x64-baseline: 1.18.19
+
+  opencode-darwin-arm64@1.18.19:
+    optional: true
+
+  opencode-darwin-x64-baseline@1.18.19:
+    optional: true
+
+  opencode-darwin-x64@1.18.19:
+    optional: true
+
+  opencode-linux-arm64-musl@1.18.19:
+    optional: true
+
+  opencode-linux-arm64@1.18.19:
+    optional: true
+
+  opencode-linux-x64-baseline-musl@1.18.19:
+    optional: true
+
+  opencode-linux-x64-baseline@1.18.19:
+    optional: true
+
+  opencode-linux-x64-musl@1.18.19:
+    optional: true
+
+  opencode-linux-x64@1.18.19:
+    optional: true
+
+  opencode-windows-arm64@1.18.19:
+    optional: true
+
+  opencode-windows-x64-baseline@1.18.19:
+    optional: true
+
+  opencode-windows-x64@1.18.19:
+    optional: true
+
   opossum@10.0.0: {}
 
   orval@8.24.0(@typescript/typescript6@6.0.2)(prettier@3.9.6):
@@ -7446,6 +7626,8 @@ snapshots:
 
   tslib@2.8.1: {}
 
+  tunnel@0.0.6: {}
+
   type-fest@0.18.1: {}
 
   type-fest@0.21.3: {}
@@ -7510,6 +7692,8 @@ snapshots:
   unbash@4.0.10: {}
 
   undici-types@6.21.0: {}
+
+  undici@6.28.0: {}
 
   unicorn-magic@0.3.0: {}
 

@@ -81,7 +81,7 @@ jobs:
           - name: Check dependencies
             run: pnpm check:deps --reporter=github-actions
           - name: License Check
-            uses: sap/cloud-sdk-js/.github/actions/check-license@main
+            uses: ./.github/actions/check-license
           - name: API Doc Check
             run: pnpm doc
       - wait-all:
