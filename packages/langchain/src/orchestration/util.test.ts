@@ -156,6 +156,53 @@ describe('mapBaseMessageToChatMessage', () => {
     });
   });
 
+  it('should round-trip reasoning_content from additional_kwargs into AssistantChatMessage', () => {
+    const rawBlocks = [{ content: 'Let me think.', signature: 'sig123' }];
+    const aiMessage = new AIMessage({
+      content: [
+        { type: 'reasoning', reasoning: 'Let me think.' },
+        { type: 'text', text: 'The answer is 42.' }
+      ],
+      additional_kwargs: { reasoning_content: rawBlocks }
+    });
+
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'assistant',
+      content: 'The answer is 42.',
+      reasoning_content: rawBlocks
+    });
+  });
+
+  it('should extract reasoning blocks from content array when additional_kwargs has none', () => {
+    const aiMessage = new AIMessage({
+      content: [
+        { type: 'reasoning', reasoning: 'Thinking hard.' },
+        { type: 'text', text: 'Result.' }
+      ]
+    });
+
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'assistant',
+      content: 'Result.',
+      reasoning_content: [{ content: 'Thinking hard.' }]
+    });
+  });
+
+  it('should not include reasoning_content when AIMessage has no reasoning', () => {
+    const aiMessage = new AIMessage('Plain answer.');
+
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'assistant',
+      content: 'Plain answer.'
+    });
+  });
+
   it('should map ToolMessage to ChatMessage with tool role', () => {
     const toolMessage = new ToolMessage('Tool message content', 'tool_call_id');
     const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
@@ -539,6 +586,78 @@ describe('mapOutputToChatResult', () => {
 
     expect(message.usage_metadata?.output_token_details).toBeUndefined();
   });
+
+  it('surfaces reasoning_content as typed content blocks when present', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'The answer is 42.',
+              role: 'assistant',
+              reasoning_content: [
+                { content: 'Let me think step by step.' },
+                { content: 'I concluded it is 42.' }
+              ]
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: { completion_tokens: 10, prompt_tokens: 5, total_tokens: 15 }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.content).toEqual([
+      { type: 'reasoning', reasoning: 'Let me think step by step.', index: 0 },
+      { type: 'reasoning', reasoning: 'I concluded it is 42.', index: 1 },
+      { type: 'text', text: 'The answer is 42.' }
+    ]);
+    expect(
+      (result.generations[0].additional_kwargs as any).reasoning_content
+    ).toEqual([
+      { content: 'Let me think step by step.' },
+      { content: 'I concluded it is 42.' }
+    ]);
+  });
+
+  it('falls back to plain string content when reasoning_content is absent', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: { content: 'Hello world', role: 'assistant' },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: { completion_tokens: 5, prompt_tokens: 3, total_tokens: 8 }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.content).toBe('Hello world');
+    expect(
+      (result.generations[0].additional_kwargs as any).reasoning_content
+    ).toBeUndefined();
+  });
 });
 
 describe('mapToolToOrchestrationFunction', () => {
@@ -761,6 +880,35 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
         reasoning: 7
       }
     });
+  });
+
+  it('surfaces delta reasoning content as typed blocks in the chunk', () => {
+    const mockChunk = createMockChunk('The answer.', undefined, undefined);
+    vi.spyOn(mockChunk, 'getDeltaReasoningContent').mockReturnValue([
+      'Let me think.'
+    ]);
+
+    const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
+
+    expect(result.content).toEqual([
+      { type: 'reasoning', reasoning: 'Let me think.', index: 0 },
+      { type: 'text', text: 'The answer.' }
+    ]);
+    expect((result.additional_kwargs as any).reasoning_content).toEqual([
+      'Let me think.'
+    ]);
+  });
+
+  it('falls back to plain string content when getDeltaReasoningContent returns undefined', () => {
+    const mockChunk = createMockChunk('Hello');
+    vi.spyOn(mockChunk, 'getDeltaReasoningContent').mockReturnValue(undefined);
+
+    const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
+
+    expect(result.content).toBe('Hello');
+    expect(
+      (result.additional_kwargs as any).reasoning_content
+    ).toBeUndefined();
   });
 });
 

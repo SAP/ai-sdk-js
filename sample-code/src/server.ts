@@ -47,7 +47,9 @@ import {
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent,
-  invokePromptCachingAgent
+  invokePromptCachingAgent,
+  invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
+  streamReasoningOrchestration
 } from './langchain-orchestration.ts';
 import {
   listBatches,
@@ -1035,6 +1037,60 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
       res.write(
         `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
       );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get('/langchain/invoke-reasoning-multi-turn-orchestration', async (req, res) => {
+  try {
+    const result = await invokeReasoningMultiTurnOrchestration();
+    res.send(result);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamReasoningOrchestration(controller);
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      if (Array.isArray(chunk.content)) {
+        for (const block of chunk.content) {
+          if (block.type === 'reasoning') {
+            res.write(`[reasoning] ${block.reasoning}`);
+          } else if (block.type === 'text') {
+            res.write(block.text);
+          }
+        }
+      } else {
+        res.write(chunk.content);
+      }
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive) {
+      res.write('\n\n---------------------------\n');
+      res.write(`Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`);
+      res.write(`Output tokens:    ${finalResult?.usage_metadata?.output_tokens ?? 0}\n`);
     }
   } catch (error: any) {
     sendError(res, error, false);
