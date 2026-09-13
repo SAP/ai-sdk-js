@@ -5,16 +5,16 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['html', 'lcov'],
-      reportsDirectory: 'coverage',
+      reportsDirectory: 'coverage'
     },
     projects: [
       'packages/*/vitest.config.ts',
       {
         test: {
           name: 'scripts',
-          include: ['scripts/**/*.test.ts'],
-        },
-      },
-    ],
-  },
+          include: ['scripts/**/*.test.ts']
+        }
+      }
+    ]
+  }
 });

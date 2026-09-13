@@ -10,7 +10,7 @@ SAP Cloud SDK for AI generates client from OpenAPI specification of each service
 For packages like `ai-api`, `document-grounding`, and `prompt-registry`, the generated clients are directly used.
 However, for packages like `foundation-models` and `orchestration`, only the generated types are used, and the client is implemented manually to provide more convenient features.
 
-Currently, all generated types in `foundation-models` and `orchestration` packages are exported publicly. 
+Currently, all generated types in `foundation-models` and `orchestration` packages are exported publicly.
 It means that if the schema in OpenAPI specification changes, we need to add wrappers or aliases, or deprecate the old types to avoid breaking changes.
 This can sometimes be tricky as those changed types might directly be used in the public client APIs and could lead to deprecation of the APIs in order to fully support the upcoming new features.
 

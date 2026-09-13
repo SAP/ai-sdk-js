@@ -1,7 +1,7 @@
 name: Bug Report
 description: Released feature does not work as expected in the SAP Cloud SDK for AI (JavaScript / TypeScript).
 title: '<title>'
-labels: 
+labels:
   - bug
 body:
   - type: markdown
@@ -12,25 +12,25 @@ body:
         Issue for SAP AI Core services (Orchestration, Grounding, Prompt Registry, ...), please refer to the [SAP AI Core Support Process](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process).
   - type: checkboxes
     attributes:
-      label: "Checklist"
-      description: "Before submitting your issue, please make sure to check the following:"
+      label: 'Checklist'
+      description: 'Before submitting your issue, please make sure to check the following:'
       options:
-        - label: "My issue is not an [AI Core service issue](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process), but an SDK issue."
+        - label: 'My issue is not an [AI Core service issue](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/support-process), but an SDK issue.'
           required: true
-        - label: "My issue is a JS/TS related issue, not a [Java related issue](https://github.com/SAP/ai-sdk-java/issues)."
+        - label: 'My issue is a JS/TS related issue, not a [Java related issue](https://github.com/SAP/ai-sdk-java/issues).'
           required: true
-        - label: "My issue is not [already reported or documented](https://github.com/SAP/ai-sdk-js/issues)."
+        - label: 'My issue is not [already reported or documented](https://github.com/SAP/ai-sdk-js/issues).'
           required: true
   - type: textarea
     attributes:
-      label: "Describe the Bug"
-      description: "A clear and concise description of what the bug is."
+      label: 'Describe the Bug'
+      description: 'A clear and concise description of what the bug is.'
     validations:
       required: true
   - type: textarea
     attributes:
-      label: "Steps to Reproduce"
-      description: "Steps to reproduce the behavior."
+      label: 'Steps to Reproduce'
+      description: 'Steps to reproduce the behavior.'
       placeholder: |
         1. Set up ...
         2. Execute ...
@@ -40,20 +40,20 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: "Expected Behavior"
-      description: "A clear and concise description of what you expected to happen."
+      label: 'Expected Behavior'
+      description: 'A clear and concise description of what you expected to happen.'
     validations:
       required: true
   - type: textarea
     attributes:
-      label: "Screenshots"
-      description: "Add screenshots to help explain your problem."
+      label: 'Screenshots'
+      description: 'Add screenshots to help explain your problem.'
     validations:
       required: false
   - type: textarea
     attributes:
-      label: "Used Versions"
-      description: "Provide versions used in the project."
+      label: 'Used Versions'
+      description: 'Provide versions used in the project.'
       value: |
         - Node version via `node -v`: ...
         - NPM version via `npm -v: ...
@@ -64,20 +64,20 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: "Code Examples"
-      description: "Add code snippets as examples to help explain your problem. Please remove sensitive information."
+      label: 'Code Examples'
+      description: 'Add code snippets as examples to help explain your problem. Please remove sensitive information.'
     validations:
       required: false
   - type: textarea
     attributes:
-      label: "Log File"
-      description: "Add your log file or related error message. Again, please remove sensitive information."
+      label: 'Log File'
+      description: 'Add your log file or related error message. Again, please remove sensitive information.'
     validations:
       required: false
   - type: dropdown
     attributes:
-      label: "Region"
-      description: "Choose the region of your AI Core service."
+      label: 'Region'
+      description: 'Choose the region of your AI Core service.'
       multiple: true
       options:
         - AP10
@@ -97,8 +97,8 @@ body:
       required: true
   - type: dropdown
     attributes:
-      label: "Affected Development Phase"
-      description: "Choose the development phase affected by this issue."
+      label: 'Affected Development Phase'
+      description: 'Choose the development phase affected by this issue.'
       multiple: false
       options:
         - Getting Started
@@ -109,8 +109,8 @@ body:
       required: true
   - type: dropdown
     attributes:
-      label: "Impact"
-      description: "Choose the impact severity."
+      label: 'Impact'
+      description: 'Choose the impact severity.'
       multiple: false
       options:
         - No Impact
@@ -121,13 +121,13 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: "Timeline"
-      description: "Please briefly state your timeline, e.g., Go-Live in 12 weeks."
+      label: 'Timeline'
+      description: 'Please briefly state your timeline, e.g., Go-Live in 12 weeks.'
     validations:
       required: false
   - type: textarea
     attributes:
-      label: "Additional Context"
-      description: "Add any other context about the problem here."
+      label: 'Additional Context'
+      description: 'Add any other context about the problem here.'
     validations:
       required: false

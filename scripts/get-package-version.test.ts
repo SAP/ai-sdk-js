@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, afterEach } from 'vitest';
 import { fs, vol } from 'memfs';
+import { vi, describe, it, expect, afterEach } from 'vitest';
 
 vi.mock('fs/promises', () => fs.promises);
 

@@ -1,6 +1,5 @@
 name: api-docs
 
-
 on:
   push:
     tags:

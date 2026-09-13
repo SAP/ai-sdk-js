@@ -1,17 +1,25 @@
 /* oxlint-disable no-console */
 import { resolve, join } from 'node:path';
+
 import { transformFile } from './util.ts';
 
 const clientDir = process.argv[2];
 
 if (!clientDir) {
-  console.error('Please provide the batch-service client directory path as an argument.');
+  console.error(
+    'Please provide the batch-service client directory path as an argument.'
+  );
   process.exit(1);
 }
 
 const dir = resolve(clientDir);
 
-const replaceOrFail = (content: string, from: string, to: string, fileName: string): string => {
+const replaceOrFail = (
+  content: string,
+  from: string,
+  to: string,
+  fileName: string
+): string => {
   const next = content.replace(from, to);
   if (next === content) {
     console.error(
@@ -42,7 +50,12 @@ await transformFile(join(dir, 'schema/batch-create-request.ts'), file => {
     "\nimport type { LlmBatchModel } from '@sap-ai-sdk/core';\n\n/**\n * Representation of the 'BatchCreateRequest' schema.\n */",
     fileName
   );
-  next = replaceOrFail(next, '    model: string;', '    model: LlmBatchModel;', fileName);
+  next = replaceOrFail(
+    next,
+    '    model: string;',
+    '    model: LlmBatchModel;',
+    fileName
+  );
   return next;
 });
 console.log('batch-create-request.ts: processed successfully.');

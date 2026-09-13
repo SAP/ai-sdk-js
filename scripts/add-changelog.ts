@@ -1,6 +1,7 @@
 import { execFile } from 'child_process';
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { promisify } from 'util';
+
 import { getPackageVersion } from './get-package-version.ts';
 
 const COMMIT_LINK_PREFIX = 'https://github.com/SAP/ai-sdk-js/commit/';
