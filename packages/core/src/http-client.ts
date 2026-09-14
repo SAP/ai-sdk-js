@@ -114,7 +114,12 @@ function mergeWithDefaultRequestConfig(
       'content-type': 'application/json',
       'ai-resource-group': resourceGroup
     },
-    params: apiVersion ? { 'api-version': apiVersion } : {}
+    params: apiVersion ? { 'api-version': apiVersion } : {},
+    // Do not cap request/response size for AI Core: prompts and completions can be
+    // large. No-op on the current http adapter (axios defaults both to -1 = unlimited),
+    // but keeps the intent explicit and safe under a fetch adapter.
+    maxContentLength: Number.POSITIVE_INFINITY,
+    maxBodyLength: Number.POSITIVE_INFINITY
   };
 
   const mergedHeaders = mergeIgnoreCase(
