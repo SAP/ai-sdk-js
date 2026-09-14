@@ -336,6 +336,25 @@ export type OrchestrationConfigRef = Xor<
 };
 
 /**
+ * Type guard to check if a prompt is an inline template (i.e., has a non-empty `template` array
+ * and is not a TemplateRef or string).
+ * @param prompt - The prompt value from a `PromptTemplatingModule`.
+ * @returns True if the prompt is a `PromptTemplate` with a non-empty `template` array.
+ * @internal
+ */
+export function isInlineTemplate(
+  prompt: Xor<PromptTemplate, TemplateRef> | string | undefined
+): prompt is PromptTemplate & { template: NonNullable<PromptTemplate['template']> } {
+  return (
+    !!prompt &&
+    typeof prompt === 'object' &&
+    !('template_ref' in prompt) &&
+    Array.isArray((prompt as PromptTemplate).template) &&
+    ((prompt as PromptTemplate).template as unknown[]).length > 0
+  );
+}
+
+/**
  * Type guard to check if config is a config reference.
  * @param config - The config to check.
  * @returns Type predicate indicating whether the config is a config reference.

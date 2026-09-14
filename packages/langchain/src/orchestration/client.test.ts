@@ -1774,6 +1774,39 @@ describe('orchestration service client', () => {
           )
         ).toHaveLength(1);
       });
+
+      it('dedup holds when mixing invoke() and stream()', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.invoke([{ role: 'user', content: 'First' }]);
+        const stream = await client.stream([{ role: 'user', content: 'Second' }]);
+        for await (const _ of stream) {
+          /* noop */
+        }
+        await client.invoke([{ role: 'user', content: 'Third' }]);
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
+        ).toHaveLength(1);
+      });
     });
   });
 

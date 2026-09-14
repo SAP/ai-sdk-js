@@ -1779,6 +1779,42 @@ describe('orchestration service client', () => {
       });
     });
 
+    describe('no template configured', () => {
+      it('emits no logs at any call count when config has no prompt template', async () => {
+        const mockResponse = await parseMockResponse<CompletionPostResponse>(
+          'orchestration',
+          'orchestration-chat-completion-success-response.json'
+        );
+        const configWithNoTemplate: OrchestrationModuleConfig = {
+          promptTemplating: {
+            model: { name: 'gpt-5.4-nano', params: {} }
+          }
+        };
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            { url: 'inference/deployments/1234/v2/completion' }
+          );
+        }
+        const { infoSpy, warnSpy } = getLoggerSpies();
+
+        const client = new OrchestrationClient(configWithNoTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          await client.chatCompletion({
+            messages: [{ role: 'user', content }]
+          });
+        }
+
+        expect(infoSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+    });
+
     describe('config reference', () => {
       it('warns with full guidance when messages are passed alongside a config reference in chatCompletion', async () => {
         const mockResponse = await parseMockResponse<CompletionPostResponse>(

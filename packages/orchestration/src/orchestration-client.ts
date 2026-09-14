@@ -11,7 +11,8 @@ import { OrchestrationStream } from './orchestration-stream.ts';
 import {
   isConfigReference,
   isOrchestrationModuleConfigList,
-  assertIsOrchestrationModuleConfigList
+  assertIsOrchestrationModuleConfigList,
+  isInlineTemplate
 } from './orchestration-types.ts';
 import {
   constructCompletionPostRequest,
@@ -69,6 +70,8 @@ export class OrchestrationClient {
   private hasWarnedConfigRefMessages = false;
   private hasSeenInlineTemplateCall = false;
   private hasWarnedInlineTemplateReuse = false;
+  private readonly configHasInlineTemplate: boolean;
+  private readonly hasConfigReference: boolean;
 
   /* oxlint-disable typescript/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
@@ -161,6 +164,17 @@ export class OrchestrationClient {
     } else if (!isConfigReference(config)) {
       this.config = this.parseTemplatingModule(config);
     }
+
+    this.hasConfigReference = isConfigReference(this.config);
+
+    const moduleConfigs: OrchestrationModuleConfig[] = Array.isArray(this.config)
+      ? (this.config as OrchestrationModuleConfig[])
+      : !this.hasConfigReference && typeof this.config !== 'string'
+        ? [this.config as OrchestrationModuleConfig]
+        : [];
+    this.configHasInlineTemplate = moduleConfigs.some(c =>
+      isInlineTemplate(c.promptTemplating.prompt)
+    );
   }
 
   /**
@@ -365,25 +379,10 @@ export class OrchestrationClient {
    * @param request - The chat completion request to check.
    */
   private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
-    if (!request?.messages?.length || this.hasWarnedInlineTemplateReuse) {
+    if (!this.configHasInlineTemplate) {
       return;
     }
-    const configs: OrchestrationModuleConfig[] = Array.isArray(this.config)
-      ? (this.config as OrchestrationModuleConfig[])
-      : !isConfigReference(this.config) && typeof this.config !== 'string'
-        ? [this.config as OrchestrationModuleConfig]
-        : [];
-    const hasInlineTemplate = configs.some(
-      c =>
-        c.promptTemplating.prompt &&
-        typeof c.promptTemplating.prompt === 'object' &&
-        !('template_ref' in c.promptTemplating.prompt) &&
-        Array.isArray((c.promptTemplating.prompt as any).template) &&
-        (c.promptTemplating.prompt as any).template.length > 0
-    );
-    // To enable short circuit above.
-    if (!hasInlineTemplate) {
-      this.hasWarnedInlineTemplateReuse = true;
+    if (!request?.messages?.length || this.hasWarnedInlineTemplateReuse) {
       return;
     }
     if (!this.hasSeenInlineTemplateCall) {
@@ -391,7 +390,7 @@ export class OrchestrationClient {
       logger.info(
         'A prompt template is defined and messages are provided. The template will be prepended to the messages on this request.'
       );
-    } else if (!this.hasWarnedInlineTemplateReuse) {
+    } else {
       this.hasWarnedInlineTemplateReuse = true;
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
