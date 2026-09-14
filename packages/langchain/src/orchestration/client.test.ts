@@ -1795,7 +1795,9 @@ describe('orchestration service client', () => {
 
         const client = new OrchestrationClient(configWithInlineTemplate);
         await client.invoke([{ role: 'user', content: 'First' }]);
-        const stream = await client.stream([{ role: 'user', content: 'Second' }]);
+        const stream = await client.stream([
+          { role: 'user', content: 'Second' }
+        ]);
         for await (const _ of stream) {
           /* noop */
         }

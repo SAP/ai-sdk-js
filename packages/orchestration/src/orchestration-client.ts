@@ -167,7 +167,9 @@ export class OrchestrationClient {
 
     this.hasConfigReference = isConfigReference(this.config);
 
-    const moduleConfigs: OrchestrationModuleConfig[] = Array.isArray(this.config)
+    const moduleConfigs: OrchestrationModuleConfig[] = Array.isArray(
+      this.config
+    )
       ? (this.config as OrchestrationModuleConfig[])
       : !this.hasConfigReference && typeof this.config !== 'string'
         ? [this.config as OrchestrationModuleConfig]

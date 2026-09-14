@@ -344,7 +344,9 @@ export type OrchestrationConfigRef = Xor<
  */
 export function isInlineTemplate(
   prompt: Xor<PromptTemplate, TemplateRef> | string | undefined
-): prompt is PromptTemplate & { template: NonNullable<PromptTemplate['template']> } {
+): prompt is PromptTemplate & {
+  template: NonNullable<PromptTemplate['template']>;
+} {
   return (
     !!prompt &&
     typeof prompt === 'object' &&
