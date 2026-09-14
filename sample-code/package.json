@@ -37,7 +37,7 @@
     "express": "5.2.1",
     "langchain": "1.5.11",
     "openai": "7.5.0",
-    "zod": "4.6.1"
+    "zod": "4.6.2"
   },
   "devDependencies": {
     "@modelcontextprotocol/server-github": "2025.4.8",
