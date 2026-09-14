@@ -50,11 +50,11 @@
     "@sap-cloud-sdk/util": "^4.9.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.9",
+    "@langchain/core": "1.2.10",
     "@langchain/langgraph": "1.4.14",
-    "langchain": "1.5.10",
+    "langchain": "1.5.11",
     "vitest": "5.0.0",
-    "zod": "4.5.4"
+    "zod": "4.6.1"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.3",

@@ -83,9 +83,9 @@ export type RowType<T extends DataSchema> = T extends readonly any[]
   ? {
       [N in T[number]['name']]: TsType<
         Extract<T[number], { name: N }>['dtype']
-      >;
+      > | null;
     }
-  : Record<string, string | number>;
+  : Record<string, string | number | null>;
 
 /**
  * Represents the type of the `columns` property.
