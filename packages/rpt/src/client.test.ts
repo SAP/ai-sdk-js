@@ -1,4 +1,7 @@
+import * as httpClient from '@sap-cloud-sdk/http-client';
+
 import nock from 'nock';
+import { vi } from 'vitest';
 
 import {
   mockInference,
@@ -31,7 +34,8 @@ describe('rpt', () => {
             product: { dtype: 'string' },
             id: { dtype: 'numeric' },
             production_date: { dtype: 'date' }
-          }
+          },
+          rows: []
         }
       },
       {
@@ -43,13 +47,13 @@ describe('rpt', () => {
       }
     );
 
-    await new RptClient().predictWithSchema(
+    await new RptClient('sap-rpt-1-small').predictWithSchema(
       [
         { name: 'product', dtype: 'string' },
         { name: 'id', dtype: 'numeric' },
         { name: 'production_date', dtype: 'date' }
       ],
-      {} as any
+      { rows: [] } as any
     );
     expect(requestSpy.isDone()).toBe(true);
   });
@@ -65,7 +69,8 @@ describe('rpt', () => {
     const requestSpy = mockInference(
       {
         data: {
-          data_schema: null
+          data_schema: null,
+          rows: []
         }
       },
       {
@@ -77,7 +82,9 @@ describe('rpt', () => {
       }
     );
 
-    await new RptClient().predictWithoutSchema({} as any);
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema({
+      rows: []
+    } as any);
     expect(requestSpy.isDone()).toBe(true);
   });
 
@@ -99,7 +106,7 @@ describe('rpt', () => {
       .reply(200, { predictions: [{ SALESGROUP: 'test' }] });
 
     const blob = new Blob(['fake parquet data']);
-    const result = await new RptClient().predictParquet({
+    const result = await new RptClient('sap-rpt-1-small').predictParquet({
       file: blob,
       prediction_config: {
         target_columns: [
@@ -112,5 +119,103 @@ describe('rpt', () => {
 
     expect(requestScope.isDone()).toBe(true);
     expect(result.predictions).toEqual([{ SALESGROUP: 'test' }]);
+  });
+
+  it('should serialize boolean values in rows to strings', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '5678', model: { name: 'sap-rpt-1.5', version: 'latest' } }
+    );
+    const requestSpy = mockInference(
+      (body: any) =>
+        body.rows?.[0].active === 'true' && body.rows?.[1].active === 'false',
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/5678/predict' }
+    );
+
+    await new RptClient('sap-rpt-1.5').predictWithoutSchema({
+      rows: [{ active: true }, { active: false }]
+    } as any);
+    expect(requestSpy.isDone()).toBe(true);
+  });
+
+  it('should serialize boolean values in columns to strings', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '5678', model: { name: 'sap-rpt-1.5', version: 'latest' } }
+    );
+    const requestSpy = mockInference(
+      (body: any) =>
+        body.columns?.active?.[0] === 'true' &&
+        body.columns?.active?.[1] === 'false',
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/5678/predict' }
+    );
+
+    await new RptClient('sap-rpt-1.5').predictWithoutSchema({
+      columns: { active: [true, false] }
+    } as any);
+    expect(requestSpy.isDone()).toBe(true);
+  });
+});
+
+describe('rpt compression', () => {
+  let compressSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+    compressSpy = vi.spyOn(httpClient, 'compress');
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    vi.restoreAllMocks();
+  });
+
+  it('should default to compression level 1', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
+    mockInference(
+      () => true,
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/1234/predict' }
+    );
+
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema({
+      rows: []
+    } as any);
+
+    expect(compressSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        compressOptions: expect.objectContaining({ level: 1 })
+      })
+    );
+  });
+
+  it('should allow overriding the compression level', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'aicore-sap' },
+      { id: '1234', model: { name: 'sap-rpt-1-small', version: 'latest' } }
+    );
+    mockInference(
+      () => true,
+      { data: 'ok', status: 200 },
+      { url: 'inference/deployments/1234/predict' }
+    );
+
+    await new RptClient('sap-rpt-1-small').predictWithoutSchema(
+      { rows: [] } as any,
+      {
+        compress: { mode: 'always', compressOptions: { level: 6 } }
+      }
+    );
+
+    expect(compressSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        compressOptions: expect.objectContaining({ level: 6 })
+      })
+    );
   });
 });
