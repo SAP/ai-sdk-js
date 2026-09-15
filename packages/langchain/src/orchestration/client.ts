@@ -80,8 +80,7 @@ export class OrchestrationClient extends BaseChatModel<
   deploymentConfig?: ResourceGroupConfig;
   destination?: HttpDestinationOrFetchOptions;
   private hasBeenCalledOnce = false;
-  private hasWarnedTemplateRef = false;
-  private hasWarnedInlineTemplate = false;
+  private hasWarned = false;
   private readonly configHasTemplateRef: boolean;
   private readonly configHasInlineTemplate: boolean;
 
@@ -497,25 +496,19 @@ export class OrchestrationClient extends BaseChatModel<
       return;
     }
 
-    if (
-      this.configHasTemplateRef &&
-      hasMessages &&
-      !this.hasWarnedTemplateRef
-    ) {
-      this.hasWarnedTemplateRef = true;
+    if (this.hasWarned || !hasMessages) {
+      return;
+    }
+
+    if (this.configHasTemplateRef) {
+      this.hasWarned = true;
       logger.warn(
         'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
           'The prompt template is defined remotely and cannot be extended inline. ' +
           'In agentic workflows, consider using two separate clients: one with template_ref for the first node, and one without for subsequent conversational nodes.'
       );
-    }
-
-    if (
-      this.configHasInlineTemplate &&
-      hasMessages &&
-      !this.hasWarnedInlineTemplate
-    ) {
-      this.hasWarnedInlineTemplate = true;
+    } else if (this.configHasInlineTemplate) {
+      this.hasWarned = true;
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
