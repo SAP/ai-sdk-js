@@ -348,11 +348,10 @@ export function isInlineTemplate(
   template: NonNullable<PromptTemplate['template']>;
 } {
   return (
-    !!prompt &&
     typeof prompt === 'object' &&
-    !('template_ref' in prompt) &&
-    Array.isArray((prompt as PromptTemplate).template) &&
-    ((prompt as PromptTemplate).template as unknown[]).length > 0
+    'template_ref' in prompt &&
+    Array.isArray(prompt.template) &&
+    !!prompt.template.length
   );
 }
 
