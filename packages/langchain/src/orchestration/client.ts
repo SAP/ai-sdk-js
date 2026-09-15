@@ -79,10 +79,8 @@ export class OrchestrationClient extends BaseChatModel<
   langchainOptions: LangChainOrchestrationChatModelParams;
   deploymentConfig?: ResourceGroupConfig;
   destination?: HttpDestinationOrFetchOptions;
-  private hasBeenCalledOnce = false;
-  private hasWarned = false;
-  private readonly configHasTemplateRef: boolean;
-  private readonly configHasInlineTemplate: boolean;
+  private templateWarningState: 'unseen' | 'infoEmitted' | 'warnEmitted' =
+    'unseen';
 
   constructor(
     orchestrationConfig:
@@ -120,18 +118,6 @@ export class OrchestrationClient extends BaseChatModel<
     // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
     this.streaming =
       langchainOptions?.streaming === true && this.disableStreaming !== true;
-
-    const configs = Array.isArray(orchestrationConfig)
-      ? orchestrationConfig
-      : [orchestrationConfig];
-    this.configHasTemplateRef = configs.some(
-      c =>
-        typeof c.promptTemplating.prompt === 'object' &&
-        isTemplateRef(c.promptTemplating.prompt)
-    );
-    this.configHasInlineTemplate = configs.some(c =>
-      isInlineTemplate(c.promptTemplating.prompt)
-    );
   }
 
   _llmType(): string {
@@ -491,24 +477,36 @@ export class OrchestrationClient extends BaseChatModel<
   }
 
   private warnTemplateUsage(hasMessages: boolean): void {
-    if (!this.hasBeenCalledOnce) {
-      this.hasBeenCalledOnce = true;
+    if (!hasMessages || this.templateWarningState === 'warnEmitted') {
       return;
     }
 
-    if (this.hasWarned || !hasMessages) {
+    const configs = Array.isArray(this.orchestrationConfig)
+      ? this.orchestrationConfig
+      : [this.orchestrationConfig];
+    const hasTemplateRef = configs.some(
+      c =>
+        typeof c.promptTemplating.prompt === 'object' &&
+        isTemplateRef(c.promptTemplating.prompt)
+    );
+    const hasInlineTemplate = configs.some(c =>
+      isInlineTemplate(c.promptTemplating.prompt)
+    );
+
+    if (this.templateWarningState === 'unseen') {
+      this.templateWarningState = 'infoEmitted';
       return;
     }
 
-    if (this.configHasTemplateRef) {
-      this.hasWarned = true;
+    if (hasTemplateRef) {
+      this.templateWarningState = 'warnEmitted';
       logger.warn(
         'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
           'The prompt template is defined remotely and cannot be extended inline. ' +
           'In agentic workflows, consider using two separate clients: one with template_ref for the first node, and one without for subsequent conversational nodes.'
       );
-    } else if (this.configHasInlineTemplate) {
-      this.hasWarned = true;
+    } else if (hasInlineTemplate) {
+      this.templateWarningState = 'warnEmitted';
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
