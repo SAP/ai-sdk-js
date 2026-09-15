@@ -70,8 +70,6 @@ export class OrchestrationClient {
   private hasWarnedConfigRefMessages = false;
   private templateWarningState: 'unseen' | 'infoEmitted' | 'warnEmitted' =
     'unseen';
-  private readonly configHasInlineTemplate: boolean;
-  private readonly hasConfigReference: boolean;
 
   /* oxlint-disable typescript/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
@@ -165,18 +163,6 @@ export class OrchestrationClient {
       this.config = this.parseTemplatingModule(config);
     }
 
-    this.hasConfigReference = isConfigReference(this.config);
-
-    const moduleConfigs: OrchestrationModuleConfig[] = Array.isArray(
-      this.config
-    )
-      ? this.config
-      : !this.hasConfigReference && typeof this.config !== 'string'
-        ? [this.config as OrchestrationModuleConfig]
-        : [];
-    this.configHasInlineTemplate = moduleConfigs.some(c =>
-      isInlineTemplate(c.promptTemplating.prompt)
-    );
   }
 
   /**
@@ -368,6 +354,16 @@ export class OrchestrationClient {
     return response;
   }
 
+  private hasInlineTemplate(): boolean {
+    if (isConfigReference(this.config) || typeof this.config === 'string') {
+      return false;
+    }
+    const configs = Array.isArray(this.config)
+      ? this.config
+      : [this.config as OrchestrationModuleConfig];
+    return configs.some(c => isInlineTemplate(c.promptTemplating.prompt));
+  }
+
   /**
    * Log template + messages interaction on every call.
    * - First call: info log so the prepend behavior is visible immediately.
@@ -381,7 +377,7 @@ export class OrchestrationClient {
    * @param request - The chat completion request to check.
    */
   private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
-    if (!this.configHasInlineTemplate) {
+    if (!this.hasInlineTemplate()) {
       return;
     }
     if (
