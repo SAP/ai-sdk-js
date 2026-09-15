@@ -68,8 +68,8 @@ export class OrchestrationClient {
   private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
   private destination?: HttpDestinationOrFetchOptions;
   private hasWarnedConfigRefMessages = false;
-  private hasSeenInlineTemplateCall = false;
-  private hasWarnedInlineTemplateReuse = false;
+  private templateWarningState: 'unseen' | 'info_emitted' | 'warn_emitted' =
+    'unseen';
   private readonly configHasInlineTemplate: boolean;
   private readonly hasConfigReference: boolean;
 
@@ -375,7 +375,7 @@ export class OrchestrationClient {
    *
    * Note: when this client is used via the LangChain adapter, each _generate /
    * _streamResponseChunks call constructs a fresh OrchestrationClient instance,
-   * so hasSeenInlineTemplateCall/hasWarnedInlineTemplateReuse are always false and the reuse warning never fires.
+   * so templateWarningState is always 'unseen' and the reuse warning never fires.
    * The LangChain client tracks its own state and delegates to warnTemplateUsage
    * in langchain/src/orchestration/client.ts — that is the intentional split.
    * @param request - The chat completion request to check.
@@ -384,16 +384,16 @@ export class OrchestrationClient {
     if (!this.configHasInlineTemplate) {
       return;
     }
-    if (!request?.messages?.length || this.hasWarnedInlineTemplateReuse) {
+    if (!request?.messages?.length || this.templateWarningState === 'warn_emitted') {
       return;
     }
-    if (!this.hasSeenInlineTemplateCall) {
-      this.hasSeenInlineTemplateCall = true;
+    if (this.templateWarningState === 'unseen') {
+      this.templateWarningState = 'info_emitted';
       logger.info(
         'A prompt template is defined and messages are provided. The template will be prepended to the messages on this request.'
       );
     } else {
-      this.hasWarnedInlineTemplateReuse = true;
+      this.templateWarningState = 'warn_emitted';
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
