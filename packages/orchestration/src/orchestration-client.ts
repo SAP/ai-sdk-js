@@ -357,9 +357,7 @@ export class OrchestrationClient {
     if (isConfigReference(this.config) || typeof this.config === 'string') {
       return false;
     }
-    const configs = Array.isArray(this.config)
-      ? this.config
-      : [this.config as OrchestrationModuleConfig];
+    const configs = Array.isArray(this.config) ? this.config : [this.config];
     return configs.some(c => isInlineTemplate(c.promptTemplating.prompt));
   }
 
