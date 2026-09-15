@@ -5,6 +5,7 @@
  */
 
 import type { AzureContentSafetyInput } from './azure-content-safety-input.js';
+import type { InputFilterTargetSelector } from './input-filter-target-selector.js';
 /**
  * Representation of the 'AzureContentSafetyInputFilterConfig' schema.
  */
@@ -15,4 +16,5 @@ export type AzureContentSafetyInputFilterConfig = {
    */
   type: 'azure_content_safety';
   config?: AzureContentSafetyInput;
+  target_selector?: InputFilterTargetSelector;
 };

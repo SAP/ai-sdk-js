@@ -1640,6 +1640,8 @@ components:
           example: azure_content_safety
         config:
           $ref: '#/components/schemas/AzureContentSafetyInput'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
 
     AzureContentSafetyOutputFilterConfig:
       type: object
@@ -1718,6 +1720,8 @@ components:
           example: llama_guard_3_8b
         config:
           $ref: '#/components/schemas/LlamaGuard38b'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
 
     LlamaGuard38b:
       deprecated: true
@@ -1771,6 +1775,8 @@ components:
           example: granite_guardian_4_1
         config:
           $ref: '#/components/schemas/GraniteGuardian41'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
 
     GraniteGuardian41:
       description: Configuration for IBM Granite Guardian 4.1 filter provider.
@@ -2520,6 +2526,47 @@ components:
         signature:
           type: string
           default: ''
+
+    InputFilterTargetSelector:
+      oneOf:
+        - $ref: '#/components/schemas/AfterLastRoleTargetSelector'
+        - $ref: '#/components/schemas/LastMessagesTargetSelector'
+      description: >
+        Selector for scoping input filtering to a subset of the combined
+        message list (messages_history prepended to template).
+        If not present, all input content is filtered.
+
+    AfterLastRoleTargetSelector:
+      type: object
+      additionalProperties: false
+      required:
+        - after_last_role
+      properties:
+        after_last_role:
+          type: string
+          description: >
+            Filter all messages after the last message with this role in the combined
+            message list. If no message is scoped after applying this filter, then the filter is skipped.
+          enum:
+            - system
+            - user
+            - assistant
+            - developer
+            - tool
+
+    LastMessagesTargetSelector:
+      type: object
+      additionalProperties: false
+      required:
+        - last_messages
+      properties:
+        last_messages:
+          type: integer
+          minimum: 1
+          description: >
+            Number of messages from the end of the combined message list to include
+            in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request).
+            If specified value is larger than the combined message list length, all messages are filtered.
 
   responses:
     BadRequest:
