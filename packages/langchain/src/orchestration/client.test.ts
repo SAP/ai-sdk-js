@@ -1424,131 +1424,324 @@ describe('orchestration service client', () => {
       return vi.spyOn(logger, 'warn');
     }
 
-    function runWarningBehaviors(
-      config: LangChainOrchestrationModuleConfig,
-      keyword: string,
-      call: (client: OrchestrationClient, content: string) => Promise<void>,
-      callEmpty: (client: OrchestrationClient) => Promise<void>,
-      getMockData: () => typeof mockResponse | typeof mockResponseStream
-    ) {
+    describe('template_ref / invoke', () => {
       it('does not warn on first call with messages', async () => {
-        mockInference(() => true, { data: getMockData(), status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
         const warnSpy = getWarnSpy();
 
-        await call(new OrchestrationClient(config), 'Hello!');
+        await new OrchestrationClient(configWithTemplateRef).invoke([
+          { role: 'user', content: 'Hello!' }
+        ]);
 
         expect(warnSpy).not.toHaveBeenCalledWith(
-          expect.stringContaining(keyword)
+          expect.stringContaining('template_ref')
         );
       });
 
       it('warns on second call when reusing the same client with messages', async () => {
-        mockInference(() => true, { data: getMockData(), status: 200 }, endpoint);
-        mockInference(() => true, { data: getMockData(), status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
         const warnSpy = getWarnSpy();
 
-        const client = new OrchestrationClient(config);
-        await call(client, 'First message');
-        await call(client, 'Second message');
+        const client = new OrchestrationClient(configWithTemplateRef);
+        await client.invoke([{ role: 'user', content: 'First message' }]);
+        await client.invoke([{ role: 'user', content: 'Second message' }]);
 
         expect(warnSpy).toHaveBeenCalledWith(
-          expect.stringContaining(keyword)
+          expect.stringContaining('template_ref')
         );
       });
 
       it('does not warn again after second call', async () => {
         for (let i = 0; i < 3; i++) {
-          mockInference(() => true, { data: getMockData(), status: 200 }, endpoint);
+          mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
         }
         const warnSpy = getWarnSpy();
 
-        const client = new OrchestrationClient(config);
+        const client = new OrchestrationClient(configWithTemplateRef);
         for (const content of ['First', 'Second', 'Third']) {
-          await call(client, content);
+          await client.invoke([{ role: 'user', content }]);
         }
 
         expect(
           warnSpy.mock.calls.filter(([msg]) =>
-            (msg as unknown as string).includes(keyword)
+            (msg as unknown as string).includes('template_ref')
           )
         ).toHaveLength(1);
       });
 
       it('does not warn when used without messages', async () => {
-        mockInference(() => true, { data: getMockData(), status: 200 }, endpoint);
-        mockInference(() => true, { data: getMockData(), status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
         const warnSpy = getWarnSpy();
 
-        const client = new OrchestrationClient(config);
-        await callEmpty(client);
-        await callEmpty(client);
+        const client = new OrchestrationClient(configWithTemplateRef);
+        await client.invoke([]);
+        await client.invoke([]);
 
         expect(warnSpy).not.toHaveBeenCalledWith(
-          expect.stringContaining(keyword)
+          expect.stringContaining('template_ref')
         );
       });
-    }
-
-    async function invokeWith(client: OrchestrationClient, content: string) {
-      await client.invoke([{ role: 'user', content }]);
-    }
-
-    async function invokeEmpty(client: OrchestrationClient) {
-      await client.invoke([]);
-    }
-
-    async function streamWith(client: OrchestrationClient, content: string) {
-      const s = await client.stream([{ role: 'user', content }]);
-      for await (const _ of s) {
-        /* noop */
-      }
-    }
-
-    async function streamEmpty(client: OrchestrationClient) {
-      const s = await client.stream([]);
-      for await (const _ of s) {
-        /* noop */
-      }
-    }
-
-    describe('template_ref / invoke', () => {
-      runWarningBehaviors(
-        configWithTemplateRef,
-        'template_ref',
-        invokeWith,
-        invokeEmpty,
-        () => mockResponse
-      );
     });
 
     describe('template_ref / stream', () => {
-      runWarningBehaviors(
-        configWithTemplateRef,
-        'template_ref',
-        streamWith,
-        streamEmpty,
-        () => mockResponseStream
-      );
+      it('does not warn on first call with messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const s = await new OrchestrationClient(configWithTemplateRef).stream([
+          { role: 'user', content: 'Hello!' }
+        ]);
+        for await (const _ of s) {
+          /* noop */
+        }
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('warns on second call when reusing the same client with messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        for (const content of ['First message', 'Second message']) {
+          const s = await client.stream([{ role: 'user', content }]);
+          for await (const _ of s) {
+            /* noop */
+          }
+        }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
+
+      it('does not warn again after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponseStream, status: 200 },
+            endpoint
+          );
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        for (const content of ['First', 'Second', 'Third']) {
+          const s = await client.stream([{ role: 'user', content }]);
+          for await (const _ of s) {
+            /* noop */
+          }
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('template_ref')
+          )
+        ).toHaveLength(1);
+      });
+
+      it('does not warn when used without messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithTemplateRef);
+        for (let i = 0; i < 2; i++) {
+          const s = await client.stream([]);
+          for await (const _ of s) {
+            /* noop */
+          }
+        }
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('template_ref')
+        );
+      });
     });
 
     describe('inline template / invoke', () => {
-      runWarningBehaviors(
-        configWithInlineTemplate,
-        'prepended',
-        invokeWith,
-        invokeEmpty,
-        () => mockResponse
-      );
+      it('does not warn on first call with messages', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        await new OrchestrationClient(configWithInlineTemplate).invoke([
+          { role: 'user', content: 'Hello!' }
+        ]);
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('warns on second call when reusing the same client with messages', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.invoke([{ role: 'user', content: 'First message' }]);
+        await client.invoke([{ role: 'user', content: 'Second message' }]);
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('does not warn again after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          await client.invoke([{ role: 'user', content }]);
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
+        ).toHaveLength(1);
+      });
+
+      it('does not warn when used without messages', async () => {
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        await client.invoke([]);
+        await client.invoke([]);
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
     });
 
     describe('inline template / stream', () => {
-      runWarningBehaviors(
-        configWithInlineTemplate,
-        'prepended',
-        streamWith,
-        streamEmpty,
-        () => mockResponseStream
-      );
+      it('does not warn on first call with messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const s = await new OrchestrationClient(
+          configWithInlineTemplate
+        ).stream([{ role: 'user', content: 'Hello!' }]);
+        for await (const _ of s) {
+          /* noop */
+        }
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('warns on second call when reusing the same client with messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First message', 'Second message']) {
+          const s = await client.stream([{ role: 'user', content }]);
+          for await (const _ of s) {
+            /* noop */
+          }
+        }
+
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
+
+      it('does not warn again after second call', async () => {
+        for (let i = 0; i < 3; i++) {
+          mockInference(
+            () => true,
+            { data: mockResponseStream, status: 200 },
+            endpoint
+          );
+        }
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (const content of ['First', 'Second', 'Third']) {
+          const s = await client.stream([{ role: 'user', content }]);
+          for await (const _ of s) {
+            /* noop */
+          }
+        }
+
+        expect(
+          warnSpy.mock.calls.filter(([msg]) =>
+            (msg as unknown as string).includes('prepended')
+          )
+        ).toHaveLength(1);
+      });
+
+      it('does not warn when used without messages', async () => {
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponseStream, status: 200 },
+          endpoint
+        );
+        const warnSpy = getWarnSpy();
+
+        const client = new OrchestrationClient(configWithInlineTemplate);
+        for (let i = 0; i < 2; i++) {
+          const s = await client.stream([]);
+          for await (const _ of s) {
+            /* noop */
+          }
+        }
+
+        expect(warnSpy).not.toHaveBeenCalledWith(
+          expect.stringContaining('prepended')
+        );
+      });
     });
 
     it('inline template: dedup holds when mixing invoke() and stream()', async () => {
