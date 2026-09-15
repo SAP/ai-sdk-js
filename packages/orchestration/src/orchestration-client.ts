@@ -170,7 +170,7 @@ export class OrchestrationClient {
     const moduleConfigs: OrchestrationModuleConfig[] = Array.isArray(
       this.config
     )
-      ? (this.config as OrchestrationModuleConfig[])
+      ? this.config
       : !this.hasConfigReference && typeof this.config !== 'string'
         ? [this.config as OrchestrationModuleConfig]
         : [];
