@@ -21,6 +21,7 @@ jobs:
           persist-credentials: false
           sparse-checkout: |
             .github/PULL_REQUEST_TEMPLATE.md
+            .github/actions
             .changeset
       - name: Collect changed files
         id: changed-files
@@ -29,6 +30,6 @@ jobs:
           files: |
             .changeset/**
             !.changeset/config.json
-      - uses: sap/cloud-sdk-js/.github/actions/check-pr@main
+      - uses: $/.github/actions/check-pr
         with:
           changed-files: ${{ steps.changed-files.outputs.added_files }} ${{ steps.changed-files.outputs.modified_files }}
