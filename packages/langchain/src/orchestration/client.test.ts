@@ -1426,7 +1426,11 @@ describe('orchestration service client', () => {
 
     describe('template_ref / invoke', () => {
       it('does not warn on first call with messages', async () => {
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
         await new OrchestrationClient(configWithTemplateRef).invoke([
@@ -1439,8 +1443,16 @@ describe('orchestration service client', () => {
       });
 
       it('warns on second call when reusing the same client with messages', async () => {
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
         const client = new OrchestrationClient(configWithTemplateRef);
@@ -1454,7 +1466,11 @@ describe('orchestration service client', () => {
 
       it('does not warn again after second call', async () => {
         for (let i = 0; i < 3; i++) {
-          mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            endpoint
+          );
         }
         const warnSpy = getWarnSpy();
 
@@ -1471,8 +1487,16 @@ describe('orchestration service client', () => {
       });
 
       it('does not warn when used without messages', async () => {
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
         const client = new OrchestrationClient(configWithTemplateRef);
@@ -1586,7 +1610,11 @@ describe('orchestration service client', () => {
 
     describe('inline template / invoke', () => {
       it('does not warn on first call with messages', async () => {
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
         await new OrchestrationClient(configWithInlineTemplate).invoke([
@@ -1599,8 +1627,16 @@ describe('orchestration service client', () => {
       });
 
       it('warns on second call when reusing the same client with messages', async () => {
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
         const client = new OrchestrationClient(configWithInlineTemplate);
@@ -1614,7 +1650,11 @@ describe('orchestration service client', () => {
 
       it('does not warn again after second call', async () => {
         for (let i = 0; i < 3; i++) {
-          mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+          mockInference(
+            () => true,
+            { data: mockResponse, status: 200 },
+            endpoint
+          );
         }
         const warnSpy = getWarnSpy();
 
@@ -1631,8 +1671,16 @@ describe('orchestration service client', () => {
       });
 
       it('does not warn when used without messages', async () => {
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
-        mockInference(() => true, { data: mockResponse, status: 200 }, endpoint);
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
+        mockInference(
+          () => true,
+          { data: mockResponse, status: 200 },
+          endpoint
+        );
         const warnSpy = getWarnSpy();
 
         const client = new OrchestrationClient(configWithInlineTemplate);
@@ -1756,9 +1804,7 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(configWithInlineTemplate);
       await client.invoke([{ role: 'user', content: 'First' }]);
-      const stream = await client.stream([
-        { role: 'user', content: 'Second' }
-      ]);
+      const stream = await client.stream([{ role: 'user', content: 'Second' }]);
       for await (const _ of stream) {
         /* noop */
       }
