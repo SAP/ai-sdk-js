@@ -68,7 +68,7 @@ export class OrchestrationClient {
   private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
   private destination?: HttpDestinationOrFetchOptions;
   private hasWarnedConfigRefMessages = false;
-  private templateWarningState: 'unseen' | 'info_emitted' | 'warn_emitted' =
+  private templateWarningState: 'unseen' | 'infoEmitted' | 'warnEmitted' =
     'unseen';
   private readonly configHasInlineTemplate: boolean;
   private readonly hasConfigReference: boolean;
@@ -384,16 +384,16 @@ export class OrchestrationClient {
     if (!this.configHasInlineTemplate) {
       return;
     }
-    if (!request?.messages?.length || this.templateWarningState === 'warn_emitted') {
+    if (!request?.messages?.length || this.templateWarningState === 'warnEmitted') {
       return;
     }
     if (this.templateWarningState === 'unseen') {
-      this.templateWarningState = 'info_emitted';
+      this.templateWarningState = 'infoEmitted';
       logger.info(
         'A prompt template is defined and messages are provided. The template will be prepended to the messages on this request.'
       );
     } else {
-      this.templateWarningState = 'warn_emitted';
+      this.templateWarningState = 'warnEmitted';
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +

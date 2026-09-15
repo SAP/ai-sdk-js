@@ -349,9 +349,9 @@ export function isInlineTemplate(
 } {
   return (
     typeof prompt === 'object' &&
-    'template_ref' in prompt &&
+    !('template_ref' in prompt) &&
     Array.isArray(prompt.template) &&
-    !!prompt.template.length
+    prompt.template.length > 0
   );
 }
 
