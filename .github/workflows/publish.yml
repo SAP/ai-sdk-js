@@ -25,7 +25,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/publish-release.yml
+    uses: $/.github/workflows/publish-release.yml
     secrets:
       SAP_AI_SDK_BOT_CLIENT_ID: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
       SAP_AI_SDK_BOT_PRIVATE_KEY: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
@@ -35,7 +35,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/publish-canary.yml
+    uses: $/.github/workflows/publish-canary.yml
     with:
       tag: ${{ inputs.tag || 'canary' }}
 
