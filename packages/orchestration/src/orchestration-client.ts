@@ -162,7 +162,6 @@ export class OrchestrationClient {
     } else if (!isConfigReference(config)) {
       this.config = this.parseTemplatingModule(config);
     }
-
   }
 
   /**
