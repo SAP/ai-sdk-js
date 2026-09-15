@@ -12,6 +12,7 @@ import {
 } from '@sap-ai-sdk/orchestration';
 
 import {
+  AIMessage,
   HumanMessage,
   SystemMessage,
   ToolMessage
@@ -38,7 +39,7 @@ import type {
 import type {
   BaseMessage,
   AIMessageChunk,
-  AIMessage
+  ContentBlock
 } from '@langchain/core/messages';
 
 interface PromptCachingInvocationResult {
@@ -730,4 +731,94 @@ export async function invokeWithStructuredOutput<T extends boolean = false>(
   return structuredLlm.invoke('Tell me a joke about cats') as ReturnType<
     typeof invokeWithStructuredOutput<T>
   >;
+}
+
+function extractText(content: AIMessage['content']): string {
+  if (typeof content === 'string') {
+    return content;
+  }
+  return (content as ContentBlock[])
+    .filter(b => b.type === 'text')
+    .map(b => (b as ContentBlock.Text).text)
+    .join('');
+}
+
+function extractReasoning(content: AIMessage['content']): string {
+  if (typeof content === 'string') {
+    return '';
+  }
+  return (content as ContentBlock[])
+    .filter(b => b.type === 'reasoning')
+    .map(b => (b as ContentBlock.Reasoning).reasoning)
+    .join('\n');
+}
+
+/**
+ * Multi-turn conversation with a reasoning model via LangChain orchestration client.
+ * Turn 1: asks a maths question, captures reasoning + answer.
+ * Turn 2: re-sends the history (including reasoning content) and asks a follow-up.
+ * Returns a formatted string showing reasoning and answers for both turns.
+ */
+export async function invokeReasoningMultiTurn(): Promise<string> {
+  const config: LangChainOrchestrationModuleConfig = {
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku',
+        params: { reasoning_effort: 'low' }
+      }
+    }
+  };
+
+  const client = new OrchestrationClient(config);
+
+  // Turn 1
+  const messages: BaseMessage[] = [
+    new HumanMessage('What is 17 × 23? Think step by step.')
+  ];
+  const turn1 = await client.invoke(messages);
+  messages.push(turn1);
+
+  const turn1Reasoning = extractReasoning(turn1.content);
+  const turn1Answer = extractText(turn1.content);
+
+  // Turn 2 — follow-up using the same message history (round-trips reasoning)
+  messages.push(new HumanMessage('Now divide that result by 17. What do you get?'));
+  const turn2 = await client.invoke(messages);
+
+  const turn2Reasoning = extractReasoning(turn2.content);
+  const turn2Answer = extractText(turn2.content);
+
+  return [
+    '=== Turn 1 ===',
+    `Reasoning:\n${turn1Reasoning || '(none)'}`,
+    `Answer:\n${turn1Answer}`,
+    '',
+    '=== Turn 2 ===',
+    `Reasoning:\n${turn2Reasoning || '(none)'}`,
+    `Answer:\n${turn2Answer}`
+  ].join('\n');
+}
+
+/**
+ * Streams a reasoning model response via LangChain orchestration client.
+ * Emits reasoning blocks and text blocks as they arrive.
+ * @param controller - Optional abort controller.
+ * @returns An async iterable of {@link AIMessageChunk} objects.
+ */
+export async function streamReasoningOrchestration(
+  controller = new AbortController()
+): Promise<AsyncIterable<AIMessageChunk>> {
+  const config: LangChainOrchestrationModuleConfig = {
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku',
+        params: { reasoning_effort: 'low' }
+      }
+    }
+  };
+
+  return new OrchestrationClient(config).stream(
+    [new HumanMessage('What is 17 × 23? Think step by step.')],
+    { signal: controller.signal }
+  );
 }
