@@ -384,7 +384,10 @@ export class OrchestrationClient {
     if (!this.configHasInlineTemplate) {
       return;
     }
-    if (!request?.messages?.length || this.templateWarningState === 'warnEmitted') {
+    if (
+      !request?.messages?.length ||
+      this.templateWarningState === 'warnEmitted'
+    ) {
       return;
     }
     if (this.templateWarningState === 'unseen') {
