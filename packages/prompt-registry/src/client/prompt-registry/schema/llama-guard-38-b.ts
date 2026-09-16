@@ -5,7 +5,8 @@
  */
 
 /**
- * Filter configuration for Llama Guard 3 8B
+ * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
+ * @deprecated
  */
 export type LlamaGuard38B = {
   violent_crimes?: boolean;
