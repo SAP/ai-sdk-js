@@ -444,7 +444,7 @@ function resolvePromptTemplate(
     if (!prompt.template?.length && !messages?.length) {
       throw new Error('Either a prompt template or messages must be defined.');
     }
-    return { template: [...(prompt.template || []), ...(messages || [])] };
+    return { ...prompt, template: [...(prompt.template || []), ...(messages || [])] };
   }
 
   return prompt as TemplateRef;
