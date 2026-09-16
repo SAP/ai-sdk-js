@@ -11,7 +11,8 @@ import { OrchestrationStream } from './orchestration-stream.ts';
 import {
   isConfigReference,
   isOrchestrationModuleConfigList,
-  assertIsOrchestrationModuleConfigList
+  assertIsOrchestrationModuleConfigList,
+  isInlineTemplate
 } from './orchestration-types.ts';
 import {
   constructCompletionPostRequest,
@@ -67,8 +68,8 @@ export class OrchestrationClient {
   private deploymentConfig?: ResourceGroupConfig | DeploymentIdConfig;
   private destination?: HttpDestinationOrFetchOptions;
   private hasWarnedConfigRefMessages = false;
-  private hasSeenInlineTemplateCall = false;
-  private hasWarnedInlineTemplateReuse = false;
+  private templateWarningState: 'unseen' | 'infoEmitted' | 'warnEmitted' =
+    'unseen';
 
   /* oxlint-disable typescript/unified-signatures -- separate overloads improve discoverability and per-variant JSDoc */
   /**
@@ -352,6 +353,14 @@ export class OrchestrationClient {
     return response;
   }
 
+  private hasInlineTemplate(): boolean {
+    if (isConfigReference(this.config) || typeof this.config === 'string') {
+      return false;
+    }
+    const configs = Array.isArray(this.config) ? this.config : [this.config];
+    return configs.some(c => isInlineTemplate(c.promptTemplating.prompt));
+  }
+
   /**
    * Log template + messages interaction on every call.
    * - First call: info log so the prepend behavior is visible immediately.
@@ -359,40 +368,28 @@ export class OrchestrationClient {
    *
    * Note: when this client is used via the LangChain adapter, each _generate /
    * _streamResponseChunks call constructs a fresh OrchestrationClient instance,
-   * so hasSeenInlineTemplateCall/hasWarnedInlineTemplateReuse are always false and the reuse warning never fires.
+   * so templateWarningState is always 'unseen' and the reuse warning never fires.
    * The LangChain client tracks its own state and delegates to warnTemplateUsage
    * in langchain/src/orchestration/client.ts — that is the intentional split.
    * @param request - The chat completion request to check.
    */
   private warnInlineTemplateOnReuse(request?: ChatCompletionRequest): void {
-    if (!request?.messages?.length || this.hasWarnedInlineTemplateReuse) {
+    if (!this.hasInlineTemplate()) {
       return;
     }
-    const configs: OrchestrationModuleConfig[] = Array.isArray(this.config)
-      ? (this.config as OrchestrationModuleConfig[])
-      : !isConfigReference(this.config) && typeof this.config !== 'string'
-        ? [this.config as OrchestrationModuleConfig]
-        : [];
-    const hasInlineTemplate = configs.some(
-      c =>
-        c.promptTemplating.prompt &&
-        typeof c.promptTemplating.prompt === 'object' &&
-        !('template_ref' in c.promptTemplating.prompt) &&
-        Array.isArray((c.promptTemplating.prompt as any).template) &&
-        (c.promptTemplating.prompt as any).template.length > 0
-    );
-    // To enable short circuit above.
-    if (!hasInlineTemplate) {
-      this.hasWarnedInlineTemplateReuse = true;
+    if (
+      !request?.messages?.length ||
+      this.templateWarningState === 'warnEmitted'
+    ) {
       return;
     }
-    if (!this.hasSeenInlineTemplateCall) {
-      this.hasSeenInlineTemplateCall = true;
+    if (this.templateWarningState === 'unseen') {
+      this.templateWarningState = 'infoEmitted';
       logger.info(
         'A prompt template is defined and messages are provided. The template will be prepended to the messages on this request.'
       );
-    } else if (!this.hasWarnedInlineTemplateReuse) {
-      this.hasWarnedInlineTemplateReuse = true;
+    } else {
+      this.templateWarningState = 'warnEmitted';
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +

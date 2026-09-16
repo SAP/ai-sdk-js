@@ -1,4 +1,7 @@
-import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
+import {
+  OrchestrationClient as OrchestrationClientBase,
+  isInlineTemplate
+} from '@sap-ai-sdk/orchestration';
 import { createLogger } from '@sap-cloud-sdk/util';
 
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
@@ -76,9 +79,8 @@ export class OrchestrationClient extends BaseChatModel<
   langchainOptions: LangChainOrchestrationChatModelParams;
   deploymentConfig?: ResourceGroupConfig;
   destination?: HttpDestinationOrFetchOptions;
-  private isFirstCall = true;
-  private hasWarnedTemplateRef = false;
-  private hasWarnedInlineTemplate = false;
+  private templateWarningState: 'unseen' | 'infoEmitted' | 'warnEmitted' =
+    'unseen';
 
   constructor(
     orchestrationConfig:
@@ -169,13 +171,10 @@ export class OrchestrationClient extends BaseChatModel<
     }
     const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
 
-    const configs = Array.isArray(mergedOrchestrationConfig)
-      ? mergedOrchestrationConfig
-      : [mergedOrchestrationConfig];
     // OrchestrationClientBase is created fresh below, so its hasWarnedInlineTemplateReuse is always
     // false and warnInlineTemplateOnReuse there will only emit an info log, never a reuse warning.
     // This LangChain-level warnTemplateUsage is the authoritative reuse check for LangChain consumers.
-    this.warnTemplateUsage(configs, allMessages.length > 0);
+    this.warnTemplateUsage(allMessages.length > 0);
 
     const res = await this.caller.callWithOptions(
       {
@@ -397,13 +396,10 @@ export class OrchestrationClient extends BaseChatModel<
     const { placeholderValues, customRequestConfig } = options;
     const mergedOrchestrationConfig = this.mergeOrchestrationConfigs(options);
 
-    const configs = Array.isArray(mergedOrchestrationConfig)
-      ? mergedOrchestrationConfig
-      : [mergedOrchestrationConfig];
     // Same rationale as in _generate: a fresh OrchestrationClientBase is created below,
     // so its warnInlineTemplateOnReuse only emits an info log (hasWarnedInlineTemplateReuse === false).
     // This call is the reuse-warning entry point for LangChain streaming consumers.
-    this.warnTemplateUsage(configs, orchestrationMessages.length > 0);
+    this.warnTemplateUsage(orchestrationMessages.length > 0);
 
     const orchestrationClient = new OrchestrationClientBase(
       mergedOrchestrationConfig,
@@ -480,62 +476,43 @@ export class OrchestrationClient extends BaseChatModel<
     }
   }
 
-  private warnTemplateUsage(
-    configs: LangChainOrchestrationModuleConfig[],
-    hasMessages: boolean
-  ): void {
-    if (
-      this.isFirstCall ||
-      (this.hasWarnedTemplateRef && this.hasWarnedInlineTemplate)
-    ) {
-      this.isFirstCall = false;
+  private warnTemplateUsage(hasMessages: boolean): void {
+    if (!hasMessages || this.templateWarningState === 'warnEmitted') {
       return;
     }
 
+    const configs = Array.isArray(this.orchestrationConfig)
+      ? this.orchestrationConfig
+      : [this.orchestrationConfig];
     const hasTemplateRef = configs.some(
       c =>
         typeof c.promptTemplating.prompt === 'object' &&
         isTemplateRef(c.promptTemplating.prompt)
     );
-    // To avoid rechecking if there is a TemplateRef next time.
-    if (!hasTemplateRef) {
-      this.hasWarnedTemplateRef = true;
+    const hasInlineTemplate = configs.some(c =>
+      isInlineTemplate(c.promptTemplating.prompt)
+    );
+
+    if (this.templateWarningState === 'unseen') {
+      this.templateWarningState = 'infoEmitted';
+      return;
     }
-    // Only warn from the second call onward — the first call may be intentional
-    // (e.g. a single-node LangGraph client that knowingly routes messages to messages_history).
-    // Users following the two-client pattern will never see this warning.
-    if (hasTemplateRef && hasMessages && !this.hasWarnedTemplateRef) {
-      this.hasWarnedTemplateRef = true;
+
+    if (hasTemplateRef) {
+      this.templateWarningState = 'warnEmitted';
       logger.warn(
         'Messages passed to an OrchestrationClient configured with a template_ref are sent as messages_history, not as part of the prompt template. ' +
           'The prompt template is defined remotely and cannot be extended inline. ' +
           'In agentic workflows, consider using two separate clients: one with template_ref for the first node, and one without for subsequent conversational nodes.'
       );
-    }
-
-    const hasInlineTemplate = configs.some(
-      c =>
-        typeof c.promptTemplating.prompt === 'object' &&
-        !isTemplateRef(c.promptTemplating.prompt) &&
-        Array.isArray((c.promptTemplating.prompt as any).template) &&
-        (c.promptTemplating.prompt as any).template.length > 0
-    );
-    // To avoid rechecking if there is a inline template next time.
-    if (!hasInlineTemplate) {
-      this.hasWarnedInlineTemplate = true;
-    }
-    // Only warn from the second call onward — the first call is always legitimate.
-    // Users following the two-client pattern will never see this warning.
-    if (hasInlineTemplate && hasMessages && !this.hasWarnedInlineTemplate) {
-      this.hasWarnedInlineTemplate = true;
+    } else if (hasInlineTemplate) {
+      this.templateWarningState = 'warnEmitted';
       logger.warn(
         'A prompt template is defined and messages are provided. The template will always be prepended to the messages on every request. ' +
           'When reusing the same client across multiple turns, this causes the template to appear in every call. ' +
           'To avoid duplication, use two separate clients: one with the template for the first turn, and one without for subsequent turns.'
       );
     }
-
-    this.isFirstCall = false;
   }
 
   private mergeOrchestrationConfig(

@@ -52,7 +52,8 @@ export type {
 } from './orchestration-types.ts';
 export {
   isConfigReference,
-  isOrchestrationModuleConfigList
+  isOrchestrationModuleConfigList,
+  isInlineTemplate
 } from './orchestration-types.ts';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
