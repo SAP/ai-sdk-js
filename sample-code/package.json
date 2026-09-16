@@ -25,9 +25,9 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@langchain/classic": "1.0.47",
-    "@langchain/core": "1.2.10",
-    "@langchain/langgraph": "1.4.14",
+    "@langchain/classic": "1.0.48",
+    "@langchain/core": "1.2.11",
+    "@langchain/langgraph": "1.4.15",
     "@langchain/mcp-adapters": "1.1.4",
     "@langchain/textsplitters": "1.0.1",
     "@modelcontextprotocol/sdk": "1.30.0",
