@@ -429,7 +429,7 @@ export function constructCompletionPostRequest(
   };
 }
 
-function mergePromptWithMessages(
+function resolvePromptTemplate(
   promptTemplating: OrchestrationModuleConfig['promptTemplating'],
   messages?: ChatCompletionRequest['messages']
 ): Template | TemplateRef {
@@ -457,7 +457,7 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
-  const prompt = mergePromptWithMessages(promptTemplating, request?.messages);
+  const prompt = resolvePromptTemplate(promptTemplating, request?.messages);
 
   return {
     prompt_templating: {
