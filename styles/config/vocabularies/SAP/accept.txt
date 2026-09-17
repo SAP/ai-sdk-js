@@ -155,3 +155,6 @@ repo
 [Bb]ackport(ed|ing)?
 [Ee]xplainability
 RPT
+README(s)
+ADR(s)
+config(s)
