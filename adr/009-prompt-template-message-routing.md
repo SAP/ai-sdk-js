@@ -17,18 +17,18 @@ This ADR documents why it exists, how it is routed, the consequences of that rou
 
 ### The `request.messages` convenience field
 
-`ChatCompletionRequest.messages` was introduced so callers do not have to decide between two very different API fields (`prompt.template` vs `messages_history`) depending on whether they configured a template.
+`ChatCompletionRequest.messages` was introduced so callers do not have to decide between two different API fields (`prompt.template` vs `messages_history`) depending on whether they configured a template.
 The SDK routes it automatically:
 
-| Config path | Where `request.messages` ends up |
-|---|---|
-| Local template (`prompt.template`) | Appended to `prompt.template` in the outgoing request |
-| Remote template reference (`TemplateRef`) | Appended to `messages_history` |
-| Config reference (by ID or name) | Appended to `messages_history` |
-| No template | Appended to `messages_history` |
+| Config path                               | Where `request.messages` ends up                      |
+| ----------------------------------------- | ----------------------------------------------------- |
+| Local template (`prompt.template`)        | Appended to `prompt.template` in the outgoing request |
+| Remote template reference (`TemplateRef`) | Appended to `messages_history`                        |
+| Config reference (by ID or name)          | Appended to `messages_history`                        |
+| No template                               | Appended to `messages_history`                        |
 
 This ADR focuses on the **local template** path, where the routing has non-obvious consequences.
-The `TemplateRef` path is tracked as an open question below.
+The `TemplateRef` path is documented in the section below.
 
 ### Why the merge happens for local templates
 
@@ -62,9 +62,7 @@ This creates two manifestations of the same problem for multi-turn conversations
 1. **Unexpected response content**: The response appears to contain the full prompt template, not just the assistant reply.
 2. **Template duplication on subsequent turns**: If `getAllMessages()` is naïvely fed back as `request.messages` on the next turn, the template is merged into `prompt.template` again — the model receives the static template twice.
 
-## Decision
-
-### Two supported patterns for multi-turn conversation
+### Multi-Turn Conversations
 
 #### Pattern A — Single client, `getAllMessages()` as `messagesHistory`
 
@@ -97,7 +95,7 @@ const resp2 = await client.chatCompletion({
 On each subsequent turn, `request.messages` is again appended to `prompt.template`, so the model sees the static template messages twice — once in `messages_history` and once in the template array.
 In practice the model handles this gracefully, but it is redundant and may affect token usage.
 
-#### Pattern B — Two clients (currently recommended)
+#### Pattern B — Two clients (recommended, when template is present)
 
 Use one client that carries the template configuration for the initial turn, and a second client (with no template) to manage the ongoing conversation.
 The second client routes all messages through `messages_history`.
@@ -145,9 +143,22 @@ This will re-merge the template messages into `prompt.template` on every turn.
 ```ts
 // WRONG — causes template to accumulate on each turn
 const resp2 = await client.chatCompletion({
-  messages: resp1.getAllMessages(), // ← do not do this
+  messages: resp1.getAllMessages() // ← do not do this
 });
 ```
+
+### TemplateRef routing
+
+When `promptTemplating.prompt` is a remote template reference (`TemplateRef`), the SDK cannot inspect or modify the remote template.
+Routing `request.messages` to `messages_history` is the only option — there is no merge step.
+
+The SDK detects a `TemplateRef` by checking for the presence of `template_ref` as an own key on the prompt object (`isTemplateRef` in `util/module-config.ts`).
+When detected, it strips `messages` from the per-module request object and appends them after `messagesHistory` in the top-level `messages_history` field of the outgoing API request.
+
+This routing is mechanically forced — unlike the local-template path, there is no design decision being made.
+However, **no log is emitted** when this rerouting occurs.
+The config-reference path (`OrchestrationConfigRefById` / `OrchestrationConfigRefByName`) emits a `logger.debug` saying messages will be sent as `messages_history`; the inline `TemplateRef` path does not.
+A developer who passes `messages` to `chatCompletion()` alongside a `TemplateRef` config receives no signal that the routing differs from the local-template case.
 
 ## Open Questions
 
@@ -162,5 +173,6 @@ const resp2 = await client.chatCompletion({
 3. **Why is the prompt template in the constructor?**: Prompt template is one property of `promptTemplating` alongside model parameters, filters, and other module configs — all of which live in the constructor because they map to a stored config artifact.
    Whether it would be ergonomic to also allow a per-call template override (without breaking the config-artifact mental model) is an open question.
 
-4. **Review `TemplateRef` routing**: When using a remote template reference, `request.messages` is routed to `messages_history` rather than merged into the template.
-   The consequences of this for multi-turn conversations, and whether it is consistent with the local-template behaviour, should be reviewed separately.
+4. **Is "messages are silently ignored" a correct description of `TemplateRef` behavior?**: The claim sometimes made is that messages passed alongside a `TemplateRef` are silently ignored.
+   This is not accurate: the messages reach the model via `messages_history`.
+   The actual gap is observability — no log fires to indicate the rerouting, unlike the config-reference path.
