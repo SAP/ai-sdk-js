@@ -160,6 +160,13 @@ However, **no log is emitted** when this rerouting occurs.
 The config-reference path (`OrchestrationConfigRefById` / `OrchestrationConfigRefByName`) emits a `logger.debug` saying messages will be sent as `messages_history`; the inline `TemplateRef` path does not.
 A developer who passes `messages` to `chatCompletion()` alongside a `TemplateRef` config receives no signal that the routing differs from the local-template case.
 
+#### Security implications
+
+It is not fully confirmed whether content in `messages_history` is subject to the same pipeline modules — masking and content filtering — as content in `prompt.template`.
+Based on a conversation with the Orchestration service team, some modules may not be applied to `messages_history`, but this has not been verified.
+If that is the case, routing `request.messages` to `messages_history` (as happens with a `TemplateRef`) could mean that sensitive content — personal data that would otherwise be masked by DPI, or content that would be caught by input filters — passes through to the model unprotected.
+Callers who require masking or filtering should prefer a local template over a `TemplateRef` until this is clarified.
+
 ## Open Questions
 
 1. **Semantic meaning of `request.messages`**: It is unclear whether `request.messages` was intended to represent (a) the current user turn, (b) additional template messages, or (c) a convenience alias for `messages_history`.
@@ -176,3 +183,8 @@ A developer who passes `messages` to `chatCompletion()` alongside a `TemplateRef
 4. **Is "messages are silently ignored" a correct description of `TemplateRef` behavior?**: The claim sometimes made is that messages passed alongside a `TemplateRef` are silently ignored.
    This is not accurate: the messages reach the model via `messages_history`.
    The actual gap is observability — no log fires to indicate the rerouting, unlike the config-reference path.
+
+5. **Should `request.messages` alongside a `TemplateRef` be routed into the templating module instead of `messages_history`?**: Given that `messages_history` bypasses masking and filtering, the preferred destination for `request.messages` is the prompt templating module.
+   For a local template this already happens.
+   For a `TemplateRef` the remote template is opaque to the SDK, so the mechanism for achieving this is unclear — it may require service-side support for injecting messages into a remote template at request time, or a breaking change to the SDK contract (e.g. treating `messages` alongside a `TemplateRef` as an error).
+   No decision has been made.
