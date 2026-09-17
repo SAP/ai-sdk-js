@@ -871,28 +871,6 @@ function fn(arr) {
 }
 ```
 
-## Prose
-
-### Write one sentence per line in markdown files ✓
-
-Markdown files (ADRs, READMEs, docs) must contain one sentence per line.
-This rule is enforced by Vale.
-It makes diffs cleaner and prose easier to maintain — adding or rewording a sentence touches exactly one line.
-Code blocks and tables are exempt.
-
-❌ Examples of **incorrect** prose:
-
-```markdown
-The client is stateless. It holds no conversation history between calls.
-```
-
-✅ Examples of **correct** prose:
-
-```markdown
-The client is stateless.
-It holds no conversation history between calls.
-```
-
 ## GitHub Actions
 
 ### Map untrusted values to environment variables
