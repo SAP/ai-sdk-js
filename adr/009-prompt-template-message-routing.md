@@ -149,23 +149,27 @@ const resp2 = await client.chatCompletion({
 
 ### TemplateRef routing
 
-When `promptTemplating.prompt` is a remote template reference (`TemplateRef`), the SDK cannot inspect or modify the remote template.
-Routing `request.messages` to `messages_history` is the only option — there is no merge step.
-
-The SDK detects a `TemplateRef` by checking for the presence of `template_ref` as an own key on the prompt object (`isTemplateRef` in `util/module-config.ts`).
-When detected, it strips `messages` from the per-module request object and appends them after `messagesHistory` in the top-level `messages_history` field of the outgoing API request.
+When `promptTemplating.prompt` is a remote template reference (`TemplateRef`), the SDK cannot read or modify the remote template — it has no local array to append to.
+`request.messages` is therefore routed to `messages_history` automatically.
 
 This routing is mechanically forced — unlike the local-template path, there is no design decision being made.
 However, **no log is emitted** when this rerouting occurs.
 The config-reference path (`OrchestrationConfigRefById` / `OrchestrationConfigRefByName`) emits a `logger.debug` saying messages will be sent as `messages_history`; the inline `TemplateRef` path does not.
 A developer who passes `messages` to `chatCompletion()` alongside a `TemplateRef` config receives no signal that the routing differs from the local-template case.
 
-#### Security implications
+#### Module behavior on `messages_history`
 
-It is not fully confirmed whether content in `messages_history` is subject to the same pipeline modules — masking and content filtering — as content in `prompt.template`.
-Based on a conversation with the Orchestration service team, some modules may not be applied to `messages_history`, but this has not been verified.
-If that is the case, routing `request.messages` to `messages_history` (as happens with a `TemplateRef`) could mean that sensitive content — personal data that would otherwise be masked by DPI, or content that would be caught by input filters — passes through to the model unprotected.
-Callers who require masking or filtering should prefer a local template over a `TemplateRef` until this is clarified.
+All three input modules process the full combined list (history + current template) by default.
+Each has different opt-out or scoping behavior:
+
+**Translation**: Translates history and template together by default.
+Use `translate_messages_history: false` per-request to avoid re-translating already-translated history on every turn.
+
+**Content filtering**: Filters the full combined list by default.
+Use the `target_selector` option (`after_last_role` or `last_messages`) to scope filtering to only new turns — recommended for long conversations to avoid redundant filtering of history.
+
+**Data masking**: Re-masks the full combined list on every turn.
+There is no opt-out or scoping mechanism — this is by design.
 
 ## Open Questions
 
@@ -180,9 +184,6 @@ Callers who require masking or filtering should prefer a local template over a `
 3. **Why is the prompt template in the constructor?**: Prompt template is one property of `promptTemplating` alongside model parameters, filters, and other module configs — all of which live in the constructor because they map to a stored config artifact.
    Whether it would be ergonomic to also allow a per-call template override (without breaking the config-artifact mental model) is an open question.
 
-4. **Is "messages are silently ignored" a correct description of `TemplateRef` behavior?**: The claim sometimes made is that messages passed alongside a `TemplateRef` are silently ignored.
-   This is not accurate: the messages reach the model via `messages_history`.
-   The actual gap is observability — no log fires to indicate the rerouting, unlike the config-reference path.
 
 5. **Should `request.messages` alongside a `TemplateRef` be routed into the templating module instead of `messages_history`?**: Given that `messages_history` bypasses masking and filtering, the preferred destination for `request.messages` is the prompt templating module.
    For a local template this already happens.
