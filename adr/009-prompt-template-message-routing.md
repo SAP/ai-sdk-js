@@ -13,6 +13,7 @@ That API has no top-level `messages` field — the only ways to supply chat cont
 - `messages_history` — prior conversation turns, prepended to the request as context and never merged into the template
 
 The SDK introduces a third concept, `request.messages`, that has no direct equivalent in the API.
+It represents the current user turn — the dynamic per-call content layered on top of the fixed template configuration.
 This ADR documents why it exists, how it is routed, the consequences of that routing, and the recommended usage patterns today.
 
 ### The `request.messages` convenience field
@@ -173,19 +174,84 @@ There is no opt-out or scoping mechanism — this is by design.
 
 ## Open Questions
 
-1. **Semantic meaning of `request.messages`**: It is unclear whether `request.messages` was intended to represent (a) the current user turn, (b) additional template messages, or (c) a convenience alias for `messages_history`.
-   The routing behaviour differs by config path, which suggests it may have been designed as "whatever makes sense given the config" rather than with a single semantics.
-   This should be clarified and documented.
+1. **Why is `PromptTemplatingModuleConfig.prompt` a `oneOf` (XOR)?**: The API spec defines `prompt` as `oneOf: [Template, TemplateRef]`, meaning a request must carry either a local template array or a remote reference — never both.
+   It is unclear whether this is an intentional design constraint (e.g. the service cannot meaningfully merge inline messages with a remote template), a historical artefact, or simply an oversight.
+   The answer directly affects whether Option A is feasible without a service-side change.
 
-2. **Ideal future developer experience**: The current patterns require callers to understand internal routing details.
-   Candidate improvements include: (a) the client automatically strips echoed template messages from `getAllMessages()` so it returns only non-template turns; (b) `request.messages` is always routed to `messages_history` and never merged into the template; (c) a stateful client that accumulates history internally.
-   No decision has been made.
+2. How do Java and Python handle this?
 
-3. **Why is the prompt template in the constructor?**: Prompt template is one property of `promptTemplating` alongside model parameters, filters, and other module configs — all of which live in the constructor because they map to a stored config artifact.
-   Whether it would be ergonomic to also allow a per-call template override (without breaking the config-artifact mental model) is an open question.
+## Options
 
+Both options share the same core change to `chatCompletion()`:
 
-5. **Should `request.messages` alongside a `TemplateRef` be routed into the templating module instead of `messages_history`?**: Given that `messages_history` bypasses masking and filtering, the preferred destination for `request.messages` is the prompt templating module.
-   For a local template this already happens.
-   For a `TemplateRef` the remote template is opaque to the SDK, so the mechanism for achieving this is unclear — it may require service-side support for injecting messages into a remote template at request time, or a breaking change to the SDK contract (e.g. treating `messages` alongside a `TemplateRef` as an error).
-   No decision has been made.
+- `messages` is removed from `ChatCompletionRequest`.
+- `chatCompletion()` gains a `prompt?: Xor<PromptTemplate, TemplateRef>` field.
+- `messagesHistory` is unchanged.
+- Passing `prompt: TemplateRef` alongside anything that would require merging (inline messages in the template) throws an error — the SDK cannot modify a remote template.
+
+The options differ in whether `prompt` is also allowed in the constructor.
+
+### Option A — `prompt` at request level only
+
+`prompt` is removed from the constructor.
+The constructor accepts only model parameters and pipeline module config (filtering, masking, grounding, translation).
+Every call to `chatCompletion()` that needs a template or ref supplies it inline via `prompt`.
+
+```ts
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'anthropic--claude-4.5-haiku' }
+  }
+});
+
+const resp = await client.chatCompletion({
+  prompt: {
+    template: [
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'user', content: 'What is the capital of France?' }
+    ]
+  }
+});
+```
+
+**Tradeoff**: The constructor no longer maps 1:1 to a stored config artifact — callers who want to reuse a template across calls must pass it on every call or manage it themselves.
+
+### Option B — `prompt` in both constructor and request
+
+`prompt` is retained in the constructor as a convenience for the config-artifact use case (typically a system message or a remote template reference).
+`chatCompletion()` also gains `prompt?`.
+The following combinations throw an error:
+
+- Constructor `prompt` and request `prompt` are both set.
+- Constructor `prompt: TemplateRef` is set and the request carries content that would need merging.
+
+```ts
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'anthropic--claude-4.5-haiku' },
+    prompt: {
+      template: [{ role: 'system', content: 'You are a helpful assistant.' }]
+    }
+  }
+});
+
+// Turn 1 — constructor template is merged with the per-call prompt on the first request
+const resp1 = await client.chatCompletion({
+  prompt: {
+    template: [{ role: 'user', content: 'What is the capital of France?' }]
+  }
+});
+
+// Turn 2+ — use messagesHistory; no prompt needed
+const resp2 = await client.chatCompletion({
+  messagesHistory: resp1.getAllMessages(),
+  prompt: {
+    template: [{ role: 'user', content: 'What is the typical food there?' }]
+  }
+});
+```
+
+**Tradeoff**: The constructor-as-config-artifact model is preserved, but the two sites where `prompt` can live add complexity — callers must understand which site to use and when.
+
+No decision has been made.
+A separate ADR is warranted before implementing either option, as both remove `messages` from the public API contract of `chatCompletion()`.
