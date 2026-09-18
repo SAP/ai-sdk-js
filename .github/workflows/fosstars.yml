@@ -60,7 +60,6 @@ jobs:
             --nodeAuditSkipDevDependencies
             --pnpm /github/workspace/.local/pnpm/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
-            --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
             --suppression .github/owasp-suppressions.xml
 
