@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/rpt",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
   "keywords": [
     "ai-api",
