@@ -47,7 +47,7 @@
     "@sap-cloud-sdk/http-client": "4.9.1",
     "@sap-cloud-sdk/openapi-generator": "4.9.1",
     "@sap-cloud-sdk/util": "4.9.1",
-    "@types/node": "22.20.2",
+    "@types/node": "22.20.3",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "5.0.1",
     "jose": "6.2.12",
