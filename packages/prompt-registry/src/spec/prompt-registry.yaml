@@ -1452,7 +1452,7 @@ components:
             stream_options:
               include_usage: true
         timeout:
-          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
           type: integer
           default: 600
           minimum: 1
@@ -1517,7 +1517,8 @@ components:
         config:
           $ref: '#/components/schemas/AzureContentSafetyInput'
     LlamaGuard38b:
-      description: Filter configuration for Llama Guard 3 8B
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       additionalProperties: false
       minProperties: 1
@@ -1551,6 +1552,8 @@ components:
         code_interpreter_abuse:
           type: boolean
     LlamaGuard38bFilterConfig:
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       required:
         - type
