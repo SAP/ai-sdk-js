@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "",
   "keywords": [
     "langchain",
@@ -50,11 +50,11 @@
     "@sap-cloud-sdk/util": "^4.9.1"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.9",
-    "@langchain/langgraph": "1.4.13",
-    "langchain": "1.5.10",
-    "vitest": "4.1.11",
-    "zod": "4.5.2"
+    "@langchain/core": "1.2.11",
+    "@langchain/langgraph": "1.4.15",
+    "langchain": "1.5.11",
+    "vitest": "5.0.1",
+    "zod": "4.6.5"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.3",
