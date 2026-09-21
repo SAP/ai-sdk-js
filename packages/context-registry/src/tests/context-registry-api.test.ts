@@ -17,7 +17,7 @@ import type {
 } from '../client/context-registry/index.ts';
 
 const resourceGroup = 'default';
-const basePath = '/v2/admin/tcr';
+const basePath = '/v2/tcr';
 
 describe('context-registry APIs', () => {
   beforeEach(() => {
