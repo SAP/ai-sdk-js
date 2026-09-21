@@ -8,6 +8,7 @@
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { format as oxfmt } from 'oxfmt';
 import { ScenarioApi } from '@sap-ai-sdk/ai-api';
 import { transformFile } from './util.ts';
@@ -153,6 +154,35 @@ function isRetired(row: ModelRow): boolean {
     row.deprecated?.toLowerCase().includes('yes') === true ||
     isRetiredSoon(row.retirementDate ?? '')
   );
+}
+
+/**
+ * Warn-only cross-check for batch models. `batchModels` is filled directly from
+ * the scraped array and is never checked against model status, so a model that
+ * is retired/excluded for chat can silently linger there. Returns one warning
+ * string per batch entry that is retired (per {@link isRetired}) or in
+ * {@link MODEL_EXCLUSION_LIST}. Never auto-removes — removal stays manual per
+ * the update-models skill.
+ * @param rows - Scraped model rows.
+ * @param batchModels - The batchModels array from sap-models.json.
+ * @returns Warning messages, one per flagged batch model.
+ */
+export function batchModelWarnings(
+  rows: ModelRow[],
+  batchModels: string[]
+): string[] {
+  const rowByModel = new Map(rows.map(r => [r.model, r]));
+  const warnings: string[] = [];
+  for (const m of batchModels) {
+    const row = rowByModel.get(m);
+    const retired = row ? isRetired(row) : false;
+    if (retired || MODEL_EXCLUSION_LIST.has(m)) {
+      warnings.push(
+        `⚠ Batch model "${m}" is retired/excluded for chat but still in batchModels — review manually and remove from the batchModels array if it is truly retired for batch.`
+      );
+    }
+  }
+  return warnings;
 }
 
 function modelPrefix(model: string): string {
@@ -353,6 +383,10 @@ async function syncModelTypes(): Promise<void> {
   const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
   typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
 
+  for (const warning of batchModelWarnings(rows, batchModels)) {
+    console.error(warning);
+  }
+
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
   const batchCurrent = extractCurrentModels(currentContent, 'LlmBatchModel');
@@ -482,7 +516,11 @@ async function writeChangeset(releaseNote: string): Promise<void> {
   console.error(`\nChangeset written: .changeset/${filename}`);
 }
 
-syncModelTypes().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Only auto-run when invoked directly (e.g. `node scripts/sync-model-types.ts`),
+// not when imported by tests for the exported helpers.
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  syncModelTypes().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
