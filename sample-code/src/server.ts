@@ -1048,6 +1048,7 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
 app.get('/langchain/invoke-reasoning-multi-turn-orchestration', async (req, res) => {
   try {
     const result = await invokeReasoningMultiTurnOrchestration();
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     res.send(result);
   } catch (error: any) {
     sendError(res, error);
@@ -1058,11 +1059,12 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
   const controller = new AbortController();
   try {
     const stream = await streamReasoningOrchestration(controller);
-    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders();
 
     let connectionAlive = true;
+    let inReasoning = false;
     res.on('close', () => {
       controller.abort();
       connectionAlive = false;
@@ -1077,12 +1079,24 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
       if (Array.isArray(chunk.content)) {
         for (const block of chunk.content) {
           if (block.type === 'reasoning') {
-            res.write(`[reasoning] ${block.reasoning}`);
+            if (!inReasoning) {
+              res.write('[reasoning]\n');
+              inReasoning = true;
+            }
+            res.write(block.reasoning);
           } else if (block.type === 'text') {
+            if (inReasoning) {
+              res.write('\n\n[answer]\n');
+              inReasoning = false;
+            }
             res.write(block.text);
           }
         }
-      } else {
+      } else if (chunk.content) {
+        if (inReasoning) {
+          res.write('\n\n[answer]\n');
+          inReasoning = false;
+        }
         res.write(chunk.content);
       }
       finalResult = finalResult ? finalResult.concat(chunk) : chunk;

@@ -757,7 +757,7 @@ function extractReasoning(content: AIMessage['content']): string {
  * Multi-turn conversation with a reasoning model via LangChain orchestration client.
  * Turn 1: asks a maths question, captures reasoning + answer.
  * Turn 2: re-sends the history (including reasoning content) and asks a follow-up.
- * Returns a formatted string showing reasoning and answers for both turns.
+ * @returns A formatted string showing reasoning and answers for both turns.
  */
 export async function invokeReasoningMultiTurn(): Promise<string> {
   const config: LangChainOrchestrationModuleConfig = {
