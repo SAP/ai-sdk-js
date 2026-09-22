@@ -190,9 +190,9 @@ function stripReasoningFromContent(
   if (!Array.isArray(content)) {
     return content;
   }
-  const stripped = (content as (ContentBlock.Reasoning | ContentBlock.Text)[]).filter(
-    b => b.type !== 'reasoning'
-  );
+  const stripped = (
+    content as (ContentBlock.Reasoning | ContentBlock.Text)[]
+  ).filter(b => b.type !== 'reasoning');
   if (!stripped.length) {
     return '';
   }

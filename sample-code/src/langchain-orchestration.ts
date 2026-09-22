@@ -12,7 +12,6 @@ import {
 } from '@sap-ai-sdk/orchestration';
 
 import {
-  AIMessage,
   HumanMessage,
   SystemMessage,
   ToolMessage
@@ -39,7 +38,8 @@ import type {
 import type {
   BaseMessage,
   AIMessageChunk,
-  ContentBlock
+  ContentBlock,
+  AIMessage
 } from '@langchain/core/messages';
 
 interface PromptCachingInvocationResult {
@@ -782,7 +782,9 @@ export async function invokeReasoningMultiTurn(): Promise<string> {
   const turn1Answer = extractText(turn1.content);
 
   // Turn 2 — follow-up using the same message history (round-trips reasoning)
-  messages.push(new HumanMessage('Now divide that result by 17. What do you get?'));
+  messages.push(
+    new HumanMessage('Now divide that result by 17. What do you get?')
+  );
   const turn2 = await client.invoke(messages);
 
   const turn2Reasoning = extractReasoning(turn2.content);
