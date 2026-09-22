@@ -22,7 +22,7 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-# This is causing issues in CI, disable for now
+# Fix/investigate: does not work as expected because checkout action uses detached HEAD
 # gitBranchLockfile: true
 # mergeGitBranchLockfilesBranchPattern:
 #   - main
