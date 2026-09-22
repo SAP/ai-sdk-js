@@ -23,7 +23,6 @@ import type {
 
 /**
  * Representation of an RPT client to make predictions.
- * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class RptClient {
   private modelDeployment: ModelDeployment<SapRptModel>;
@@ -35,7 +34,7 @@ export class RptClient {
    * @param destination - The destination to use for the request.
    */
   constructor(
-    modelDeployment: ModelDeployment<SapRptModel> = 'sap-rpt-1-small',
+    modelDeployment: ModelDeployment<SapRptModel>,
     destination?: HttpDestinationOrFetchOptions
   ) {
     this.modelDeployment = modelDeployment;
@@ -127,23 +126,16 @@ export class RptClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    const body = {
-      data_schema: dataSchema
-        ? Object.fromEntries(
-            dataSchema.map(({ name, ...schemaFieldConfig }) => [
-              name,
-              schemaFieldConfig
-            ])
-          )
-        : null,
-      ...predictionData
-    } satisfies PredictRequestPayload;
+    const body = this.buildBody(predictionData, dataSchema);
 
     const { compress, ...customRequestConfig } = requestConfig;
 
     if (compress?.mode !== 'never') {
       customRequestConfig.middleware = [
-        compressMiddleware(compress),
+        compressMiddleware({
+          ...compress,
+          compressOptions: { level: 1, ...compress?.compressOptions }
+        }),
         ...(customRequestConfig.middleware || [])
       ];
     }
@@ -153,6 +145,55 @@ export class RptClient {
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
       .addCustomRequestConfiguration(customRequestConfig)
       .execute(this.destination);
+  }
+
+  private buildBody<T extends DataSchema>(
+    predictionData: PredictionData<T>,
+    dataSchema?: T
+  ): PredictRequestPayload {
+    const { rows, columns, ...restData } = predictionData;
+
+    const base = {
+      data_schema: dataSchema
+        ? Object.fromEntries(
+            dataSchema.map(({ name, ...schemaFieldConfig }) => [
+              name,
+              schemaFieldConfig
+            ])
+          )
+        : null,
+      ...restData
+    };
+
+    const serializeBooleans = (v: any) =>
+      typeof v === 'boolean' ? String(v) : v;
+
+    if (rows) {
+      return {
+        ...base,
+        rows: rows.map(row =>
+          Object.fromEntries<string | number | null>(
+            Object.entries(row).map(([k, v]) => [k, serializeBooleans(v)])
+          )
+        )
+      };
+    }
+
+    if (columns) {
+      return {
+        ...base,
+        columns: Object.fromEntries<(string | number | null)[]>(
+          Object.entries(columns).map(([k, vals]) => [
+            k,
+            vals.map(serializeBooleans)
+          ])
+        )
+      };
+    }
+
+    throw new Error(
+      'Could not build body: either rows or columns must be provided.'
+    );
   }
 
   /**

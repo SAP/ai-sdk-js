@@ -9,11 +9,16 @@
  */
 export type PredictionResult = {
   /**
-   * The predicted value for the column.
+   * The predicted value for the column (string for classification, number for regression).
    */
   prediction: string | number;
   /**
-   * The confidence of the prediction (currently not provided).
+   * The confidence of the prediction (null for regression predictions).
+   * Maximum: 1.
    */
   confidence?: number | null;
+  /**
+   * Lower and upper bounds of the confidence interval (null for classification predictions).
+   */
+  confidence_interval?: [number, number] | null;
 } & Record<string, any>;

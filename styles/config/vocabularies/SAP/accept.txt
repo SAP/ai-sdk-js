@@ -79,6 +79,7 @@ namespace
 hostname
 multithreading
 https?
+gzip
 www
 semver
 XML
@@ -158,3 +159,10 @@ breakpoints?
 compat
 passthrough
 TFMs?
+repo
+[Bb]ackport(ed|ing)?
+[Ee]xplainability
+RPT
+README(s)
+ADR(s)
+config(s)
