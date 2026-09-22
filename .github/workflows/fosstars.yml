@@ -29,7 +29,7 @@ jobs:
       - name: Install pnpm for OWASP container
         shell: bash
         env:
-          PNPM_VERSION: 12.3.0
+          PNPM_VERSION: 12.4.2
         run: |
           archive="${RUNNER_TEMP}/pnpm-linux-x64-musl.tar.gz"
           curl --proto "=https" --tlsv1.2 -fsSL \
@@ -60,7 +60,6 @@ jobs:
             --nodeAuditSkipDevDependencies
             --pnpm /github/workspace/.local/pnpm/pnpm
             --nvdApiKey ${{ secrets.NVD_API_KEY }}
-            --ossIndexUsername ${{ vars.OSS_INDEX_USERNAME }}
             --ossIndexPassword ${{ secrets.OSS_INDEX_PASSWORD }}
             --suppression .github/owasp-suppressions.xml
 
