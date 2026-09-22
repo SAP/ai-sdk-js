@@ -21,10 +21,11 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-gitBranchLockfile: true
-mergeGitBranchLockfilesBranchPattern:
-  - main
-  - renovate/*
+# Fix/investigate: does not work as expected because checkout action uses detached HEAD
+# gitBranchLockfile: true
+# mergeGitBranchLockfilesBranchPattern:
+#   - main
+#   - renovate/*
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
