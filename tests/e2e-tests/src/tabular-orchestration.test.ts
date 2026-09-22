@@ -26,5 +26,6 @@ describe('tabular-orchestration', () => {
     const config = await getOrCreateScenarioConfiguration();
     expect(config.name).toBeDefined();
     expect(config.contextSelectionStrategy).toBeDefined();
+    expect(config.status).toBe('ACTIVE');
   });
 });

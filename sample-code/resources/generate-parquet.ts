@@ -15,6 +15,7 @@ import { join } from 'node:path';
 
 import { parquetWriteFile } from 'hyparquet-writer';
 
+import type { RowType } from '@sap-ai-sdk/rpt';
 import type {
   ColumnType,
   SchemaFieldConfig

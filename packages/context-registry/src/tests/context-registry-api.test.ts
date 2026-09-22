@@ -111,4 +111,37 @@ describe('context-registry APIs', () => {
 
     expect(result).toEqual(expectedResponse);
   });
+
+  it('should serialize Set selected columns as an array', async () => {
+    const expectedResponse = { name: 'my-artifact' };
+
+    const scope = nock(aiCoreDestination.url)
+      .put(`${basePath}/tabularArtifacts/my-artifact`, {
+        dataDestinationName: 'my-destination',
+        type: 'PARQUET',
+        path: '/data/my-artifact.parquet',
+        csnMetadata: {
+          selectedColumns: ['customer_id', 'customer_name'],
+          definition: { definitionType: 'AUTO' }
+        }
+      })
+      .reply(202, expectedResponse, { 'Content-Type': 'application/json' });
+
+    const result = await TabularArtifactsApi.createTabularArtifact(
+      'my-artifact',
+      {
+        dataDestinationName: 'my-destination',
+        type: 'PARQUET',
+        path: '/data/my-artifact.parquet',
+        csnMetadata: {
+          selectedColumns: new Set(['customer_id', 'customer_name']),
+          definition: { definitionType: 'AUTO' }
+        }
+      },
+      { 'AI-Resource-Group': resourceGroup }
+    ).execute();
+
+    expect(scope.isDone()).toBe(true);
+    expect(result).toEqual(expectedResponse);
+  });
 });

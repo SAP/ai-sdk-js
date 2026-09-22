@@ -125,20 +125,45 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
     return existing;
   }
 
-  await ScenarioConfigurationManagerApi.createScenarioConfiguration(
-    scenarioConfigName,
-    {
-      description: 'Sample scenario configuration',
-      contextSelectionStrategy: 'random',
-      tabularArtifacts: [{ name: artifactName }]
-    },
-    headers
-  ).execute();
+  const response =
+    await ScenarioConfigurationManagerApi.createScenarioConfiguration(
+      scenarioConfigName,
+      {
+        description: 'Sample scenario configuration',
+        contextSelectionStrategy: 'random',
+        tabularArtifacts: [{ name: artifactName }]
+      },
+      headers
+    ).executeRaw();
 
-  return ScenarioConfigurationManagerApi.getScenarioConfigurationByName(
-    scenarioConfigName,
-    headers
-  ).execute();
+  if (response.status !== 202) {
+    throw new Error(`Expected 202 Accepted, got ${response.status}`);
+  }
+
+  const location = response.headers.location;
+  if (typeof location !== 'string') {
+    throw new Error('Creation response did not include a Location header');
+  }
+  const pollingName = getNameFromLocation(location, 'scenarioConfigurations');
+
+  return pollAsyncResource<ScenarioConfigurationObject>({
+    read: () =>
+      ScenarioConfigurationManagerApi.getScenarioConfigurationByName(
+        pollingName,
+        headers
+      ).execute(),
+    isComplete: resource => resource.status === 'ACTIVE',
+    getFailure: resource =>
+      resource.status === 'ERROR'
+        ? (resource.errorMessage ?? 'Scenario configuration creation failed')
+        : undefined,
+    onPoll: (attempt, resource) =>
+      console.log(
+        `[${attempt}] Scenario configuration status: ${resource.status}`
+      ),
+    intervalMs: 2_000,
+    maxAttempts: 60
+  });
 }
 
 function getNameFromLocation(location: string, segment: string): string {
