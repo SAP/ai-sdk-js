@@ -205,6 +205,17 @@
       .msg-bubble--user-voice.placeholder {
         color: var(--ink-4);
       }
+      .msg-bubble--user-voice.failed {
+        background: var(--surface);
+        border-color: var(--border);
+        color: var(--ink-4);
+        text-decoration: line-through;
+        text-decoration-color: var(--ink-4);
+      }
+      .msg-bubble--user-voice.failed::before {
+        content: '🎙';
+        opacity: 0.35;
+      }
       .msg-bubble--ai {
         background: var(--panel);
         color: var(--ink);
@@ -450,6 +461,12 @@
       .btn-send:focus-visible {
         box-shadow: 0 0 0 3px rgba(100, 64, 245, 0.25);
       }
+      .btn-ptt:disabled,
+      .btn-send:disabled {
+        opacity: 0.35;
+        cursor: default;
+        pointer-events: none;
+      }
 
       /* ── Footer row ── */
       .footer-row {
@@ -673,6 +690,7 @@
               title="Push to talk"
               aria-label="Push to talk"
               aria-pressed="false"
+              disabled
             >
               <svg
                 id="ptt-icon"
@@ -712,6 +730,7 @@
               class="btn-send"
               title="Send"
               aria-label="Send message"
+              disabled
             >
               <svg
                 width="14"
@@ -738,13 +757,13 @@
             <input type="checkbox" id="ptt-toggle" class="ptt-toggle" checked />
             Push-to-talk
           </label>
-          <span class="mic-hint" id="mic-hint">Connect on first use</span>
+          <span class="mic-hint" id="mic-hint"></span>
           <button
             id="connect-btn"
-            class="btn-connect"
+            class="btn-connect hidden"
             style="margin-left: auto"
           >
-            Connect
+            Reconnect
           </button>
           <button
             id="disconnect-btn"
@@ -769,6 +788,7 @@
       let responseInProgress = false;
       let pendingAction = null;
       let voiceBubbleCounter = 0;
+      let lastPendingVoiceBubble = null; // bubble awaiting server confirmation; marked failed on error
       let pcmChunks = []; // Int16Array chunks for current utterance
 
       // ── WAV encoding ───────────────────────────────────────────────
@@ -897,6 +917,7 @@
         const bubbleId = voiceBubble.id;
         const chunksToSend = pcmChunks.slice();
         // keep bubble even without transcript — shows user that speech was detected
+        lastPendingVoiceBubble = voiceBubble;
         voiceBubble = null;
         voiceTranscript = '';
         pcmChunks = [];
@@ -1076,6 +1097,7 @@
       }
 
       function activatePtt() {
+        clearError();
         pttActive = true;
         pttBtn.classList.add('active');
         pttBtn.setAttribute('aria-pressed', 'true');
@@ -1105,14 +1127,14 @@
             JSON.stringify({ type: 'set_ptt', enabled: pttToggle.checked })
           );
           updateMicHint();
-        } else if (!pttToggle.checked && !connected && !connecting) {
-          connect();
         }
       }
 
       function updateMicHint() {
         if (!connected) {
-          micHint.textContent = 'Connect on first use';
+          micHint.textContent = connecting
+            ? 'Connecting…'
+            : 'Click Reconnect or send a text message to connect.';
           return;
         }
         micHint.textContent = micStream
@@ -1123,11 +1145,9 @@
       }
 
       function updateInputState() {
-        const busy = responseInProgress;
+        const busy = !connected || responseInProgress;
         sendBtn.disabled = busy;
         pttBtn.disabled = busy;
-        sendBtn.style.opacity = busy ? '0.4' : '';
-        pttBtn.style.opacity = busy ? '0.4' : '';
       }
 
       function setResponseInProgress(value) {
@@ -1137,6 +1157,7 @@
 
       // ── Send text ──────────────────────────────────────────────────
       function submitText(text) {
+        clearError();
         appendBubble('user').textContent = text;
         textInput.value = '';
         setResponseInProgress(true);
@@ -1167,6 +1188,7 @@
         connecting = true;
         clearError();
         setStatus('Connecting…', 'connecting');
+        updateMicHint();
 
         const voice = voiceSelect.value;
         const ptt = pttToggle.checked;
@@ -1209,6 +1231,7 @@
             await startMic();
             startAudioBar();
             updateMicHint();
+            updateInputState();
             if (pendingAction) {
               const action = pendingAction;
               pendingAction = null;
@@ -1283,10 +1306,21 @@
             }
           } else if (msg.type === 'done') {
             currentAiBubble = null;
+            lastPendingVoiceBubble = null;
             setResponseInProgress(false);
             updateMicHint();
             setStatus('Connected', 'connected');
           } else if (msg.type === 'error') {
+            // Mark the pending voice bubble as failed (not sent) rather than removing it
+            if (lastPendingVoiceBubble) {
+              lastPendingVoiceBubble.classList.remove('placeholder');
+              lastPendingVoiceBubble.classList.add('failed');
+            }
+            lastPendingVoiceBubble = null;
+            currentAiBubble = null;
+            setResponseInProgress(false);
+            setStatus('Connected', 'connected');
+            updateMicHint();
             showError(msg.message);
           }
         };
@@ -1353,6 +1387,7 @@
         connecting = false;
         currentAiBubble = null;
         currentToolBubble = null;
+        lastPendingVoiceBubble = null;
         setResponseInProgress(false);
         pendingAction = null;
         pttActive = false;
@@ -1411,6 +1446,9 @@
         .catch(() => {
           /* permission denied — mic hint will reflect this when connected */
         });
+
+      // ── Auto-connect on load ───────────────────────────────────────
+      connect();
     </script>
   </body>
 </html>

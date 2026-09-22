@@ -231,7 +231,6 @@ export function attachRealtimeWs(server: Server): void {
 
       realtime.on('error', err => {
         sendJson(browserWs, { type: 'error', message: err.message });
-        browserWs.close();
       });
       realtime.on('session.created', () => {
         realtime.send(buildSessionUpdate(mode, voice));

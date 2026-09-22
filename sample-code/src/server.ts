@@ -159,7 +159,7 @@ app.post(
             content: [
               {
                 type: 'text',
-                text: 'Transcribe the spoken words in the audio. Return only the transcript, no other text.'
+                text: 'Transcribe the spoken words in the audio exactly as heard.\n- If the audio contains silence or no detectable sound, output exactly: [Silence]\n- If the audio contains music without speech, output exactly: [Music]\n- Otherwise return only the transcript with no additional commentary.'
               },
               {
                 type: 'file',
