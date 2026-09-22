@@ -623,7 +623,7 @@ describe('mapOutputToChatResult', () => {
       { type: 'text', text: 'The answer is 42.' }
     ]);
     expect(
-      (result.generations[0].additional_kwargs as any).reasoning_content
+      (result.generations[0].message as AIMessage).additional_kwargs.reasoning_content
     ).toEqual([
       { content: 'Let me think step by step.' },
       { content: 'I concluded it is 42.' }
@@ -655,7 +655,7 @@ describe('mapOutputToChatResult', () => {
 
     expect(message.content).toBe('Hello world');
     expect(
-      (result.generations[0].additional_kwargs as any).reasoning_content
+      (result.generations[0].message as AIMessage).additional_kwargs.reasoning_content
     ).toBeUndefined();
   });
 });

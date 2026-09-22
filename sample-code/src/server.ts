@@ -1083,28 +1083,20 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
       if (!connectionAlive) {
         break;
       }
-      if (Array.isArray(chunk.content)) {
-        for (const block of chunk.content) {
-          if (block.type === 'reasoning') {
-            if (!inReasoning) {
-              res.write('[reasoning]\n');
-              inReasoning = true;
-            }
-            res.write(block.reasoning);
-          } else if (block.type === 'text') {
-            if (inReasoning) {
-              res.write('\n\n[answer]\n');
-              inReasoning = false;
-            }
-            res.write(block.text);
+      for (const block of chunk.contentBlocks) {
+        if (block.type === 'reasoning') {
+          if (!inReasoning) {
+            res.write('[reasoning]\n');
+            inReasoning = true;
           }
+          res.write(block.reasoning);
+        } else if (block.type === 'text') {
+          if (inReasoning) {
+            res.write('\n\n[answer]\n');
+            inReasoning = false;
+          }
+          res.write(block.text);
         }
-      } else if (chunk.content) {
-        if (inReasoning) {
-          res.write('\n\n[answer]\n');
-          inReasoning = false;
-        }
-        res.write(chunk.content);
       }
       finalResult = finalResult ? finalResult.concat(chunk) : chunk;
     }

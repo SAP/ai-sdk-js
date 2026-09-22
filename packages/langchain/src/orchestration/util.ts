@@ -178,10 +178,7 @@ function extractReasoningBlocks(
   if (Array.isArray(rawBlocks) && rawBlocks.length) {
     return rawBlocks as ReasoningBlock[];
   }
-  if (!Array.isArray(message.content)) {
-    return undefined;
-  }
-  const blocks = (message.content as (ContentBlock.Reasoning | ContentBlock.Text)[])
+  const blocks = message.contentBlocks
     .filter((b): b is ContentBlock.Reasoning => b.type === 'reasoning')
     .map(b => ({ content: b.reasoning }));
   return blocks.length ? blocks : undefined;
@@ -449,18 +446,18 @@ export function mapOutputToChatResult(
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
+        additional_kwargs: {
+          tool_calls: choice.message.tool_calls,
+          intermediate_results,
+          ...(choice.message.reasoning_content?.length && {
+            reasoning_content: choice.message.reasoning_content
+          })
+        },
         response_metadata: { tokenUsage },
         usage_metadata: usage
           ? buildUsageMetadata(usage)
           : { input_tokens: 0, output_tokens: 0, total_tokens: 0 }
       }),
-      additional_kwargs: {
-        tool_calls: choice.message.tool_calls,
-        intermediate_results,
-        ...(choice.message.reasoning_content?.length && {
-          reasoning_content: choice.message.reasoning_content
-        })
-      },
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
