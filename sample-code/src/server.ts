@@ -1052,15 +1052,18 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
   }
 });
 
-app.get('/langchain/invoke-reasoning-multi-turn-orchestration', async (req, res) => {
-  try {
-    const result = await invokeReasoningMultiTurnOrchestration();
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    res.send(result);
-  } catch (error: any) {
-    sendError(res, error);
+app.get(
+  '/langchain/invoke-reasoning-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const result = await invokeReasoningMultiTurnOrchestration();
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
   }
-});
+);
 
 app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
   const controller = new AbortController();
@@ -1102,8 +1105,12 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
     }
     if (connectionAlive) {
       res.write('\n\n---------------------------\n');
-      res.write(`Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`);
-      res.write(`Output tokens:    ${finalResult?.usage_metadata?.output_tokens ?? 0}\n`);
+      res.write(
+        `Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`
+      );
+      res.write(
+        `Output tokens:    ${finalResult?.usage_metadata?.output_tokens ?? 0}\n`
+      );
     }
   } catch (error: any) {
     sendError(res, error, false);
