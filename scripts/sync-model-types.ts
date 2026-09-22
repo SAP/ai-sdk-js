@@ -159,30 +159,24 @@ function isRetired(row: ModelRow): boolean {
 /**
  * Warn-only cross-check for batch models. `batchModels` is filled directly from
  * the scraped array and is never checked against model status, so a model that
- * is retired/excluded for chat can silently linger there. Returns one warning
- * string per batch entry that is retired (per {@link isRetired}) or in
+ * is retired/excluded for chat can silently linger there. Returns the batch
+ * entries that are retired (per {@link isRetired}) or in
  * {@link MODEL_EXCLUSION_LIST}. Never auto-removes — removal stays manual per
  * the update-models skill.
  * @param rows - Scraped model rows.
  * @param batchModels - The batchModels array from sap-models.json.
- * @returns Warning messages, one per flagged batch model.
+ * @returns The flagged batch model names.
  */
-export function batchModelWarnings(
+export function retiredOrExcludedBatchModels(
   rows: ModelRow[],
   batchModels: string[]
 ): string[] {
   const rowByModel = new Map(rows.map(r => [r.model, r]));
-  const warnings: string[] = [];
-  for (const m of batchModels) {
+  return batchModels.filter(m => {
     const row = rowByModel.get(m);
     const retired = row ? isRetired(row) : false;
-    if (retired || MODEL_EXCLUSION_LIST.has(m)) {
-      warnings.push(
-        `⚠ Batch model "${m}" is retired/excluded for chat but still in batchModels — review manually and remove from the batchModels array if it is truly retired for batch.`
-      );
-    }
-  }
-  return warnings;
+    return retired || MODEL_EXCLUSION_LIST.has(m);
+  });
 }
 
 function modelPrefix(model: string): string {
@@ -383,8 +377,11 @@ async function syncModelTypes(): Promise<void> {
   const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
   typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
 
-  for (const warning of batchModelWarnings(rows, batchModels)) {
-    console.error(warning);
+  const flaggedBatchModels = retiredOrExcludedBatchModels(rows, batchModels);
+  if (flaggedBatchModels.length) {
+    console.error(
+      `⚠ Batch models retired/excluded for chat but still in batchModels — review manually and remove any truly retired for batch: ${flaggedBatchModels.join(', ')}`
+    );
   }
 
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
