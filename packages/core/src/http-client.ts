@@ -74,7 +74,13 @@ export async function executeRequest(
     data:
       data instanceof FormData || data instanceof Blob
         ? data
-        : JSON.stringify(data)
+        : JSON.stringify(data, (_key, value) =>
+            value instanceof Set
+              ? [...value]
+              : value instanceof Map
+                ? Object.fromEntries(value)
+                : value
+          )
   };
 
   try {
