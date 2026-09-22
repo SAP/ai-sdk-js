@@ -2,30 +2,30 @@
 
 ## Status
 
-proposed
+decided
 
 ## Context
 
 Providing SDK clients for the Tabular AI Orchestration and Context Registry services is a significant undertaking.
 These are two independent components maintained by separate teams:
 
-- the **Tabular AI Orchestration** prediction client handles virtual deployment in AI Core, routes requests to the prediction model, and performs context selection;
-- the **Context Registry** client handles data destinations, tabular artifacts, tabular scenarios, and HANA DB.
+- The **Tabular AI Orchestration** prediction client handles virtual deployment in AI Core, routes requests to the prediction model, and performs context selection.
+- The **Context Registry** client handles data destinations, tabular artifacts, tabular scenarios, and HANA DB.
 
 Neither requires the other to be implemented or released first.
 An end-to-end workflow commonly uses both to prepare context and submit a prediction.
 
 ```mermaid
 flowchart TD
-    subgraph ctx ["@sap-ai-sdk/ctx-registry"]
+    subgraph ctx ["@sap-ai-sdk/context-registry"]
         DD[Data Destination]
         TA[Tabular Artifact]
         SC[Scenario Config Artifact]
         DD --> TA --> SC
     end
 
-    subgraph pred ["@sap-ai-sdk/tabular-orchestration"]
-        PC["TabularOrchestrationClient.predict(body)"]
+    subgraph pred ["Prediction package (name pending)"]
+        PC["Generated predict operation"]
     end
 
     SC -- scenarioConfigName --> PC
@@ -40,9 +40,14 @@ The prediction and context-registry clients can be tracked, implemented, reviewe
 
 ## Decision
 
-No decision has been accepted yet.
+Develop and release the Context Registry and Tabular AI Orchestration clients independently when each is usable.
+The first releases are explicitly experimental: they prioritize availability and feedback over a complete convenience API or a coordinated end-to-end release.
 
-The current recommendation is **Option D**: track the clients independently and release each as soon as it satisfies its own criteria, without waiting for a predetermined order.
+Each experimental package starts from its generated client.
+Handwritten convenience is deferred to follow-up work, except for the deployment resolution and required header handling needed to execute prediction requests through SAP AI Core.
+
+The Context Registry package is named `@sap-ai-sdk/context-registry`.
+The prediction package name is tracked separately in [ADR 011](./011-tabular-orchestration-prediction.md).
 
 ## Discussion
 
@@ -77,7 +82,7 @@ Release the context-registry client before the prediction client.
 **Cons:**
 
 - Delays the primary prediction use case.
-- The client remains blocked until the Context Registry team provides the authoritative merged specification.
+- At the time this option was considered, the client depended on the Context Registry team's authoritative specification.
 - Users of the initial release cannot complete predictions or verify that configured registry resources meet their needs in a prediction scenario.
 
 #### Option C: Release Both Clients Together
@@ -96,12 +101,12 @@ Hold both clients until a coordinated release provides the complete workflow.
 - Increases the initial review, test, and documentation scope.
 - Delays user feedback that could improve either client independently.
 
-#### Option D: Independent Efforts, Release When Ready
+#### Option D: Independent Experimental Releases as Ready (selected)
 
 Create separate delivery tickets, each with its own owner, scope, review, tests, documentation, and release criteria.
-Work may proceed concurrently or at different times; whichever client becomes ready first is released first.
+Work may proceed concurrently or at different times; whichever experimental client becomes usable first is released first.
 
-This is a first-completed, first-released strategy rather than a commitment to parallel completion or a coordinated launch.
+This is a release-as-we-go strategy rather than a commitment to parallel completion, a predetermined order, or a coordinated launch.
 
 **Pros:**
 
