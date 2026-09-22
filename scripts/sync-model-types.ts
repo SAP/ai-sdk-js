@@ -518,7 +518,7 @@ async function writeChangeset(releaseNote: string): Promise<void> {
 
 // Only auto-run when invoked directly (e.g. `node scripts/sync-model-types.ts`),
 // not when imported by tests for the exported helpers.
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (process.argv[1] === import.meta.filename) {
   syncModelTypes().catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);
