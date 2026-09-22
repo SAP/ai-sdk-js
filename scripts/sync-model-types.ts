@@ -8,7 +8,6 @@
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { format as oxfmt } from 'oxfmt';
 import { ScenarioApi } from '@sap-ai-sdk/ai-api';
 import { transformFile } from './util.ts';
