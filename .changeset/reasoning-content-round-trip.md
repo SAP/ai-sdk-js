@@ -2,4 +2,6 @@
 '@sap-ai-sdk/langchain': minor
 ---
 
-Support reasoning content round-trip in the LangChain orchestration client. Reasoning blocks from assistant messages are now forwarded back to the API in `reasoning_content` (preserving the `signature` for encrypted thinking), and reasoning is stripped from `content` before sending to avoid API conflicts.
+[feat] Add reasoning content support to the LangChain orchestration client. 
+Reasoning blocks are surfaced on the `AIMessage` as typed content blocks and in `additional_kwargs.reasoning_content` (preserving the `signature` for encrypted thinking round-trips). 
+Reasoning blocks from assistant messages are forwarded back to the API in `reasoning_content` on subsequent turns.
