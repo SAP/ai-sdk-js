@@ -16,7 +16,6 @@ jobs:
       - name: Get Changelog
         id: get-changelog
         uses: $/.github/actions/get-changelog
-        uses: $/.github/actions/get-changelog
       - name: Create Draft Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

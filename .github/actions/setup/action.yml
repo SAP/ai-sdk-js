@@ -27,11 +27,23 @@ inputs:
   persist-credentials:
     description: 'Whether to configure the token or SSH key with the local git config'
     default: 'false'
+  sparse-checkout:
+    description: 'Paths for sparse checkout, one per line. If empty, full checkout is performed.'
+    default: ''
 
 runs:
   using: 'composite'
   steps:
+    - name: Checkout repository (sparse)
+      if: ${{ inputs.sparse-checkout != '' }}
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        ref: ${{ inputs.ref }}
+        token: ${{ inputs.token }}
+        persist-credentials: ${{ inputs.persist-credentials }}
+        sparse-checkout: ${{ inputs.sparse-checkout }}
     - name: Checkout repository
+      if: ${{ inputs.sparse-checkout == '' }}
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         ref: ${{ inputs.ref }}

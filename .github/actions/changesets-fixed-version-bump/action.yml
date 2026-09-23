@@ -13,7 +13,6 @@ runs:
     - name: Run changesets-fixed-version-bump
       id: run
       shell: bash
-      working-directory: ${{ github.workspace }}/build-packages/changesets-fixed-version-bump
       env:
         INPUT_MAJORVERSION: ${{ inputs.majorVersion }}
-      run: node index.ts
+      run: node ${{ github.action_path }}/index.ts

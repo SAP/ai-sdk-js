@@ -10,5 +10,12 @@ inputs:
     description: 'Regular expression for paths to be ignore when checking the public API.'
 
 runs:
-  using: 'node24'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: Run check-public-api
+      shell: bash
+      env:
+        INPUT_FORCE_INTERNAL_EXPORTS: ${{ inputs.force_internal_exports }}
+        INPUT_EXCLUDED_PACKAGES: ${{ inputs.excluded_packages }}
+        INPUT_IGNORED_PATH_PATTERN: ${{ inputs.ignored_path_pattern }}
+      run: node ${{ github.action_path }}/index.ts

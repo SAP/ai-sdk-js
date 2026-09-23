@@ -10,5 +10,4 @@ runs:
     - name: Run get-changelog
       id: run
       shell: bash
-      working-directory: ${{ github.workspace }}/build-packages/get-changelog
-      run: node index.ts
+      run: node ${{ github.action_path }}/index.ts

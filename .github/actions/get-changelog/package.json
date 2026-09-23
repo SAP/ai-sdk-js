@@ -1,1 +1,9 @@
-{"type":"module"}
+{
+  "name": "action-get-changelog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@actions/core": "^3.0.0"
+  }
+}
