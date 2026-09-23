@@ -9,7 +9,6 @@ runs:
   steps:
     - name: Run check-pr
       shell: bash
-      working-directory: ${{ github.workspace }}/build-packages/check-pr
       env:
         INPUT_CHANGED-FILES: ${{ inputs.changed-files }}
-      run: node index.ts
+      run: node ${{ github.action_path }}/index.ts
