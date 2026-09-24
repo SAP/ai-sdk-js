@@ -32,4 +32,4 @@ export const messageTypes = [
   }
 ];
 
-export type MessageType = (typeof messageTypes)[number];
+type MessageType = (typeof messageTypes)[number];
