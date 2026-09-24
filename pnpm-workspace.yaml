@@ -14,7 +14,6 @@ packages:
   - tests/e2e-tests
   - tests/smoke-tests
   - tests/type-tests
-  - .github/actions/check-license
   - .github/actions/check-pr
   - .github/actions/check-public-api
   - .github/actions/get-changelog
