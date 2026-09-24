@@ -16,7 +16,7 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: $/.github/actions/setup
+      - uses: ./.github/actions/setup
         with:
           sparse-checkout: |
             .github/PULL_REQUEST_TEMPLATE.md
@@ -33,6 +33,6 @@ jobs:
           files: |
             .changeset/**
             !.changeset/config.json
-      - uses: $/.github/actions/check-pr
+      - uses: ./.github/actions/check-pr
         with:
           changed-files: ${{ steps.changed-files.outputs.added_files }} ${{ steps.changed-files.outputs.modified_files }}

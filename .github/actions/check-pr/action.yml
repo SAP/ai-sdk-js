@@ -7,9 +7,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Link node_modules
-      shell: bash
-      run: ln -s ${{ github.workspace }}/.github/actions/check-pr/node_modules ${{ github.action_path }}/node_modules
     - name: Run check-pr
       shell: bash
       env:
