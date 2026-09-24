@@ -46,8 +46,9 @@ const MODEL_TYPES_PATH = resolve(
 const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-4o',         // Intentionally removed — deprecated despite having a non-deprecated row
   'gpt-4o-mini',    // Intentionally removed — deprecated despite having a non-deprecated row
-  'gpt-4.1',        // Intentionally removed — retiring 2026-10-14
-  'gpt-4.1-mini',   // Intentionally removed — retiring 2026-10-14
+  'gpt-4.1',        // Intentionally removed — retiring 2027-04-14
+  'gpt-4.1-mini',   // Intentionally removed — retiring 2027-04-14
+  'gpt-4.1-nano',   // Intentionally removed — retiring 2027-04-14
   'o3',             // Intentionally removed — retiring 2026-10-16
   'o4-mini',        // Intentionally removed — retiring 2026-10-16
   'gpt-realtime',   // WebSocket-based, not a standard chat completion model
@@ -152,6 +153,29 @@ function isRetired(row: ModelRow): boolean {
     row.deprecated?.toLowerCase().includes('yes') === true ||
     isRetiredSoon(row.retirementDate ?? '')
   );
+}
+
+/**
+ * Warn-only cross-check for batch models. `batchModels` is filled directly from
+ * the scraped array and is never checked against model status, so a model that
+ * is retired/excluded for chat can silently linger there. Returns the batch
+ * entries that are retired (per {@link isRetired}) or in
+ * {@link MODEL_EXCLUSION_LIST}. Never auto-removes — removal stays manual per
+ * the update-models skill.
+ * @param rows - Scraped model rows.
+ * @param batchModels - The batchModels array from sap-models.json.
+ * @returns The flagged batch model names.
+ */
+export function retiredOrExcludedBatchModels(
+  rows: ModelRow[],
+  batchModels: string[]
+): string[] {
+  const rowByModel = new Map(rows.map(r => [r.model, r]));
+  return batchModels.filter(m => {
+    const row = rowByModel.get(m);
+    const retired = row ? isRetired(row) : false;
+    return retired || MODEL_EXCLUSION_LIST.has(m);
+  });
 }
 
 function modelPrefix(model: string): string {
@@ -352,6 +376,13 @@ async function syncModelTypes(): Promise<void> {
   const { typeToActiveModels, retiredInfo, skippedRows } = buildActiveModelMap(rows);
   typeToActiveModels['LlmBatchModel'] = new Set(batchModels);
 
+  const flaggedBatchModels = retiredOrExcludedBatchModels(rows, batchModels);
+  if (flaggedBatchModels.length) {
+    console.error(
+      `⚠ Batch models retired/excluded for chat but still in batchModels — review manually and remove any truly retired for batch: ${flaggedBatchModels.join(', ')}`
+    );
+  }
+
   const currentContent = await readFile(MODEL_TYPES_PATH, 'utf8');
 
   const batchCurrent = extractCurrentModels(currentContent, 'LlmBatchModel');
@@ -481,7 +512,11 @@ async function writeChangeset(releaseNote: string): Promise<void> {
   console.error(`\nChangeset written: .changeset/${filename}`);
 }
 
-syncModelTypes().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Only auto-run when invoked directly (e.g. `node scripts/sync-model-types.ts`),
+// not when imported by tests for the exported helpers.
+if (process.argv[1] === import.meta.filename) {
+  syncModelTypes().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}

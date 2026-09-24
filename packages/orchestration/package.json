@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "",
   "keywords": [
     "llm-access",
@@ -51,6 +51,6 @@
   "devDependencies": {
     "@sap-cloud-sdk/connectivity": "4.9.1",
     "@sap-cloud-sdk/http-client": "4.9.1",
-    "vitest": "5.0.0"
+    "vitest": "5.0.1"
   }
 }
