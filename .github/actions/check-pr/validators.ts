@@ -111,7 +111,7 @@ async function extractChangesetFileContents(): Promise<string[]> {
   return fileContents;
 }
 
-export function validateChangesets(
+function validateChangesets(
   preamble: string,
   commitType: string,
   isBreaking: boolean,
