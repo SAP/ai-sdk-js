@@ -25,7 +25,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: $/.github/actions/setup
+      - uses: ./.github/actions/setup
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }} # zizmor: ignore[overprovisioned-secrets]
