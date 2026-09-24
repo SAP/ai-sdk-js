@@ -7,6 +7,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: npm install --ignore-scripts
     - name: Run check-pr
       shell: bash
       env:

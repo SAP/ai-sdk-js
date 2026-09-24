@@ -66,4 +66,4 @@ runs:
     - name: Run lifecycle scripts
       if: ${{ inputs.skip-install == 'false' && inputs.skip-build == 'false' }}
       shell: bash
-      run: pnpm rebuild
+      run: pnpm compile
