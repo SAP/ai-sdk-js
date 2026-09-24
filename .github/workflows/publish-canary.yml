@@ -20,7 +20,7 @@ jobs:
       id-token: write
 
     steps:
-      - uses: ./.github/actions/setup
+      - uses: $/.github/actions/setup
         with:
           pnpm-install-args: ''
           package-manager-cache: false
