@@ -7,10 +7,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Install dependencies
+    - name: Link node_modules
       shell: bash
-      working-directory: ${{ github.action_path }}
-      run: npm install --ignore-scripts
+      run: ln -s ${{ github.workspace }}/.github/actions/check-pr/node_modules ${{ github.action_path }}/node_modules
     - name: Run check-pr
       shell: bash
       env:
