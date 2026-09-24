@@ -16,7 +16,7 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: ./.github/actions/setup
+      - uses: $/.github/actions/setup
         with:
           sparse-checkout: |
             .github/PULL_REQUEST_TEMPLATE.md

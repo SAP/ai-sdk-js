@@ -15,7 +15,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: ./.github/actions/setup
+      - uses: $/.github/actions/setup
       - name: Generate API documentation
         run: |
           pnpm generate
