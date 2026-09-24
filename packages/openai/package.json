@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@types/ws": "8.18.1",
-    "openai": "7.19.0",
+    "openai": "7.20.0",
     "vitest": "5.0.1",
     "ws": "8.21.3"
   },
