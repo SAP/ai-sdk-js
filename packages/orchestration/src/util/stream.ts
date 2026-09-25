@@ -15,6 +15,7 @@ import type {
   ModuleResultsStreaming,
   ReasoningBlock,
   ResponseChatMessage,
+  TokenUsage,
   ToolCallChunk
 } from '../client/api/schema/index.ts';
 import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
@@ -116,17 +117,17 @@ function mergeLlmModule(
 }
 
 function mergeTokenUsage(
-  existing:
-    | { prompt_tokens: number; completion_tokens: number; total_tokens: number }
-    | undefined,
-  incoming:
-    | { prompt_tokens: number; completion_tokens: number; total_tokens: number }
-    | undefined
-): { prompt_tokens: number; completion_tokens: number; total_tokens: number } {
+  existing: TokenUsage | undefined,
+  incoming: TokenUsage | undefined
+): TokenUsage {
   if (incoming) {
     logger.debug(`Token usage: ${JSON.stringify(incoming)}`);
   }
   return {
+    // Keep every field the service sent, e.g. `prompt_tokens_details` and
+    // `completion_tokens_details`, instead of only the three flat counters.
+    ...existing,
+    ...incoming,
     prompt_tokens: incoming?.prompt_tokens ?? existing?.prompt_tokens ?? 0,
     completion_tokens:
       incoming?.completion_tokens ?? existing?.completion_tokens ?? 0,
