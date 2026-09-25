@@ -55,7 +55,7 @@
     "memfs": "4.78.1",
     "nock": "14.0.17",
     "orval": "8.27.0",
-    "oxfmt": "0.68.0",
+    "oxfmt": "0.70.0",
     "oxlint": "1.83.0",
     "oxlint-tsgolint": "7.0.2002",
     "typedoc": "0.28.20",
