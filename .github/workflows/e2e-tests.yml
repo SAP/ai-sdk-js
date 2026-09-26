@@ -34,6 +34,9 @@ jobs:
           echo "AICORE_SERVICE_KEY='$AICORE_SERVICE_KEY'" > tests/e2e-tests/.env
           url=$(echo "$AICORE_SERVICE_KEY" | jq -r '.serviceurls.AI_API_URL' | sed 's|^https://||')
           echo "Using AI Core ${{ matrix.environment }} instance on $url"
+      - name: 'Compile Sample Code'
+        working-directory: ./sample-code
+        run: pnpm compile
       - name: 'Start Sample App'
         id: sample-app
         working-directory: ./sample-code
