@@ -51,7 +51,7 @@
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
     "@upstash/context7-mcp": "4.1.1",
-    "hyparquet-writer": "0.16.9"
+    "hyparquet-writer": "0.16.10"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
