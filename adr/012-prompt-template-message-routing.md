@@ -9,7 +9,8 @@ Accepted
 The `OrchestrationClient` wraps the SAP AI Core Orchestration API.
 That API has no top-level `messages` field — the only ways to supply chat content are:
 
-- `config.modules.prompt_templating.prompt.template` — the static message array that defines the scenario, persona, or instructions (with optional `{{?placeholder}}` slots filled from `placeholder_values`)
+- `config.modules.prompt_templating.prompt` — the prompt template that defines the scenario, persona, or instructions.
+  It is _either_ a local template (`Template`, an inline message array with optional `{{?placeholder}}` slots filled from `placeholder_values`) _or_ a single template reference (`TemplateRef`, one registry template by ID or by scenario/name/version) — the two cannot be mixed, and multiple template references are not allowed.
 - `messages_history` — prior conversation turns, prepended to the request as context and never merged into the template
 
 The SDK introduces a third concept, `request.messages`, that has no direct equivalent in the API.
