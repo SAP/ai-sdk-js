@@ -16,6 +16,7 @@ That API has no top-level `messages` field — the only ways to supply chat cont
 The SDK introduces a third concept, `request.messages`, that has no direct equivalent in the API.
 It represents the current user turn — the dynamic per-call content layered on top of the fixed template configuration.
 This ADR documents:
+
 - why it exists
 - how it is routed
 - the consequences of that routing
@@ -24,32 +25,23 @@ This ADR documents:
 
 ### The `request.messages` convenience field
 
-`ChatCompletionRequest.messages` was introduced so callers do not have to decide between two different API fields (`prompt.template` vs `messages_history`) depending on whether they configured a template.
-The SDK routes it automatically:
+The `ChatCompletionRequest.messages` field was introduced so callers do not have to choose between `prompt.template` and `messages_history` depending on whether they configured a template.
 
-| Config path                               | Where `request.messages` ends up                      |
-| ----------------------------------------- | ----------------------------------------------------- |
-| Local template (`prompt.template`)        | Appended to `prompt.template` in the outgoing request |
-| Remote template reference (`TemplateRef`) | Appended to `messages_history`                        |
-| Config reference (by ID or name)          | Appended to `messages_history`                        |
-| No template                               | Appended to `messages_history`                        |
+The SDK routes the `messages` field automatically:
 
-This ADR focuses on the **local template** path, where the routing has non-obvious consequences.
-The `TemplateRef` path is documented in the section below.
+- with a local template (`prompt.template`) it is appended to `prompt.template` in the outgoing request
+- in every other case (`TemplateRef`, config reference, or no template) it is appended to `messages_history`.
 
-### Why the merge happens for local templates
-
-The Orchestration API requires that when a local template is present, all messages are either part of the template array or the history.
-There is no separate "current turn" slot at the API level.
-Appending `request.messages` to `prompt.template` is the SDK's way of delivering a per-request user turn when a local template is configured.
+This ADR focuses on the local-template path, where the routing has non-obvious consequences.
+The `TemplateRef` path is documented below.
 
 ### Constructor as config artifact
 
 The prompt template lives in the constructor, not in `chatCompletion()`, because the constructor maps 1:1 to an orchestration **configuration artifact** — the same `module_configurations` block that can be stored and referenced on the server.
-All module-level settings (model, parameters, filters, masking, grounding, translation, and prompt template) are part of that artifact and are fixed for the lifetime of a client instance.
-Per-call arguments (`messages`, `messagesHistory`, `placeholderValues`) are the dynamic content layered on top of that fixed artifact.
+All module-level settings (model, parameters, filters, masking, grounding, translation, prompt template) are fixed for the lifetime of a client instance.
+Per-call arguments (`messages`, `messagesHistory`, `placeholderValues`) are the dynamic content layered on top.
 
-This mirrors the intent of `adr/003-history-maintenance.md`: one client instance = one conversation = one configuration context.
+This mirrors `adr/003-history-maintenance.md`: one client instance = one conversation = one configuration context.
 
 ### The template echo problem
 
@@ -161,7 +153,8 @@ When `promptTemplating.prompt` is a remote template reference (`TemplateRef`), t
 
 This routing is mechanically forced — unlike the local-template path, there is no design decision being made.
 However, **no log is emitted** when this rerouting occurs.
-The config-reference path (`OrchestrationConfigRefById` / `OrchestrationConfigRefByName`) emits a `logger.debug` saying messages will be sent as `messages_history`; the inline `TemplateRef` path does not.
+The config-reference path (`OrchestrationConfigRefById` / `OrchestrationConfigRefByName`) emits a `logger.debug` saying messages will be sent as `messages_history`.
+The inline `TemplateRef` path does not.
 A developer who passes `messages` to `chatCompletion()` alongside a `TemplateRef` config receives no signal that the routing differs from the local-template case.
 
 #### Module behavior on `messages_history`
