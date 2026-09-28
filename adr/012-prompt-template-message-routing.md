@@ -15,7 +15,12 @@ That API has no top-level `messages` field — the only ways to supply chat cont
 
 The SDK introduces a third concept, `request.messages`, that has no direct equivalent in the API.
 It represents the current user turn — the dynamic per-call content layered on top of the fixed template configuration.
-This ADR documents why it exists, how it is routed, the consequences of that routing, and the recommended usage patterns today.
+This ADR documents:
+- why it exists
+- how it is routed
+- the consequences of that routing
+- the recommended usage patterns today, and
+- a proposal for a new API
 
 ### The `request.messages` convenience field
 
