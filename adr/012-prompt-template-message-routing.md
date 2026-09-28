@@ -15,13 +15,6 @@ That API has no top-level `messages` field — the only ways to supply chat cont
 
 The SDK introduces a third concept, `request.messages`, that has no direct equivalent in the API.
 It represents the current user turn — the dynamic per-call content layered on top of the fixed template configuration.
-This ADR documents:
-
-- why it exists
-- how it is routed
-- the consequences of that routing
-- the recommended usage patterns today, and
-- a proposal for a new API
 
 ### The `request.messages` convenience field
 
@@ -35,17 +28,6 @@ The SDK routes the `messages` field automatically:
 
 This ADR focuses on the local-template path, where the routing has non-obvious consequences.
 The `TemplateRef` path is documented below.
-
-### Constructor as config artifact
-
-The prompt template lives in the constructor, not in `chatCompletion()`, because the constructor maps 1:1 to an orchestration **configuration artifact** — the same `module_configurations` block that can be stored and referenced on the server.
-All module-level settings (model, parameters, filters, masking, grounding, translation, prompt template) are fixed for the lifetime of a client instance.
-Per-call arguments (`messages`, `messagesHistory`, `placeholderValues`) are the dynamic content layered on top.
-
-The Orchestration API makes no such distinction — every call is stateless and `prompt.template` is per-request content.
-The config-artifact mapping is an SDK-layer abstraction.
-
-This mirrors `adr/003-history-maintenance.md`: one client instance = one conversation = one configuration context.
 
 ### The template echo problem
 
