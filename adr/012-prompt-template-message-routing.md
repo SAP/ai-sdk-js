@@ -26,6 +26,7 @@ This ADR documents:
 ### The `request.messages` convenience field
 
 The `ChatCompletionRequest.messages` field was introduced so callers do not have to choose between `prompt.template` and `messages_history` depending on whether they configured a template.
+In API terms it is the per-request portion of `prompt.template` — the API has no static/dynamic split.
 
 The SDK routes the `messages` field automatically:
 
@@ -41,20 +42,15 @@ The prompt template lives in the constructor, not in `chatCompletion()`, because
 All module-level settings (model, parameters, filters, masking, grounding, translation, prompt template) are fixed for the lifetime of a client instance.
 Per-call arguments (`messages`, `messagesHistory`, `placeholderValues`) are the dynamic content layered on top.
 
+The Orchestration API makes no such distinction — every call is stateless and `prompt.template` is per-request content.
+The config-artifact mapping is an SDK-layer abstraction.
+
 This mirrors `adr/003-history-maintenance.md`: one client instance = one conversation = one configuration context.
 
 ### The template echo problem
 
 When using a local template, the Orchestration service echoes the fully-rendered template (static messages + appended `request.messages`, after placeholder substitution) back in the response under `intermediate_results.templating`.
-`OrchestrationResponse.getAllMessages()` returns these echoed messages concatenated with the assistant reply:
-
-```ts
-getAllMessages(): ChatMessages {
-  const messages = this._data.intermediate_results.templating ?? [];
-  const content = this.findChoiceByIndex(choiceIndex)?.message;
-  return content ? [...messages, content] : messages;
-}
-```
+`OrchestrationResponse.getAllMessages()` returns these echoed messages concatenated with the assistant reply.
 
 This creates two manifestations of the same problem for multi-turn conversations:
 
