@@ -26,17 +26,17 @@
   },
   "dependencies": {
     "@langchain/classic": "1.0.48",
-    "@langchain/core": "1.2.11",
-    "@langchain/langgraph": "1.4.15",
+    "@langchain/core": "1.2.12",
+    "@langchain/langgraph": "1.4.17",
     "@langchain/mcp-adapters": "1.1.4",
     "@langchain/textsplitters": "1.0.1",
-    "@modelcontextprotocol/sdk": "1.30.0",
+    "@modelcontextprotocol/sdk": "1.30.1",
     "@sap-cloud-sdk/resilience": "4.9.1",
     "@sap-cloud-sdk/util": "4.9.1",
     "@types/express": "5.0.6",
     "express": "5.2.1",
-    "langchain": "1.5.11",
-    "openai": "7.18.0",
+    "langchain": "1.5.12",
+    "openai": "7.23.0",
     "ws": "8.21.3",
     "zod": "4.6.5"
   },
@@ -53,7 +53,7 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@types/ws": "8.18.1",
     "@upstash/context7-mcp": "4.1.1",
-    "hyparquet-writer": "0.16.9"
+    "hyparquet-writer": "0.16.10"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
