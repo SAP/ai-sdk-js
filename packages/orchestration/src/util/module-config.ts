@@ -427,7 +427,7 @@ function resolvePromptTemplate(
   messages?: ChatCompletionRequest['messages']
 ): Template | TemplateRef {
   if (typeof promptTemplating.prompt === 'string') {
-    throw new Error('Prompt must be parsed before merging with messages.');
+    throw new TypeError('Prompt must be parsed before merging with messages.');
   }
 
   // If promptTemplating.prompt is not defined, we initialize it with an empty template object
