@@ -3,8 +3,8 @@ import { context } from '@actions/github';
 import { validateTitle, validateBody } from './validators.ts';
 
 try {
-  validateTitle(context.payload.pull_request?.title);
-  validateBody(context.payload.pull_request?.body?.replace(/\r\n/g, '\n'));
+  await validateTitle(context.payload.pull_request?.title);
+  await validateBody(context.payload.pull_request?.body?.replace(/\r\n/g, '\n'));
 } catch (err: any) {
   setFailed(err);
 }

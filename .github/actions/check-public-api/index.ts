@@ -346,7 +346,7 @@ function checkInternalReExports(fileContent: string, filePath: string): void {
     /\{([\w,]+)\}from'.*\/internal'/g
   );
   if (internalReExports.length) {
-    error(
+    setFailed(
       `Re-exporting internal modules is not allowed. ${internalReExports
         .map(reExport => `'${reExport}'`)
         .join(', ')} exported in '${filePath}'.`
@@ -391,13 +391,13 @@ function captureGroupsFromGlobalRegex(regex: RegExp, str: string): string[] {
 }
 
 export async function checkBarrelRecursive(cwd: string): Promise<void> {
-  (await readdir(cwd, { withFileTypes: true }))
-    .filter(dirent => dirent.isDirectory())
-    .forEach(async subDir => {
-      if (subDir.name !== '__snapshots__') {
-        await checkBarrelRecursive(join(cwd, subDir.name));
-      }
-    });
+  for (const subDir of (await readdir(cwd, { withFileTypes: true })).filter(
+    dirent => dirent.isDirectory()
+  )) {
+    if (subDir.name !== '__snapshots__') {
+      await checkBarrelRecursive(join(cwd, subDir.name));
+    }
+  }
   await exportAllInBarrel(
     cwd,
     parse(cwd).name === 'src' ? 'internal.ts' : 'index.ts'

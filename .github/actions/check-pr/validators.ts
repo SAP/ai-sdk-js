@@ -23,17 +23,9 @@ export async function validateTitle(title: string | undefined): Promise<void> {
 }
 
 async function validatePreamble(preamble: string): Promise<void> {
-  const groups = preamble.match(
-    /(?<commitType>\w+)?(\((?<topic>\w+)\))?(?<isBreaking>!)?/
-  )?.groups;
-
-  if (!groups) {
-    return setFailed(
-      'Could not parse preamble. Ensure it follows the conventional commit guidelines.'
-    );
-  }
-
-  const { commitType, isBreaking } = groups;
+  const { commitType, isBreaking } =
+    preamble.match(/(?<commitType>\w+)?(\((?<topic>\w+)\))?(?<isBreaking>!)?/)
+      ?.groups ?? {};
 
   validateCommitType(commitType);
   validateChangesets(
