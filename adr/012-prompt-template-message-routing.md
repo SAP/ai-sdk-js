@@ -30,7 +30,16 @@ Working around this today requires client-management patterns that are not refle
 
 Two further behaviors constrain any redesign.
 The `TemplateRef` path reroutes `messages` to the `messages_history` field without a debug signal — unlike the config-reference path, it emits no `logger.debug` entry that the routing differs.
-And all three input modules re-process the full combined list (history + current template) on every turn: translation and content filtering can opt out or scope per request (`translate_messages_history`, `target_selector`), while data masking re-masks everything.
+And by default each module treats the `messages_history` field the same as the template (except prompt templating):
+
+- **Prompt templating** never renders history, so `{{?placeholder}}` text there is passed through literally.
+- **Translation** can be disabled per request with `translate_messages_history`.
+- **Content filtering** can be scoped per request with `target_selector`.
+- **Data masking** always processes everything, with no opt-out.
+
+## Decision
+
+tbd
 
 ## Options
 
@@ -42,6 +51,12 @@ Both options share the same core change to the `chatCompletion()` method:
 - Passing a `prompt: TemplateRef` value alongside anything that would require merging inline messages into the template throws an error, because the SDK cannot modify a remote template.
 
 The options differ in whether the `prompt` field is also allowed in the constructor.
+
+**Impact on existing consumers**: The LangChain integration's `OrchestrationClient` (`packages/langchain/src/orchestration/client.ts`) depends on the `messages` field as its only runtime channel.
+It maps the combined LangChain message list and passes it as `chatCompletion({ messages, ... })`, keeping the template in the constructor config.
+It never sets `messagesHistory` and never passes a per-request `prompt`.
+Removing the `messages` field therefore breaks this client under both options.
+Both options require migrating it to route its combined list through `messagesHistory` and/or the per-request `prompt`.
 
 ### Option A — `prompt` at request level only
 
@@ -108,12 +123,6 @@ const resp2 = await client.chatCompletion({
 
 **Tradeoff**: Preserves the SDK's config-artifact abstraction.
 But the two sites where the `prompt` field can live add complexity — callers must understand which site to use and when.
-
-## Decision
-
-Whether to remove the `messages` field from `ChatCompletionRequest` and, if so, which option to adopt.
-
-TBD.
 
 ## Open Questions
 
