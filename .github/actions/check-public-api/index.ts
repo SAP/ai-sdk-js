@@ -1,8 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
-import { mkdtemp, rm, readFile, lstat, readdir } from 'node:fs/promises';
+import { mkdtemp, rm, readFile, lstat, readdir, glob } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { glob } from 'glob';
 import { info, warning, error, getInput, setFailed } from '@actions/core';
 import { flatten } from '@sap-cloud-sdk/util';
 import {
@@ -255,7 +254,7 @@ export async function checkIndexFileExists(
  * @returns Paths to the `.d.ts` files excluding `index.d.ts` files.
  */
 export async function typeDescriptorPaths(cwd: string): Promise<string[]> {
-  const files = await glob('**/*.d.ts', { cwd });
+  const files = await Array.fromAsync(glob('**/*.d.ts', { cwd }));
   return files
     .filter(file => !file.endsWith('index.d.ts'))
     .map(file => join(cwd, file));
@@ -415,17 +414,19 @@ export async function exportAllInBarrel(
       .catch(() => false)
   ) {
     const dirContents = (
-      await glob('*', {
-        ignore: [
-          '**/*.spec.ts',
-          '__snapshots__',
-          'internal.ts',
-          'index.ts',
-          'cli.ts',
-          '**/*.md'
-        ],
-        cwd
-      })
+      await Array.fromAsync(
+        glob('*', {
+          ignore: [
+            '**/*.spec.ts',
+            '__snapshots__',
+            'internal.ts',
+            'index.ts',
+            'cli.ts',
+            '**/*.md'
+          ],
+          cwd
+        })
+      )
     ).map(name => basename(name, '.ts'));
     const exportedFiles = parseBarrelFile(
       await readFile(barrelFilePath, 'utf8'),
