@@ -1,0 +1,13 @@
+name: 'Get current changelog'
+description: 'Gets the current changelog'
+outputs:
+  changelog:
+    description: 'The current changelog'
+    value: ${{ steps.run.outputs.changelog }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Run get-changelog
+      id: run
+      shell: bash
+      run: node ${{ github.action_path }}/index.ts
