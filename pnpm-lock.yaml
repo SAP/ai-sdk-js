@@ -286,9 +286,6 @@ importers:
       '@sap-cloud-sdk/util':
         specifier: ^4.9.1
         version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      glob:
-        specifier: ^13.0.6
-        version: 13.0.6
 
   .github/actions/get-changelog:
     dependencies:
