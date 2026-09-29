@@ -1,0 +1,8 @@
+name: 'Merge Changelogs'
+description: 'Merges all public changelogs from changesets into a single changelog.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Run merge-and-write-changelogs
+      shell: bash
+      run: node ${{ github.action_path }}/index.ts

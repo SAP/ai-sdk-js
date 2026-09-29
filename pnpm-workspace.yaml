@@ -14,6 +14,11 @@ packages:
   - tests/e2e-tests
   - tests/smoke-tests
   - tests/type-tests
+  - .github/actions/check-pr
+  - .github/actions/check-public-api
+  - .github/actions/get-changelog
+  - .github/actions/changesets-fixed-version-bump
+  - .github/actions/merge-and-write-changelogs
 
 allowBuilds:
   '@swc/core': true

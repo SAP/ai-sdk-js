@@ -57,7 +57,7 @@ jobs:
     permissions: &spec-update-permissions
       contents: write
       pull-requests: write
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: ai-api
       ref: main
@@ -67,7 +67,7 @@ jobs:
 
   update-document-grounding:
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: document-grounding
       ref: main
@@ -76,7 +76,7 @@ jobs:
 
   update-prompt-registry:
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: prompt-registry
       ref: main
@@ -86,7 +86,7 @@ jobs:
   update-orchestration:
     needs: get-orchestration-reference
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: orchestration
       ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
