@@ -245,7 +245,7 @@ export async function checkIndexFileExists(
     .then(stat => stat.isFile())
     .catch(() => false);
   if (!isFile) {
-    error(`No index.ts file found in ${dirname(indexFilePath)}.`);
+    setFailed(`No index.ts file found in ${dirname(indexFilePath)}.`);
   }
 }
 
@@ -432,10 +432,10 @@ export async function exportAllInBarrel(
       regexExportedInternal
     );
     if (compareBarrels(dirContents, exportedFiles, barrelFilePath)) {
-      error(`'${barrelFileName}' is not in sync.`);
+      setFailed(`'${barrelFileName}' is not in sync.`);
     }
   } else {
-    error(`No '${barrelFileName}' file found in '${cwd}'.`);
+    setFailed(`No '${barrelFileName}' file found in '${cwd}'.`);
   }
 }
 
@@ -448,14 +448,14 @@ function compareBarrels(
     x => !exportedFiles.includes(x)
   );
   missingBarrelExports.forEach(tsFiles =>
-    error(`'${tsFiles}' is not exported in '${barrelFilePath}'.`)
+    setFailed(`'${tsFiles}' is not exported in '${barrelFilePath}'.`)
   );
 
   const extraBarrelExports = exportedFiles.filter(
     x => !dirContents.includes(x)
   );
   extraBarrelExports.forEach(exports =>
-    error(
+    setFailed(
       `'${exports}' is exported from the '${barrelFilePath}' but does not exist in this directory.`
     )
   );
