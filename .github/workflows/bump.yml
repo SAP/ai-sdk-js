@@ -30,16 +30,16 @@ jobs:
           persist-credentials: true
       - name: Bump version
         id: bump
-        uses: ./.github/actions/changesets-fixed-version-bump
+        uses: ./.github/actions/changesets-fixed-version-bump # zizmor: ignore[self-repository]
         with:
           majorVersion: ${{ inputs.majorVersion }}
       - name: Merge and write changelogs
         id: merge-changelogs
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-        uses: ./.github/actions/merge-and-write-changelogs
+        uses: ./.github/actions/merge-and-write-changelogs # zizmor: ignore[self-repository]
       - name: Commit and tag
-        uses: ./.github/actions/commit-and-tag
+        uses: ./.github/actions/commit-and-tag # zizmor: ignore[self-repository]
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}

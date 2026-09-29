@@ -74,14 +74,14 @@ jobs:
       # Independent read-only checks — run them concurrently.
       - parallel:
           - name: Check public API
-            uses: ./.github/actions/check-public-api
+            uses: ./.github/actions/check-public-api # zizmor: ignore[self-repository]
             with:
               force_internal_exports: 'false'
               ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?'
           - name: Check dependencies
             run: pnpm check:deps --reporter=github-actions
           - name: License Check
-            uses: ./.github/actions/check-license
+            uses: ./.github/actions/check-license # zizmor: ignore[self-repository]
           - name: API Doc Check
             run: pnpm doc
       - wait-all:

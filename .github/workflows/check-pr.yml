@@ -33,6 +33,6 @@ jobs:
           files: |
             .changeset/**
             !.changeset/config.json
-      - uses: ./.github/actions/check-pr
+      - uses: ./.github/actions/check-pr # zizmor: ignore[self-repository]
         with:
           changed-files: ${{ steps.changed-files.outputs.added_files }} ${{ steps.changed-files.outputs.modified_files }}
