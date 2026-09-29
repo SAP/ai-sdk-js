@@ -6,6 +6,10 @@ proposed
 
 ## Context
 
+The `OrchestrationClient`'s routing of chat content through two distinct API fields has non-obvious consequences for multi-turn conversations and tool calling.
+
+### Routing mechanics
+
 The `OrchestrationClient` class wraps the SAP AI Core Orchestration API.
 That API has no top-level `messages` field.
 The only ways to supply chat content are:
@@ -18,10 +22,12 @@ The only ways to supply chat content are:
 The SDK adds a third concept with no direct API equivalent: the `ChatCompletionRequest.messages` field.
 It represents the current user turn — the dynamic per-call content layered on top of the fixed template configuration.
 Callers use it so they do not have to choose between the `prompt.template` array and the `messages_history` field depending on whether they configured a template.
-The SDK routes it automatically:
+The SDK routes it automatically in the outgoing request:
 
-- with a local template or no template — appended to the `prompt.template` array in the outgoing request.
-- with a `TemplateRef` reference or a complete config reference — appended to the `messages_history` field.
+- to the `prompt.template` array — with a local template or no template.
+- to the `messages_history` field — with a `TemplateRef` reference or a complete config reference.
+
+### Routing consequences
 
 This automatic routing has non-obvious consequences.
 With a local template, the Orchestration service echoes the fully-rendered template back in the response under `intermediate_results.templating`, and `OrchestrationResponse.getAllMessages()` returns those echoed messages concatenated with the assistant reply.
@@ -36,6 +42,14 @@ And by default each module treats the `messages_history` field the same as the t
 - **Translation** can be disabled per request with `translate_messages_history`.
 - **Content filtering** can be scoped per request with `target_selector`.
 - **Data masking** always processes everything, with no opt-out.
+
+### Tool calling
+
+Tool calling introduces a third constraint.
+The Orchestration Service expects Tool Results to be supplied through the `prompt.template` array.
+The templating engine processes `role: tool` message content as template text, which causes a server-side error when a Tool Result's output contains `{{?placeholder}}`-style patterns.
+This is tracked in [llm-orchestration#3612](https://github.tools.sap/AI/llm-orchestration/issues/3612).
+The fix is acknowledged but not yet committed, and there is no workaround.
 
 ## Decision
 
@@ -84,16 +98,14 @@ const resp = await client.chatCompletion({
 **Tradeoff**: Aligns with the API's per-request semantics.
 But it drops the SDK abstraction where a client instance maps 1:1 to a stored orchestration **configuration artifact** — the same `module_configurations` block that can be stored and referenced on the server.
 All module-level settings are fixed for the client's lifetime, and per-call arguments are layered on top (mirroring `adr/003-history-maintenance.md`: one client = one conversation = one configuration context).
-Under Option A, callers must supply the template on every call or manage it themselves.
+Under Option A, callers must supply the template on the first call or manage it themselves.
 
 ### Option B — `prompt` in both constructor and request
 
 The `prompt` field is retained in the constructor as a convenience for the config-artifact use case (typically a system message or a remote template reference).
 The `chatCompletion()` method also gains a `prompt?` parameter.
-The following combinations throw an error:
-
-- The constructor `prompt` field and request `prompt` field are both set.
-- A constructor-level `prompt: TemplateRef` value is set and the request carries content that would need merging.
+Setting the constructor `prompt` field and request `prompt` field both at once throws an error when one of them is a remote template, because the SDK cannot merge into a remote template.
+The constructor prompt will be prepended to the `messages_history` field.
 
 ```ts
 const client = new OrchestrationClient({
@@ -126,9 +138,4 @@ But the two sites where the `prompt` field can live add complexity — callers m
 
 ## Open Questions
 
-1. **Why is the `PromptTemplatingModuleConfig.prompt` field a `oneOf` discriminator (XOR)?**: The API spec defines the `prompt` field as a `oneOf: [Template, TemplateRef]` schema, meaning a request must carry either a local template array or a remote reference — never both.
-   It is unclear whether this is an intentional design constraint (e.g. the service cannot meaningfully merge inline messages with a remote template), a historical artefact, or an oversight.
-   The answer directly affects whether Option A is feasible without a service-side change.
-
-2. How do Java and Python handle this?
-
+1. How do Java and Python handle this?
