@@ -31,5 +31,3 @@ export const messageTypes = [
     alternatives: ['dependency', 'dependency update']
   }
 ];
-
-type MessageType = (typeof messageTypes)[number];

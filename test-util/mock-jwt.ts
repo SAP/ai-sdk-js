@@ -1,4 +1,5 @@
 import { createPrivateKey, generateKeyPairSync } from 'node:crypto';
+
 import { SignJWT } from 'jose';
 
 export const { publicKey, privateKey } = generateKeyPairSync('rsa', {
