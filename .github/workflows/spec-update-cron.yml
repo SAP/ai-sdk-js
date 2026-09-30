@@ -67,7 +67,7 @@ jobs:
 
   update-context-registry:
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: context-registry
       ref: main
