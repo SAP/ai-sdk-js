@@ -1,6 +1,7 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import { mkdtemp, rm, readFile, lstat, readdir, glob } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-/* eslint-disable jsdoc/require-jsdoc */
 import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
 
 import {
