@@ -36,7 +36,15 @@
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
     "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^12.4.1"
+    }
+  },
   "devDependencies": {
+    "@actions/core": "3.0.1",
+    "@blueoak/list": "15.0.0",
     "@changesets/cli": "3.0.3",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
@@ -47,20 +55,20 @@
     "@sap-cloud-sdk/http-client": "4.9.1",
     "@sap-cloud-sdk/openapi-generator": "4.9.1",
     "@sap-cloud-sdk/util": "4.9.1",
-    "@types/node": "22.20.3",
+    "@types/node": "22.20.4",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "5.0.1",
+    "@vitest/coverage-v8": "5.0.2",
     "jose": "6.2.12",
-    "knip": "6.36.0",
-    "memfs": "4.78.1",
+    "knip": "6.38.0",
+    "memfs": "4.79.0",
     "nock": "14.0.17",
     "orval": "8.27.0",
-    "oxfmt": "0.68.0",
-    "oxlint": "1.83.0",
-    "oxlint-tsgolint": "7.0.2002",
+    "oxfmt": "0.70.0",
+    "oxlint": "1.85.0",
+    "oxlint-tsgolint": "7.0.2003",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vitest": "5.0.1",
+    "vitest": "5.0.2",
     "zod": "4.6.5"
   }
 }
