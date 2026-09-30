@@ -52,6 +52,24 @@ export interface EndpointOptions {
    */
   resourceGroup?: string;
 }
+
+/**
+ * A replacer function for JSON.stringify that handles Set and Map objects.
+ * @param _key - The key of the property being processed.
+ * @param value - The value of the property being processed.
+ * @returns The processed value.
+ * @internal
+ */
+function jsonStringReplacer(_key: string, value: any) {
+  if (value instanceof Set) {
+    return [...value];
+  }
+  if (value instanceof Map) {
+    return Object.fromEntries(value);
+  }
+  return value;
+}
+
 /**
  * Executes a request to the AI Core service.
  * @param endpointOptions - The options to call an endpoint.
@@ -74,13 +92,7 @@ export async function executeRequest(
     data:
       data instanceof FormData || data instanceof Blob
         ? data
-        : JSON.stringify(data, (_key, value) =>
-            value instanceof Set
-              ? [...value]
-              : value instanceof Map
-                ? Object.fromEntries(value)
-                : value
-          )
+        : JSON.stringify(data, jsonStringReplacer)
   };
 
   try {
