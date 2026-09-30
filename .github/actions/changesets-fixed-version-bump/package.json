@@ -1,0 +1,12 @@
+{
+  "name": "action-changesets-fixed-version-bump",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@changesets/get-release-plan": "^5.0.0",
+    "semver": "^7.7.4",
+    "tinyexec": "^1.3.0"
+  }
+}
