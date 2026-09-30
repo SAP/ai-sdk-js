@@ -1,7 +1,9 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+
 import { getInput, info, setOutput } from '@actions/core';
 import { x } from 'tinyexec';
+
 import { formatJson, getNextVersion } from './util.ts';
 
 async function transformFile(
