@@ -25,17 +25,6 @@
     "customManagers": [
         {
             "customType": "regex",
-            "description": "Update PNPM_VERSION env var in workflow files",
-            "managerFilePatterns": ["/^\\.github\\/workflows\\/[^/]+\\.ya?ml$/"],
-            "matchStrings": [
-                "PNPM_VERSION:\\s*(?<currentValue>[^\\s]+)"
-            ],
-            "depNameTemplate": "pnpm/pnpm",
-            "datasourceTemplate": "github-releases",
-            "extractVersionTemplate": "^v?(?<version>.*)$"
-        },
-        {
-            "customType": "regex",
             "description": "Update vale version in workflow files",
             "managerFilePatterns": ["/^\\.github\\/workflows\\/[^/]+\\.ya?ml$/"],
             "matchStrings": [
@@ -58,7 +47,7 @@
             "pinDigests": false
         },
         {
-            "matchPackageNames": ["@sap-cloud-sdk/**", "sap/cloud-sdk-js", "sap/cloud-sdk-js/**"],
+            "matchPackageNames": ["@sap-cloud-sdk/**"],
             "groupName": "sap-cloud-sdk",
             "minimumReleaseAge": null,
             "pinDigests": false
