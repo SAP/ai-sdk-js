@@ -59,7 +59,7 @@ export async function createTabularArtifact(
   }
   const pollingName = getNameFromLocation(location, 'tabularArtifacts');
 
-  const artifact = await pollAsyncResource<TabularArtifactDetails>({
+  return pollAsyncResource<TabularArtifactDetails>({
     read: () =>
       TabularArtifactsApi.getTabularArtifactByName(
         pollingName,
@@ -75,7 +75,6 @@ export async function createTabularArtifact(
     intervalMs: 2_000,
     maxAttempts: 60
   });
-  return artifact;
 }
 
 /**
