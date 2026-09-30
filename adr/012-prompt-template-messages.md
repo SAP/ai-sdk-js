@@ -136,6 +136,42 @@ const resp2 = await client.chatCompletion({
 **Tradeoff**: Preserves the SDK's config-artifact abstraction.
 But the two sites where the `prompt` field can live add complexity — callers must understand which site to use and when.
 
-## Open Questions
+## How Java and Python handle this
 
-1. How do Java and Python handle this?
+Neither sibling SDK reproduces the TS design of a `messages` current turn plus a constructor template plus hidden rerouting.
+They split on a more fundamental question: whether a current-turn abstraction should exist at all.
+
+### Java
+
+Java keeps a current-turn abstraction but drops the constructor template.
+The current turn lives as `OrchestrationPrompt.messages`, a per-call list distinct from `OrchestrationPrompt.messagesHistory`.
+The whole module config, template included, is passed to each `chatCompletion()` call.
+The client constructor takes only a destination.
+
+Routing is explicit per template type.
+With an inline template the current-turn `messages` are appended to the template array.
+With a `TemplateRef` the current-turn `messages` are dropped, so the caller must place runtime messages in `messagesHistory` instead.
+History always maps to `messages_history` and never to the template.
+
+Multi-turn uses `OrchestrationChatResponse.getAllMessages()`, fed into the next prompt's `messageHistory(...)`.
+Tool definitions travel in the template's `tools`, while tool-call and tool-result messages travel through history.
+
+### Python
+
+Python has no current-turn abstraction.
+The current turn is an element of the prompt template itself, for example `Template(template=[UserMessage(...)])`.
+The template config lives both as a constructor default and as a per-`run` override, resolved by `config or self.config`.
+
+There is no client-side routing.
+The `config` maps 1:1 to the template and the `history` parameter maps 1:1 to `messages_history`, and the server merges them.
+Choosing a `TemplateRef` or a `config_ref` resolves the template server-side, so the caller supplies only `placeholder_values` and optional history.
+
+There is no `getAllMessages()` helper.
+Multi-turn is manual: the caller reads the rendered messages from `response.intermediate_results.templating`, appends the assistant reply, and passes the result as `history` on the next call.
+Tool definitions travel in the template's `tools`, while tool-call and tool-result messages travel through history.
+
+### Bearing on the options
+
+Python is the closest precedent for Option B: the template can live in both the constructor and the request, and the current turn is expressed as template content rather than a separate `messages` field.
+Java is the closest precedent for Option A: no constructor template, with per-request config only.
+Neither SDK routes a current turn silently between the template and `messages_history`, which is the specific behavior this ADR removes.
