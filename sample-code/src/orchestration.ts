@@ -1336,7 +1336,7 @@ export async function orchestrationReasoningContent(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gemini-3.5-flash',
+        name: 'gemini-3.8-flash',
         // reasoning_effort is harmonized across providers; orchestration maps it
         // to each model's native reasoning configuration.
         params: { reasoning_effort: 'high' }
@@ -1377,7 +1377,7 @@ export async function orchestrationReasoningContentStream(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gemini-3.5-flash',
+        name: 'gemini-3.8-flash',
         // reasoning_effort is harmonized across providers; orchestration maps it
         // to each model's native reasoning configuration.
         params: { reasoning_effort: 'high' }
