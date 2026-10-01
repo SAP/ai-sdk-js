@@ -61,7 +61,7 @@
     "@types/ws": "8.18.1",
     "openai": "7.23.0",
     "vitest": "5.0.2",
-    "ws": "8.21.3"
+    "ws": "8.22.0"
   },
   "peerDependencies": {
     "openai": "^7.5.0",

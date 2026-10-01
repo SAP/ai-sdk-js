@@ -436,13 +436,13 @@ importers:
         version: 8.18.1
       openai:
         specifier: 7.23.0
-        version: 7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5)
+        version: 7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5)
       vitest:
         specifier: 5.0.2
         version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(@vitest/coverage-v8@5.0.2)(vite@8.3.0(@types/node@22.20.4)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       ws:
-        specifier: 8.21.3
-        version: 8.21.3
+        specifier: 8.22.0
+        version: 8.22.0
 
   packages/orchestration:
     dependencies:
@@ -536,19 +536,19 @@ importers:
     dependencies:
       '@langchain/classic':
         specifier: 1.0.50
-        version: 1.0.50(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(undici@7.29.1)(ws@8.21.3)
+        version: 1.0.50(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(undici@7.29.1)(ws@8.22.0)
       '@langchain/core':
         specifier: 1.2.13
-        version: 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+        version: 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       '@langchain/langgraph':
         specifier: 1.4.18
-        version: 1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(zod@4.6.5)
+        version: 1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5)
       '@langchain/mcp-adapters':
         specifier: 1.1.4
-        version: 1.1.4(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(@langchain/langgraph@1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(zod@4.6.5))(supports-color@7.2.0)
+        version: 1.1.4(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@langchain/langgraph@1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5))(supports-color@7.2.0)
       '@langchain/textsplitters':
         specifier: 1.0.2
-        version: 1.0.2(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))
+        version: 1.0.2(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))
       '@modelcontextprotocol/sdk':
         specifier: 1.30.1
         version: 1.30.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.5)
@@ -566,13 +566,13 @@ importers:
         version: 5.2.1(supports-color@7.2.0)
       langchain:
         specifier: 1.5.14
-        version: 1.5.14(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+        version: 1.5.14(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       openai:
         specifier: 7.23.0
-        version: 7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5)
+        version: 7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5)
       ws:
-        specifier: 8.21.3
-        version: 8.21.3
+        specifier: 8.22.0
+        version: 8.22.0
       zod:
         specifier: 4.6.5
         version: 4.6.5
@@ -4722,6 +4722,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.22.0:
+    resolution: {integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
@@ -5240,11 +5252,11 @@ snapshots:
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.8.1)
       tslib: 2.8.1
 
-  '@langchain/classic@1.0.50(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(undici@7.29.1)(ws@8.21.3)':
+  '@langchain/classic@1.0.50(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(undici@7.29.1)(ws@8.22.0)':
     dependencies:
-      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
-      '@langchain/openai': 1.6.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(undici@7.29.1)(ws@8.21.3)
-      '@langchain/textsplitters': 1.0.2(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
+      '@langchain/openai': 1.6.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(undici@7.29.1)(ws@8.22.0)
+      '@langchain/textsplitters': 1.0.2(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))
       handlebars: 4.7.9
       js-yaml: 5.4.2
       jsonpointer: 5.0.1
@@ -5252,7 +5264,7 @@ snapshots:
       yaml: 2.9.1
       zod: 4.6.5
     optionalDependencies:
-      langsmith: 0.10.4(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+      langsmith: 0.10.4(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
       - '@opentelemetry/api'
@@ -5296,6 +5308,22 @@ snapshots:
       - openai
       - ws
 
+  '@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)':
+    dependencies:
+      '@cfworker/json-schema': 4.1.1
+      '@standard-schema/spec': 1.1.0
+      js-tiktoken: 1.0.21
+      langsmith: 0.10.4(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      zod: 4.6.5
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - ws
+
   '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.19.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))':
     dependencies:
       '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.19.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
@@ -5303,6 +5331,11 @@ snapshots:
   '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))':
     dependencies:
       '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+    optional: true
+
+  '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))':
+    dependencies:
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
 
   '@langchain/langgraph-sdk@1.12.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.19.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))':
     dependencies:
@@ -5315,6 +5348,15 @@ snapshots:
   '@langchain/langgraph-sdk@1.12.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))':
     dependencies:
       '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+      '@langchain/protocol': 0.0.19
+      '@types/json-schema': 7.0.15
+      p-queue: 9.3.3
+      p-retry: 7.1.1
+    optional: true
+
+  '@langchain/langgraph-sdk@1.12.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))':
+    dependencies:
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       '@langchain/protocol': 0.0.19
       '@types/json-schema': 7.0.15
       p-queue: 9.3.3
@@ -5343,11 +5385,24 @@ snapshots:
     transitivePeerDependencies:
       - react
       - react-dom
+    optional: true
 
-  '@langchain/mcp-adapters@1.1.4(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(@langchain/langgraph@1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(zod@4.6.5))(supports-color@7.2.0)':
+  '@langchain/langgraph@1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5)':
     dependencies:
-      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
-      '@langchain/langgraph': 1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(zod@4.6.5)
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
+      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))
+      '@langchain/langgraph-sdk': 1.12.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))
+      '@langchain/protocol': 0.0.19
+      '@standard-schema/spec': 1.1.0
+      zod: 4.6.5
+    transitivePeerDependencies:
+      - react
+      - react-dom
+
+  '@langchain/mcp-adapters@1.1.4(@cfworker/json-schema@4.1.1)(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@langchain/langgraph@1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5))(supports-color@7.2.0)':
+    dependencies:
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
+      '@langchain/langgraph': 1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5)
       '@modelcontextprotocol/sdk': 1.30.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.5)
       debug: 4.4.3(supports-color@7.2.0)
       zod: 4.6.5
@@ -5357,11 +5412,11 @@ snapshots:
       - '@cfworker/json-schema'
       - supports-color
 
-  '@langchain/openai@1.6.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(undici@7.29.1)(ws@8.21.3)':
+  '@langchain/openai@1.6.0(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(undici@7.29.1)(ws@8.22.0)':
     dependencies:
-      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       js-tiktoken: 1.0.21
-      openai: 7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5)
+      openai: 7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5)
       zod: 4.6.5
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
@@ -5372,9 +5427,9 @@ snapshots:
 
   '@langchain/protocol@0.0.19': {}
 
-  '@langchain/textsplitters@1.0.2(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))':
+  '@langchain/textsplitters@1.0.2(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))':
     dependencies:
-      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       js-tiktoken: 1.0.21
 
   '@manypkg/find-root@3.1.0':
@@ -7435,12 +7490,12 @@ snapshots:
       - react-dom
       - ws
 
-  langchain@1.5.14(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3):
+  langchain@1.5.14(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0):
     dependencies:
-      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
-      '@langchain/langgraph': 1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))(zod@4.6.5)
-      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3))
-      langsmith: 0.10.4(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5))(ws@8.21.3)
+      '@langchain/core': 1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
+      '@langchain/langgraph': 1.4.18(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5)
+      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.13(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))
+      langsmith: 0.10.4(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       zod: 4.6.5
     transitivePeerDependencies:
       - '@opentelemetry/api'
@@ -7466,6 +7521,14 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       openai: 7.23.0(undici@7.29.1)(ws@8.21.3)(zod@4.6.5)
       ws: 8.21.3
+
+  langsmith@0.10.4(@opentelemetry/api@1.9.1)(openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0):
+    dependencies:
+      p-queue: 6.6.2
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.1
+      openai: 7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5)
+      ws: 8.22.0
 
   launch-editor@2.14.1:
     dependencies:
@@ -7806,6 +7869,12 @@ snapshots:
     optionalDependencies:
       undici: 7.29.1
       ws: 8.21.3
+      zod: 4.6.5
+
+  openai@7.23.0(undici@7.29.1)(ws@8.22.0)(zod@4.6.5):
+    optionalDependencies:
+      undici: 7.29.1
+      ws: 8.22.0
       zod: 4.6.5
 
   openapi-types@12.1.3: {}
@@ -8670,7 +8739,10 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.21.3: {}
+  ws@8.21.3:
+    optional: true
+
+  ws@8.22.0: {}
 
   y18n@5.0.8: {}
 
