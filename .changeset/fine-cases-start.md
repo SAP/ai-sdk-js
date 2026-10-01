@@ -3,4 +3,4 @@
 ---
 
 [feat] prompt-registry: updated generated client to latest spec.
-Adds `deleteOrchestrationConfigsByScenario`, `deleteOrchestrationConfigHistory`, `deletePromptTemplatesByScenario`, and `deletePromptTemplateHistory` API functions.
+Add `deleteOrchestrationConfigsByScenario`, `deleteOrchestrationConfigHistory`, `deletePromptTemplatesByScenario`, and `deletePromptTemplateHistory` API functions.
