@@ -512,6 +512,16 @@
     },
     {
       "executableId": "gcp-vertexai (Google)",
+      "model": "gemini-3.8-flash",
+      "version": "001 (latest)",
+      "availableInOrchestration": "yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "gcp-vertexai (Google)",
       "model": "gemini-2.5-flash-lite",
       "version": "001 (latest)",
       "availableInOrchestration": "yes",

@@ -150,7 +150,7 @@ app.post(
       const wavBase64 = (req.body as Buffer).toString('base64');
       const fileData = `data:audio/wav;base64,${wavBase64}`;
       const orchestrationClient = new OrchestrationClient({
-        promptTemplating: { model: { name: 'gemini-3.5-flash' } }
+        promptTemplating: { model: { name: 'gemini-3.8-flash' } }
       });
       const result = await orchestrationClient.chatCompletion({
         messages: [
