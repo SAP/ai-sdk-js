@@ -117,7 +117,7 @@ function compareApisAndLog(
     }
   });
   info(`We have found ${allExportedIndex.length} exports.`);
-  info(`Public api: ${allExportedIndex.sort().join(',\n')}`);
+  info(`Public api: ${allExportedIndex.toSorted((a, b) => a.localeCompare(b)).join(',\n')}`);
 
   return setsAreEqual;
 }
