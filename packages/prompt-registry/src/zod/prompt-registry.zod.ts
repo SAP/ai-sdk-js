@@ -201,6 +201,44 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse = zod
 
 
 /**
+ * Delete all imperative prompt templates in the given scenario.
+ */
+export const RegistryControllerPromptControllerDeletePromptTemplatesByScenarioParams = zod.object({
+  "scenario": zod.string()
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplatesByScenarioHeader = zod.object({
+  "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use'),
+  "AI-Resource-Group-Scope": zod.enum(['true', 'True', 'false', 'False']).optional().describe('Specify whether the resource group scope is to be used')
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplatesByScenarioResponse = zod.object({
+  "message": zod.string(),
+  "deleted": zod.int()
+})
+
+
+/**
+ * Delete all non-current versions (history) for the given prompt template
+ */
+export const RegistryControllerPromptControllerDeletePromptTemplateHistoryParams = zod.object({
+  "scenario": zod.string(),
+  "version": zod.string(),
+  "name": zod.string()
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplateHistoryHeader = zod.object({
+  "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use'),
+  "AI-Resource-Group-Scope": zod.enum(['true', 'True', 'false', 'False']).optional().describe('Specify whether the resource group scope is to be used')
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplateHistoryResponse = zod.object({
+  "message": zod.string(),
+  "deleted": zod.int()
+})
+
+
+/**
  * List prompt template history
  */
 export const RegistryControllerPromptControllerListPromptTemplateHistoryParams = zod.object({
@@ -2178,6 +2216,42 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }).optional().describe('Options for streaming. Will be ignored if enabled is false.')
 }).optional()
 }))
+})
+
+
+/**
+ * Delete all imperative orchestration configs in the given scenario.
+ */
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigsByScenarioParams = zod.object({
+  "scenario": zod.string()
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigsByScenarioHeader = zod.object({
+  "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use')
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigsByScenarioResponse = zod.object({
+  "message": zod.string(),
+  "deleted": zod.int()
+})
+
+
+/**
+ * Delete all non-current versions (history) for the given orchestration config
+ */
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHistoryParams = zod.object({
+  "scenario": zod.string(),
+  "version": zod.string(),
+  "name": zod.string()
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHistoryHeader = zod.object({
+  "AI-Resource-Group": zod.string().optional().describe('Specify a resource group id to use')
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHistoryResponse = zod.object({
+  "message": zod.string(),
+  "deleted": zod.int()
 })
 
 
