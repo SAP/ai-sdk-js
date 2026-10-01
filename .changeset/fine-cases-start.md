@@ -2,5 +2,5 @@
 '@sap-ai-sdk/prompt-registry': minor
 ---
 
-[feat] prompt-registry: updated generated client to latest spec.
+[feat] Update generated client to latest spec.
 Add `deleteOrchestrationConfigsByScenario`, `deleteOrchestrationConfigHistory`, `deletePromptTemplatesByScenario`, and `deletePromptTemplateHistory` API functions.
