@@ -1,16 +1,20 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
+
 import { mkdtemp, rm, readFile, lstat, readdir, glob } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { info, warning, error, getInput, setFailed } from '@actions/core';
-import { flatten } from '@sap-cloud-sdk/util';
+import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
+
 import {
   defaultPrettierConfig,
   readCompilerOptions,
   readIncludeExcludeWithDefaults,
   transpileDirectory
 } from '@sap-cloud-sdk/generator-common/internal';
+import { flatten } from '@sap-cloud-sdk/util';
+
+import { info, warning, error, getInput, setFailed } from '@actions/core';
 import { getPackages } from '@manypkg/get-packages';
+
 import type { CompilerOptions } from 'typescript';
 
 export const regexExportedIndex = /export(?:type)?\{([\w,]+)\}from'\./g;

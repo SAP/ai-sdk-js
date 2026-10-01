@@ -1,43 +1,43 @@
-name: "PR Is Mergeable"
-description: "Checks whether the provided PR is approved and all status checks either succeeded or have been skipped"
+name: 'PR Is Mergeable'
+description: 'Checks whether the provided PR is approved and all status checks either succeeded or have been skipped'
 
 inputs:
   pr-ref:
-    description: "The reference (i.e. either number or a branch) of the PR to check"
+    description: 'The reference (i.e. either number or a branch) of the PR to check'
     required: true
   fail-on-unmergeable:
-    description: "Whether to fail the action if the PR is not mergeable"
+    description: 'Whether to fail the action if the PR is not mergeable'
     required: false
-    default: "true"
+    default: 'true'
   repo:
-    description: "The repository of the PR"
+    description: 'The repository of the PR'
     required: false
     default: ${{ github.repository }}
   token:
-    description: "The GitHub access token (with PR read permissions) to access the PR"
+    description: 'The GitHub access token (with PR read permissions) to access the PR'
     required: false
     default: ${{ github.token }}
   excluded-check-runs:
-    description: "A JSON object, where the keys are the names of the workflows to exclude. The values are a list of step names to ignore. If the list is empty, all steps of the workflow will be ignored."
+    description: 'A JSON object, where the keys are the names of the workflows to exclude. The values are a list of step names to ignore. If the list is empty, all steps of the workflow will be ignored.'
     required: false
     default: '{\"${{ github.workflow }}\": []}'
 
 outputs:
   pr-number:
-    description: "The number of the PR that was checked"
+    description: 'The number of the PR that was checked'
     value: ${{ steps.check.outputs.PR_NUMBER }}
   is-mergeable:
-    description: "Whether the PR is mergeable"
+    description: 'Whether the PR is mergeable'
     value: ${{ steps.check.outputs.RESULT }}
 
 runs:
   using: composite
   steps:
-    - name: "Print Action Start"
+    - name: 'Print Action Start'
       run: echo ">>>>> Starting PR Is Mergeable Action; Not printing inputs, as they might contain sensitive information"
       shell: bash
 
-    - name: "Check Whether PR Is Mergeable"
+    - name: 'Check Whether PR Is Mergeable'
       id: check
       env:
         GH_TOKEN: ${{ inputs.token }}
@@ -114,12 +114,12 @@ runs:
         echo "RESULT=true" >> $GITHUB_OUTPUT
       shell: bash
 
-    - name: "Fail If PR Is Not Mergeable"
+    - name: 'Fail If PR Is Not Mergeable'
       if: ${{ inputs.fail-on-unmergeable == 'true' && steps.check.outputs.RESULT != 'true' }}
       run: exit 1
       shell: bash
 
-    - name: "Print Action End"
+    - name: 'Print Action End'
       if: always()
       run: echo "<<<<< Finished PR Is Mergeable Action"
       shell: bash

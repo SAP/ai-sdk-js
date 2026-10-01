@@ -1,4 +1,5 @@
 import { readFile } from 'fs/promises';
+
 import type { PathLike } from 'fs';
 
 /**

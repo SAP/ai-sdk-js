@@ -1,7 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+
 import { getInput, setFailed, info } from '@actions/core';
+
 import { messageTypes } from './changeset-types.ts';
 
 const validCommitTypes = ['feat', 'fix', 'chore'];
