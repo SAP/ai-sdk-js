@@ -28,6 +28,49 @@
 
 -
 
+# 2.16.0
+## Compatibility Notes
+
+- [openai] Raise the minimum required openai package version to 7.5.0. (875e285)
+- [rpt] Deprecate `sap-rpt-1-small` and `sap-rpt-1-large`.
+  These model names remain functional until their retirement date (2026-12-31). (ba5b1b4)
+- [rpt] The server default changed from for `parse_data_types` changed from `true` to `false`.
+  Pass `parse_data_types: true` explicitly if you relied on the old default. (ba5b1b4)
+- [rpt] The `RptClient` constructor no longer has a default model name.
+  Pass one of the known model names explicitly, e.g. `'sap-rpt-1.5'`. (ba5b1b4)
+- [rpt] Widen `TargetColumnConfig.prediction_placeholder` to accept `null`.
+  The type is now `string | number | null` (was `string | number`). (ba5b1b4)
+
+## New Features
+
+- [core, llm-batch] Add `LlmBatchModel` type for models supported in LLM batch processing.
+  `BatchCreateRequest.spec.model` now uses this type for IDE autocomplete. (0da56e2)
+- [core] Add `gemini-3.5-flash-lite` to the available model list.
+  Remove deprecated model `mistralai--mistral-large-instruct` (retirement date: 2026-09-30). (4b2c014)
+- [rpt] Add a `confidence_interval` field to `PredictResponsePayload` predictions for regression tasks. (ba5b1b4)
+- [rpt] Default gzip compression level to 1 for RPT predict requests. (ba5b1b4)
+- [rpt] Add an `explanations` field to `prediction_config`; read feature importance scores per query row from the response. (ba5b1b4)
+- [rpt] Expand `ColumnType` from 3 to 16 values (`integer`, `int16`, `int32`, `int64`, `uint8`, `decimal`, `double`, `boolean`, `largestring`, `uuid`, `time`, `datetime`, `timestamp`).
+  Map the new numeric variants to `number`; all other new variants (including `datetime` and `timestamp`, which are full ISO strings) map to `string`. (ba5b1b4)
+- [rpt] Add `context_mode` to `PredictionConfig` and `PredictResponseMetadata` (from RPT spec v1.6.0). (21556db)
+
+## Fixed Issues
+
+- [core] Set the default http agent socket timeout for AI Core requests to 1201 seconds (1201000 ms).
+  This overrides the Cloud SDK default of 5 seconds, which is too short for chat and streaming completions.
+  The value covers the orchestration server-side maximum of 1200 seconds plus 1 second of leeway.
+  Keep-alive is now disabled on these requests.
+  This avoids reusing stale sockets that a load balancer may have closed during the longer timeout.
+  Both settings apply only to the service-binding destination.
+  You can still override them with a custom destination's `agentOptions` or `CustomRequestConfig.httpsAgent`. (3483acb)
+- [langchain] Normalize invalid tool message content to empty string to prevent AI Core 400 errors when MCP tools return empty results. (4cda527)
+
+## Improvements
+
+- [core] Added `mistralai--mistral-medium`, `sap-rpt-1.5`, `sap-rpt-1.5-large`, `sap-rpt-1.6`, `sap-rpt-1.6-large`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` to the available model list.
+  Remove deprecated models `gpt-4.1-nano` (retirement date: 2026-10-14), `gemini-2.5-flash` (retirement date: 2026-10-16) and `gemini-2.5-pro` (retirement date: 2026-10-16). (94b36e5)
+- [document-grounding] Update document grounding specification. (478fc53)
+
 # 2.15.0
 ## Compatibility Notes
 
