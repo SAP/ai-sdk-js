@@ -26,19 +26,19 @@
   },
   "dependencies": {
     "@langchain/classic": "1.0.50",
-    "@langchain/core": "1.2.13",
-    "@langchain/langgraph": "1.4.18",
+    "@langchain/core": "catalog:",
+    "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "1.1.4",
     "@langchain/textsplitters": "1.0.2",
     "@modelcontextprotocol/sdk": "1.30.1",
-    "@sap-cloud-sdk/resilience": "4.9.1",
-    "@sap-cloud-sdk/util": "4.9.1",
+    "@sap-cloud-sdk/resilience": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:",
     "@types/express": "5.0.6",
     "express": "5.2.1",
-    "langchain": "1.5.14",
+    "langchain": "catalog:",
     "openai": "7.23.0",
     "ws": "8.22.0",
-    "zod": "4.6.5"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@modelcontextprotocol/server-github": "2025.4.8",
