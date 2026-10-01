@@ -312,7 +312,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gemini-3.5-flash',
+          name: 'gemini-3.8-flash',
           params: { reasoning_effort: 'high' }
         }
       }
@@ -338,7 +338,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gemini-3.5-flash',
+          name: 'gemini-3.8-flash',
           params: { reasoning_effort: 'high' }
         }
       }
