@@ -7,13 +7,6 @@
   "license": "Apache-2.0",
   "repository": "github:SAP/ai-sdk-js",
   "type": "module",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^12",
-      "onFail": "download"
-    }
-  },
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
