@@ -37,7 +37,7 @@
     "express": "5.2.1",
     "langchain": "1.5.14",
     "openai": "7.23.0",
-    "ws": "8.21.3",
+    "ws": "8.22.0",
     "zod": "4.6.5"
   },
   "devDependencies": {
