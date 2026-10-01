@@ -22,8 +22,8 @@ jobs:
       - uses: $/.github/actions/setup
         with:
           ref: ${{ github.head_ref }}
-          persist-credentials: true
           token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
       - run: pnpm lint:fix
       - name: Commit Changes if needed
         env:

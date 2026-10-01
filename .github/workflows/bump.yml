@@ -21,8 +21,8 @@ jobs:
           permission-contents: write
       - uses: $/.github/actions/setup
         with:
-          token: ${{ steps.app-token.outputs.token }}
           ref: 'main'
+          token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true
       - name: Bump version
         id: bump
@@ -34,9 +34,9 @@ jobs:
         id: merge-changelogs
         env:
           VERSION: ${{ steps.bump.outputs.version }}
-        uses: sap/cloud-sdk-js/.github/actions/merge-and-write-changelogs@main
+        uses: ./.github/actions/merge-and-write-changelogs # zizmor: ignore[self-repository]
       - name: Commit and tag
-        uses: sap/cloud-sdk-js/.github/actions/commit-and-tag@main
+        uses: ./.github/actions/commit-and-tag # zizmor: ignore[self-repository]
         with:
           version: ${{ steps.bump.outputs.version }}
           user-name: ${{ vars.SAP_AI_SDK_BOT_NAME }}

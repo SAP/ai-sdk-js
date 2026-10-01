@@ -1,5 +1,33 @@
 # @sap-ai-sdk/rpt
 
+## 2.16.0
+
+### Minor Changes
+
+- ba5b1b4: [feat] Add a `confidence_interval` field to `PredictResponsePayload` predictions for regression tasks.
+- ba5b1b4: [feat] Default gzip compression level to 1 for RPT predict requests.
+- ba5b1b4: [compat] Deprecate `sap-rpt-1-small` and `sap-rpt-1-large`.
+  These model names remain functional until their retirement date (2026-12-31).
+- ba5b1b4: [feat] Add an `explanations` field to `prediction_config`; read feature importance scores per query row from the response.
+- ba5b1b4: [feat] Expand `ColumnType` from 3 to 16 values (`integer`, `int16`, `int32`, `int64`, `uint8`, `decimal`, `double`, `boolean`, `largestring`, `uuid`, `time`, `datetime`, `timestamp`).
+  Map the new numeric variants to `number`; all other new variants (including `datetime` and `timestamp`, which are full ISO strings) map to `string`.
+- ba5b1b4: [compat] The server default changed from for `parse_data_types` changed from `true` to `false`.
+  Pass `parse_data_types: true` explicitly if you relied on the old default.
+- ba5b1b4: [compat] The `RptClient` constructor no longer has a default model name.
+  Pass one of the known model names explicitly, e.g. `'sap-rpt-1.5'`.
+- ba5b1b4: [compat] Widen `TargetColumnConfig.prediction_placeholder` to accept `null`.
+  The type is now `string | number | null` (was `string | number`).
+- 21556db: [feat] Add `context_mode` to `PredictionConfig` and `PredictResponseMetadata` (from RPT spec v1.6.0).
+
+### Patch Changes
+
+- Updated dependencies [0da56e2]
+- Updated dependencies [3483acb]
+- Updated dependencies [94b36e5]
+- Updated dependencies [4b2c014]
+  - @sap-ai-sdk/core@2.16.0
+  - @sap-ai-sdk/ai-api@2.16.0
+
 ## 2.15.0
 
 ### Patch Changes
