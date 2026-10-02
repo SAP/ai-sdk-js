@@ -10,6 +10,7 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
+    "changeset": "pnpm change",
     "test:unit": "vitest run",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
@@ -39,7 +40,6 @@
   "devDependencies": {
     "@actions/core": "3.0.1",
     "@blueoak/list": "15.0.0",
-    "@changesets/cli": "3.0.3",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -56,7 +56,7 @@
     "knip": "6.38.0",
     "memfs": "4.79.0",
     "nock": "14.0.17",
-    "orval": "8.27.0",
+    "orval": "8.38.0",
     "oxfmt": "0.70.0",
     "oxlint": "1.85.0",
     "oxlint-tsgolint": "7.0.2003",

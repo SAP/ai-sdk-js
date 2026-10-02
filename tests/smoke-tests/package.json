@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "canary",
+    "@sap-ai-sdk/context-registry": "canary",
     "@sap-ai-sdk/document-grounding": "canary",
     "@sap-ai-sdk/foundation-models": "canary",
     "@sap-ai-sdk/langchain": "canary",
