@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript"],
+  "plugins": ["typescript", "unicorn", "typescript", "vitest"],
   "categories": {
     "correctness": "off"
   },
@@ -108,7 +108,8 @@
     "typescript/no-wrapper-object-types": "error",
     "typescript/prefer-as-const": "error",
     "typescript/prefer-namespace-keyword": "error",
-    "typescript/triple-slash-reference": "error"
+    "typescript/triple-slash-reference": "error",
+    "unicorn/prefer-node-protocol": "error"
   },
   "overrides": [
     {
@@ -257,7 +258,7 @@
           "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js"
         }
       ],
-      "plugins": ["import", "jsdoc"]
+      "plugins": ["import", "jsdoc", "unicorn"]
     },
     {
       "files": ["**/test/**/*", "**/*.test.ts", "**/*.spec.ts"],
