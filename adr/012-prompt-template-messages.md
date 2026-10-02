@@ -36,7 +36,7 @@ Working around this today requires client-management patterns that are not refle
 
 Two further behaviors constrain any redesign.
 The `TemplateRef` path reroutes `messages` to the `messages_history` field without a debug signal — unlike the config-reference path, it emits no `logger.debug` entry that the routing differs.
-And by default each module treats the `messages_history` field the same as the template (except prompt templating):
+And by default each orchestration module treats the `messages_history` field the same as the template (except prompt templating):
 
 - **Prompt templating** never renders history, so `{{?placeholder}}` text there is passed through literally.
 - **Translation** can be disabled per request with `translate_messages_history`.
