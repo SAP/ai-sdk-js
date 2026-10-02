@@ -1,7 +1,9 @@
 name: publish-canary
 
 on:
-  workflow_call:
+  schedule:
+    - cron: '0 1 * * MON-FRI'
+  workflow_dispatch:
     inputs:
       tag:
         description: 'Dist tag for the release. If you chose something different than "canary", make sure to delete it once it is not needed anymore.'
@@ -13,8 +15,9 @@ permissions: {}
 
 jobs:
   publish:
+    name: Publish canary to NPM
     runs-on: ubuntu-latest
-    environment: release
+    environment: canary-release
     permissions:
       contents: read
       id-token: write
@@ -25,11 +28,37 @@ jobs:
           pnpm-install-args: ''
           package-manager-cache: false
 
-      - name: publish
+      - name: Check for changes since last canary
+        id: check-changes
+        if: github.event_name == 'schedule'
         env:
-          INPUTS_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
-          date=$(date +%Y%m%d%H%M%S)
+          last_sha=$(gh run list \
+            --workflow=publish-canary.yml \
+            --event=schedule \
+            --status=success \
+            --limit=1 \
+            --json headSha \
+            --jq '.[0].headSha // empty')
+          if [ -n "$last_sha" ] && [ "$last_sha" = "$(git rev-parse HEAD)" ]; then
+            echo "No new commits since last canary release ($last_sha), skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: publish
+        if: steps.check-changes.outputs.skip != 'true'
+        shell: bash
+        env:
+          INPUTS_TAG: ${{ inputs.tag || 'canary' }}
+        run: |
+          if [ "${INPUTS_TAG}" = "latest" ] || [[ "${INPUTS_TAG}" == v* ]]; then
+            echo "Canary releases must not publish to the latest dist tag or v* tags."
+            exit 1
+          fi
+
+          date=`date +%Y%m%d%H%M%S`
           pnpm -r exec pnpm version prepatch --preid "${date}" --no-git-tag-version --no-git-checks
           pnpm publish -r --tag "${INPUTS_TAG}" --no-git-checks
       - name: Notify Slack on failure
