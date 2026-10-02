@@ -2,10 +2,6 @@ name: bump
 
 on:
   workflow_dispatch:
-    inputs:
-      majorVersion:
-        description: Mandatory, when bumping a major version. Semver compatible version string (X.Y.Z). Must not be set for patch and minor version releases.
-        required: false
 
 permissions: {}
 
@@ -30,9 +26,10 @@ jobs:
           persist-credentials: true
       - name: Bump version
         id: bump
-        uses: ./.github/actions/changesets-fixed-version-bump # zizmor: ignore[self-repository]
-        with:
-          majorVersion: ${{ inputs.majorVersion }}
+        run: |
+          pnpm version -r
+          VERSION=$(pnpm node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
       - name: Merge and write changelogs
         id: merge-changelogs
         env:

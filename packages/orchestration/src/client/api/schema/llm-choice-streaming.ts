@@ -20,4 +20,8 @@ export type LlmChoiceStreaming = {
    * Reason for stopping the model
    */
   finish_reason?: string;
+  /**
+   * Provider-specific fields not representable in the OpenAI schema. When not identical, includes 'finish_reason' with the raw, unmapped finish reason string from the provider.
+   */
+  provider_specific_fields?: Record<string, any>;
 } & Record<string, any>;
