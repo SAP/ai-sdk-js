@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { retiredOrExcludedBatchModels, type ModelRow } from './sync-model-types.ts';
+
+import {
+  retiredOrExcludedBatchModels,
+  type ModelRow
+} from './sync-model-types.ts';
 
 function row(overrides: Partial<ModelRow> & { model: string }): ModelRow {
   return {
@@ -38,7 +42,9 @@ describe('retiredOrExcludedBatchModels', () => {
 
   it('flags a batch model whose retirement date has already passed', () => {
     // Fixed past date keeps this deterministic regardless of the current date.
-    const rows = [row({ model: 'some-batch-model', retirementDate: '2000-01-01' })];
+    const rows = [
+      row({ model: 'some-batch-model', retirementDate: '2000-01-01' })
+    ];
     expect(retiredOrExcludedBatchModels(rows, ['some-batch-model'])).toEqual([
       'some-batch-model'
     ]);
@@ -46,11 +52,15 @@ describe('retiredOrExcludedBatchModels', () => {
 
   it('does not flag an active, non-excluded batch model', () => {
     const rows = [row({ model: 'active-batch-model' })];
-    expect(retiredOrExcludedBatchModels(rows, ['active-batch-model'])).toEqual([]);
+    expect(retiredOrExcludedBatchModels(rows, ['active-batch-model'])).toEqual(
+      []
+    );
   });
 
   it('does not flag a batch model with no matching row and not excluded', () => {
-    expect(retiredOrExcludedBatchModels([], ['unknown-batch-model'])).toEqual([]);
+    expect(retiredOrExcludedBatchModels([], ['unknown-batch-model'])).toEqual(
+      []
+    );
   });
 
   it('returns nothing for an empty batchModels array', () => {

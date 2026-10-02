@@ -31,7 +31,7 @@ jobs:
           repositories: ai-sdk
           permission-contents: read
           permission-pull-requests: read
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
           package-manager-cache: false
       - name: Determine Release Notes PR Branch Name
@@ -59,7 +59,7 @@ jobs:
 
       - name: 'Check Whether Release Notes PR Can Be Merged'
         if: steps.check-pr-status.outputs.merged == 'false'
-        uses: ./.github/actions/pr-is-mergeable
+        uses: ./.github/actions/pr-is-mergeable # zizmor: ignore[self-repository]
         with:
           pr-ref: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
           repo: SAP/ai-sdk
@@ -75,12 +75,12 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
           package-manager-cache: false
       - name: publish
         run: |
-          pnpm changeset publish
+          pnpm publish -r
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
@@ -106,4 +106,3 @@ jobs:
         run: |
           echo "Attempting to merge PR for branch: $BRANCH_NAME"
           gh pr merge --squash "$BRANCH_NAME" --delete-branch --auto --repo "SAP/ai-sdk"
-
