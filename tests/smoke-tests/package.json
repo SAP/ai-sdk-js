@@ -1,7 +1,7 @@
 {
   "name": "@sap-ai-sdk/smoke-tests",
   "version": "2.14.0",
-  "private": "true",
+  "private": true,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
