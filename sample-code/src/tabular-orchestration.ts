@@ -167,7 +167,8 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
 
 function getNameFromLocation(location: string, segment: string): string {
   const { pathname } = new URL(location, 'https://context-registry.invalid');
-  const match = pathname.match(new RegExp(`/${segment}/([^/]+)$`));
+  const re = new RegExp(`/${segment}/([^/]+)$`);
+  const match = re.exec(pathname);
   if (!match) {
     throw new Error(`Unexpected polling location: ${location}`);
   }

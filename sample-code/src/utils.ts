@@ -1,4 +1,4 @@
-import { setTimeout as delay } from 'timers/promises';
+import { setTimeout as delay } from 'node:timers/promises';
 
 const DEFAULT_MAX_ATTEMPTS = 10;
 const DEFAULT_INTERVAL_MS = 1_000;
