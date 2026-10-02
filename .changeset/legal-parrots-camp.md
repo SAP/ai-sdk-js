@@ -1,4 +1,5 @@
 ---
+'@sap-ai-sdk/orchestration': minor
 '@sap-ai-sdk/prompt-registry': minor
 ---
 

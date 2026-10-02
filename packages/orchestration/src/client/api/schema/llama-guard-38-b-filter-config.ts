@@ -6,7 +6,8 @@
 
 import type { LlamaGuard38B } from './llama-guard-38-b.js';
 /**
- * Representation of the 'LlamaGuard38BFilterConfig' schema.
+ * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
+ * @deprecated
  */
 export type LlamaGuard38BFilterConfig = {
   /**
