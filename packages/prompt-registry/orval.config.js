@@ -21,11 +21,7 @@ const config = {
     },
     input: {
       target: './src/spec/prompt-registry.yaml',
-      validation: false,
-      filters: {
-        mode: 'include',
-        schemas: ['PromptTemplatePostRequest']
-      }
+      validation: false
     }
   }
 };
