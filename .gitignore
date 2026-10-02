@@ -1,5 +1,6 @@
 dist
 dist-cjs
+!.github/actions/*/dist
 node_modules
 coverage
 
@@ -72,3 +73,4 @@ knowledge-base/api-reference/
 
 # Local config files with credentials
 packages/llm-batch/config.json
+docs/agents

@@ -1,22 +1,23 @@
 {
   "name": "sap-ai-sdk",
-  "version": "2.15.0",
+  "version": "2.16.0",
+  "private": true,
   "description": "",
   "keywords": [],
   "license": "Apache-2.0",
   "repository": "github:SAP/ai-sdk-js",
-  "private": true,
   "type": "module",
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
+    "changeset": "pnpm change",
     "test:unit": "vitest run",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
     "test:smoke": "pnpm smoke-tests test",
     "typecheck": "tsc --project tsconfig.json",
-    "lint": "pnpm -r run lint && pnpm typecheck",
-    "lint:fix": "pnpm -r run lint:fix && pnpm typecheck",
+    "lint": "oxlint . && oxfmt --check . && pnpm typecheck",
+    "lint:fix": "oxlint --fix . && oxfmt . && pnpm typecheck",
     "generate": "pnpm -r run generate",
     "apply-patches": "pnpm -r run --if-present apply-patches",
     "doc": "node scripts/generate-docs.ts",
@@ -37,7 +38,8 @@
     "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
   },
   "devDependencies": {
-    "@changesets/cli": "3.0.1",
+    "@actions/core": "3.0.1",
+    "@blueoak/list": "15.0.0",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -47,20 +49,26 @@
     "@sap-cloud-sdk/http-client": "4.9.1",
     "@sap-cloud-sdk/openapi-generator": "4.9.1",
     "@sap-cloud-sdk/util": "4.9.1",
-    "@types/node": "22.20.1",
+    "@types/node": "22.20.4",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "4.1.11",
-    "jose": "6.2.10",
-    "knip": "6.33.0",
-    "memfs": "4.68.2",
+    "@vitest/coverage-v8": "5.0.2",
+    "jose": "6.2.12",
+    "knip": "6.38.0",
+    "memfs": "4.79.0",
     "nock": "14.0.17",
     "orval": "8.27.0",
-    "oxfmt": "0.65.0",
-    "oxlint": "1.80.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "oxfmt": "0.70.0",
+    "oxlint": "1.85.0",
+    "oxlint-tsgolint": "7.0.2003",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vitest": "4.1.11",
-    "zod": "4.5.2"
+    "vitest": "5.0.2",
+    "zod": "4.6.5"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^12.4.1"
+    }
   }
 }

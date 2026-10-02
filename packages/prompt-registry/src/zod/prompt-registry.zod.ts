@@ -201,6 +201,44 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse = /*#
 
 
 /**
+ * Delete all imperative prompt templates in the given scenario.
+ */
+export const RegistryControllerPromptControllerDeletePromptTemplatesByScenarioParams = /*#__PURE__*/ zod.object({
+  "scenario": /*#__PURE__*/ zod.string()
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplatesByScenarioHeader = /*#__PURE__*/ zod.object({
+  "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use')),
+  "AI-Resource-Group-Scope": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['true', 'True', 'false', 'False'])).check(/*#__PURE__*/ zod.describe('Specify whether the resource group scope is to be used'))
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplatesByScenarioResponse = /*#__PURE__*/ zod.object({
+  "message": /*#__PURE__*/ zod.string(),
+  "deleted": /*#__PURE__*/ zod.int()
+})
+
+
+/**
+ * Delete all non-current versions (history) for the given prompt template
+ */
+export const RegistryControllerPromptControllerDeletePromptTemplateHistoryParams = /*#__PURE__*/ zod.object({
+  "scenario": /*#__PURE__*/ zod.string(),
+  "version": /*#__PURE__*/ zod.string(),
+  "name": /*#__PURE__*/ zod.string()
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplateHistoryHeader = /*#__PURE__*/ zod.object({
+  "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use')),
+  "AI-Resource-Group-Scope": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['true', 'True', 'false', 'False'])).check(/*#__PURE__*/ zod.describe('Specify whether the resource group scope is to be used'))
+})
+
+export const RegistryControllerPromptControllerDeletePromptTemplateHistoryResponse = /*#__PURE__*/ zod.object({
+  "message": /*#__PURE__*/ zod.string(),
+  "deleted": /*#__PURE__*/ zod.int()
+})
+
+
+/**
  * List prompt template history
  */
 export const RegistryControllerPromptControllerListPromptTemplateHistoryParams = /*#__PURE__*/ zod.object({
@@ -924,7 +962,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 })).check(/*#__PURE__*/ zod.describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n')),
@@ -956,8 +994,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -986,8 +1024,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -1220,7 +1258,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 }),
@@ -1252,8 +1290,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -1282,8 +1320,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -1696,7 +1734,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 })).check(/*#__PURE__*/ zod.describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n')),
@@ -1728,8 +1766,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -1758,8 +1796,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -1992,7 +2030,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 }),
@@ -2024,8 +2062,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -2054,8 +2092,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -2178,6 +2216,42 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })).check(/*#__PURE__*/ zod.describe('Options for streaming. Will be ignored if enabled is false.'))
 }))
 }))
+})
+
+
+/**
+ * Delete all imperative orchestration configs in the given scenario.
+ */
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigsByScenarioParams = /*#__PURE__*/ zod.object({
+  "scenario": /*#__PURE__*/ zod.string()
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigsByScenarioHeader = /*#__PURE__*/ zod.object({
+  "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use'))
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigsByScenarioResponse = /*#__PURE__*/ zod.object({
+  "message": /*#__PURE__*/ zod.string(),
+  "deleted": /*#__PURE__*/ zod.int()
+})
+
+
+/**
+ * Delete all non-current versions (history) for the given orchestration config
+ */
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHistoryParams = /*#__PURE__*/ zod.object({
+  "scenario": /*#__PURE__*/ zod.string(),
+  "version": /*#__PURE__*/ zod.string(),
+  "name": /*#__PURE__*/ zod.string()
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHistoryHeader = /*#__PURE__*/ zod.object({
+  "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use'))
+})
+
+export const RegistryControllerOrchestrationConfigControllerDeleteOrchestrationConfigHistoryResponse = /*#__PURE__*/ zod.object({
+  "message": /*#__PURE__*/ zod.string(),
+  "deleted": /*#__PURE__*/ zod.int()
 })
 
 
@@ -2462,7 +2536,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 })).check(/*#__PURE__*/ zod.describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n')),
@@ -2494,8 +2568,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -2524,8 +2598,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -2758,7 +2832,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 }),
@@ -2790,8 +2864,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -2820,8 +2894,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -3213,7 +3287,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 })).check(/*#__PURE__*/ zod.describe('Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.\n')),
@@ -3245,8 +3319,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -3275,8 +3349,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -3509,7 +3583,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
 }),
@@ -3541,8 +3615,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -3571,8 +3645,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "sexual_content": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "elections": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "code_interpreter_abuse": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean())
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B \*\*DEPRECATED\*\*: will be removed 2027-09-20.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
