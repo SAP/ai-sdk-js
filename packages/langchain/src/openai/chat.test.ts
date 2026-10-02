@@ -83,8 +83,8 @@ describe('Chat client', () => {
 
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
       const scope = mockInference(
-        {
-          data: {
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -96,11 +96,12 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: true // Will be tested
+                  strict: true
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -113,8 +114,8 @@ describe('Chat client', () => {
 
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
       const scope = mockInference(
-        {
-          data: {
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -126,11 +127,12 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: false // Will be tested
+                  strict: false
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -143,8 +145,8 @@ describe('Chat client', () => {
 
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
       const scope = mockInference(
-        {
-          data: {
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -156,11 +158,12 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: undefined // Will be tested
+                  strict: undefined
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -172,8 +175,8 @@ describe('Chat client', () => {
     it('should bind a tool with strict set to true if defined by supportsStrictToolCalling', async () => {
       client.supportsStrictToolCalling = true;
       const scope = mockInference(
-        {
-          data: {
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -185,11 +188,12 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: true // Will be tested
+                  strict: true
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint

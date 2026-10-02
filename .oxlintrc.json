@@ -269,6 +269,7 @@
           "error",
           {
             "assertFunctionNames": [
+              "assertCacheControlAt",
               "assertContent",
               "expect",
               "verifyPredictions"
