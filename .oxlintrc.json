@@ -271,7 +271,8 @@
             "assertFunctionNames": [
               "assertContent",
               "expect",
-              "verifyPredictions"
+              "verifyPredictions",
+              "mockInference"
             ]
           }
         ],

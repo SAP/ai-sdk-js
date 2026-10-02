@@ -9,7 +9,6 @@ loadEnv();
 describe('DeploymentApi', () => {
   let createdDeploymentId: string | undefined;
 
-  // oxlint-disable-next-line vitest/expect-expect
   it('should get all deployments', async () => {
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();

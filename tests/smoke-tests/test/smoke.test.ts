@@ -4,7 +4,6 @@ const smokeTestRoute =
 const itCfOnly = smokeTestRoute.includes('localhost') ? it.skip : it;
 
 describe('Smoke Test', () => {
-  // oxlint-disable-next-line vitest/expect-expect
   it('aicore client retrieves a list of deployments', async () => {
     await expect(
       fetch(`${smokeTestRoute}/ai-api/deployments`)
@@ -21,14 +20,12 @@ describe('Smoke Test', () => {
     }
   );
 
-  // oxlint-disable-next-line vitest/expect-expect
   it('orchestration client retrieves completion results', async () => {
     await expect(
       fetch(`${smokeTestRoute}/orchestration/simple`)
     ).resolves.toHaveProperty('status', 200);
   });
 
-  // oxlint-disable-next-line vitest/expect-expect
   it('langchain client retrieves completion results', async () => {
     await expect(
       fetch(`${smokeTestRoute}/langchain/invoke`)
@@ -45,7 +42,6 @@ describe('Smoke Test', () => {
     }
   );
 
-  // oxlint-disable-next-line vitest/expect-expect
   it('openai client retrieves completion results', async () => {
     await expect(
       fetch(`${smokeTestRoute}/openai/chat-completion`)

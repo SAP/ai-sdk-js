@@ -264,7 +264,6 @@ describe('orchestration service client', () => {
       client = new OrchestrationClient(config, { maxRetries: 0 });
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
       mockInference(
         {
@@ -301,7 +300,6 @@ describe('orchestration service client', () => {
         .invoke('What is 1 + 2?');
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
       mockInference(
         {
@@ -338,7 +336,6 @@ describe('orchestration service client', () => {
         .invoke('What is 1 + 2?');
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
       mockInference(
         {
@@ -1466,7 +1463,6 @@ describe('orchestration service client', () => {
       expect(response.content).toBeDefined();
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('omits cache_control from the request body when the option is not set', async () => {
       mockInference(
         {
@@ -1487,7 +1483,6 @@ describe('orchestration service client', () => {
       await client.invoke(messages);
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('moves the cache_control breakpoint to the new last message across successive invocations', async () => {
       // Turn 1: single user message — breakpoint at index 0.
       mockInference(
@@ -1528,7 +1523,6 @@ describe('orchestration service client', () => {
       );
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('honors a 1h ttl in the cache_control breakpoint', async () => {
       mockInference(
         {
@@ -1547,7 +1541,6 @@ describe('orchestration service client', () => {
       });
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('applies the cache_control breakpoint on the streaming path', async () => {
       mockInference(
         {

@@ -81,7 +81,6 @@ describe('Chat client', () => {
       }
     };
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
       mockInference(
         {
@@ -111,7 +110,6 @@ describe('Chat client', () => {
         .invoke('What is 1 + 2?');
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
       mockInference(
         {
@@ -141,7 +139,6 @@ describe('Chat client', () => {
         .invoke('What is 1 + 2?');
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
       mockInference(
         {
@@ -169,7 +166,6 @@ describe('Chat client', () => {
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
     });
 
-    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to true if defined by supportsStrictToolCalling', async () => {
       client.supportsStrictToolCalling = true;
       mockInference(
