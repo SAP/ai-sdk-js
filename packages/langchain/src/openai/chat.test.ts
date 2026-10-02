@@ -82,7 +82,7 @@ describe('Chat client', () => {
     };
 
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             messages: [
@@ -108,10 +108,11 @@ describe('Chat client', () => {
       await client
         .bindTools([addNumbersTool], { strict: true })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             messages: [
@@ -137,10 +138,11 @@ describe('Chat client', () => {
       await client
         .bindTools([addNumbersTool], { strict: false })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             messages: [
@@ -164,11 +166,12 @@ describe('Chat client', () => {
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with strict set to true if defined by supportsStrictToolCalling', async () => {
       client.supportsStrictToolCalling = true;
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             messages: [
@@ -192,6 +195,7 @@ describe('Chat client', () => {
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
   });
 

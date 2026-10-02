@@ -265,7 +265,7 @@ describe('orchestration service client', () => {
     });
 
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             config: {
@@ -298,10 +298,11 @@ describe('orchestration service client', () => {
       await client
         .bindTools([addNumbersTool], { strict: true })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             config: {
@@ -334,10 +335,11 @@ describe('orchestration service client', () => {
       await client
         .bindTools([addNumbersTool], { strict: false })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: {
             config: {
@@ -368,6 +370,7 @@ describe('orchestration service client', () => {
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should not accumulate duplicate tools on repeated invocations (issue #1898)', async () => {
@@ -1464,7 +1467,7 @@ describe('orchestration service client', () => {
     });
 
     it('omits cache_control from the request body when the option is not set', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: (body: any) => {
             const template =
@@ -1481,11 +1484,12 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       await client.invoke(messages);
+      expect(scope.isDone()).toBe(true);
     });
 
     it('moves the cache_control breakpoint to the new last message across successive invocations', async () => {
       // Turn 1: single user message — breakpoint at index 0.
-      mockInference(
+      const scope1 = mockInference(
         {
           data: expectCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
@@ -1496,7 +1500,7 @@ describe('orchestration service client', () => {
         endpoint
       );
       // Turn 2: three messages — breakpoint advances to index 2.
-      mockInference(
+      const scope2 = mockInference(
         {
           data: expectCacheControlAt(2, 'Follow-up.', {
             type: 'ephemeral',
@@ -1521,10 +1525,12 @@ describe('orchestration service client', () => {
         ],
         callOptions
       );
+      expect(scope1.isDone()).toBe(true);
+      expect(scope2.isDone()).toBe(true);
     });
 
     it('honors a 1h ttl in the cache_control breakpoint', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: expectCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
@@ -1539,10 +1545,11 @@ describe('orchestration service client', () => {
       await client.invoke(messages, {
         cache_control: { type: 'ephemeral', ttl: '1h' }
       });
+      expect(scope.isDone()).toBe(true);
     });
 
     it('applies the cache_control breakpoint on the streaming path', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: expectCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
@@ -1560,6 +1567,7 @@ describe('orchestration service client', () => {
       for await (const _chunk of stream) {
         // drain
       }
+      expect(scope.isDone()).toBe(true);
     });
   });
 });
