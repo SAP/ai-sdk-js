@@ -118,9 +118,10 @@ describe('orchestration', () => {
     expect(response.getTokenUsage()).toBeDefined();
   });
 
-  // oxlint-disable-next-line vitest/expect-expect
   it('should trigger an input filter', async () => {
-    await orchestrationInputFiltering();
+    const response = await orchestrationInputFiltering();
+
+    expect(response.error).toBeDefined();
   });
 
   it('should trigger an output filter', async () => {

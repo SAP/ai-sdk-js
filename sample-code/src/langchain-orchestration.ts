@@ -368,8 +368,8 @@ export async function streamChainWithFallbackConfigs(
     finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
   }
 
-  const c = finalOutput?.content ?? '';
-  return typeof c === 'string' ? c : JSON.stringify(c);
+  const content = finalOutput?.content ?? '';
+  return typeof content === 'string' ? content : JSON.stringify(content);
 }
 
 /**

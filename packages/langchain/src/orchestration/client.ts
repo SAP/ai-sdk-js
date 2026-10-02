@@ -360,7 +360,7 @@ export class OrchestrationClient extends BaseChatModel<
    * @param messages - The messages to send to the model.
    * @param options - The call options.
    * @param runManager - The callback manager for the run.
-   * @yields {ChatGenerationChunk} - An async generator of chat generation chunks.
+   * @yields A chat generation chunk.
    * @returns An async generator of chat generation chunks.
    */
   override async *_streamResponseChunks(

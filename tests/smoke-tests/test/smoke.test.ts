@@ -13,7 +13,6 @@ describe('Smoke Test', () => {
   itCfOnly(
     'aicore client retrieves a list of deployments with custom destination',
     async () => {
-      // oxlint-disable-next-line vitest/no-standalone-expect
       await expect(
         fetch(`${smokeTestRoute}/ai-api/deployments-with-destination`)
       ).resolves.toHaveProperty('status', 200);
@@ -35,7 +34,6 @@ describe('Smoke Test', () => {
   itCfOnly(
     'azure-openai client retrieves completion results with custom destination',
     async () => {
-      // oxlint-disable-next-line vitest/no-standalone-expect
       await expect(
         fetch(`${smokeTestRoute}/azure-openai/chat-completion-with-destination`)
       ).resolves.toHaveProperty('status', 200);
