@@ -81,7 +81,7 @@ export async function invokeChainWithFallbackConfigs(): Promise<string> {
       // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -334,7 +334,7 @@ export async function streamChainWithFallbackConfigs(
     {
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
