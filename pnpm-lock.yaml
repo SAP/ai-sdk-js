@@ -315,6 +315,16 @@ importers:
         specifier: 5.0.2
         version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(@vitest/coverage-v8@5.0.2)(vite@8.3.0(@types/node@22.20.4)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
 
+  packages/context-registry:
+    dependencies:
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+    devDependencies:
+      vitest:
+        specifier: 5.0.2
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(@vitest/coverage-v8@5.0.2)(vite@8.3.0(@types/node@22.20.4)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+
   packages/core:
     dependencies:
       '@sap-cloud-sdk/connectivity':
@@ -580,6 +590,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: workspace:^
         version: link:../packages/ai-api
+      '@sap-ai-sdk/context-registry':
+        specifier: workspace:^
+        version: link:../packages/context-registry
       '@sap-ai-sdk/document-grounding':
         specifier: workspace:^
         version: link:../packages/document-grounding
@@ -653,6 +666,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: canary
         version: 2.16.1-20261002012711.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/context-registry':
+        specifier: canary
+        version: 2.16.1-20260930141605.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/document-grounding':
         specifier: canary
         version: 2.16.1-20261002012711.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -2140,6 +2156,9 @@ packages:
 
   '@sap-ai-sdk/ai-api@2.16.1-20261002012711.0':
     resolution: {integrity: sha512-zJGugXaUG5TVAczeM3PwivmYKGsZuVTXr215KIbzInie6VOnS5BMiFyqOO4/owk1SNO4tstH1UvhJLaFwXotdg==}
+
+  '@sap-ai-sdk/context-registry@2.16.1-20260930141605.0':
+    resolution: {integrity: sha512-A71QHJS/IHYVfsWEPNSPJySyR7MjqUh1qkgIJ9WacLNBe0IUV/0f26iWYHZotJBYAvsYRpu2I4w+/iuc5D9iZg==}
 
   '@sap-ai-sdk/core@2.16.1-20261002012711.0':
     resolution: {integrity: sha512-XmSrdybUnl5VmZt6irQ3pnByo5yIBsuCmVVI+KzqHJOJeRxE3Y0TQy75ln2DoaHNqNg4vbOanRxmJnqYUFn9pA==}
@@ -5965,6 +5984,13 @@ snapshots:
       '@sap-ai-sdk/core': 2.16.1-20261002012711.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/context-registry@2.16.1-20260930141605.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      '@sap-ai-sdk/core': 2.16.1-20261002012711.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color

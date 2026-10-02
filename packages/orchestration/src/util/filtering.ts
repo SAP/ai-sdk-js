@@ -69,6 +69,7 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
  * @param type - Type of the filter, either `input` or `output`.
  * @param categories - Categories to be enabled for filtering. Provide at least one category.
  * @returns Llama Guard 3 8B filter configuration.
+ * @deprecated
  * @example buildLlamaGuard38BFilter('input', ['elections', 'hate'])
  */
 export function buildLlamaGuard38BFilter<T extends ConfigType>(
