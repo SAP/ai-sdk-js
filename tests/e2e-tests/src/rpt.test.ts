@@ -35,7 +35,7 @@ describe('rpt', () => {
     verifyPredictions(predictions);
   });
 
-  it('should predict sales groups with automatic schema ', async () => {
+  it('should predict sales groups with automatic schema', async () => {
     const { predictions } = await predictAutomaticParsing();
     verifyPredictions(predictions, false);
   });

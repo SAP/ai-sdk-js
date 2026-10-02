@@ -571,7 +571,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res
         .header('Content-Type', 'text/plain')
         .send(
-          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
+          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${JSON.stringify(embedding)}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens ?? ''}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens ?? ''}`
         );
     } else if (sampleCase === 'fallbackModules') {
       const intermediateFailures = (
@@ -1041,7 +1041,7 @@ app.get('/langchain/stream-azure-openai', async (req, res) => {
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(
-        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+        `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
       );
       res.write('Token usage:\n');
       res.write(
@@ -1088,7 +1088,7 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(
-        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+        `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
       );
       res.write('Token usage:\n');
       res.write(

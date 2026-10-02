@@ -112,7 +112,9 @@ describe('batch api', () => {
       id
     ).catch(retrowUnlessNotFound);
     if (output) {
+      // oxlint-disable-next-line vitest/no-conditional-expect
       expect(output.length).toBeGreaterThan(0);
+      // oxlint-disable-next-line vitest/no-conditional-expect
       expect(output.filter(line => line.error === null).length).toBeGreaterThan(
         0
       );

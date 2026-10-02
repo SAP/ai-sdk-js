@@ -483,7 +483,7 @@ async function runCheckApi() {
     try {
       await checkApiOfPackage(pkg.dir);
     } catch (e) {
-      setFailed(`API check failed for ${pkg.relativeDir}: ${e}`);
+      setFailed(`API check failed for ${pkg.relativeDir}: ${String(e)}`);
       process.exit(1);
     }
   }

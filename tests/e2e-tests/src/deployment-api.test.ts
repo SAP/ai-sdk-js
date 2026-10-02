@@ -9,6 +9,7 @@ loadEnv();
 describe('DeploymentApi', () => {
   let createdDeploymentId: string | undefined;
 
+  // oxlint-disable-next-line vitest/expect-expect
   it('should get all deployments', async () => {
     const queryResponse = await getDeployments(resourceGroup);
     expect(queryResponse).toBeDefined();
@@ -19,6 +20,7 @@ describe('DeploymentApi', () => {
   });
 
   // ToDo: Re-enable after the deployment limits per tenant are either increased or we implement a cleanup strategy for unused deployments.
+  // oxlint-disable-next-line vitest/no-disabled-tests
   it.skip('should create and delete a deployment', async () => {
     const createResponse = await createDeployment(
       configurationId,
@@ -62,6 +64,7 @@ describe('DeploymentApi', () => {
     const finalDeployments = await getDeployments(resourceGroup);
 
     if (finalDeployments.count) {
+      // oxlint-disable-next-line vitest/no-standalone-expect, vitest/no-conditional-expect
       expect(
         finalDeployments.resources.map(deployment => deployment.id)
       ).not.toContain(createdDeploymentId);

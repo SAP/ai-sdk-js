@@ -144,7 +144,7 @@ describe('orchestration service client', () => {
     it('retries when delay exceeds timeout', async () => {
       vi.useFakeTimers();
       mockInferenceWithResilience(mockResponse, { delay: 5000 });
-      const onFailedAttempt = vi.fn();
+      const onFailedAttempt = vi.fn<() => void>();
       const client = new OrchestrationClient(config, {
         maxRetries: 1,
         onFailedAttempt
@@ -186,13 +186,14 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       const stream = client.stream(messages, { timeout: 100 });
       // Install rejection handler before advancing timers to avoid unhandled promise rejection
-      const assertion = expect(stream).rejects.toThrow(
+      // oxlint-disable-next-line vitest/valid-expect -- intentionally not awaited immediately; awaited after advancing timers
+      const assertionPromise = expect(stream).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
       await vi.advanceTimersByTimeAsync(100);
-      await assertion;
+      await assertionPromise;
     });
 
     it('returns successful response when timeout is bigger than delay', async () => {
@@ -263,6 +264,7 @@ describe('orchestration service client', () => {
       client = new OrchestrationClient(config, { maxRetries: 0 });
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
       mockInference(
         {
@@ -299,6 +301,7 @@ describe('orchestration service client', () => {
         .invoke('What is 1 + 2?');
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
       mockInference(
         {
@@ -335,6 +338,7 @@ describe('orchestration service client', () => {
         .invoke('What is 1 + 2?');
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
       mockInference(
         {
@@ -466,7 +470,10 @@ describe('orchestration service client', () => {
         endpoint
       );
 
-      vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        OrchestrationClient.prototype,
+        '_streamResponseChunks'
+      );
 
       const client = new OrchestrationClient(config, {
         streaming: true
@@ -478,7 +485,7 @@ describe('orchestration service client', () => {
       ]);
 
       expect(finalOutput).toMatchSnapshot();
-      expect(client._streamResponseChunks).toHaveBeenCalled();
+      expect(streamSpy).toHaveBeenCalled();
     });
 
     it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
@@ -505,7 +512,10 @@ describe('orchestration service client', () => {
         endpoint
       );
 
-      vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        OrchestrationClient.prototype,
+        '_streamResponseChunks'
+      );
 
       const client = new OrchestrationClient(config, {
         streaming: true,
@@ -522,7 +532,7 @@ describe('orchestration service client', () => {
       // Verify that no further chunks are present
       const trailingChunk = await stream.next();
       expect(trailingChunk.done).toBe(true);
-      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+      expect(streamSpy).not.toHaveBeenCalled();
     });
 
     it('should handle streaming and disabling streaming flags as expected', async () => {
@@ -618,9 +628,13 @@ describe('orchestration service client', () => {
       );
       let tokenCount = 0;
       const callbackHandler = {
-        handleLLMNewToken: vi.fn().mockImplementation(() => {
-          tokenCount += 1;
-        })
+        handleLLMNewToken: vi
+          .fn<
+            (token: string, idx: { prompt: number; completion: number }) => void
+          >()
+          .mockImplementation(() => {
+            tokenCount += 1;
+          })
       };
       const client = new OrchestrationClient(config, {
         callbacks: [callbackHandler]
@@ -705,7 +719,10 @@ describe('orchestration service client', () => {
       },
       endpoint
     );
-    vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+    const streamSpy = vi.spyOn(
+      OrchestrationClient.prototype,
+      '_streamResponseChunks'
+    );
 
     const llm = new OrchestrationClient(config);
 
@@ -738,7 +755,7 @@ describe('orchestration service client', () => {
       // Empty
     }
 
-    expect(llm._streamResponseChunks).toHaveBeenCalled();
+    expect(streamSpy).toHaveBeenCalled();
   });
 
   describe('module fallback configs', () => {
@@ -1449,6 +1466,7 @@ describe('orchestration service client', () => {
       expect(response.content).toBeDefined();
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('omits cache_control from the request body when the option is not set', async () => {
       mockInference(
         {
@@ -1469,6 +1487,7 @@ describe('orchestration service client', () => {
       await client.invoke(messages);
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('moves the cache_control breakpoint to the new last message across successive invocations', async () => {
       // Turn 1: single user message — breakpoint at index 0.
       mockInference(
@@ -1509,6 +1528,7 @@ describe('orchestration service client', () => {
       );
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('honors a 1h ttl in the cache_control breakpoint', async () => {
       mockInference(
         {
@@ -1527,6 +1547,7 @@ describe('orchestration service client', () => {
       });
     });
 
+    // oxlint-disable-next-line vitest/expect-expect
     it('applies the cache_control breakpoint on the streaming path', async () => {
       mockInference(
         {

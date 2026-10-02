@@ -18,9 +18,9 @@ function getBindToolsOptions(
 }
 
 function stubModel<T extends LanguageModelLike>(model: T): T {
-  const bindToolsMock = vi.fn().mockReturnValue(model);
+  const bindToolsMock = vi.fn<() => T>().mockReturnValue(model);
   const invokeMock = vi
-    .fn()
+    .fn<() => Promise<AIMessage>>()
     .mockResolvedValue(new AIMessage('Response from model') as never);
 
   Object.assign(model as object, {
