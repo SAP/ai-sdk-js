@@ -56,7 +56,9 @@ const MODEL_EXCLUSION_LIST = new Set<string>([
   'o4-mini', // Intentionally removed — retiring 2026-10-16
   'gpt-realtime', // WebSocket-based, not a standard chat completion model
   'gpt-5.3-codex', // Responses API only, not a standard chat completion model
-  'cohere-reranker' // Re-ranker model, not a chat/embedding model
+  'cohere-reranker', // Re-ranker model, not a chat/embedding model
+  'cohere-rerank-pro', // Re-ranker model, not a chat/embedding model
+  'tabpfn-3.5-plus' // Tabular prediction model, not a chat/embedding model
 ]);
 
 // Models that should always be included regardless of retirement date.

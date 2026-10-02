@@ -679,7 +679,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         }
       },
       model: {
-        name: 'gpt-4.1-nano'
+        name: 'gpt-5.4-nano'
       }
     }
   });
@@ -983,7 +983,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -1031,7 +1031,7 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
     {
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -1066,7 +1066,7 @@ const fileTypeConfig: Record<
   csv: {
     filename: 'test.csv',
     mimeType: 'text/csv',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     instruction:
       'Transcribe the CSV content exactly, preserving all rows and columns.'
   },
@@ -1080,7 +1080,7 @@ const fileTypeConfig: Record<
   mp3: {
     filename: 'test.mp3',
     mimeType: 'audio/mpeg',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     instruction: 'Transcribe the spoken words in the audio file.'
   }
 };

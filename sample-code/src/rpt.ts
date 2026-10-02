@@ -77,7 +77,7 @@ const data: PredictionData<typeof schema> = {
  * @returns The prediction results.
  */
 export async function predictWithSchema(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(schema, data);
 }
 
@@ -86,7 +86,7 @@ export async function predictWithSchema(): Promise<PredictResponsePayload> {
  * @returns The prediction results.
  */
 export async function predictWithSchemaCompressed(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(schema, data, {
     compress: {
       mode: 'always' // force-enable compression
@@ -99,7 +99,7 @@ export async function predictWithSchemaCompressed(): Promise<PredictResponsePayl
  * @returns The prediction results.
  */
 export async function predictAutomaticParsing(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithoutSchema(data);
 }
 
@@ -121,7 +121,7 @@ export async function predictParquetFile(): Promise<PredictResponsePayload> {
     type: 'application/vnd.apache.parquet'
   });
   // Send the Parquet file to the RPT service for predictions
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictParquet({
     file: parquetFile,
     prediction_config: data.prediction_config,
@@ -139,7 +139,7 @@ export async function predictParquetBlob(): Promise<PredictResponsePayload> {
     type: 'application/vnd.apache.parquet'
   });
   // Send the Parquet blob to the RPT service for predictions
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictParquet({
     file: parquetFileBlob,
     prediction_config: data.prediction_config,
@@ -154,7 +154,7 @@ export async function predictParquetBlob(): Promise<PredictResponsePayload> {
  * @returns The prediction results.
  */
 export async function predictWithSchemaResilient(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(schema, data, {
     middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
   });
@@ -191,7 +191,7 @@ const columnarData: PredictionData<typeof schema> = {
  * @returns The prediction results.
  */
 export async function predictColumnarFormat(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(schema, columnarData);
 }
 
@@ -201,7 +201,7 @@ export async function predictColumnarFormat(): Promise<PredictResponsePayload> {
  * @returns The prediction results including explanation data.
  */
 export async function predictWithExplanations(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(schema, {
     ...data,
     prediction_config: {
@@ -222,7 +222,7 @@ export async function predictWithExplanations(): Promise<PredictResponsePayload>
  * @returns The prediction results including the top K predictions per row.
  */
 export async function predictWithTopK(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(schema, {
     ...data,
     prediction_config: {
@@ -287,6 +287,6 @@ const regressionData: PredictionData<typeof regressionSchema> = {
  * @returns The prediction results including confidence intervals.
  */
 export async function predictRegressionWithConfidenceIntervals(): Promise<PredictResponsePayload> {
-  const client = new RptClient('sap-rpt-1.5');
+  const client = new RptClient('sap-rpt-1.6');
   return client.predictWithSchema(regressionSchema, regressionData);
 }
