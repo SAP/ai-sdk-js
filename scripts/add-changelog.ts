@@ -1,6 +1,6 @@
-import { execFile } from 'child_process';
-import { readdir, readFile, writeFile } from 'fs/promises';
-import { promisify } from 'util';
+import { execFile } from 'node:child_process';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { promisify } from 'node:util';
 
 import { getPackageVersion } from './get-package-version.ts';
 
