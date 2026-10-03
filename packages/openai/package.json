@@ -58,7 +58,7 @@
     "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "@types/ws": "8.18.1",
+    "@types/ws": "8.18.2",
     "openai": "7.23.0",
     "vitest": "5.0.2",
     "ws": "8.22.0"

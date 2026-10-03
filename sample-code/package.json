@@ -52,7 +52,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
-    "@types/ws": "8.18.1",
+    "@types/ws": "8.18.2",
     "@upstash/context7-mcp": "4.1.1",
     "hyparquet-writer": "0.16.10"
   },
