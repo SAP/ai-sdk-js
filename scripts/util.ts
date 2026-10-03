@@ -55,7 +55,9 @@ async function transformFilesInCanonicalDirectory(
         await transformCanonicalFile(canonicalPath, transformFn);
       }
     } catch (err) {
-      throw new Error(`Error processing ${filePath}: ${err}`, { cause: err });
+      throw new Error(`Error processing ${filePath}: ${String(err)}`, {
+        cause: err
+      });
     }
   }
 }

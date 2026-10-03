@@ -16,9 +16,9 @@ vi.mock('@sap-cloud-sdk/connectivity', async importOriginal => {
   const actual = await importOriginal<typeof Connectivity>();
   return {
     ...actual,
-    transformServiceBindingToDestination: vi.fn(
-      actual.transformServiceBindingToDestination
-    )
+    transformServiceBindingToDestination: vi.fn<
+      typeof actual.transformServiceBindingToDestination
+    >(actual.transformServiceBindingToDestination)
   };
 });
 

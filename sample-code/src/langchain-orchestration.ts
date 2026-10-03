@@ -368,7 +368,8 @@ export async function streamChainWithFallbackConfigs(
     finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
   }
 
-  return String(finalOutput?.content ?? '');
+  const content = finalOutput?.content ?? '';
+  return typeof content === 'string' ? content : JSON.stringify(content);
 }
 
 /**
@@ -610,12 +611,18 @@ export async function invokePromptCachingAgent(): Promise<
     secondMessage.usage_metadata?.input_token_details;
   return [
     {
-      content: String(firstMessage.content),
+      content:
+        typeof firstMessage.content === 'string'
+          ? firstMessage.content
+          : JSON.stringify(firstMessage.content),
       cacheCreationTokens: firstInputTokenDetails?.cache_creation ?? 0,
       cachedTokens: firstInputTokenDetails?.cache_read ?? 0
     },
     {
-      content: String(secondMessage.content),
+      content:
+        typeof secondMessage.content === 'string'
+          ? secondMessage.content
+          : JSON.stringify(secondMessage.content),
       cacheCreationTokens: secondInputTokenDetails?.cache_creation ?? 0,
       cachedTokens: secondInputTokenDetails?.cache_read ?? 0
     }

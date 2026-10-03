@@ -142,7 +142,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
 
   override bindTools(
     tools: ChatAzureOpenAIToolType[],
-    kwargs?: Partial<AzureOpenAiChatCallOptions> | undefined
+    kwargs?: Partial<AzureOpenAiChatCallOptions>
   ): Runnable<
     BaseLanguageModelInput,
     AIMessageChunk,
@@ -364,6 +364,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
    * @param messages - The messages to send to the model.
    * @param options - The call options.
    * @param runManager - The callback manager for the run.
+   * @yields A chat generation chunk.
    * @returns An async generator of chat generation chunks.
    */
   override async *_streamResponseChunks(
