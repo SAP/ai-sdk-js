@@ -2301,12 +2301,12 @@ packages:
     resolution: {integrity: sha512-1tuv+c6o2Y8/1F3UEdqiv3TPWzZDpCjxuDpAFtFBM8C+weum8ixgwc2YXEWvBzWvtSEl7C5L/o8jBqiuhcXF4w==}
 
   '@sap/cds-compiler@7.0.3':
-    resolution: {integrity: sha512-scgBPK0TcobT0tXIQOEBTeVuGaxWthKeIQjhBoeLWcQXwVC3s61U3GFdbW56h01pXFwwUUSsxjzZN7all5lRyg==, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-releases-npm/@sap/cds-compiler/-/@sap/cds-compiler-7.0.3.tgz}
+    resolution: {integrity: sha512-scgBPK0TcobT0tXIQOEBTeVuGaxWthKeIQjhBoeLWcQXwVC3s61U3GFdbW56h01pXFwwUUSsxjzZN7all5lRyg==}
     engines: {node: '>=22'}
     hasBin: true
 
   '@sap/cds-dk@10.1.2':
-    resolution: {integrity: sha512-pp06zUiizaIxNf5cNxNLGvpWNyahGeEBqPS3BDQ6eLbycc8i77jHS3Ewam9owHoAcsXwGF3oZsRJFqssOsLQJg==, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-releases-npm/@sap/cds-dk/-/@sap/cds-dk-10.1.2.tgz}
+    resolution: {integrity: sha512-pp06zUiizaIxNf5cNxNLGvpWNyahGeEBqPS3BDQ6eLbycc8i77jHS3Ewam9owHoAcsXwGF3oZsRJFqssOsLQJg==}
     hasBin: true
     bundledDependencies:
       - '@cap-js/asyncapi'
@@ -2418,12 +2418,12 @@ packages:
       - yaml
 
   '@sap/cds-fiori@2.3.0':
-    resolution: {integrity: sha512-6oWov+DSpFrSTgxXR0dZhak6aZ/IVRZvaHERMi0EgSTzIJdlvZlpw3Kf18ePMcTrRrtEXwD4RIjKt8pbs0g2Hg==, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-releases-npm/@sap/cds-fiori/-/@sap/cds-fiori-2.3.0.tgz}
+    resolution: {integrity: sha512-6oWov+DSpFrSTgxXR0dZhak6aZ/IVRZvaHERMi0EgSTzIJdlvZlpw3Kf18ePMcTrRrtEXwD4RIjKt8pbs0g2Hg==}
     peerDependencies:
       '@sap/cds': '>=8'
 
   '@sap/cds@10.1.1':
-    resolution: {integrity: sha512-0F2R0BqQS6q463WlDlkSqPaV8WK/YXDCKgVmAWcvYSRwcbJUFDBK1X4RF5obHFWjqOO1rXsf9Jh105inHXU3/g==, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-releases-npm/@sap/cds/-/@sap/cds-10.1.1.tgz}
+    resolution: {integrity: sha512-0F2R0BqQS6q463WlDlkSqPaV8WK/YXDCKgVmAWcvYSRwcbJUFDBK1X4RF5obHFWjqOO1rXsf9Jh105inHXU3/g==}
     engines: {node: '>=22'}
     hasBin: true
     peerDependencies:
@@ -2434,11 +2434,11 @@ packages:
         optional: true
 
   '@sap/xsenv@6.2.2':
-    resolution: {integrity: sha512-SGn+yaVKeXND/rQaQhqTZC+M6g5ASW1YnqAdQiZqNL74E1T1kUsDHttgOjQNkLObMZ0fsxgQxRPMnuVcAgIODg==, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-releases-npm/@sap/xsenv/-/@sap/xsenv-6.2.2.tgz}
+    resolution: {integrity: sha512-SGn+yaVKeXND/rQaQhqTZC+M6g5ASW1YnqAdQiZqNL74E1T1kUsDHttgOjQNkLObMZ0fsxgQxRPMnuVcAgIODg==}
     engines: {node: ^20.0.0  || ^22.0.0 || ^24.0.0}
 
   '@sap/xssec@4.15.0':
-    resolution: {integrity: sha512-I9TMMaWq4BNDNt9blJy8o2FV9uXjs2RyNTT7KBv9fK83bGoQxcipQ8e4DrxYb296GXg+HhE420kHuqmyXZSOuQ==, tarball: https://int.repositories.cloud.sap/artifactory/api/npm/build-releases-npm/@sap/xssec/-/xssec-4.15.0.tgz}
+    resolution: {integrity: sha512-I9TMMaWq4BNDNt9blJy8o2FV9uXjs2RyNTT7KBv9fK83bGoQxcipQ8e4DrxYb296GXg+HhE420kHuqmyXZSOuQ==}
     engines: {node: '>=18'}
 
   '@scalar/helpers@0.16.0':
