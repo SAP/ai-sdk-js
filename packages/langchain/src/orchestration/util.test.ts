@@ -631,6 +631,49 @@ describe('mapOutputToChatResult', () => {
     ]);
   });
 
+  it('filters out content-less reasoning blocks (encrypted/redacted thinking)', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'The answer is 42.',
+              role: 'assistant',
+              reasoning_content: [
+                { content: 'Visible thinking.' },
+                { signature: 'encrypted-sig' }
+              ]
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: { completion_tokens: 10, prompt_tokens: 5, total_tokens: 15 }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.content).toEqual([
+      { type: 'reasoning', reasoning: 'Visible thinking.', index: 0 },
+      { type: 'text', text: 'The answer is 42.' }
+    ]);
+    expect(
+      (result.generations[0].message as AIMessage).additional_kwargs
+        .reasoning_content
+    ).toEqual([
+      { content: 'Visible thinking.' },
+      { signature: 'encrypted-sig' }
+    ]);
+  });
+
   it('falls back to plain string content when reasoning_content is absent', () => {
     const completionResponse: CompletionPostResponse = {
       final_result: {
@@ -896,7 +939,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
       { type: 'reasoning', reasoning: 'Let me think.', index: 0 },
       { type: 'text', text: 'The answer.' }
     ]);
-    expect((result.additional_kwargs as any).reasoning_content).toEqual([
+    expect(result.additional_kwargs.reasoning_content).toEqual([
       'Let me think.'
     ]);
   });

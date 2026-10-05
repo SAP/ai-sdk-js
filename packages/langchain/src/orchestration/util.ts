@@ -178,6 +178,10 @@ function extractReasoningBlocks(
   if (Array.isArray(rawBlocks) && rawBlocks.length) {
     return rawBlocks as ReasoningBlock[];
   }
+  // TODO: Only reasoning-type LangChain v1 content blocks are handled here; other v1 block
+  // types (e.g. tool calls) may be silently dropped if the caller sends v1 content arrays.
+  // We don't opt into v1 content so this is acceptable for now, but proper v1-content-block
+  // support should be added as a follow-up.
   const blocks = message.contentBlocks
     .filter((b): b is ContentBlock.Reasoning => b.type === 'reasoning')
     .map(b => ({ content: b.reasoning }));
@@ -402,17 +406,40 @@ function buildUsageMetadata(usage: TokenUsage): {
 }
 
 function buildContentBlocks(
-  reasoningContent: string[] | undefined,
+  reasoningContent: ReasoningBlock[] | undefined,
   textContent: string | null | undefined
 ): string | (ContentBlock.Reasoning | ContentBlock.Text)[] {
-  if (!reasoningContent?.length) {
+  const visibleBlocks = reasoningContent?.filter(
+    (b): b is ReasoningBlock & { content: string } => !!b.content
+  );
+  if (!visibleBlocks?.length) {
     return textContent ?? '';
   }
-  const reasoningBlocks: ContentBlock.Reasoning[] = reasoningContent.map(
-    (r, index) => ({ type: 'reasoning' as const, reasoning: r, index })
+  const reasoningBlocks: ContentBlock.Reasoning[] = visibleBlocks.map(
+    (b, index) => ({ type: 'reasoning' as const, reasoning: b.content, index })
   );
   return textContent
     ? [...reasoningBlocks, { type: 'text' as const, text: textContent }]
+    : reasoningBlocks;
+}
+
+function buildStreamingContentBlocks(
+  deltaReasoning: string[] | undefined,
+  deltaText: string | null | undefined
+): string | (ContentBlock.Reasoning | ContentBlock.Text)[] {
+  // TODO: Block indices are assigned per-chunk here. Once reasoning establishes block 0,
+  // later text-only chunks reset to index 0 as well, which may attach text/tool deltas
+  // to the active reasoning block in LangChain's stream-event bridge. A stateful
+  // index allocator that tracks first-seen order across chunks is needed.
+  // See: https://github.com/SAP/ai-sdk-js/pull/2305#discussion_r2152956093
+  if (!deltaReasoning?.length) {
+    return deltaText ?? '';
+  }
+  const reasoningBlocks: ContentBlock.Reasoning[] = deltaReasoning.map(
+    (r, index) => ({ type: 'reasoning' as const, reasoning: r, index })
+  );
+  return deltaText
+    ? [...reasoningBlocks, { type: 'text' as const, text: deltaText }]
     : reasoningBlocks;
 }
 
@@ -438,9 +465,7 @@ export function mapOutputToChatResult(
       text: choice.message.content ?? '',
       message: new AIMessage({
         content: buildContentBlocks(
-          choice.message.reasoning_content?.map(
-            (b: { content?: string }) => b.content ?? ''
-          ),
+          choice.message.reasoning_content,
           choice.message.content
         ),
         tool_calls: mapOrchestrationToLangChainToolCall(
@@ -504,7 +529,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   const choice = chunk._data.final_result?.choices[0];
   const deltaText = chunk.getDeltaContent() ?? '';
   const deltaReasoning = chunk.getDeltaReasoningContent();
-  const content = buildContentBlocks(deltaReasoning, deltaText || null);
+  const content = buildStreamingContentBlocks(deltaReasoning, deltaText || null);
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
