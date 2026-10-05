@@ -53,8 +53,11 @@ const ALLOWED_LIBRARY_IDS = new Set([
   '/langchain-ai/langchainjs'
 ]);
 
-// Escape {{ to prevent Orchestration API 400 "Unused parameters" — applied to all user content
-const esc = (s: string) => s.replaceAll('{{', '{ {');
+// Escape {{ to prevent Orchestration API 400 "Unused parameters" — applied to all user content.
+// Insert a space after any `{` that is immediately followed by another `{`, so even consecutive
+// runs (`{{{`, `{{{{`) are fully broken — a plain replaceAll('{{','{ {') is non-overlapping and
+// leaves a residual `{{` in odd-length runs.
+const esc = (s: string) => s.replace(/\{(?=\{)/g, '{ ');
 
 const AGENT_SYSTEM_PROMPT = [
   'You are an SAP AI SDK support assistant.',

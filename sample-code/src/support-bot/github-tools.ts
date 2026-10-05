@@ -139,7 +139,24 @@ const searchCode = tool(
 
 const getFileContents = tool(
   async ({ path }) => {
-    const data = (await gh(`/repos/${ALLOWED_REPO}/contents/${path}`)) as {
+    // SEC-3: this is the only tool whose model-supplied path interpolates into the URL with no
+    // result-side repo filter to catch an escape, so this check is the sole scope enforcement.
+    // A syntactic `..`/leading-`/` blocklist is NOT enough: `new URL` resolves `..`/`.` segments
+    // AND normalizes backslashes to `/` on the https (WHATWG "special") scheme, so `..\..\octocat`
+    // would slip past a forward-slash-only check yet still climb out of the repo. Validate the
+    // FINAL normalized URL by prefix (positive allowlist) — anything that resolves outside
+    // /repos/SAP/ai-sdk-js/contents/ (another repo, or a different endpoint) is rejected.
+    // Also reject percent-encoding outright: an encoded slash (`..%2f..`) stays encoded in the
+    // URL so the prefix check can't see the traversal, but may be decoded server-side.
+    const requestPath = `/repos/${ALLOWED_REPO}/contents/${path}`;
+    const allowedPrefix = `${GH_API}/repos/${ALLOWED_REPO}/contents/`;
+    if (
+      path.includes('%') ||
+      !new URL(GH_API + requestPath).href.startsWith(allowedPrefix)
+    ) {
+      throw new Error('invalid path');
+    }
+    const data = (await gh(requestPath)) as {
       content?: string;
       encoding?: string;
     };
