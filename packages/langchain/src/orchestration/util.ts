@@ -427,11 +427,6 @@ function buildStreamingContentBlocks(
   deltaReasoning: string[] | undefined,
   deltaText: string | null | undefined
 ): string | (ContentBlock.Reasoning | ContentBlock.Text)[] {
-  // TODO: Block indices are assigned per-chunk here. Once reasoning establishes block 0,
-  // later text-only chunks reset to index 0 as well, which may attach text/tool deltas
-  // to the active reasoning block in LangChain's stream-event bridge. A stateful
-  // index allocator that tracks first-seen order across chunks is needed.
-  // See: https://github.com/SAP/ai-sdk-js/pull/2305#discussion_r2152956093
   if (!deltaReasoning?.length) {
     return deltaText ?? '';
   }
