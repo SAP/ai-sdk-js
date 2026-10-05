@@ -529,7 +529,10 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   const choice = chunk._data.final_result?.choices[0];
   const deltaText = chunk.getDeltaContent() ?? '';
   const deltaReasoning = chunk.getDeltaReasoningContent();
-  const content = buildStreamingContentBlocks(deltaReasoning, deltaText || null);
+  const content = buildStreamingContentBlocks(
+    deltaReasoning,
+    deltaText || null
+  );
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
