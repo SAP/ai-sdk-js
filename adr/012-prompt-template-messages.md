@@ -1,3 +1,4 @@
+<!-- vale off -->
 # Prompt Template Message Routing
 
 ## Status
