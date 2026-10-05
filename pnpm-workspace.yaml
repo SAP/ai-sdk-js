@@ -39,6 +39,7 @@ allowBuilds:
   '@swc/core': true
   better-sqlite3: false
   esbuild: false
+  opencode-ai: true
   unrs-resolver: false
 
 # Fix/investigate: does not work as expected because checkout action uses detached HEAD

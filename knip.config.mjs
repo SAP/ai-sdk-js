@@ -6,13 +6,7 @@ export default {
       // Knip usually automatically detects entry files based on package.json scripts/bin, but these are used indirectly.
       entry: [
         'src/tutorials/mcp/weather-mcp-server.ts',
-        'resources/generate-parquet.ts',
-        'src/support-bot/agent.ts'
-      ],
-      // spawned as CLI processes by the MCP client, so knip can't trace them
-      ignoreDependencies: [
-        '@modelcontextprotocol/server-github',
-        '@upstash/context7-mcp'
+        'resources/generate-parquet.ts'
       ]
     },
     'tests/type-tests': {

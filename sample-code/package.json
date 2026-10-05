@@ -19,7 +19,8 @@
     "local": "node --env-file-if-exists=.env src/server.ts",
     "agent-tutorial": "node --env-file-if-exists=.env src/tutorials/travel-itinerary-agent.ts",
     "realtime-demo": "node --env-file-if-exists=.env src/openai-realtime.ts",
-    "compile": "tsc",
+    "support-bot": "node --env-file-if-exists=.env src/support-bot/reply.ts \"${ISSUE_NUMBER:-9999}\"",
+    "compile": "tsc && tsc --project src/support-bot/tsconfig.json",
     "dev": "tsc -w",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."
@@ -31,12 +32,14 @@
     "@langchain/mcp-adapters": "1.1.4",
     "@langchain/textsplitters": "1.0.2",
     "@modelcontextprotocol/sdk": "1.31.0",
+    "@opencode-ai/sdk": "^1.18.4",
     "@sap-cloud-sdk/resilience": "catalog:",
     "@sap-cloud-sdk/util": "catalog:",
     "@types/express": "5.0.6",
     "express": "5.2.1",
     "langchain": "catalog:",
     "openai": "7.25.0",
+    "opencode-ai": "^1.18.4",
     "ws": "8.22.0",
     "zod": "catalog:"
   },
@@ -52,7 +55,6 @@
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
     "@types/ws": "8.18.2",
-    "@upstash/context7-mcp": "4.1.1",
     "hyparquet-writer": "0.16.10"
   },
   "peerDependencies": {
