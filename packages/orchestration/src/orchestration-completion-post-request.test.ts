@@ -36,6 +36,7 @@ describe('construct completion post request', () => {
   });
 
   // TODO: Adapt the test after Cloud SDK fix for: https://github.com/SAP/cloud-sdk-backlog/issues/1234
+  // oxlint-disable-next-line vitest/no-disabled-tests
   it.skip('should construct completion post request with empty templating module', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {

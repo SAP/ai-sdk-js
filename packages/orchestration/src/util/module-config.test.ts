@@ -21,7 +21,8 @@ import type {
   OrchestrationConfigRef,
   ChatCompletionRequest,
   OrchestrationModuleConfigList,
-  StreamOptions
+  StreamOptions,
+  ModuleStreamOptions
 } from '../orchestration-types.ts';
 
 describe('stream util tests', () => {
@@ -134,7 +135,7 @@ describe('stream util tests', () => {
           model: {
             ...config.prompt_templating.model,
             params: {
-              ...(config.prompt_templating.model.params || {}),
+              ...config.prompt_templating.model.params,
               stream_options: { include_usage: true }
             }
           }
@@ -788,8 +789,8 @@ describe('addStreamOptions with module fallback configs', () => {
       createModuleConfig('claude-4')
     ];
 
-    // Sparse array: only override indices 0 and 3
-    const overridesArray = new Array(configs.length);
+    // Sparse overrides: only indices 0 and 3 set, others resolve to shared options
+    const overridesArray: Partial<Record<number, ModuleStreamOptions>> = {};
     overridesArray[0] = { promptTemplating: { include_usage: true } };
     overridesArray[3] = { promptTemplating: { include_usage: true } };
 
@@ -1174,10 +1175,8 @@ describe('warnAboutUnusedOverrides', () => {
     // Explicitly using object syntax (spread array)
     const streamOptions: StreamOptions = {
       overrides: {
-        ...[
-          { promptTemplating: { include_usage: true } },
-          { promptTemplating: { include_usage: false } }
-        ]
+        0: { promptTemplating: { include_usage: true } },
+        1: { promptTemplating: { include_usage: false } }
       }
     };
 
