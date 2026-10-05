@@ -1,5 +1,7 @@
-import { expectType, expectAssignable, expectError } from 'tsd';
 import { SapOpenAiRealtimeWs } from '@sap-ai-sdk/openai/realtime';
+
+import { expectType, expectAssignable, expectError } from 'tsd';
+
 import type { AzureOpenAiRealtimeModel } from '@sap-ai-sdk/core';
 import type {
   SapOpenAiRealtimeOptions,

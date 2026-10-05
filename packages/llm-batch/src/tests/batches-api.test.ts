@@ -1,9 +1,11 @@
 import nock from 'nock';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.ts';
 import { BatchesApi } from '../client/batch-service/index.ts';
+
 import type { BatchListResponse } from '../client/batch-service/index.ts';
 
 describe('batches api', () => {

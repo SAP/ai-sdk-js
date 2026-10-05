@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+
 import {
   OrchestrationClient,
   OrchestrationEmbeddingClient,
@@ -9,10 +10,12 @@ import {
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
-import { createLogger } from '@sap-cloud-sdk/util';
 import { resilience } from '@sap-cloud-sdk/resilience';
-import * as z from 'zod/v4';
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
+import * as z from 'zod/v4';
+
 import type {
   OrchestrationStreamChunkResponse,
   OrchestrationStreamResponse,
@@ -62,7 +65,7 @@ export async function orchestrationChatCompletion(
 }
 
 /**
- * Ask ChatGPT through the orchestration service using resilience middleware.
+ * Ask the LLM through the orchestration service using resilience middleware.
  * Configures a 30-second timeout, circuit breaker, and one retry attempt.
  * @returns The orchestration service response.
  */
@@ -80,7 +83,7 @@ export async function orchestrationChatCompletionResilient(): Promise<Orchestrat
 }
 
 /**
- * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming.
+ * Ask the LLM through the orchestration service about SAP Cloud SDK with streaming.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.
@@ -139,7 +142,7 @@ export async function orchestrationTemplating(): Promise<OrchestrationResponse> 
 }
 
 /**
- * Ask ChatGPT through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
+ * Ask the LLM through the orchestration service about SAP Cloud SDK with streaming and JSON module configuration.
  * @param controller - The abort controller.
  * @returns The response from the orchestration service containing the response content.
  */
@@ -676,7 +679,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         }
       },
       model: {
-        name: 'gpt-4.1-nano'
+        name: 'gpt-5.4-nano'
       }
     }
   });
@@ -723,7 +726,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const addTwoNumbers = (first: number, second: number): string =>
     `The sum of ${first} and ${second} is ${first + second}.`;
 
-  // Routing tool calls to their corresponsing implementation
+  // Routing tool calls to their corresponding implementation
   const callFunction = (name: string, args: any): string => {
     switch (name) {
       case 'add':
@@ -822,7 +825,7 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
 }
 
 /**
- * Ask ChatGPT to add two numbers using tools and stream the response.
+ * Ask the LLM to add two numbers using tools and stream the response.
  * @param controller - The abort controller.
  * @param streamOptions - The stream options.
  * @returns The response from the orchestration service containing the response content.
@@ -980,7 +983,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -1028,7 +1031,7 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
     {
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -1063,7 +1066,7 @@ const fileTypeConfig: Record<
   csv: {
     filename: 'test.csv',
     mimeType: 'text/csv',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     instruction:
       'Transcribe the CSV content exactly, preserving all rows and columns.'
   },
@@ -1077,7 +1080,7 @@ const fileTypeConfig: Record<
   mp3: {
     filename: 'test.mp3',
     mimeType: 'audio/mpeg',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     instruction: 'Transcribe the spoken words in the audio file.'
   }
 };
@@ -1333,7 +1336,7 @@ export async function orchestrationReasoningContent(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gemini-3.5-flash',
+        name: 'gemini-3.8-flash',
         // reasoning_effort is harmonized across providers; orchestration maps it
         // to each model's native reasoning configuration.
         params: { reasoning_effort: 'high' }
@@ -1374,7 +1377,7 @@ export async function orchestrationReasoningContentStream(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gemini-3.5-flash',
+        name: 'gemini-3.8-flash',
         // reasoning_effort is harmonized across providers; orchestration maps it
         // to each model's native reasoning configuration.
         params: { reasoning_effort: 'high' }

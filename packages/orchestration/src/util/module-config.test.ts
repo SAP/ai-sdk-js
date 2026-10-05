@@ -1,5 +1,7 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import { isOrchestrationModuleConfigList } from '../orchestration-types.ts';
+import { buildAzureContentSafetyFilter } from './filtering.ts';
 import {
   addStreamOptions,
   addStreamOptionsToOutputFilteringConfig,
@@ -7,13 +9,13 @@ import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromConfigReference
 } from './module-config.ts';
-import { buildAzureContentSafetyFilter } from './filtering.ts';
+
+import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.ts';
 import type {
   ModuleConfigs,
   OrchestrationConfig,
   PromptTemplatingModuleConfig
 } from '../client/api/schema/index.ts';
-import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.ts';
 import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
@@ -120,7 +122,7 @@ describe('stream util tests', () => {
       }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // oxlint-disable-next-line no-unused-vars
     const { promptTemplating, ...streamOptions } = defaultStreamOptions;
 
     const expectedOrchestrationConfig: OrchestrationConfig = {
@@ -496,6 +498,56 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
     expect(
       modules[1].prompt_templating.model.params?.stream_options
     ).toBeDefined();
+  });
+});
+
+describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
+  it('should throw when the prompt is still an unparsed string', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        prompt: 'template: [{ role: user }]' as any,
+        model: { name: 'gpt-5.4' }
+      }
+    };
+
+    expect(() => constructCompletionPostRequest(config)).toThrow(
+      'Prompt must be parsed before merging with messages.'
+    );
+  });
+
+  it('should throw when neither a prompt template nor messages are defined', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        prompt: { template: [] },
+        model: { name: 'gpt-5.4' }
+      }
+    };
+
+    expect(() => constructCompletionPostRequest(config)).toThrow(
+      'Either a prompt template or messages must be defined.'
+    );
+  });
+
+  it('should initialize the template from request messages when the prompt is undefined', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4' }
+      }
+    };
+    const request: ChatCompletionRequest = {
+      messages: [{ role: 'user', content: 'Hello' }]
+    };
+
+    const result = constructCompletionPostRequest(
+      config,
+      request
+    ) as CompletionRequestConfiguration;
+
+    expect(
+      (result.config.modules as ModuleConfigs).prompt_templating.prompt
+    ).toEqual({
+      template: [{ role: 'user', content: 'Hello' }]
+    });
   });
 });
 

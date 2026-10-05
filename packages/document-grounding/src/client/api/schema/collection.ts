@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { EmbeddingConfig } from './embedding-config.js';
 import type { VectorKeyValueListPair } from './vector-key-value-list-pair.js';
 /**

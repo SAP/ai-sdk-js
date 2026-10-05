@@ -2,13 +2,15 @@ import {
   resolveDeploymentUrlForModel,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
+
 import { createTokenProvider } from './token-provider.ts';
-import type { AzureClientOptions } from 'openai/azure';
+
 import type {
   SapOpenAiContext,
   SapOpenAiInput,
   SapOpenAiOptions
 } from './types.ts';
+import type { AzureClientOptions } from 'openai/azure';
 
 const defaultApiVersion = '2024-10-21';
 

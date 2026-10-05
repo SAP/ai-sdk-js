@@ -20,6 +20,7 @@ on:
         required: false
         options:
           - ai-api
+          - context-registry
           - document-grounding
           - orchestration
           - prompt-registry
@@ -77,10 +78,10 @@ jobs:
       CREATE_PR: ${{ inputs.create-pr }}
       BRANCH: spec-update/${{ inputs.service }}/${{ inputs.ref }}
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
-          persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
       - name: 'Checkout or Create Branch'
         id: branch
@@ -114,6 +115,9 @@ jobs:
 
             [orchestration.url]="repos/AI/llm-orchestration/contents/src/spec/v2.yaml"
             [orchestration.path]="packages/orchestration/src/spec/api.yaml"
+
+            [context-registry.url]="repos/AI/context-registry/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml"
+            [context-registry.path]="packages/context-registry/src/spec/context-registry.yaml"
 
             [prompt-registry.url]="repos/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml"
             [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
@@ -153,7 +157,7 @@ jobs:
         id: breaking-changes
         if: steps.check-spec-changes.outputs.spec == 'true'
         continue-on-error: true
-        uses: oasdiff/oasdiff-action/breaking@033c15c845bef10f148afb0fa781bf1b2a7fe1bf # v0.1.12
+        uses: oasdiff/oasdiff-action/breaking@5e81b5c380accc6b523f9d32a637ca630e33620b # v0.1.17
         with:
           base: 'origin/main:${{ steps.resolve.outputs.file_path }}'
           revision: 'HEAD:${{ steps.resolve.outputs.file_path }}'

@@ -1,4 +1,5 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import {
   type ChatCompletionRequest,
   type StreamOptions,
@@ -11,6 +12,7 @@ import {
   type EmbeddingModuleConfig,
   type EmbeddingRequest
 } from '../orchestration-types.ts';
+
 import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
@@ -420,6 +422,30 @@ export function constructCompletionPostRequest(
   };
 }
 
+function resolvePromptTemplate(
+  promptTemplating: OrchestrationModuleConfig['promptTemplating'],
+  messages?: ChatCompletionRequest['messages']
+): Template | TemplateRef {
+  if (typeof promptTemplating.prompt === 'string') {
+    throw new TypeError('Prompt must be parsed before merging with messages.');
+  }
+
+  // If promptTemplating.prompt is not defined, we initialize it with an empty template object
+  const prompt = promptTemplating.prompt ?? { template: [] };
+
+  if (isTemplate(prompt)) {
+    if (!prompt.template?.length && !messages?.length) {
+      throw new Error('Either a prompt template or messages must be defined.');
+    }
+    return {
+      ...prompt,
+      template: [...(prompt.template || []), ...(messages || [])]
+    };
+  }
+
+  return prompt as TemplateRef;
+}
+
 function buildCompletionModulesConfig(
   config: OrchestrationModuleConfig,
   request?: ChatCompletionRequest
@@ -427,23 +453,7 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
-  // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const prompt = {
-    ...(promptTemplating.prompt as Template | TemplateRef)
-  };
-
-  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
-  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
-
-  if (isTemplate(prompt)) {
-    if (!prompt.template?.length && !request?.messages?.length) {
-      throw new Error('Either a prompt template or messages must be defined.');
-    }
-    prompt.template = [
-      ...(prompt.template || []),
-      ...(request?.messages || [])
-    ];
-  }
+  const prompt = resolvePromptTemplate(promptTemplating, request?.messages);
 
   return {
     prompt_templating: {

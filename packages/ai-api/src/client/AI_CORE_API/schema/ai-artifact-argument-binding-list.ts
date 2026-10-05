@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { AiArtifactArgumentBinding } from './ai-artifact-argument-binding.js';
 /**
  * Representation of the 'AiArtifactArgumentBindingList' schema.

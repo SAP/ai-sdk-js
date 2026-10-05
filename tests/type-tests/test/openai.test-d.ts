@@ -1,9 +1,11 @@
-import { expectType, expectAssignable, expectError } from 'tsd';
 import {
   SapOpenAi,
   createOpenAiConfig,
   createTokenProvider
 } from '@sap-ai-sdk/openai';
+
+import { expectType, expectAssignable, expectError } from 'tsd';
+
 import type {
   SapChat,
   SapCompletions,

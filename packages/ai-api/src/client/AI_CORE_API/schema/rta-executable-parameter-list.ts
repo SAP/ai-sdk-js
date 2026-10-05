@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { RTAExecutableParameter } from './rta-executable-parameter.js';
 /**
  * Executable parameters

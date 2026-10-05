@@ -3,10 +3,11 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AzureOpenAiOnYourDataConnectionStringAuthenticationOptions } from './on-your-data-connection-string-authentication-options.js';
+
 import type { AzureOpenAiAzureCosmosDBFieldMappingOptions } from './azure-cosmos-db-field-mapping-options.js';
-import type { AzureOpenAiOnYourDataEndpointVectorizationSource } from './on-your-data-endpoint-vectorization-source.js';
+import type { AzureOpenAiOnYourDataConnectionStringAuthenticationOptions } from './on-your-data-connection-string-authentication-options.js';
 import type { AzureOpenAiOnYourDataDeploymentNameVectorizationSource } from './on-your-data-deployment-name-vectorization-source.js';
+import type { AzureOpenAiOnYourDataEndpointVectorizationSource } from './on-your-data-endpoint-vectorization-source.js';
 /**
  * Parameters to use when configuring Azure OpenAI On Your Data chat extensions when using Azure Cosmos DB for
  * MongoDB vCore.

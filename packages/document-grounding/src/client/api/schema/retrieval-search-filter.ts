@@ -3,9 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { RetrievalSearchConfiguration } from './retrieval-search-configuration.js';
+
 import type { DataRepositoryType } from './data-repository-type.js';
 import type { RetrievalKeyValueListPair } from './retrieval-key-value-list-pair.js';
+import type { RetrievalSearchConfiguration } from './retrieval-search-configuration.js';
 import type { RetrievalSearchDocumentKeyValueListPair } from './retrieval-search-document-key-value-list-pair.js';
 /**
  * Limit scope of search to certain DataRepositories, Documents or Chunks.
@@ -23,6 +24,9 @@ export type RetrievalSearchFilter = {
    * ].
    */
   dataRepositories?: string[];
+  /**
+   * Only include DataRepositories with the given type.
+   */
   dataRepositoryType: DataRepositoryType;
   /**
    * Destination Name of remote instance.

@@ -1,5 +1,7 @@
-import { expectError, expectType } from 'tsd';
 import { executeRequest } from '@sap-ai-sdk/core';
+
+import { expectError, expectType } from 'tsd';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 expectType<Promise<HttpResponse>>(

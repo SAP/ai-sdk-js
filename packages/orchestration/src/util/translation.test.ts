@@ -1,4 +1,5 @@
 import { buildTranslationConfig } from './translation.ts';
+
 import type {
   SAPDocumentTranslationInput,
   SAPDocumentTranslationOutput

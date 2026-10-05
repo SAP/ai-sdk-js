@@ -1,8 +1,10 @@
 import { OrchestrationStreamResponse } from '../index.ts';
 import { mergeStreamResponse } from './stream.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
-import type { CompletionPostResponseStreaming } from '../internal.ts';
+
 import type { OrchestrationStreamChunkResponse } from '../index.ts';
+import type { CompletionPostResponseStreaming } from '../internal.ts';
 
 const llmBase = {
   id: 'orchestration-id-1',
@@ -274,6 +276,32 @@ describe('stream-util', () => {
         completion_tokens: 5,
         total_tokens: 15
       });
+    });
+
+    it('preserves token usage detail fields', () => {
+      const usage = {
+        prompt_tokens: 11247,
+        completion_tokens: 139,
+        total_tokens: 11386,
+        prompt_tokens_details: { cached_tokens: 11136 },
+        completion_tokens_details: { reasoning_tokens: 128 }
+      };
+
+      const chunk: CompletionPostResponseStreaming = {
+        request_id: 'test-request-123',
+        intermediate_results: { llm: { ...llmBase, usage, choices: [] } },
+        final_result: { ...llmBase, usage, choices: [] }
+      };
+
+      const response =
+        new OrchestrationStreamResponse<OrchestrationStreamChunkResponse>(
+          emptyHttpResponse
+        );
+
+      mergeStreamResponse(response, chunk);
+
+      expect(response._data.final_result?.usage).toEqual(usage);
+      expect(response._data.intermediate_results?.llm?.usage).toEqual(usage);
     });
   });
 

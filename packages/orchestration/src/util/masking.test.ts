@@ -1,4 +1,5 @@
 import { buildDpiMaskingProvider } from './masking.ts';
+
 import type { DpiConfig } from '../client/api/schema/index.ts';
 
 describe('masking util', () => {

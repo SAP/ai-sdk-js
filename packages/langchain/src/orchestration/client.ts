@@ -1,9 +1,12 @@
+import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
+
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
-import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
 import {
   JsonOutputParser,
   StructuredOutputParser
 } from '@langchain/core/output_parsers';
+import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
+import { ChatGenerationChunk } from '@langchain/core/outputs';
 import {
   RunnablePassthrough,
   RunnableSequence,
@@ -16,8 +19,7 @@ import {
   isInteropZodSchema,
   type InteropZodType
 } from '@langchain/core/utils/types';
-import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
-import { ChatGenerationChunk } from '@langchain/core/outputs';
+
 import {
   isTemplateRef,
   mapLangChainMessagesToOrchestrationMessages,
@@ -26,16 +28,10 @@ import {
   mapOrchestrationChunkToLangChainMessageChunk,
   applyCacheControlToLastMessage
 } from './util.ts';
-import type { NewTokenIndices } from '@langchain/core/callbacks/base';
-import type {
-  BaseLanguageModelInput,
-  StructuredOutputMethodOptions
-} from '@langchain/core/language_models/base';
-import type { ChatResult } from '@langchain/core/outputs';
+
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
-import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
+
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.ts';
 import type {
   OrchestrationCallOptions,
@@ -44,6 +40,14 @@ import type {
   LangChainOrchestrationChatModelParams,
   ChatOrchestrationToolType
 } from './types.ts';
+import type { NewTokenIndices } from '@langchain/core/callbacks/base';
+import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
+import type {
+  BaseLanguageModelInput,
+  StructuredOutputMethodOptions
+} from '@langchain/core/language_models/base';
+import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
+import type { ChatResult } from '@langchain/core/outputs';
 
 function isInputFilteringError(error: any): boolean {
   return (

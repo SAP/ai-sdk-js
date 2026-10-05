@@ -1,8 +1,10 @@
-import { expectError, expectType, expectAssignable } from 'tsd';
 import {
   OrchestrationEmbeddingClient,
   buildDpiMaskingProvider
 } from '@sap-ai-sdk/orchestration';
+
+import { expectError, expectType, expectAssignable } from 'tsd';
+
 import type {
   OrchestrationEmbeddingResponse,
   EmbeddingData,

@@ -1,6 +1,8 @@
 import { createLogger } from '@sap-cloud-sdk/util';
+
 import { parseMockResponse } from '../../../test-util/mock-http.ts';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
+
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 describe('OrchestrationStreamResponse', () => {

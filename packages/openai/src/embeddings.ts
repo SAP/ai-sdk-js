@@ -1,12 +1,14 @@
 import { Embeddings } from 'openai/resources/embeddings';
+
 import type { AzureOpenAiEmbeddingModel } from '@sap-ai-sdk/core';
+
+import type { WithOptionalModel } from './types.ts';
 import type { OpenAI } from 'openai';
+import type { APIPromise } from 'openai/api-promise';
 import type {
   EmbeddingCreateParams,
   CreateEmbeddingResponse
 } from 'openai/resources/embeddings';
-import type { APIPromise } from 'openai/api-promise';
-import type { WithOptionalModel } from './types.ts';
 
 type RequestOptions = Parameters<Embeddings['create']>[1];
 

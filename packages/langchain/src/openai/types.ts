@@ -1,20 +1,21 @@
-import type { BaseLLMParams } from '@langchain/core/language_models/llms';
-import type {
-  BaseChatModelCallOptions,
-  BaseChatModelParams,
-  BindToolsInput
-} from '@langchain/core/language_models/chat_models';
+import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
+import type { CustomRequestConfig } from '@sap-ai-sdk/core';
 import type {
   AzureOpenAiChatCompletionParameters,
   AzureOpenAiChatModel,
   AzureOpenAiEmbeddingModel
 } from '@sap-ai-sdk/foundation-models';
-import type { CustomRequestConfig } from '@sap-ai-sdk/core';
-import type { ModelConfig, ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
 import type {
   AzureOpenAiChatCompletionsRequestCommon,
   AzureOpenAiChatCompletionTool
 } from '@sap-ai-sdk/foundation-models/internal.js';
+
+import type {
+  BaseChatModelCallOptions,
+  BaseChatModelParams,
+  BindToolsInput
+} from '@langchain/core/language_models/chat_models';
+import type { BaseLLMParams } from '@langchain/core/language_models/llms';
 
 /**
  * Input type for {@link AzureOpenAiChatClient} initialization.

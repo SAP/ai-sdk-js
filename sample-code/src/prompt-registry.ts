@@ -1,4 +1,5 @@
 import { PromptTemplatesApi } from '@sap-ai-sdk/prompt-registry';
+
 import type {
   PromptTemplateDeleteResponse,
   PromptTemplatePostResponse

@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { AiDeploymentTargetStatus } from './ai-deployment-target-status.js';
+
 import type { AiConfigurationId } from './ai-configuration-id.js';
+import type { AiDeploymentTargetStatus } from './ai-deployment-target-status.js';
 /**
  * Request object for changing the target status of a deployment (currently only STOPPED is supported)
  */

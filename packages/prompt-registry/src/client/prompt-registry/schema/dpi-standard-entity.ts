@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { DPIEntities } from './dpi-entities.js';
 import type { DPIMethodConstant } from './dpi-method-constant.js';
 import type { DPIMethodFabricatedData } from './dpi-method-fabricated-data.js';

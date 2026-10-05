@@ -3,9 +3,10 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
+import type { ChatMessages } from './chat-messages.js';
 import type { CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef } from './completion-request-configuration-reference-by-name-scenario-version-config-ref.js';
 import type { PartialOrchestrationConfig } from './partial-orchestration-config.js';
-import type { ChatMessages } from './chat-messages.js';
 /**
  * Representation of the 'CompletionRequestConfigurationReferenceByNameScenarioVersion' schema.
  */

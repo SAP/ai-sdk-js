@@ -1,13 +1,15 @@
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
-import nock from 'nock';
+
+import { type AIMessageChunk } from '@langchain/core/messages';
 import {
   START,
   END,
   MessagesAnnotation,
   StateGraph
 } from '@langchain/langgraph';
-import { type AIMessageChunk } from '@langchain/core/messages';
+import nock from 'nock';
 import { z } from 'zod';
+
 import {
   mockClientCredentialsGrantCall,
   mockDeploymentsList,
@@ -18,10 +20,12 @@ import {
 } from '../../../../test-util/mock-http.ts';
 import { addNumbersTool } from '../../../../test-util/tools.ts';
 import { OrchestrationClient } from './client.ts';
-import type { LangChainOrchestrationModuleConfig } from './types.ts';
-import type { ToolCall } from '@langchain/core/messages/tool';
+
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
+
+import type { LangChainOrchestrationModuleConfig } from './types.ts';
+import type { ToolCall } from '@langchain/core/messages/tool';
 
 describe('orchestration service client', () => {
   let mockResponse: CompletionPostResponse;

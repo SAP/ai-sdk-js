@@ -5,6 +5,7 @@ import {
   getPipelineStatus,
   orchestrationGrounding
 } from '@sap-ai-sdk/sample-code';
+
 import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();

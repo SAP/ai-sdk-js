@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { MetaDataKeyValuePairStrict } from './meta-data-key-value-pair-strict.js';
 /**
  * Representation of the 'DataRepositoryMetaDataStrict' schema.

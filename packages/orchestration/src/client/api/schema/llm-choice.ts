@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { ResponseChatMessage } from './response-chat-message.js';
+
 import type { ChoiceLogprobs } from './choice-logprobs.js';
+import type { ResponseChatMessage } from './response-chat-message.js';
 /**
  * Representation of the 'LlmChoice' schema.
  */
@@ -20,4 +21,8 @@ export type LlmChoice = {
    * @example "stop"
    */
   finish_reason: string;
+  /**
+   * Provider-specific fields not representable in the OpenAI schema. When not identical, includes 'finish_reason' with the raw, unmapped finish reason string from the provider.
+   */
+  provider_specific_fields?: Record<string, any>;
 } & Record<string, any>;

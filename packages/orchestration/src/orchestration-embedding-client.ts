@@ -1,20 +1,23 @@
-import { executeRequest } from '@sap-ai-sdk/core';
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
+import { executeRequest } from '@sap-ai-sdk/core';
+
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
 import { constructEmbeddingPostRequest } from './util/index.ts';
-import type {
-  HttpResponse,
-  CustomRequestConfig
-} from '@sap-cloud-sdk/http-client';
+
 import type {
   DeploymentIdConfig,
   ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type {
+  HttpResponse,
+  CustomRequestConfig
+} from '@sap-cloud-sdk/http-client';
+
 import type {
   EmbeddingModuleConfig,
   EmbeddingRequest
 } from './orchestration-types.ts';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 /**
  * Orchestration embedding client for generating embeddings with optional orchestration modules.

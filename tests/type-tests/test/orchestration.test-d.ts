@@ -1,4 +1,3 @@
-import { expectError, expectType, expectAssignable } from 'tsd';
 import {
   OrchestrationClient,
   buildAzureContentSafetyFilter,
@@ -8,6 +7,9 @@ import {
   buildTranslationConfig,
   isConfigReference
 } from '@sap-ai-sdk/orchestration';
+
+import { expectError, expectType, expectAssignable } from 'tsd';
+
 import type {
   ChatModel,
   LlmModelParams,

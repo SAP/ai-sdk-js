@@ -1,4 +1,6 @@
-import { MultiServerMCPClient } from '@langchain/mcp-adapters';
+import { OrchestrationClient } from '@sap-ai-sdk/langchain';
+import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
+
 import {
   AIMessage,
   HumanMessage,
@@ -6,12 +8,13 @@ import {
   ToolMessage
 } from '@langchain/core/messages';
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { OrchestrationClient } from '@sap-ai-sdk/langchain';
-import { buildAzureContentSafetyFilter } from '@sap-ai-sdk/orchestration';
-import { SDK_KNOWLEDGE } from './knowledge.ts';
+import { MultiServerMCPClient } from '@langchain/mcp-adapters';
+
 import { githubTools } from './github-tools.ts';
-import type { StructuredToolInterface } from '@langchain/core/tools';
+import { SDK_KNOWLEDGE } from './knowledge.ts';
+
 import type { BaseMessage } from '@langchain/core/messages';
+import type { StructuredToolInterface } from '@langchain/core/tools';
 
 const MAX_ITER = 8;
 

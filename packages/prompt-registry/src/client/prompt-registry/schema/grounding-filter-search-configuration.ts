@@ -10,10 +10,12 @@
 export type GroundingFilterSearchConfiguration = {
   /**
    * Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+   * Exclusive Minimum: true.
    */
   max_chunk_count?: number;
   /**
    * [Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned.
+   * Exclusive Minimum: true.
    */
   max_document_count?: number;
 };

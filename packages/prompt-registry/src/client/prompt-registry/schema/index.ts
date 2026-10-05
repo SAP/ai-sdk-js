@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './prompt-template.js';
 export * from './single-chat-template.js';
 export * from './multi-chat-template.js';
@@ -22,6 +23,8 @@ export * from './prompt-template-post-response.js';
 export * from './prompt-template-get-response.js';
 export * from './prompt-template-list-response.js';
 export * from './prompt-template-delete-response.js';
+export * from './prompt-template-history-delete-response.js';
+export * from './prompt-template-scenario-delete-response.js';
 export * from './runtime-prompt-template-file.js';
 export * from './prompt-template-substitution-request.js';
 export * from './prompt-template-substitution-response.js';
@@ -33,6 +36,8 @@ export * from './orchestration-config-post-request.js';
 export * from './orchestration-config-post-response.js';
 export * from './orchestration-config-get-response.js';
 export * from './orchestration-config-delete-response.js';
+export * from './orchestration-config-history-delete-response.js';
+export * from './orchestration-config-scenario-delete-response.js';
 export * from './runtime-orchestration-config-file.js';
 export * from './cache-control.js';
 export * from './schemas-text-content.js';

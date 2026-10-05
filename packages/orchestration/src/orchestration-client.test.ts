@@ -1,9 +1,11 @@
-import nock from 'nock';
-import { createLogger } from '@sap-cloud-sdk/util';
 import {
   resolveDeploymentId,
   getOrchestrationDeploymentId
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { createLogger } from '@sap-cloud-sdk/util';
+
+import nock from 'nock';
+
 import {
   aiCoreDestination,
   mockClientCredentialsGrantCall,
@@ -24,6 +26,7 @@ import {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
 } from './util/index.ts';
+
 import type { CompletionPostResponse } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,

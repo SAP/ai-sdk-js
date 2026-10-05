@@ -1,5 +1,11 @@
 import { AzureOpenAiChatClient as AzureOpenAiChatClientBase } from '@sap-ai-sdk/foundation-models';
+
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import {
+  JsonOutputParser,
+  StructuredOutputParser
+} from '@langchain/core/output_parsers';
+import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
 import { ChatGenerationChunk } from '@langchain/core/outputs';
 import {
   RunnableLambda,
@@ -7,39 +13,37 @@ import {
   RunnableSequence,
   type Runnable
 } from '@langchain/core/runnables';
+import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import {
   getSchemaDescription,
   isInteropZodSchema
 } from '@langchain/core/utils/types';
-import {
-  JsonOutputParser,
-  StructuredOutputParser
-} from '@langchain/core/output_parsers';
-import { toJsonSchema } from '@langchain/core/utils/json_schema';
-import { JsonOutputKeyToolsParser } from '@langchain/core/output_parsers/openai_tools';
+
 import {
   mapAzureOpenAiChunkToLangChainMessageChunk,
   mapLangChainToAiClient,
   mapOutputToChatResult,
   mapToolToOpenAiTool
 } from './util.ts';
-import type { InteropZodType } from '@langchain/core/utils/types';
+
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
+import type {
+  AzureOpenAiChatCallOptions,
+  AzureOpenAiChatModelParams,
+  ChatAzureOpenAIToolType
+} from './types.ts';
 import type { NewTokenIndices } from '@langchain/core/callbacks/base';
+import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type {
   BaseLanguageModelInput,
   FunctionDefinition,
   StructuredOutputMethodOptions
 } from '@langchain/core/language_models/base';
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
-import type { CallbackManagerForLLMRun } from '@langchain/core/callbacks/manager';
 import type { ChatResult } from '@langchain/core/outputs';
-import type {
-  AzureOpenAiChatCallOptions,
-  AzureOpenAiChatModelParams,
-  ChatAzureOpenAIToolType
-} from './types.ts';
-import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { JsonSchema7Type } from '@langchain/core/utils/json_schema';
+import type { InteropZodType } from '@langchain/core/utils/types';
 
 /**
  * LangChain chat client for Azure OpenAI consumption on SAP BTP.

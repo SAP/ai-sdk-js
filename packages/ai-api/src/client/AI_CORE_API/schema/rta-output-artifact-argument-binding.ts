@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { RTAArtifactName } from './rta-artifact-name.js';
 import type { RTAArtifactUrl } from './rta-artifact-url.js';
 /**

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { GoogleDriveResourceDetail } from './google-drive-resource-detail.js';
 /**
  * Representation of the 'GoogleDriveConfigurationMinimal' schema.

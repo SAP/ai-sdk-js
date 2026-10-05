@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { BoostingScoreComputationStrategy } from './boosting-score-computation-strategy.js';
 /**
  * Representation of the 'BoostingScoringConfiguration' schema.
@@ -35,5 +36,8 @@ export type BoostingScoringConfiguration = {
    * Default: 1.
    */
   weight?: number | null;
+  /**
+   * How the similarity between document metadata and boosted key-value pairs is computed.
+   */
   scoreComputationStrategy?: BoostingScoreComputationStrategy;
 } & Record<string, any>;

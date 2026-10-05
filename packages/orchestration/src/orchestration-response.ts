@@ -1,4 +1,5 @@
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
 import type {
   CompletionPostResponse,
   TokenUsage,

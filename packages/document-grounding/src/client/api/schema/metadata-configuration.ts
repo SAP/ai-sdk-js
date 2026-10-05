@@ -3,8 +3,9 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
-import type { MetadataConfigurationStruct } from './metadata-configuration-struct.js';
+
 import type { DataRepositoryMetaDataStrict } from './data-repository-meta-data-strict.js';
+import type { MetadataConfigurationStruct } from './metadata-configuration-struct.js';
 /**
  * Representation of the 'MetadataConfiguration' schema.
  */

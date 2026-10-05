@@ -1,6 +1,7 @@
-/* eslint-disable no-console */
-import { readdir, realpath } from 'node:fs/promises';
+/* oxlint-disable no-console */
+
 import { execFile } from 'node:child_process';
+import { readdir, realpath } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { promisify } from 'node:util';
 

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { CacheCreationTokenDetails } from './cache-creation-token-details.js';
 /**
  * Usage of tokens in the response

@@ -86,7 +86,8 @@ export {
   predictParquetFile,
   predictParquetBlob,
   predictWithSchemaCompressed,
-  predictWithSchemaResilient
+  predictWithSchemaResilient,
+  predictWithTopK
 } from './rpt.ts';
 
 export {
@@ -113,6 +114,13 @@ export {
   responsesApiStateful,
   responsesApiMultiTurn
 } from './openai.ts';
+
+export {
+  listDataDestinations,
+  createTabularArtifact,
+  deleteTabularArtifact,
+  getOrCreateScenarioConfiguration
+} from './tabular-orchestration.ts';
 
 export {
   realtimeTextToAudio,

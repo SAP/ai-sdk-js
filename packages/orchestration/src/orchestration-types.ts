@@ -1,6 +1,6 @@
-import type { Xor } from '@sap-cloud-sdk/util';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
-import type { ChatModel, EmbeddingModel } from './model-types.ts';
+import type { Xor } from '@sap-cloud-sdk/util';
+
 import type {
   ChatMessages,
   DataRepositoryType,
@@ -32,6 +32,7 @@ import type {
   EncodingFormat,
   PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
+import type { ChatModel, EmbeddingModel } from './model-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
@@ -678,6 +679,7 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 
 /**
  * The filter categories supported for Llama Guard 3 8B filter.
+ * @deprecated
  */
 export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 
@@ -816,16 +818,19 @@ export type AzureContentSafetyFilterReturnType<T extends ConfigType> =
 
 /**
  * Input filter configuration for Llama Guard 3 8B.
+ * @deprecated
  */
 export type LlamaGuard38BInputFilterConfig = LlamaGuard38BFilterConfig;
 
 /**
  * Output filter configuration for Llama Guard 3 8B.
+ * @deprecated
  */
 export type LlamaGuard38BOutputFilterConfig = LlamaGuard38BFilterConfig;
 
 /**
  * Filter return type for Llama Guard 3 8B.
+ * @deprecated
  */
 export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
   T extends 'input'

@@ -1,6 +1,7 @@
 import { getScenarios, getModelsInScenario } from '@sap-ai-sdk/sample-code';
-import { loadEnv } from './utils/load-env.ts';
+
 import { resourceGroup } from './utils/ai-api-utils.ts';
+import { loadEnv } from './utils/load-env.ts';
 
 loadEnv();
 

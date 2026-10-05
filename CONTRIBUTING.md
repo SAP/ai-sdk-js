@@ -51,7 +51,7 @@ To run the type tests, execute:
 pnpm test:type
 ```
 
-### E2E tests (locally)
+### E2E tests and smoke tests(locally)
 
 The E2E tests are based on a locally running server providing a REST interface using OpenAPI.
 This server is used by the E2E tests located at [tests/e2e-tests](./test-packages/e2e-tests).
@@ -59,14 +59,15 @@ This server is used by the E2E tests located at [tests/e2e-tests](./test-package
 **Attention** The imports in the E2E tests use the root packages e.g. `@sap-ai-sdk/ai-api` to mimic the way a customer would use it.
 Thus, if you made code changes in one of the packages you need to run `pnpm compile` to make the changes take effect.
 
-Before running the E2E tests, ensure that you have a `.env` file located in `tests/e2e-tests` folder.
+Before running the E2E tests, ensure that you have a `.env` file located in the `tests/e2e-tests` and `tests/smoke-tests` folders.
 
 Inside the `.env` file, define an `AICORE_SERVICE_KEY` variable and initialize it with the service binding of `aicore`. You can obtain this binding from the `VCAP_SERVICES` environment variable or from the service key defined in your SAP BTP subaccount.
 
 To run the tests, use the following command:
 
-```
+```bash
 pnpm test:e2e
+pnpm test:smoke
 ```
 
 ## Linting

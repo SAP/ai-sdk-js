@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { PipelineMinimalResponse } from './pipeline-minimal-response.js';
 /**
  * Representation of the 'SearchPipelinesResponse' schema.

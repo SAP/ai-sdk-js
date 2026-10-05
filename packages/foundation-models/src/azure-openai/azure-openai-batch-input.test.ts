@@ -1,4 +1,5 @@
 import { createBatchInput } from './azure-openai-batch-input.ts';
+
 import type { AzureOpenAiCreateChatCompletionRequest } from './client/inference/schema/index.ts';
 
 describe('createBatchInput', () => {

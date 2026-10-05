@@ -1,17 +1,23 @@
 {
   "name": "@sap-ai-sdk/langchain",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "",
-  "license": "Apache-2.0",
   "keywords": [
-    "sap-ai-sdk",
-    "langchain"
+    "langchain",
+    "sap-ai-sdk"
   ],
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/ai-sdk-js",
     "directory": "packages/langchain"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,12 +35,6 @@
       "default": "./dist/internal.js"
     }
   },
-  "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts",
-    "dist/**/*.d.ts.map"
-  ],
   "scripts": {
     "compile": "tsc",
     "test": "vitest run",
@@ -46,19 +46,18 @@
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.8.0",
-    "@sap-cloud-sdk/util": "^4.8.0"
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "@langchain/core": "1.2.7",
-    "@langchain/langgraph": "1.4.9",
-    "langchain": "1.5.8",
-    "vitest": "4.1.10",
-    "zod": "4.4.3"
+    "@langchain/core": "catalog:",
+    "@langchain/langgraph": "catalog:",
+    "langchain": "catalog:",
+    "zod": "catalog:"
   },
   "peerDependencies": {
-    "@langchain/core": "^1.2.3",
-    "langchain": "^1.5.4"
+    "@langchain/core": "^1.2.13",
+    "langchain": "^1.5.14"
   },
   "peerDependenciesMeta": {
     "langchain": {

@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 import type { SchemasTextContent } from './schemas-text-content.js';
 /**
  * Representation of the 'ChatMessageContent' schema.

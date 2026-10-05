@@ -3,6 +3,7 @@
  *
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
+
 export * from './error-response.js';
 export * from './error-base.js';
 export * from './error.js';

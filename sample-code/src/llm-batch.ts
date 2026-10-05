@@ -1,9 +1,10 @@
-import { BatchesApi } from '@sap-ai-sdk/llm-batch';
 import { FileApi } from '@sap-ai-sdk/ai-api';
 import {
   createBatchInput,
   parseBatchOutput
 } from '@sap-ai-sdk/foundation-models';
+import { BatchesApi } from '@sap-ai-sdk/llm-batch';
+
 import type { BatchOutputLine } from '@sap-ai-sdk/foundation-models';
 import type {
   BatchListResponse,

@@ -1,4 +1,3 @@
-import type { AzureClientOptions } from 'openai/azure';
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type {
   AzureOpenAiChatModel,
@@ -6,6 +5,8 @@ import type {
   AzureOpenAiResponsesModel
 } from '@sap-ai-sdk/core';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
+import type { AzureClientOptions } from 'openai/azure';
 
 /**
  * Union of all supported Azure OpenAI model names.

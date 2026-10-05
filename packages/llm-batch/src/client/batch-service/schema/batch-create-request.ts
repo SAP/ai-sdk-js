@@ -4,6 +4,8 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { LlmBatchModel } from '@sap-ai-sdk/core';
+
 /**
  * Representation of the 'BatchCreateRequest' schema.
  */
@@ -35,6 +37,6 @@ export type BatchCreateRequest = {
     /**
      * Model name
      */
-    model: string;
+    model: LlmBatchModel;
   } & Record<string, any>;
 } & Record<string, any>;

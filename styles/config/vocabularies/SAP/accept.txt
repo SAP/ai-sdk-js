@@ -25,6 +25,9 @@ JCo
 OAuth
 API's
 SDK's
+RPT's
+explainability
+subpath
 SAMLAssertion
 zoneId
 CRDs
@@ -40,13 +43,14 @@ CAs
 myFunction
 rejectUnauthorized
 registerDestination
-ESLint
+oxlint
 CLIs
 GUIDs
 [AI|ai]
 Blust
 Streifeneder
 ESM
+PoC
 
 subaccount
 microservices
@@ -75,6 +79,7 @@ namespace
 hostname
 multithreading
 https?
+gzip
 www
 semver
 XML
@@ -123,6 +128,8 @@ subscribable
 Sandeep
 browserified
 untrusted
+async
+handwrite
 
 v2
 v4
@@ -150,3 +157,12 @@ impr
 breakpoints?
 [Rr]ealtime
 compat
+passthrough
+TFMs?
+repo
+[Bb]ackport(ed|ing)?
+[Ee]xplainability
+RPT
+README(s)
+ADR(s)
+config(s)

@@ -1,12 +1,13 @@
 packages:
   - packages/ai-api
+  - packages/context-registry
   - packages/core
   - packages/document-grounding
   - packages/foundation-models
-  - packages/openai
   - packages/langchain
-  - packages/orchestration
   - packages/llm-batch
+  - packages/openai
+  - packages/orchestration
   - packages/prompt-registry
   - packages/rpt
   - sample-cap
@@ -14,12 +15,48 @@ packages:
   - tests/e2e-tests
   - tests/smoke-tests
   - tests/type-tests
+  - .github/actions/check-pr
+  - .github/actions/check-public-api
+  - .github/actions/get-changelog
+  - .github/actions/changesets-fixed-version-bump
+  - .github/actions/merge-and-write-changelogs
+
+versioning:
+  fixed:
+    - ['@sap-ai-sdk/*']
+  maxBump: minor
+  changelog:
+    storage: repository
+  # POC: openai/rpt could graduate onto a parallel prerelease track ("alpha" lane).
+  # A fixed group must move lanes together, so this requires first narrowing `fixed`
+  # above to exclude them, e.g. fixed: [['@sap-ai-sdk/core', '@sap-ai-sdk/ai-api', ...]]
+  # (listing the group members explicitly, minus openai/rpt), then:
+  # lanes:
+  #   '@sap-ai-sdk/openai': alpha
+  #   '@sap-ai-sdk/rpt': alpha
 
 allowBuilds:
   '@swc/core': true
   better-sqlite3: false
   esbuild: false
   unrs-resolver: false
+
+# Fix/investigate: does not work as expected because checkout action uses detached HEAD
+# gitBranchLockfile: true
+# mergeGitBranchLockfilesBranchPattern:
+#   - main
+#   - renovate/*
+
+catalog:
+  '@langchain/core': ^1.2.13
+  '@langchain/langgraph': ^1.4.18
+  '@sap-cloud-sdk/connectivity': ^4.9.1
+  '@sap-cloud-sdk/http-client': ^4.9.1
+  '@sap-cloud-sdk/openapi': ^4.9.1
+  '@sap-cloud-sdk/resilience': ^4.9.1
+  '@sap-cloud-sdk/util': ^4.9.1
+  langchain: ^1.5.14
+  zod: ^4.6.5
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
@@ -33,4 +70,5 @@ shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - 'picomatch@4.0.5'
+  - 'undici-types@6.21.0'
 trustPolicyIgnoreAfter: 131400 # 3 months

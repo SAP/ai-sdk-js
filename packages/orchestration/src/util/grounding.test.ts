@@ -1,4 +1,5 @@
 import { buildDocumentGroundingConfig } from './grounding.ts';
+
 import type { DocumentGroundingServiceConfig } from '../orchestration-types.ts';
 
 describe('document grounding util', () => {
