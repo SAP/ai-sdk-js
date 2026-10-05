@@ -33,7 +33,7 @@ const deployResult = await x(
     '--prod',
     deployDir
   ],
-  { nodeOptions: { cwd: workspaceRoot } }
+  { throwOnError: true, nodeOptions: { cwd: workspaceRoot } }
 );
 if (deployResult.stdout) {
   console.log(deployResult.stdout);
@@ -79,7 +79,10 @@ await writeFile(
 );
 
 console.log(`Running cf push from ${tmpDir.path}...`);
-const cfResult = await x('cf', ['push'], { nodeOptions: { cwd: tmpDir.path } });
+const cfResult = await x('cf', ['push'], {
+  throwOnError: true,
+  nodeOptions: { cwd: tmpDir.path }
+});
 if (cfResult.stdout) {
   console.log(cfResult.stdout);
 }
