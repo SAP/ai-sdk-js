@@ -26,7 +26,11 @@ Callers use it so they do not have to choose between the `prompt.template` array
 The SDK routes it automatically in the outgoing request:
 
 - to the `prompt.template` array — with a local template or no template.
-- to the `messages_history` field — with a `TemplateRef` reference or a complete config reference.
+- to the `messages_history` field — with a `TemplateRef` reference or a complete config reference, because the template is defined server-side and cannot be extended inline.
+
+Config references are single-turn only.
+The API cannot express a config reference plus a current user turn in a single call without reconstructing the stored config client-side, which defeats the purpose of referencing it.
+Multi-turn conversations must use a local template or a `TemplateRef`.
 
 ### Routing consequences
 
