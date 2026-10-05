@@ -524,6 +524,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   const choice = chunk._data.final_result?.choices[0];
   const deltaText = chunk.getDeltaContent() ?? '';
   const deltaReasoning = chunk.getDeltaReasoningContent();
+  const deltaReasoningBlocks = choice?.delta.reasoning_content;
   const content = buildStreamingContentBlocks(
     deltaReasoning,
     deltaText || null
@@ -535,7 +536,9 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
     additional_kwargs: {
       // TODO: Fix duplicated intermediate results when using concat() method for streaming chunks.
       intermediate_results: chunk._data.intermediate_results,
-      ...(deltaReasoning?.length && { reasoning_content: deltaReasoning })
+      ...(deltaReasoningBlocks?.length && {
+        reasoning_content: deltaReasoningBlocks
+      })
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)

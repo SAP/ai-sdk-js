@@ -932,6 +932,9 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     vi.spyOn(mockChunk, 'getDeltaReasoningContent').mockReturnValue([
       'Let me think.'
     ]);
+    mockChunk._data.final_result!.choices[0].delta.reasoning_content = [
+      { content: 'Let me think.', signature: 'sig-abc' }
+    ];
 
     const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
 
@@ -940,7 +943,7 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
       { type: 'text', text: 'The answer.' }
     ]);
     expect(result.additional_kwargs.reasoning_content).toEqual([
-      'Let me think.'
+      { content: 'Let me think.', signature: 'sig-abc' }
     ]);
   });
 
