@@ -1,9 +1,12 @@
-import { createOpencode } from '@opencode-ai/sdk';
-import type { TextPart } from '@opencode-ai/sdk';
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { resolve, dirname, delimiter } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { createOpencode } from '@opencode-ai/sdk';
+
 import { SDK_KNOWLEDGE } from './knowledge.ts';
+
+import type { TextPart } from '@opencode-ai/sdk';
 
 const __dirname = import.meta.dirname!;
 

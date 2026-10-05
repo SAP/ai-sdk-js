@@ -1,5 +1,6 @@
-import { setFailed, info } from '@actions/core';
 import { execFileSync } from 'node:child_process';
+
+import { setFailed, info } from '@actions/core';
 import blueOakListRaw from '@blueoak/list/index.json' with { type: 'json' };
 
 interface BlueOakLicense {
@@ -45,7 +46,9 @@ const ALLOWED_UNKNOWN = [
 
 function isSapDependency(name: string): boolean {
   const [scope] = name.split('/');
-  return scope === '@sap' || scope === '@sap-cloud-sdk' || scope === '@sap-ai-sdk';
+  return (
+    scope === '@sap' || scope === '@sap-cloud-sdk' || scope === '@sap-ai-sdk'
+  );
 }
 
 function isAllowedPackage(license: string, pkg: PackageInfo): boolean {
@@ -82,7 +85,9 @@ if (disallowed.length) {
     ({ license, pkg }) =>
       `Disallowed license "${license}" used by: ${packageInfoToString(pkg)}`
   );
-  setFailed(`Found ${disallowed.length} disallowed licenses:\n${messages.join('\n')}`);
+  setFailed(
+    `Found ${disallowed.length} disallowed licenses:\n${messages.join('\n')}`
+  );
 } else {
   info('All production dependency licenses are acceptable.');
 }

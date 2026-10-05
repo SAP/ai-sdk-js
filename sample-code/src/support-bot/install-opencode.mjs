@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { existsSync, symlinkSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const pkgPath = fileURLToPath(import.meta.resolve('opencode-ai/package.json'));
 const binDir = join(dirname(pkgPath), 'bin');
