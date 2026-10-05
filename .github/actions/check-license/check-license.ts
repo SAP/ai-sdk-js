@@ -1,9 +1,6 @@
-import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
-
 import { setFailed, info } from '@actions/core';
-
-const require = createRequire(import.meta.url);
+import { execFileSync } from 'node:child_process';
+import blueOakListRaw from '@blueoak/list/index.json' with { type: 'json' };
 
 interface BlueOakLicense {
   id: string;
@@ -18,7 +15,7 @@ interface PackageInfo {
   versions: string[];
 }
 
-const blueOakList: BlueOakCategory[] = require('@blueoak/list');
+const blueOakList: BlueOakCategory[] = blueOakListRaw as BlueOakCategory[];
 
 const ALLOWED_STATUSES = new Set(['Model', 'Gold', 'Silver', 'Bronze']);
 
@@ -48,9 +45,7 @@ const ALLOWED_UNKNOWN = [
 
 function isSapDependency(name: string): boolean {
   const [scope] = name.split('/');
-  return (
-    scope === '@sap' || scope === '@sap-cloud-sdk' || scope === '@sap-ai-sdk'
-  );
+  return scope === '@sap' || scope === '@sap-cloud-sdk' || scope === '@sap-ai-sdk';
 }
 
 function isAllowedPackage(license: string, pkg: PackageInfo): boolean {
@@ -87,9 +82,7 @@ if (disallowed.length) {
     ({ license, pkg }) =>
       `Disallowed license "${license}" used by: ${packageInfoToString(pkg)}`
   );
-  setFailed(
-    `Found ${disallowed.length} disallowed licenses:\n${messages.join('\n')}`
-  );
+  setFailed(`Found ${disallowed.length} disallowed licenses:\n${messages.join('\n')}`);
 } else {
   info('All production dependency licenses are acceptable.');
 }

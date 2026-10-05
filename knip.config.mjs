@@ -7,9 +7,7 @@ export default {
       entry: [
         'src/tutorials/mcp/weather-mcp-server.ts',
         'resources/generate-parquet.ts'
-      ],
-      // spawned as CLI processes, so knip can't trace the import
-      ignoreDependencies: ['opencode-ai']
+      ]
     },
     'tests/type-tests': {
       // tsd entry files are not auto-detected; knip has no built-in handling for them
