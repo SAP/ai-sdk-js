@@ -41,7 +41,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@modelcontextprotocol/server-github": "2025.4.8",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/context-registry": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
