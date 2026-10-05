@@ -5,7 +5,7 @@
   "arrowParens": "avoid",
   "endOfLine": "lf",
   "printWidth": 80,
-  "sortPackageJson": false,
+  "sortPackageJson": true,
   "sortImports": {
     "customGroups": [
       {
@@ -32,11 +32,14 @@
     ]
   },
   "ignorePatterns": [
+    ".changeset/",
     "node_modules/",
     "dist/",
     "dist-cjs/",
     "coverage/",
+    "test-util/data",
     "pnpm-lock.yaml",
+    "CHANGELOG.md",
     "packages/prompt-registry/src/zod"
   ],
   "overrides": [

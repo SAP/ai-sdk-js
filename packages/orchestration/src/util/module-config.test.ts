@@ -21,7 +21,8 @@ import type {
   OrchestrationConfigRef,
   ChatCompletionRequest,
   OrchestrationModuleConfigList,
-  StreamOptions
+  StreamOptions,
+  ModuleStreamOptions
 } from '../orchestration-types.ts';
 
 describe('stream util tests', () => {
@@ -134,7 +135,7 @@ describe('stream util tests', () => {
           model: {
             ...config.prompt_templating.model,
             params: {
-              ...(config.prompt_templating.model.params || {}),
+              ...config.prompt_templating.model.params,
               stream_options: { include_usage: true }
             }
           }
@@ -501,6 +502,56 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
   });
 });
 
+describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
+  it('should throw when the prompt is still an unparsed string', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        prompt: 'template: [{ role: user }]' as any,
+        model: { name: 'gpt-5.4' }
+      }
+    };
+
+    expect(() => constructCompletionPostRequest(config)).toThrow(
+      'Prompt must be parsed before merging with messages.'
+    );
+  });
+
+  it('should throw when neither a prompt template nor messages are defined', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        prompt: { template: [] },
+        model: { name: 'gpt-5.4' }
+      }
+    };
+
+    expect(() => constructCompletionPostRequest(config)).toThrow(
+      'Either a prompt template or messages must be defined.'
+    );
+  });
+
+  it('should initialize the template from request messages when the prompt is undefined', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4' }
+      }
+    };
+    const request: ChatCompletionRequest = {
+      messages: [{ role: 'user', content: 'Hello' }]
+    };
+
+    const result = constructCompletionPostRequest(
+      config,
+      request
+    ) as CompletionRequestConfiguration;
+
+    expect(
+      (result.config.modules as ModuleConfigs).prompt_templating.prompt
+    ).toEqual({
+      template: [{ role: 'user', content: 'Hello' }]
+    });
+  });
+});
+
 describe('addStreamOptions with module fallback configs', () => {
   const createModuleConfig = (modelName: string): ModuleConfigs => ({
     prompt_templating: {
@@ -738,8 +789,8 @@ describe('addStreamOptions with module fallback configs', () => {
       createModuleConfig('claude-4')
     ];
 
-    // Sparse array: only override indices 0 and 3
-    const overridesArray = new Array(configs.length);
+    // Sparse overrides: only indices 0 and 3 set, others resolve to shared options
+    const overridesArray: Partial<Record<number, ModuleStreamOptions>> = {};
     overridesArray[0] = { promptTemplating: { include_usage: true } };
     overridesArray[3] = { promptTemplating: { include_usage: true } };
 
@@ -1124,10 +1175,8 @@ describe('warnAboutUnusedOverrides', () => {
     // Explicitly using object syntax (spread array)
     const streamOptions: StreamOptions = {
       overrides: {
-        ...[
-          { promptTemplating: { include_usage: true } },
-          { promptTemplating: { include_usage: false } }
-        ]
+        0: { promptTemplating: { include_usage: true } },
+        1: { promptTemplating: { include_usage: false } }
       }
     };
 

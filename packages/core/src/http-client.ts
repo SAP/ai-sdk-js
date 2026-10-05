@@ -52,6 +52,24 @@ export interface EndpointOptions {
    */
   resourceGroup?: string;
 }
+
+/**
+ * A replacer function for JSON.stringify that handles Set and Map objects.
+ * @param _key - The key of the property being processed.
+ * @param value - The value of the property being processed.
+ * @returns The processed value.
+ * @internal
+ */
+function jsonStringReplacer(_key: string, value: any) {
+  if (value instanceof Set) {
+    return [...value];
+  }
+  if (value instanceof Map) {
+    return Object.fromEntries(value);
+  }
+  return value;
+}
+
 /**
  * Executes a request to the AI Core service.
  * @param endpointOptions - The options to call an endpoint.
@@ -74,7 +92,7 @@ export async function executeRequest(
     data:
       data instanceof FormData || data instanceof Blob
         ? data
-        : JSON.stringify(data)
+        : JSON.stringify(data, jsonStringReplacer)
   };
 
   try {
@@ -87,6 +105,9 @@ export async function executeRequest(
     );
     return response;
   } catch (error: any) {
+    if (requestConfig?.signal?.aborted) {
+      throw new ErrorWithCause('Request aborted.', error);
+    }
     // TODO: remove this after the axios issue (https://github.com/axios/axios/issues/6468) has been fixed.
     await handleStreamError(error);
     throw new ErrorWithCause(
@@ -114,7 +135,12 @@ function mergeWithDefaultRequestConfig(
       'content-type': 'application/json',
       'ai-resource-group': resourceGroup
     },
-    params: apiVersion ? { 'api-version': apiVersion } : {}
+    params: apiVersion ? { 'api-version': apiVersion } : {},
+    // Do not cap request/response size for AI Core: prompts and completions can be
+    // large. No-op on the current http adapter (axios defaults both to -1 = unlimited),
+    // but keeps the intent explicit and safe under a fetch adapter.
+    maxContentLength: Number.POSITIVE_INFINITY,
+    maxBodyLength: Number.POSITIVE_INFINITY
   };
 
   const mergedHeaders = mergeIgnoreCase(

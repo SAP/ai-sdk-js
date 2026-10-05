@@ -4,7 +4,6 @@ type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>);
  * Azure OpenAI models for chat completion.
  */
 export type AzureOpenAiChatModel = LiteralUnion<
-  | 'gpt-4.1-nano'
   | 'gpt-5'
   | 'gpt-5-mini'
   | 'gpt-5-nano'
@@ -13,6 +12,9 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-5.4-nano'
   | 'gpt-5.5'
   | 'gpt-5.1'
+  | 'gpt-5.6-sol'
+  | 'gpt-5.6-terra'
+  | 'gpt-5.6-luna'
 >;
 
 /**
@@ -38,11 +40,10 @@ export type AzureOpenAiRealtimeModel = LiteralUnion<'gpt-realtime'>;
  * GCP Vertex AI models for chat completion.
  */
 export type GcpVertexAiChatModel = LiteralUnion<
-  | 'gemini-2.5-flash'
-  | 'gemini-2.5-flash-lite'
-  | 'gemini-2.5-pro'
   | 'gemini-3.1-flash-lite'
   | 'gemini-3.5-flash'
+  | 'gemini-3.5-flash-lite'
+  | 'gemini-3.8-flash'
 >;
 
 /**
@@ -80,11 +81,7 @@ export type PerplexityChatModel = LiteralUnion<'sonar' | 'sonar-pro'>;
  * AI Core open source models for chat completion.
  */
 export type AiCoreOpenSourceChatModel = LiteralUnion<
-  | 'cohere--command-a-reasoning'
-  | 'mistralai--mistral-large-instruct'
-  | 'mistralai--mistral-medium-instruct'
-  | 'mistralai--mistral-small'
-  | 'sap-abap-1'
+  'mistralai--mistral-small' | 'mistralai--mistral-medium' | 'sap-abap-1'
 >;
 
 /**
@@ -95,8 +92,9 @@ export type AiCoreOpenSourceEmbeddingModel =
 
 /**
  * SAP RPT models.
+ * @remarks `sap-rpt-1-small` and `sap-rpt-1-large` are deprecated and will be removed 2026-12-31. Use `sap-rpt-1.5` or `sap-rpt-1.5-large` instead.
  */
-export type SapRptModel = LiteralUnion<'sap-rpt-1-small' | 'sap-rpt-1-large'>;
+export type SapRptModel = LiteralUnion<'sap-rpt-1.6' | 'sap-rpt-1.6-large'>;
 
 /**
  * Models supported for LLM batch processing.

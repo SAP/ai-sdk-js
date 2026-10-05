@@ -19,6 +19,8 @@ import type {
   GetPipelineExecutionById,
   DocumentsStatusResponse,
   PipelineDocumentResponse,
+  PresignedUrlRequest,
+  PresignedUrlResponse,
   ManualPipelineTrigger
 } from './schema/index.js';
 /**
@@ -315,6 +317,33 @@ export const PipelinesApi = {
       {
         pathParameters: { pipelineId, documentId },
         headerParameters
+      },
+      PipelinesApi._defaultBasePath
+    ),
+  /**
+   * Generate a presigned S3 URL for a specific document in a pipeline.
+   * @param pipelineId - The ID of the pipeline
+   * @param documentId - The ID of the document
+   * @param body - Request body.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  generateDocumentPresignedUrl: (
+    pipelineId: string,
+    documentId: string,
+    body: PresignedUrlRequest | undefined,
+    headerParameters: { 'AI-Resource-Group': string }
+  ) =>
+    new OpenApiRequestBuilder<PresignedUrlResponse>(
+      'post',
+      '/pipelines/{pipelineId}/documents/{documentId}/presignedUrl',
+      {
+        pathParameters: { pipelineId, documentId },
+        body,
+        headerParameters: {
+          'content-type': 'application/json',
+          ...headerParameters
+        }
       },
       PipelinesApi._defaultBasePath
     ),

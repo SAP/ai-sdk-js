@@ -41,6 +41,8 @@ Syncs `packages/core/src/model-types.ts` and the deprecated models table in the 
          Instead, **list those models to the user** and let them decide whether to remove any.
          Only remove on explicit user confirmation.
        - If `result.batch` is empty (section not found), keep `batchModels` unchanged and warn the user.
+       - When you later run `pnpm tsx scripts/sync-model-types.ts`, it now emits a `⚠ Batch model "..."` warning for any `batchModels` entry that is retired/excluded for chat.
+         Review each warning and decide whether to remove that entry (still manual — the script never auto-removes).
    - **Close the browser tab** using `browser_close` to avoid stale session issues on future runs.
 
 3. **Patch model-types.ts** by running the sync script:

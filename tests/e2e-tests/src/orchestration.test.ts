@@ -119,7 +119,9 @@ describe('orchestration', () => {
   });
 
   it('should trigger an input filter', async () => {
-    await orchestrationInputFiltering();
+    const response = await orchestrationInputFiltering();
+
+    expect(response.error).toBeDefined();
   });
 
   it('should trigger an output filter', async () => {
@@ -129,7 +131,7 @@ describe('orchestration', () => {
     expect(
       response.getIntermediateResults().output_filtering!.data
     ).toBeDefined();
-    expect(response.getContent).toThrow(Error);
+    expect(() => response.getContent()).toThrow(Error);
     expect(response.getFinishReason()).toEqual('content_filter');
   });
 
@@ -230,6 +232,10 @@ describe('orchestration', () => {
       }
     };
 
+    type HttpError = Error & {
+      cause?: { response?: { data?: { error?: { message?: unknown } } } };
+    };
+    let caughtErr: HttpError | undefined;
     try {
       await new OrchestrationClient(config).stream({
         messages: [
@@ -240,12 +246,14 @@ describe('orchestration', () => {
         ],
         placeholderValues: { __input__: 'SAP Cloud SDK' }
       });
-    } catch (err: any) {
-      expect(err.stack).toContain(
-        'Caused by:\nHTTP Response: Request failed with status code 400'
-      );
-      expect(err.cause?.response?.data?.error?.message).toBeDefined();
+    } catch (err) {
+      caughtErr = err as HttpError;
     }
+    expect(caughtErr).toBeDefined();
+    expect(caughtErr?.stack).toContain(
+      'Caused by:\nHTTP Response: Request failed with status code 400'
+    );
+    expect(caughtErr?.cause?.response?.data?.error?.message).toBeDefined();
   });
 
   it('should complete a chat with input and output translation', async () => {
@@ -312,7 +320,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gemini-3.5-flash',
+          name: 'gemini-3.8-flash',
           params: { reasoning_effort: 'high' }
         }
       }
@@ -338,7 +346,7 @@ describe('orchestration', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         model: {
-          name: 'gemini-3.5-flash',
+          name: 'gemini-3.8-flash',
           params: { reasoning_effort: 'high' }
         }
       }
@@ -405,12 +413,10 @@ describe('orchestration', () => {
     expect(response.getContent()).toEqual(expect.any(String));
     // Citations may or may not be present depending on the query
     const citations = response.getCitations();
-    if (citations) {
-      expect(Array.isArray(citations)).toBe(true);
-      citations.forEach(citation => {
-        expect(citation.title).toEqual(expect.any(String));
-        expect(citation.url).toEqual(expect.any(String));
-      });
+    expect(citations == null || Array.isArray(citations)).toBe(true);
+    for (const citation of citations ?? []) {
+      expect(citation.title).toEqual(expect.any(String));
+      expect(citation.url).toEqual(expect.any(String));
     }
   });
 
@@ -426,9 +432,7 @@ describe('orchestration', () => {
     expect(response.getFinishReason()).toEqual('stop');
     // Citations may or may not be present depending on the query
     const citations = response.getCitations();
-    if (citations) {
-      expect(Array.isArray(citations)).toBe(true);
-    }
+    expect(citations == null || Array.isArray(citations)).toBe(true);
   });
 
   it('should complete a basic chat with qwen3.6-flash', async () => {

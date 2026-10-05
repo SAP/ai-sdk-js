@@ -144,7 +144,7 @@ describe('orchestration service client', () => {
     it('retries when delay exceeds timeout', async () => {
       vi.useFakeTimers();
       mockInferenceWithResilience(mockResponse, { delay: 5000 });
-      const onFailedAttempt = vi.fn();
+      const onFailedAttempt = vi.fn<() => void>();
       const client = new OrchestrationClient(config, {
         maxRetries: 1,
         onFailedAttempt
@@ -186,13 +186,14 @@ describe('orchestration service client', () => {
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       const stream = client.stream(messages, { timeout: 100 });
       // Install rejection handler before advancing timers to avoid unhandled promise rejection
-      const assertion = expect(stream).rejects.toThrow(
+      // oxlint-disable-next-line vitest/valid-expect -- intentionally not awaited immediately; awaited after advancing timers
+      const assertionPromise = expect(stream).rejects.toThrow(
         expect.objectContaining({
           stack: expect.stringMatching(/Timeout/)
         })
       );
       await vi.advanceTimersByTimeAsync(100);
-      await assertion;
+      await assertionPromise;
     });
 
     it('returns successful response when timeout is bigger than delay', async () => {
@@ -264,9 +265,9 @@ describe('orchestration service client', () => {
     });
 
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             config: {
               modules: {
                 prompt_templating: {
@@ -280,7 +281,7 @@ describe('orchestration service client', () => {
                         type: 'function',
                         function: {
                           ...addNumbersTool.function,
-                          strict: true // Will be tested
+                          strict: true
                         }
                       }
                     ],
@@ -289,7 +290,8 @@ describe('orchestration service client', () => {
                 }
               }
             }
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -297,12 +299,13 @@ describe('orchestration service client', () => {
       await client
         .bindTools([addNumbersTool], { strict: true })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             config: {
               modules: {
                 prompt_templating: {
@@ -316,7 +319,7 @@ describe('orchestration service client', () => {
                         type: 'function',
                         function: {
                           ...addNumbersTool.function,
-                          strict: false // Will be tested
+                          strict: false
                         }
                       }
                     ],
@@ -325,7 +328,8 @@ describe('orchestration service client', () => {
                 }
               }
             }
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -333,12 +337,13 @@ describe('orchestration service client', () => {
       await client
         .bindTools([addNumbersTool], { strict: false })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             config: {
               modules: {
                 prompt_templating: {
@@ -352,7 +357,7 @@ describe('orchestration service client', () => {
                         type: 'function',
                         function: {
                           ...addNumbersTool.function,
-                          strict: undefined // Will be tested
+                          strict: undefined
                         }
                       }
                     ],
@@ -361,12 +366,14 @@ describe('orchestration service client', () => {
                 }
               }
             }
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should not accumulate duplicate tools on repeated invocations (issue #1898)', async () => {
@@ -466,7 +473,10 @@ describe('orchestration service client', () => {
         endpoint
       );
 
-      vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        OrchestrationClient.prototype,
+        '_streamResponseChunks'
+      );
 
       const client = new OrchestrationClient(config, {
         streaming: true
@@ -478,7 +488,7 @@ describe('orchestration service client', () => {
       ]);
 
       expect(finalOutput).toMatchSnapshot();
-      expect(client._streamResponseChunks).toHaveBeenCalled();
+      expect(streamSpy).toHaveBeenCalled();
     });
 
     it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
@@ -505,7 +515,10 @@ describe('orchestration service client', () => {
         endpoint
       );
 
-      vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        OrchestrationClient.prototype,
+        '_streamResponseChunks'
+      );
 
       const client = new OrchestrationClient(config, {
         streaming: true,
@@ -522,7 +535,7 @@ describe('orchestration service client', () => {
       // Verify that no further chunks are present
       const trailingChunk = await stream.next();
       expect(trailingChunk.done).toBe(true);
-      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+      expect(streamSpy).not.toHaveBeenCalled();
     });
 
     it('should handle streaming and disabling streaming flags as expected', async () => {
@@ -618,9 +631,13 @@ describe('orchestration service client', () => {
       );
       let tokenCount = 0;
       const callbackHandler = {
-        handleLLMNewToken: vi.fn().mockImplementation(() => {
-          tokenCount += 1;
-        })
+        handleLLMNewToken: vi
+          .fn<
+            (token: string, idx: { prompt: number; completion: number }) => void
+          >()
+          .mockImplementation(() => {
+            tokenCount += 1;
+          })
       };
       const client = new OrchestrationClient(config, {
         callbacks: [callbackHandler]
@@ -705,7 +722,10 @@ describe('orchestration service client', () => {
       },
       endpoint
     );
-    vi.spyOn(OrchestrationClient.prototype, '_streamResponseChunks');
+    const streamSpy = vi.spyOn(
+      OrchestrationClient.prototype,
+      '_streamResponseChunks'
+    );
 
     const llm = new OrchestrationClient(config);
 
@@ -738,7 +758,7 @@ describe('orchestration service client', () => {
       // Empty
     }
 
-    expect(llm._streamResponseChunks).toHaveBeenCalled();
+    expect(streamSpy).toHaveBeenCalled();
   });
 
   describe('module fallback configs', () => {
@@ -1398,7 +1418,7 @@ describe('orchestration service client', () => {
     // `messageIdx` is passed in (rather than computed as `length - 1`) so the
     // assertion would fail if the implementation pinned the breakpoint to a
     // different message than the last one.
-    function expectCacheControlAt(
+    function assertCacheControlAt(
       messageIdx: number,
       expectedContent: string,
       expectedCacheControl: { type: string; ttl?: string }
@@ -1406,34 +1426,36 @@ describe('orchestration service client', () => {
       return (body: any): boolean => {
         const template =
           body?.config?.modules?.prompt_templating?.prompt?.template;
-        if (!Array.isArray(template) || messageIdx >= template.length) {
-          return false;
-        }
+        expect(Array.isArray(template)).toBe(true);
+        expect(template.length).toBeGreaterThan(messageIdx);
+
         const target = template[messageIdx];
-        if (target?.role !== 'user' || !Array.isArray(target.content)) {
-          return false;
-        }
-        const [block] = target.content;
-        const targetHasExpectedBreakpoint =
-          target.content.length === 1 &&
-          block?.type === 'text' &&
-          block.text === expectedContent &&
-          block.cache_control?.type === expectedCacheControl.type &&
-          block.cache_control?.ttl === expectedCacheControl.ttl;
+        expect(target).toMatchObject({
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: expectedContent,
+              cache_control: expectedCacheControl
+            }
+          ]
+        });
+        expect(target.content).toHaveLength(1);
 
         const otherMessagesHaveBreakpoint = template.some(
           (msg: any, idx: number) =>
             idx !== messageIdx && JSON.stringify(msg).includes('cache_control')
         );
+        expect(otherMessagesHaveBreakpoint).toBe(false);
 
-        return targetHasExpectedBreakpoint && !otherMessagesHaveBreakpoint;
+        return true;
       };
     }
 
     it('applies the cache_control breakpoint to the last user message in non-streaming requests', async () => {
-      mockInference(
+      const scope = mockInference(
         {
-          data: expectCacheControlAt(0, 'Hello!', {
+          data: assertCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
             ttl: '5m'
           })
@@ -1447,18 +1469,18 @@ describe('orchestration service client', () => {
         cache_control: { type: 'ephemeral', ttl: '5m' }
       });
       expect(response.content).toBeDefined();
+      expect(scope.isDone()).toBe(true);
     });
 
     it('omits cache_control from the request body when the option is not set', async () => {
-      mockInference(
+      const scope = mockInference(
         {
           data: (body: any) => {
             const template =
               body?.config?.modules?.prompt_templating?.prompt?.template;
-            return (
-              Array.isArray(template) &&
-              !JSON.stringify(template).includes('cache_control')
-            );
+            expect(Array.isArray(template)).toBe(true);
+            expect(JSON.stringify(template)).not.toContain('cache_control');
+            return true;
           }
         },
         { data: mockResponse, status: 200 },
@@ -1467,13 +1489,14 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config, { maxRetries: 0 });
       await client.invoke(messages);
+      expect(scope.isDone()).toBe(true);
     });
 
     it('moves the cache_control breakpoint to the new last message across successive invocations', async () => {
       // Turn 1: single user message — breakpoint at index 0.
-      mockInference(
+      const scope1 = mockInference(
         {
-          data: expectCacheControlAt(0, 'Hello!', {
+          data: assertCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
             ttl: '5m'
           })
@@ -1482,9 +1505,9 @@ describe('orchestration service client', () => {
         endpoint
       );
       // Turn 2: three messages — breakpoint advances to index 2.
-      mockInference(
+      const scope2 = mockInference(
         {
-          data: expectCacheControlAt(2, 'Follow-up.', {
+          data: assertCacheControlAt(2, 'Follow-up.', {
             type: 'ephemeral',
             ttl: '5m'
           })
@@ -1507,12 +1530,14 @@ describe('orchestration service client', () => {
         ],
         callOptions
       );
+      expect(scope1.isDone()).toBe(true);
+      expect(scope2.isDone()).toBe(true);
     });
 
     it('honors a 1h ttl in the cache_control breakpoint', async () => {
-      mockInference(
+      const scope = mockInference(
         {
-          data: expectCacheControlAt(0, 'Hello!', {
+          data: assertCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
             ttl: '1h'
           })
@@ -1525,12 +1550,13 @@ describe('orchestration service client', () => {
       await client.invoke(messages, {
         cache_control: { type: 'ephemeral', ttl: '1h' }
       });
+      expect(scope.isDone()).toBe(true);
     });
 
     it('applies the cache_control breakpoint on the streaming path', async () => {
-      mockInference(
+      const scope = mockInference(
         {
-          data: expectCacheControlAt(0, 'Hello!', {
+          data: assertCacheControlAt(0, 'Hello!', {
             type: 'ephemeral',
             ttl: '5m'
           })
@@ -1546,6 +1572,7 @@ describe('orchestration service client', () => {
       for await (const _chunk of stream) {
         // drain
       }
+      expect(scope.isDone()).toBe(true);
     });
   });
 });

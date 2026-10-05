@@ -1,5 +1,6 @@
-import type { SnapshotSerializer } from 'vitest';
 import { isErrorWithCause } from '@sap-cloud-sdk/util';
+
+import type { SnapshotSerializer } from 'vitest';
 
 export default {
   test(val) {
@@ -13,7 +14,7 @@ export default {
       'ErrorWithCause {',
       `${indent}"message": ${message},`,
       `${indent}"cause": ${cause},`,
-      `${indentation}}`,
+      `${indentation}}`
     ].join('\n');
-  },
+  }
 } satisfies SnapshotSerializer;

@@ -1,10 +1,7 @@
 {
-  "type": "module",
   "name": "@sap-ai-sdk/sample-code",
   "version": "2.14.0",
-  "private": "true",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "private": true,
   "bin": {
     "sap-ai-sdk-sample-server": "./dist/server.js"
   },
@@ -14,6 +11,9 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map"
   ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "start": "node src/server.ts",
     "local": "node --env-file-if-exists=.env src/server.ts",
@@ -25,24 +25,25 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@langchain/classic": "1.0.45",
-    "@langchain/core": "1.2.9",
-    "@langchain/langgraph": "1.4.13",
+    "@langchain/classic": "1.0.51",
+    "@langchain/core": "catalog:",
+    "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "1.1.4",
-    "@langchain/textsplitters": "1.0.1",
-    "@modelcontextprotocol/sdk": "1.30.0",
-    "@sap-cloud-sdk/resilience": "4.9.1",
-    "@sap-cloud-sdk/util": "4.9.1",
+    "@langchain/textsplitters": "1.0.2",
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "@sap-cloud-sdk/resilience": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:",
     "@types/express": "5.0.6",
     "express": "5.2.1",
-    "langchain": "1.5.10",
-    "openai": "7.4.0",
-    "zod": "4.4.3"
+    "langchain": "catalog:",
+    "openai": "7.25.0",
+    "ws": "8.22.0",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@modelcontextprotocol/server-github": "2025.4.8",
-    "@upstash/context7-mcp": "4.0.3",
     "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/context-registry": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
@@ -51,10 +52,13 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
-    "hyparquet-writer": "0.16.6"
+    "@types/ws": "8.18.2",
+    "@upstash/context7-mcp": "4.1.1",
+    "hyparquet-writer": "0.16.10"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
+    "@sap-ai-sdk/context-registry": "*",
     "@sap-ai-sdk/document-grounding": "*",
     "@sap-ai-sdk/foundation-models": "*",
     "@sap-ai-sdk/langchain": "*",

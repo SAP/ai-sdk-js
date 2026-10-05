@@ -52,6 +52,8 @@ export * from './get-pipeline-execution-by-id.js';
 export * from './document-status.js';
 export * from './documents-status-response.js';
 export * from './pipeline-document-response.js';
+export * from './presigned-url-request.js';
+export * from './presigned-url-response.js';
 export * from './search-pipeline.js';
 export * from './search-pipelines-response.js';
 export * from './pipeline-minimal-response.js';

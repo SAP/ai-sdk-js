@@ -18,6 +18,17 @@ const logger = createLogger({
   messageContext: 'context'
 });
 
+// Default HTTP agent socket timeout for AI Core requests (1,200s + 1s leeway), overriding the
+// Cloud SDK default of 5s, which is too short for chat/streaming completions.
+const DEFAULT_AGENT_TIMEOUT = 1_200_000 + 1e3;
+
+// Disabled so the long timeout above does not keep stale pooled sockets alive past
+// a load balancer's idle timeout, which would cause ECONNRESET on reuse.
+// TODO: revisit if we switch HTTP library (e.g. undici / a fetch adapter), which can
+// isolate the idle free-socket timeout from the active-request timeout and make
+// keep-alive safe here.
+const DEFAULT_AGENT_KEEP_ALIVE = false;
+
 let aiCoreServiceBinding: Service | undefined;
 
 /**
@@ -63,7 +74,14 @@ export async function getAiCoreDestination(
       useCache: true
     }
   )) as HttpDestination;
-  return aiCoreDestination;
+  return {
+    ...aiCoreDestination,
+    agentOptions: {
+      keepAlive: DEFAULT_AGENT_KEEP_ALIVE,
+      timeout: DEFAULT_AGENT_TIMEOUT,
+      ...aiCoreDestination.agentOptions
+    }
+  };
 }
 
 function getAiCoreServiceKeyFromEnv(): Service | undefined {

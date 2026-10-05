@@ -3,20 +3,20 @@
     {
       "executableId": "aicore-mistralai(SAP-hosted)",
       "model": "mistralai--mistral-large-instruct",
-      "version": "2407 (latest)",
+      "version": "2407",
       "availableInOrchestration": "yes",
-      "deprecated": "",
-      "retirementDate": "not earlier than 2026-09-30",
-      "suggestedReplacement": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-10-30",
+      "suggestedReplacement": "mistralai--mistral-medium",
       "retired": ""
     },
     {
       "executableId": "",
       "model": "mistralai--mistral-small-instruct",
-      "version": "2503 (latest)",
+      "version": "2503",
       "availableInOrchestration": "yes",
       "deprecated": "Yes",
-      "retirementDate": "not earlier than 2026-09-30",
+      "retirementDate": "2026-12-31",
       "suggestedReplacement": "mistralai--mistral-small",
       "retired": ""
     },
@@ -25,9 +25,9 @@
       "model": "mistralai--mistral-medium-instruct",
       "version": "2505 (latest)",
       "availableInOrchestration": "yes",
-      "deprecated": "",
-      "retirementDate": "not earlier than 2026-09-30",
-      "suggestedReplacement": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-11-30",
+      "suggestedReplacement": "mistralai--mistral-medium",
       "retired": ""
     },
     {
@@ -36,67 +36,67 @@
       "version": "2603",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "not earlier than 2026-12-31",
+      "retirementDate": "2027-03-31 or later",
       "suggestedReplacement": "",
       "retired": ""
     },
     {
       "executableId": "aicore-nvidia (SAP-managed)",
       "model": "nvidia--llama-3.2-nv-embedqa-1b",
-      "version": "2 (latest)",
+      "version": "2",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "not earlier than 2026-09-30",
+      "retirementDate": "2026-12-31 or later",
       "suggestedReplacement": "",
       "retired": ""
     },
     {
       "executableId": "aicore-cohere (SAP-hosted)",
       "model": "cohere--command-a-reasoning",
-      "version": "2508 (latest)",
+      "version": "2508",
       "availableInOrchestration": "yes",
-      "deprecated": "",
-      "retirementDate": "not earlier than 2026-08-30",
+      "deprecated": "Yes",
+      "retirementDate": "2026-10-30",
       "suggestedReplacement": "",
       "retired": ""
     },
     {
       "executableId": "",
       "model": "cohere-reranker",
-      "version": "3.5 (latest)",
+      "version": "3.5",
       "availableInOrchestration": "",
       "deprecated": "",
-      "retirementDate": "not earlier than 2026-09-30",
+      "retirementDate": "2026-12-31 or later",
       "suggestedReplacement": "",
       "retired": ""
     },
     {
       "executableId": "",
       "model": "sap-rpt-1-small",
-      "version": "1 (latest)",
+      "version": "1",
       "availableInOrchestration": "",
-      "deprecated": "",
-      "retirementDate": "not earlier than 2026-12-31",
-      "suggestedReplacement": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-12-31",
+      "suggestedReplacement": "sap-rpt-1.6",
       "retired": ""
     },
     {
       "executableId": "aicore-sap (SAP-hosted)",
       "model": "sap-rpt-1-large",
-      "version": "1 (latest)",
+      "version": "1",
       "availableInOrchestration": "",
-      "deprecated": "",
-      "retirementDate": "not earlier than 2026-12-31",
-      "suggestedReplacement": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-12-31",
+      "suggestedReplacement": "sap-rpt-1.6-large",
       "retired": ""
     },
     {
       "executableId": "aicore-sap (SAP-hosted)",
       "model": "sap-abap-1",
       "version": "1 (latest)",
-      "availableInOrchestration": "yes(orchestration-only)",
+      "availableInOrchestration": "yes (orchestration-only)",
       "deprecated": "",
-      "retirementDate": "not earlier than 2026-08-30",
+      "retirementDate": "2026-10-30",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -276,7 +276,7 @@
       "version": "1 (latest)",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "not earlier than 2027-04-15",
+      "retirementDate": "2028-02-09",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -286,7 +286,7 @@
       "version": "1 (latest)",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "not earlier than 2027-04-15",
+      "retirementDate": "2028-02-09",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -296,8 +296,8 @@
       "version": "2 (latest)",
       "availableInOrchestration": "yes",
       "deprecated": "yes",
-      "retirementDate": "not earlier than 2027-04-15",
-      "suggestedReplacement": "text-embedding-3-small, text-embedding-3-large",
+      "retirementDate": "2028-02-09",
+      "suggestedReplacement": "",
       "retired": ""
     },
     {
@@ -306,8 +306,8 @@
       "version": "2024-11-20",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-10-01",
-      "suggestedReplacement": "gpt-5",
+      "retirementDate": "2027-04-14",
+      "suggestedReplacement": "gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna",
       "retired": ""
     },
     {
@@ -316,8 +316,8 @@
       "version": "2024-07-18",
       "availableInOrchestration": "yes",
       "deprecated": "yes",
-      "retirementDate": "2026-10-01",
-      "suggestedReplacement": "gpt-5-mini",
+      "retirementDate": "2027-04-14",
+      "suggestedReplacement": "gpt-5.6-terra, gpt-5.6-luna",
       "retired": ""
     },
     {
@@ -326,7 +326,7 @@
       "version": "2025-04-14",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-10-14",
+      "retirementDate": "2027-04-14",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -336,7 +336,7 @@
       "version": "2025-04-14",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-10-14",
+      "retirementDate": "2027-04-14",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -346,7 +346,7 @@
       "version": "2025-04-14",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-10-14",
+      "retirementDate": "2027-04-14",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -356,7 +356,7 @@
       "version": "2025-08-07",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "No current plans for retirement",
+      "retirementDate": "2027-02-09",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -366,7 +366,7 @@
       "version": "2025-11-13 (latest)",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-05-15",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -376,7 +376,7 @@
       "version": "2025-08-07",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "No current plans for retirement",
+      "retirementDate": "2027-02-09",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -386,7 +386,7 @@
       "version": "2025-08-07",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "No current plans for retirement",
+      "retirementDate": "2027-02-09",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -396,7 +396,7 @@
       "version": "2025-12-11",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "No current plans for retirement",
+      "retirementDate": "2027-06-08",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -406,7 +406,7 @@
       "version": "2026-02-24",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-08-24",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -416,17 +416,7 @@
       "version": "2026-03-05",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "",
-      "suggestedReplacement": "",
-      "retired": ""
-    },
-    {
-      "executableId": "azure-openai (Azure)",
-      "model": "gpt-5.4-nano",
-      "version": "2026-03-17",
-      "availableInOrchestration": "yes",
-      "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-09-02",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -436,7 +426,7 @@
       "version": "2026-04-24",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-10-26",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -446,7 +436,7 @@
       "version": "2025-08-28",
       "availableInOrchestration": "",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-03-02",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -456,8 +446,8 @@
       "version": "2024-12-17",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-07-15",
-      "suggestedReplacement": "",
+      "retirementDate": "2026-11-19",
+      "suggestedReplacement": "gpt-5.6-sol",
       "retired": ""
     },
     {
@@ -466,8 +456,8 @@
       "version": "2025-01-31",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-08-02",
-      "suggestedReplacement": "",
+      "retirementDate": "2026-11-19",
+      "suggestedReplacement": "gpt-5.6-terra",
       "retired": ""
     },
     {
@@ -476,8 +466,8 @@
       "version": "2025-04-16",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-10-16",
-      "suggestedReplacement": "",
+      "retirementDate": "2026-11-19",
+      "suggestedReplacement": "gpt-5.6-sol",
       "retired": ""
     },
     {
@@ -486,8 +476,8 @@
       "version": "2025-04-16",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "2026-10-16",
-      "suggestedReplacement": "",
+      "retirementDate": "2026-11-19",
+      "suggestedReplacement": "gpt-5.6-terra",
       "retired": ""
     },
     {
@@ -495,9 +485,9 @@
       "model": "gemini-2.5-flash",
       "version": "001 (latest)",
       "availableInOrchestration": "yes",
-      "deprecated": "",
-      "retirementDate": "2026-10-16",
-      "suggestedReplacement": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-10-20",
+      "suggestedReplacement": "gemini-3.5-flash-lite",
       "retired": ""
     },
     {
@@ -512,12 +502,22 @@
     },
     {
       "executableId": "gcp-vertexai (Google)",
-      "model": "gemini-2.5-flash-lite",
+      "model": "gemini-3.8-flash",
       "version": "001 (latest)",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "No current plans for retirement",
+      "retirementDate": "",
       "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "gcp-vertexai (Google)",
+      "model": "gemini-2.5-flash-lite",
+      "version": "001 (latest)",
+      "availableInOrchestration": "yes",
+      "deprecated": "Yes",
+      "retirementDate": "2026-10-20",
+      "suggestedReplacement": "gemini-3.5-flash-lite",
       "retired": ""
     },
     {
@@ -526,7 +526,7 @@
       "version": "001",
       "availableInOrchestration": "",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-03-15",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -535,9 +535,9 @@
       "model": "gemini-2.5-pro",
       "version": "001 (latest)",
       "availableInOrchestration": "yes",
-      "deprecated": "",
-      "retirementDate": "2026-10-16",
-      "suggestedReplacement": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-10-20",
+      "suggestedReplacement": "gemini-3.5-flash",
       "retired": ""
     },
     {
@@ -546,7 +546,7 @@
       "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-05-07",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -566,7 +566,7 @@
       "version": "001",
       "availableInOrchestration": "",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-05-28",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -576,7 +576,7 @@
       "version": "001",
       "availableInOrchestration": "",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-05-28",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -598,16 +598,6 @@
       "deprecated": "",
       "retirementDate": "",
       "suggestedReplacement": "mistralai--mistral-small-instruct",
-      "retired": "yes"
-    },
-    {
-      "executableId": "azure-openai (Azure)",
-      "model": "gpt-35-turbo",
-      "version": "0613",
-      "availableInOrchestration": "",
-      "deprecated": "",
-      "retirementDate": "",
-      "suggestedReplacement": "gpt-4o-mini",
       "retired": "yes"
     },
     {
@@ -869,6 +859,136 @@
       "retirementDate": "",
       "suggestedReplacement": "mistralai--mistral-medium-instruct",
       "retired": "yes"
+    },
+    {
+      "executableId": "",
+      "model": "mistralai--mistral-medium",
+      "version": "3.5",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "2027-03-31 or later",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "aicore-sap (SAP-hosted)",
+      "model": "sap-rpt-1.5",
+      "version": "1",
+      "availableInOrchestration": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-12-31",
+      "suggestedReplacement": "sap-rpt-1.6",
+      "retired": ""
+    },
+    {
+      "executableId": "aicore-sap (SAP-hosted)",
+      "model": "sap-rpt-1.5-large",
+      "version": "1",
+      "availableInOrchestration": "",
+      "deprecated": "Yes",
+      "retirementDate": "2026-12-31",
+      "suggestedReplacement": "sap-rpt-1.6-large",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-5.6-sol",
+      "version": "2026-07-09",
+      "availableInOrchestration": "yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-5.6-terra",
+      "version": "2026-07-09",
+      "availableInOrchestration": "yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-5.6-luna",
+      "version": "2026-07-09",
+      "availableInOrchestration": "yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "",
+      "model": "gemini-embedding-2",
+      "version": "001",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "aicore-sap (SAP-hosted)",
+      "model": "sap-rpt-1.6",
+      "version": "1",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "2027-03-31 or later",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "aicore-sap (SAP-hosted)",
+      "model": "sap-rpt-1.6-large",
+      "version": "1",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "2027-03-31 or later",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "gcp-vertexai (Google)",
+      "model": "gemini-3.5-flash-lite",
+      "version": "001",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "2027-07-21",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "",
+      "model": "cohere-rerank-pro",
+      "version": "4",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "2027-03-31 or later",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "prior-labs (SAP-hosted)",
+      "model": "tabpfn-3.5-plus",
+      "version": "2609",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "2027-03-31 or later",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-5.4-nano",
+      "version": "2026-03-17",
+      "availableInOrchestration": "yes",
+      "deprecated": "",
+      "retirementDate": "2027-09-21",
+      "suggestedReplacement": "",
+      "retired": ""
     }
   ],
   "batchModels": [
