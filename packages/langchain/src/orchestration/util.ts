@@ -423,21 +423,6 @@ function buildContentBlocks(
     : reasoningBlocks;
 }
 
-function buildStreamingContentBlocks(
-  deltaReasoning: string[] | undefined,
-  deltaText: string | null | undefined
-): string | (ContentBlock.Reasoning | ContentBlock.Text)[] {
-  if (!deltaReasoning?.length) {
-    return deltaText ?? '';
-  }
-  const reasoningBlocks: ContentBlock.Reasoning[] = deltaReasoning.map(
-    (r, index) => ({ type: 'reasoning' as const, reasoning: r, index })
-  );
-  return deltaText
-    ? [...reasoningBlocks, { type: 'text' as const, text: deltaText }]
-    : reasoningBlocks;
-}
-
 /**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
@@ -522,13 +507,8 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
   chunk: OrchestrationStreamChunkResponse
 ): AIMessageChunk {
   const choice = chunk._data.final_result?.choices[0];
-  const deltaText = chunk.getDeltaContent() ?? '';
+  const content = chunk.getDeltaContent() ?? '';
   const deltaReasoning = chunk.getDeltaReasoningContent();
-  const deltaReasoningBlocks = choice?.delta.reasoning_content;
-  const content = buildStreamingContentBlocks(
-    deltaReasoning,
-    deltaText || null
-  );
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
@@ -536,9 +516,7 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
     additional_kwargs: {
       // TODO: Fix duplicated intermediate results when using concat() method for streaming chunks.
       intermediate_results: chunk._data.intermediate_results,
-      ...(deltaReasoningBlocks?.length && {
-        reasoning_content: deltaReasoningBlocks
-      })
+      ...(deltaReasoning?.length && { reasoning_content: deltaReasoning })
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)

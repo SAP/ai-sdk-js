@@ -927,23 +927,17 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     });
   });
 
-  it('surfaces delta reasoning content as typed blocks in the chunk', () => {
+  it('surfaces delta reasoning content as string[] in additional_kwargs, content stays plain string', () => {
     const mockChunk = createMockChunk('The answer.', undefined, undefined);
     vi.spyOn(mockChunk, 'getDeltaReasoningContent').mockReturnValue([
       'Let me think.'
     ]);
-    mockChunk._data.final_result!.choices[0].delta.reasoning_content = [
-      { content: 'Let me think.', signature: 'sig-abc' }
-    ];
 
     const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
 
-    expect(result.content).toEqual([
-      { type: 'reasoning', reasoning: 'Let me think.', index: 0 },
-      { type: 'text', text: 'The answer.' }
-    ]);
+    expect(result.content).toBe('The answer.');
     expect(result.additional_kwargs.reasoning_content).toEqual([
-      { content: 'Let me think.', signature: 'sig-abc' }
+      'Let me think.'
     ]);
   });
 
