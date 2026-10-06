@@ -645,7 +645,7 @@ export async function invokeMcpToolChain(): Promise<string> {
     { maxRetries: 0 }
   );
 
-  const tools = await mcpClient.getTools();
+  const tools = await mcpClient.listTools();
 
   const messages: BaseMessage[] = [
     new HumanMessage('What is the weather like in Berlin?')
