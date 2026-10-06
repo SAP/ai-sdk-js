@@ -49,7 +49,8 @@ import {
   invokeDynamicModelAgent,
   invokePromptCachingAgent,
   invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
-  streamReasoningOrchestration
+  streamReasoningOrchestration,
+  invokeReasoningStreamConcat as invokeReasoningStreamConcatOrchestration
 } from './langchain-orchestration.ts';
 import {
   listBatches,
@@ -1086,20 +1087,24 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
       if (!connectionAlive) {
         break;
       }
-      for (const block of chunk.contentBlocks) {
-        if (block.type === 'reasoning') {
-          if (!inReasoning) {
-            res.write('[reasoning]\n');
-            inReasoning = true;
-          }
-          res.write(block.reasoning);
-        } else if (block.type === 'text') {
-          if (inReasoning) {
-            res.write('\n\n[answer]\n');
-            inReasoning = false;
-          }
-          res.write(block.text);
+      const deltaReasoning = chunk.additional_kwargs.reasoning_content as
+        | string[]
+        | undefined;
+      if (deltaReasoning?.length) {
+        if (!inReasoning) {
+          res.write('[reasoning]\n');
+          inReasoning = true;
         }
+        deltaReasoning.forEach(block => res.write(block));
+      }
+      const deltaText =
+        typeof chunk.content === 'string' ? chunk.content : '';
+      if (deltaText) {
+        if (inReasoning) {
+          res.write('\n\n[answer]\n');
+          inReasoning = false;
+        }
+        res.write(deltaText);
       }
       finalResult = finalResult ? finalResult.concat(chunk) : chunk;
     }
@@ -1118,6 +1123,23 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
     res.end();
   }
 });
+
+app.get(
+  '/langchain/invoke-reasoning-stream-concat-orchestration',
+  async (req, res) => {
+    try {
+      const result = await invokeReasoningStreamConcatOrchestration();
+      let response = '--- Streamed + concat() ---\n\n';
+      response += `Reasoning:\n${result.reasoning || '(none)'}\n\n`;
+      response += `Answer:\n${result.text}\n\n`;
+      response += `Content blocks (raw):\n${result.contentBlocks}\n\n`;
+      response += `Reasoning tokens: ${result.reasoningTokens}\n`;
+      res.header('Content-Type', 'text/plain').send(response);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 /* Document Grounding */
 app.get(

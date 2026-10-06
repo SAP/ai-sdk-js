@@ -802,6 +802,36 @@ export async function invokeReasoningMultiTurn(): Promise<string> {
 }
 
 /**
+ * Streams a reasoning model response, accumulates all chunks with {@link AIMessageChunk.concat},
+ * and returns the final merged message shape. This demonstrates that streaming reasoning deltas
+ * kept in {@link AIMessageChunk.additional_kwargs.reasoning_content} survive chunk aggregation
+ * without index collisions.
+ * @returns The aggregated reasoning string, answer text, raw content blocks, and reasoning token count.
+ */
+export async function invokeReasoningStreamConcat(): Promise<{
+  text: string;
+  reasoning: string;
+  contentBlocks: string;
+  reasoningTokens: number;
+}> {
+  const stream = await streamReasoningOrchestration();
+  let finalResult: AIMessageChunk | undefined;
+  for await (const chunk of stream) {
+    finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+  }
+  const msg = finalResult!;
+  const reasoningDeltas = msg.additional_kwargs.reasoning_content as
+    | string[]
+    | undefined;
+  return {
+    text: extractText(msg.content),
+    reasoning: reasoningDeltas?.join('') ?? '',
+    contentBlocks: JSON.stringify(msg.content),
+    reasoningTokens: msg.usage_metadata?.output_token_details?.reasoning ?? 0
+  };
+}
+
+/**
  * Streams a reasoning model response via LangChain orchestration client.
  * Emits reasoning blocks and text blocks as they arrive.
  * @param controller - Optional abort controller.
