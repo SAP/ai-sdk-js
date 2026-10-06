@@ -1097,8 +1097,7 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
         }
         deltaReasoning.forEach(block => res.write(block));
       }
-      const deltaText =
-        typeof chunk.content === 'string' ? chunk.content : '';
+      const deltaText = typeof chunk.content === 'string' ? chunk.content : '';
       if (deltaText) {
         if (inReasoning) {
           res.write('\n\n[answer]\n');
