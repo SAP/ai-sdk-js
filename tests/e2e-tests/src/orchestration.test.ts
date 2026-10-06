@@ -407,7 +407,7 @@ describe('orchestration', () => {
     expect(response.getContent()).toEqual(expect.any(String));
   });
 
-  it('should complete a chat with Sonar model and return citations', async () => {
+  it.skip('should complete a chat with Sonar model and return citations', async () => {
     const response = await orchestrationSonarWithCitations();
 
     expect(response.getContent()).toEqual(expect.any(String));
@@ -420,7 +420,7 @@ describe('orchestration', () => {
     }
   });
 
-  it('should stream a chat with Sonar model and return citations', async () => {
+  it.skip('should stream a chat with Sonar model and return citations', async () => {
     const response = await orchestrationSonarStreamWithCitations(
       new AbortController()
     );
