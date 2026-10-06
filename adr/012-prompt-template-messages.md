@@ -141,6 +141,26 @@ const resp2 = await client.chatCompletion({
 **Tradeoff**: Preserves the SDK's config-artifact abstraction.
 But the two sites where the `prompt` field can live add complexity — callers must understand which site to use and when.
 
+### Option C — two-client split
+
+Option C separates the single `OrchestrationClient` into two classes with distinct purposes.
+
+`OrchestrationClient` serves single-turn use and manually-managed multi-turn.
+Its API follows Option B: the constructor accepts an optional fixed `prompt`, and `chatCompletion()` accepts `messagesHistory` and an optional per-call `prompt`.
+The caller is fully responsible for history.
+There is no hidden routing.
+
+`OrchestrationConversation` is explicitly designed for multi-turn conversations.
+It wraps `OrchestrationClient` and manages history automatically after each call.
+The constructor accepts the same config and an optional fixed `prompt`, locked for the lifetime of the conversation.
+`chatCompletion()` accepts only the current user turn (as `prompt`) and placeholder values — `messagesHistory` is not exposed.
+The class exposes `getHistory()` for read-only inspection and persistence, and `reset()` to start a new conversation on the same client.
+
+**Tradeoff**: The use case is explicit at instantiation time, so the routing ambiguity this ADR addresses does not arise for `OrchestrationConversation`.
+`OrchestrationClient` has no hidden routing because it has no auto-history at all.
+The cost is an additional public class and a larger API surface.
+History auto-management also introduces a statefulness constraint: a single `OrchestrationConversation` instance cannot safely be shared across concurrent calls.
+
 ## How Java and Python handle this
 
 Neither sibling SDK reproduces the TS design of a `messages` current turn plus a constructor template plus hidden rerouting.
