@@ -1,4 +1,5 @@
 <!-- vale off -->
+
 # Prompt Template Message Routing
 
 ## Status
@@ -29,7 +30,7 @@ The SDK routes it automatically in the outgoing request:
 - to the `messages_history` field — with a `TemplateRef` reference or a complete config reference, because the template is defined server-side and cannot be extended inline.
 
 Config references are single-turn only.
-The API cannot express a config reference plus a current user turn in a single call without reconstructing the stored config client-side, which defeats the purpose of referencing it.
+The API cannot express a config reference plus a current user turn in a single call without reconstructing the stored config client-side or misusing config overrides, which defeats the purpose of referencing it.
 Multi-turn conversations must use a local template or a `TemplateRef`.
 
 ### Routing consequences
@@ -62,12 +63,22 @@ tbd
 
 ## Options
 
-Both options share the same core change to the `chatCompletion()` method:
+Both options share the same core changes to the `chatCompletion()` method:
 
 - The `messages` field is removed from the `ChatCompletionRequest` type.
 - The `chatCompletion()` method gains a `prompt?: Xor<PromptTemplate, TemplateRef>` field.
 - The `messagesHistory` parameter is unchanged.
 - Passing a `prompt: TemplateRef` value alongside anything that would require merging inline messages into the template throws an error, because the SDK cannot modify a remote template.
+
+### Config references
+
+`OrchestrationConfigRef` remains a valid constructor argument under both options, as a mutually exclusive overload — it cannot be combined with a `prompt` or module config.
+`overrideConfig` stays on the config ref and is fixed for the client's lifetime.
+
+Config references are single-turn by nature: the stored artifact defines the full template and cannot be extended client-side.
+When the constructor holds a config ref, `chatCompletion()` accepts `messagesHistory` and `placeholderValues` but no per-call `prompt`.
+This is enforced by a generic type parameter inferred from the constructor argument (narrowing `chatCompletion()`'s signature) and a runtime throw as a safety net.
+Multi-turn conversations must use a local template or a `TemplateRef` instead.
 
 The options differ in whether the `prompt` field is also allowed in the constructor.
 
@@ -80,23 +91,45 @@ Both options require migrating it to route its combined list through `messagesHi
 ### Option A — `prompt` at request level only
 
 The `prompt` field is removed from the constructor.
-The constructor accepts only model parameters and pipeline module config (filtering, masking, grounding, translation).
+The constructor accepts either a config ref or module parameters and pipeline module config (filtering, masking, grounding, translation) — no `prompt`.
 Every call to the `chatCompletion()` method that needs a template or ref supplies it inline via the `prompt` field.
+
+**Local template**:
 
 ```ts
 const client = new OrchestrationClient({
-  promptTemplating: {
-    model: { name: 'anthropic--claude-4.5-haiku' }
-  }
+  promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } }
 });
 
 const resp = await client.chatCompletion({
   prompt: {
     template: [
+      // Turn 0
       { role: 'system', content: 'You are a helpful assistant.' },
+      // Turn 1+
       { role: 'user', content: 'What is the capital of France?' }
     ]
   }
+});
+```
+
+**Remote template (TemplateRef)**:
+
+```ts
+const client = new OrchestrationClient({
+  promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } }
+});
+
+const resp1 = await client.chatCompletion({
+  // Turn 0
+  prompt: { template_ref: { id: 'my-system-prompt' } }
+});
+const res2 = await client.chatCompletion({
+  messagesHistory: resp1.getAllMessages(),
+  template: [
+    // Turn 1+
+    { role: 'user', content: 'What is the capital of France?' }
+  ]
 });
 ```
 
@@ -104,6 +137,7 @@ const resp = await client.chatCompletion({
 But it drops the SDK abstraction where a client instance maps 1:1 to a stored orchestration **configuration artifact** — the same `module_configurations` block that can be stored and referenced on the server.
 All module-level settings are fixed for the client's lifetime, and per-call arguments are layered on top (mirroring `adr/003-history-maintenance.md`: one client = one conversation = one configuration context).
 Under Option A, callers must supply the template on the first call or manage it themselves.
+The constructor shapes for a local/remote template and a config ref look similar — the distinction only appears at the `chatCompletion()` call site.
 
 ### Option B — `prompt` in both constructor and request
 
@@ -112,24 +146,29 @@ The `chatCompletion()` method also gains a `prompt?` parameter.
 Setting the constructor `prompt` field and request `prompt` field both at once throws an error when one of them is a remote template, because the SDK cannot merge into a remote template.
 The constructor prompt will be prepended to the `messages_history` field.
 
+The constructor has three mutually exclusive shapes: a config ref, a module config with an optional `prompt`, or a module config with no `prompt`.
+
+**Local template** (constructor `prompt` + per-call `prompt`):
+
 ```ts
 const client = new OrchestrationClient({
   promptTemplating: {
     model: { name: 'anthropic--claude-4.5-haiku' },
     prompt: {
+      // Turn 0
       template: [{ role: 'system', content: 'You are a helpful assistant.' }]
     }
   }
 });
 
-// Turn 1 — constructor template is merged with the per-call prompt on the first request
+// Turn 1
 const resp1 = await client.chatCompletion({
   prompt: {
     template: [{ role: 'user', content: 'What is the capital of France?' }]
   }
 });
 
-// Turn 2+ — use messagesHistory; no prompt needed
+// Turn 2+
 const resp2 = await client.chatCompletion({
   messagesHistory: resp1.getAllMessages(),
   prompt: {
@@ -138,28 +177,24 @@ const resp2 = await client.chatCompletion({
 });
 ```
 
+**Remote template (TemplateRef)** (constructor `prompt` only; per-call `prompt` would conflict):
+
+```ts
+const client = new OrchestrationClient({
+  promptTemplating: {
+    model: { name: 'anthropic--claude-4.5-haiku' },
+    prompt: { template_ref: { id: 'my-system-prompt' } }
+  }
+});
+
+const resp = await client.chatCompletion({
+  placeholderValues: { user_input: 'What is the capital of France?' }
+});
+```
+
 **Tradeoff**: Preserves the SDK's config-artifact abstraction.
-But the two sites where the `prompt` field can live add complexity — callers must understand which site to use and when.
-
-### Option C — two-client split
-
-Option C separates the single `OrchestrationClient` into two classes with distinct purposes.
-
-`OrchestrationClient` serves single-turn use and manually-managed multi-turn.
-Its API follows Option B: the constructor accepts an optional fixed `prompt`, and `chatCompletion()` accepts `messagesHistory` and an optional per-call `prompt`.
-The caller is fully responsible for history.
-There is no hidden routing.
-
-`OrchestrationConversation` is explicitly designed for multi-turn conversations.
-It wraps `OrchestrationClient` and manages history automatically after each call.
-The constructor accepts the same config and an optional fixed `prompt`, locked for the lifetime of the conversation.
-`chatCompletion()` accepts only the current user turn (as `prompt`) and placeholder values — `messagesHistory` is not exposed.
-The class exposes `getHistory()` for read-only inspection and persistence, and `reset()` to start a new conversation on the same client.
-
-**Tradeoff**: The use case is explicit at instantiation time, so the routing ambiguity this ADR addresses does not arise for `OrchestrationConversation`.
-`OrchestrationClient` has no hidden routing because it has no auto-history at all.
-The cost is an additional public class and a larger API surface.
-History auto-management also introduces a statefulness constraint: a single `OrchestrationConversation` instance cannot safely be shared across concurrent calls.
+But three constructor shapes exist — config ref, module config with `prompt`, and module config without — and callers must understand which site to use for `prompt` and when.
+The TemplateRef and config ref shapes look identical at the `chatCompletion()` call site; the distinction lives in the constructor.
 
 ## How Java and Python handle this
 
