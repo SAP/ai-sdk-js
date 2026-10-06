@@ -23,8 +23,10 @@ jobs:
             .github/actions
             .changeset
             pnpm-workspace.yaml
-            package.json
             pnpm-lock.yaml
+            package.json
+            **/package.json
+          sparse-checkout-cone-mode: false
           skip-build: 'true'
       - name: Collect changed files
         id: changed-files

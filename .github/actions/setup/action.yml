@@ -30,6 +30,9 @@ inputs:
   sparse-checkout:
     description: 'Paths for sparse checkout, one per line. If empty, full checkout is performed.'
     default: ''
+  sparse-checkout-cone-mode:
+    description: 'Whether to enable cone mode for sparse checkout'
+    default: ''
 
 runs:
   using: 'composite'
@@ -42,6 +45,7 @@ runs:
         token: ${{ inputs.token }}
         persist-credentials: ${{ inputs.persist-credentials }}
         sparse-checkout: ${{ inputs.sparse-checkout }}
+        sparse-checkout-cone-mode: ${{ inputs.sparse-checkout-cone-mode }}
     - name: Checkout repository
       if: ${{ inputs.sparse-checkout == '' }}
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

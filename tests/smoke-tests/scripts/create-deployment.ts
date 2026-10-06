@@ -1,6 +1,7 @@
 /* oxlint-disable no-console */
-import { execFile } from 'node:child_process';
+
 import {
+  access,
   copyFile,
   mkdtempDisposable,
   readFile,
@@ -8,9 +9,8 @@ import {
 } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
-import { promisify } from 'node:util';
 
-const pExecFile = promisify(execFile);
+import { x } from 'tinyexec';
 
 const workspaceRoot = resolve(import.meta.dirname, '..', '..', '..');
 const appDir = resolve(import.meta.dirname, '..');
@@ -23,7 +23,7 @@ const deployDir = resolve(tmpDir.path, 'deploy');
 console.log(`Temp dir: ${tmpDir.path}`);
 
 console.log('Running pnpm deploy...');
-const deployResult = await pExecFile(
+const deployResult = await x(
   'pnpm',
   [
     '--filter',
@@ -33,7 +33,7 @@ const deployResult = await pExecFile(
     '--prod',
     deployDir
   ],
-  { cwd: workspaceRoot }
+  { throwOnError: true, nodeOptions: { cwd: workspaceRoot } }
 );
 if (deployResult.stdout) {
   console.log(deployResult.stdout);
@@ -41,6 +41,9 @@ if (deployResult.stdout) {
 if (deployResult.stderr) {
   console.error(deployResult.stderr);
 }
+await access(
+  resolve(deployDir, 'node_modules', '.bin', 'sap-ai-sdk-sample-server')
+);
 
 console.log('Writing .npmrc...');
 await writeFile(resolve(deployDir, '.npmrc'), 'ignore-scripts=true\n');
@@ -76,7 +79,10 @@ await writeFile(
 );
 
 console.log(`Running cf push from ${tmpDir.path}...`);
-const cfResult = await pExecFile('cf', ['push'], { cwd: tmpDir.path });
+const cfResult = await x('cf', ['push'], {
+  throwOnError: true,
+  nodeOptions: { cwd: tmpDir.path }
+});
 if (cfResult.stdout) {
   console.log(cfResult.stdout);
 }
