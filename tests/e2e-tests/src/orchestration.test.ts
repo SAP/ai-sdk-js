@@ -173,7 +173,10 @@ describe('orchestration', () => {
     assertContent(response);
   });
 
-  // Skipped: until sonar migration to Agent API is done
+  // Skipped: ZDR (Zero Data Retention) is enabled on this tenant, which blocks binary file
+  // content embedded in requests. No model can receive base64 file_data under ZDR.
+  // TODO: Re-enable once ZDR restrictions are lifted or a ZDR-compatible file upload path exists.
+  // oxlint-disable-next-line vitest/no-disabled-tests
   it.skip('should complete a chat with a DOCX file', async () => {
     const response = await orchestrationChatCompletionDocxFile();
     assertContent(response);
@@ -408,7 +411,7 @@ describe('orchestration', () => {
     expect(response.getContent()).toEqual(expect.any(String));
   });
 
-  it.skip('should complete a chat with Sonar model and return citations', async () => {
+  it('should complete a chat with Sonar model and return citations', async () => {
     const response = await orchestrationSonarWithCitations();
 
     expect(response.getContent()).toEqual(expect.any(String));
@@ -421,7 +424,7 @@ describe('orchestration', () => {
     }
   });
 
-  it.skip('should stream a chat with Sonar model and return citations', async () => {
+  it('should stream a chat with Sonar model and return citations', async () => {
     const response = await orchestrationSonarStreamWithCitations(
       new AbortController()
     );
