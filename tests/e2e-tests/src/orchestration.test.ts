@@ -173,7 +173,8 @@ describe('orchestration', () => {
     assertContent(response);
   });
 
-  it('should complete a chat with a DOCX file', async () => {
+  // Skipped: until sonar migration to Agent API is done
+  it.skip('should complete a chat with a DOCX file', async () => {
     const response = await orchestrationChatCompletionDocxFile();
     assertContent(response);
   }, 60_000);
