@@ -4,7 +4,7 @@
 
 ## Status
 
-proposed
+decided
 
 ## Context
 
@@ -59,20 +59,22 @@ The fix is acknowledged but not yet committed, and there is no workaround.
 
 ## Decision
 
-tbd
+The `prompt` field lives at request level only.
 
-## Options
-
-Both options share the same core changes to the `chatCompletion()` method:
+The core changes to the `chatCompletion()` method:
 
 - The `messages` field is removed from the `ChatCompletionRequest` type.
 - The `chatCompletion()` method gains a `prompt?: Xor<PromptTemplate, TemplateRef>` field.
 - The `messagesHistory` parameter is unchanged.
 - Passing a `prompt: TemplateRef` value alongside anything that would require merging inline messages into the template throws an error, because the SDK cannot modify a remote template.
 
+The `prompt` field is removed from the constructor.
+The constructor accepts either a config ref or module parameters and pipeline module config (filtering, masking, grounding, translation) — no `prompt`.
+Every call to the `chatCompletion()` method that needs a template or ref supplies it inline via the `prompt` field.
+
 ### Config references
 
-`OrchestrationConfigRef` remains a valid constructor argument under both options, as a mutually exclusive overload — it cannot be combined with a `prompt` or module config.
+`OrchestrationConfigRef` remains a valid constructor argument, as a mutually exclusive overload — it cannot be combined with a `prompt` or module config.
 `overrideConfig` stays on the config ref and is fixed for the client's lifetime.
 
 Config references are single-turn by nature: the stored artifact defines the full template and cannot be extended client-side.
@@ -80,19 +82,11 @@ When the constructor holds a config ref, `chatCompletion()` accepts `messagesHis
 This is enforced by a generic type parameter inferred from the constructor argument (narrowing `chatCompletion()`'s signature) and a runtime throw as a safety net.
 Multi-turn conversations must use a local template or a `TemplateRef` instead.
 
-The options differ in whether the `prompt` field is also allowed in the constructor.
-
 **Impact on existing consumers**: The LangChain integration's `OrchestrationClient` (`packages/langchain/src/orchestration/client.ts`) depends on the `messages` field as its only runtime channel.
 It maps the combined LangChain message list and passes it as `chatCompletion({ messages, ... })`, keeping the template in the constructor config.
 It never sets `messagesHistory` and never passes a per-request `prompt`.
-Removing the `messages` field therefore breaks this client under both options.
-Both options require migrating it to route its combined list through `messagesHistory` and/or the per-request `prompt`.
-
-### Option A — `prompt` at request level only
-
-The `prompt` field is removed from the constructor.
-The constructor accepts either a config ref or module parameters and pipeline module config (filtering, masking, grounding, translation) — no `prompt`.
-Every call to the `chatCompletion()` method that needs a template or ref supplies it inline via the `prompt` field.
+Removing the `messages` field therefore breaks this client.
+Migrating it means routing its combined list through `messagesHistory` and/or the per-request `prompt`.
 
 **Local template**:
 
@@ -133,13 +127,17 @@ const res2 = await client.chatCompletion({
 });
 ```
 
-**Tradeoff**: Aligns with the API's per-request semantics.
+### Consequences
+
+Aligns with the API's per-request semantics.
 But it drops the SDK abstraction where a client instance maps 1:1 to a stored orchestration **configuration artifact** — the same `module_configurations` block that can be stored and referenced on the server.
 All module-level settings are fixed for the client's lifetime, and per-call arguments are layered on top (mirroring `adr/003-history-maintenance.md`: one client = one conversation = one configuration context).
-Under Option A, callers must supply the template on the first call or manage it themselves.
+Callers must supply the template on the first call or manage it themselves.
 The constructor shapes for a local/remote template and a config ref look similar — the distinction only appears at the `chatCompletion()` call site.
 
-### Option B — `prompt` in both constructor and request
+## Alternatives
+
+### `prompt` in both constructor and request
 
 The `prompt` field is retained in the constructor as a convenience for the config-artifact use case (typically a system message or a remote template reference).
 The `chatCompletion()` method also gains a `prompt?` parameter.
@@ -195,9 +193,11 @@ const resp = await client.chatCompletion({
 **Tradeoff**: Preserves the SDK's config-artifact abstraction.
 But three constructor shapes exist — config ref, module config with `prompt`, and module config without — and callers must understand which site to use for `prompt` and when.
 The TemplateRef and config ref shapes look identical at the `chatCompletion()` call site; the distinction lives in the constructor.
+This was rejected in favor of the request-level-only approach above.
 
 ## How Java and Python handle this
 
+This section is for comparison only.
 Neither sibling SDK reproduces the TS design of a `messages` current turn plus a constructor template plus hidden rerouting.
 They split on a more fundamental question: whether a current-turn abstraction should exist at all.
 
@@ -229,9 +229,3 @@ Choosing a `TemplateRef` or a `config_ref` resolves the template server-side, so
 There is no `getAllMessages()` helper.
 Multi-turn is manual: the caller reads the rendered messages from `response.intermediate_results.templating`, appends the assistant reply, and passes the result as `history` on the next call.
 Tool definitions travel in the template's `tools`, while tool-call and tool-result messages travel through history.
-
-### Bearing on the options
-
-Python is the closest precedent for Option B: the template can live in both the constructor and the request, and the current turn is expressed as template content rather than a separate `messages` field.
-Java is the closest precedent for Option A: no constructor template, with per-request config only.
-Neither SDK routes a current turn silently between the template and `messages_history`, which is the specific behavior this ADR removes.
