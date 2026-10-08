@@ -170,6 +170,23 @@ describe('stream util tests', () => {
 });
 
 describe('constructCompletionPostRequestFromConfigReference', () => {
+  it('throws when a request-level prompt is combined with a config reference', () => {
+    const configRef: OrchestrationConfigRef = {
+      id: 'test-config-id'
+    };
+    const request: ChatCompletionRequest = {
+      prompt: {
+        template: [{ role: 'user', content: 'Current turn' }]
+      }
+    };
+
+    expect(() =>
+      constructCompletionPostRequestFromConfigReference(configRef, request)
+    ).toThrowError(
+      "Cannot set 'prompt' in the request when using a config reference. A config reference is single-turn and defines the template server-side. Use 'messagesHistory' for prior turns instead."
+    );
+  });
+
   it('constructs request with config reference by ID', () => {
     const configRef: OrchestrationConfigRef = {
       id: 'test-config-id'

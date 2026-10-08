@@ -72,6 +72,14 @@ export function constructCompletionPostRequestFromConfigReference(
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
+  // Config references are single-turn by nature: the stored artifact defines the
+  // full template and cannot be extended with a request-level prompt (see ADR 012).
+  if (request?.prompt) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when using a config reference. A config reference is single-turn and defines the template server-side. Use 'messagesHistory' for prior turns instead."
+    );
+  }
+
   // Route request.messages into messages_history since there is no local
   // prompt.template to merge them into for config references.
   const messagesHistory = [
