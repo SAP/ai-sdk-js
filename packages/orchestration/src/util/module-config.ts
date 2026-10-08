@@ -405,8 +405,6 @@ function buildRequestPromptCompletion(
     streamOptions
   );
 
-  // A request-level prompt owns the current turn by itself; only explicit
-  // history flows to messages_history (never request.messages, which is rejected).
   return {
     config: configWithStream,
     ...(request.placeholderValues && {
