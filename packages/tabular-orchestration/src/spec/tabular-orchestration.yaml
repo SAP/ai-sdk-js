@@ -1,0 +1,818 @@
+openapi: 3.0.3
+info:
+  title: Tabular AI Orchestration
+  version: 1.10.2
+  description:
+    The Tabular AI Orchestration service acts as the unified tabular inference
+    layer for the AI Core platform, exposing a single prediction endpoint that handles
+    request validation, context selection, and Tabular Foundation Model interface
+    harmonization automatically. It leverages Tabular Foundation Models to generate
+    predictions from structured enterprise data using in-context learning, eliminating
+    the need for dataset-specific training. By abstracting the complexity of data
+    connectivity and schema interpretation, this service allows developers to seamlessly
+    integrate predictive AI capabilities into business processes through a standardized
+    invocation interface.
+  contact:
+    name: SAP AI Core
+paths:
+  /predict:
+    post:
+      tags:
+        - Predict
+      summary: Make predictions using a Tabular Foundation Model
+      description:
+        "Make predictions for tabular data using a deployed Tabular Foundation\
+        \ Model.\n\n    Required Headers:\n    - ai-resource-group: AI Core resource\
+        \ group identifier"
+      operationId: predict.v1.predict_endpoints.predict
+      parameters:
+        - name: ai-resource-group
+          in: header
+          required: true
+          schema:
+            type: string
+            description: AI Core resource group identifier
+            title: Ai-Resource-Group
+          description: AI Core resource group identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictResponse'
+        '400':
+          description: Invalid request data
+        '401':
+          description: Authentication failed
+        '404':
+          description: Model not found
+        '500':
+          description: Internal server error
+        '502':
+          description: External service error
+        '504':
+          description: Request timeout
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - Oauth2: []
+      x-sap-cloud-sdk-operation-name: predict
+components:
+  schemas:
+    ColumnarData:
+      additionalProperties:
+        items: {}
+        type: array
+      type: object
+      title: ColumnarData
+      description:
+        "Columnar data format where each key is a column name\nand the\
+        \ value is a list of values for that column.\n\nExample:\n{\n    \"code\"\
+        : [\"new_code1\", \"new_code2\"],\n    \"category\": [\"Electronics\", \"\
+        Clothing\"],\n    \"price\": [100, 50]\n}"
+    ContextSelectionConfig:
+      properties:
+        indexColumn:
+          title: Indexcolumn
+          description:
+            Name of the unique row-identifier column (e.g. 'ROW_INDEX').
+            Required for 'heuristic', and deterministic 'random' strategies.
+          type: string
+          nullable: true
+        numRows:
+          title: Numrows
+          description:
+            Number of rows to select for context. If not provided or set
+            to 0, context selection is skipped.
+          type: integer
+          minimum: 0.0
+          nullable: true
+        strategy:
+          $ref: '#/components/schemas/ContextSelectionStrategyEnum'
+          description: Sampling strategy for context selection.
+          default: random
+        strategyConfig:
+          oneOf:
+            - $ref: '#/components/schemas/SamplingNoneConfig'
+            - $ref: '#/components/schemas/SamplingRandomConfig'
+            - $ref: '#/components/schemas/SamplingHeuristicConfig'
+          title: Strategyconfig
+          description: Strategy-specific configuration parameters.
+        filterConditions:
+          anyOf:
+            - $ref: '#/components/schemas/FilterConditions'
+            - $ref: '#/components/schemas/FilterCondition'
+          title: Filterconditions
+          description: Filter conditions for context selection
+          nullable: true
+      type: object
+      required:
+        - strategyConfig
+      title: ContextSelectionConfig
+      description: Configuration for context selection.
+    ContextSelectionStrategyEnum:
+      type: string
+      enum:
+        - none
+        - random
+        - heuristic
+        - auto
+      title: ContextSelectionStrategyEnum
+      description: Context selection strategies for data sampling.
+    FilterCondition:
+      properties:
+        field:
+          type: string
+          title: Field
+          description: Field name to filter on
+        op:
+          type: string
+          title: Op
+          description: Filter operator (e.g., 'eq', 'gte', 'lte')
+        value:
+          title: Value
+          description: Value to compare against
+      type: object
+      required:
+        - field
+        - op
+        - value
+      title: FilterCondition
+      description: A single filter condition for context selection.
+    FilterConditions:
+      properties:
+        logic:
+          type: string
+          title: Logic
+          description: Logical operator to combine conditions ('and' or 'or')
+        conditions:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/FilterCondition'
+              - $ref: '#/components/schemas/FilterConditions'
+          type: array
+          title: Conditions
+          description: List of filter conditions
+      type: object
+      required:
+        - logic
+        - conditions
+      title: FilterConditions
+      description: Filter conditions for context selection.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ModelConfig:
+      properties: {}
+      additionalProperties: true
+      type: object
+      title: ModelConfig
+    ModelRpt1:
+      properties:
+        index_column:
+          title: Index Column
+          description:
+            (Optional) The name of the column used to identify the row.
+            This column isn't used as an input feature for the model, and is returned
+            in the response objects.
+          type: string
+          nullable: true
+        data_schema:
+          title: Data Schema
+          description:
+            '(Optional) A schema definition for data types of all columns.
+            Possible values: string, numeric, or date.'
+          example:
+            data_schema:
+              ORDERDATE:
+                dtype: date
+              PRICE:
+                dtype: numeric
+              PRODUCT:
+                dtype: string
+          additionalProperties:
+            additionalProperties:
+              type: string
+            type: object
+          type: object
+          nullable: true
+        parse_data_types:
+          type: boolean
+          title: Parse Data Types
+          description:
+            "(Optional, RPT default: True) Relevant when data_schema isn't
+            passed. Whether or not to parse data types, such as interpreting strings
+            as numbers or dates."
+          default: true
+      additionalProperties: true
+      type: object
+      title: ModelRpt1
+      description: 'RPT1 Reference: https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US#parameters'
+    ModelRpt1_5:
+      properties:
+        index_column:
+          title: Index Column
+          description:
+            (Optional) The name of the column used to identify the row.
+            This column isn't used as an input feature for the model, and is returned
+            in the response objects.
+          type: string
+          nullable: true
+        data_schema:
+          title: Data Schema
+          description:
+            '(Optional) A schema definition for data types of all columns.
+            Possible values: string, numeric, or date.'
+          example:
+            data_schema:
+              ORDERDATE:
+                dtype: date
+              PRICE:
+                dtype: numeric
+              PRODUCT:
+                dtype: string
+          additionalProperties:
+            additionalProperties:
+              type: string
+            type: object
+          type: object
+          nullable: true
+        parse_data_types:
+          type: boolean
+          title: Parse Data Types
+          description:
+            "(Optional, RPT Default: True) Relevant when data_schema isn't
+            passed. Whether or not to parse data types, such as interpreting strings
+            as numbers or dates."
+          default: true
+        prediction_config:
+          $ref: '#/components/schemas/ModelRpt1_5PredictionConfig'
+          description: (Optional) An object for configuring predictions.
+      additionalProperties: true
+      type: object
+      title: ModelRpt1_5
+    ModelRpt1_5Explanations:
+      properties:
+        top_column_scores:
+          type: integer
+          maximum: 20.0
+          minimum: 0.0
+          title: Top Column Scores
+          description:
+            '(Optional, RPT Default: 0) Number of top column scores to
+            return. A value of 0 disables explainability.'
+          default: 0
+        top_relevant_context_rows:
+          title: Top Relevant Context Rows
+          description:
+            (Optional) Number of most relevant context rows to return for
+            each query row.
+          type: integer
+          maximum: 20.0
+          nullable: true
+      additionalProperties: true
+      type: object
+      title: ModelRpt1_5Explanations
+    ModelRpt1_5PredictionConfig:
+      properties:
+        explanations:
+          $ref: '#/components/schemas/ModelRpt1_5Explanations'
+          description: (Optional) Configuration used to request explanations.
+      additionalProperties: true
+      type: object
+      title: ModelRpt1_5PredictionConfig
+    ModelRpt1_6:
+      properties:
+        index_column:
+          title: Index Column
+          description:
+            (Optional) The name of the column used to identify the row.
+            This column isn't used as an input feature for the model, and is returned
+            in the response objects.
+          type: string
+          nullable: true
+        data_schema:
+          title: Data Schema
+          description:
+            '(Optional) A schema definition for data types of all columns.
+            Possible values: string, numeric, or date.'
+          example:
+            data_schema:
+              ORDERDATE:
+                dtype: date
+              PRICE:
+                dtype: numeric
+              PRODUCT:
+                dtype: string
+          additionalProperties:
+            additionalProperties:
+              type: string
+            type: object
+          type: object
+          nullable: true
+        parse_data_types:
+          type: boolean
+          title: Parse Data Types
+          description:
+            "(Optional, RPT Default: True) Relevant when data_schema isn't
+            passed. Whether or not to parse data types, such as interpreting strings
+            as numbers or dates."
+          default: true
+        prediction_config:
+          $ref: '#/components/schemas/ModelRpt1_6PredictionConfig'
+          description: (Optional) An object for configuring predictions.
+      additionalProperties: true
+      type: object
+      title: ModelRpt1_6
+    ModelRpt1_6PredictionConfig:
+      properties:
+        explanations:
+          $ref: '#/components/schemas/ModelRpt1_5Explanations'
+          description: (Optional) Configuration used to request explanations.
+        context_mode:
+          type: string
+          title: Context Mode
+          description:
+            (Optional, default 'default') Only available for sap-rpt-1.6-large.
+            Set to 'deep' for higher accuracy at higher latency when you have more
+            than 8000 context rows. The value is passed through to the model, which
+            validates the supported values.
+          default: default
+      additionalProperties: true
+      type: object
+      title: ModelRpt1_6PredictionConfig
+    PredictMetadata:
+      properties:
+        num_columns:
+          type: integer
+          title: Num Columns
+        num_rows:
+          type: integer
+          title: Num Rows
+        num_predictions:
+          type: integer
+          title: Num Predictions
+        num_query_rows:
+          type: integer
+          title: Num Query Rows
+      type: object
+      required:
+        - num_columns
+        - num_rows
+        - num_predictions
+        - num_query_rows
+      title: PredictMetadata
+      description: Metadata about the prediction.
+    PredictRequest:
+      properties:
+        modelName:
+          $ref: '#/components/schemas/TFMEnum'
+          description: Name of the deployed model
+        scenarioConfigName:
+          title: Scenarioconfigname
+          description:
+            Scenario configuration identifier. Required to retrieve TabularArtifact,
+            required to perform Context Selection.
+          type: string
+          nullable: true
+        contextSelectionConfig:
+          description: Context selection configuration
+          $ref: '#/components/schemas/ContextSelectionConfig'
+          nullable: true
+        predictionConfig:
+          $ref: '#/components/schemas/PredictionConfig'
+          description: Prediction configuration
+        modelConfig:
+          oneOf:
+            - $ref: '#/components/schemas/ModelConfig'
+            - $ref: '#/components/schemas/ModelRpt1'
+            - $ref: '#/components/schemas/ModelRpt1_5'
+            - $ref: '#/components/schemas/ModelRpt1_6'
+          title: Modelconfig
+          description:
+            (Optional) Any additional TFM-specific configurations that
+            will be passed to the selected TFM.
+        columns:
+          description:
+            Query-only rows in columnar form. An object mapping from column
+            name to array of column values.
+          $ref: '#/components/schemas/ColumnarData'
+          nullable: true
+        contextColumns:
+          description:
+            (Optional) Context rows in columnar form, only relevant if
+            'columns' is provided. An object mapping from column name to array of
+            column values.
+          $ref: '#/components/schemas/ColumnarData'
+          nullable: true
+        rows:
+          description:
+            Query-only rows in row form. An array of objects representing
+            table rows.
+          $ref: '#/components/schemas/RowData'
+          nullable: true
+        contextRows:
+          description:
+            (Optional) Context rows in row form, only relevant if 'rows'
+            is provided. An array of objects representing table rows.
+          $ref: '#/components/schemas/RowData'
+          nullable: true
+      type: object
+      required:
+        - modelName
+        - predictionConfig
+        - modelConfig
+      title: PredictRequest
+      description: Request schema for prediction endpoint.
+      example:
+        columns:
+          baseUnitOfMeasure:
+            - EA
+          baseUnitOfMeasureCode:
+            - EA
+          catalogId:
+            - default-source-catalog
+          catalogVersion:
+            - Draft
+          code:
+            - BK-211-M
+          currency:
+            - USD
+          division:
+            - '[PREDICT]'
+          gtin:
+            - ''
+          keywords:
+            - cycling,gloves,hands,grip,protection,comfort
+          manufacturerAID:
+            - ACC-CSPW
+          manufacturerName:
+            - Ritchey
+          minQuantity:
+            - 1
+          name:
+            - BK Cycling Gloves - Size Medium
+          price:
+            - 21.1
+          priceEndDate:
+            - 31-12-2099
+          priceStartDate:
+            - 08-08-2025
+          summary:
+            - Treat your hands to a comfortable pair of cycling gloves. Size medium.
+          superCategories:
+            - all-products:Draft:sample-b2c-usSalesCatalog,gear:Draft:sample-b2c-usSalesCatalog,weight-dimensions:Draft:sample-b2c-usSalesCatalog,all-products:Draft:sample-b2c-usSalesCatalog,gear:Draft:sample-b2c-usSalesCatalog,weight-dimensions:Draft:sample-b2c-usSalesCatalog,all-products:Draft:sample-b2c-usSalesCatalog,gear:Draft:sample-b2c-usSalesCatalog,weight-dimensions:Draft:sample-b2c-usSalesCatalog
+          userPriceGroup:
+            - ''
+        contextSelectionConfig:
+          strategy: random
+        modelConfig:
+          __notes__: This is a sample sap-rpt-1.5 modelConfig
+          data_schema:
+            __notes__: 'Available dtyes are: string, numeric, or date.'
+            baseUnitOfMeasure:
+              dtype: string
+            baseUnitOfMeasureCode:
+              dtype: string
+            catalogId:
+              dtype: string
+            catalogVersion:
+              dtype: string
+            code:
+              dtype: string
+            currency:
+              dtype: string
+            division:
+              dtype: string
+            gtin:
+              dtype: string
+            keywords:
+              dtype: string
+            manufacturerAID:
+              dtype: string
+            manufacturerName:
+              dtype: string
+            minQuantity:
+              dtype: numeric
+            name:
+              dtype: string
+            price:
+              dtype: numeric
+            priceEndDate:
+              dtype: date
+            priceStartDate:
+              dtype: date
+            summary:
+              dtype: string
+            superCategories:
+              dtype: string
+            userPriceGroup:
+              dtype: string
+          index_column: code
+          prediction_config:
+            explanations:
+              top_column_scores: 3
+              top_relevant_context_rows: 2
+        modelName: sap-rpt-1.5
+        predictionConfig:
+          targetColumns:
+            - name: division
+              predictionPlaceholder: '[PREDICT]'
+              taskType: classification
+        scenarioConfigName: sample_scenario_config
+    PredictResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        metadata:
+          $ref: '#/components/schemas/PredictMetadata'
+        predictions:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Predictions
+        status:
+          $ref: '#/components/schemas/PredictStatus'
+        additional_information:
+          items:
+            type: string
+          type: array
+          title: Additional Information
+          description: Warnings or informational messages from context selection
+          default: []
+      additionalProperties: true
+      type: object
+      required:
+        - id
+        - metadata
+        - predictions
+        - status
+      title: PredictResponse
+      description:
+        "Response schema for prediction endpoint.\n\nExample response:\n\
+        \    {\n        \"id\": \"8f15bafd-5fb8-4a35-bd2f-43c3b5887584\",\n      \
+        \  \"metadata\": {\"num_columns\": 5, \"num_predictions\": 1, \"num_query_rows\"\
+        : 1, \"num_rows\": 3},\n        \"predictions\": [{\"category\": [{\"confidence\"\
+        : 0.71, \"prediction\": \"Electronics\"}], \"id\": 4}],\n        \"status\"\
+        : {\"code\": 0, \"message\": \"ok\"},\n    }"
+    PredictStatus:
+      properties:
+        code:
+          type: integer
+          title: Code
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - code
+        - message
+      title: PredictStatus
+      description: Status of the prediction.
+    PredictionConfig:
+      properties:
+        targetColumns:
+          items:
+            $ref: '#/components/schemas/TargetColumn'
+          type: array
+          minItems: 1
+          title: Targetcolumns
+          description: List of target columns with prediction configuration
+      additionalProperties: false
+      type: object
+      required:
+        - targetColumns
+      title: PredictionConfig
+      description: 'Configuration for what to predict.
+
+
+        Model-agnostic prediction config. Only contains fields shared across
+
+        all TFMs. Model-specific fields belong in `PredictRequest.modelConfig`.'
+    RowData:
+      items:
+        additionalProperties: true
+        type: object
+      type: array
+      title: RowData
+      description:
+        "Row-wise data format where each element is a dictionary\nrepresenting\
+        \ a single row with column names as keys.\n\nExample:\n[\n    {\"code\": \"\
+        new_code1\", \"category\": \"Electronics\", \"price\": 100},\n    {\"code\"\
+        : \"new_code2\", \"category\": \"Clothing\", \"price\": 50},\n]"
+    SamplingHeuristicConfig:
+      properties:
+        methodRatio:
+          type: number
+          title: Methodratio
+          description:
+            Fraction of numRows filled by scoring method (remainder is
+            random fill). Must be between 0 and 1.
+          default: 0.67
+        fuzzyNumPct:
+          type: number
+          title: Fuzzynumpct
+          description:
+            Numeric fuzzy threshold as a fraction of the absolute query
+            value. E.g. 0.1 = ±10%.
+          default: 0.1
+        chunkSize:
+          type: integer
+          title: Chunksize
+          description:
+            Max CASE WHEN expressions per subquery chunk (avoids HANA parse-tree
+            depth limit).
+          default: 100
+        chunkThreshold:
+          type: integer
+          title: Chunkthreshold
+          description:
+            Column count above which chunked SQL is used instead of a flat
+            query.
+          default: 150
+        poolSize:
+          title: Poolsize
+          description:
+            If set, scoring runs against a random subsample of this many
+            rows instead of the full table. None = full table scan.
+          type: integer
+          nullable: true
+        fuzzyDateDays:
+          type: integer
+          title: Fuzzydatedays
+          description:
+            Day window for fuzzy date matching. A date column scores 1
+            if abs(DAYS_BETWEEN(row_date, query_date)) <= dateFuzzyDays. Set to 0
+            for exact date match.
+          default: 30
+        allowTimeoutFallback:
+          type: boolean
+          title: Allowtimeoutfallback
+          description:
+            When true, heuristic sampling falls back to random on timeout
+            instead of raising an error. Set by the orchestrator when strategy=AUTO.
+          default: false
+      additionalProperties: true
+      type: object
+      title: SamplingHeuristicConfig
+    SamplingNoneConfig:
+      properties: {}
+      additionalProperties: true
+      type: object
+      title: SamplingNoneConfig
+      description: 'Strategy config for the ''none'' strategy.
+
+
+        The ''none'' strategy performs no context selection, so it carries no
+
+        tunable parameters. It exists to keep strategyConfig typed consistently
+
+        across all strategies. All passthroughs still allow extra variables with
+
+        `model_config = ConfigDict(extra="allow")`.'
+    SamplingRandomConfig:
+      properties:
+        deterministic:
+          type: boolean
+          title: Deterministic
+          description:
+            When true, uses HASH_SHA256 of indexColumn for ordering instead
+            of RAND(), producing the same row order on every call for the same data.
+          default: false
+      additionalProperties: true
+      type: object
+      title: SamplingRandomConfig
+    TFMEnum:
+      type: string
+      enum:
+        - sap-rpt-1-small
+        - sap-rpt-1-large
+        - sap-rpt-1.5
+        - sap-rpt-1.5-large
+        - sap-rpt-1.6
+        - sap-rpt-1.6-large
+      title: TFMEnum
+      description: Supported Tabular Foundation Models.
+    TargetColumn:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Name of the column to predict
+        prediction_placeholder:
+          type: string
+          title: Prediction Placeholder
+          description: (Optional) Placeholder value indicating cells to predict
+          default: '[PREDICT]'
+        task_type:
+          $ref: '#/components/schemas/TaskTypeEnum'
+          description: (Optional) Type of prediction task (classification or regression)
+          default: classification
+        top_k:
+          title: Top K
+          description:
+            (Optional) Controls how many labels to predict for each column
+            in each row. Only applicable to 'classification' task type.
+          type: integer
+          nullable: true
+      type: object
+      required:
+        - name
+      title: TargetColumn
+      description: Configuration for a target column to predict.
+    TaskTypeEnum:
+      type: string
+      enum:
+        - classification
+        - regression
+      title: TaskTypeEnum
+      description: ML task types for predictions.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description:
+        OAuth client credentials (client ID and secret) are required. These
+        can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
+x-sap-shortText:
+  A runtime orchestration layer that performs predictions with Tabular
+  Foundation Models using structured data with no dataset-specific training required.
+externalDocs:
+  description: Documentation for SAP AI Core - Tabular AI Orchestration
+  url: https://help.sap.com/docs/sap-ai-core/generative-ai-hub/tabular-ai
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{deployment_id}
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-ap11.ap-southeast-1.aws
+          - prod-br10.sa-east-1.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-us20.westus2.azure
+          - prod-ap20.australiaeast.azure
+          - prod-ap21.southeastasia.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+          - prod-ap30.australia-southeast1.gcp
+          - prod-in30.asia-south1.gcp
+          - prod-eu01.eu-de-1.sapcc
+        default: prod.eu-central-1.aws
+      deployment_id:
+        description:
+          The deployment ID of the Tabular AI Orchestration service. To be
+          obtained from the SAP AI Core service using the deployments endpoint.
+        default: d1234567890

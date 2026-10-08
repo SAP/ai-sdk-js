@@ -1,13 +1,13 @@
-# @sap-ai-sdk/context-registry
+# @sap-ai-sdk/tabular-orchestration
 
 > [!warning]
 > This package is still in **beta** and is subject to breaking changes. Use it with caution.
 
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
-This package provides a client for SAP’s Context Registry, managing the context for Tabular Orchestration service predictions.
+This package provides a client for the SAP AI Core Tabular AI Orchestration service, which makes predictions with Tabular Foundation Models such as [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html).
 
-As part of this you can list, create, update, and delete Data Destinations, Scenario Configurations and Tabular Artifacts.
+Context for predictions can be provided inline or selected from tabular artifacts referenced by a scenario configuration, which can be managed with [`@sap-ai-sdk/context-registry`](https://www.npmjs.com/package/@sap-ai-sdk/context-registry).
 
 ```mermaid
 flowchart TD
@@ -25,6 +25,7 @@ flowchart TD
 ### Table of Contents
 
 - [Installation](#installation)
+- [Usage](#usage)
 - [Documentation](#documentation)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
@@ -32,7 +33,32 @@ flowchart TD
 ## Installation
 
 ```
-$ npm install @sap-ai-sdk/context-registry
+$ npm install @sap-ai-sdk/tabular-orchestration
+```
+
+## Usage
+
+The client resolves a running deployment of the `tabular-orchestration` scenario and sends the request body as defined by the service specification.
+
+```ts
+import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
+
+const client = new TabularOrchestrationClient({ resourceGroup: 'default' });
+
+const { predictions } = await client.predict({
+  modelName: 'sap-rpt-1.6',
+  scenarioConfigName: 'my-scenario-config',
+  contextSelectionConfig: {
+    strategy: 'random',
+    numRows: 100,
+    strategyConfig: {}
+  },
+  predictionConfig: {
+    targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
+  },
+  modelConfig: { index_column: 'id' },
+  rows: [{ id: '42', product: 'Desktop Computer', salesgroup: '[PREDICT]' }]
+});
 ```
 
 ## Documentation
