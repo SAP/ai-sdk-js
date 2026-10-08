@@ -568,7 +568,7 @@ function addStreamIfEnabled(
       );
 }
 
-function resolvePromptTemplate(
+function mergePromptWithMessages(
   promptTemplating: OrchestrationModuleConfig['promptTemplating'],
   request?: ChatCompletionRequest
 ): Template | TemplateRef {
@@ -605,7 +605,7 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
-  const prompt = resolvePromptTemplate(promptTemplating, request);
+  const prompt = mergePromptWithMessages(promptTemplating, request);
 
   return {
     prompt_templating: {

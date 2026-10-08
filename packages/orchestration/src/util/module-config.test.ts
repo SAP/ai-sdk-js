@@ -502,7 +502,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
   });
 });
 
-describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
+describe('mergePromptWithMessages via constructCompletionPostRequest', () => {
   it('should throw when the prompt is still an unparsed string', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
