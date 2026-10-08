@@ -1,6 +1,29 @@
+import type { ChatCompletionRequest } from './orchestration-types.ts';
 import { constructCompletionPostRequestFromJsonModuleConfig } from './util/module-config.ts';
 
 describe('construct completion post request from JSON', () => {
+  it('throws when a request-level prompt is combined with a Launchpad JSON config', () => {
+    const jsonConfig = {
+      modules: {
+        prompt_templating: {
+          model: { name: 'gpt-5.4-nano' },
+          prompt: { template: [{ role: 'user', content: 'Hello!' }] }
+        }
+      }
+    };
+    const request: ChatCompletionRequest = {
+      prompt: {
+        template: [{ role: 'user', content: 'Current turn' }]
+      }
+    };
+
+    expect(() =>
+      constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+    ).toThrowError(
+      "Cannot set 'prompt' in the request when using a Launchpad JSON config. Use 'messagesHistory' or 'placeholderValues' instead."
+    );
+  });
+
   it('should construct completion post request from JSON', () => {
     const jsonConfig = `{
       "modules": {
