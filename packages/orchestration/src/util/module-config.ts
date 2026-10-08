@@ -393,7 +393,7 @@ function buildRequestPromptCompletion(
   const configs = Array.isArray(config) ? config : [config];
   assertRequestPromptIsExclusive(configs, request);
 
-  const prompt = resolveRequestPrompt(request.prompt!);
+  const prompt = resolveRequestPrompt(request.prompt);
 
   const moduleConfigurations = Array.isArray(config)
     ? config.map(c => buildModulesConfigWithPrompt(c, prompt))
@@ -496,8 +496,7 @@ function assertRequestPromptIsExclusive(
 
 /**
  * Resolves a request-level prompt into the template or template reference sent
- * to the orchestration service. Unlike {@link resolvePromptTemplate}, there is
- * no constructor fallback and no `messages` to merge in.
+ * to the orchestration service.
  * @param requestPrompt - The request-level prompt to resolve.
  * @returns The resolved template or template reference.
  */
