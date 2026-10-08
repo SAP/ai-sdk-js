@@ -43,6 +43,12 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   prompt?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
+  if (prompt?.prompt) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when using a Launchpad JSON config. Use 'messagesHistory' or 'placeholderValues' instead."
+    );
+  }
+
   if (stream) {
     config = {
       ...config,
