@@ -162,7 +162,7 @@ export class OrchestrationClient {
 
   /**
    * Send a chat completion request to the orchestration service.
-   * @param request - Request containing messages, placeholder values, and message history.
+   * @param request - Request containing the prompt, placeholder values, and message history.
    * @param requestConfig - Additional request configuration. Use `requestConfig.headers` to pass service-specific headers:
    * - `AI-Object-Store-Secret-Name`: Name of the object store secret used by the feedback service.
    * @returns The orchestration service response.
@@ -189,7 +189,7 @@ export class OrchestrationClient {
 
   /**
    * Create a streaming chat completion request to the orchestration service.
-   * @param request - Request containing messages, placeholder values, and message history.
+   * @param request - Request containing the prompt, placeholder values, and message history.
    * @param signal - An abort signal to cancel the request.
    * @param options - Streaming options, e.g., for input/output filtering.
    * @param requestConfig - Additional request configuration. Use `requestConfig.headers` to pass service-specific headers:
