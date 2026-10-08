@@ -1,5 +1,6 @@
-import type { ChatCompletionRequest } from './orchestration-types.ts';
 import { constructCompletionPostRequestFromJsonModuleConfig } from './util/module-config.ts';
+
+import type { ChatCompletionRequest } from './orchestration-types.ts';
 
 describe('construct completion post request from JSON', () => {
   it('throws when a request-level prompt is combined with a Launchpad JSON config', () => {
