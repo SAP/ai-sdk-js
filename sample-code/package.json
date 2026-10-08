@@ -36,7 +36,7 @@
     "@types/express": "5.0.6",
     "express": "5.2.1",
     "langchain": "catalog:",
-    "openai": "7.27.0",
+    "openai": "7.28.0",
     "ws": "8.22.0",
     "zod": "catalog:"
   },
