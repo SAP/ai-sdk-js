@@ -1,6 +1,6 @@
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
-import { expectError, expectType } from 'tsd';
+import { expectAssignable, expectError, expectType } from 'tsd';
 
 import type {
   ModelConfigFor,
@@ -8,6 +8,7 @@ import type {
   ModelRpt1,
   ModelRpt15,
   ModelRpt16,
+  PredictRequest,
   PredictResponse,
   TFMEnum
 } from '@sap-ai-sdk/tabular-orchestration';
@@ -45,3 +46,32 @@ expectError(
     rows: [{ category: '[PREDICT]' }]
   })
 );
+
+expectAssignable<PredictRequest>({
+  modelName: 'sap-rpt-1.6',
+  predictionConfig: { targetColumns: [{ name: 'category' }] },
+  modelConfig: { prediction_config: { context_mode: 'deep' } },
+  rows: [{ category: '[PREDICT]' }]
+});
+
+expectError<PredictRequest>({
+  modelName: 'sap-rpt-1.6',
+  predictionConfig: { targetColumns: [{ name: 'category' }] },
+  modelConfig: { prediction_config: 'deep' },
+  rows: [{ category: '[PREDICT]' }]
+});
+
+expectError<PredictRequest>({
+  modelName: 'sap-rpt-1.5',
+  predictionConfig: { targetColumns: [{ name: 'category' }] },
+  modelConfig: { prediction_config: { explanations: true } },
+  rows: [{ category: '[PREDICT]' }]
+});
+
+expectError<PredictRequest>({
+  modelName: 'sap-rpt-1.6',
+  modelConfig: {},
+  rows: [{ category: '[PREDICT]' }]
+});
+
+expectType<Promise<PredictResponse>>(client.predict({} as PredictRequest));

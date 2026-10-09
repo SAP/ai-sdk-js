@@ -31,7 +31,9 @@ export type ModelConfigFor<ModelName extends keyof ModelConfigRegistry> =
  */
 export type TabularOrchestrationPredictRequest<
   ModelName extends keyof ModelConfigRegistry = keyof ModelConfigRegistry
-> = GeneratedPredictRequest & {
-  modelName: ModelName;
-  modelConfig: ModelConfigFor<NoInfer<ModelName>>;
-};
+> = ModelName extends unknown
+  ? GeneratedPredictRequest & {
+      modelName: ModelName;
+      modelConfig: ModelConfigFor<NoInfer<ModelName>>;
+    }
+  : never;
