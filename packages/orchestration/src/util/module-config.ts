@@ -45,7 +45,10 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 ): Record<string, any> {
   if (prompt?.prompt) {
     throw new Error(
-      "Cannot set 'prompt' in the request when using a Launchpad JSON config. Use 'messagesHistory' or 'placeholderValues' instead."
+      rejectRequestPromptMessage(
+        'a Launchpad JSON config',
+        "Use 'messagesHistory' or 'placeholderValues' instead."
+      )
     );
   }
 
@@ -82,7 +85,10 @@ export function constructCompletionPostRequestFromConfigReference(
   // full template and cannot be extended with a request-level prompt (see ADR 012).
   if (request?.prompt) {
     throw new Error(
-      "Cannot set 'prompt' in the request when using a config reference. A config reference is single-turn and defines the template server-side. Use 'messagesHistory' for prior turns instead."
+      rejectRequestPromptMessage(
+        'a config reference',
+        "A config reference is single-turn and defines the template server-side. Use 'messagesHistory' for prior turns instead."
+      )
     );
   }
 
@@ -487,8 +493,16 @@ function buildLegacyMessagesCompletion(
 }
 
 /**
- * Asserts that a request-level prompt is not combined with a constructor prompt
- * or the deprecated `messages` field, both of which it is mutually exclusive with.
+ * Builds the error message for rejecting a request-level prompt on an entry
+ * point that structurally cannot carry one.
+ * @param context - The rejecting entry point, e.g. `'a config reference'`.
+ * @param hint - What the caller should use instead.
+ * @returns The error message.
+ */
+function rejectRequestPromptMessage(context: string, hint: string): string {
+  return `Cannot set 'prompt' in the request when using ${context}. ${hint}`;
+}
+
  * @param configs - The module configurations to check for a constructor prompt.
  * @param request - The request to check for the deprecated `messages` field.
  */
