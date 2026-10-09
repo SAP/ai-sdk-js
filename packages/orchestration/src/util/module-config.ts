@@ -411,9 +411,7 @@ function buildRequestPromptCompletion(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const configs = Array.isArray(config) ? config : [config];
-  assertRequestPromptIsExclusive(configs, request);
-
-  const prompt = resolveRequestPrompt(request.prompt);
+  const prompt = validateRequestPrompt(configs, request);
 
   const moduleConfigurations = Array.isArray(config)
     ? config.map(c => buildModulesConfig(c, prompt))
@@ -503,13 +501,19 @@ function rejectRequestPromptMessage(context: string, hint: string): string {
   return `Cannot set 'prompt' in the request when using ${context}. ${hint}`;
 }
 
+/**
+ * Validates a request-level prompt and narrows it to the template or template
+ * reference sent to the orchestration service. A request-level prompt is
+ * mutually exclusive with a constructor prompt and the deprecated `messages`
+ * field, must already be parsed, and must contain at least one message.
  * @param configs - The module configurations to check for a constructor prompt.
- * @param request - The request to check for the deprecated `messages` field.
+ * @param request - The request carrying the request-level prompt.
+ * @returns The validated template or template reference.
  */
-function assertRequestPromptIsExclusive(
+function validateRequestPrompt(
   configs: OrchestrationModuleConfig[],
   request: ChatCompletionRequest
-): void {
+): Template | TemplateRef {
   if (configs.some(c => c?.promptTemplating?.prompt)) {
     throw new Error(
       "Cannot set 'prompt' in the request when a prompt is already configured in the constructor. The constructor prompt only supports the deprecated 'messages' field. Migrate to the request-level 'prompt' field only."
@@ -520,32 +524,22 @@ function assertRequestPromptIsExclusive(
       "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
     );
   }
-}
 
-/**
- * Resolves a request-level prompt into the template or template reference sent
- * to the orchestration service.
- * @param requestPrompt - The request-level prompt to resolve.
- * @returns The resolved template or template reference.
- */
-function resolveRequestPrompt(
-  requestPrompt: ChatCompletionRequest['prompt']
-): Template | TemplateRef {
-  if (typeof requestPrompt === 'string') {
+  const { prompt } = request;
+  if (typeof prompt === 'string') {
     throw new TypeError('Prompt must be parsed before merging with messages.');
   }
 
-  if (
-    !requestPrompt ||
-    (isTemplate(requestPrompt) && !requestPrompt.template?.length)
-  ) {
+  // A template reference is sent as-is; a local template must carry a message.
+  if (isTemplateRef(prompt)) {
+    return prompt;
+  }
+  if (!isTemplate(prompt) || !prompt.template?.length) {
     throw new Error(
       'The request-level prompt template must contain at least one message.'
     );
   }
-
-  // Cast required: the Xor on `prompt`'s type leaves `template?: ... | undefined` on the ref branch
-  return requestPrompt as Template | TemplateRef;
+  return prompt;
 }
 
 /**
@@ -559,7 +553,7 @@ function addStreamIfEnabled(
   moduleConfigurations: ModuleConfigs | ModuleConfigs[],
   stream?: boolean,
   streamOptions?: StreamOptions
-): OrchestrationConfig | { modules: ModuleConfigs | ModuleConfigs[] } {
+): OrchestrationConfig {
   if (!stream) {
     return { modules: moduleConfigurations };
   }
@@ -575,18 +569,15 @@ function mergePromptWithMessages(
   promptTemplating: OrchestrationModuleConfig['promptTemplating'],
   request?: ChatCompletionRequest
 ): Template | TemplateRef {
-  // Legacy path only: there is no request-level prompt here (it routes to
-  // buildRequestPromptCompletion). Fall back to the constructor prompt merged
-  // with the deprecated `messages` field.
-  const effectivePrompt = promptTemplating.prompt;
+  // Legacy path only: the request-level prompt routes to buildRequestPromptCompletion.
   const messages = request?.messages;
 
-  if (typeof effectivePrompt === 'string') {
+  if (typeof promptTemplating.prompt === 'string') {
     throw new TypeError('Prompt must be parsed before merging with messages.');
   }
 
   // If no prompt is defined, we initialize it with an empty template object
-  const prompt = effectivePrompt ?? { template: [] };
+  const prompt = promptTemplating.prompt ?? { template: [] };
 
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !messages?.length) {
@@ -642,7 +633,7 @@ function isTemplate(template: unknown): template is Template {
   );
 }
 
-function isTemplateRef(template: unknown): template is TemplateRef {
+function isTemplateRef<T>(template: T): template is Extract<T, TemplateRef> {
   return (
     !!template && typeof template === 'object' && 'template_ref' in template
   );
