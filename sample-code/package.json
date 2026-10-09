@@ -52,6 +52,7 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
+    "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
     "@upstash/context7-mcp": "4.1.1",
     "hyparquet-writer": "0.16.10"
@@ -66,6 +67,7 @@
     "@sap-ai-sdk/openai": "*",
     "@sap-ai-sdk/orchestration": "*",
     "@sap-ai-sdk/prompt-registry": "*",
-    "@sap-ai-sdk/rpt": "*"
+    "@sap-ai-sdk/rpt": "*",
+    "@sap-ai-sdk/tabular-orchestration": "*"
   }
 }

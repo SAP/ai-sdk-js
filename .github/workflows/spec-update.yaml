@@ -24,6 +24,7 @@ on:
           - document-grounding
           - orchestration
           - prompt-registry
+          - tabular-orchestration
         #
         # NOTES:
         #
@@ -121,6 +122,9 @@ jobs:
 
             [prompt-registry.url]="repos/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml"
             [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
+
+            [tabular-orchestration.url]="repos/AI/tabular-ai-orchestration/contents/src/spec/spec.yaml"
+            [tabular-orchestration.path]="packages/tabular-orchestration/src/spec/tabular-orchestration.yaml"
 
             # [rpt.url]="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json"
             # [rpt.path]="packages/rpt/src/spec/rpt.json"

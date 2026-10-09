@@ -10,6 +10,7 @@ packages:
   - packages/orchestration
   - packages/prompt-registry
   - packages/rpt
+  - packages/tabular-orchestration
   - sample-cap
   - sample-code
   - tests/e2e-tests

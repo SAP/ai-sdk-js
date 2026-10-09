@@ -118,6 +118,10 @@ import {
   predictRegressionWithConfidenceIntervals,
   predictWithTopK
 } from './rpt.ts';
+import {
+  predictWithScenarioContext,
+  predictWithInlineContext
+} from './tabular-orchestration.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type {
@@ -1399,6 +1403,25 @@ app.get('/rpt/predict-top-k', async (req, res) => {
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+/* Tabular Orchestration */
+app.get('/tabular-orchestration/predict-scenario-context', async (req, res) => {
+  try {
+    const data = await predictWithScenarioContext();
+    res.send(data);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/tabular-orchestration/predict-inline-context', async (req, res) => {
+  try {
+    const data = await predictWithInlineContext();
+    res.send(data);
   } catch (error: any) {
     sendError(res, error);
   }

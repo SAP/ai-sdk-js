@@ -541,6 +541,25 @@ importers:
         specifier: 5.0.3
         version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@22.20.5)(@vitest/coverage-v8@5.0.3)(vite@8.3.2(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
 
+  packages/tabular-orchestration:
+    dependencies:
+      '@sap-ai-sdk/ai-api':
+        specifier: workspace:^
+        version: link:../ai-api
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../core
+      '@sap-cloud-sdk/connectivity':
+        specifier: 'catalog:'
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client':
+        specifier: 'catalog:'
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+    devDependencies:
+      vitest:
+        specifier: 5.0.3
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@22.20.5)(@vitest/coverage-v8@5.0.3)(vite@8.3.2(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+
   sample-cap:
     dependencies:
       '@sap-ai-sdk/ai-api':
@@ -644,6 +663,9 @@ importers:
       '@sap-ai-sdk/rpt':
         specifier: workspace:^
         version: link:../packages/rpt
+      '@sap-ai-sdk/tabular-orchestration':
+        specifier: workspace:^
+        version: link:../packages/tabular-orchestration
       '@types/ws':
         specifier: 8.18.2
         version: 8.18.2
@@ -723,6 +745,9 @@ importers:
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
+      '@sap-ai-sdk/tabular-orchestration':
+        specifier: canary
+        version: 2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@types/node':
         specifier: 22.20.1
@@ -2208,11 +2233,17 @@ packages:
   '@sap-ai-sdk/ai-api@2.16.1-20261008013547.0':
     resolution: {integrity: sha512-0OrczOpjQ5XbfJn5n6RG/YGwANpvZ0lDc3BLH3U9YX5O6SRMMGT+59/1ZRHWq/mJFeJ2UcIvNiB/CLzZBczMXg==}
 
+  '@sap-ai-sdk/ai-api@2.16.1-20261009100005.0':
+    resolution: {integrity: sha512-CkA+NdC4WEoUy6hibUY+tCUKIPewPDngeZf4B+/LZNVa3KM3YldVCgbCAZFIJ1dTm3m3yQii5qOWQ2EoBy0XwQ==}
+
   '@sap-ai-sdk/context-registry@2.15.1-20261008013547.0':
     resolution: {integrity: sha512-Q4lHewL8aDfUSOodZ08ZLASlOMY1DGr3bCDXN5VvDbFkcQnW9wcKIbCfDcc75LJYsfCDbFPF+gvwHB+KNPnLcg==}
 
   '@sap-ai-sdk/core@2.16.1-20261008013547.0':
     resolution: {integrity: sha512-J5fKf0oKXce09fo4T0pXm36PhIwzcczuCrWnkBheh5nVx21y4pMxR6aDlmYkx21VNlDe61GutZZuxUNfCu+ZYA==}
+
+  '@sap-ai-sdk/core@2.16.1-20261009100005.0':
+    resolution: {integrity: sha512-0pQrMj4tMo/cyxN6Q5BtZ+SvLyxt+AZoCL5pS0+i0v6D3KJOfjjkBl45sgU60WWpLxdkooKd31zcLOVX8Np50w==}
 
   '@sap-ai-sdk/document-grounding@2.16.1-20261008013547.0':
     resolution: {integrity: sha512-w/7tQViziVe7Jl2hWYIOTFTq+Jd61YogOakOPVxcKsJ5SI5Ojh+CTEi/b2E/xGPrzbm2muO+PS4pNe3qGsuJAg==}
@@ -2249,6 +2280,9 @@ packages:
 
   '@sap-ai-sdk/rpt@2.16.1-20261008013547.0':
     resolution: {integrity: sha512-6o9C9PodfxgmZGS6wZbQnWNYjmy96JzgkbqWcCiSoV5nmyIhQHPCBza+xmkJ9RIuqYuV/ZPki0e9YYd/uPquig==}
+
+  '@sap-ai-sdk/tabular-orchestration@2.16.1-20261009100005.0':
+    resolution: {integrity: sha512-BVHnnTfjYMFcO4ZuYm6sWDyxkPKw7Hakr9oORMpWX3g6AJVZERK4qaQS0+UWIduWA3BbJHdiatg3bzIva0ZoDg==}
 
   '@sap-cloud-sdk/connectivity@4.9.1':
     resolution: {integrity: sha512-0deJBmdUd1LD1O3CX/wqYjTEKmnrnLsxnrSE8CyGtzbyomjjL1ePEXB3g6QUpQKmClVyOgJG/IbpyJFGGXXL5A==}
@@ -6031,6 +6065,15 @@ snapshots:
       - debug
       - supports-color
 
+  '@sap-ai-sdk/ai-api@2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      '@sap-ai-sdk/core': 2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@sap-ai-sdk/context-registry@2.15.1-20261008013547.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@sap-ai-sdk/core': 2.16.1-20261008013547.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -6039,6 +6082,16 @@ snapshots:
       - supports-color
 
   '@sap-ai-sdk/core@2.16.1-20261008013547.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/openapi': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/core@2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -6127,6 +6180,16 @@ snapshots:
       '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@sap-ai-sdk/tabular-orchestration@2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      '@sap-ai-sdk/ai-api': 2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.16.1-20261009100005.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
