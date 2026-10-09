@@ -34,13 +34,13 @@ The final package name remains pending between `@sap-ai-sdk/tabular-orchestratio
 
 ### Question 1: Vendor-Specific Feature Access
 
-**Decision for the experimental release: use the generated model configuration types.**
+**Decision for the experimental release: map each supported model name to its generated model configuration type.**
 
-Version 1.9.1 models `PredictRequest.modelConfig` as a union of `ModelRpt1`, `ModelRpt1_5`, and `ModelRpt1_6`.
-Those schemas cover the documented RPT data schema, parsing, explanation, and context-mode settings while allowing additional properties for forward compatibility.
+Version 1.9.1 models `PredictRequest.modelConfig` as a union of generated `ModelRpt1`, `ModelRpt1_5`, and `ModelRpt1_6` schemas.
+Expose a generic request type backed by a `ModelConfigRegistry` so the `modelName` literal selects the corresponding generated model configuration type.
+Keep the registry keys exhaustive against the generated `TFMEnum`; a type test detects model additions that require a mapping.
 
-This is sufficient for the initial client and avoids a second, SDK-maintained type system.
-Do not add a declaration-merging registry, discriminated union, or vendor-specific builder until usage demonstrates a concrete gap in the generated contract.
+This reuses the generated schemas rather than creating a second SDK-maintained model configuration type system.
 The closed `TFMEnum` remains an explicit experimental limitation and should be reconsidered if the service confirms that arbitrary registered model names are valid.
 
 ### Question 2: Level of Convenience
