@@ -36,7 +36,7 @@ The final package name remains pending between `@sap-ai-sdk/tabular-orchestratio
 
 **Decision for the experimental release: map each supported model name to its generated model configuration type.**
 
-Version 1.9.1 models `PredictRequest.modelConfig` as a union of generated `ModelRpt1`, `ModelRpt1_5`, and `ModelRpt1_6` schemas.
+Version 1.9.1 models `PredictRequest.modelConfig` as a union of generated `ModelRpt1`, `ModelRpt15`, and `ModelRpt16` schemas.
 Expose a generic request type backed by a `ModelConfigRegistry` so the `modelName` literal selects the corresponding generated model configuration type.
 Keep the registry keys exhaustive against the generated `TFMEnum`; a type test detects model additions that require a mapping.
 
