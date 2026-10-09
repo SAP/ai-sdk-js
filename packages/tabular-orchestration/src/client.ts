@@ -12,10 +12,11 @@ import type {
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { CustomRequestConfig } from '@sap-cloud-sdk/http-client';
 
+import type { PredictResponse } from './client/tabular-orchestration/index.ts';
 import type {
-  PredictRequest,
-  PredictResponse
-} from './client/tabular-orchestration/index.ts';
+  ModelConfigRegistry,
+  TabularOrchestrationPredictRequest
+} from './types.ts';
 
 /**
  * Deployment configuration for the Tabular AI Orchestration service.
@@ -52,8 +53,8 @@ export class TabularOrchestrationClient {
    * @param requestConfig - Custom request configuration.
    * @returns Prediction response.
    */
-  async predict(
-    body: PredictRequest,
+  async predict<ModelName extends keyof ModelConfigRegistry>(
+    body: TabularOrchestrationPredictRequest<ModelName>,
     requestConfig?: CustomRequestConfig
   ): Promise<PredictResponse> {
     const resourceGroup = this.deploymentConfig.resourceGroup ?? 'default';

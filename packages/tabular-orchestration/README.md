@@ -39,6 +39,7 @@ $ npm install @sap-ai-sdk/tabular-orchestration
 ## Usage
 
 The client resolves a running deployment of the `tabular-orchestration` scenario and sends the request body as defined by the service specification.
+For supported model names, `modelConfig` is typed according to the selected model.
 
 ```ts
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
