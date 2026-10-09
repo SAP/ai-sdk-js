@@ -404,7 +404,7 @@ describe('construct completion post request', () => {
         }
       );
       expect(completionPostRequest.messages_history).toEqual(messagesHistory);
-      expect(completionPostRequest.config.modules).toEqual({
+      expect(completionPostRequest.config?.modules).toEqual({
         prompt_templating: {
           ...configWithoutPrompt.promptTemplating,
           prompt: { template_ref: { id: 'test-template-id' } }
