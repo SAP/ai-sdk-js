@@ -410,8 +410,8 @@ function buildRequestPromptCompletion(
   const prompt = resolveRequestPrompt(request.prompt);
 
   const moduleConfigurations = Array.isArray(config)
-    ? config.map(c => buildModulesConfigWithPrompt(c, prompt))
-    : buildModulesConfigWithPrompt(config, prompt);
+    ? config.map(c => buildModulesConfig(c, prompt))
+    : buildModulesConfig(config, prompt);
 
   const configWithStream = addStreamIfEnabled(
     moduleConfigurations,
@@ -460,8 +460,8 @@ function buildLegacyMessagesCompletion(
       : request;
 
   const moduleConfigurations = Array.isArray(config)
-    ? config.map(c => buildCompletionModulesConfig(c, moduleRequest))
-    : buildCompletionModulesConfig(config, moduleRequest);
+    ? config.map(c => buildLegacyModulesConfig(c, moduleRequest))
+    : buildLegacyModulesConfig(config, moduleRequest);
 
   const configWithStream = addStreamIfEnabled(
     moduleConfigurations,
@@ -535,31 +535,6 @@ function resolveRequestPrompt(
 }
 
 /**
- * Builds a single module configuration with an already-resolved request-level prompt.
- * @param config - The module configuration to build from.
- * @param prompt - The resolved template or template reference.
- * @returns The module configuration with the prompt applied.
- */
-function buildModulesConfigWithPrompt(
-  config: OrchestrationModuleConfig,
-  prompt: Template | TemplateRef
-): ModuleConfigs {
-  const { promptTemplating, filtering, masking, grounding, translation } =
-    config;
-
-  return {
-    prompt_templating: {
-      ...promptTemplating,
-      prompt
-    },
-    ...(filtering && Object.keys(filtering).length && { filtering }),
-    ...(masking && Object.keys(masking).length && { masking }),
-    ...(grounding && Object.keys(grounding).length && { grounding }),
-    ...(translation && Object.keys(translation).length && { translation })
-  };
-}
-
-/**
  * Wraps module configurations in an orchestration config, enabling streaming when requested.
  * @param moduleConfigurations - Single or array of module configurations.
  * @param stream - Whether to enable streaming.
@@ -612,14 +587,18 @@ function mergePromptWithMessages(
   return prompt as TemplateRef;
 }
 
-function buildCompletionModulesConfig(
+/**
+ * Builds a single module configuration with an already-resolved request-level prompt.
+ * @param config - The module configuration to build from.
+ * @param prompt - The resolved template or template reference.
+ * @returns The module configuration with the prompt applied.
+ */
+function buildModulesConfig(
   config: OrchestrationModuleConfig,
-  request?: ChatCompletionRequest
+  prompt: Template | TemplateRef
 ): ModuleConfigs {
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
-
-  const prompt = mergePromptWithMessages(promptTemplating, request);
 
   return {
     prompt_templating: {
@@ -631,6 +610,16 @@ function buildCompletionModulesConfig(
     ...(grounding && Object.keys(grounding).length && { grounding }),
     ...(translation && Object.keys(translation).length && { translation })
   };
+}
+
+function buildLegacyModulesConfig(
+  config: OrchestrationModuleConfig,
+  request?: ChatCompletionRequest
+): ModuleConfigs {
+  return buildModulesConfig(
+    config,
+    mergePromptWithMessages(config.promptTemplating, request)
+  );
 }
 
 function isTemplate(template: unknown): template is Template {
