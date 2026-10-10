@@ -597,8 +597,8 @@ importers:
         specifier: 'catalog:'
         version: 1.4.18(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5)
       '@langchain/mcp-adapters':
-        specifier: 2.0.0
-        version: 2.0.0(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@langchain/langgraph@1.4.18(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5))
+        specifier: 2.0.1
+        version: 2.0.1(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@langchain/langgraph@1.4.18(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5))
       '@langchain/textsplitters':
         specifier: 1.0.2
         version: 1.0.2(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))
@@ -1296,12 +1296,12 @@ packages:
       '@langchain/core': ^1.1.48
       zod: ^3.25.32 || ^4.2.0
 
-  '@langchain/mcp-adapters@2.0.0':
-    resolution: {integrity: sha512-0h5KzZVqSORz7JAQ0XlA8L+jvN+6mealM+60AdNs62i7vQBCkCTXG/PL7gLuiiPz72mIEzlAb662NL8serAQ+g==}
+  '@langchain/mcp-adapters@2.0.1':
+    resolution: {integrity: sha512-dYijIiyN5JdufWX1I8cGrhKnmtSzl50cKLPuH9196xpsEJBz9TO+Z/ZM9pcHNyKM7+OZJDJvwB+DS7cAVhyheA==}
     engines: {node: '>=20.10.0'}
     peerDependencies:
       '@langchain/core': ^1.2.6
-      '@langchain/langgraph': ^1.4.13
+      '@langchain/langgraph': ^1.4.18
 
   '@langchain/openai@1.6.2':
     resolution: {integrity: sha512-KaXc3zjdM2/E24FdBlsk5NTT2Dyxh46vzCS2by78ehN6G5zdx+4OfVnPvyLl8r2tv2TqQCHpEhImVXgnAZaOvg==}
@@ -5354,7 +5354,7 @@ snapshots:
       - react
       - react-dom
 
-  '@langchain/mcp-adapters@2.0.0(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@langchain/langgraph@1.4.18(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5))':
+  '@langchain/mcp-adapters@2.0.1(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(@langchain/langgraph@1.4.18(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5))':
     dependencies:
       '@langchain/core': 1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0)
       '@langchain/langgraph': 1.4.18(@langchain/core@1.2.14(@opentelemetry/api@1.9.1)(openai@7.28.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.5))(ws@8.22.0))(zod@4.6.5)
