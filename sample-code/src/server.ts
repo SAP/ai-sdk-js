@@ -52,7 +52,10 @@ import {
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent,
-  invokePromptCachingAgent
+  invokePromptCachingAgent,
+  invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
+  streamReasoningOrchestration,
+  invokeReasoningStreamConcat as invokeReasoningStreamConcatOrchestration
 } from './langchain-orchestration.ts';
 import {
   listBatches,
@@ -1111,6 +1114,93 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
     res.end();
   }
 });
+
+app.get(
+  '/langchain/invoke-reasoning-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const result = await invokeReasoningMultiTurnOrchestration();
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamReasoningOrchestration(controller);
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    let inReasoning = false;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      const deltaReasoning = chunk.additional_kwargs.reasoning_content as
+        | string[]
+        | undefined;
+      if (deltaReasoning?.length) {
+        if (!inReasoning) {
+          res.write('[reasoning]\n');
+          inReasoning = true;
+        }
+        deltaReasoning.forEach(block => res.write(block));
+      }
+      const deltaText = typeof chunk.content === 'string' ? chunk.content : '';
+      if (deltaText) {
+        if (inReasoning) {
+          res.write('\n\n[answer]\n');
+          inReasoning = false;
+        }
+        res.write(deltaText);
+      }
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive) {
+      res.write('\n\n---------------------------\n');
+      res.write(
+        `Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`
+      );
+      res.write(
+        `Output tokens:    ${finalResult?.usage_metadata?.output_tokens ?? 0}\n`
+      );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get(
+  '/langchain/invoke-reasoning-stream-concat-orchestration',
+  async (req, res) => {
+    try {
+      const result = await invokeReasoningStreamConcatOrchestration();
+      let response = '--- Streamed + concat() ---\n\n';
+      response += `Reasoning:\n${result.reasoning || '(none)'}\n\n`;
+      response += `Answer:\n${result.text}\n\n`;
+      response += `Content blocks (raw):\n${result.contentBlocks}\n\n`;
+      response += `Reasoning tokens: ${result.reasoningTokens}\n`;
+      res.header('Content-Type', 'text/plain').send(response);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 /* Document Grounding */
 app.get(

@@ -17,6 +17,7 @@ import type {
   CompletionPostResponse,
   FunctionObject,
   MessageToolCalls,
+  ReasoningBlock,
   SystemChatMessage,
   TokenUsage,
   ToolChatMessage,
@@ -30,6 +31,7 @@ import type { ChatOrchestrationToolType } from './types.ts';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type {
   BaseMessage,
+  ContentBlock,
   HumanMessage,
   SystemMessage,
   ToolMessage
@@ -160,11 +162,48 @@ function mapAiMessageToOrchestrationAssistantMessage(
   const tool_calls =
     mapLangChainToolCallToOrchestrationToolCall(message.tool_calls) ??
     message.additional_kwargs.tool_calls;
+  const reasoning_content = extractReasoningBlocks(message);
   return {
     ...(tool_calls?.length ? { tool_calls } : {}),
-    content: cloneMessageContent(message.content),
+    ...(reasoning_content?.length ? { reasoning_content } : {}),
+    content: cloneMessageContent(stripReasoningFromContent(message.content)),
     role: 'assistant'
   } as AssistantChatMessage;
+}
+
+function extractReasoningBlocks(
+  message: AIMessage
+): ReasoningBlock[] | undefined {
+  const rawBlocks = message.additional_kwargs.reasoning_content;
+  if (Array.isArray(rawBlocks) && rawBlocks.length) {
+    return rawBlocks as ReasoningBlock[];
+  }
+  // TODO: Only reasoning-type LangChain v1 content blocks are handled here; other v1 block
+  // types (e.g. tool calls) may be silently dropped if the caller sends v1 content arrays.
+  // We don't opt into v1 content so this is acceptable for now, but proper v1-content-block
+  // support should be added as a follow-up.
+  const blocks = message.contentBlocks
+    .filter((b): b is ContentBlock.Reasoning => b.type === 'reasoning')
+    .map(b => ({ content: b.reasoning }));
+  return blocks.length ? blocks : undefined;
+}
+
+function stripReasoningFromContent(
+  content: AIMessage['content']
+): AIMessage['content'] {
+  if (!Array.isArray(content)) {
+    return content;
+  }
+  const stripped = (
+    content as (ContentBlock.Reasoning | ContentBlock.Text)[]
+  ).filter(b => b.type !== 'reasoning');
+  if (!stripped.length) {
+    return '';
+  }
+  if (stripped.length === 1 && stripped[0].type === 'text') {
+    return (stripped[0] as ContentBlock.Text).text;
+  }
+  return stripped;
 }
 
 function cloneMessageContent<TContent>(content: TContent): TContent {
@@ -366,6 +405,24 @@ function buildUsageMetadata(usage: TokenUsage): {
   };
 }
 
+function buildContentBlocks(
+  reasoningContent: ReasoningBlock[] | undefined,
+  textContent: string | null | undefined
+): string | (ContentBlock.Reasoning | ContentBlock.Text)[] {
+  const visibleBlocks = reasoningContent?.filter(
+    (b): b is ReasoningBlock & { content: string } => !!b.content
+  );
+  if (!visibleBlocks?.length) {
+    return textContent ?? '';
+  }
+  const reasoningBlocks: ContentBlock.Reasoning[] = visibleBlocks.map(
+    (b, index) => ({ type: 'reasoning' as const, reasoning: b.content, index })
+  );
+  return textContent
+    ? [...reasoningBlocks, { type: 'text' as const, text: textContent }]
+    : reasoningBlocks;
+}
+
 /**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
@@ -387,19 +444,25 @@ export function mapOutputToChatResult(
     generations: choices.map(choice => ({
       text: choice.message.content ?? '',
       message: new AIMessage({
-        content: choice.message.content ?? '',
+        content: buildContentBlocks(
+          choice.message.reasoning_content,
+          choice.message.content
+        ),
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
+        additional_kwargs: {
+          tool_calls: choice.message.tool_calls,
+          intermediate_results,
+          ...(choice.message.reasoning_content?.length && {
+            reasoning_content: choice.message.reasoning_content
+          })
+        },
         response_metadata: { tokenUsage },
         usage_metadata: usage
           ? buildUsageMetadata(usage)
           : { input_tokens: 0, output_tokens: 0, total_tokens: 0 }
       }),
-      additional_kwargs: {
-        tool_calls: choice.message.tool_calls,
-        intermediate_results
-      },
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
@@ -445,13 +508,15 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
 ): AIMessageChunk {
   const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
+  const deltaReasoning = chunk.getDeltaReasoningContent();
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
     content,
     additional_kwargs: {
       // TODO: Fix duplicated intermediate results when using concat() method for streaming chunks.
-      intermediate_results: chunk._data.intermediate_results
+      intermediate_results: chunk._data.intermediate_results,
+      ...(deltaReasoning?.length && { reasoning_content: deltaReasoning })
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)
