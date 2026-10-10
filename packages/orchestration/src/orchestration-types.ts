@@ -36,7 +36,7 @@ import type { ChatModel, EmbeddingModel } from './model-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
- * Only `messages`, `messagesHistory`, and `placeholderValues` are accepted here.
+ * Only `prompt`, `messagesHistory`, and `placeholderValues` are accepted here.
  * Model parameters (`temperature`, `max_tokens`, etc.), `tools`, and `response_format`
  * must be configured in the {@link OrchestrationModuleConfig} passed to the constructor.
  */
@@ -47,7 +47,27 @@ export interface ChatCompletionRequest {
   messagesHistory?: ChatMessages;
 
   /**
+   * The prompt template or reference to use for this call. Can be either a user defined template or a reference to a template in the prompt registry.
+   * It cannot be combined with a constructor prompt or with the deprecated `messages` field, and a {@link TemplateRef} cannot be combined with a local prompt or prompt template.
+   * @example
+   * prompt: {
+   *   template: [
+   *     {
+   *       role: 'system',
+   *       content: 'You are a helpful assistant answering questions about {{?product}}.'
+   *     },
+   *     {
+   *       role: 'user',
+   *       content: 'Can you give me an overview of its key benefits?'
+   *     }
+   *   ]
+   * }
+   */
+  prompt?: Xor<PromptTemplate, TemplateRef>;
+
+  /**
    * New chat messages, including template messages.
+   * @deprecated Since v2.17.0. Pass the current turn via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
    * @example
    * messages: [
    *   {
@@ -105,6 +125,7 @@ export interface PromptTemplatingModule {
    *
    * This is meant for static instructions included with every call.
    * For per-request templating, use `messages` in `.chatCompletion()` instead.
+   * @deprecated Since v2.17.0. Supply the prompt per call via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
    * @example
    * prompt: {
    *   template: [

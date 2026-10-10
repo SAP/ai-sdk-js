@@ -43,6 +43,12 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   prompt?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
+  if (prompt?.prompt) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when using a Launchpad JSON config. Use 'messagesHistory' or 'placeholderValues' instead."
+    );
+  }
+
   if (stream) {
     config = {
       ...config,
@@ -72,6 +78,14 @@ export function constructCompletionPostRequestFromConfigReference(
 ):
   | CompletionRequestConfigurationReferenceById
   | CompletionRequestConfigurationReferenceByNameScenarioVersion {
+  // Config references are single-turn by nature: the stored artifact defines the
+  // full template and cannot be extended with a request-level prompt (see ADR 012).
+  if (request?.prompt) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when using a config reference. A config reference is single-turn and defines the template server-side. Use 'messagesHistory' for prior turns instead."
+    );
+  }
+
   // Route request.messages into messages_history since there is no local
   // prompt.template to merge them into for config references.
   const messagesHistory = [
@@ -368,14 +382,74 @@ export function constructCompletionPostRequest(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  // Preserve format: single config → ModuleConfigs, array → ModuleConfigs[]
-  // The orchestration service expects the config structure to match the input:
-  // - Single config (OrchestrationModuleConfig) → single ModuleConfigs object
-  // - Config array (OrchestrationModuleConfigList) → array of ModuleConfigs for fallback behavior
+  return request?.prompt
+    ? buildRequestPromptCompletion(config, request, stream, streamOptions)
+    : buildLegacyMessagesCompletion(config, request, stream, streamOptions);
+}
 
-  // When any config uses a TemplateRef, messages cannot be merged into prompt.template
-  // (the template lives remotely). Route them to messages_history instead.
+/**
+ * Builds the request from a request-level `prompt`, the current direction for
+ * supplying the turn's template or template reference per call.
+ * The deprecated `messages` field and constructor prompt are not supported here;
+ * they belong to {@link buildLegacyMessagesCompletion} and are rejected up front.
+ * @param config - Single or array of module configurations.
+ * @param request - The request carrying the request-level prompt.
+ * @param stream - Whether to enable streaming.
+ * @param streamOptions - Stream options with optional per-config overrides.
+ * @returns The completion post request.
+ */
+function buildRequestPromptCompletion(
+  config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
+  request: ChatCompletionRequest,
+  stream?: boolean,
+  streamOptions?: StreamOptions
+): CompletionPostRequest {
   const configs = Array.isArray(config) ? config : [config];
+  assertRequestPromptIsExclusive(configs, request);
+
+  const prompt = resolveRequestPrompt(request.prompt);
+
+  const moduleConfigurations = Array.isArray(config)
+    ? config.map(c => buildModulesConfigWithPrompt(c, prompt))
+    : buildModulesConfigWithPrompt(config, prompt);
+
+  const configWithStream = addStreamIfEnabled(
+    moduleConfigurations,
+    stream,
+    streamOptions
+  );
+
+  return {
+    config: configWithStream,
+    ...(request.placeholderValues && {
+      placeholder_values: request.placeholderValues
+    }),
+    ...(request.messagesHistory && {
+      messages_history: request.messagesHistory
+    })
+  };
+}
+
+/**
+ * @deprecated Builds the request from the deprecated `messages` field and the
+ * constructor prompt. Delete this path once `messages` is removed; the request
+ * is then built solely by {@link buildRequestPromptCompletion}.
+ * @param config - Single or array of module configurations.
+ * @param request - The request carrying the deprecated `messages` field.
+ * @param stream - Whether to enable streaming.
+ * @param streamOptions - Stream options with optional per-config overrides.
+ * @returns The completion post request.
+ */
+function buildLegacyMessagesCompletion(
+  config: OrchestrationModuleConfig | OrchestrationModuleConfigList,
+  request?: ChatCompletionRequest,
+  stream?: boolean,
+  streamOptions?: StreamOptions
+): CompletionPostRequest {
+  const configs = Array.isArray(config) ? config : [config];
+
+  // When a TemplateRef is in the constructor, messages cannot be merged into
+  // prompt.template (the template lives remotely). Route them to history instead.
   const routeMessagesToHistory = configs.some(c =>
     isTemplateRef(c?.promptTemplating?.prompt || {})
   );
@@ -385,24 +459,15 @@ export function constructCompletionPostRequest(
       ? { ...request, messages: undefined }
       : request;
 
-  /**
-   * Module configurations for the orchestration request.
-   */
   const moduleConfigurations = Array.isArray(config)
     ? config.map(c => buildCompletionModulesConfig(c, moduleRequest))
     : buildCompletionModulesConfig(config, moduleRequest);
 
-  /**
-   * Orchestration configuration with or without streaming enabled.
-   */
-  const configWithStream = stream
-    ? Array.isArray(moduleConfigurations)
-      ? addStreamOptions(moduleConfigurations, streamOptions)
-      : addStreamOptions(
-          moduleConfigurations,
-          streamOptions as BaseStreamOptions | undefined
-        )
-    : { modules: moduleConfigurations };
+  const configWithStream = addStreamIfEnabled(
+    moduleConfigurations,
+    stream,
+    streamOptions
+  );
 
   // When routing messages to history, append request.messages after messagesHistory
   const messagesHistory =
@@ -421,16 +486,118 @@ export function constructCompletionPostRequest(
   };
 }
 
-function resolvePromptTemplate(
-  promptTemplating: OrchestrationModuleConfig['promptTemplating'],
-  messages?: ChatCompletionRequest['messages']
+/**
+ * Asserts that a request-level prompt is not combined with a constructor prompt
+ * or the deprecated `messages` field, both of which it is mutually exclusive with.
+ * @param configs - The module configurations to check for a constructor prompt.
+ * @param request - The request to check for the deprecated `messages` field.
+ */
+function assertRequestPromptIsExclusive(
+  configs: OrchestrationModuleConfig[],
+  request: ChatCompletionRequest
+): void {
+  if (configs.some(c => c?.promptTemplating?.prompt)) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when a prompt is already configured in the constructor. The constructor prompt only supports the deprecated 'messages' field. Migrate to the request-level 'prompt' field only."
+    );
+  }
+  if (request.messages?.length) {
+    throw new Error(
+      "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
+    );
+  }
+}
+
+/**
+ * Resolves a request-level prompt into the template or template reference sent
+ * to the orchestration service.
+ * @param requestPrompt - The request-level prompt to resolve.
+ * @returns The resolved template or template reference.
+ */
+function resolveRequestPrompt(
+  requestPrompt: ChatCompletionRequest['prompt']
 ): Template | TemplateRef {
-  if (typeof promptTemplating.prompt === 'string') {
+  if (typeof requestPrompt === 'string') {
     throw new TypeError('Prompt must be parsed before merging with messages.');
   }
 
-  // If promptTemplating.prompt is not defined, we initialize it with an empty template object
-  const prompt = promptTemplating.prompt ?? { template: [] };
+  if (
+    !requestPrompt ||
+    (isTemplate(requestPrompt) && !requestPrompt.template?.length)
+  ) {
+    throw new Error(
+      'The request-level prompt template must contain at least one message.'
+    );
+  }
+
+  // Cast required: the Xor on `prompt`'s type leaves `template?: ... | undefined` on the ref branch
+  return requestPrompt as Template | TemplateRef;
+}
+
+/**
+ * Builds a single module configuration with an already-resolved request-level prompt.
+ * @param config - The module configuration to build from.
+ * @param prompt - The resolved template or template reference.
+ * @returns The module configuration with the prompt applied.
+ */
+function buildModulesConfigWithPrompt(
+  config: OrchestrationModuleConfig,
+  prompt: Template | TemplateRef
+): ModuleConfigs {
+  const { promptTemplating, filtering, masking, grounding, translation } =
+    config;
+
+  return {
+    prompt_templating: {
+      ...promptTemplating,
+      prompt
+    },
+    ...(filtering && Object.keys(filtering).length && { filtering }),
+    ...(masking && Object.keys(masking).length && { masking }),
+    ...(grounding && Object.keys(grounding).length && { grounding }),
+    ...(translation && Object.keys(translation).length && { translation })
+  };
+}
+
+/**
+ * Wraps module configurations in an orchestration config, enabling streaming when requested.
+ * @param moduleConfigurations - Single or array of module configurations.
+ * @param stream - Whether to enable streaming.
+ * @param streamOptions - Stream options with optional per-config overrides.
+ * @returns The orchestration config, with streaming enabled when requested.
+ */
+function addStreamIfEnabled(
+  moduleConfigurations: ModuleConfigs | ModuleConfigs[],
+  stream?: boolean,
+  streamOptions?: StreamOptions
+): OrchestrationConfig | { modules: ModuleConfigs | ModuleConfigs[] } {
+  if (!stream) {
+    return { modules: moduleConfigurations };
+  }
+  return Array.isArray(moduleConfigurations)
+    ? addStreamOptions(moduleConfigurations, streamOptions)
+    : addStreamOptions(
+        moduleConfigurations,
+        streamOptions as BaseStreamOptions | undefined
+      );
+}
+
+function mergePromptWithMessages(
+  promptTemplating: OrchestrationModuleConfig['promptTemplating'],
+  request?: ChatCompletionRequest
+): Template | TemplateRef {
+  // Legacy path only: there is no request-level prompt here (it routes to
+  // buildRequestPromptCompletion). Fall back to the constructor prompt merged
+  // with the deprecated `messages` field.
+  const effectivePrompt = promptTemplating.prompt;
+  const messages = request?.messages;
+
+  if (typeof effectivePrompt === 'string') {
+    throw new TypeError('Prompt must be parsed before merging with messages.');
+  }
+
+  // If no prompt is defined, we initialize it with an empty template object
+  const prompt = effectivePrompt ?? { template: [] };
 
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !messages?.length) {
@@ -452,7 +619,7 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
-  const prompt = resolvePromptTemplate(promptTemplating, request?.messages);
+  const prompt = mergePromptWithMessages(promptTemplating, request);
 
   return {
     prompt_templating: {
@@ -466,19 +633,15 @@ function buildCompletionModulesConfig(
   };
 }
 
-function isTemplate(templating: unknown): templating is Template {
+function isTemplate(template: unknown): template is Template {
   return (
-    !!templating &&
-    typeof templating === 'object' &&
-    !('template_ref' in templating)
+    !!template && typeof template === 'object' && !('template_ref' in template)
   );
 }
 
-function isTemplateRef(templating: unknown): templating is TemplateRef {
+function isTemplateRef(template: unknown): template is TemplateRef {
   return (
-    !!templating &&
-    typeof templating === 'object' &&
-    'template_ref' in templating
+    !!template && typeof template === 'object' && 'template_ref' in template
   );
 }
 
