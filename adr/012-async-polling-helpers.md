@@ -37,8 +37,8 @@ That package is private and unpublished, the helper has no exponential backoff a
 ## Decision
 
 Promote `pollAsyncResource` into `@sap-ai-sdk/core` as an internal engine, and expose thin per-service convenience wrappers as the primary consumer surface.
-Return a `Promise<T>` with an `onPoll` progress callback, accept an `AbortSignal` and a `maxWaitTime` budget, and honor `Retry-After` as a wait floor.
-Defer generator integration, a streaming poller, and a runtime strategy enum.
+Expose the engine as a pull-model primitive (an async iterator) and layer a thin blocking helper on top that awaits the terminal state and returns `T`; both carry an `AbortSignal` and a `maxWaitTime` budget, and honor `Retry-After` as a wait floor if the service ever emits it.
+Defer generator integration, a full poller object, and a runtime strategy enum.
 Several points remain open for team alignment and are recorded below; the status stays `proposed` until they are resolved.
 
 ## Discussion
@@ -99,21 +99,23 @@ This mirrors the hand-written client pattern in `@sap-ai-sdk/foundation-models`.
 
 ### Question 4: Backoff strategy
 
-**Open — team decision.**
-The ticket asks for exponential backoff and randomisation, but these services emit `Retry-After`, so the server already throttles.
-Azure's long-running-operation library uses a fixed interval while honoring `Retry-After`; AWS waiters use exponential backoff with jitter precisely because their services send no server hint.
+**Recommendation: Option A, exponential backoff with jitter.**
+Neither specification declares a 429 response or a `Retry-After` header, and the reviewer confirms none was emitted when the helper was added, so the client cannot rely on a server-provided wait hint.
+AWS waiters use exponential backoff with jitter for exactly this reason, whereas Azure's long-running-operation library can use a fixed interval because its services do return `Retry-After`.
 
-#### Option A: Literal — exponential backoff with jitter
+#### Option A: Exponential backoff with jitter
 
-**Pros:** Matches the ticket text and is safe under concurrent bursts of polling.
+**Pros:** Matches the ticket text, needs no server hint, and is safe under concurrent bursts of polling.
 
-**Cons:** Redundant when the server already returns `Retry-After`, and jitter only helps concurrent fan-out, which is not the current usage.
+**Cons:** Slightly more code than a fixed interval.
 
-#### Option B: Fixed interval driven by `Retry-After`, with `maxWaitTime`
+#### Option B: Fixed interval
 
-**Pros:** Simpler, aligns with the server contract and the Azure precedent, and a wall-clock `maxWaitTime` is clearer than a maximum attempt count.
+**Pros:** Simplest, and a wall-clock `maxWaitTime` is clearer than a maximum attempt count.
 
-**Cons:** Deviates from the literal ticket wording, so it needs the ticket author's agreement.
+**Cons:** Without a server hint it either polls too often or not often enough; a fixed interval is reasonable only once the service emits `Retry-After`.
+
+If the service later emits `Retry-After` (the progress and ETA work may add it), honor it as a wait floor on top of the backoff.
 
 ### Question 5: Terminal-model coverage
 
@@ -121,16 +123,35 @@ Azure's long-running-operation library uses a fixed interval while honoring `Ret
 Confirm which flows are in scope for the first version: create only, or also `deleteCollectionById` (404 terminal) and `manualTriggerPipeline` (several terminals plus partial success).
 This determines whether the engine's completion model must go beyond a binary complete-or-fail, and whether `getFailure` must distinguish partial success from failure.
 
-### Question 6: Return shape — Promise or poller object
+### Question 6: Return shape — pull-model primitive, blocking helper, or poller object
 
-**Recommendation: a `Promise<T>` plus an `onPoll` callback.**
-Cancellation through `AbortSignal` and progress through `onPoll` are already covered, and a poller with resumable cross-process state is unnecessary for in-process polling.
-The upcoming progress and ETA data will arrive inside the polled resource and flow through `onPoll`, so a plain promise does not block that path.
+**Recommendation: a low-level pull-model primitive, with a blocking helper layered on top.**
+Expose the core as a pull model (an async iterator the caller advances, yielding each poll result) rather than a loop that runs to completion.
+A pull model lets the caller apply its own polling requirements, is a small testable building block, and is the natural foundation for the per-service wrappers from Question 3.
+The blocking convenience (await until terminal, returning `T`) is then a thin layer over the primitive, carrying `AbortSignal`, `maxWaitTime`, and progress.
+
+#### Option A: Pull-model primitive plus a thin blocking helper
+
+**Pros:** Low-level and testable; the caller controls cadence and completion; higher-level helpers compose cleanly on top.
+
+**Cons:** Two layers to document instead of one.
+
+#### Option B: Blocking `Promise<T>` only
+
+**Pros:** One call for the common case.
+
+**Cons:** Opinionated and high-level; the caller cannot adjust the loop, and it is harder to test in isolation.
+
+#### Option C: Full poller object with resumable state
+
+**Pros:** Rich control; resumable across processes.
+
+**Cons:** High-level and unnecessary for in-process polling; resumable state is not needed today.
 
 ### Service-team inputs needed
 
 - Typical and p99 completion time for asynchronous operations, to set `maxWaitTime` defaults.
-- The `Retry-After` format on 429 responses (integer seconds or a date).
+- Whether 429 responses with a `Retry-After` header will be emitted at all (its format is already standardised).
 - The planned channel and format for the upcoming progress and ETA feature.
 - Whether `createMetadataConfiguration` is actually asynchronous, since it has no status endpoint.
 
