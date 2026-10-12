@@ -8,7 +8,6 @@ import type {
   ResponseInputItem,
   ResponseStreamEvent
 } from 'openai/resources/responses/responses';
-import type { Stream } from 'openai/streaming';
 
 /**
  * Ask gpt-5.4 about the capital of France.
@@ -114,7 +113,7 @@ export async function responsesApi(): Promise<string | undefined> {
  * @returns The stream of response events.
  */
 export async function responsesApiStream(): Promise<
-  Stream<ResponseStreamEvent>
+  AsyncIterable<ResponseStreamEvent>
 > {
   const client = await SapOpenAi.createClient('gpt-5.4-nano');
 

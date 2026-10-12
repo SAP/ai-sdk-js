@@ -57,13 +57,14 @@ catalog:
   '@sap-cloud-sdk/resilience': ^4.9.1
   '@sap-cloud-sdk/util': ^4.9.1
   langchain: ^1.5.14
-  zod: ^4.6.5
+  zod: ^4.6.6
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
   - '@sap-cloud-sdk/*'
+  - zod@4.6.6
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true
