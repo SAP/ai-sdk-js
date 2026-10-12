@@ -2,7 +2,9 @@ import {
   listDataDestinations,
   createTabularArtifact,
   deleteTabularArtifact,
-  getOrCreateScenarioConfiguration
+  getOrCreateScenarioConfiguration,
+  predictWithScenarioContext,
+  predictWithInlineContext
 } from '@sap-ai-sdk/sample-code';
 
 import { loadEnv } from './utils/load-env.ts';
@@ -27,5 +29,28 @@ describe('tabular-orchestration', () => {
     expect(config.name).toBeDefined();
     expect(config.contextSelectionStrategy).toBeDefined();
     expect(config.status).toBe('ACTIVE');
+  });
+
+  it('should predict sales groups with context from a scenario configuration', async () => {
+    const { metadata, predictions, status } =
+      await predictWithScenarioContext();
+    expect(status.code).toBe(0);
+    expect(metadata.num_query_rows).toBe(2);
+    expect(predictions).toHaveLength(2);
+    expect(predictions[0]).toMatchObject({
+      id: '1001',
+      salesgroup: [{ prediction: expect.any(String) }]
+    });
+  });
+
+  it('should predict sales groups with inline context rows', async () => {
+    const { metadata, predictions, status } = await predictWithInlineContext();
+    expect(status.code).toBe(0);
+    expect(metadata.num_rows).toBe(5);
+    expect(predictions).toHaveLength(2);
+    expect(predictions[0]).toMatchObject({
+      id: '35',
+      salesgroup: [{ prediction: expect.any(String) }]
+    });
   });
 });
