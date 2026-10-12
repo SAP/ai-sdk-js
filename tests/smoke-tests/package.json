@@ -25,7 +25,8 @@
     "@sap-ai-sdk/orchestration": "canary",
     "@sap-ai-sdk/prompt-registry": "canary",
     "@sap-ai-sdk/rpt": "canary",
-    "@sap-ai-sdk/sample-code": "workspace:^"
+    "@sap-ai-sdk/sample-code": "workspace:^",
+    "@sap-ai-sdk/tabular-orchestration": "canary"
   },
   "devDependencies": {
     "@types/node": "22.20.1",

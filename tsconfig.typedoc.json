@@ -9,7 +9,8 @@
     "./packages/openai/**/*",
     "./packages/orchestration/**/*",
     "./packages/prompt-registry/**/*",
-    "./packages/rpt/**/*"
+    "./packages/rpt/**/*",
+    "./packages/tabular-orchestration/**/*"
   ],
   "exclude": [
     "**/*.spec.ts",
@@ -45,6 +46,9 @@
     },
     {
       "path": "./packages/rpt"
+    },
+    {
+      "path": "./packages/tabular-orchestration"
     }
   ],
   "typedocOptions": {
@@ -60,7 +64,8 @@
       "packages/openai/src/realtime/index.ts",
       "packages/orchestration/src/index.ts",
       "packages/prompt-registry/src/index.ts",
-      "packages/rpt/src/index.ts"
+      "packages/rpt/src/index.ts",
+      "packages/tabular-orchestration/src/index.ts"
     ],
     "name": "SAP AI SDK for JavaScript",
     "readme": "DOCUMENTATION.md",
