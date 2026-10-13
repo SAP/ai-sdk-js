@@ -203,7 +203,7 @@ In contrast, the `@aws-sdk/client-bedrock-runtime` package provides no Claude ab
 
 Model-level limitations exist on earlier Claude 3 and Claude 3.5 releases:
 
-- **Extended thinking**: gated to Claude 3.7 Sonnet; earlier models reject thinking parameters.
+- **Extended thinking**: gated to Claude 3.7 Sonnet or later; earlier models reject thinking parameters.
 - **Maximum output tokens**: Claude 3 models are capped at 4,096 tokens (compared to 8,192 or more tokens on subsequent revisions).
 - **Prompt caching**: supported on Bedrock `invoke` through explicit breakpoints (`cache_control: { type: "ephemeral" }`), but automatic caching is restricted to later models and specific regions.
 - **Computer use**: beta feature with restricted deployment availability.
