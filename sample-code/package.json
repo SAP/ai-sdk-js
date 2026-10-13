@@ -54,7 +54,7 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
-    "@upstash/context7-mcp": "4.2.0",
+    "@upstash/context7-mcp": "4.3.0",
     "hyparquet-writer": "0.16.11"
   },
   "peerDependencies": {
