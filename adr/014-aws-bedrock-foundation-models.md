@@ -63,7 +63,7 @@ The same explicit header also enables native AWS SDK decoding for `/invoke-with-
 
 The [Python Bedrock adapter](https://github.com/SAP/ai-sdk-python/blob/os-migration/packages/gen/gen_ai_hub/proxy/native/amazon/clients.py) sets this `Accept` header in the `prepare_request_dict()` method and delegates both synchronous and asynchronous Converse streaming to the official clients.
 The JavaScript adapter can apply the same header through the `client.middlewareStack.add()` method, alongside deployment path rewriting and SAP headers.
-This is HTTP response content negotiation, not a custom streaming protocol; the compatibility gotcha is that the AWS client does not otherwise need to request its native streaming format explicitly.
+This is http response content negotiation, not a custom streaming protocol; the compatibility gotcha is that the AWS client does not otherwise need to request its native streaming format explicitly.
 
 ### Option C: Invoke API: Proposed Choice
 
@@ -211,9 +211,9 @@ Handwriting clients requires implementing and maintaining response classes, stre
 ## Ecosystem Research: Native Claude and Unified Bedrock APIs
 
 The following comparison was checked against primary SDK sources and provider documentation on 2026-10-13.
-It distinguishes the existing Bedrock runtime APIs from the separate Bedrock Mantle Messages integration; it does not assert that all Bedrock clients use Invoke exclusively.
+It distinguishes the existing Bedrock runtime APIs from the separate Bedrock Mantle Messages integration; it does not assert that all Bedrock clients use Invoke.
 
-### Official Anthropic Bedrock Runtime Clients
+### Official Anthropic Bedrock runtime Clients
 
 The TypeScript [`AnthropicBedrock` class implementation in `@anthropic-ai/bedrock-sdk`](https://github.com/anthropics/anthropic-sdk-typescript/blob/main/packages/bedrock-sdk/src/client.ts) and Python [`anthropic.AnthropicBedrock` class implementation](https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/lib/bedrock/_client.py), installed with `anthropic[bedrock]`, route message generation to `InvokeModel` and `InvokeModelWithResponseStream`, not Converse.
 Both add `anthropic_version: "bedrock-2023-05-31"`, remove the routing fields `model` and `stream`, and translate the canonical Messages path to the selected Invoke endpoint.
@@ -262,7 +262,7 @@ Frameworks expose both model-native and unified paths; there is no universal rul
 ### Implication for This Proposal
 
 Prefer Invoke with Anthropic's SDK when the goal is a Claude-first surface with native schemas, types, and stream helpers.
-Prefer Converse when the application values AWS's harmonized, typed interface and provider interchangeability, or simply prefers that interface for Claude.
+Prefer Converse when the application values AWS's harmonized, typed interface and provider interchangeability, or prefers that interface for Claude.
 The proposed choice is an API-surface decision, not a streaming-compatibility workaround or a guarantee of exclusive Claude feature coverage.
 
 ---
