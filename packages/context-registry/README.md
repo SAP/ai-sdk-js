@@ -18,7 +18,7 @@ flowchart TD
         DD --> TA --> SC
     end
 
-    SC -- scenarioConfigName --> PC["@sap-ai-sdk/tabular-orchestration (future)"]
+    SC -- scenarioConfigName --> PC["@sap-ai-sdk/tabular-orchestration"]
     PC --> Result[Prediction Result]
 ```
 

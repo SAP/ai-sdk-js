@@ -105,6 +105,9 @@ export async function executeRequest(
     );
     return response;
   } catch (error: any) {
+    if (requestConfig?.signal?.aborted) {
+      throw new ErrorWithCause('Request aborted.', error);
+    }
     // TODO: remove this after the axios issue (https://github.com/axios/axios/issues/6468) has been fixed.
     await handleStreamError(error);
     throw new ErrorWithCause(

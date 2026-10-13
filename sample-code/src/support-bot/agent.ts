@@ -8,7 +8,7 @@ import {
   ToolMessage
 } from '@langchain/core/messages';
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { MultiServerMCPClient } from '@langchain/mcp-adapters';
+import { MCPAdapter } from '@langchain/mcp-adapters';
 
 import { githubTools } from './github-tools.ts';
 import { SDK_KNOWLEDGE } from './knowledge.ts';
@@ -129,11 +129,11 @@ const AGENT_SYSTEM_PROMPT = [
   '  Do NOT include dependency bumps, unrelated chore PRs, or the issue being answered itself.'
 ].join('\n');
 
-const mcpClient = new MultiServerMCPClient({
+const mcpClient = new MCPAdapter({
   // AC6: a context7 hiccup should degrade gracefully, not kill the run
   throwOnLoadError: false,
   prefixToolNameWithServerName: true,
-  mcpServers: {
+  servers: {
     context7: {
       // Hosted context7 over streamable HTTP — no local process to spawn, so a
       // missing/broken binary can't kill the run (removes the stdio ENOENT gap).
@@ -202,7 +202,7 @@ function truncateToolResult(raw: unknown, toolName: string): string {
 }
 
 export async function initAgent(): Promise<void> {
-  const mcpTools = await mcpClient.getTools();
+  const mcpTools = await mcpClient.listTools();
 
   // context7 comes from MCP; GitHub tools are native-fetch (repo scope enforced inside them)
   tools = [

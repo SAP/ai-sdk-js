@@ -14,19 +14,16 @@ import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
 loadEnv();
 
 describe('rpt', () => {
-  function verifyPredictions(
-    predictions: PredictResponsePayload[],
-    hasSchema: boolean = true
-  ) {
+  function verifyPredictions(predictions: PredictResponsePayload[]) {
     expect(predictions.length).toBeGreaterThan(0);
     expect(predictions.length).toBe(2);
     expect(predictions[0]).toMatchObject({
       SALESGROUP: expect.anything(),
-      __row_idx__: hasSchema ? '35' : 35
+      __row_idx__: '35'
     });
     expect(predictions[1]).toMatchObject({
       SALESGROUP: expect.anything(),
-      __row_idx__: hasSchema ? '571' : 571
+      __row_idx__: '571'
     });
   }
 
@@ -35,9 +32,9 @@ describe('rpt', () => {
     verifyPredictions(predictions);
   });
 
-  it('should predict sales groups with automatic schema ', async () => {
+  it('should predict sales groups with automatic schema', async () => {
     const { predictions } = await predictAutomaticParsing();
-    verifyPredictions(predictions, false);
+    verifyPredictions(predictions);
   });
 
   it('should predict sales groups from Parquet file [Blob]', async () => {

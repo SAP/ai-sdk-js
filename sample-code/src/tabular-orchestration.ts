@@ -5,6 +5,7 @@ import {
   DataDestinationsApi,
   ScenarioConfigurationManagerApi
 } from '@sap-ai-sdk/context-registry';
+import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
 
 import { pollAsyncResource } from './utils.ts';
 
@@ -13,6 +14,7 @@ import type {
   TabularArtifactDetails,
   ScenarioConfigurationObject
 } from '@sap-ai-sdk/context-registry';
+import type { PredictResponse } from '@sap-ai-sdk/tabular-orchestration';
 
 const resourceGroup = 'default';
 const headers = { 'AI-Resource-Group': resourceGroup };
@@ -162,6 +164,90 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
       ),
     intervalMs: 2_000,
     maxAttempts: 60
+  });
+}
+
+/**
+ * Predict sales groups with context rows selected from the tabular artifacts of a scenario configuration.
+ * @returns The prediction response.
+ */
+export async function predictWithScenarioContext(): Promise<PredictResponse> {
+  const client = new TabularOrchestrationClient({ resourceGroup });
+
+  return client.predict({
+    modelName: 'sap-rpt-1.6',
+    scenarioConfigName,
+    contextSelectionConfig: {
+      strategy: 'random',
+      numRows: 3,
+      indexColumn: 'id',
+      strategyConfig: { deterministic: true }
+    },
+    predictionConfig: {
+      targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
+    },
+    modelConfig: { index_column: 'id' },
+    rows: [
+      {
+        id: '1001',
+        product: 'Laptop',
+        price: 999.99,
+        date: '2025-01-15',
+        salesgroup: '[PREDICT]'
+      },
+      {
+        id: '1002',
+        product: 'Office Chair',
+        price: 142.99,
+        date: '2025-07-13',
+        salesgroup: '[PREDICT]'
+      }
+    ]
+  });
+}
+
+/**
+ * Predict sales groups with context rows provided in the request, without a scenario configuration.
+ * @returns The prediction response.
+ */
+export async function predictWithInlineContext(): Promise<PredictResponse> {
+  const client = new TabularOrchestrationClient({ resourceGroup });
+
+  return client.predict({
+    modelName: 'sap-rpt-1.6',
+    predictionConfig: {
+      targetColumns: [{ name: 'salesgroup', task_type: 'classification' }]
+    },
+    modelConfig: { index_column: 'id' },
+    rows: [
+      { id: '35', product: 'Laptop', price: 999.99, salesgroup: '[PREDICT]' },
+      {
+        id: '571',
+        product: 'Office Chair',
+        price: 142.99,
+        salesgroup: '[PREDICT]'
+      }
+    ],
+    contextRows: [
+      {
+        id: '42',
+        product: 'Desktop Computer',
+        price: 921.5,
+        salesgroup: 'Electronics'
+      },
+      {
+        id: '99',
+        product: 'Macbook',
+        price: 1220.99,
+        salesgroup: 'Electronics'
+      },
+      {
+        id: '689',
+        product: 'Office Desk',
+        price: 750.5,
+        salesgroup: 'Furniture'
+      }
+    ]
   });
 }
 
