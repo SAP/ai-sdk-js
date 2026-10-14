@@ -100,7 +100,7 @@ This mirrors the hand-written client pattern in `@sap-ai-sdk/foundation-models`.
 ### Question 4: Backoff strategy
 
 **Recommendation: Option A, exponential backoff with jitter.**
-Neither specification declares a 429 response or a `Retry-After` header, and the reviewer confirms none was emitted when the helper was added, so the client cannot rely on a server-provided wait hint.
+Neither specification declares a 429 response or a `Retry-After` header, so the client cannot rely on a server-provided wait hint.
 AWS waiters use exponential backoff with jitter for exactly this reason, whereas Azure's long-running-operation library can use a fixed interval because its services do return `Retry-After`.
 
 #### Option A: Exponential backoff with jitter
