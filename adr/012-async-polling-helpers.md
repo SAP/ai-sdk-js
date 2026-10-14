@@ -147,7 +147,10 @@ A full poller object is out of scope.
 #### Option A: Blocking helper (consumer-facing, first step)
 
 ```ts
-const collection = await createAndWaitForActive(id, { maxWaitTime: 60_000, signal });
+const collection = await createAndWaitForActive(id, {
+  maxWaitTime: 60_000,
+  signal
+});
 ```
 
 **Pros:** One call for the common case; carries `AbortSignal`, `maxWaitTime`, and backoff internally.
