@@ -118,25 +118,19 @@ If the service later emits `Retry-After` (the progress and ETA work may add it),
 
 ### Question 5: Terminal-model coverage
 
-**Open — team decision.**
-Confirm which flows are in scope for the first version: create only, or also `deleteCollectionById` (404 terminal) and `manualTriggerPipeline` (several terminals plus partial success).
-This determines whether the engine's completion model must go beyond a binary complete-or-fail, and whether `getFailure` must distinguish partial success from failure.
+**Open — team decision, but a single engine covers create, delete, and pipeline.**
+All three fit one model: poll until a terminal state, return the resource, and let the caller interpret the outcome.
 
-#### Option A: One engine with a richer completion model
+- **Create:** the resource reaches `ACTIVE` or `ERROR` (context-registry), or the creation-status union resolves to its created shape (document-grounding).
+- **Delete:** effectively binary (gone or not).
+  document-grounding exposes a typed `/deletionStatus` endpoint, which is a cleaner signal than the resource's 404.
+  context-registry has no delete-status endpoint, so deletion shows as the `DELETING` status and then a 404 once a background job removes the resource — there the `read` still needs a 404-to-done guard.
+  The 404 handling does not disappear everywhere, but delete stays binary either way.
+- **Pipeline:** `manualTriggerPipeline` has several terminals including the partial-success `FINISHEDWITHERRORS`.
+  `isComplete` treats every terminal (`FINISHED`, `FINISHEDWITHERRORS`, `TIMEOUT`) as done, `getFailure` fires only on the `*_FAILED` states, and the caller reads `resource.status` to tell success from partial success.
 
-A single `pollAsyncResource` whose predicate can report pending, success, failure, and partial success.
-
-**Pros:** One engine to learn and test.
-
-**Cons:** Every caller carries the partial-success shape even for the common binary case.
-
-#### Option B: Two engines
-
-Keep `pollAsyncResource` as a simple binary `complete-or-fail` engine, and add a separate `pollAsyncResourceWithPartialSuccess` for the pipeline case; each per-service wrapper picks the right engine.
-
-**Pros:** The common case stays simple; partial success is opt-in where it is actually needed (the pipeline).
-
-**Cons:** Two engines to maintain.
+A separate `pollAsyncResourceWithPartialSuccess` engine is therefore not needed: partial success is the caller's interpretation of the returned resource, not a second engine.
+The only open point is confirming the team wants to cover all three flows in the first version rather than create only.
 
 ### Question 6: Return shape — pull-model primitive, blocking helper, or poller object
 
@@ -146,23 +140,35 @@ A full poller object is out of scope.
 
 #### Option A: Blocking helper (consumer-facing, first step)
 
+A per-service wrapper hides the involved flow — call the 202 operation, parse the `Location`, and poll the status operation until the union resolves:
+
 ```ts
-const collection = await createAndWaitForActive(id, {
-  maxWaitTime: 60_000,
+const headers = { 'AI-Resource-Group': resourceGroup };
+const raw = await VectorApi.createCollection(body, headers).executeRaw();
+// 202 Accepted; Location points at /collections/{id}/creationStatus
+const id = (raw.headers.location as string).split('/').at(-2)!;
+const collection = await pollAsyncResource({
+  read: () => VectorApi.getCollectionCreationStatus(id, headers).execute(),
+  // getCollectionCreationStatus returns CollectionCreatedResponse | CollectionPendingResponse
+  isComplete: r => 'collectionURL' in r, // created-response shape is terminal
+  intervalMs: 2_000,
+  maxAttempts: 60,
   signal
 });
 ```
 
-**Pros:** One call for the common case; carries `AbortSignal`, `maxWaitTime`, and backoff internally.
+**Pros:** One call for the common case; hides the `executeRaw`/`Location`/union handling; carries `AbortSignal` and backoff internally.
 
-**Cons:** The caller cannot adjust the loop; built on Option B underneath.
+**Cons:** The caller cannot adjust the loop; built on the pull-model primitive (Option B) underneath.
 
 #### Option B: Pull-model primitive (the building block)
 
+The same read, exposed as an iterator the caller advances (proposed shape; the merged helper currently returns a `Promise`):
+
 ```ts
-for await (const state of pollAsyncResource({ read, isComplete, getFailure })) {
-  // caller decides what to do on each poll; break/return when satisfied
-  updateProgress(state);
+for await (const state of pollCollectionCreation(id, headers)) {
+  if ('collectionURL' in state) break; // terminal: created
+  reportProgress(state); // still pending (CollectionPendingResponse)
 }
 ```
 
