@@ -2,7 +2,7 @@
 
 ## Status
 
-proposed — pending team alignment on scope, backoff, ergonomics, and terminal-model coverage
+proposed — pending team alignment on backoff, ergonomics, and terminal-model coverage
 
 This ADR covers acceptance criterion #1 of [#659](https://github.com/SAP/ai-sdk-js-backlog/issues/659) ("investigate and decide on approach"), following the Context Registry release ([#663](https://github.com/SAP/ai-sdk-js-backlog/issues/663)).
 No implementation is included; the ticket requires team alignment before code is written.
@@ -19,13 +19,14 @@ The asynchronous operations in scope were verified against the current specifica
   Completion is a typed status enum (`PROCESSING`, `ACTIVE`, `ERROR`, `DELETING`), polled on the same resource URL.
 - `document-grounding`: `createCollection`, `deleteCollectionById`, `manualTriggerPipeline`, and possibly `createMetadataConfiguration`.
   The terminal models are not uniform (described below).
-- `prompt-registry`: no asynchronous operations — every operation is synchronous.
+
+`prompt-registry` is out of scope: it has no asynchronous operations in the current specification.
 
 The two services differ structurally.
 Both declare a `Location` header on the 202 response.
 `context-registry` returns a body with the resource name and completes through a typed status enum on the resource.
 `document-grounding` returns no body and completes through field presence in a `oneOf` (`collectionURL` versus `monitorURL`), with an untyped `status` string.
-`document-grounding` is also not uniform internally: `deleteCollectionById` terminates on a 404, and `manualTriggerPipeline` has several terminal states plus a partial-success state (`FINISHEDWITHERRORS`).
+`document-grounding` is also not uniform internally: deletion is tracked by polling the resource itself — `GET /vector/collections/{id}` returns a 404 once `deleteCollectionById` completes (a typed `/deletionStatus` endpoint returning `Deleted | Pending` also exists) — and `manualTriggerPipeline` has several terminal states plus a partial-success state (`FINISHEDWITHERRORS`).
 
 ### Generated client
 
@@ -43,12 +44,10 @@ Several points remain open for team alignment and are recorded below; the status
 
 ## Discussion
 
-### Question 1: Scope — is Prompt Registry included?
+### Question 1: Scope
 
-**Open — team decision.**
-The ticket title says "Prompt & Context Registry", but `prompt-registry` has no asynchronous operations in the current specification.
-The effective scope is `context-registry` plus `document-grounding`.
-Confirm that Prompt Registry is out of scope, or name the planned future operation this should target.
+**Settled.** The scope is `context-registry` plus `document-grounding`.
+`prompt-registry` is excluded because it has no asynchronous operations.
 
 ### Question 2: Standalone helper versus generator integration
 
@@ -123,32 +122,67 @@ If the service later emits `Retry-After` (the progress and ETA work may add it),
 Confirm which flows are in scope for the first version: create only, or also `deleteCollectionById` (404 terminal) and `manualTriggerPipeline` (several terminals plus partial success).
 This determines whether the engine's completion model must go beyond a binary complete-or-fail, and whether `getFailure` must distinguish partial success from failure.
 
+#### Option A: One engine with a richer completion model
+
+A single `pollAsyncResource` whose predicate can report pending, success, failure, and partial success.
+
+**Pros:** One engine to learn and test.
+
+**Cons:** Every caller carries the partial-success shape even for the common binary case.
+
+#### Option B: Two engines
+
+Keep `pollAsyncResource` as a simple binary `complete-or-fail` engine, and add a separate `pollAsyncResourceWithPartialSuccess` for the pipeline case; each per-service wrapper picks the right engine.
+
+**Pros:** The common case stays simple; partial success is opt-in where it is actually needed (the pipeline).
+
+**Cons:** Two engines to maintain.
+
 ### Question 6: Return shape — pull-model primitive, blocking helper, or poller object
 
-**Recommendation: a low-level pull-model primitive, with a blocking helper layered on top.**
-Expose the core as a pull model (an async iterator the caller advances, yielding each poll result) rather than a loop that runs to completion.
-A pull model lets the caller apply its own polling requirements, is a small testable building block, and is the natural foundation for the per-service wrappers from Question 3.
-The blocking convenience (await until terminal, returning `T`) is then a thin layer over the primitive, carrying `AbortSignal`, `maxWaitTime`, and progress.
+**Recommendation: ship the blocking helper as the consumer-facing surface first, built on a pull-model primitive underneath.**
+The blocking helper covers the common case in one call; the pull-model primitive is the small, testable building block it is layered on, and can be exposed directly as a follow-up if callers need to drive the loop themselves.
+A full poller object is out of scope.
 
-#### Option A: Pull-model primitive plus a thin blocking helper
+#### Option A: Blocking helper (consumer-facing, first step)
 
-**Pros:** Low-level and testable; the caller controls cadence and completion; higher-level helpers compose cleanly on top.
+```ts
+const collection = await createAndWaitForActive(id, { maxWaitTime: 60_000, signal });
+```
 
-**Cons:** Two layers to document instead of one.
+**Pros:** One call for the common case; carries `AbortSignal`, `maxWaitTime`, and backoff internally.
 
-#### Option B: Blocking `Promise<T>` only
+**Cons:** The caller cannot adjust the loop; built on Option B underneath.
 
-**Pros:** One call for the common case.
+#### Option B: Pull-model primitive (the building block)
 
-**Cons:** Opinionated and high-level; the caller cannot adjust the loop, and it is harder to test in isolation.
+```ts
+for await (const state of pollAsyncResource({ read, isComplete, getFailure })) {
+  // caller decides what to do on each poll; break/return when satisfied
+  updateProgress(state);
+}
+```
+
+**Pros:** Low-level and testable; the caller controls cadence and completion; the blocking helper and the per-service wrappers compose on top of it.
+
+**Cons:** Two layers to document.
 
 #### Option C: Full poller object with resumable state
+
+```ts
+const poller = createPoller(id);
+poller.onProgress(cb);
+await poller.pollUntilDone();
+const state = poller.serialize(); // resume later / in another process
+```
 
 **Pros:** Rich control; resumable across processes.
 
 **Cons:** High-level and unnecessary for in-process polling; resumable state is not needed today.
 
 ### Service-team inputs needed
+
+Rather than guess defaults, reach out to the respective service teams for:
 
 - Typical and p99 completion time for asynchronous operations, to set `maxWaitTime` defaults.
 - Whether 429 responses with a `Retry-After` header will be emitted at all (its format is already standardised).
