@@ -17,7 +17,7 @@ The asynchronous operations in scope were verified against the current specifica
 
 - `context-registry`: `createUpdateDataDestination`, `createScenarioConfiguration`, and `createTabularArtifact` (`PUT` returning 202).
   Completion is a typed status enum (`PROCESSING`, `ACTIVE`, `ERROR`, `DELETING`), polled on the same resource URL.
-- `document-grounding`: `createCollection`, `deleteCollectionById`, `manualTriggerPipeline`, and possibly `createMetadataConfiguration`.
+- `document-grounding`: `createCollection`, `deleteCollectionById`, `manualTriggerPipeline`, and `createMetadataConfiguration`.
   The terminal models are not uniform (described below).
 
 `prompt-registry` is out of scope: it has no asynchronous operations in the current specification.
@@ -187,7 +187,8 @@ Rather than guess defaults, reach out to the respective service teams for:
 - Typical and p99 completion time for asynchronous operations, to set `maxWaitTime` defaults.
 - Whether 429 responses with a `Retry-After` header will be emitted at all (its format is already standardised).
 - The planned channel and format for the upcoming progress and ETA feature.
-- Whether `createMetadataConfiguration` is actually asynchronous, since it has no status endpoint.
+
+`createMetadataConfiguration` is confirmed asynchronous — the specification declares a 202 with a `Location` header ("Document enumeration in progress") — but has no dedicated status endpoint, so completion is tracked by polling the resource at the returned `Location`.
 
 The patterns above were derived from the generated clients and the OpenApi specifications, not from the normative North Star guidance, which is internal and was not consulted.
 Obtaining it would let us classify canonical versus service-specific behaviour with certainty.
