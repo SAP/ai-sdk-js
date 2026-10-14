@@ -38,7 +38,8 @@ That package is private and unpublished, the helper has no exponential backoff a
 ## Decision
 
 Promote `pollAsyncResource` into `@sap-ai-sdk/core` as an internal engine, and expose thin per-service convenience wrappers as the primary consumer surface.
-Expose the engine as a pull-model primitive (an async iterator) and layer a thin blocking helper on top that awaits the terminal state and returns `T`; both carry an `AbortSignal` and a `maxWaitTime` budget, and honor `Retry-After` as a wait floor if the service ever emits it.
+Expose the engine as a pull-model primitive (an async iterator) and layer a thin blocking helper on top that awaits the terminal state and returns `T`.
+Both carry an `AbortSignal` and a `maxWaitTime` budget, and honor `Retry-After` as a wait floor if the service ever emits it.
 Defer generator integration, a full poller object, and a runtime strategy enum.
 Several points remain open for team alignment and are recorded below; the status stays `proposed` until they are resolved.
 
@@ -124,7 +125,8 @@ All three fit one model: poll until a terminal state, return the resource, and l
 - **Create:** the resource reaches `ACTIVE` or `ERROR` (context-registry), or the creation-status union resolves to its created shape (document-grounding).
 - **Delete:** effectively binary (gone or not).
   document-grounding exposes a typed `/deletionStatus` endpoint, which is a cleaner signal than the resource's 404.
-  context-registry has no delete-status endpoint, so deletion shows as the `DELETING` status and then a 404 once a background job removes the resource — there the `read` still needs a 404-to-done guard.
+  context-registry has no delete-status endpoint.
+  There, deletion shows as the `DELETING` status and then a 404 once a background job removes the resource, so the `read` needs a 404-to-done guard.
   The 404 handling does not disappear everywhere, but delete stays binary either way.
 - **Pipeline:** `manualTriggerPipeline` has several terminals including the partial-success `FINISHEDWITHERRORS`.
   `isComplete` treats every terminal (`FINISHED`, `FINISHEDWITHERRORS`, `TIMEOUT`) as done, `getFailure` fires only on the `*_FAILED` states, and the caller reads `resource.status` to tell success from partial success.
