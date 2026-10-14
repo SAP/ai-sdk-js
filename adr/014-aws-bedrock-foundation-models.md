@@ -162,10 +162,13 @@ The adapter architecture includes the following configuration options:
 - **Bedrock-optimized client hook (`SapAnthropic` class)**:
   - Subclasses Anthropic's `AnthropicBedrock` client from `@anthropic-ai/bedrock-sdk`.
   - **Canonical request visibility**: user-defined middleware observes standard Anthropic-shaped requests (`/v1/messages`, `model` parameter, etc.) before the backend adapter translates them for AWS Bedrock.
-  - **Typed execution context**: provides access to the `ctx.options?.stream` property without needing to parse the raw body string twice.
+  - **Upstream request adaptation and typed context**: chaining `super.backendMiddleware()` leverages `@anthropic-ai/bedrock-sdk` to adapt the request body (`anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers) and route the URL to `/model/{modelId}/invoke` or `/model/{modelId}/invoke-with-response-stream`, without manual JSON body rewriting.
+    The adapter can inspect the rewritten path or `ctx.options?.stream` without parsing the raw body string twice.
   - **Streaming support**: requests negotiate binary AWS EventStream (`Accept: application/vnd.amazon.eventstream`), which `@anthropic-ai/bedrock-sdk` decodes directly, preserving Anthropic's typed events and streaming helpers without a custom SSE normalizer.
     The prototype's `adaptBedrockSseStream()` function is not needed when using this binary EventStream path.
-  - **Bearer token management**: seamlessly uses Anthropic's `credentials: AccessTokenProvider` property with `expiresAt: 0`, delegating token caching and refresh to `@sap-ai-sdk/core` / SAP Cloud SDK.
+  - **Bearer token management and SigV4 bypass**: passes `skipAuth: true` (and `apiKey: ''`) to `AnthropicBedrock` to bypass AWS SigV4 signing and suppress ambient AWS bearer token resolution.
+    In the overridden `backendMiddleware()` method, the adapter injects `Authorization: Bearer <token>` and `AI-Resource-Group`, delegating token retrieval and caching to `@sap-ai-sdk/core` / SAP Cloud SDK destination management.
+    This avoids relying on `credentials: AccessTokenProvider`, which `AnthropicBedrock`'s `ClientOptions` drops and does not pass through to `super()`.
 
 - **Optional standalone fetch adapter (the `createSapBedrockAnthropicFetch()` function)**:
   - Optionally provided alongside the class implementation (referencing the pattern from `direct-access-vercel/src/authenticated-fetch.ts`) for environments that prefer configuring standard `new AnthropicBedrock({ fetch })`.
@@ -345,9 +348,9 @@ The architecture decision encompasses the following points:
   - Adapting Messages requests to Bedrock Invoke payloads (`anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers).
   - Decoding binary AWS EventStream from `/invoke-with-response-stream` into typed Anthropic `MessageStreamEvent`s that feed Anthropic's message helpers (`messages.stream()`, stream accumulators).
     Because AI Core defaults to data-only SSE (which lacks the named `event: <type>` lines needed for Messages API compatibility), negotiating binary AWS EventStream and delegating decoding to `@anthropic-ai/bedrock-sdk` avoids any need for a custom SSE event-name normalizer.
-    The SAP wrapper (`SapAnthropic` class, optionally complemented by `createSapBedrockAnthropicFetch()`) focuses on SAP-specific responsibilities: deployment URL resolution, Bearer token management via `credentials: AccessTokenProvider`, and injecting the `AI-Resource-Group` header.
+    The SAP wrapper (`SapAnthropic` class, optionally complemented by `createSapBedrockAnthropicFetch()`) focuses on SAP-specific responsibilities: deployment URL resolution, bypassing AWS SigV4 signing via `skipAuth: true`, injecting `Authorization: Bearer <token>` and the `AI-Resource-Group` header via `backendMiddleware()`, and delegating token caching to `@sap-ai-sdk/core` / SAP Cloud SDK.
     Option A includes the following components:
-  - Adapt the official Bedrock-optimized Anthropic client through backend hooks / request middleware for canonical request visibility, typed execution context, and SAP bearer-token management; reuse `@anthropic-ai/bedrock-sdk`'s payload adaptation and binary EventStream decoding rather than implementing a custom SSE normalizer.
+  - Adapt the official Bedrock-optimized Anthropic client through backend hooks / request middleware for canonical request visibility, SigV4 bypass via `skipAuth: true`, and SAP bearer-token injection via `backendMiddleware()`; reuse `@anthropic-ai/bedrock-sdk`'s payload adaptation and binary EventStream decoding rather than implementing a custom SSE normalizer.
   - Optionally provide a standalone fetch adapter (the `createSapBedrockAnthropicFetch()` function) alongside the `SapAnthropic` class for environments that prefer configuring standard `new AnthropicBedrock({ fetch })`.
     This approach reuses upstream Claude types and streaming helpers without handwriting response accumulators or maintaining parallel schemas; it does not guarantee first-party day-0 feature availability through Bedrock or SAP AI Core.
 - **AWS SDK alternative**: recognize Option B as technically viable for both Invoke and Converse, including streaming with `Accept: application/vnd.amazon.eventstream`.
@@ -366,7 +369,7 @@ The following resources provide background information and technical context:
 - [Claude on Amazon Bedrock: InvokeModel/Converse integration](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy)
 - [Claude in Amazon Bedrock: separate Messages/Mantle integration](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock)
 - [Anthropic Claude Tool Use on Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages-tool-use.html)
-- Reference prototype in the `sap-bedrock-wrapper` repository (`prototype/sap-bedrock-runtime.prototype.ts` file)
+- Reference prototypes in the `sap-bedrock-wrapper` repository (`prototype/sap-anthropic-bedrock.prototype.ts` and `prototype/sap-bedrock-runtime.prototype.ts` files)
 - Reference direct access implementation in the `direct-access-vercel` repository (`src/authenticated-fetch.ts` file)
 - [Python Bedrock client adapter: response format negotiation and official-client delegation](https://github.com/SAP/ai-sdk-python/blob/os-migration/packages/gen/gen_ai_hub/proxy/native/amazon/clients.py)
 - Live JavaScript transport verification (2026-10-13) against a Claude Sonnet 4.6 SAP AI Core deployment: Invoke and Converse, streaming and non-streaming, decoded by the official AWS SDK; streaming requests explicitly sent `Accept: application/vnd.amazon.eventstream`.
