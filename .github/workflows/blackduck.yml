@@ -49,13 +49,13 @@ jobs:
           echo "project_version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository at project version
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           ref: ${{ steps.version.outputs.project_version }}
           persist-credentials: false
 
       - name: Run Black Duck SCA scan
-        uses: blackduck-inc/black-duck-security-scan@152247222aa9cd38124acd5c0cf60f4db71adc3f # v2.11.0
+        uses: blackduck-inc/black-duck-security-scan@v2.11.0
         with:
           blackducksca_url: https://sap.blackducksoftware.com
           blackducksca_token: ${{ secrets.BLACKDUCK_API_TOKEN }}
@@ -88,4 +88,4 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_MSG_AUTHOR: ' '
           SLACK_ICON: https://sap.github.io/cloud-sdk/img/logo.png
-        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
+        uses: rtCamp/action-slack-notify@v2.4.0
