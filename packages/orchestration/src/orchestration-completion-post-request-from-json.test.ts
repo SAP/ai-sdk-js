@@ -1,4 +1,4 @@
-import { constructCompletionPostRequestFromJsonModuleConfig } from './util/module-config.ts';
+import { constructCompletionPostRequestFromJsonModuleConfig } from './util/completion-request-builder.ts';
 
 import type { ChatCompletionRequest } from './orchestration-types.ts';
 

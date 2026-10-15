@@ -1,14 +1,14 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 
 import { isOrchestrationModuleConfigList } from '../orchestration-types.ts';
-import { buildAzureContentSafetyFilter } from './filtering.ts';
 import {
   addStreamOptions,
   addStreamOptionsToOutputFilteringConfig,
   addStreamOptionsToPromptTemplatingModuleConfig,
   constructCompletionPostRequest,
   constructCompletionPostRequestFromConfigReference
-} from './module-config.ts';
+} from './completion-request-builder.ts';
+import { buildAzureContentSafetyFilter } from './filtering.ts';
 
 import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.ts';
 import type {

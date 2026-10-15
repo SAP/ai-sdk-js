@@ -8,9 +8,7 @@ import {
   type OrchestrationConfigRefById,
   type OrchestrationConfigRefByName,
   type OrchestrationModuleConfig,
-  type OrchestrationModuleConfigList,
-  type EmbeddingModuleConfig,
-  type EmbeddingRequest
+  type OrchestrationModuleConfigList
 } from '../orchestration-types.ts';
 
 import type {
@@ -24,10 +22,7 @@ import type {
   PartialOrchestrationConfig,
   Template,
   PromptTemplatingModuleConfig,
-  TemplateRef,
-  EmbeddingsPostRequest,
-  EmbeddingsOrchestrationConfig,
-  EmbeddingsModuleConfigs
+  TemplateRef
 } from '../client/api/schema/index.ts';
 
 const logger = createLogger({
@@ -637,47 +632,4 @@ function isTemplateRef<T>(template: T): template is Extract<T, TemplateRef> {
   return (
     !!template && typeof template === 'object' && 'template_ref' in template
   );
-}
-
-/**
- * Constructs an embedding post request from the given configuration and request.
- * @internal
- */
-export function constructEmbeddingPostRequest(
-  config: EmbeddingModuleConfig,
-  request: EmbeddingRequest
-): EmbeddingsPostRequest {
-  const orchestrationConfig: EmbeddingsOrchestrationConfig = {
-    modules: buildEmbeddingModulesConfig(config)
-  };
-
-  const embeddingRequest: EmbeddingsPostRequest = {
-    config: orchestrationConfig,
-    input: {
-      text: request.input,
-      ...(request.type && { type: request.type })
-    }
-  };
-  return embeddingRequest;
-}
-
-function buildEmbeddingModulesConfig(
-  config: EmbeddingModuleConfig
-): EmbeddingsModuleConfigs {
-  const { embeddings, masking } = config;
-  const { model } = embeddings;
-  const { name, version, params } = model;
-
-  const modules: EmbeddingsModuleConfigs = {
-    embeddings: {
-      model: {
-        name,
-        ...(version && { version }),
-        ...(params && { params })
-      }
-    },
-    ...(masking && Object.keys(masking).length && { masking })
-  };
-
-  return modules;
 }
