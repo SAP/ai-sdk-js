@@ -119,7 +119,8 @@ import {
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type {
   OrchestrationEmbeddingResponse,
-  OrchestrationResponse
+  OrchestrationResponse,
+  ReasoningBlock
 } from '@sap-ai-sdk/orchestration';
 
 import type { AIMessageChunk } from '@langchain/core/messages';
@@ -1088,14 +1089,14 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
         break;
       }
       const deltaReasoning = chunk.additional_kwargs.reasoning_content as
-        | string[]
+        | ReasoningBlock[]
         | undefined;
       if (deltaReasoning?.length) {
         if (!inReasoning) {
           res.write('[reasoning]\n');
           inReasoning = true;
         }
-        deltaReasoning.forEach(block => res.write(block));
+        deltaReasoning.forEach(block => res.write(block.content ?? ''));
       }
       const deltaText = typeof chunk.content === 'string' ? chunk.content : '';
       if (deltaText) {
@@ -1132,6 +1133,7 @@ app.get(
       response += `Reasoning:\n${result.reasoning || '(none)'}\n\n`;
       response += `Answer:\n${result.text}\n\n`;
       response += `Content blocks (raw):\n${result.contentBlocks}\n\n`;
+      response += `Signature preserved: ${result.hasSignature}\n`;
       response += `Reasoning tokens: ${result.reasoningTokens}\n`;
       res.header('Content-Type', 'text/plain').send(response);
     } catch (error: any) {

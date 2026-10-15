@@ -508,7 +508,11 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
 ): AIMessageChunk {
   const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
-  const deltaReasoning = chunk.getDeltaReasoningContent();
+  // Surface the raw reasoning blocks (not getDeltaReasoningContent(), which strips
+  // signatures): the signature is required to replay thinking+tool-use turns back to
+  // models like Claude. Content stays a plain-text delta so concat() merges the blocks
+  // into additional_kwargs without colliding on content-block index 0.
+  const deltaReasoning = choice?.delta.reasoning_content;
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
   return new AIMessageChunk({

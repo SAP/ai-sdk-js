@@ -34,6 +34,7 @@ import type {
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationModuleConfigList
 } from '@sap-ai-sdk/langchain';
+import type { ReasoningBlock } from '@sap-ai-sdk/orchestration';
 
 import type {
   BaseMessage,
@@ -803,15 +804,18 @@ export async function invokeReasoningMultiTurn(): Promise<string> {
 
 /**
  * Streams a reasoning model response, accumulates all chunks with {@link AIMessageChunk.concat},
- * and returns the final merged message shape. This demonstrates that streaming reasoning deltas
+ * and returns the final merged message shape. This demonstrates that streaming reasoning blocks
  * kept in {@link AIMessageChunk.additional_kwargs.reasoning_content} survive chunk aggregation
- * without index collisions.
- * @returns The aggregated reasoning string, answer text, raw content blocks, and reasoning token count.
+ * without index collisions, and that each block's `signature` is preserved end-to-end (required
+ * to replay thinking+tool-use turns back to models like Claude).
+ * @returns The aggregated reasoning string, answer text, raw content blocks, whether a signature
+ * survived the concat, and the reasoning token count.
  */
 export async function invokeReasoningStreamConcat(): Promise<{
   text: string;
   reasoning: string;
   contentBlocks: string;
+  hasSignature: boolean;
   reasoningTokens: number;
 }> {
   const stream = await streamReasoningOrchestration();
@@ -820,13 +824,14 @@ export async function invokeReasoningStreamConcat(): Promise<{
     finalResult = finalResult ? finalResult.concat(chunk) : chunk;
   }
   const msg = finalResult!;
-  const reasoningDeltas = msg.additional_kwargs.reasoning_content as
-    | string[]
+  const reasoningBlocks = msg.additional_kwargs.reasoning_content as
+    | ReasoningBlock[]
     | undefined;
   return {
     text: extractText(msg.content),
-    reasoning: reasoningDeltas?.join('') ?? '',
+    reasoning: reasoningBlocks?.map(b => b.content ?? '').join('') ?? '',
     contentBlocks: JSON.stringify(msg.content),
+    hasSignature: !!reasoningBlocks?.some(b => b.signature),
     reasoningTokens: msg.usage_metadata?.output_token_details?.reasoning ?? 0
   };
 }

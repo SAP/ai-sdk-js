@@ -30,6 +30,7 @@ import type {
   ToolCallChunk as OrchestrationToolCallChunk,
   CompletionPostResponseStreaming,
   FunctionObject,
+  ReasoningBlock,
   TokenUsage
 } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -764,7 +765,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     content?: string,
     toolCallChunks?: OrchestrationToolCallChunk[],
     finishReason?: string,
-    tokenUsage?: TokenUsage
+    tokenUsage?: TokenUsage,
+    reasoningBlocks?: ReasoningBlock[]
   ): OrchestrationStreamChunkResponse {
     const mockData: CompletionPostResponseStreaming = {
       request_id: 'req-123',
@@ -781,7 +783,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
               delta: {
                 role: 'assistant',
                 content: content || '',
-                tool_calls: toolCallChunks
+                tool_calls: toolCallChunks,
+                ...(reasoningBlocks && { reasoning_content: reasoningBlocks })
               },
               finish_reason: finishReason || ''
             }
@@ -801,7 +804,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
             delta: {
               role: 'assistant',
               content: content || '',
-              tool_calls: toolCallChunks
+              tool_calls: toolCallChunks,
+              ...(reasoningBlocks && { reasoning_content: reasoningBlocks })
             },
             finish_reason: finishReason || ''
           }
@@ -927,28 +931,43 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     });
   });
 
-  it('surfaces delta reasoning content as string[] in additional_kwargs, content stays plain string', () => {
-    const mockChunk = createMockChunk('The answer.', undefined, undefined);
-    vi.spyOn(mockChunk, 'getDeltaReasoningContent').mockReturnValue([
-      'Let me think.'
-    ]);
+  it('surfaces delta reasoning blocks (with signatures) in additional_kwargs, content stays plain string', () => {
+    const mockChunk = createMockChunk(
+      'The answer.',
+      undefined,
+      undefined,
+      undefined,
+      [{ content: 'Let me think.', signature: 'sig-abc' }]
+    );
 
     const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
 
     expect(result.content).toBe('The answer.');
     expect(result.additional_kwargs.reasoning_content).toEqual([
-      'Let me think.'
+      { content: 'Let me think.', signature: 'sig-abc' }
     ]);
   });
 
-  it('falls back to plain string content when getDeltaReasoningContent returns undefined', () => {
+  it('preserves a signature-only reasoning block (encrypted thinking) in additional_kwargs', () => {
+    const mockChunk = createMockChunk('', undefined, 'stop', undefined, [
+      { content: '', signature: 'encrypted-sig' }
+    ]);
+
+    const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
+
+    expect(result.content).toBe('');
+    expect(result.additional_kwargs.reasoning_content).toEqual([
+      { content: '', signature: 'encrypted-sig' }
+    ]);
+  });
+
+  it('omits reasoning_content from additional_kwargs when the delta has none', () => {
     const mockChunk = createMockChunk('Hello');
-    vi.spyOn(mockChunk, 'getDeltaReasoningContent').mockReturnValue(undefined);
 
     const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
 
     expect(result.content).toBe('Hello');
-    expect((result.additional_kwargs as any).reasoning_content).toBeUndefined();
+    expect(result.additional_kwargs.reasoning_content).toBeUndefined();
   });
 });
 
