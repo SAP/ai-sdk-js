@@ -39,12 +39,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   stream?: boolean
 ): Record<string, any> {
   if (prompt?.prompt) {
-    throw new Error(
-      rejectRequestPromptMessage(
-        'a Launchpad JSON config',
-        "Use 'messagesHistory' or 'placeholderValues' instead."
-      )
-    );
+    config = injectRequestPromptIntoJsonConfig(config, prompt.prompt);
   }
 
   if (stream) {
@@ -63,6 +58,51 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
     messages_history: prompt?.messagesHistory || [],
     placeholder_values: prompt?.placeholderValues || {},
     config
+  };
+}
+
+function injectRequestPromptIntoJsonConfig(
+  config: Record<string, any>,
+  requestPrompt: NonNullable<ChatCompletionRequest['prompt']>
+): Record<string, any> {
+  const { modules } = config;
+
+  if (!modules || (typeof modules !== 'object' && !Array.isArray(modules))) {
+    throw new Error(
+      "Cannot inject request-level 'prompt' into the JSON config: 'modules' must be an object or array."
+    );
+  }
+
+  const moduleList: Record<string, any>[] = Array.isArray(modules)
+    ? modules
+    : [modules];
+
+  const hasExistingPrompt = moduleList.some(mod => {
+    if (!mod?.prompt_templating || typeof mod.prompt_templating !== 'object') {
+      throw new Error(
+        "Cannot inject request-level 'prompt' into the JSON config: each module must have a 'prompt_templating' object."
+      );
+    }
+    return mod.prompt_templating.prompt !== undefined;
+  });
+
+  if (hasExistingPrompt) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when the JSON config already has 'prompt_templating.prompt'. Remove the prompt from the config or omit the request-level prompt."
+    );
+  }
+
+  const injectedModules = moduleList.map(mod => ({
+    ...mod,
+    prompt_templating: {
+      ...mod.prompt_templating,
+      prompt: requestPrompt
+    }
+  }));
+
+  return {
+    ...config,
+    modules: Array.isArray(modules) ? injectedModules : injectedModules[0]
   };
 }
 

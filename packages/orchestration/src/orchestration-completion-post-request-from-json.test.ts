@@ -3,28 +3,6 @@ import { constructCompletionPostRequestFromJsonModuleConfig } from './util/compl
 import type { ChatCompletionRequest } from './orchestration-types.ts';
 
 describe('construct completion post request from JSON', () => {
-  it('throws when a request-level prompt is combined with a Launchpad JSON config', () => {
-    const jsonConfig = {
-      modules: {
-        prompt_templating: {
-          model: { name: 'gpt-5.4-nano' },
-          prompt: { template: [{ role: 'user', content: 'Hello!' }] }
-        }
-      }
-    };
-    const request: ChatCompletionRequest = {
-      prompt: {
-        template: [{ role: 'user', content: 'Current turn' }]
-      }
-    };
-
-    expect(() =>
-      constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
-    ).toThrowError(
-      "Cannot set 'prompt' in the request when using a Launchpad JSON config. Use 'messagesHistory' or 'placeholderValues' instead."
-    );
-  });
-
   it('should construct completion post request from JSON', () => {
     const jsonConfig = `{
       "modules": {
@@ -49,9 +27,7 @@ describe('construct completion post request from JSON', () => {
     };
 
     const completionPostRequestFromJson: Record<string, any> =
-      constructCompletionPostRequestFromJsonModuleConfig(
-        JSON.parse(jsonConfig)
-      );
+      constructCompletionPostRequestFromJsonModuleConfig(JSON.parse(jsonConfig));
 
     expect(expectedCompletionPostRequestFromJson).toEqual(
       completionPostRequestFromJson
@@ -116,5 +92,127 @@ describe('construct completion post request from JSON', () => {
     expect(expectedCompletionPostRequestFromJson).toEqual(
       completionPostRequestFromJson
     );
+  });
+
+  describe('request-level prompt with JSON config', () => {
+    const modelConfig = {
+      model: { name: 'gpt-5.4-nano' }
+    };
+    const requestPrompt = {
+      template: [{ role: 'user', content: 'Current turn' }]
+    };
+
+    it('injects a request-level prompt when the JSON config has no existing prompt', () => {
+      const jsonConfig = {
+        modules: {
+          prompt_templating: modelConfig
+        }
+      };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      const result = constructCompletionPostRequestFromJsonModuleConfig(
+        jsonConfig,
+        request
+      );
+
+      expect(result.config.modules.prompt_templating.prompt).toEqual(
+        requestPrompt
+      );
+    });
+
+    it('injects a request-level prompt into every module in a fallback list', () => {
+      const jsonConfig = {
+        modules: [
+          { prompt_templating: modelConfig },
+          { prompt_templating: { model: { name: 'gpt-4o' } } }
+        ]
+      };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      const result = constructCompletionPostRequestFromJsonModuleConfig(
+        jsonConfig,
+        request
+      );
+
+      for (const mod of result.config.modules) {
+        expect(mod.prompt_templating.prompt).toEqual(requestPrompt);
+      }
+    });
+
+    it('throws when a JSON config module already has prompt_templating.prompt', () => {
+      const jsonConfig = {
+        modules: {
+          prompt_templating: {
+            ...modelConfig,
+            prompt: { template: [{ role: 'user', content: 'Hello!' }] }
+          }
+        }
+      };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrowError(/prompt/i);
+    });
+
+    it('throws when any module in a fallback list already has prompt_templating.prompt', () => {
+      const jsonConfig = {
+        modules: [
+          { prompt_templating: modelConfig },
+          {
+            prompt_templating: {
+              ...modelConfig,
+              prompt: { template: [{ role: 'user', content: 'Hello!' }] }
+            }
+          }
+        ]
+      };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrowError(/prompt/i);
+    });
+
+    it('routes messagesHistory when injecting a request-level prompt', () => {
+      const jsonConfig = {
+        modules: { prompt_templating: modelConfig }
+      };
+      const messagesHistory = [
+        { role: 'user' as const, content: 'Prior message' }
+      ];
+      const request: ChatCompletionRequest = {
+        prompt: requestPrompt,
+        messagesHistory
+      };
+
+      const result = constructCompletionPostRequestFromJsonModuleConfig(
+        jsonConfig,
+        request
+      );
+
+      expect(result.messages_history).toEqual(messagesHistory);
+      expect(result.config.modules.prompt_templating.prompt).toEqual(
+        requestPrompt
+      );
+    });
+
+    it('throws a friendly error when modules is not an object or array', () => {
+      const jsonConfig = { modules: 'invalid' };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrow();
+    });
+
+    it('throws a friendly error when a module lacks prompt_templating', () => {
+      const jsonConfig = { modules: { other_field: {} } };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrow();
+    });
   });
 });
