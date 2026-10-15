@@ -54,6 +54,7 @@ It wraps `AzureOpenAI` from the `openai` package and exposes only the endpoints 
 
 ```ts
 import { SapOpenAi } from '@sap-ai-sdk/openai';
+
 import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
@@ -105,8 +106,9 @@ const client = await SapOpenAi.createClient({
 Use `createOpenAiConfig` if you need to instantiate `AzureOpenAI` directly (e.g. to access endpoints not exposed by `SapOpenAi`):
 
 ```ts
-import { AzureOpenAI } from 'openai';
 import { createOpenAiConfig } from '@sap-ai-sdk/openai';
+
+import { AzureOpenAI } from 'openai';
 
 const config = await createOpenAiConfig('gpt-5.4');
 const client = new AzureOpenAI(config);
