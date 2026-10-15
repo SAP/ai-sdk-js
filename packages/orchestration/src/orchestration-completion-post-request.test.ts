@@ -1,6 +1,7 @@
 import {
   constructCompletionPostRequest,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildDpiMaskingProvider
 } from './util/index.ts';
 
 import type { CompletionPostRequest } from './client/api/schema/index.ts';
@@ -441,6 +442,38 @@ describe('construct completion post request', () => {
           messages: [{ role: 'user', content: 'Also hi' }]
         })
       ).toThrow(/Cannot set both 'prompt' and 'messages'/);
+    });
+
+    it('should propagate masking into modules.masking with a request-level prompt', async () => {
+      const maskingProvider = buildDpiMaskingProvider({
+        method: 'anonymization',
+        entities: ['profile-address']
+      });
+      const config: OrchestrationModuleConfig = {
+        ...configWithoutPrompt,
+        masking: { masking_providers: [maskingProvider] }
+      };
+      const completionPostRequest = constructCompletionPostRequest(config, {
+        prompt: {
+          template: [{ role: 'user', content: 'Hi' }]
+        }
+      });
+      expect(completionPostRequest.config?.modules?.masking).toEqual(
+        config.masking
+      );
+    });
+
+    it('should omit modules.masking when masking is empty with a request-level prompt', async () => {
+      const config: OrchestrationModuleConfig = {
+        ...configWithoutPrompt,
+        masking: {}
+      };
+      const completionPostRequest = constructCompletionPostRequest(config, {
+        prompt: {
+          template: [{ role: 'user', content: 'Hi' }]
+        }
+      });
+      expect(completionPostRequest.config?.modules?.masking).toBeUndefined();
     });
   });
 });
