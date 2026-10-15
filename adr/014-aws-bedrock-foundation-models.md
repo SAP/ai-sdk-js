@@ -162,7 +162,7 @@ The adapter architecture includes the following configuration options:
 - **Bedrock-optimized client hook (`SapAnthropic` class)**:
   - Subclasses Anthropic's `AnthropicBedrock` client from `@anthropic-ai/bedrock-sdk`.
   - **Canonical request visibility**: user-defined middleware observes standard Anthropic-shaped requests (`/v1/messages`, `model` parameter, etc.) before the backend adapter translates them for AWS Bedrock.
-  - **Upstream request adaptation and typed context**: chaining `super.backendMiddleware()` leverages `@anthropic-ai/bedrock-sdk` to adapt the request body (`anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers) and route the URL to `/model/{modelId}/invoke` or `/model/{modelId}/invoke-with-response-stream`, without manual JSON body rewriting.
+  - **Upstream request adaptation and typed context**: chaining `super.backendMiddleware()` leverages `@anthropic-ai/bedrock-sdk` to adapt the request body (`anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers) and route the URL to `/deployment/{deploymentId}/invoke` or `/deployment/{deploymentId}/invoke-with-response-stream`, without manual JSON body rewriting.
     The adapter can inspect the rewritten path or `ctx.options?.stream` without parsing the raw body string twice.
   - **Streaming support**: requests negotiate binary AWS EventStream (`Accept: application/vnd.amazon.eventstream`), which `@anthropic-ai/bedrock-sdk` decodes directly, preserving Anthropic's typed events and streaming helpers without a custom SSE normalizer.
     The prototype's `adaptBedrockSseStream()` function is not needed when using this binary EventStream path.
