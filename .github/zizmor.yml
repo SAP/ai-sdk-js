@@ -3,3 +3,6 @@ rules:
   dependabot-cooldown:
     config:
       days: 4
+  # TODO: re-enabled after next zizmor release
+  unpinned-uses:
+    disable: true

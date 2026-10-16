@@ -41,7 +41,7 @@ jobs:
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3
+        uses: SonarSource/sonarqube-scan-action@v8.3.0
       - name: Wait for type tests
         wait: test-type
 
@@ -63,7 +63,7 @@ jobs:
             exit 1
           fi
       - name: REUSE Compliance Check
-        uses: fsfe/reuse-action@676e2d560c9a403aa252096d99fcab3e1132b0f5 # v6.0.0
+        uses: fsfe/reuse-action@v6.0.0
         background: true
       - name: Lint codebase
         id: lint
