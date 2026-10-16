@@ -15,6 +15,9 @@ export type AzureOpenAiChatModel = LiteralUnion<
   | 'gpt-5.6-sol'
   | 'gpt-5.6-terra'
   | 'gpt-5.6-luna'
+  | 'gpt-6-astra'
+  | 'gpt-6-luna'
+  | 'gpt-6.1-sol'
 >;
 
 /**
@@ -44,6 +47,7 @@ export type GcpVertexAiChatModel = LiteralUnion<
   | 'gemini-3.5-flash'
   | 'gemini-3.5-flash-lite'
   | 'gemini-3.8-flash'
+  | 'gemini-3.6-flash'
 >;
 
 /**
@@ -87,8 +91,9 @@ export type AiCoreOpenSourceChatModel = LiteralUnion<
 /**
  * AI Core sap managed model for embedding.
  */
-export type AiCoreOpenSourceEmbeddingModel =
-  LiteralUnion<'nvidia--llama-3.2-nv-embedqa-1b'>;
+export type AiCoreOpenSourceEmbeddingModel = LiteralUnion<
+  'nvidia--llama-3.2-nv-embedqa-1b' | 'nvidia--llama-nemotron-embed-1b'
+>;
 
 /**
  * SAP RPT models.
