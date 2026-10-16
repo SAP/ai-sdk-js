@@ -5,7 +5,9 @@ import {
 } from './util/index.ts';
 
 import type { CompletionPostRequest } from './client/api/schema/index.ts';
+import type { ModuleConfigs } from './client/api/schema/module-configs.ts';
 import type {
+  MaskingModule,
   OrchestrationModuleConfig,
   StreamOptions
 } from './orchestration-types.ts';
@@ -458,22 +460,24 @@ describe('construct completion post request', () => {
           template: [{ role: 'user', content: 'Hi' }]
         }
       });
-      expect(completionPostRequest.config?.modules?.masking).toEqual(
-        config.masking
-      );
+      expect(
+        (completionPostRequest.config?.modules as ModuleConfigs)?.masking
+      ).toEqual(config.masking);
     });
 
     it('should omit modules.masking when masking is empty with a request-level prompt', async () => {
       const config: OrchestrationModuleConfig = {
         ...configWithoutPrompt,
-        masking: {}
+        masking: {} as MaskingModule
       };
       const completionPostRequest = constructCompletionPostRequest(config, {
         prompt: {
           template: [{ role: 'user', content: 'Hi' }]
         }
       });
-      expect(completionPostRequest.config?.modules?.masking).toBeUndefined();
+      expect(
+        (completionPostRequest.config?.modules as ModuleConfigs)?.masking
+      ).toBeUndefined();
     });
   });
 });

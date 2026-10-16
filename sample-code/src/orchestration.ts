@@ -53,7 +53,9 @@ export async function orchestrationChatCompletion(
   // execute the request
   const result = await orchestrationClient.chatCompletion(
     {
-      prompt: { template: [{ role: 'user', content: 'What is the capital of France?' }] }
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
     },
     { signal }
   );
@@ -75,7 +77,11 @@ export async function orchestrationChatCompletionResilient(): Promise<Orchestrat
   });
 
   return orchestrationClient.chatCompletion(
-    { prompt: { template: [{ role: 'user', content: 'What is the capital of France?' }] } },
+    {
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
+    },
     {
       middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
     }
@@ -192,12 +198,16 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
   });
 
   const firstResponse = await orchestrationClient.chatCompletion({
-    prompt: { template: [{ role: 'user', content: 'What is the capital of France?' }] }
+    prompt: {
+      template: [{ role: 'user', content: 'What is the capital of France?' }]
+    }
   });
 
   // User can then ask a follow-up question
   const nextResponse = await orchestrationClient.chatCompletion({
-    prompt: { template: [{ role: 'user', content: 'What is the typical food there?' }] },
+    prompt: {
+      template: [{ role: 'user', content: 'What is the typical food there?' }]
+    },
     messagesHistory: firstResponse.getAllMessages()
   });
 
@@ -314,7 +324,10 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
     await orchestrationClient.chatCompletion({
       prompt: {
         template: [
-          { role: 'user', content: 'My social insurance number is ABC123456789.' }
+          {
+            role: 'user',
+            content: 'My social insurance number is ABC123456789.'
+          }
         ] // Should be filtered by the Llama guard filter
       }
     });
@@ -516,7 +529,9 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
 
   return orchestrationClient.chatCompletion(
     {
-      prompt: { template: [{ role: 'user', content: 'What is the capital of France?' }] }
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
     },
     // add a custom header to the request
     {
@@ -869,7 +884,10 @@ export async function chatCompletionStreamWithTools(
     {
       prompt: {
         template: [
-          { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
+          {
+            role: 'user',
+            content: 'Add the numbers 2 and 3, as well as 4 and 5'
+          }
         ]
       }
     },
@@ -1077,7 +1095,9 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
   ]);
 
   return orchestrationClient.stream({
-    prompt: { template: [{ role: 'user', content: 'Give me a short introduction.' }] }
+    prompt: {
+      template: [{ role: 'user', content: 'Give me a short introduction.' }]
+    }
   });
 }
 
@@ -1201,7 +1221,9 @@ export async function orchestrationQwenChatCompletion(
     }
   });
   return orchestrationClient.chatCompletion({
-    prompt: { template: [{ role: 'user', content: 'What is the capital of France?' }] }
+    prompt: {
+      template: [{ role: 'user', content: 'What is the capital of France?' }]
+    }
   });
 }
 
@@ -1394,7 +1416,9 @@ export async function orchestrationReasoningContent(
   // Pass full message history (includes reasoning blocks) to maintain context.
   await orchestrationClient.chatCompletion(
     {
-      prompt: { template: [{ role: 'user', content: 'Now do the same for 23 * 19.' }] },
+      prompt: {
+        template: [{ role: 'user', content: 'Now do the same for 23 * 19.' }]
+      },
       messagesHistory: response.getAllMessages()
     },
     { signal }

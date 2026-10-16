@@ -27,7 +27,9 @@ describe('construct completion post request from JSON', () => {
     };
 
     const completionPostRequestFromJson: Record<string, any> =
-      constructCompletionPostRequestFromJsonModuleConfig(JSON.parse(jsonConfig));
+      constructCompletionPostRequestFromJsonModuleConfig(
+        JSON.parse(jsonConfig)
+      );
 
     expect(expectedCompletionPostRequestFromJson).toEqual(
       completionPostRequestFromJson
@@ -99,7 +101,7 @@ describe('construct completion post request from JSON', () => {
       model: { name: 'gpt-5.4-nano' }
     };
     const requestPrompt = {
-      template: [{ role: 'user', content: 'Current turn' }]
+      template: [{ role: 'user' as const, content: 'Current turn' }]
     };
 
     it('injects a request-level prompt when the JSON config has no existing prompt', () => {
@@ -217,7 +219,7 @@ describe('construct completion post request from JSON', () => {
 
       expect(() =>
         constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
-      ).toThrow();
+      ).toThrow(/'modules' must be an object or array/);
     });
 
     it('throws a friendly error when a module lacks prompt_templating', () => {
@@ -226,7 +228,7 @@ describe('construct completion post request from JSON', () => {
 
       expect(() =>
         constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
-      ).toThrow();
+      ).toThrow(/each module must have a 'prompt_templating' object/);
     });
   });
 });
