@@ -38,7 +38,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   request?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
-  const { modules } = config;
+  let { modules } = config;
 
   const moduleList: Record<string, any>[] = Array.isArray(modules)
     ? modules
@@ -52,24 +52,24 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
         "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
       );
     }
-    const injectedModules = injectRequestPromptIntoJsonConfig(
+    const modulesWithPrompt = addRequestPromptToModules(
       moduleList,
       request.prompt
     );
-    config.modules = Array.isArray(modules)
-      ? injectedModules
-      : injectedModules[0];
+    modules = Array.isArray(modules) ? modulesWithPrompt : modulesWithPrompt[0];
   }
 
   if (stream) {
     config = {
       ...config,
+      modules,
       stream: {
         ...config.stream,
         enabled: true
       }
     };
   } else {
+    config = { ...config, modules };
     delete config.stream;
   }
 
@@ -90,7 +90,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
 function validateJsonModuleConfigShape(
   moduleList: Record<string, any>[]
 ): void {
-  for (const mod of moduleList) {
+  moduleList.forEach(mod => {
     if (!mod || typeof mod !== 'object' || Array.isArray(mod)) {
       throw new Error(
         "Invalid JSON config: 'modules' must be an object or array."
@@ -105,10 +105,10 @@ function validateJsonModuleConfigShape(
         "Invalid JSON config: each module's 'prompt_templating' must be an object."
       );
     }
-  }
+  });
 }
 
-function injectRequestPromptIntoJsonConfig(
+function addRequestPromptToModules(
   moduleList: Record<string, any>[],
   requestPrompt: NonNullable<ChatCompletionRequest['prompt']>
 ): Record<string, any>[] {
@@ -122,15 +122,13 @@ function injectRequestPromptIntoJsonConfig(
     );
   }
 
-  const injectedModules = moduleList.map(mod => ({
+  return moduleList.map(mod => ({
     ...mod,
     prompt_templating: {
       ...mod.prompt_templating,
       prompt: requestPrompt
     }
   }));
-
-  return injectedModules;
 }
 
 /**
