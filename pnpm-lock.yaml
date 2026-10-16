@@ -252,7 +252,7 @@ importers:
         version: 14.0.17
       orval:
         specifier: 8.41.0
-        version: 8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.6))(@typescript/typescript6@6.0.2)(prettier@3.9.9)(typedoc@0.28.20(@typescript/typescript6@6.0.2))(zod@4.6.6)
+        version: 8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.7))(@typescript/typescript6@6.0.2)(prettier@3.9.9)(typedoc@0.28.20(@typescript/typescript6@6.0.2))(zod@4.6.7)
       oxfmt:
         specifier: 0.72.0
         version: 0.72.0
@@ -272,8 +272,8 @@ importers:
         specifier: 5.0.4
         version: 5.0.4(@opentelemetry/api@1.9.1)(@types/node@22.20.5)(@vitest/coverage-v8@5.0.4)(vite@8.3.4(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       zod:
-        specifier: 4.6.6
-        version: 4.6.6
+        specifier: 4.6.7
+        version: 4.6.7
 
   .github/actions/changesets-fixed-version-bump:
     dependencies:
@@ -470,7 +470,7 @@ importers:
         version: 8.18.2
       openai:
         specifier: 7.32.0
-        version: 7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6)
+        version: 7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7)
       vitest:
         specifier: 5.0.4
         version: 5.0.4(@opentelemetry/api@1.9.1)(@types/node@22.20.5)(@vitest/coverage-v8@5.0.4)(vite@8.3.4(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -726,13 +726,13 @@ importers:
         version: 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.16.1-20261016012240.0(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(debug@4.4.3(supports-color@7.2.0))(langchain@1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(supports-color@7.2.0)
+        version: 2.16.1-20261016012240.0(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(debug@4.4.3(supports-color@7.2.0))(langchain@1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(supports-color@7.2.0)
       '@sap-ai-sdk/llm-batch':
         specifier: canary
         version: 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/openai':
         specifier: canary
-        version: 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(supports-color@7.2.0)(ws@8.22.0)
+        version: 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(supports-color@7.2.0)(ws@8.22.0)
       '@sap-ai-sdk/orchestration':
         specifier: canary
         version: 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -4816,6 +4816,9 @@ packages:
   zod@4.6.6:
     resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
+
 snapshots:
 
   '@actions/core@3.0.1':
@@ -5281,6 +5284,22 @@ snapshots:
       - openai
       - ws
 
+  '@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)':
+    dependencies:
+      '@cfworker/json-schema': 4.1.1
+      '@standard-schema/spec': 1.1.0
+      js-tiktoken: 1.0.21
+      langsmith: 0.10.8(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
+      mustache: 4.2.0
+      p-queue: 6.6.2
+      zod: 4.6.6
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - ws
+
   '@langchain/langgraph-checkpoint@1.1.6(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.30.1(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))':
     dependencies:
       '@langchain/core': 1.2.17(@opentelemetry/api@1.9.1)(openai@7.30.1(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0)
@@ -5426,6 +5445,31 @@ snapshots:
       '@cfworker/json-schema': 4.1.1
     transitivePeerDependencies:
       - supports-color
+
+  '@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.7)':
+    dependencies:
+      '@hono/node-server': 2.1.4(hono@4.13.13)
+      ajv: 8.20.0
+      ajv-formats: 3.0.1(ajv@8.20.0)
+      content-type: 1.0.5
+      cors: 2.8.6
+      cross-spawn: 7.0.6
+      eventsource: 3.0.7
+      eventsource-parser: 3.1.1
+      express: 5.3.0(supports-color@7.2.0)
+      express-rate-limit: 8.7.1(express@5.3.0(supports-color@7.2.0))(supports-color@7.2.0)
+      hono: 4.13.13
+      jose: 6.2.12
+      json-schema-typed: 8.0.2
+      pkce-challenge: 5.0.1
+      raw-body: 3.0.2
+      zod: 4.6.7
+      zod-to-json-schema: 3.25.2(zod@4.6.7)
+    optionalDependencies:
+      '@cfworker/json-schema': 4.1.1
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
 
   '@modelcontextprotocol/server-github@2025.4.8':
     dependencies:
@@ -5640,23 +5684,23 @@ snapshots:
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/hono@8.41.0(@typescript/typescript6@6.0.2)(zod@4.6.6)':
+  '@orval/hono@8.41.0(@typescript/typescript6@6.0.2)(zod@4.6.7)':
     dependencies:
       '@orval/core': 8.41.0
-      '@orval/zod': 8.41.0(zod@4.6.6)
+      '@orval/zod': 8.41.0(zod@4.6.7)
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
     transitivePeerDependencies:
       - '@faker-js/faker'
       - zod
 
-  '@orval/mcp@8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.6))(zod@4.6.6)':
+  '@orval/mcp@8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.7))(zod@4.6.7)':
     dependencies:
       '@orval/core': 8.41.0
       '@orval/fetch': 8.41.0
-      '@orval/zod': 8.41.0(zod@4.6.6)
+      '@orval/zod': 8.41.0(zod@4.6.7)
     optionalDependencies:
-      '@modelcontextprotocol/sdk': 1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.6)
+      '@modelcontextprotocol/sdk': 1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.7)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - zod
@@ -5693,12 +5737,12 @@ snapshots:
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/zod@8.41.0(zod@4.6.6)':
+  '@orval/zod@8.41.0(zod@4.6.7)':
     dependencies:
       '@orval/core': 8.41.0
       jsesc: 3.1.0
     optionalDependencies:
-      zod: 4.6.6
+      zod: 4.6.7
     transitivePeerDependencies:
       - '@faker-js/faker'
 
@@ -6045,9 +6089,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/langchain@2.16.1-20261016012240.0(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(debug@4.4.3(supports-color@7.2.0))(langchain@1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(supports-color@7.2.0)':
+  '@sap-ai-sdk/langchain@2.16.1-20261016012240.0(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(debug@4.4.3(supports-color@7.2.0))(langchain@1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(supports-color@7.2.0)':
     dependencies:
-      '@langchain/core': 1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0)
+      '@langchain/core': 1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
       '@sap-ai-sdk/ai-api': 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/core': 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/foundation-models': 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -6055,7 +6099,7 @@ snapshots:
       '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     optionalDependencies:
-      langchain: 1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0)
+      langchain: 1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6067,13 +6111,13 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/openai@2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(supports-color@7.2.0)(ws@8.22.0)':
+  '@sap-ai-sdk/openai@2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(supports-color@7.2.0)(ws@8.22.0)':
     dependencies:
       '@sap-ai-sdk/ai-api': 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/core': 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      openai: 7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6)
+      openai: 7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7)
     optionalDependencies:
       ws: 8.22.0
     transitivePeerDependencies:
@@ -7390,7 +7434,7 @@ snapshots:
       tinyglobby: 0.2.17
       unbash: 5.0.0
       yaml: 2.9.1
-      zod: 4.6.6
+      zod: 4.6.7
 
   kuler@2.0.0: {}
 
@@ -7426,6 +7470,23 @@ snapshots:
       - react-dom
       - ws
 
+  langchain@1.5.16(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0):
+    dependencies:
+      '@langchain/core': 1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
+      '@langchain/langgraph': 1.4.21(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))(zod@4.6.6)
+      '@langchain/langgraph-checkpoint': 1.1.6(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0))
+      langsmith: 0.10.8(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
+      zod: 4.6.6
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - '@opentelemetry/exporter-trace-otlp-proto'
+      - '@opentelemetry/sdk-trace-base'
+      - openai
+      - react
+      - react-dom
+      - ws
+    optional: true
+
   langsmith@0.10.8(@opentelemetry/api@1.9.1)(openai@7.30.1(undici@7.30.0)(ws@8.22.0)(zod@4.6.6))(ws@8.22.0):
     dependencies:
       p-queue: 6.6.2
@@ -7440,6 +7501,14 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
       openai: 7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.6)
+      ws: 8.22.0
+
+  langsmith@0.10.8(@opentelemetry/api@1.9.1)(openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0):
+    dependencies:
+      p-queue: 6.6.2
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.1
+      openai: 7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7)
       ws: 8.22.0
 
   lightningcss-android-arm64@1.33.0:
@@ -7775,11 +7844,17 @@ snapshots:
       ws: 8.22.0
       zod: 4.6.6
 
+  openai@7.32.0(undici@7.30.0)(ws@8.22.0)(zod@4.6.7):
+    optionalDependencies:
+      undici: 7.30.0
+      ws: 8.22.0
+      zod: 4.6.7
+
   openapi-types@12.1.3: {}
 
   opossum@10.0.0: {}
 
-  orval@8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.6))(@typescript/typescript6@6.0.2)(prettier@3.9.9)(typedoc@0.28.20(@typescript/typescript6@6.0.2))(zod@4.6.6):
+  orval@8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.7))(@typescript/typescript6@6.0.2)(prettier@3.9.9)(typedoc@0.28.20(@typescript/typescript6@6.0.2))(zod@4.6.7):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
       '@orval/angular': 8.41.0
@@ -7787,14 +7862,14 @@ snapshots:
       '@orval/core': 8.41.0
       '@orval/effect': 8.41.0
       '@orval/fetch': 8.41.0
-      '@orval/hono': 8.41.0(@typescript/typescript6@6.0.2)(zod@4.6.6)
-      '@orval/mcp': 8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.6))(zod@4.6.6)
+      '@orval/hono': 8.41.0(@typescript/typescript6@6.0.2)(zod@4.6.7)
+      '@orval/mcp': 8.41.0(@modelcontextprotocol/sdk@1.32.1(@cfworker/json-schema@4.1.1)(supports-color@7.2.0)(zod@4.6.7))(zod@4.6.7)
       '@orval/mock': 8.41.0
       '@orval/pinia-colada': 8.41.0
       '@orval/query': 8.41.0
       '@orval/solid-start': 8.41.0
       '@orval/swr': 8.41.0
-      '@orval/zod': 8.41.0(zod@4.6.6)
+      '@orval/zod': 8.41.0(zod@4.6.7)
       '@scalar/json-magic': 0.15.6
       '@scalar/openapi-parser': 0.29.12
       '@scalar/openapi-types': 0.9.7
@@ -8662,8 +8737,15 @@ snapshots:
     dependencies:
       zod: 4.6.6
 
+  zod-to-json-schema@3.25.2(zod@4.6.7):
+    dependencies:
+      zod: 4.6.7
+    optional: true
+
   zod@3.25.76: {}
 
   zod@4.6.5: {}
 
   zod@4.6.6: {}
+
+  zod@4.6.7: {}
