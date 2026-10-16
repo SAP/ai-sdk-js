@@ -91,8 +91,9 @@ export function createOpenAIConfig(options: any): OpenAIConfig {
 Then supply this configuration to the official SDK to create client instances.
 
 ```ts
-import { AzureOpenAI } from 'openai';
 import { createOpenAIConfig } from '@sap-ai-sdk/foundation-models';
+
+import { AzureOpenAI } from 'openai';
 
 const config = createOpenAIConfig({
   model: 'gpt-5',
