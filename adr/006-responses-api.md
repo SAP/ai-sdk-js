@@ -208,8 +208,9 @@ We could provide a helper function to retrieve a config based on destination, mo
 This is a hands-on PoC: https://github.tools.sap/I824643/responses-api-poc.
 
 ```ts
-import { AzureOpenAI } from 'openai/azure';
 import { createAzureOpenAiClientOptions } from '@sap-ai-sdk/foundation-models';
+
+import { AzureOpenAI } from 'openai/azure';
 
 // SAP Cloud SDK for AI part
 const options = await createAzureOpenAiClientOptions('gpt-5');
@@ -252,8 +253,9 @@ However, the model is already defined through the deployment.
 In order to prevent confusion we could take back more ownership and wrap the official client.
 
 ```ts
-import { AzureOpenAI } from 'openai/azure';
 import { createAzureOpenAiClient } from '@sap-ai-sdk/foundation-models';
+
+import { AzureOpenAI } from 'openai/azure';
 
 // SAP Cloud SDK for AI part
 const client: AzureOpenAI = await createAzureOpenAiClient('gpt-5');
