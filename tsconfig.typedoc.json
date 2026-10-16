@@ -3,6 +3,7 @@
   "include": [
     "./packages/ai-api/**/*",
     "./packages/core/**/*",
+    "./packages/context-registry/**/*",
     "./packages/document-grounding/**/*",
     "./packages/foundation-models/**/*",
     "./packages/langchain/**/*",
@@ -25,6 +26,9 @@
     },
     {
       "path": "./packages/core"
+    },
+    {
+      "path": "./packages/context-registry"
     },
     {
       "path": "./packages/document-grounding"
@@ -56,6 +60,7 @@
     "entryPoints": [
       "packages/ai-api/src/index.ts",
       "packages/core/src/index.ts",
+      "packages/context-registry/src/index.ts",
       "packages/document-grounding/src/index.ts",
       "packages/foundation-models/src/index.ts",
       "packages/langchain/src/index.ts",
