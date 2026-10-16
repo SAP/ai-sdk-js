@@ -44,6 +44,8 @@ AWS now documents a separate Bedrock Mantle endpoint at `/anthropic/v1/messages`
 SAP AI Core does not yet expose this route for Bedrock deployments.
 Exposure on SAP AI Core has been indicated as likely.
 The proposal therefore targets the available deployment-local Invoke and Converse endpoints.
+Messages API feature will depend on which Bedrock endpoint SAP AI Core exposes or wraps (Bedrock Runtime or Bedrock Mantle). The Messages-shaped surface is not guarantee identical feature support across backends.
+For example, Bedrock Mantle rejects requests that include `output_config.format` (structured outputs), while the Bedrock Runtime Converse and Invoke APIs support structured outputs and suppoert in the Bedrock Mantle API is more comprehensive overall.
 See [Claude in Amazon Bedrock](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock) for the AWS-side Messages integration.
 
 ### Option B: Converse API: Viable Alternative
