@@ -89,6 +89,8 @@ export * from './azure-content-safety-output.js';
 export * from './azure-threshold.js';
 export * from './llama-guard-38-b-filter-config.js';
 export * from './llama-guard-38-b.js';
+export * from './granite-guardian-filter-config.js';
+export * from './granite-guardian-41.js';
 export * from './masking-module-config.js';
 export * from './masking-provider-config.js';
 export * from './dpi-config.js';
@@ -125,3 +127,6 @@ export * from './completion-request-configuration-reference-by-id-config-ref.js'
 export * from './completion-request-configuration-reference-by-name-scenario-version.js';
 export * from './completion-request-configuration-reference-by-name-scenario-version-config-ref.js';
 export * from './reasoning-block.js';
+export * from './input-filter-target-selector.js';
+export * from './after-last-role-target-selector.js';
+export * from './last-messages-target-selector.js';
