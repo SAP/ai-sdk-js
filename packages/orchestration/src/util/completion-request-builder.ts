@@ -39,6 +39,11 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   stream?: boolean
 ): Record<string, any> {
   if (prompt?.prompt) {
+    if (prompt.messages?.length) {
+      throw new Error(
+        "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
+      );
+    }
     config = injectRequestPromptIntoJsonConfig(config, prompt.prompt);
   }
 

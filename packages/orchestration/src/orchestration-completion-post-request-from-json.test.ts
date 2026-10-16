@@ -197,6 +197,20 @@ describe('construct completion post request from JSON', () => {
       );
     });
 
+    it('throws when both prompt and messages are set in the request', () => {
+      const jsonConfig = {
+        modules: { prompt_templating: modelConfig }
+      };
+      const request: ChatCompletionRequest = {
+        prompt: requestPrompt,
+        messages: [{ role: 'user' as const, content: 'Conflicting message' }]
+      };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrowError(/Cannot set both 'prompt' and 'messages'/);
+    });
+
     it('throws a friendly error when modules is not an object or array', () => {
       const jsonConfig = { modules: 'invalid' };
       const request: ChatCompletionRequest = { prompt: requestPrompt };
