@@ -102,7 +102,8 @@ The wire impedance is minimal for the following reasons:
 - **Native message response schema**: synchronous Claude Invoke responses retain Anthropic's `Message` structure, including `id`, `type`, `role`, `content`, `stop_reason`, and `usage`, rather than a Converse envelope.
 - **Native streaming support**: Invoke streaming uses binary AWS EventStream, which `@anthropic-ai/bedrock-sdk` decodes into the format expected by its message helpers.
 
-**Unlike the upstream AWS Bedrock service**, SAP AI Core requires the request to explicitly include `Accept: application/vnd.amazon.eventstream` to return the binary EventStream format. The adapter must set this header for streaming requests.
+**Unlike the upstream AWS Bedrock service**, SAP AI Core requires the request to explicitly include `Accept: application/vnd.amazon.eventstream` to return the binary EventStream format.
+The adapter must set this header for streaming requests.
 
 The adapter has the following responsibilities, delegating Bedrock payload transformations and binary stream decoding to `@anthropic-ai/bedrock-sdk`:
 
@@ -144,7 +145,8 @@ Option A provides the following advantages:
 
 The precedent is adapting an official provider client, not using an identical extension hook across SDKs.
 The `@sap-ai-sdk/openai` package already overrides the [`buildRequest()`](../packages/openai/src/azure-openai.ts) method of the `SapAzureOpenAi` class, rather than monkey-patching fetch.
-For Anthropic, adapting the Bedrock client through its middleware hook is preferred because it runs inside the client request pipeline and adapts the outgoing request for SAP AI Core. The `SapAnthropic` class provides this entry point while preserving Anthropic's client surface.
+For Anthropic, adapting the Bedrock client through its middleware hook is preferred because it runs inside the client request pipeline and adapts the outgoing request for SAP AI Core.
+The `SapAnthropic` class provides this entry point while preserving Anthropic's client surface.
 
 The adapter architecture includes the following configuration options:
 
