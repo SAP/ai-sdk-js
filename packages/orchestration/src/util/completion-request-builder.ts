@@ -38,13 +38,27 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   request?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
+  const { modules } = config;
+
+  const moduleList: Record<string, any>[] = Array.isArray(modules)
+    ? modules
+    : [modules];
+
+  validateJsonModuleConfigShape(moduleList);
+
   if (request?.prompt) {
     if (request.messages?.length) {
       throw new Error(
         "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
       );
     }
-    config = injectRequestPromptIntoJsonConfig(config, request.prompt);
+    const injectedModules = injectRequestPromptIntoJsonConfig(
+      moduleList,
+      request.prompt
+    );
+    config.modules = Array.isArray(modules)
+      ? injectedModules
+      : injectedModules[0];
   }
 
   if (stream) {
@@ -66,30 +80,41 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   };
 }
 
-function injectRequestPromptIntoJsonConfig(
-  config: Record<string, any>,
-  requestPrompt: NonNullable<ChatCompletionRequest['prompt']>
-): Record<string, any> {
-  const { modules } = config;
-
-  if (!modules || (typeof modules !== 'object' && !Array.isArray(modules))) {
-    throw new Error(
-      "Cannot inject request-level 'prompt' into the JSON config: 'modules' must be an object or array."
-    );
-  }
-
-  const moduleList: Record<string, any>[] = Array.isArray(modules)
-    ? modules
-    : [modules];
-
-  const hasExistingPrompt = moduleList.some(mod => {
-    if (!mod?.prompt_templating || typeof mod.prompt_templating !== 'object') {
+/**
+ * Validates the structural shape of a parsed JSON orchestration module config.
+ * Checks only what the request builder relies on: every module is an object
+ * carrying a `prompt_templating` object. It does not verify the config is
+ * complete.
+ * @param moduleList - The parsed module configurations to validate.
+ */
+function validateJsonModuleConfigShape(
+  moduleList: Record<string, any>[]
+): void {
+  for (const mod of moduleList) {
+    if (!mod || typeof mod !== 'object' || Array.isArray(mod)) {
       throw new Error(
-        "Cannot inject request-level 'prompt' into the JSON config: each module must have a 'prompt_templating' object."
+        "Invalid JSON config: 'modules' must be an object or array."
       );
     }
-    return mod.prompt_templating.prompt !== undefined;
-  });
+    if (
+      !mod.prompt_templating ||
+      typeof mod.prompt_templating !== 'object' ||
+      Array.isArray(mod.prompt_templating)
+    ) {
+      throw new Error(
+        "Invalid JSON config: each module's 'prompt_templating' must be an object."
+      );
+    }
+  }
+}
+
+function injectRequestPromptIntoJsonConfig(
+  moduleList: Record<string, any>[],
+  requestPrompt: NonNullable<ChatCompletionRequest['prompt']>
+): Record<string, any>[] {
+  const hasExistingPrompt = moduleList.some(
+    mod => mod.prompt_templating.prompt !== undefined
+  );
 
   if (hasExistingPrompt) {
     throw new Error(
@@ -105,10 +130,7 @@ function injectRequestPromptIntoJsonConfig(
     }
   }));
 
-  return {
-    ...config,
-    modules: Array.isArray(modules) ? injectedModules : injectedModules[0]
-  };
+  return injectedModules;
 }
 
 /**

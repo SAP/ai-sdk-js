@@ -228,7 +228,32 @@ describe('construct completion post request from JSON', () => {
 
       expect(() =>
         constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
-      ).toThrow(/each module must have a 'prompt_templating' object/);
+      ).toThrow(/each module's 'prompt_templating' must be an object/);
+    });
+
+    it("throws a friendly error when a module's prompt_templating is null", () => {
+      const jsonConfig = { modules: { prompt_templating: null } };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrow(/each module's 'prompt_templating' must be an object/);
+    });
+
+    it('validates the JSON config shape even without a request-level prompt', () => {
+      const jsonConfig = { modules: 'invalid' };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig)
+      ).toThrow(/'modules' must be an object or array/);
+    });
+
+    it('validates each module has prompt_templating even without a request-level prompt', () => {
+      const jsonConfig = { modules: { other_field: {} } };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig)
+      ).toThrow(/each module's 'prompt_templating' must be an object/);
     });
   });
 });
