@@ -35,16 +35,16 @@ const logger = createLogger({
  */
 export function constructCompletionPostRequestFromJsonModuleConfig(
   config: Record<string, any>,
-  prompt?: ChatCompletionRequest,
+  request?: ChatCompletionRequest,
   stream?: boolean
 ): Record<string, any> {
-  if (prompt?.prompt) {
-    if (prompt.messages?.length) {
+  if (request?.prompt) {
+    if (request.messages?.length) {
       throw new Error(
         "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
       );
     }
-    config = injectRequestPromptIntoJsonConfig(config, prompt.prompt);
+    config = injectRequestPromptIntoJsonConfig(config, request.prompt);
   }
 
   if (stream) {
@@ -60,8 +60,8 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   }
 
   return {
-    messages_history: prompt?.messagesHistory || [],
-    placeholder_values: prompt?.placeholderValues || {},
+    messages_history: request?.messagesHistory || [],
+    placeholder_values: request?.placeholderValues || {},
     config
   };
 }
