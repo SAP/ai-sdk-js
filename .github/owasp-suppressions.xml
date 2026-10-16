@@ -16,4 +16,12 @@
       <packageUrl>pkg:npm/node-forge</packageUrl>
       <vulnerabilityName>GHSA-86w9-cpqp-85rv</vulnerabilityName>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+         @sap/cds-dk bundles handlebars 4.7.9 in its published package. @sap/cds-dk is a development-only dependency and is not included in production artifacts.
+      ]]></notes>
+      <filePath regex="true">.*/@sap/cds-dk/node_modules/handlebars/.*</filePath>
+      <cve>CVE-2026-106445</cve>
+      <cve>CVE-2026-106446</cve>
+   </suppress>
 </suppressions>
