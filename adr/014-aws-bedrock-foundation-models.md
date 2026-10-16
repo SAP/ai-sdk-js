@@ -6,9 +6,9 @@ Proposed.
 
 The proposal comprises the following selections:
 
-- **Wire protocol**: the AWS Bedrock `invoke` and `invoke-with-response-stream` endpoints, using binary AWS EventStream (`Accept: application/vnd.amazon.eventstream`) for streaming.
-- **SDK architecture**: option A, which provides a configured client leveraging Anthropic's Bedrock-optimized SDK (`@anthropic-ai/bedrock-sdk`, extending `@anthropic-ai/sdk`) adapted for Bedrock `invoke` endpoints through native SAP backend middleware (the `SapAnthropic` class), with an optional standalone `fetch` adapter (the `createSapBedrockAnthropicFetch()` function).
-  Streaming negotiates binary AWS EventStream, which `@anthropic-ai/bedrock-sdk` decodes natively, bypassing AI Core's data-only SSE incompatibility and eliminating the need for a custom SSE event-name normalizer.
+- **Wire protocol**: the AWS Bedrock `invoke` and `invoke-with-response-stream` endpoints, using binary AWS EventStream for streaming.
+- **SDK architecture**: option A, which provides a configured client leveraging Anthropic's Bedrock-optimized SDK (`@anthropic-ai/bedrock-sdk`, extending `@anthropic-ai/sdk`) through a SAP middleware hook (the `SapAnthropic` class), with an optional standalone `fetch` adapter (the `createSapBedrockAnthropicFetch()` function).
+  The Anthropic SDK handles the Bedrock-specific request and streaming details.
   This approach directly continues the strategy established in [ADR 007: Foundation Model Client Strategy](./007-foundation-model-client-strategy.md) and implemented in the `@sap-ai-sdk/openai` package.
 
 ---
@@ -83,13 +83,12 @@ sequenceDiagram
 
     Note over App,Adapter: Outbound Anthropic Messages payload
     App->>Adapter: messages.stream({ ... })
-    Note over Adapter: 1. Target endpoint: /invoke or /invoke-with-response-stream<br/>2. Strip 'model' and 'stream' fields<br/>3. Inject anthropic_version: "bedrock-2023-05-31"<br/>4. Inject Bearer token and AI-Resource-Group<br/>5. Set Accept: application/vnd.amazon.eventstream
+    Note over Adapter: Middleware adapts the request for the SAP AI Core deployment
     Adapter->>AICore: POST /v2/inference/deployments/DEPLOYMENT_ID/invoke-with-response-stream
-    AICore->>Bedrock: InvokeModelWithResponseStream (AWS IAM and SigV4)
+    AICore->>Bedrock: InvokeModelWithResponseStream
     Bedrock-->>AICore: Binary AWS EventStream (:event-type chunk)
-    Note over AICore: Negotiated via Accept header<br/>(AI Core defaults to data-only SSE)
     AICore-->>Adapter: HTTP 200 application/vnd.amazon.eventstream
-    Note over Adapter: @anthropic-ai/bedrock-sdk decodes binary EventStream<br/>into MessageStreamEvents natively
+    Note over Adapter: Anthropic SDK decodes the stream into MessageStreamEvents
     Adapter-->>App: Typed Anthropic MessageStreamEvents
     Note over App: Consumes native Anthropic stream helpers
 ```
@@ -101,22 +100,15 @@ The wire impedance is minimal for the following reasons:
 - **Near-native request schemas**: core fields such as `messages`, `system`, `tools`, `tool_choice`, and `max_tokens` retain Anthropic's shapes, with Bedrock-specific routing and version adaptation.
   This is not an unconditional guarantee that every first-party parameter or beta feature is accepted by every Bedrock model.
 - **Native message response schema**: synchronous Claude Invoke responses retain Anthropic's `Message` structure, including `id`, `type`, `role`, `content`, `stop_reason`, and `usage`, rather than a Converse envelope.
-- **Binary AWS EventStream over AI Core default SSE**:
-  Anthropic's native Messages API uses named SSE events (`event: content_block_delta`, etc.).
-  For Invoke streaming, Bedrock's API uses binary AWS EventStream frames.
-  SAP AI Core defaults to data-only SSE (`text/event-stream`), omitting the named `event: <type>` lines.
-  Even for `invoke`, this default SSE stream lacks compatibility with Anthropic's Messages streaming parser.
-  However, AI Core returns native binary AWS EventStream when the request includes `Accept: application/vnd.amazon.eventstream`.
-  Anthropic's `@anthropic-ai/bedrock-sdk` can decode that binary stream directly and adapt it to the format its message helpers expect.
-  We should therefore standardize on binary AWS EventStream for Invoke streaming, which makes a custom SSE event-name normalizer unnecessary for this path.
+- **Native streaming support**: Invoke streaming uses binary AWS EventStream, which `@anthropic-ai/bedrock-sdk` decodes into the format expected by its message helpers.
+
+**Unlike the upstream AWS Bedrock service**, SAP AI Core requires the request to explicitly include `Accept: application/vnd.amazon.eventstream` to return the binary EventStream format. The adapter must set this header for streaming requests.
 
 The adapter has the following responsibilities, delegating Bedrock payload transformations and binary stream decoding to `@anthropic-ai/bedrock-sdk`:
 
-1. Route to the `/invoke` or `/invoke-with-response-stream` endpoint.
-2. Strip the `model` and `stream` parameters, because the SAP AI Core deployment and endpoint URL handle selection.
-3. Add `"anthropic_version": "bedrock-2023-05-31"` to the JSON request body (handled by `@anthropic-ai/bedrock-sdk`).
-4. Set the `Authorization: Bearer AI_CORE_TOKEN` header and the `AI-Resource-Group: RESOURCE_GROUP` header.
-5. For streaming, send `Accept: application/vnd.amazon.eventstream` and let `@anthropic-ai/bedrock-sdk` decode the binary stream natively rather than implementing a custom SSE normalizer.
+1. Route requests to the SAP AI Core deployment.
+2. Apply SAP-specific request configuration through middleware.
+3. Delegate Bedrock payload adaptation and stream decoding to `@anthropic-ai/bedrock-sdk`.
 
 ---
 
@@ -135,11 +127,8 @@ The following five SDK implementation options were investigated:
 - **Mechanism**: follow the configured-provider-client precedent set by the `@sap-ai-sdk/openai` package.
   Use Anthropic's official Bedrock-optimized SDK (`@anthropic-ai/bedrock-sdk`, which extends `@anthropic-ai/sdk`), adapted for SAP AI Core deployments.
   `@anthropic-ai/bedrock-sdk` handles much of the Bedrock-specific complexity for us:
-  - Adapts Messages request payloads into Bedrock Invoke shapes (injecting `anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers).
-  - Decodes binary AWS EventStream from `/invoke-with-response-stream` into typed Anthropic `MessageStreamEvent`s that drive stream accumulators and `messages.stream()`.
-    The backend adapter supplies SAP deployment routing, OAuth2 Bearer token resolution, and `AI-Resource-Group` headers, while sending `Accept: application/vnd.amazon.eventstream` for streaming calls.
-    This bypasses AI Core's data-only SSE incompatibility and eliminates the need for a custom SSE event-name normalizer.
-    A custom `fetch` adapter is an optional configuration mechanism (`createSapBedrockAnthropicFetch()`), enabling use with `new AnthropicBedrock({ fetch })` if needed.
+  - Adapts Messages request payloads into Bedrock Invoke shapes
+  - Decodes binary AWS EventStream from `/invoke-with-response-stream` into typed Anthropic `MessageStreamEvent`s that drive stream accumulators and `messages.stream()`. The backend adapter supplies SAP deployment routing and request configuration.
 - **Alignment with ADR 007**: matches Option B.2 of [ADR 007: Foundation Model Client Strategy](./007-foundation-model-client-strategy.md) directly.
   By wrapping Anthropic's Bedrock-optimized client, developers receive upstream Claude types and helpers, including the `messages.stream()` method, without waiting for this package to recreate them.
   Actual feature availability still depends on the selected model, Bedrock API, region, and SAP AI Core deployment.
@@ -155,34 +144,25 @@ Option A provides the following advantages:
 
 The precedent is adapting an official provider client, not using an identical extension hook across SDKs.
 The `@sap-ai-sdk/openai` package already overrides the [`buildRequest()`](../packages/openai/src/azure-openai.ts) method of the `SapAzureOpenAi` class, rather than monkey-patching fetch.
-For Anthropic, adapting the Bedrock client (`SapAnthropic` extending `AnthropicBedrock` from `@anthropic-ai/bedrock-sdk` or leveraging its middleware hook) is preferred because it runs inside client middleware, adapts the outgoing request for SAP AI Core, and negotiates binary EventStream for streaming responses.
+For Anthropic, adapting the Bedrock client through its middleware hook is preferred because it runs inside the client request pipeline and adapts the outgoing request for SAP AI Core. The `SapAnthropic` class provides this entry point while preserving Anthropic's client surface.
 
 The adapter architecture includes the following configuration options:
 
 - **Bedrock-optimized client hook (`SapAnthropic` class)**:
   - Subclasses Anthropic's `AnthropicBedrock` client from `@anthropic-ai/bedrock-sdk`.
-  - **Canonical request visibility**: user-defined middleware observes standard Anthropic-shaped requests (`/v1/messages`, `model` parameter, etc.) before the backend adapter translates them for AWS Bedrock.
-  - **Upstream request adaptation and typed context**: chaining `super.backendMiddleware()` leverages `@anthropic-ai/bedrock-sdk` to adapt the request body (`anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers) and route the URL to `/deployment/{deploymentId}/invoke` or `/deployment/{deploymentId}/invoke-with-response-stream`, without manual JSON body rewriting.
-    The adapter can inspect the rewritten path or `ctx.options?.stream` without parsing the raw body string twice.
-  - **Streaming support**: requests negotiate binary AWS EventStream (`Accept: application/vnd.amazon.eventstream`), which `@anthropic-ai/bedrock-sdk` decodes directly, preserving Anthropic's typed events and streaming helpers without a custom SSE normalizer.
-    The prototype's `adaptBedrockSseStream()` function is not needed when using this binary EventStream path.
-  - **Bearer token management and SigV4 bypass**: passes `skipAuth: true` (and `apiKey: ''`) to `AnthropicBedrock` to bypass AWS SigV4 signing and suppress ambient AWS bearer token resolution.
-    In the overridden `backendMiddleware()` method, the adapter injects `Authorization: Bearer <token>` and `AI-Resource-Group`, delegating token retrieval and caching to `@sap-ai-sdk/core` / SAP Cloud SDK destination management.
-    This avoids relying on `credentials: AccessTokenProvider`, which `AnthropicBedrock`'s `ClientOptions` drops and does not pass through to `super()`.
-
+  - **Middleware entry point**: the hook adapts standard Anthropic-shaped requests for SAP AI Core while preserving Anthropic's client surface.
+  - **Request adaptation**: the middleware delegates Bedrock-specific request handling to `@anthropic-ai/bedrock-sdk`.
+  - **Streaming support**: preserves Anthropic's typed events and streaming helpers.
 - **Optional standalone fetch adapter (the `createSapBedrockAnthropicFetch()` function)**:
   - Optionally provided alongside the class implementation (referencing the pattern from `direct-access-vercel/src/authenticated-fetch.ts`) for environments that prefer configuring standard `new AnthropicBedrock({ fetch })`.
 
 ### Option B: Use AWS SDK (`@aws-sdk/client-bedrock-runtime`) with Invoke or Converse
 
 - **Mechanism**: use the `BedrockRuntimeClient` class with the `InvokeModelCommand`, `InvokeModelWithResponseStreamCommand`, `ConverseCommand`, or `ConverseStreamCommand` classes.
-  Configure SAP bearer authentication through `token` and `authSchemePreference: ['httpBearerAuth']` instead of SigV4.
-  Use the `client.middlewareStack.add()` method to rewrite `/model/{modelId}/{operation}` to the deployment-local operation path, inject SAP headers, and set `Accept: application/vnd.amazon.eventstream` for streaming operations.
+  Configure the client for SAP AI Core deployments through middleware.
 - **Status**: technically viable; not selected for the proposed Claude-first client surface.
 
 The AWS SDK owns request serialization, response deserialization, and binary EventStream decoding.
-SAP AI Core's default SSE response differs from the binary AWS EventStream expected by the SDK; explicitly negotiating `application/vnd.amazon.eventstream` resolves this transport mismatch.
-Live verification on a Claude Sonnet 4.6 deployment confirmed non-streaming and streaming Invoke and Converse through the official JavaScript AWS client, without an SSE bridge or custom EventStream parser.
 
 The remaining trade-offs are API-level:
 
@@ -199,6 +179,7 @@ Option C presents the following advantages:
 - Provides a higher-level abstraction.
 - Expresses an API-neutral approach to exposing Claude capabilities.
 - Avoids additional effort for eventual support in those agent SDKs.
+- Work on this could be re-used for Gemini/OpenAI/OpenAI-compatible clients in the future.
 
 Option C presents the following disadvantages:
 
@@ -240,10 +221,7 @@ This supports the Claude-first choice for three reasons:
 - **Schema fidelity**: native Anthropic message, tool, and content-block shapes are preserved without translating them into Converse envelopes.
 - **Upstream feature exposure**: model-native options such as `cache_control`, thinking configuration, computer-use tools, document/image inputs, and structured-output settings can use Anthropic's SDK surface when supported by the target deployment, rather than requiring a new harmonized field in this wrapper.
   Invoke avoids an additional Converse-schema translation step, but does not guarantee day-0 feature availability on Bedrock or SAP AI Core.
-- **Native types and Bedrock-optimized stream decoding**: Anthropic's native Messages API uses named SSE events, while Bedrock streaming emits binary AWS EventStream.
-  SAP AI Core defaults to data-only SSE (omitting `event:` lines), which breaks Messages API streaming compatibility even for Invoke.
-  By sending `Accept: application/vnd.amazon.eventstream`, AI Core returns binary EventStream, which `@anthropic-ai/bedrock-sdk` decodes natively into canonical Anthropic stream events.
-  This handles low-level streaming complexity and makes a custom SSE event-name normalizer unnecessary.
+- **Native types and streaming support**: `@anthropic-ai/bedrock-sdk` preserves Anthropic's native types and decodes Bedrock streaming into canonical Anthropic stream events, but some adaption for AI specifics (requesting AWS EventStream instead of AWS) is required.
 
 Anthropic's [Bedrock runtime documentation](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy) describes this integration separately from the Bedrock Mantle Messages endpoint.
 Model, endpoint, and feature availability must be checked independently of SDK type availability.
@@ -303,7 +281,7 @@ The `@anthropic-ai/bedrock-sdk` package is Anthropic's Bedrock-optimized SDK.
 It preserves Anthropic's native development surface for Claude types, message-stream helpers, and model-specific parameters, while handling Bedrock Invoke protocol details: adapting request payloads and decoding binary AWS EventStream frames into canonical message stream events.
 Using it avoids recreating that surface or writing custom stream transformers in the SAP wrapper; supported runtime features remain constrained by the selected Bedrock model and SAP AI Core deployment.
 In contrast, the `@aws-sdk/client-bedrock-runtime` package provides typed, harmonized Converse schemas but no native Claude types or Anthropic stream helpers for Invoke.
-`@anthropic-ai/bedrock-sdk` handles the Bedrock Invoke mechanics, while the SAP adapter provides SAP deployment routing, OAuth2 Bearer token resolution, and resource-group headers.
+`@anthropic-ai/bedrock-sdk` handles the Bedrock Invoke mechanics, while the SAP adapter provides deployment routing and SAP-specific request configuration.
 
 ### Do SAP AI Core deployments have limitations when used with these SDKs?
 
@@ -321,19 +299,6 @@ The following features function consistently on earlier models through Bedrock `
 - Tool use (function calling)
 - Image vision inputs
 
-### How complete is SAP AI Core feature coverage for each SDK?
-
-The integration with SAP AI Core exhibits the following characteristics:
-
-- **Streaming protocol**: Anthropic's native Messages API relies on named SSE events (`event: content_block_delta`, etc.). Bedrock Invoke streaming uses binary AWS EventStream.
-  SAP AI Core defaults to data-only SSE (`text/event-stream` without named `event:` tags), which lacks compatibility with Anthropic's Messages streaming parser even for Invoke endpoints.
-  However, sending `Accept: application/vnd.amazon.eventstream` instructs AI Core to return native binary AWS EventStream.
-  `@anthropic-ai/bedrock-sdk` can decode that binary stream directly and adapt it to the format its message helpers expect, completely bypassing the SSE compatibility gap and eliminating the need for a custom SSE event-name normalizer.
-- **Authentication**: SAP AI Core replaces AWS SigV4 signing with standard OAuth2 Bearer tokens and the `AI-Resource-Group` header.
-- **Model routing**: the SAP AI Core deployment URL isolates model selection.
-  For the Anthropic adapter, the request body's `model` parameter is discarded and the `anthropic_version` parameter is added (handled by `@anthropic-ai/bedrock-sdk`).
-  For the AWS adapter, middleware removes the generated `/model/{modelId}` URL segment while retaining the operation's request schema.
-
 ---
 
 ## Decision
@@ -341,16 +306,12 @@ The integration with SAP AI Core exhibits the following characteristics:
 The architecture decision encompasses the following points:
 
 - **Wire protocol**: standardize on the AWS Bedrock `invoke` (synchronous) and `invoke-with-response-stream` (streaming) endpoints through SAP AI Core deployments.
-  For streaming, explicitly use binary AWS EventStream by including `Accept: application/vnd.amazon.eventstream`.
+  For streaming, request binary AWS EventStream by including `Accept: application/vnd.amazon.eventstream`; this header is required by SAP AI Core even though it is not required when calling the upstream AWS Bedrock service directly.
 - **Client architecture**: adopt Option A.
   Provide a configured client based on Anthropic's Bedrock-optimized SDK (`@anthropic-ai/bedrock-sdk`, extending `@anthropic-ai/sdk`), continuing the strategy established in [ADR 007: Foundation Model Client Strategy](./007-foundation-model-client-strategy.md) and mirroring the `@sap-ai-sdk/openai` package.
-  `@anthropic-ai/bedrock-sdk` handles much of the Bedrock-specific complexity:
-  - Adapting Messages requests to Bedrock Invoke payloads (`anthropic_version: "bedrock-2023-05-31"`, stripping `model` and `stream`, translating beta headers).
-  - Decoding binary AWS EventStream from `/invoke-with-response-stream` into typed Anthropic `MessageStreamEvent`s that feed Anthropic's message helpers (`messages.stream()`, stream accumulators).
-    Because AI Core defaults to data-only SSE (which lacks the named `event: <type>` lines needed for Messages API compatibility), negotiating binary AWS EventStream and delegating decoding to `@anthropic-ai/bedrock-sdk` avoids any need for a custom SSE event-name normalizer.
-    The SAP wrapper (`SapAnthropic` class, optionally complemented by `createSapBedrockAnthropicFetch()`) focuses on SAP-specific responsibilities: deployment URL resolution, bypassing AWS SigV4 signing via `skipAuth: true`, injecting `Authorization: Bearer <token>` and the `AI-Resource-Group` header via `backendMiddleware()`, and delegating token caching to `@sap-ai-sdk/core` / SAP Cloud SDK.
-    Option A includes the following components:
-  - Adapt the official Bedrock-optimized Anthropic client through backend hooks / request middleware for canonical request visibility, SigV4 bypass via `skipAuth: true`, and SAP bearer-token injection via `backendMiddleware()`; reuse `@anthropic-ai/bedrock-sdk`'s payload adaptation and binary EventStream decoding rather than implementing a custom SSE normalizer.
+  The `SapAnthropic` class uses the SDK's middleware hook as the entry point for SAP AI Core request configuration, while the Anthropic SDK handles Bedrock-specific adaptation and stream decoding.
+  Option A includes the following components:
+  - Adapt the official Bedrock-optimized Anthropic client through request middleware and reuse its payload adaptation and binary EventStream decoding.
   - Optionally provide a standalone fetch adapter (the `createSapBedrockAnthropicFetch()` function) alongside the `SapAnthropic` class for environments that prefer configuring standard `new AnthropicBedrock({ fetch })`.
     This approach reuses upstream Claude types and streaming helpers without handwriting response accumulators or maintaining parallel schemas; it does not guarantee first-party day-0 feature availability through Bedrock or SAP AI Core.
 - **AWS SDK alternative**: recognize Option B as technically viable for both Invoke and Converse, including streaming with `Accept: application/vnd.amazon.eventstream`.
