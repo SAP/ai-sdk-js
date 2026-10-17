@@ -37,7 +37,7 @@ import type {
 } from './orchestration-types.ts';
 
 const defaultJsonConfig = `{
-  "module_configurations": {
+  "modules": {
     "prompt_templating": {
       "model": {
         "name": "gpt-5.4-nano",
