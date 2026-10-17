@@ -59,7 +59,7 @@
     "nock": "14.0.17",
     "orval": "8.42.0",
     "oxfmt": "0.72.0",
-    "oxlint": "1.87.0",
+    "oxlint": "1.88.0",
     "oxlint-tsgolint": "7.0.2004",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
