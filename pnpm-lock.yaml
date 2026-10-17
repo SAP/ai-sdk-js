@@ -673,8 +673,8 @@ importers:
         specifier: 4.3.0
         version: 4.3.0(hono@4.13.13)(supports-color@7.2.0)
       hyparquet-writer:
-        specifier: 0.16.11
-        version: 0.16.11
+        specifier: 0.16.12
+        version: 0.16.12
 
   tests/e2e-tests:
     dependencies:
@@ -3370,11 +3370,11 @@ packages:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
-  hyparquet-writer@0.16.11:
-    resolution: {integrity: sha512-Q0hI/Cf0RC5PX0iV0L8k02HdnqyPBuYc0t5gq/h9HO9n8eZiu4y5Fq3/AStGKi3lLYCePTCqyrmEymGOlnm61A==}
+  hyparquet-writer@0.16.12:
+    resolution: {integrity: sha512-tlFRfU1TdhWCjqxxQdi8DpxL+C41SU2ebSPDvT0FLT4jFVrVEnBc7pzyFkrXpTMnwk4J2vSo6lQnlXjWmQmw6A==}
 
-  hyparquet@1.31.3:
-    resolution: {integrity: sha512-qThDJfCrTClFdaIQuQTtFOGp33bkbOyk+y1NrwcC8YZjvr5wxjNdKz7/PUF3xfNd7ZKLsYW+fY6N8dInjjMWJg==}
+  hyparquet@1.31.4:
+    resolution: {integrity: sha512-Qe37Nhu1lLvmnSL9bQuY/CN8suLDoNMPNhrTb6+ZXJDfiy1mHHRjkoVYIYPhf0krYpRdAxMMnuEWEHeSUCe40g==}
 
   hyperdyperid@1.2.0:
     resolution: {integrity: sha512-Y93lCzHYgGWdrJ66yIktxiaGULYc6oGiABxhcO5AufBeOyoIdZF7bIfLaOrbM0iGIOXQQgxxRrFEnb+Y6w1n4A==}
@@ -6138,7 +6138,7 @@ snapshots:
   '@sap-ai-sdk/prompt-registry@2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@sap-ai-sdk/core': 2.16.1-20261016012240.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      zod: 4.6.6
+      zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -7274,11 +7274,11 @@ snapshots:
 
   human-signals@8.0.1: {}
 
-  hyparquet-writer@0.16.11:
+  hyparquet-writer@0.16.12:
     dependencies:
-      hyparquet: 1.31.3
+      hyparquet: 1.31.4
 
-  hyparquet@1.31.3: {}
+  hyparquet@1.31.4: {}
 
   hyperdyperid@1.2.0: {}
 
