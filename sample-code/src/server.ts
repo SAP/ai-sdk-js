@@ -55,8 +55,7 @@ import {
   invokePromptCachingAgent,
   invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
   invokeReasoningStreamMultiTurn as invokeReasoningStreamMultiTurnOrchestration,
-  streamReasoningOrchestration,
-  invokeReasoningStreamConcat as invokeReasoningStreamConcatOrchestration
+  streamReasoningOrchestration
 } from './langchain-orchestration.ts';
 import {
   listBatches,
@@ -1187,7 +1186,15 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
       finalResult = finalResult ? finalResult.concat(chunk) : chunk;
     }
     if (connectionAlive) {
-      res.write('\n\n---------------------------\n');
+      const mergedReasoning = finalResult?.additional_kwargs
+        .reasoning_content as ReasoningBlock[] | undefined;
+      res.write('\n\n--- Merged via concat() ---\n');
+      res.write(
+        `Signature preserved: ${!!mergedReasoning?.some(b => b.signature)}\n`
+      );
+      res.write(
+        `Content blocks (raw): ${JSON.stringify(finalResult?.content)}\n`
+      );
       res.write(
         `Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`
       );
@@ -1201,24 +1208,6 @@ app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
     res.end();
   }
 });
-
-app.get(
-  '/langchain/invoke-reasoning-stream-concat-orchestration',
-  async (req, res) => {
-    try {
-      const result = await invokeReasoningStreamConcatOrchestration();
-      let response = '--- Streamed + concat() ---\n\n';
-      response += `Reasoning:\n${result.reasoning || '(none)'}\n\n`;
-      response += `Answer:\n${result.text}\n\n`;
-      response += `Content blocks (raw):\n${result.contentBlocks}\n\n`;
-      response += `Signature preserved: ${result.hasSignature}\n`;
-      response += `Reasoning tokens: ${result.reasoningTokens}\n`;
-      res.header('Content-Type', 'text/plain').send(response);
-    } catch (error: any) {
-      sendError(res, error);
-    }
-  }
-);
 
 /* Document Grounding */
 app.get(

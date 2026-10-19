@@ -875,40 +875,6 @@ export async function invokeReasoningStreamMultiTurn(
 }
 
 /**
- * Streams a reasoning model response, accumulates all chunks with {@link AIMessageChunk.concat},
- * and returns the final merged message shape. This demonstrates that streaming reasoning blocks
- * kept in {@link AIMessageChunk.additional_kwargs.reasoning_content} survive chunk aggregation
- * without index collisions, and that each block's `signature` is preserved end-to-end (required
- * to replay thinking+tool-use turns back to models like Claude).
- * @returns The aggregated reasoning string, answer text, raw content blocks, whether a signature
- * survived the concat, and the reasoning token count.
- */
-export async function invokeReasoningStreamConcat(): Promise<{
-  text: string;
-  reasoning: string;
-  contentBlocks: string;
-  hasSignature: boolean;
-  reasoningTokens: number;
-}> {
-  const stream = await streamReasoningOrchestration();
-  let finalResult: AIMessageChunk | undefined;
-  for await (const chunk of stream) {
-    finalResult = finalResult ? finalResult.concat(chunk) : chunk;
-  }
-  const msg = finalResult!;
-  const reasoningBlocks = msg.additional_kwargs.reasoning_content as
-    | ReasoningBlock[]
-    | undefined;
-  return {
-    text: extractText(msg.content),
-    reasoning: reasoningText(msg),
-    contentBlocks: JSON.stringify(msg.content),
-    hasSignature: !!reasoningBlocks?.some(b => b.signature),
-    reasoningTokens: msg.usage_metadata?.output_token_details?.reasoning ?? 0
-  };
-}
-
-/**
  * Streams a reasoning model response via LangChain orchestration client.
  * Emits reasoning blocks and text blocks as they arrive.
  * @param controller - Optional abort controller.
