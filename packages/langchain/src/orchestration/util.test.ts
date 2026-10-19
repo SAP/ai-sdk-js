@@ -1,4 +1,5 @@
 import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+import { createLogger } from '@sap-cloud-sdk/util';
 
 import {
   AIMessage,
@@ -176,7 +177,13 @@ describe('mapBaseMessageToChatMessage', () => {
     });
   });
 
-  it('should extract reasoning blocks from content array when additional_kwargs has none', () => {
+  it('does not forward reasoning from content and warns when additional_kwargs has none', () => {
+    const logger = createLogger({
+      package: 'langchain',
+      messageContext: 'orchestration-util'
+    });
+    const warnSpy = vi.spyOn(logger, 'warn');
+
     const aiMessage = new AIMessage({
       content: [
         { type: 'reasoning', reasoning: 'Thinking hard.' },
@@ -188,9 +195,35 @@ describe('mapBaseMessageToChatMessage', () => {
 
     expect(result[0]).toEqual({
       role: 'assistant',
-      content: 'Result.',
-      reasoning_content: [{ content: 'Thinking hard.' }]
+      content: 'Result.'
     });
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Reasoning blocks found in message content')
+    );
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when reasoning is provided via additional_kwargs', () => {
+    const logger = createLogger({
+      package: 'langchain',
+      messageContext: 'orchestration-util'
+    });
+    const warnSpy = vi.spyOn(logger, 'warn');
+
+    const aiMessage = new AIMessage({
+      content: [
+        { type: 'reasoning', reasoning: 'Let me think.' },
+        { type: 'text', text: 'The answer is 42.' }
+      ],
+      additional_kwargs: {
+        reasoning_content: [{ content: 'Let me think.', signature: 'sig123' }]
+      }
+    });
+
+    mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 
   it('should not include reasoning_content when AIMessage has no reasoning', () => {
@@ -588,7 +621,7 @@ describe('mapOutputToChatResult', () => {
     expect(message.usage_metadata?.output_token_details).toBeUndefined();
   });
 
-  it('surfaces reasoning_content as typed content blocks when present', () => {
+  it('surfaces reasoning_content in additional_kwargs, content stays plain answer text', () => {
     const completionResponse: CompletionPostResponse = {
       final_result: {
         id: 'test-id',
@@ -618,21 +651,14 @@ describe('mapOutputToChatResult', () => {
     const result = mapOutputToChatResult(completionResponse);
     const message = result.generations[0].message as AIMessage;
 
-    expect(message.content).toEqual([
-      { type: 'reasoning', reasoning: 'Let me think step by step.', index: 0 },
-      { type: 'reasoning', reasoning: 'I concluded it is 42.', index: 1 },
-      { type: 'text', text: 'The answer is 42.' }
-    ]);
-    expect(
-      (result.generations[0].message as AIMessage).additional_kwargs
-        .reasoning_content
-    ).toEqual([
+    expect(message.content).toBe('The answer is 42.');
+    expect(message.additional_kwargs.reasoning_content).toEqual([
       { content: 'Let me think step by step.' },
       { content: 'I concluded it is 42.' }
     ]);
   });
 
-  it('filters out content-less reasoning blocks (encrypted/redacted thinking)', () => {
+  it('keeps content-less reasoning blocks (encrypted/redacted thinking) in additional_kwargs', () => {
     const completionResponse: CompletionPostResponse = {
       final_result: {
         id: 'test-id',
@@ -662,14 +688,8 @@ describe('mapOutputToChatResult', () => {
     const result = mapOutputToChatResult(completionResponse);
     const message = result.generations[0].message as AIMessage;
 
-    expect(message.content).toEqual([
-      { type: 'reasoning', reasoning: 'Visible thinking.', index: 0 },
-      { type: 'text', text: 'The answer is 42.' }
-    ]);
-    expect(
-      (result.generations[0].message as AIMessage).additional_kwargs
-        .reasoning_content
-    ).toEqual([
+    expect(message.content).toBe('The answer is 42.');
+    expect(message.additional_kwargs.reasoning_content).toEqual([
       { content: 'Visible thinking.' },
       { signature: 'encrypted-sig' }
     ]);

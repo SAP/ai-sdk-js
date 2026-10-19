@@ -54,6 +54,7 @@ import {
   invokeDynamicModelAgent,
   invokePromptCachingAgent,
   invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
+  invokeReasoningStreamMultiTurn as invokeReasoningStreamMultiTurnOrchestration,
   streamReasoningOrchestration,
   invokeReasoningStreamConcat as invokeReasoningStreamConcatOrchestration
 } from './langchain-orchestration.ts';
@@ -130,6 +131,7 @@ import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-ground
 import type {
   OrchestrationEmbeddingResponse,
   OrchestrationResponse,
+  ChatModel,
   ReasoningBlock
 } from '@sap-ai-sdk/orchestration';
 
@@ -1121,6 +1123,20 @@ app.get(
   async (req, res) => {
     try {
       const result = await invokeReasoningMultiTurnOrchestration();
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get(
+  '/langchain/invoke-reasoning-stream-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const model = req.query.model as ChatModel | undefined;
+      const result = await invokeReasoningStreamMultiTurnOrchestration(model);
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.send(result);
     } catch (error: any) {

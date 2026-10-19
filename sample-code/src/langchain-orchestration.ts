@@ -34,7 +34,7 @@ import type {
   LangChainOrchestrationModuleConfig,
   LangChainOrchestrationModuleConfigList
 } from '@sap-ai-sdk/langchain';
-import type { ReasoningBlock } from '@sap-ai-sdk/orchestration';
+import type { ChatModel, ReasoningBlock } from '@sap-ai-sdk/orchestration';
 
 import type {
   BaseMessage,
@@ -806,6 +806,75 @@ export async function invokeReasoningMultiTurn(): Promise<string> {
     '=== Turn 2 ===',
     `Reasoning:\n${turn2Reasoning || '(none)'}`,
     `Answer:\n${turn2Answer}`
+  ].join('\n');
+}
+
+/**
+ * Multi-turn STREAMING conversation with a reasoning model via LangChain orchestration client.
+ * Turn 1: streams a maths question, accumulates chunks with {@link AIMessageChunk.concat},
+ * and pushes the merged message into history. Turn 2: streams a follow-up using that history,
+ * which round-trips the accumulated reasoning blocks (incl. signatures) back to the service.
+ * This proves the streamed reasoning round-trip works for reasoning models (e.g. Claude, Cohere).
+ * @param modelName - The reasoning model to use. Defaults to `anthropic--claude-4.5-haiku`.
+ * @returns A formatted string showing reasoning, answer, and signature presence for both turns.
+ */
+export async function invokeReasoningStreamMultiTurn(
+  modelName: ChatModel = 'anthropic--claude-4.5-haiku'
+): Promise<string> {
+  const config: LangChainOrchestrationModuleConfig = {
+    promptTemplating: {
+      model: {
+        name: modelName,
+        params: { reasoning_effort: 'low' }
+      }
+    }
+  };
+  const client = new OrchestrationClient(config);
+
+  const accumulate = async (
+    history: BaseMessage[]
+  ): Promise<AIMessageChunk> => {
+    const stream = await client.stream(history);
+    let merged: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      merged = merged ? merged.concat(chunk) : chunk;
+    }
+    return merged!;
+  };
+
+  const describe = (msg: AIMessageChunk): string => {
+    const blocks = msg.additional_kwargs.reasoning_content as
+      | ReasoningBlock[]
+      | undefined;
+    const reasoning = blocks?.map(b => b.content ?? '').join('') ?? '';
+    const hasSignature = !!blocks?.some(b => b.signature);
+    return [
+      `Reasoning:\n${reasoning || '(none)'}`,
+      `Answer:\n${extractText(msg.content)}`,
+      `Signature preserved: ${hasSignature}`,
+      `reasoning_content blocks: ${JSON.stringify(blocks)}`
+    ].join('\n');
+  };
+
+  // Turn 1 — stream + concat, then push merged message into history
+  const messages: BaseMessage[] = [
+    new HumanMessage('What is 17 × 23? Think step by step.')
+  ];
+  const turn1 = await accumulate(messages);
+  messages.push(turn1);
+
+  // Turn 2 — follow-up re-sends history, round-tripping turn 1 reasoning + signature
+  messages.push(
+    new HumanMessage('Now divide that result by 17. What do you get?')
+  );
+  const turn2 = await accumulate(messages);
+
+  return [
+    '=== Turn 1 (streamed) ===',
+    describe(turn1),
+    '',
+    '=== Turn 2 (streamed, history round-tripped) ===',
+    describe(turn2)
   ].join('\n');
 }
 

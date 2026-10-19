@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
@@ -38,6 +40,11 @@ import type {
 } from '@langchain/core/messages';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { ChatResult } from '@langchain/core/outputs';
+
+const logger = createLogger({
+  package: 'langchain',
+  messageContext: 'orchestration-util'
+});
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -163,10 +170,24 @@ function mapAiMessageToOrchestrationAssistantMessage(
     mapLangChainToolCallToOrchestrationToolCall(message.tool_calls) ??
     message.additional_kwargs.tool_calls;
   const reasoning_content = extractReasoningBlocks(message);
+  const content = cloneMessageContent(
+    stripReasoningFromContent(message.content)
+  );
+  // Reasoning is forwarded to the service only from `additional_kwargs.reasoning_content`.
+  // Reasoning blocks placed directly in `content` are treated as output-only (matching the
+  // OpenAI Chat Completions convention) and are stripped from the request. Warn so callers
+  // know reasoning in `content` alone is not round-tripped.
+  if (!reasoning_content?.length && contentHasReasoning(message.content)) {
+    logger.warn(
+      'Reasoning blocks found in message content but not in `additional_kwargs.reasoning_content`. ' +
+        'Reasoning is not forwarded to the orchestration service from content; provide it via ' +
+        '`additional_kwargs.reasoning_content` to round-trip reasoning (including signatures).'
+    );
+  }
   return {
     ...(tool_calls?.length ? { tool_calls } : {}),
     ...(reasoning_content?.length ? { reasoning_content } : {}),
-    content: cloneMessageContent(stripReasoningFromContent(message.content)),
+    content,
     role: 'assistant'
   } as AssistantChatMessage;
 }
@@ -178,14 +199,16 @@ function extractReasoningBlocks(
   if (Array.isArray(rawBlocks) && rawBlocks.length) {
     return rawBlocks as ReasoningBlock[];
   }
-  // TODO: Only reasoning-type LangChain v1 content blocks are handled here; other v1 block
-  // types (e.g. tool calls) may be silently dropped if the caller sends v1 content arrays.
-  // We don't opt into v1 content so this is acceptable for now, but proper v1-content-block
-  // support should be added as a follow-up.
-  const blocks = message.contentBlocks
-    .filter((b): b is ContentBlock.Reasoning => b.type === 'reasoning')
-    .map(b => ({ content: b.reasoning }));
-  return blocks.length ? blocks : undefined;
+  return undefined;
+}
+
+function contentHasReasoning(content: AIMessage['content']): boolean {
+  return (
+    Array.isArray(content) &&
+    content.some(
+      b => b && typeof b === 'object' && 'type' in b && b.type === 'reasoning'
+    )
+  );
 }
 
 function stripReasoningFromContent(
@@ -405,24 +428,6 @@ function buildUsageMetadata(usage: TokenUsage): {
   };
 }
 
-function buildContentBlocks(
-  reasoningContent: ReasoningBlock[] | undefined,
-  textContent: string | null | undefined
-): string | (ContentBlock.Reasoning | ContentBlock.Text)[] {
-  const visibleBlocks = reasoningContent?.filter(
-    (b): b is ReasoningBlock & { content: string } => !!b.content
-  );
-  if (!visibleBlocks?.length) {
-    return textContent ?? '';
-  }
-  const reasoningBlocks: ContentBlock.Reasoning[] = visibleBlocks.map(
-    (b, index) => ({ type: 'reasoning' as const, reasoning: b.content, index })
-  );
-  return textContent
-    ? [...reasoningBlocks, { type: 'text' as const, text: textContent }]
-    : reasoningBlocks;
-}
-
 /**
  * Maps the completion response to a {@link ChatResult}.
  * @param completionResponse - The completion response to map.
@@ -444,10 +449,7 @@ export function mapOutputToChatResult(
     generations: choices.map(choice => ({
       text: choice.message.content ?? '',
       message: new AIMessage({
-        content: buildContentBlocks(
-          choice.message.reasoning_content,
-          choice.message.content
-        ),
+        content: choice.message.content ?? '',
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
