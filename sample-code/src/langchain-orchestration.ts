@@ -751,14 +751,11 @@ function extractText(content: AIMessage['content']): string {
     .join('');
 }
 
-function extractReasoning(content: AIMessage['content']): string {
-  if (typeof content === 'string') {
-    return '';
-  }
-  return (content as ContentBlock[])
-    .filter(b => b.type === 'reasoning')
-    .map(b => (b as ContentBlock.Reasoning).reasoning)
-    .join('\n');
+function reasoningText(message: AIMessage | AIMessageChunk): string {
+  const blocks = message.additional_kwargs.reasoning_content as
+    | ReasoningBlock[]
+    | undefined;
+  return blocks?.map(b => b.content ?? '').join('') ?? '';
 }
 
 /**
@@ -786,7 +783,7 @@ export async function invokeReasoningMultiTurn(): Promise<string> {
   const turn1 = await client.invoke(messages);
   messages.push(turn1);
 
-  const turn1Reasoning = extractReasoning(turn1.content);
+  const turn1Reasoning = reasoningText(turn1);
   const turn1Answer = extractText(turn1.content);
 
   // Turn 2 — follow-up using the same message history (round-trips reasoning)
@@ -795,7 +792,7 @@ export async function invokeReasoningMultiTurn(): Promise<string> {
   );
   const turn2 = await client.invoke(messages);
 
-  const turn2Reasoning = extractReasoning(turn2.content);
+  const turn2Reasoning = reasoningText(turn2);
   const turn2Answer = extractText(turn2.content);
 
   return [
@@ -846,10 +843,9 @@ export async function invokeReasoningStreamMultiTurn(
     const blocks = msg.additional_kwargs.reasoning_content as
       | ReasoningBlock[]
       | undefined;
-    const reasoning = blocks?.map(b => b.content ?? '').join('') ?? '';
     const hasSignature = !!blocks?.some(b => b.signature);
     return [
-      `Reasoning:\n${reasoning || '(none)'}`,
+      `Reasoning:\n${reasoningText(msg) || '(none)'}`,
       `Answer:\n${extractText(msg.content)}`,
       `Signature preserved: ${hasSignature}`,
       `reasoning_content blocks: ${JSON.stringify(blocks)}`
@@ -905,7 +901,7 @@ export async function invokeReasoningStreamConcat(): Promise<{
     | undefined;
   return {
     text: extractText(msg.content),
-    reasoning: reasoningBlocks?.map(b => b.content ?? '').join('') ?? '',
+    reasoning: reasoningText(msg),
     contentBlocks: JSON.stringify(msg.content),
     hasSignature: !!reasoningBlocks?.some(b => b.signature),
     reasoningTokens: msg.usage_metadata?.output_token_details?.reasoning ?? 0
