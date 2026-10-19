@@ -759,6 +759,40 @@ function reasoningText(message: AIMessage | AIMessageChunk): string {
 }
 
 /**
+ * Streams one turn and accumulates all chunks into a single merged message.
+ * @param client - The orchestration client.
+ * @param history - The message history to send.
+ * @returns The merged {@link AIMessageChunk} with reasoning in `additional_kwargs`.
+ */
+async function streamToMessage(
+  client: OrchestrationClient,
+  history: BaseMessage[]
+): Promise<AIMessageChunk> {
+  const stream = await client.stream(history);
+  let merged: AIMessageChunk | undefined;
+  for await (const chunk of stream) {
+    merged = merged ? merged.concat(chunk) : chunk;
+  }
+  return merged!;
+}
+
+/**
+ * Formats a turn's reasoning, answer, and whether a reasoning signature was preserved.
+ * @param message - The message to format.
+ * @returns A display string for the turn.
+ */
+function formatTurn(message: AIMessage | AIMessageChunk): string {
+  const blocks = message.additional_kwargs.reasoning_content as
+    | ReasoningBlock[]
+    | undefined;
+  return [
+    `Reasoning:\n${reasoningText(message) || '(none)'}`,
+    `Answer:\n${extractText(message.content)}`,
+    `Signature preserved: ${!!blocks?.some(b => b.signature)}`
+  ].join('\n');
+}
+
+/**
  * Multi-turn conversation with a reasoning model via LangChain orchestration client.
  * Turn 1: asks a maths question, captures reasoning + answer.
  * Turn 2: re-sends the history (including reasoning content) and asks a follow-up.
@@ -828,50 +862,23 @@ export async function invokeReasoningStreamMultiTurn(
   };
   const client = new OrchestrationClient(config);
 
-  const accumulate = async (
-    history: BaseMessage[]
-  ): Promise<AIMessageChunk> => {
-    const stream = await client.stream(history);
-    let merged: AIMessageChunk | undefined;
-    for await (const chunk of stream) {
-      merged = merged ? merged.concat(chunk) : chunk;
-    }
-    return merged!;
-  };
-
-  const describe = (msg: AIMessageChunk): string => {
-    const blocks = msg.additional_kwargs.reasoning_content as
-      | ReasoningBlock[]
-      | undefined;
-    const hasSignature = !!blocks?.some(b => b.signature);
-    return [
-      `Reasoning:\n${reasoningText(msg) || '(none)'}`,
-      `Answer:\n${extractText(msg.content)}`,
-      `Signature preserved: ${hasSignature}`,
-      `reasoning_content blocks: ${JSON.stringify(blocks)}`
-    ].join('\n');
-  };
-
-  // Turn 1 — stream + concat, then push merged message into history
+  // Turn 1 — stream + concat, then push the merged message into history.
   const messages: BaseMessage[] = [
     new HumanMessage('What is 17 × 23? Think step by step.')
   ];
-  const turn1 = await accumulate(messages);
+  const turn1 = await streamToMessage(client, messages);
   messages.push(turn1);
 
-  // Turn 2 — follow-up re-sends history, round-tripping turn 1 reasoning + signature
+  // Turn 2 — follow-up re-sends history, round-tripping turn 1 reasoning + signature.
   messages.push(
     new HumanMessage('Now divide that result by 17. What do you get?')
   );
-  const turn2 = await accumulate(messages);
+  const turn2 = await streamToMessage(client, messages);
 
   return [
-    '=== Turn 1 (streamed) ===',
-    describe(turn1),
-    '',
-    '=== Turn 2 (streamed, history round-tripped) ===',
-    describe(turn2)
-  ].join('\n');
+    `=== Turn 1 (streamed) ===\n${formatTurn(turn1)}`,
+    `=== Turn 2 (streamed, history round-tripped) ===\n${formatTurn(turn2)}`
+  ].join('\n\n');
 }
 
 /**
