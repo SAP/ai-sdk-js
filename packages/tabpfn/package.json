@@ -1,0 +1,58 @@
+{
+  "name": "@sap-ai-sdk/tabpfn",
+  "version": "2.16.0",
+  "description": "This package provides a client for the TabPFN foundation model for tabular prediction via in-context learning.",
+  "keywords": [
+    "ai-api",
+    "sap-ai-sdk",
+    "tabpfn"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/tabpfn"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
+  "scripts": {
+    "compile": "tsc",
+    "test": "vitest run",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/tabpfn.json -o ./src/client && openapi-generator --generateESM -i ./src/spec/tabpfn-multipart.json -o ./src/client",
+    "pregenerate": "pnpm postprocess-spec",
+    "postgenerate": "pnpm update-imports && pnpm make-tabpfn-internal && pnpm make-tabpfn-multipart-internal && pnpm lint:fix",
+    "postprocess-spec": "redocly bundle ./src/spec/tabpfnopenapispecs.yaml --overlay=./src/spec/tabpfn-predict-overlay.yaml --remove-unused-components --output ./src/spec/tabpfn-predict.json && node ./scripts/postprocess-tabpfn-spec.ts ./src/spec/tabpfn-predict.json",
+    "update-imports": "node ../../scripts/update-imports.ts ./src/client",
+    "make-tabpfn-internal": "node ../../scripts/postgenerate-tabpfn.ts ./src/client/tabpfn/inference-api.ts",
+    "make-tabpfn-multipart-internal": "node ../../scripts/postgenerate-tabpfn.ts ./src/client/tabpfn-multipart/inference-api.ts"
+  },
+  "dependencies": {
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/http-client": "catalog:"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^2.64.0",
+    "vitest": "5.0.4"
+  }
+}
