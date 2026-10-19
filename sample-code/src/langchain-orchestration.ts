@@ -773,7 +773,10 @@ async function streamToMessage(
   for await (const chunk of stream) {
     merged = merged ? merged.concat(chunk) : chunk;
   }
-  return merged!;
+  if (!merged) {
+    throw new Error('No chunks were generated from the stream.');
+  }
+  return merged;
 }
 
 /**
