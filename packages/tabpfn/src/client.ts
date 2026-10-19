@@ -18,8 +18,8 @@ import type { TabpfnRequestOptions } from './types.ts';
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class TabpfnClient {
-  private modelDeployment: ModelDeployment<TabpfnModel>;
-  private destination?: HttpDestinationOrFetchOptions;
+  private readonly modelDeployment: ModelDeployment<TabpfnModel>;
+  private readonly destination?: HttpDestinationOrFetchOptions;
 
   /**
    * Creates an instance of the TabPFN client.

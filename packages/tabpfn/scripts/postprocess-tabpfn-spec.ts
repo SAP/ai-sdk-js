@@ -80,7 +80,7 @@ for (const [name, mediaType] of [
 
       Object.entries(value).forEach(([key, child]) => {
         if (key === '$ref' && typeof child === 'string') {
-          const match = child.match(/^#\/components\/schemas\/(.+)$/);
+          const match = /^#\/components\/schemas\/(.+)$/.exec(child);
           if (match?.[1] && !referencedSchemas.has(match[1])) {
             referencedSchemas.add(match[1]);
             collectSchemaReferences(schemas[match[1]]);
