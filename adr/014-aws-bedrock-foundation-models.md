@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed.
+Accepted.
 
 The proposal comprises the following selections:
 
