@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
+
 import { setOutput, setFailed } from '@actions/core';
 
 async function getPackageVersion(): Promise<string> {
@@ -16,7 +17,7 @@ async function getChangelog(v?: string): Promise<string> {
   return logs.slice(logs.indexOf('\n##') + 1);
 }
 
-(async () => {
+await (async () => {
   try {
     setOutput('changelog', await getChangelog());
   } catch (error) {

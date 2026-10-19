@@ -1,10 +1,8 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript"
-  ],
+  "plugins": ["typescript", "unicorn", "typescript", "vitest"],
   "categories": {
-    "correctness": "off"
+    "correctness": "error"
   },
   "env": {
     "builtin": true
@@ -18,7 +16,10 @@
     "typeAware": true
   },
   "jsPlugins": [
-    { "name": "local", "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js" }
+    {
+      "name": "local",
+      "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js"
+    }
   ],
   "ignorePatterns": [
     "**/*.d.ts",
@@ -107,16 +108,12 @@
     "typescript/no-wrapper-object-types": "error",
     "typescript/prefer-as-const": "error",
     "typescript/prefer-namespace-keyword": "error",
-    "typescript/triple-slash-reference": "error"
+    "typescript/triple-slash-reference": "error",
+    "unicorn/prefer-node-protocol": "error"
   },
   "overrides": [
     {
-      "files": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts"
-      ],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "rules": {
         "constructor-super": "off",
         "getter-return": "off",
@@ -141,21 +138,13 @@
       }
     },
     {
-      "files": [
-        "**/*.ts"
-      ],
+      "files": ["**/*.ts"],
       "rules": {
         "local/no-uppercase-internal-tag": "error",
         "arrow-body-style": "error",
         "curly": "error",
-        "eqeqeq": [
-          "error",
-          "smart"
-        ],
-        "max-classes-per-file": [
-          "error",
-          1
-        ],
+        "eqeqeq": ["error", "smart"],
+        "max-classes-per-file": ["error", 1],
         "no-bitwise": "error",
         "no-caller": "error",
         "no-console": "error",
@@ -173,11 +162,7 @@
         "no-restricted-imports": [
           "error",
           {
-            "paths": [
-              "..",
-              "../..",
-              "."
-            ],
+            "paths": ["..", "../..", "."],
             "patterns": [
               {
                 "regex": "^\\.{1,2}/.*\\.(?:[cm]?js|jsx)$",
@@ -212,9 +197,7 @@
         "jsdoc/require-param": "error",
         "jsdoc/require-returns-description": "error",
         "jsdoc/require-returns": "error",
-        "no-redeclare": [
-          "error"
-        ],
+        "no-redeclare": ["error"],
         "no-shadow": [
           "error",
           {
@@ -270,22 +253,33 @@
         "typescript/no-unsafe-return": "off"
       },
       "jsPlugins": [
-        { "name": "local", "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js" }
+        {
+          "name": "local",
+          "specifier": "./oxlint-plugins/no-uppercase-internal-tag.js"
+        }
       ],
-      "plugins": [
-        "import",
-        "jsdoc"
-      ]
+      "plugins": ["import", "jsdoc", "unicorn"]
     },
     {
-      "files": [
-        "**/test/**/*",
-        "**/*.test.ts",
-        "**/*.spec.ts"
-      ],
+      "files": ["**/test/**/*", "**/*.test.ts", "**/*.spec.ts"],
       "rules": {
         "no-unused-expressions": "off",
-        "typescript/explicit-module-boundary-types": "off"
+        "typescript/explicit-module-boundary-types": "off",
+        "vitest/expect-expect": [
+          "error",
+          {
+            "assertFunctionNames": [
+              "assertCacheControlAt",
+              "assertContent",
+              "expect",
+              "verifyPredictions"
+            ]
+          }
+        ],
+        "vitest/no-standalone-expect": [
+          "error",
+          { "additionalTestBlockFunctions": ["itCfOnly"] }
+        ]
       }
     },
     {
@@ -303,9 +297,7 @@
       }
     },
     {
-      "files": [
-        "sample-code/src/support-bot/**/*"
-      ],
+      "files": ["sample-code/src/support-bot/**/*"],
       "rules": {
         "no-console": "off"
       }

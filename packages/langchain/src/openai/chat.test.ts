@@ -82,9 +82,9 @@ describe('Chat client', () => {
     };
 
     it('should bind a tool with strict set to true if defined in kwargs', async () => {
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -96,11 +96,12 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: true // Will be tested
+                  strict: true
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -108,12 +109,13 @@ describe('Chat client', () => {
       await client
         .bindTools([addNumbersTool], { strict: true })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with strict set to false if defined in kwargs', async () => {
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -125,11 +127,12 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: false // Will be tested
+                  strict: false
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
@@ -137,12 +140,13 @@ describe('Chat client', () => {
       await client
         .bindTools([addNumbersTool], { strict: false })
         .invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with undefined strict if not defined in kwargs', async () => {
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -154,23 +158,25 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: undefined // Will be tested
+                  strict: undefined
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
 
     it('should bind a tool with strict set to true if defined by supportsStrictToolCalling', async () => {
       client.supportsStrictToolCalling = true;
-      mockInference(
-        {
-          data: {
+      const scope = mockInference(
+        body => {
+          expect(body).toEqual({
             messages: [
               {
                 role: 'user' as const,
@@ -182,16 +188,18 @@ describe('Chat client', () => {
                 type: 'function',
                 function: {
                   ...addNumbersTool.function,
-                  strict: true // Will be tested
+                  strict: true
                 }
               }
             ]
-          }
+          });
+          return true;
         },
         toolResponse,
         endpoint
       );
       await client.bindTools([addNumbersTool]).invoke('What is 1 + 2?');
+      expect(scope.isDone()).toBe(true);
     });
   });
 
@@ -363,7 +371,10 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        AzureOpenAiChatClient.prototype,
+        '_streamResponseChunks'
+      );
 
       client.streaming = true;
       expect(client.streaming).toBe(true);
@@ -371,7 +382,7 @@ describe('Chat client', () => {
       const finalOutput = await client.invoke('What is the capital of France?');
 
       expect(finalOutput).toBeDefined();
-      expect(client._streamResponseChunks).toHaveBeenCalled();
+      expect(streamSpy).toHaveBeenCalled();
     });
 
     it('supports disabling auto-streaming via disableStreaming flag', async () => {
@@ -402,7 +413,10 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        AzureOpenAiChatClient.prototype,
+        '_streamResponseChunks'
+      );
 
       client.streaming = false;
       client.disableStreaming = true;
@@ -410,7 +424,7 @@ describe('Chat client', () => {
       const finalOutput = await client.invoke('What is the capital of France?');
 
       expect(finalOutput).toMatchSnapshot();
-      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+      expect(streamSpy).not.toHaveBeenCalled();
     });
 
     it('has langchain handle disabling streaming via disableStreaming flag in stream', async () => {
@@ -441,7 +455,10 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        AzureOpenAiChatClient.prototype,
+        '_streamResponseChunks'
+      );
 
       client.disableStreaming = true;
       client.streaming = false;
@@ -455,7 +472,7 @@ describe('Chat client', () => {
       // Verify that no further chunks are present
       const trailingChunk = await stream.next();
       expect(trailingChunk.done).toBe(true);
-      expect(client._streamResponseChunks).not.toHaveBeenCalled();
+      expect(streamSpy).not.toHaveBeenCalled();
     });
 
     it('should handle streaming and disabling streaming flags as expected', async () => {
@@ -592,7 +609,10 @@ describe('Chat client', () => {
         },
         endpoint
       );
-      vi.spyOn(AzureOpenAiChatClient.prototype, '_streamResponseChunks');
+      const streamSpy = vi.spyOn(
+        AzureOpenAiChatClient.prototype,
+        '_streamResponseChunks'
+      );
       // Simulate a minimal streaming langgraph-like workflow
       const llm = new AzureOpenAiChatClient({ modelName: 'gpt-5.4-nano' });
 
@@ -621,7 +641,7 @@ describe('Chat client', () => {
       for await (const _ of stream) {
         // Empty
       }
-      expect(llm._streamResponseChunks).toHaveBeenCalled();
+      expect(streamSpy).toHaveBeenCalled();
     });
   });
 });

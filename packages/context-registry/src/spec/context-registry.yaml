@@ -1,0 +1,1895 @@
+openapi: 3.0.3
+info:
+  title: Context Registry
+  version: 1.0.0
+  description: Context Registry is a service for managing tabular data contexts for AI applications. It provides capabilities to register data destinations (object stores and data sharing platforms), create tabular artifacts from various file formats (CSV, Parquet, Delta), and configure scenarios for context selection in AI-driven business solutions.
+  contact:
+    name: SAP AI Core
+x-sap-shortText: Manage tabular data contexts for AI applications in SAP AI Core.
+
+tags:
+  - name: Data Destinations
+    description: Manage data destination configurations for unified data source integration
+  - name: Tabular Artifacts
+    description: Manage tabular artifacts for structured data access
+  - name: Scenario Configuration Manager
+    description: Manage scenario configurations for context selection
+
+servers:
+  - url: 'https://{landscapehost}/v2/tcr'
+    description: Production endpoint for SAP AI Core
+    variables:
+      landscapehost:
+        default: api.ai.prod.eu-central-1.aws.ml.hana.ondemand.com
+        description: SAP AI Core landscape host (e.g., api.ai.prod.eu-central-1.aws.ml.hana.ondemand.com, api.ai.prod.us-east-1.aws.ml.hana.ondemand.com)
+
+security:
+  - Oauth2: []
+
+paths:
+  # Data Destinations Endpoints
+  '/dataDestinations':
+    get:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.list_data_destinations
+      summary: Get Data Destinations
+      description: Get all data destinations in the tenant (resource group)
+      x-sap-cloud-sdk-operation-name: getAllDataDestinations
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Returns all data destinations for the tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataDestinations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/dataDestinations/search':
+    post:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.search_data_destinations
+      summary: Search Data Destinations
+      description: Search data destinations by label key-value pairs
+      x-sap-cloud-sdk-operation-name: searchDestinations
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - labels
+              properties:
+                labels:
+                  $ref: '#/components/schemas/Labels'
+      responses:
+        '200':
+          description: Returns data destinations matching the label selector
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataDestinations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/dataDestinations/validate':
+    post:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.validate_data_destination
+      summary: Validate Data Destination (pre-creation)
+      description: Test provider connectivity before saving. Nothing is persisted.
+      x-sap-cloud-sdk-operation-name: validateDataDestination
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateDataDestinationRequest'
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateDataDestinationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/dataDestinations/{dataDestinationName}':
+    put:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.create_update_data_destination
+      summary: Async Data Destination Creation
+      description: >
+        Create a data destination asynchronously. Schema validation happens
+        synchronously; credential validation and secret storage run in a background task.
+        Poll GET /dataDestinations/{name} to track progress via status and errorMessage.
+        Returns 202 (not exists or ERROR retry), 409 (ACTIVE or DELETING), 422 (retry exhausted).
+      x-sap-cloud-sdk-operation-name: createUpdateDataDestination
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: dataDestinationName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 127
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: Unique identifier for the data destination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDataDestination'
+      responses:
+        '202':
+          description: Accepted - background task launched
+          headers:
+            Location:
+              description: URL to poll for creation status
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncCreateDataDestinationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    get:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.get_data_destination_by_name
+      summary: Get Data Destination Details
+      description: Get metadata of a specific data destination (excluding credentials)
+      x-sap-cloud-sdk-operation-name: getDataDestinationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: dataDestinationName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the data destination to get
+      responses:
+        '200':
+          description: Returns the data destination for the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataDestination'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.delete_data_destination_by_name
+      summary: Delete Data Destination
+      description: >
+        Mark the data destination for deletion. Synchronously checks for dependent
+        TabularArtifacts; returns 202 immediately after marking DELETING. The cron
+        reaper handles secret deletion and hard delete.
+      x-sap-cloud-sdk-operation-name: deleteDataDestinationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: dataDestinationName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the data destination to delete
+      responses:
+        '202':
+          description: Accepted — data destination marked DELETING; cron handles cleanup
+          headers:
+            Location:
+              description: URL to poll for deletion status
+              schema:
+                type: string
+                format: uri
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    patch:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.patch_data_destination_by_name
+      summary: Update Data Destination
+      description: Update a data destination (excluding name and type)
+      x-sap-cloud-sdk-operation-name: patchDataDestinationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: dataDestinationName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the data destination to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchDataDestination'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/dataDestinations/{dataDestinationName}/validate':
+    post:
+      tags:
+        - Data Destinations
+      operationId: controllers.data_destination.v1.endpoints.validate_data_destination_by_name
+      summary: Validate Data Destination (post-creation)
+      description: Re-verify an already-saved destination using stored credentials.
+      x-sap-cloud-sdk-operation-name: validateDataDestinationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: dataDestinationName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the data destination to validate
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateDataDestinationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # Tabular Artifacts Endpoints
+  '/tabularArtifacts':
+    get:
+      tags:
+        - Tabular Artifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.get_all_tabular_artifacts
+      summary: Get all Tabular Artifacts
+      description: Retrieve list of Tabular Artifacts with pagination
+      x-sap-cloud-sdk-operation-name: getAllTabularArtifacts
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Tabular Artifacts retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TabularArtifactListResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  '/tabularArtifacts/{tabularArtifactName}':
+    put:
+      tags:
+        - Tabular Artifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.create_tabular_artifact
+      summary: Async Tabular Artifact Creation
+      description: >
+        Create a Tabular Artifact asynchronously. Schema validation happens
+        synchronously; resource creation runs in a background task.
+        Poll GET /tabularArtifacts/{name} to track progress via status and errorMessage.
+        Returns 202 (not exists or ERROR retry), 409 (ACTIVE or DELETING), 422 (retry exhausted).
+      x-sap-cloud-sdk-operation-name: createTabularArtifact
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: Unique name of the Tabular Artifact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTARequest'
+      responses:
+        '202':
+          description: Accepted - Tabular Artifact creation request accepted
+          headers:
+            Location:
+              description: URL to check the Tabular Artifact creation status
+              schema:
+                $ref: '#/components/schemas/Url'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the Tabular Artifact being created
+                additionalProperties: false
+              example:
+                name: 'customer-ta'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    get:
+      tags:
+        - Tabular Artifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.get_tabular_artifact_by_name
+      summary: Get Tabular Artifact Details with Metadata
+      description: >
+        Retrieve details of a specific Tabular Artifact by name including schema metadata.
+      x-sap-cloud-sdk-operation-name: getTabularArtifactByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: >
+            Unique name of the Tabular Artifact.
+            Must match allowed pattern and length constraints.
+      responses:
+        '200':
+          description: Tabular Artifact details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TabularArtifactDetails'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Tabular Artifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.delete_tabular_artifact
+      summary: Delete Tabular Artifact
+      description: Delete a specific Tabular Artifact by name
+      x-sap-cloud-sdk-operation-name: deleteTabularArtifact
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: >
+            Unique name of the Tabular Artifact.
+            Must match allowed pattern and length constraints.
+      responses:
+        '202':
+          description: Accepted — the Tabular Artifact has been marked for deletion and will be removed asynchronously
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/tabularArtifacts/{tabularArtifactName}/data':
+    get:
+      tags:
+        - Tabular Artifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.get_tabular_artifact_data
+      summary: Get Tabular Artifact Data Preview
+      description: Retrieve a preview of data rows from the Virtual Table (first 10 records)
+      x-sap-cloud-sdk-operation-name: getTabularArtifactData
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: >
+            Unique name of the Tabular Artifact.
+            Must match allowed pattern and length constraints.
+      responses:
+        '200':
+          description: Tabular Artifact data preview retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TabularArtifactDataPreview'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  # Scenario Configuration Manager Endpoints
+  '/scenarioConfigurations':
+    get:
+      tags:
+        - Scenario Configuration Manager
+      operationId: controllers.scenario_configuration_manager.v1.endpoints.get_all_scenario_configurations
+      summary: Get All Scenario Configurations
+      description: Get all scenario configurations in the tenant (resource group)
+      x-sap-cloud-sdk-operation-name: getAllScenarioConfigurations
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Returns all scenario configurations for the tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScenarioConfigurations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/scenarioConfigurations/search':
+    post:
+      tags:
+        - Scenario Configuration Manager
+      operationId: controllers.scenario_configuration_manager.v1.endpoints.search_scenario_configurations_by_label
+      summary: Search Scenario Configurations by Labels
+      description: Search for scenario configurations that match ALL specified labels (AND logic)
+      x-sap-cloud-sdk-operation-name: searchScenarioConfigurationsByLabel
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/skip'
+        - $ref: '#/components/parameters/count'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchScenarioConfiguration'
+      responses:
+        '200':
+          description: Returns scenario configurations matching all specified labels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScenarioConfigurations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  '/scenarioConfigurations/{scenarioConfigurationName}':
+    put:
+      tags:
+        - Scenario Configuration Manager
+      operationId: controllers.scenario_configuration_manager.v1.endpoints.create_scenario_configuration
+      summary: Async Scenario Configuration Creation
+      description: >
+        Create a scenario configuration asynchronously. Schema validation happens
+        synchronously; background processing runs asynchronously.
+        Poll GET /scenarioConfigurations/{name} to track progress via status and errorMessage.
+        Returns 202 (not exists or ERROR retry), 409 (ACTIVE or DELETING), 422 (retry exhausted).
+      x-sap-cloud-sdk-operation-name: createScenarioConfiguration
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: scenarioConfigurationName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 127
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: Name of the scenario configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScenarioConfiguration'
+      responses:
+        '202':
+          description: Accepted - background task launched
+          headers:
+            Location:
+              description: URL to poll for creation status
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioConfigurationNameObject'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    get:
+      tags:
+        - Scenario Configuration Manager
+      operationId: controllers.scenario_configuration_manager.v1.endpoints.get_scenario_configuration_by_name
+      summary: Get Scenario Configuration By Name
+      description: Get a scenario configuration by its name
+      x-sap-cloud-sdk-operation-name: getScenarioConfigurationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: scenarioConfigurationName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 127
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: The name of the scenario configuration to retrieve
+      responses:
+        '200':
+          description: Returns the scenario configuration object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioConfigurationObject'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    patch:
+      tags:
+        - Scenario Configuration Manager
+      operationId: controllers.scenario_configuration_manager.v1.endpoints.patch_scenario_configuration_by_name
+      summary: Update Scenario Configuration
+      description: Update a scenario configuration (excluding name)
+      x-sap-cloud-sdk-operation-name: patchScenarioConfigurationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: scenarioConfigurationName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 127
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: The name of the scenario configuration to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchScenarioConfiguration'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Scenario Configuration Manager
+      operationId: controllers.scenario_configuration_manager.v1.endpoints.delete_scenario_configuration_by_name
+      summary: Delete Scenario Configuration
+      description: Delete a scenario configuration by name
+      x-sap-cloud-sdk-operation-name: deleteScenarioConfigurationByName
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+        - name: scenarioConfigurationName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the scenario configuration to delete
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: OAuth client credentials (client ID and secret) are required. These can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
+
+  schemas:
+    # Data Destination Schemas
+    CreateDataDestination:
+      discriminator:
+        propertyName: type
+        mapping:
+          HDL: '#/components/schemas/HDLDataDestinationCreateRequest'
+          S3: '#/components/schemas/S3DataDestinationCreateRequest'
+          GCS: '#/components/schemas/GCSDataDestinationCreateRequest'
+          AZURE: '#/components/schemas/AzureDataDestinationCreateRequest'
+          DELTA_SHARING: '#/components/schemas/DeltaSharingDataDestinationCreateRequest'
+      oneOf:
+        - $ref: '#/components/schemas/HDLDataDestinationCreateRequest'
+        - $ref: '#/components/schemas/S3DataDestinationCreateRequest'
+        - $ref: '#/components/schemas/GCSDataDestinationCreateRequest'
+        - $ref: '#/components/schemas/AzureDataDestinationCreateRequest'
+        - $ref: '#/components/schemas/DeltaSharingDataDestinationCreateRequest'
+
+    DataDestinationCreateBase:
+      type: object
+      properties:
+        description:
+          type: string
+          maxLength: 1000
+          description: 'Optional description of the data destination'
+        adapterType:
+          type: string
+          enum: [File, DeltaShare]
+          default: File
+          description: 'Adapter type for data access.'
+        labels:
+          $ref: '#/components/schemas/Labels'
+
+    HDLDataDestinationCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/DataDestinationCreateBase'
+        - type: object
+          required: [type, config]
+          properties:
+            type:
+              type: string
+              enum: [HDL]
+            config:
+              $ref: '#/components/schemas/HDLConnectionConfig'
+
+    HDLConnectionConfig:
+      type: object
+      required:
+        - host
+      properties:
+        host:
+          type: string
+          pattern: '^[a-zA-Z0-9]([a-zA-Z0-9\-\.]*[a-zA-Z0-9])?(:[0-9]+)?$'
+          example: 'ccc727c8-ffff-4c37-ffff-ede322dcfa8f.files.hdl.canary-eu10.hanacloud.ondemand.com'
+          description: "HDL file container hostname. Only alphanumeric characters, hyphens, dots, and an optional port are allowed. Do not include 'https://' or any URL scheme."
+      additionalProperties: false
+
+    S3DataDestinationCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/DataDestinationCreateBase'
+        - type: object
+          required: [type, config]
+          properties:
+            type:
+              type: string
+              enum: [S3]
+            config:
+              $ref: '#/components/schemas/S3ConnectionConfig'
+
+    GCSDataDestinationCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/DataDestinationCreateBase'
+        - type: object
+          required: [type, config]
+          properties:
+            type:
+              type: string
+              enum: [GCS]
+            config:
+              $ref: '#/components/schemas/GCSConnectionConfig'
+
+    AzureDataDestinationCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/DataDestinationCreateBase'
+        - type: object
+          required: [type, config]
+          properties:
+            type:
+              type: string
+              enum: [AZURE]
+            config:
+              $ref: '#/components/schemas/AzureConnectionConfig'
+
+    S3ConnectionConfigBase:
+      type: object
+      properties:
+        bucket:
+          type: string
+          minLength: 1
+          description: S3 bucket name
+        region:
+          type: string
+          minLength: 1
+          description: AWS region (e.g. eu-central-1)
+        access_key_id:
+          type: string
+          minLength: 1
+          description: AWS access key ID
+        secret_access_key:
+          type: string
+          minLength: 1
+          description: 'AWS secret access key (raw value — must not be URL-encoded)'
+      additionalProperties: false
+
+    S3ConnectionConfig:
+      allOf:
+        - $ref: '#/components/schemas/S3ConnectionConfigBase'
+        - type: object
+          required: [bucket, region, access_key_id, secret_access_key]
+
+    GCSConnectionConfigBase:
+      type: object
+      properties:
+        bucket:
+          type: string
+          minLength: 1
+          description: GCS bucket name
+        base64_encoded_private_key_data:
+          type: string
+          minLength: 1
+          format: byte
+          description: >
+            Base64-encoded service account JSON key, as provided directly in the BTP Object Store
+            service key. TCR decodes this at runtime to extract client_email and private_key for
+            the HANA OAUTH credential. The decoded value must be valid JSON containing both
+            client_email and private_key fields.
+      additionalProperties: false
+
+    GCSConnectionConfig:
+      allOf:
+        - $ref: '#/components/schemas/GCSConnectionConfigBase'
+        - type: object
+          required: [bucket, base64_encoded_private_key_data]
+
+    AzureConnectionConfigBase:
+      type: object
+      properties:
+        account_name:
+          type: string
+          minLength: 1
+          description: 'Azure storage account name (maps to user= in HANA credential)'
+        container_uri:
+          type: string
+          minLength: 1
+          description: >
+            Full container URI from the BTP Object Store service key
+            (e.g. https://account.z2.blob.storage.azure.net/container).
+            TCR strips the https:// prefix to derive the HANA adls endpoint.
+        sas_token:
+          type: string
+          minLength: 1
+          description: 'SAS token (raw, percent-encoded characters stored as-is). Must grant read + list (r + l) on the container.'
+      additionalProperties: false
+
+    AzureConnectionConfig:
+      allOf:
+        - $ref: '#/components/schemas/AzureConnectionConfigBase'
+        - type: object
+          required: [account_name, container_uri, sas_token]
+
+    DeltaSharingDataDestinationCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/DataDestinationCreateBase'
+        - type: object
+          required: [type, config]
+          properties:
+            type:
+              type: string
+              enum: [DELTA_SHARING]
+            config:
+              $ref: '#/components/schemas/DeltaSharingConnectionConfig'
+            adapterType:
+              type: string
+              enum: [DeltaShare]
+              default: DeltaShare
+              description: 'Adapter type for Delta Sharing'
+
+    DeltaSharingConnectionConfig:
+      type: object
+      required:
+        - host
+      properties:
+        host:
+          type: string
+          pattern: '^[a-zA-Z0-9]([a-zA-Z0-9\-\.]*[a-zA-Z0-9])?(:[0-9]+)?$'
+          example: 'ccc727c8-ffff-4c37-ffff-ede322dcfa8f.sharing.hdl.canary-eu10.hanacloud.ondemand.com'
+          description: "Delta Sharing server hostname. Only alphanumeric characters, hyphens, dots, and an optional port are allowed. Do not include 'https://' or any URL scheme."
+        provider:
+          type: string
+          enum: [hdlf]
+          description: 'Delta Sharing provider. Optional, defaults to hdlf if not specified.'
+      additionalProperties: false
+
+    S3PatchConfig:
+      type: object
+      description: 'S3 credential fields for PATCH.'
+      additionalProperties: false
+      properties:
+        access_key_id:
+          type: string
+          minLength: 1
+          description: AWS access key ID
+        secret_access_key:
+          type: string
+          minLength: 1
+          description: AWS secret access key
+
+    GCSPatchConfig:
+      type: object
+      description: 'GCS credential fields for PATCH.'
+      additionalProperties: false
+      properties:
+        base64_encoded_private_key_data:
+          type: string
+          minLength: 1
+          format: byte
+          description: Base64-encoded service account JSON key
+
+    AzurePatchConfig:
+      type: object
+      description: 'Azure credential fields for PATCH.'
+      additionalProperties: false
+      properties:
+        sas_token:
+          type: string
+          minLength: 1
+          description: SAS token
+
+    Labels:
+      type: array
+      items:
+        $ref: '#/components/schemas/LabelKeyValuePair'
+      example:
+        - key: 'ext.ai.sap.com/environment'
+          value: 'prod'
+
+    LabelKeyValuePair:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          minLength: 1
+          maxLength: 63
+          pattern: "^(ext|int)\\.ai\\.sap\\.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$"
+          description: 'Label key following SAP AI Core format: (ext|int).ai.sap.com/suffix'
+        value:
+          type: string
+          minLength: 1
+          maxLength: 63
+          pattern: '^(([A-Za-z0-9][-A-Za-z0-9_./]*)?[A-Za-z0-9])?$'
+          description: 'Label value'
+      additionalProperties: false
+
+    AsyncCreateDataDestinationResponse:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the data destination being created
+        subjectPatterns:
+          type: array
+          items:
+            type: string
+          description: 'Subject pattern for HDL authentication and btp cred store'
+      additionalProperties: false
+
+    DataDestinationStatus:
+      type: string
+      enum:
+        - PROCESSING
+        - ACTIVE
+        - DELETING
+        - ERROR
+      description: >
+        Lifecycle status of the Data Destination.
+        PROCESSING — creation is in progress (background task running).
+        ACTIVE — fully created and available.
+        ERROR — creation failed; see errorMessage for details.
+        DELETING — marked for deletion, awaiting async cleanup.
+
+    DataDestinationErrorMessage:
+      type: string
+      nullable: true
+      description: Detailed error message if the Data Destination creation failed
+
+    GetDataDestinations:
+      type: object
+      required:
+        - resources
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetDataDestination'
+
+    GetDataDestination:
+      discriminator:
+        propertyName: type
+        mapping:
+          HDL: '#/components/schemas/HDLDataDestinationGetResponse'
+          S3: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
+          GCS: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
+          AZURE: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
+          DELTA_SHARING: '#/components/schemas/DeltaSharingDataDestinationGetResponse'
+      oneOf:
+        - $ref: '#/components/schemas/HDLDataDestinationGetResponse'
+        - $ref: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
+        - $ref: '#/components/schemas/DeltaSharingDataDestinationGetResponse'
+
+    HDLDataDestinationGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataDestinationResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum: [HDL]
+            adapterType:
+              type: string
+              enum: [File]
+            subjectPatterns:
+              type: array
+              items:
+                type: string
+              description: 'Subject pattern for HDL authentication and btp cred store'
+
+    ObjectStoreDataDestinationGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataDestinationResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum: [S3, GCS, AZURE]
+            adapterType:
+              type: string
+              enum: [File]
+
+    DeltaSharingDataDestinationGetResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataDestinationResponse'
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum: [DELTA_SHARING]
+            adapterType:
+              type: string
+              enum: [DeltaShare]
+
+    BaseDataDestinationResponse:
+      type: object
+      required:
+        - name
+        - createdAt
+        - updatedAt
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        status:
+          $ref: '#/components/schemas/DataDestinationStatus'
+        errorMessage:
+          $ref: '#/components/schemas/DataDestinationErrorMessage'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2024-02-15T12:45:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2024-02-15T12:45:00.000Z'
+
+    PatchDataDestination:
+      type: object
+      additionalProperties: false
+      properties:
+        labels:
+          $ref: '#/components/schemas/Labels'
+        description:
+          type: string
+          maxLength: 253
+          description: 'Data destination description.'
+        config:
+          description: "Credential fields for the destination's provider type."
+          anyOf:
+            - $ref: '#/components/schemas/S3PatchConfig'
+            - $ref: '#/components/schemas/GCSPatchConfig'
+            - $ref: '#/components/schemas/AzurePatchConfig'
+
+    ValidateDataDestinationRequest:
+      discriminator:
+        propertyName: type
+        mapping:
+          S3: '#/components/schemas/ValidateS3Request'
+          GCS: '#/components/schemas/ValidateGCSRequest'
+          AZURE: '#/components/schemas/ValidateAzureRequest'
+      oneOf:
+        - $ref: '#/components/schemas/ValidateS3Request'
+        - $ref: '#/components/schemas/ValidateGCSRequest'
+        - $ref: '#/components/schemas/ValidateAzureRequest'
+
+    ValidateS3Request:
+      type: object
+      required: [type, config]
+      properties:
+        type:
+          type: string
+          enum: [S3]
+        adapterType:
+          type: string
+          enum: [File]
+          default: File
+        config:
+          $ref: '#/components/schemas/S3ConnectionConfig'
+
+    ValidateGCSRequest:
+      type: object
+      required: [type, config]
+      properties:
+        type:
+          type: string
+          enum: [GCS]
+        adapterType:
+          type: string
+          enum: [File]
+          default: File
+        config:
+          $ref: '#/components/schemas/GCSConnectionConfig'
+
+    ValidateAzureRequest:
+      type: object
+      required: [type, config]
+      properties:
+        type:
+          type: string
+          enum: [AZURE]
+        adapterType:
+          type: string
+          enum: [File]
+          default: File
+        config:
+          $ref: '#/components/schemas/AzureConnectionConfig'
+
+    ValidateDataDestinationResponse:
+      discriminator:
+        propertyName: status
+        mapping:
+          OK: '#/components/schemas/ValidationOkResponse'
+          FAILED: '#/components/schemas/ValidationFailedResponse'
+      oneOf:
+        - $ref: '#/components/schemas/ValidationOkResponse'
+        - $ref: '#/components/schemas/ValidationFailedResponse'
+
+    ValidationOkResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [OK]
+      additionalProperties: false
+
+    ValidationFailedResponse:
+      type: object
+      required: [status, reason]
+      properties:
+        status:
+          type: string
+          enum: [FAILED]
+        reason:
+          type: string
+          description: 'Provider-specific failure reason. Always present when status is FAILED.'
+      additionalProperties: false
+
+    # Tabular Artifact Schemas
+    DefinitionType:
+      type: string
+      enum:
+        - DOCUMENT
+        - REFERENCE
+        - AUTO
+
+    DocumentDefinition:
+      type: object
+      required:
+        - definitionType
+        - document
+      properties:
+        definitionType:
+          $ref: '#/components/schemas/DefinitionType'
+        document:
+          type: object
+          description: 'CSN document content used to create Tabular Artifact (required if definitionType is DOCUMENT)'
+      additionalProperties: false
+
+    ReferenceDefinition:
+      type: object
+      required:
+        - definitionType
+        - documentReference
+      properties:
+        definitionType:
+          $ref: '#/components/schemas/DefinitionType'
+        documentReference:
+          type: object
+          required:
+            - path
+          properties:
+            path:
+              type: string
+              description: "Absolute path to the file on the data destination (must start with '/')"
+              pattern: '^\/.*'
+              example: '/data/ingest/customer_data/csn_metadata.json'
+          additionalProperties: false
+      additionalProperties: false
+
+    AutoDefinition:
+      type: object
+      required:
+        - definitionType
+      properties:
+        definitionType:
+          $ref: '#/components/schemas/DefinitionType'
+        autoConfig:
+          type: object
+          description: 'Optional configuration for AUTO schema derivation'
+          properties:
+            csvOptions:
+              type: object
+              description: 'Optional CSV-specific options (only for CSV type files)'
+              properties:
+                columnListInFirstRow:
+                  type: boolean
+                  default: true
+                  description: 'Whether CSV has column names in first row'
+                delimiter:
+                  type: string
+                  default: ','
+                  description: 'CSV delimiter character'
+              additionalProperties: false
+          additionalProperties: false
+      additionalProperties: false
+
+    CSNDefinition:
+      oneOf:
+        - $ref: '#/components/schemas/DocumentDefinition'
+        - $ref: '#/components/schemas/ReferenceDefinition'
+        - $ref: '#/components/schemas/AutoDefinition'
+      discriminator:
+        propertyName: definitionType
+        mapping:
+          DOCUMENT: '#/components/schemas/DocumentDefinition'
+          REFERENCE: '#/components/schemas/ReferenceDefinition'
+          AUTO: '#/components/schemas/AutoDefinition'
+
+    TabularArtifactListResponse:
+      type: object
+      required:
+        - resources
+      properties:
+        count:
+          type: integer
+          description: Total number of records
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/TabularArtifactDetails'
+      additionalProperties: false
+
+    CreateTARequest:
+      type: object
+      required:
+        - dataDestinationName
+        - type
+        - path
+        - csnMetadata
+      properties:
+        dataDestinationName:
+          type: string
+          minLength: 1
+          maxLength: 127
+          description: 'Identifier for the target data destination'
+        type:
+          type: string
+          enum: [CSV, PARQUET, DELTA]
+          description: 'Source file format'
+          example: CSV
+        path:
+          type: string
+          description: |
+            Absolute path to the data (must start with '/').
+            - For file-based artifacts (HDL, S3, GCS, AZURE): Standard file path (e.g., /data/customers.parquet)
+            - For Delta Sharing artifacts (DELTA_SHARING): Format /<share>/<schema>/<table> (e.g., /sample_data/tpch/customer)
+          pattern: '^\/.*'
+          example: '/data/ingest/customer_data/file1.csv'
+        csnMetadata:
+          type: object
+          additionalProperties: false
+          description: 'Metadata of artifact in CSN format. For AUTO definition type, entityName is optional and will be derived from the file name if not provided.'
+          required:
+            - definition
+          properties:
+            entityName:
+              type: string
+              description: 'Name of the entity in CSN model. Required for DOCUMENT and REFERENCE types. Optional for AUTO type (defaults to file name without extension).'
+            selectedColumns:
+              type: array
+              description: 'List of selected columns from the source file to be included in the TA'
+              example: ['customer_id', 'customer_name', 'purchase_amount']
+              minItems: 1
+              uniqueItems: true
+              items:
+                type: string
+                description: 'Name of the column'
+            definition:
+              $ref: '#/components/schemas/CSNDefinition'
+      additionalProperties: false
+
+    TabularArtifactStatus:
+      type: string
+      enum:
+        - PROCESSING
+        - ERROR
+        - ACTIVE
+        - DELETING
+      description: >
+        Lifecycle status of the Tabular Artifact.
+        PROCESSING — the artifact is being created asynchronously (onboarding may be in progress).
+        ERROR — the artifact creation failed.
+        ACTIVE — the artifact is fully available.
+        DELETING — the artifact has been soft-deleted and is awaiting async cleanup.
+
+    TabularArtifactErrorMessage:
+      type: string
+      nullable: true
+      description: Detailed error message if the Tabular Artifact creation failed
+
+    TabularArtifactDetails:
+      type: object
+      required:
+        - id
+        - name
+        - tenantId
+        - resourceGroupId
+        - dataDestinationName
+        - path
+        - type
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Tabular Artifact
+        name:
+          type: string
+          description: Name of the Tabular Artifact
+        tenantId:
+          type: string
+          description: Tenant identifier
+        resourceGroupId:
+          type: string
+          description: Resource group identifier
+        dataDestinationName:
+          type: string
+        virtualTableName:
+          type: string
+          nullable: true
+        remoteSourceName:
+          type: string
+          nullable: true
+        path:
+          type: string
+        type:
+          type: string
+          enum: [CSV, PARQUET, DELTA]
+        status:
+          $ref: '#/components/schemas/TabularArtifactStatus'
+        errorMessage:
+          $ref: '#/components/schemas/TabularArtifactErrorMessage'
+        csnMetadata:
+          type: object
+          nullable: true
+          properties:
+            entityName:
+              type: string
+              description: Name of the entity in CSN model
+            selectedColumns:
+              type: array
+              description: List of selected columns from the source file
+              items:
+                type: string
+            definition:
+              $ref: '#/components/schemas/CSNDefinition'
+        metadata:
+          type: array
+          description: >
+            Schema metadata containing column definitions based on CSN
+          items:
+            type: object
+            required:
+              - type
+              - columns
+            properties:
+              type:
+                type: string
+                description: Type of metadata (e.g., csn)
+                example: 'csn'
+              columns:
+                type: array
+                description: Array of column definitions extracted from CSN schema
+                items:
+                  type: object
+                  required:
+                    - name
+                    - cdsType
+                  properties:
+                    name:
+                      type: string
+                      description: Column name (extracted from CSN element key)
+                    cdsType:
+                      type: string
+                      description: CDS data type (e.g., cds.String, cds.Integer, cds.Decimal, cds.Boolean, cds.Date, cds.DateTime)
+                      example: 'cds.String'
+                    length:
+                      type: integer
+                      minimum: 1
+                      description: Column length (for string types, from CSN element length property)
+                      example: 5000
+                    precision:
+                      type: integer
+                      minimum: 1
+                      description: Precision (for decimal types - total number of digits)
+                      example: 15
+                    scale:
+                      type: integer
+                      minimum: 0
+                      description: Scale (for decimal types - digits after decimal point)
+                      example: 2
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TabularArtifactDataPreview:
+      type: object
+      required:
+        - name
+        - columns
+        - data
+      properties:
+        name:
+          type: string
+          description: Name of the Tabular Artifact
+        columns:
+          type: array
+          description: Array of column names in the result set
+          items:
+            type: string
+        data:
+          type: array
+          description: Array of row objects (up to 10 rows)
+          items:
+            type: object
+            additionalProperties: true
+
+    Url:
+      type: string
+      format: uri
+
+    # Scenario Configuration Schemas
+    CreateScenarioConfiguration:
+      type: object
+      required:
+        - tabularArtifacts
+      properties:
+        description:
+          type: string
+          maxLength: 253
+          nullable: true
+          description: Optional description text for the scenario configuration
+          example: 'Production HR scenario for customer data analysis'
+        contextSelectionStrategy:
+          $ref: '#/components/schemas/ContextSelectionStrategy'
+        tabularArtifacts:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TabularArtifactConfig'
+          description: List of tabular artifacts
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+          description: Optional labels for metadata tagging
+      additionalProperties: false
+
+    TabularArtifactConfig:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: 'Name for the Tabular Artifact.'
+          example: 'test-ta1'
+      additionalProperties: false
+
+    Label:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+          minLength: 1
+          maxLength: 63
+          pattern: '^(ext)\.ai\.sap\.com\/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$'
+          description: Label key must start with 'ext.ai.sap.com/' and follow the pattern
+          example: 'ext.ai.sap.com/environment'
+        value:
+          type: string
+          minLength: 1
+          maxLength: 63
+          pattern: '^(([A-Za-z0-9][-A-Za-z0-9_.\/]*)?[A-Za-z0-9])?$'
+          description: Label value
+          example: 'production'
+      additionalProperties: false
+
+    ContextSelectionStrategy:
+      type: string
+      maxLength: 100
+      enum:
+        - random
+        - embedding
+      description: Strategy for selecting context in the scenario configuration
+      example: 'embedding'
+
+    SearchScenarioConfiguration:
+      type: object
+      required:
+        - labels
+      properties:
+        labels:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Label'
+          description: Labels to search for (must match all specified labels)
+      additionalProperties: false
+
+    ScenarioConfigurationStatus:
+      type: string
+      enum:
+        - PROCESSING
+        - ACTIVE
+        - ERROR
+        - DELETING
+      description: >
+        Lifecycle status of the Scenario Configuration.
+        PROCESSING — creation is in progress.
+        ACTIVE — fully created and available.
+        ERROR — creation failed; see errorMessage for details.
+        DELETING — marked for deletion, awaiting async cleanup.
+
+    ScenarioConfigurationErrorMessage:
+      type: string
+      nullable: true
+      description: Detailed error message if the Scenario Configuration creation failed
+
+    ScenarioConfigurationNameObject:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the scenario configuration
+
+    ScenarioConfigurationObject:
+      type: object
+      required:
+        - name
+        - tabularArtifacts
+        - createdAt
+        - updatedAt
+      properties:
+        name:
+          type: string
+          description: Name of the scenario configuration
+          example: 'scm-bdc-def-v2'
+        description:
+          type: string
+          nullable: true
+          description: Optional description text
+          example: 'Production BDC scenario for customer data analysis'
+        contextSelectionStrategy:
+          $ref: '#/components/schemas/ContextSelectionStrategy'
+        tabularArtifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TabularArtifactConfig'
+          description: List of tabular artifacts
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+          description: List of labels for the scenario configuration
+        status:
+          $ref: '#/components/schemas/ScenarioConfigurationStatus'
+        errorMessage:
+          $ref: '#/components/schemas/ScenarioConfigurationErrorMessage'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2024-02-15T12:45:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2024-02-15T12:45:00.000Z'
+
+    GetScenarioConfigurations:
+      type: object
+      required:
+        - resources
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScenarioConfigurationObject'
+
+    PatchScenarioConfiguration:
+      type: object
+      minProperties: 1
+      properties:
+        contextSelectionStrategy:
+          $ref: '#/components/schemas/ContextSelectionStrategy'
+        tabularArtifacts:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TabularArtifactConfig'
+          description: Updated list of tabular artifacts
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+          description: Updated labels (replaces all existing labels when provided)
+        description:
+          type: string
+          nullable: true
+          maxLength: 253
+          description: Optional description for the scenario configuration
+      additionalProperties: false
+
+    # Error Schemas
+    ApiError:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: plaintext error description
+          type: string
+        requestId:
+          description: id of individual request
+          type: string
+        target:
+          description: url that has been called
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailsErrorResponse'
+
+    DetailsErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: Plaintext error description
+          type: string
+
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: The specification of the resource was incorrect
+
+    NotFound:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: The specified resource was not found
+
+    Conflict:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: The resource conflicts with existing resources or has dependencies
+
+    UnprocessableEntity:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+          examples:
+            noVirtualTable:
+              value:
+                error:
+                  code: 'UNPROCESSABLE_ENTITY'
+                  message: 'Tabular artifact exists but has no virtual table'
+            metadataUnavailable:
+              value:
+                error:
+                  code: 'UNPROCESSABLE_ENTITY'
+                  message: 'Virtual table exists but metadata is not available'
+            noTabularArtifacts:
+              value:
+                error:
+                  code: 'UNPROCESSABLE_ENTITY'
+                  message: 'Scenario configuration exists but contains no tabular artifacts'
+      description: The request is valid but cannot be processed due to semantic errors
+
+    ServerError:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: '#/components/schemas/ApiError'
+      description: Server error
+
+  parameters:
+    top:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 1000
+      example: 10
+
+    skip:
+      name: $skip
+      description: Number of results to be skipped from the ordered list of results
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 10
+
+    count:
+      name: $count
+      description: When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
+      in: query
+      required: false
+      schema:
+        type: boolean
+      example: true

@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { info } from 'node:console';
 import { readFile } from 'node:fs/promises';
+
 import getReleasePlan from '@changesets/get-release-plan';
 import { inc } from 'semver';
 

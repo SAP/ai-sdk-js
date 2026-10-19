@@ -87,14 +87,14 @@ When handling multiple concurrent streams, conversation isolation becomes critic
 Two design choices emerge:
 
 1. **Stream Lock**  
-   Prevent multiple simultaneous streams per client.  
-   - Pros: Simple to implement  
-   - Cons: Limits concurrency  
+   Prevent multiple simultaneous streams per client.
+   - Pros: Simple to implement
+   - Cons: Limits concurrency
    - Risk: If not locked, stream chunks could bleed into a shared history
 
 2. **Conversation IDs**  
-   Create isolated “conversations” client-side, allowing concurrent streams.  
-   - Pros: Scalable and concurrent  
+   Create isolated “conversations” client-side, allowing concurrent streams.
+   - Pros: Scalable and concurrent
    - Cons: Requires the introduction of a conversation ID concept (not currently supported by vendors)
 
 ---
@@ -102,6 +102,7 @@ Two design choices emerge:
 ## Proposal:
 
 We instantiate a new client for every conversation; this way, we can simplify multiple concerns:
+
 - We leave tenant-isolation concerns to our users
 - We don't need to handle internal conversation id's, instead a simple stream-lock
 - Conversations are only created at client instantiation, where we can pass history as an instantiation parameter

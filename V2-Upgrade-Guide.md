@@ -47,6 +47,7 @@ Update all SAP Cloud SDK for AI packages to version 2.x in your `package.json` f
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
 **v1:**
+
 ```typescript
 const controller = new AbortController();
 const response = await azureOpenAiChatClient.stream(
@@ -54,11 +55,12 @@ const response = await azureOpenAiChatClient.stream(
     messages: [{ role: 'user', content: 'Hello' }],
     max_tokens: 100
   },
-  controller  // Pass the controller
+  controller // Pass the controller
 );
 ```
 
 **v2:**
+
 ```typescript
 const controller = new AbortController();
 const response = await azureOpenAiChatClient.stream(
@@ -66,7 +68,7 @@ const response = await azureOpenAiChatClient.stream(
     messages: [{ role: 'user', content: 'Hello' }],
     max_tokens: 100
   },
-  controller.signal  // Pass the signal instead
+  controller.signal // Pass the signal instead
 );
 ```
 
@@ -77,25 +79,27 @@ For frequently used types in most cases, they remain available from the public e
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/foundation-models/internal.js`.
 
 **v1:**
+
 ```typescript
-import type { 
+import type {
   AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse 
+  AzureOpenAiCreateChatCompletionResponse
 } from '@sap-ai-sdk/foundation-models';
 ```
 
 **v2:**
+
 ```typescript
 // Generated types must be imported from internal
-import type { 
+import type {
   AzureOpenAiCreateChatCompletionRequest,
-  AzureOpenAiCreateChatCompletionResponse 
+  AzureOpenAiCreateChatCompletionResponse
 } from '@sap-ai-sdk/foundation-models/internal.js';
 ```
 
 ```typescript
 // Frequently used types remain available from main package
-import type { 
+import type {
   AzureOpenAiChatCompletionTool,
   AzureOpenAiFunctionObject,
   AzureOpenAiChatCompletionRequestMessage,
@@ -112,6 +116,7 @@ The `AzureOpenAiCreateChatCompletionRequest` type is no longer exported publicly
 Use the new `AzureOpenAiChatCompletionParameters` type instead.
 
 **v1:**
+
 ```typescript
 import type { AzureOpenAiCreateChatCompletionRequest } from '@sap-ai-sdk/foundation-models';
 
@@ -122,6 +127,7 @@ const request: AzureOpenAiCreateChatCompletionRequest = {
 ```
 
 **v2:**
+
 ```typescript
 import type { AzureOpenAiChatCompletionParameters } from '@sap-ai-sdk/foundation-models';
 
@@ -137,6 +143,7 @@ The `data` property in response objects is renamed to `_data`.
 Prefer using the provided getter methods instead of accessing the data object directly.
 
 **Affected Response Classes:**
+
 - `AzureOpenAiChatCompletionResponse`
 - `AzureOpenAiChatCompletionStreamChunkResponse`
 - `AzureOpenAiEmbeddingResponse`
@@ -148,20 +155,22 @@ Prefer using the provided getter methods instead of accessing the data object di
 The `stream()` method now accepts an `AbortSignal` instead of an `AbortController` as the second parameter.
 
 **v1:**
+
 ```typescript
 const controller = new AbortController();
 const response = await orchestrationClient.stream(
   { messages: [{ role: 'user', content: 'Hello' }] },
-  controller  // Pass the controller
+  controller // Pass the controller
 );
 ```
 
 **v2:**
+
 ```typescript
 const controller = new AbortController();
 const response = await orchestrationClient.stream(
   { messages: [{ role: 'user', content: 'Hello' }] },
-  controller.signal  // Pass the signal instead
+  controller.signal // Pass the signal instead
 );
 ```
 
@@ -172,25 +181,27 @@ For frequently used types in most cases, they remain available from the public e
 For edge cases where the underlying generated types are used, they must be imported from `@sap-ai-sdk/orchestration/internal.js`.
 
 **v1:**
+
 ```typescript
-import type { 
+import type {
   CompletionPostResponse,
-  LlmChoice 
+  LlmChoice
 } from '@sap-ai-sdk/orchestration';
 ```
 
 **v2:**
+
 ```typescript
 // Generated types must be imported from internal
-import type { 
+import type {
   CompletionPostResponse,
-  LlmChoice 
+  LlmChoice
 } from '@sap-ai-sdk/orchestration/internal.js';
 ```
 
 ```typescript
 // Frequently used types remain available from main package
-import type { 
+import type {
   ChatMessage,
   SystemChatMessage,
   UserChatMessage,
@@ -208,6 +219,7 @@ The `data` property in response objects is renamed to `_data`.
 Prefer using the provided getter methods instead of accessing the data object directly.
 
 **Affected Response Classes:**
+
 - `OrchestrationResponse`
 - `OrchestrationStreamResponse`
 - `OrchestrationStreamChunkResponse`
@@ -217,11 +229,12 @@ Prefer using the provided getter methods instead of accessing the data object di
 The most significant change is the consolidation of `llm` and `templating` modules into a single `promptTemplating` module as `model` and `prompt` properties respectively.
 
 **v1:**
+
 ```typescript
 const config = {
   llm: {
     model_name: 'gpt-5',
-    model_params: { }
+    model_params: {}
   },
   templating: {
     template: [
@@ -232,6 +245,7 @@ const config = {
 ```
 
 **v2:**
+
 ```typescript
 const config = {
   promptTemplating: {
@@ -253,7 +267,9 @@ const config = {
 Several parameter names have been updated for consistency.
 
 ##### Input Parameters
+
 **v1:**
+
 ```typescript
 orchestrationClient.chatCompletion({
   inputParams: { country: 'France' }
@@ -261,6 +277,7 @@ orchestrationClient.chatCompletion({
 ```
 
 **v2:**
+
 ```typescript
 orchestrationClient.chatCompletion({
   placeholderValues: { country: 'France' }
@@ -268,7 +285,9 @@ orchestrationClient.chatCompletion({
 ```
 
 ##### Model Configuration
+
 **v1:**
+
 ```typescript
 llm: {
   model_name: 'gpt-5',
@@ -277,6 +296,7 @@ llm: {
 ```
 
 **v2:**
+
 ```typescript
 promptTemplating: {
   model: {
@@ -291,6 +311,7 @@ promptTemplating: {
 The global streaming configuration has been updated to use an `enabled` flag instead of a top-level `stream` property.
 
 **v1:**
+
 ```typescript
 const config = {
   stream: true,
@@ -301,6 +322,7 @@ const config = {
 ```
 
 **v2:**
+
 ```typescript
 const config = {
   streamOptions: {
@@ -315,17 +337,19 @@ const config = {
 The response structure has been updated with new property names.
 
 **v1:**
+
 ```typescript
 // Response properties
-response.orchestration_result
-response.module_results
+response.orchestration_result;
+response.module_results;
 ```
 
 **v2:**
+
 ```typescript
 // Response properties
-response.final_result
-response.intermediate_results
+response.final_result;
+response.intermediate_results;
 ```
 
 #### Grounding Configuration
@@ -333,6 +357,7 @@ response.intermediate_results
 The grounding configuration structure has been updated to use `placeholders` instead of separate `input_params` and `output_param`.
 
 **v1:**
+
 ```typescript
 buildDocumentGroundingConfig({
   input_params: ['groundingInput'],
@@ -342,6 +367,7 @@ buildDocumentGroundingConfig({
 ```
 
 **v2:**
+
 ```typescript
 buildDocumentGroundingConfig({
   placeholders: {
@@ -358,6 +384,7 @@ The deprecated `buildAzureContentFilter()` function has been removed in v2.
 Use `buildAzureContentSafetyFilter()` instead.
 
 **v1:**
+
 ```typescript
 // This function is deprecated and removed in v2
 const filter = buildAzureContentFilter({
@@ -367,9 +394,11 @@ const filter = buildAzureContentFilter({
 ```
 
 **v2:**
+
 ```typescript
 // Use this function instead
-const filter = buildAzureContentSafetyFilter('input', { // For output filter, use type 'output'
+const filter = buildAzureContentSafetyFilter('input', {
+  // For output filter, use type 'output'
   hate: 'ALLOW_SAFE',
   violence: 'ALLOW_SAFE_LOW_MEDIUM'
 });
@@ -381,6 +410,7 @@ The `buildAzureContentSafetyFilter()` function now requires a `type` parameter a
 Additionally, the Azure content filter property names have been updated to use lowercase with underscores.
 
 **v1:**
+
 ```typescript
 buildAzureContentSafetyFilter({
   Hate: 'ALLOW_SAFE',
@@ -391,6 +421,7 @@ buildAzureContentSafetyFilter({
 ```
 
 **v2:**
+
 ```typescript
 // For input filters
 buildAzureContentSafetyFilter('input', {
@@ -408,17 +439,20 @@ buildAzureContentSafetyFilter('output', {
   violence: 'ALLOW_ALL'
 });
 ```
+
 #### Llama Guard Filter Changes
 
 The `buildLlamaGuardFilter()` function has been renamed to `buildLlamaGuard38BFilter()` function.
 It now requires a `type` parameter as the first argument to distinguish between `input` and `output` filter configurations, and accepts categories as an array instead of individual parameters.
 
 **v1:**
+
 ```typescript
 buildLlamaGuardFilter('self_harm');
 ```
 
 **v2:**
+
 ```typescript
 // For input filters
 buildLlamaGuard38BFilter('input', ['self_harm', 'violence']);
@@ -432,6 +466,7 @@ buildLlamaGuard38BFilter('output', ['self_harm', 'violence']);
 The `buildTranslationConfig()` function now requires a `type` parameter as the first argument to distinguish between input and output translation configurations.
 
 **v1:**
+
 ```typescript
 buildTranslationConfig({
   sourceLanguage: 'en-US',
@@ -440,6 +475,7 @@ buildTranslationConfig({
 ```
 
 **v2:**
+
 ```typescript
 // For input translation
 buildTranslationConfig('input', {
@@ -461,6 +497,7 @@ buildTranslationConfig('output', {
 The LangChain orchestration configuration follows the same structural changes as the core orchestration package.
 
 **v1:**
+
 ```typescript
 const config: LangChainOrchestrationModuleConfig = {
   llm: {
@@ -474,6 +511,7 @@ const config: LangChainOrchestrationModuleConfig = {
 ```
 
 **v2:**
+
 ```typescript
 const config: LangChainOrchestrationModuleConfig = {
   promptTemplating: {
@@ -493,6 +531,7 @@ const config: LangChainOrchestrationModuleConfig = {
 Input parameters for LangChain orchestration calls have been updated.
 
 **v1:**
+
 ```typescript
 await orchestrationClient.invoke(messages, {
   inputParams: { country: 'France' }
@@ -500,6 +539,7 @@ await orchestrationClient.invoke(messages, {
 ```
 
 **v2:**
+
 ```typescript
 await orchestrationClient.invoke(messages, {
   placeholderValues: { country: 'France' }
@@ -511,12 +551,15 @@ await orchestrationClient.invoke(messages, {
 LangChain message responses now use updated property names for intermediate results.
 
 **v1:**
+
 ```typescript
 // Access module results in response
-message.additional_kwargs.module_results
+message.additional_kwargs.module_results;
 ```
 
 **v2:**
+
 ```typescript
 // Access intermediate results in response
-message.additional_kwargs.intermediate_results
+message.additional_kwargs.intermediate_results;
+```

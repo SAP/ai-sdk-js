@@ -529,7 +529,7 @@ export interface GroundingModule {
   /**
    * @example 'document_grounding_service'
    */
-  type: 'document_grounding_service' | any;
+  type: 'document_grounding_service' | (string & {});
   /**
    * Grounding service configuration.
    */
@@ -679,6 +679,7 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 
 /**
  * The filter categories supported for Llama Guard 3 8B filter.
+ * @deprecated
  */
 export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 
@@ -817,16 +818,19 @@ export type AzureContentSafetyFilterReturnType<T extends ConfigType> =
 
 /**
  * Input filter configuration for Llama Guard 3 8B.
+ * @deprecated
  */
 export type LlamaGuard38BInputFilterConfig = LlamaGuard38BFilterConfig;
 
 /**
  * Output filter configuration for Llama Guard 3 8B.
+ * @deprecated
  */
 export type LlamaGuard38BOutputFilterConfig = LlamaGuard38BFilterConfig;
 
 /**
  * Filter return type for Llama Guard 3 8B.
+ * @deprecated
  */
 export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
   T extends 'input'

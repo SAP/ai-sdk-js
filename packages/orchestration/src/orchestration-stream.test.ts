@@ -129,7 +129,7 @@ describe('Orchestration chat completion stream', () => {
   });
 
   it('should not read from the stream in any way before streaming starts', async () => {
-    const mockNext = vi.fn();
+    const mockNext = vi.fn<() => void>();
     async function* mockIterator(): AsyncGenerator<any> {
       mockNext();
       for (const sseChunk of sseChunks) {

@@ -11,16 +11,17 @@ const config = {
           ...(info.title ? [info.title] : []),
           ...(info.description ? [info.description] : []),
           ...(info.version ? [`OpenAPI spec version: ${info.version}`] : [])
-        ]
+        ],
+        zod: {
+          // Prefer Mini for more tree-shakeable generated schemas.
+          variant: 'mini',
+          version: 4
+        }
       }
     },
     input: {
       target: './src/spec/prompt-registry.yaml',
-      validation: false,
-      filters: {
-        mode: 'include',
-        schemas: ['PromptTemplatePostRequest']
-      }
+      validation: false
     }
   }
 };

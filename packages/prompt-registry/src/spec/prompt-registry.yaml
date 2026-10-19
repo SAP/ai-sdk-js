@@ -91,7 +91,72 @@ paths:
           $ref: '#/components/responses/PayloadTooLarge'
         default:
           $ref: '#/components/responses/CommonError'
+  /lm/scenarios/{scenario}/promptTemplates:
+    delete:
+      operationId: registry.controller.prompt_controller.delete_prompt_templates_by_scenario
+      x-sap-cloud-sdk-operation-name: deletePromptTemplatesByScenario
+      description: Delete all imperative prompt templates in the given scenario.
+      tags:
+        - prompt templates
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateScenarioDeleteResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/CommonError'
   /lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history:
+    delete:
+      operationId: registry.controller.prompt_controller.delete_prompt_template_history
+      x-sap-cloud-sdk-operation-name: deletePromptTemplateHistory
+      description: Delete all non-current versions (history) for the given prompt template
+      tags:
+        - prompt templates
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - $ref: '#/components/parameters/ai-resource-group-scope'
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptTemplateHistoryDeleteResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/CommonError'
     get:
       operationId: registry.controller.prompt_controller.list_prompt_template_history
       x-sap-cloud-sdk-operation-name: listPromptTemplateHistory
@@ -441,7 +506,70 @@ paths:
           $ref: '#/components/responses/PayloadTooLarge'
         default:
           $ref: '#/components/responses/CommonError'
+  /registry/v2/scenarios/{scenario}/orchestrationConfigs:
+    delete:
+      operationId: registry.controller.orchestration_config_controller.delete_orchestration_configs_by_scenario
+      x-sap-cloud-sdk-operation-name: deleteOrchestrationConfigsByScenario
+      description: Delete all imperative orchestration configs in the given scenario.
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigScenarioDeleteResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/CommonError'
   /registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history:
+    delete:
+      operationId: registry.controller.orchestration_config_controller.delete_orchestration_config_history
+      x-sap-cloud-sdk-operation-name: deleteOrchestrationConfigHistory
+      description: Delete all non-current versions (history) for the given orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: '#/components/parameters/ai-resource-group'
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationConfigHistoryDeleteResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/CommonError'
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
@@ -913,6 +1041,26 @@ components:
       properties:
         message:
           type: string
+    PromptTemplateHistoryDeleteResponse:
+      type: object
+      required:
+        - message
+        - deleted
+      properties:
+        message:
+          type: string
+        deleted:
+          type: integer
+    PromptTemplateScenarioDeleteResponse:
+      type: object
+      required:
+        - message
+        - deleted
+      properties:
+        message:
+          type: string
+        deleted:
+          type: integer
     RuntimePromptTemplateFile:
       type: object
       properties:
@@ -1074,6 +1222,26 @@ components:
       properties:
         message:
           type: string
+    OrchestrationConfigHistoryDeleteResponse:
+      type: object
+      required:
+        - message
+        - deleted
+      properties:
+        message:
+          type: string
+        deleted:
+          type: integer
+    OrchestrationConfigScenarioDeleteResponse:
+      type: object
+      required:
+        - message
+        - deleted
+      properties:
+        message:
+          type: string
+        deleted:
+          type: integer
     RuntimeOrchestrationConfigFile:
       type: object
       properties:
@@ -1452,7 +1620,7 @@ components:
             stream_options:
               include_usage: true
         timeout:
-          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+          description: Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
           type: integer
           default: 600
           minimum: 1
@@ -1517,7 +1685,8 @@ components:
         config:
           $ref: '#/components/schemas/AzureContentSafetyInput'
     LlamaGuard38b:
-      description: Filter configuration for Llama Guard 3 8B
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       additionalProperties: false
       minProperties: 1
@@ -1551,6 +1720,8 @@ components:
         code_interpreter_abuse:
           type: boolean
     LlamaGuard38bFilterConfig:
+      deprecated: true
+      description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
       type: object
       required:
         - type

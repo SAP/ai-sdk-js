@@ -4,9 +4,11 @@
  * This is a generated file powered by the SAP Cloud SDK for JavaScript.
  */
 
+import type { InputFilterTargetSelector } from './input-filter-target-selector.js';
 import type { LlamaGuard38B } from './llama-guard-38-b.js';
 /**
- * Representation of the 'LlamaGuard38BFilterConfig' schema.
+ * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
+ * @deprecated
  */
 export type LlamaGuard38BFilterConfig = {
   /**
@@ -15,4 +17,5 @@ export type LlamaGuard38BFilterConfig = {
    */
   type: 'llama_guard_3_8b';
   config: LlamaGuard38B;
+  target_selector?: InputFilterTargetSelector;
 };

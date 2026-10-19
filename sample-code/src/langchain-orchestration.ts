@@ -83,7 +83,7 @@ export async function invokeChainWithFallbackConfigs(): Promise<string> {
       // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -336,7 +336,7 @@ export async function streamChainWithFallbackConfigs(
     {
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -370,7 +370,8 @@ export async function streamChainWithFallbackConfigs(
     finalOutput = finalOutput ? finalOutput.concat(chunk) : chunk;
   }
 
-  return String(finalOutput?.content ?? '');
+  const content = finalOutput?.content ?? '';
+  return typeof content === 'string' ? content : JSON.stringify(content);
 }
 
 /**
@@ -612,12 +613,18 @@ export async function invokePromptCachingAgent(): Promise<
     secondMessage.usage_metadata?.input_token_details;
   return [
     {
-      content: String(firstMessage.content),
+      content:
+        typeof firstMessage.content === 'string'
+          ? firstMessage.content
+          : JSON.stringify(firstMessage.content),
       cacheCreationTokens: firstInputTokenDetails?.cache_creation ?? 0,
       cachedTokens: firstInputTokenDetails?.cache_read ?? 0
     },
     {
-      content: String(secondMessage.content),
+      content:
+        typeof secondMessage.content === 'string'
+          ? secondMessage.content
+          : JSON.stringify(secondMessage.content),
       cacheCreationTokens: secondInputTokenDetails?.cache_creation ?? 0,
       cachedTokens: secondInputTokenDetails?.cache_read ?? 0
     }
@@ -640,7 +647,7 @@ export async function invokeMcpToolChain(): Promise<string> {
     { maxRetries: 0 }
   );
 
-  const tools = await mcpClient.getTools();
+  const tools = await mcpClient.listTools();
 
   const messages: BaseMessage[] = [
     new HumanMessage('What is the weather like in Berlin?')

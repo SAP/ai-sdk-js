@@ -54,14 +54,14 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.9.1",
-    "@sap-cloud-sdk/util": "^4.9.1"
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "@types/ws": "8.18.1",
-    "openai": "7.23.0",
-    "vitest": "5.0.2",
-    "ws": "8.21.3"
+    "@types/ws": "8.18.2",
+    "openai": "7.34.0",
+    "vitest": "5.0.4",
+    "ws": "8.22.0"
   },
   "peerDependencies": {
     "openai": "^7.5.0",

@@ -1,14 +1,16 @@
 packages:
   - packages/ai-api
+  - packages/context-registry
   - packages/core
   - packages/document-grounding
   - packages/foundation-models
-  - packages/openai
   - packages/langchain
-  - packages/orchestration
   - packages/llm-batch
+  - packages/openai
+  - packages/orchestration
   - packages/prompt-registry
   - packages/rpt
+  - packages/tabular-orchestration
   - sample-cap
   - sample-code
   - tests/e2e-tests
@@ -19,6 +21,20 @@ packages:
   - .github/actions/get-changelog
   - .github/actions/changesets-fixed-version-bump
   - .github/actions/merge-and-write-changelogs
+
+versioning:
+  fixed:
+    - ['@sap-ai-sdk/*']
+  maxBump: minor
+  changelog:
+    storage: repository
+  # POC: openai/rpt could graduate onto a parallel prerelease track ("alpha" lane).
+  # A fixed group must move lanes together, so this requires first narrowing `fixed`
+  # above to exclude them, e.g. fixed: [['@sap-ai-sdk/core', '@sap-ai-sdk/ai-api', ...]]
+  # (listing the group members explicitly, minus openai/rpt), then:
+  # lanes:
+  #   '@sap-ai-sdk/openai': alpha
+  #   '@sap-ai-sdk/rpt': alpha
 
 allowBuilds:
   '@swc/core': true
@@ -32,12 +48,23 @@ allowBuilds:
 #   - main
 #   - renovate/*
 
+catalog:
+  '@langchain/core': ^1.2.13
+  '@langchain/langgraph': ^1.4.18
+  '@sap-cloud-sdk/connectivity': ^4.9.1
+  '@sap-cloud-sdk/http-client': ^4.9.1
+  '@sap-cloud-sdk/openapi': ^4.9.1
+  '@sap-cloud-sdk/resilience': ^4.9.1
+  '@sap-cloud-sdk/util': ^4.9.1
+  langchain: ^1.5.14
+  zod: ^4.6.6
+
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
   - '@sap-cloud-sdk/*'
-  - 'hono@4.12.34'
+  - zod@4.6.6
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true

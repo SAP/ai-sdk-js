@@ -116,6 +116,15 @@ export {
 } from './openai.ts';
 
 export {
+  listDataDestinations,
+  createTabularArtifact,
+  deleteTabularArtifact,
+  getOrCreateScenarioConfiguration,
+  predictWithScenarioContext,
+  predictWithInlineContext
+} from './tabular-orchestration.ts';
+
+export {
   realtimeTextToAudio,
   realtimeAudioToAudio,
   realtimeWithToolCalling,

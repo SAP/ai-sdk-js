@@ -1,16 +1,20 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
+
 import { mkdtemp, rm, readFile, lstat, readdir, glob } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { info, warning, error, getInput, setFailed } from '@actions/core';
-import { flatten } from '@sap-cloud-sdk/util';
+import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
+
 import {
   defaultPrettierConfig,
   readCompilerOptions,
   readIncludeExcludeWithDefaults,
   transpileDirectory
 } from '@sap-cloud-sdk/generator-common/internal';
+import { flatten } from '@sap-cloud-sdk/util';
+
+import { info, warning, error, getInput, setFailed } from '@actions/core';
 import { getPackages } from '@manypkg/get-packages';
+
 import type { CompilerOptions } from 'typescript';
 
 export const regexExportedIndex = /export(?:type)?\{([\w,]+)\}from'\./g;
@@ -117,7 +121,9 @@ function compareApisAndLog(
     }
   });
   info(`We have found ${allExportedIndex.length} exports.`);
-  info(`Public api: ${allExportedIndex.sort().join(',\n')}`);
+  info(
+    `Public api: ${allExportedIndex.toSorted((a, b) => a.localeCompare(b)).join(',\n')}`
+  );
 
   return setsAreEqual;
 }
@@ -477,7 +483,7 @@ async function runCheckApi() {
     try {
       await checkApiOfPackage(pkg.dir);
     } catch (e) {
-      setFailed(`API check failed for ${pkg.relativeDir}: ${e}`);
+      setFailed(`API check failed for ${pkg.relativeDir}: ${String(e)}`);
       process.exit(1);
     }
   }

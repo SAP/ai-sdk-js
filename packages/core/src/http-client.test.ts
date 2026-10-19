@@ -216,4 +216,40 @@ describe('http-client', () => {
     expect(res.status).toBe(200);
     expect(res.data).toEqual({ status: 'received' });
   });
+
+  it('should stringify Set and Map values', async () => {
+    const jsonData = {
+      set: new Set(['value1', 'value2']),
+      map: new Map([
+        ['key1', 'value1'],
+        ['key2', 'value2']
+      ]),
+      setInMap: new Map([['key', new Set(['value'])]]),
+      mapInSet: new Set([new Map([['key', 'value']])])
+    };
+
+    const scope = nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default',
+        'ai-client-type': 'AI SDK JavaScript'
+      }
+    })
+      .post('/v2/json/endpoint', {
+        set: ['value1', 'value2'],
+        map: { key1: 'value1', key2: 'value2' },
+        setInMap: { key: ['value'] },
+        mapInSet: [{ key: 'value' }]
+      })
+      .query({ 'api-version': 'mock-api-version' })
+      .reply(200, { status: 'received' });
+
+    const res = await executeRequest(
+      { url: '/json/endpoint', apiVersion: 'mock-api-version' },
+      jsonData
+    );
+
+    expect(scope.isDone()).toBe(true);
+    expect(res.status).toBe(200);
+    expect(res.data).toEqual({ status: 'received' });
+  });
 });

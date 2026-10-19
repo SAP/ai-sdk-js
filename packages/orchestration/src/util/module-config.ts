@@ -47,7 +47,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
     config = {
       ...config,
       stream: {
-        ...(config.stream || {}),
+        ...config.stream,
         enabled: true
       }
     };
@@ -117,13 +117,12 @@ export function addStreamOptionsToPromptTemplatingModuleConfig(
     model: {
       ...promptTemplatingModuleConfig.model,
       params: {
-        ...(promptTemplatingModuleConfig.model.params || {}),
+        ...promptTemplatingModuleConfig.model.params,
         ...(streamOptions?.promptTemplating !== null && {
           stream_options: {
             include_usage: true,
-            ...(promptTemplatingModuleConfig.model.params?.stream_options ||
-              {}),
-            ...(streamOptions?.promptTemplating || {})
+            ...promptTemplatingModuleConfig.model.params?.stream_options,
+            ...streamOptions?.promptTemplating
           }
         })
       }
@@ -141,7 +140,7 @@ export function addStreamOptionsToOutputFilteringConfig(
   return {
     ...outputFilteringConfig,
     stream_options: {
-      ...(outputFilteringConfig.stream_options || {}),
+      ...outputFilteringConfig.stream_options,
       ...filteringStreamOptions
     }
   };
@@ -312,7 +311,7 @@ export function addStreamOptions(
   return {
     stream: {
       enabled: true,
-      ...(streamOptions?.global || {})
+      ...streamOptions?.global
     },
     modules: Array.isArray(moduleConfigs) ? modules : modules[0]
   };
@@ -422,6 +421,30 @@ export function constructCompletionPostRequest(
   };
 }
 
+function resolvePromptTemplate(
+  promptTemplating: OrchestrationModuleConfig['promptTemplating'],
+  messages?: ChatCompletionRequest['messages']
+): Template | TemplateRef {
+  if (typeof promptTemplating.prompt === 'string') {
+    throw new TypeError('Prompt must be parsed before merging with messages.');
+  }
+
+  // If promptTemplating.prompt is not defined, we initialize it with an empty template object
+  const prompt = promptTemplating.prompt ?? { template: [] };
+
+  if (isTemplate(prompt)) {
+    if (!prompt.template?.length && !messages?.length) {
+      throw new Error('Either a prompt template or messages must be defined.');
+    }
+    return {
+      ...prompt,
+      template: [...(prompt.template || []), ...(messages || [])]
+    };
+  }
+
+  return prompt as TemplateRef;
+}
+
 function buildCompletionModulesConfig(
   config: OrchestrationModuleConfig,
   request?: ChatCompletionRequest
@@ -429,23 +452,7 @@ function buildCompletionModulesConfig(
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
 
-  // prompt is not a string here as it is already parsed in `parseAndMergeTemplating` method
-  const prompt = {
-    ...(promptTemplating.prompt as Template | TemplateRef)
-  };
-
-  // If promptTemplating.prompt is not defined, we initialize it with an empty Template object
-  promptTemplating.prompt = promptTemplating.prompt || { template: [] };
-
-  if (isTemplate(prompt)) {
-    if (!prompt.template?.length && !request?.messages?.length) {
-      throw new Error('Either a prompt template or messages must be defined.');
-    }
-    prompt.template = [
-      ...(prompt.template || []),
-      ...(request?.messages || [])
-    ];
-  }
+  const prompt = resolvePromptTemplate(promptTemplating, request?.messages);
 
   return {
     prompt_templating: {

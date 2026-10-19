@@ -10,6 +10,8 @@ import type {
   PromptTemplateListResponse,
   PromptTemplatePostRequest,
   PromptTemplatePostResponse,
+  PromptTemplateScenarioDeleteResponse,
+  PromptTemplateHistoryDeleteResponse,
   PromptTemplateGetResponse,
   PromptTemplateDeleteResponse,
   PromptTemplateSubstitutionRequest,
@@ -77,6 +79,28 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
+   * Delete all imperative prompt templates in the given scenario.
+   * @param scenario - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  deletePromptTemplatesByScenario: (
+    scenario: string,
+    headerParameters?: {
+      'AI-Resource-Group'?: string;
+      'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
+    }
+  ) =>
+    new OpenApiRequestBuilder<PromptTemplateScenarioDeleteResponse>(
+      'delete',
+      '/lm/scenarios/{scenario}/promptTemplates',
+      {
+        pathParameters: { scenario },
+        headerParameters
+      },
+      PromptTemplatesApi._defaultBasePath
+    ),
+  /**
    * List prompt template history
    * @param scenario - Path parameter.
    * @param version - Path parameter.
@@ -102,6 +126,32 @@ export const PromptTemplatesApi = {
         pathParameters: { scenario, version, name },
         headerParameters,
         queryParameters
+      },
+      PromptTemplatesApi._defaultBasePath
+    ),
+  /**
+   * Delete all non-current versions (history) for the given prompt template
+   * @param scenario - Path parameter.
+   * @param version - Path parameter.
+   * @param name - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  deletePromptTemplateHistory: (
+    scenario: string,
+    version: string,
+    name: string,
+    headerParameters?: {
+      'AI-Resource-Group'?: string;
+      'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
+    }
+  ) =>
+    new OpenApiRequestBuilder<PromptTemplateHistoryDeleteResponse>(
+      'delete',
+      '/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history',
+      {
+        pathParameters: { scenario, version, name },
+        headerParameters
       },
       PromptTemplatesApi._defaultBasePath
     ),

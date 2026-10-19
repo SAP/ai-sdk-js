@@ -3,10 +3,10 @@
 ## Modules
 
 - @sap-ai-sdk/core
-    - Common HTTP client code + types
+  - Common HTTP client code + types
 - @sap-ai-sdk/ai-api
-    - AI API generated client + types
+  - AI API generated client + types
 - @sap-ai-sdk/foundation-models
-    - Foundation model client for LLM Access (Azure Openai, and more)
+  - Foundation model client for LLM Access (Azure Openai, and more)
 - @sap-ai-sdk/orchestration
-    - Orchestration generated client
+  - Orchestration generated client

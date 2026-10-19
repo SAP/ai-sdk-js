@@ -1,5 +1,6 @@
-import { readFile } from 'fs/promises';
-import type { PathLike } from 'fs';
+import { readFile } from 'node:fs/promises';
+
+import type { PathLike } from 'node:fs';
 
 /**
  * Retrieves the version from a package.json file.

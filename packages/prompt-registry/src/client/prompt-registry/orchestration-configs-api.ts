@@ -10,6 +10,8 @@ import type {
   OrchestrationConfigListResponse,
   OrchestrationConfigPostRequest,
   OrchestrationConfigPostResponse,
+  OrchestrationConfigScenarioDeleteResponse,
+  OrchestrationConfigHistoryDeleteResponse,
   OrchestrationConfigGetResponse,
   OrchestrationConfigDeleteResponse
 } from './schema/index.js';
@@ -72,6 +74,25 @@ export const OrchestrationConfigsApi = {
       OrchestrationConfigsApi._defaultBasePath
     ),
   /**
+   * Delete all imperative orchestration configs in the given scenario.
+   * @param scenario - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  deleteOrchestrationConfigsByScenario: (
+    scenario: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
+    new OpenApiRequestBuilder<OrchestrationConfigScenarioDeleteResponse>(
+      'delete',
+      '/registry/v2/scenarios/{scenario}/orchestrationConfigs',
+      {
+        pathParameters: { scenario },
+        headerParameters
+      },
+      OrchestrationConfigsApi._defaultBasePath
+    ),
+  /**
    * List orchestration config history
    * @param scenario - Path parameter.
    * @param version - Path parameter.
@@ -101,6 +122,29 @@ export const OrchestrationConfigsApi = {
         pathParameters: { scenario, version, name },
         headerParameters,
         queryParameters
+      },
+      OrchestrationConfigsApi._defaultBasePath
+    ),
+  /**
+   * Delete all non-current versions (history) for the given orchestration config
+   * @param scenario - Path parameter.
+   * @param version - Path parameter.
+   * @param name - Path parameter.
+   * @param headerParameters - Object containing the following keys: AI-Resource-Group.
+   * @returns The request builder, use the `execute()` method to trigger the request.
+   */
+  deleteOrchestrationConfigHistory: (
+    scenario: string,
+    version: string,
+    name: string,
+    headerParameters?: { 'AI-Resource-Group'?: string }
+  ) =>
+    new OpenApiRequestBuilder<OrchestrationConfigHistoryDeleteResponse>(
+      'delete',
+      '/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history',
+      {
+        pathParameters: { scenario, version, name },
+        headerParameters
       },
       OrchestrationConfigsApi._defaultBasePath
     ),

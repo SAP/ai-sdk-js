@@ -1,12 +1,7 @@
 ---
 name: review-spec-update
-description: >
-  Review a spec-update branch for a generated client package (e.g., document-grounding, prompt-registry).
-  Compares the updated generated client against main, classifies every breaking change by consumer impact,
-  creates [compat] changesets for each breaking change, fixes or creates backward-compat patches when
-  parameter order shifts, and adds apply-patches support when the package lacks it.
-  Use this skill whenever you're on a spec-update/* branch, have just run pnpm generate, or want to audit
-  what a spec update broke for downstream consumers.
+description: Review a spec-update branch — classify breaking changes, write [compat] changesets, and fix parameter-order patches.
+disable-model-invocation: true
 ---
 
 <!-- vale Vale.Spelling = NO -->
@@ -79,6 +74,7 @@ For each changed type/function, decide:
 | Enum member removed | **YES** |
 | Type renamed | **YES** (if exported) — also check the new type's shape: a rename often comes with property changes (`id` → `resourceId`, removed fields, etc.).<br>Document each property-level breaking change in its own `[compat]` entry; do not just note the rename.<br>If the old type is entirely deleted and replaced by a structurally different new type with no shared name, treat it as a deletion of the old type plus introduction of a new type.<br>Create one `[compat]` entry for the deletion and list the migration target type by name if identifiable from the diff. |
 | Type deleted | **YES** (if exported) |
+| Type or field deprecated | **YES** — always create a `[compat]` entry noting the deprecation and the migration target |
 | Shared schema **split** into distinct schemas (e.g. `FooConfig` → `FooConfigInput` + `FooConfigOutput`) | SDK-effort only — not a user breaking change **unless** the old type was directly exported and consumers referenced it by name. If exported, treat as a type rename/deletion and create a `[compat]` entry. |
 <!-- vale SAP.Sentences = YES -->
 
@@ -125,7 +121,6 @@ functionName: (
 <!-- vale SAP.Sentences = NO -->
 If the spec reordered `headerParameters` vs `queryParameters`, the generator will flip their positions.
 <!-- vale SAP.Sentences = YES -->
-The old signature was the correct consumer-facing order; restore it via a patch.
 
 ### Creating a patch
 
@@ -168,21 +163,11 @@ cat packages/<pkg>/package.json | grep apply-patches
 ```
 
 If missing, add it.
-The migration target is a shared script at `scripts/apply-patches.ts`.
-It takes the package root directory as its argument and resolves `<rootDir>/patches`.
-It refuses to touch patch directories outside the repository root.
-It skips patches that are already applied via `git apply --reverse --check`.
-It applies the remaining `*.patch` files and exits non-zero listing any patch files that failed.
-For packages moved to the shared runner, add this to `package.json` scripts:
+Add this to `package.json` scripts:
 
 ```json
 "apply-patches": "tsx ../../scripts/apply-patches.ts ."
 ```
-
-The `.` argument passes the current package directory as `rootDir`, so the script looks for a `patches/` subdirectory at `./patches`.
-When the root `apply-patches` command runs, it invokes each package's `apply-patches` script via pnpm recursion, so this package script is the entry point the repository-wide command will call.
-No need to list individual patch files — the script picks them up automatically.
-Adding a new patch is as simple as dropping a `.patch` file into `patches/`.
 
 Also verify the root `package.json` runs `apply-patches` across the repository:
 ```bash
@@ -281,6 +266,7 @@ If tests fail, apply the same triage: attribute failures to this spec update or 
 - [ ] Every breaking response-side removal/rename/narrowing has a `[compat]` changeset
 - [ ] `additionalProperties: false` added to any request object → `[compat]` changeset created
 - [ ] Schema splits checked: exported old names → `[compat]`; unexported without structural change → no action needed
+- [ ] Every deprecated type or field has a `[compat]` changeset with migration target
 - [ ] Under-specified response changes (`{}` bodies) confirmed as non-breaking and omitted from `[compat]`
 - [ ] Parameter-order regressions have patches (new or updated)
 - [ ] All patches apply cleanly (`pnpm <pkg> apply-patches` from fresh generated output)
