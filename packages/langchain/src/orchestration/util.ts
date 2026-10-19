@@ -175,8 +175,7 @@ function mapAiMessageToOrchestrationAssistantMessage(
   );
   // Reasoning is forwarded to the service only from `additional_kwargs.reasoning_content`.
   // Reasoning blocks placed directly in `content` are treated as output-only (matching the
-  // OpenAI Chat Completions convention) and are stripped from the request. Warn so callers
-  // know reasoning in `content` alone is not round-tripped.
+  // OpenAI Chat Completions convention) and are stripped from the request.
   if (!reasoning_content?.length && contentHasReasoning(message.content)) {
     logger.warn(
       'Reasoning blocks found in message content but not in `additional_kwargs.reasoning_content`. ' +
@@ -510,10 +509,6 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
 ): AIMessageChunk {
   const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
-  // Surface the raw reasoning blocks (not getDeltaReasoningContent(), which strips
-  // signatures): the signature is required to replay thinking+tool-use turns back to
-  // models like Claude. Content stays a plain-text delta so concat() merges the blocks
-  // into additional_kwargs without colliding on content-block index 0.
   const deltaReasoning = choice?.delta.reasoning_content;
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
