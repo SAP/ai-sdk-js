@@ -25,7 +25,7 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@langchain/classic": "1.0.52",
+    "@langchain/classic": "1.0.53",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "2.0.1",
@@ -54,7 +54,7 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
-    "@upstash/context7-mcp": "4.4.1",
+    "@upstash/context7-mcp": "4.4.2",
     "hyparquet-writer": "0.16.12"
   },
   "peerDependencies": {
