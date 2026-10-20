@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Tabular AI Orchestration
-  version: 1.10.2
+  version: 1.11.1
   description:
     The Tabular AI Orchestration service acts as the unified tabular inference
     layer for the AI Core platform, exposing a single prediction endpoint that handles
