@@ -101,10 +101,7 @@ export function buildLlamaGuard38BFilter<T extends ConfigType>(
  */
 export function buildGraniteGuardianFilter<T extends ConfigType>(
   type: T,
-  categories: readonly [
-    GraniteGuardianCategory,
-    ...GraniteGuardianCategory[]
-  ],
+  categories: readonly [GraniteGuardianCategory, ...GraniteGuardianCategory[]],
   options?: GraniteGuardianFilterOptions
 ): GraniteGuardianFilterReturnType<T> {
   return {
