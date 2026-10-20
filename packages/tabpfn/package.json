@@ -37,13 +37,12 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/tabpfn.json -o ./src/client && openapi-generator --generateESM -i ./src/spec/tabpfn-multipart.json -o ./src/client",
+    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/tabpfn.json -o ./src/client",
     "pregenerate": "pnpm postprocess-spec",
-    "postgenerate": "pnpm update-imports && pnpm make-tabpfn-internal && pnpm make-tabpfn-multipart-internal && pnpm lint:fix",
-    "postprocess-spec": "redocly bundle ./src/spec/tabpfnopenapispecs.yaml --overlay=./src/spec/tabpfn-predict-overlay.yaml --remove-unused-components --output ./src/spec/tabpfn-predict.json && node ./scripts/postprocess-tabpfn-spec.ts ./src/spec/tabpfn-predict.json",
+    "postgenerate": "pnpm update-imports && pnpm make-tabpfn-internal && pnpm lint:fix",
+    "postprocess-spec": "redocly bundle ./src/spec/tabpfnopenapispecs.yaml --overlay=./src/spec/tabpfn-predict-overlay.yaml --remove-unused-components --output ./src/spec/tabpfn.json && node ./scripts/postprocess-tabpfn-spec.ts ./src/spec/tabpfn.json",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client",
-    "make-tabpfn-internal": "node ../../scripts/postgenerate-tabpfn.ts ./src/client/tabpfn/inference-api.ts",
-    "make-tabpfn-multipart-internal": "node ../../scripts/postgenerate-tabpfn.ts ./src/client/tabpfn-multipart/inference-api.ts"
+    "make-tabpfn-internal": "node ../../scripts/postgenerate-tabpfn.ts ./src/client/tabpfn/tab-pfn-api.ts"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",

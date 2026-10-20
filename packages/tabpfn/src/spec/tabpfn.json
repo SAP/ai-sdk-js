@@ -248,6 +248,22 @@
                   }
                 }
               }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictMultipart"
+              },
+              "encoding": {
+                "x_train": {
+                  "contentType": "text/csv, application/vnd.apache.parquet"
+                },
+                "y_train": {
+                  "contentType": "text/csv, application/vnd.apache.parquet"
+                },
+                "x_test": {
+                  "contentType": "text/csv, application/vnd.apache.parquet"
+                }
+              }
             }
           }
         },
@@ -1434,6 +1450,80 @@
         },
         "description": "`x_train` and `x_test` are accepted as aliases of `X_train` and `X_test`. Unknown top-level keys are rejected with 422."
       },
+      "PredictRequestConfig": {
+        "title": "PredictRequestConfig",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["task_config"],
+        "properties": {
+          "task_config": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ClassifierConfig"
+              },
+              {
+                "$ref": "#/components/schemas/RegressorConfig"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "task",
+              "mapping": {
+                "classification": "#/components/schemas/ClassifierConfig",
+                "regression": "#/components/schemas/RegressorConfig"
+              }
+            }
+          },
+          "model_version": {
+            "type": "string",
+            "enum": ["v2", "v2.5", "v2.6", "v3", "v3.5"],
+            "description": "Model family to fit with. This image serves v3, v3.5; any other listed value is rejected with 400. Omit for v3.5."
+          },
+          "tabpfn_systems": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["preprocessing", "text", "thinking"]
+            },
+            "default": ["preprocessing", "text"],
+            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`. `\"thinking\"` is rejected with 422."
+          },
+          "context": {
+            "$ref": "#/components/schemas/PredictRequestContext",
+            "description": "Accepted for compatibility. A non-null `model_id` without training data is rejected with 400."
+          }
+        },
+        "description": "The JSON carried in the `request` part of a multipart upload."
+      },
+      "PredictMultipart": {
+        "title": "PredictMultipart",
+        "type": "object",
+        "required": ["request", "x_train", "y_train", "x_test"],
+        "properties": {
+          "request": {
+            "type": "string",
+            "contentMediaType": "application/json",
+            "contentSchema": {
+              "$ref": "#/components/schemas/PredictRequestConfig"
+            },
+            "description": "A plain form field (not a file) holding a `PredictRequestConfig` as a JSON string."
+          },
+          "x_train": {
+            "type": "string",
+            "format": "binary",
+            "description": "CSV with a header row, or Parquet."
+          },
+          "y_train": {
+            "type": "string",
+            "format": "binary",
+            "description": "CSV with a header row, or Parquet. Exactly one column."
+          },
+          "x_test": {
+            "type": "string",
+            "format": "binary",
+            "description": "CSV with a header row, or Parquet."
+          }
+        }
+      },
       "Prediction": {
         "title": "Prediction",
         "description": "Shape depends on the task and `output_type`. Non-finite numbers are serialised as null.",
@@ -1567,5 +1657,6 @@
         ]
       }
     }
-  }
+  },
+  "x-sap-cloud-sdk-api-name": "TabPfnApi"
 }
