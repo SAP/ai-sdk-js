@@ -1,9 +1,7 @@
 import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
 
 import { setFailed, info } from '@actions/core';
-
-const require = createRequire(import.meta.url);
+import blueOakListRaw from '@blueoak/list/index.json' with { type: 'json' };
 
 interface BlueOakLicense {
   id: string;
@@ -18,7 +16,7 @@ interface PackageInfo {
   versions: string[];
 }
 
-const blueOakList: BlueOakCategory[] = require('@blueoak/list');
+const blueOakList: BlueOakCategory[] = blueOakListRaw as BlueOakCategory[];
 
 const ALLOWED_STATUSES = new Set(['Model', 'Gold', 'Silver', 'Bronze']);
 
