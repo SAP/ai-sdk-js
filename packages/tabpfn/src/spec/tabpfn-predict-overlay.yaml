@@ -3,6 +3,9 @@ info:
   title: TabPFN prediction deployment overlay
   version: 1.0.0
 actions:
+  - target: '$'
+    update:
+      x-sap-cloud-sdk-api-name: TabPfnApi
   - target: $.paths['/health']
     remove: true
   - target: $.paths['/ready']
