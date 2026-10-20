@@ -989,6 +989,29 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     expect(result.content).toBe('Hello');
     expect(result.additional_kwargs.reasoning_content).toBeUndefined();
   });
+
+  it('accumulates reasoning_content across chunks via concat (does not overwrite)', () => {
+    const chunk1 = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk('The ', undefined, undefined, undefined, [
+        { content: 'Let me ' }
+      ])
+    );
+    const chunk2 = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk('answer.', undefined, undefined, undefined, [
+        { content: 'think.', signature: 'sig' }
+      ])
+    );
+
+    const merged = chunk1.concat(chunk2);
+
+    expect(merged.content).toBe('The answer.');
+    // Reasoning deltas accumulate as the stream progresses; later chunks must not
+    // overwrite earlier ones.
+    expect(merged.additional_kwargs.reasoning_content).toEqual([
+      { content: 'Let me ' },
+      { content: 'think.', signature: 'sig' }
+    ]);
+  });
 });
 
 describe('applyCacheControlToLastMessage', () => {
