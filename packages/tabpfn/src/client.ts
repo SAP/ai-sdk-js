@@ -3,14 +3,17 @@ import {
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
 
-import { InferenceApi, MultipartInferenceApi } from './internal.ts';
+import { TabPfnApi } from './internal.ts';
 
 import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { TabpfnModel } from '@sap-ai-sdk/core/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
-import type { PredictMultipart } from './client/tabpfn-multipart/index.ts';
-import type { PredictRequest, PredictResponse } from './client/tabpfn/index.ts';
+import type {
+  PredictMultipart,
+  PredictRequest,
+  PredictResponse
+} from './client/tabpfn/index.ts';
 import type { TabpfnRequestOptions } from './types.ts';
 
 /**
@@ -47,7 +50,7 @@ export class TabpfnClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    return InferenceApi.predict(predictionData)
+    return TabPfnApi.predictWithJson(predictionData)
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
       .addCustomRequestConfiguration(requestConfig)
@@ -68,7 +71,7 @@ export class TabpfnClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    return MultipartInferenceApi.predict({
+    return TabPfnApi.predictWithMultipartFormData({
       ...payload,
       x_train: toFile(payload.x_train, 'x_train'),
       y_train: toFile(payload.y_train, 'y_train'),
