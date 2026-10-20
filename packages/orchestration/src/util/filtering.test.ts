@@ -85,7 +85,7 @@ describe('Content filter util', () => {
   });
 
   describe('Granite Guardian filter', () => {
-    it('builds input filter config for a single category', async () => {
+    it('builds input filter config for a single category', () => {
       const filterConfig = buildGraniteGuardianFilter('input', ['harm']);
       const expectedFilterConfig = {
         type: 'granite_guardian_4_1',
@@ -98,7 +98,7 @@ describe('Content filter util', () => {
       expect(filterConfig).toEqual(expectedFilterConfig);
     });
 
-    it('builds output filter config for multiple categories', async () => {
+    it('builds output filter config for multiple categories', () => {
       const filterConfig = buildGraniteGuardianFilter('output', [
         'harm',
         'violence'
@@ -115,7 +115,7 @@ describe('Content filter util', () => {
       expect(filterConfig).toEqual(expectedFilterConfig);
     });
 
-    it('builds filter config without duplicates', async () => {
+    it('builds filter config without duplicates', () => {
       const filterConfig = buildGraniteGuardianFilter('input', [
         'harm',
         'social_bias',
@@ -133,9 +133,9 @@ describe('Content filter util', () => {
       expect(filterConfig).toEqual(expectedFilterConfig);
     });
 
-    it('sets enable_reasoning when enableReasoning is true', async () => {
+    it('forwards enable_reasoning when requested', () => {
       const filterConfig = buildGraniteGuardianFilter('output', ['harm'], {
-        enableReasoning: true
+        enable_reasoning: true
       });
       const expectedFilterConfig = {
         type: 'granite_guardian_4_1',
@@ -149,10 +149,15 @@ describe('Content filter util', () => {
       expect(filterConfig).toEqual(expectedFilterConfig);
     });
 
-    it('omits enable_reasoning when not requested', async () => {
-      const filterConfig = buildGraniteGuardianFilter('input', ['harm'], {
-        enableReasoning: false
+    it('forwards enable_reasoning: false verbatim', () => {
+      const filterConfig = buildGraniteGuardianFilter('output', ['harm'], {
+        enable_reasoning: false
       });
+      expect(filterConfig.config.enable_reasoning).toBe(false);
+    });
+
+    it('omits enable_reasoning when no options are passed', () => {
+      const filterConfig = buildGraniteGuardianFilter('input', ['harm']);
       expect(filterConfig.config).not.toHaveProperty('enable_reasoning');
     });
   });

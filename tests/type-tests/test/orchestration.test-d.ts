@@ -471,7 +471,7 @@ expectType<GraniteGuardianFilterReturnType<'input'>>(
 );
 
 expectType<GraniteGuardianFilterReturnType<'output'>>(
-  buildGraniteGuardianFilter('output', ['harm'], { enableReasoning: true })
+  buildGraniteGuardianFilter('output', ['harm'], { enable_reasoning: true })
 );
 
 // Empty category list must be a compile error (non-empty tuple).

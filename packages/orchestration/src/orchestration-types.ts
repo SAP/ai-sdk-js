@@ -869,7 +869,7 @@ export interface GraniteGuardianFilterOptions {
   /**
    * Enable reasoning (think) mode to receive reasoning content for every configured category.
    */
-  enableReasoning?: boolean;
+  enable_reasoning?: boolean;
 }
 
 /**
