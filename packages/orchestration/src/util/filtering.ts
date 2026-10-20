@@ -6,6 +6,9 @@ import type {
   AzureFilterThreshold,
   LlamaGuard38BCategory,
   LlamaGuard38BFilterReturnType,
+  GraniteGuardianCategory,
+  GraniteGuardianFilterReturnType,
+  GraniteGuardianFilterOptions,
   ConfigType
 } from '../orchestration-types.ts';
 
@@ -82,4 +85,33 @@ export function buildLlamaGuard38BFilter<T extends ConfigType>(
       [...categories].map(category => [category, true])
     )
   };
+}
+
+/**
+ * Convenience function to build an IBM Granite Guardian 4.1 filter.
+ *
+ * Note: Granite Guardian requires a separate backend call for each enabled
+ * category, so enabling several categories multiplies latency and cost.
+ * Prefer the catch-all `harm` category unless a specific category is needed.
+ * @param type - Type of the filter, either `input` or `output`.
+ * @param categories - Categories to be enabled for filtering. Provide at least one category.
+ * @param options - Additional options. Set `enableReasoning` to receive reasoning content for every configured category.
+ * @returns IBM Granite Guardian 4.1 filter configuration.
+ * @example buildGraniteGuardianFilter('output', ['harm'])
+ */
+export function buildGraniteGuardianFilter<T extends ConfigType>(
+  type: T,
+  categories: [GraniteGuardianCategory, ...GraniteGuardianCategory[]],
+  options?: GraniteGuardianFilterOptions
+): GraniteGuardianFilterReturnType<T> {
+  return {
+    type: 'granite_guardian_4_1',
+    config: {
+      // ponytail: inline copy of the Llama one-line transform; not worth a shared helper for a single line
+      categories: Object.fromEntries(
+        [...categories].map(category => [category, true])
+      ),
+      ...(options?.enableReasoning ? { enable_reasoning: true } : {})
+    }
+  } as GraniteGuardianFilterReturnType<T>;
 }

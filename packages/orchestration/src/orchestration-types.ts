@@ -23,6 +23,8 @@ import type {
   AzureContentSafetyInputFilterConfig,
   AzureContentSafetyOutputFilterConfig,
   LlamaGuard38BFilterConfig,
+  GraniteGuardian41,
+  GraniteGuardianFilterConfig,
   EmbeddingsModelDetails as OriginalEmbeddingsModelDetails,
   EmbeddingsModelParams as OriginalEmbeddingsModelParams,
   SAPDocumentTranslationInput,
@@ -684,6 +686,11 @@ export type AzureFilterThreshold = keyof typeof supportedAzureFilterThresholds;
 export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 
 /**
+ * The filter categories supported for IBM Granite Guardian 4.1 filter.
+ */
+export type GraniteGuardianCategory = keyof GraniteGuardian41['categories'];
+
+/**
  * Type for module configurations (input or output).
  * @internal
  */
@@ -836,6 +843,34 @@ export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
   T extends 'input'
     ? LlamaGuard38BInputFilterConfig
     : LlamaGuard38BOutputFilterConfig;
+
+/**
+ * Input filter configuration for IBM Granite Guardian 4.1.
+ */
+export type GraniteGuardianInputFilterConfig = GraniteGuardianFilterConfig;
+
+/**
+ * Output filter configuration for IBM Granite Guardian 4.1.
+ */
+export type GraniteGuardianOutputFilterConfig = GraniteGuardianFilterConfig;
+
+/**
+ * Filter return type for IBM Granite Guardian 4.1.
+ */
+export type GraniteGuardianFilterReturnType<T extends ConfigType> =
+  T extends 'input'
+    ? GraniteGuardianInputFilterConfig
+    : GraniteGuardianOutputFilterConfig;
+
+/**
+ * Additional options for the IBM Granite Guardian 4.1 filter.
+ */
+export interface GraniteGuardianFilterOptions {
+  /**
+   * Enable reasoning (think) mode to receive reasoning content for every configured category.
+   */
+  enableReasoning?: boolean;
+}
 
 /**
  * Representation of the 'DpiConfig' schema.
