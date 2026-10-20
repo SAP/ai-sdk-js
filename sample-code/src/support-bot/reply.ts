@@ -11,7 +11,7 @@ import type { TextPart } from '@opencode-ai/sdk';
 const __dirname = import.meta.dirname!;
 
 const PROVIDER_ID = 'sap-ai-core';
-const MODEL_ID = 'gpt-5.6-luna';
+const MODEL_ID = 'anthropic--claude-4.6-sonnet';
 
 const SELF_VERIFY_PROMPT = [
   'Before finalizing, verify your draft. For each factual claim — file paths, type/field shapes,',
