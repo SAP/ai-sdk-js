@@ -50,7 +50,7 @@ import type {
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 
-const NEVER_RETRY_SAME_REQUEST_LOCATIONS = new Set([
+const IRRECOVERABLE_ERROR_LOCATIONS = new Set([
   'Input Parameters',
   'Request Body',
   'Filtering Module - Input Filter',
@@ -77,7 +77,7 @@ function isIrrecoverableError(error: Record<string, unknown>): boolean {
     const { location, message } = err ?? {};
     return (
       (typeof location === 'string' &&
-        NEVER_RETRY_SAME_REQUEST_LOCATIONS.has(location)) ||
+        IRRECOVERABLE_ERROR_LOCATIONS.has(location)) ||
       (location === 'LLM Module' &&
         typeof message === 'string' &&
         message.includes('Model name must be one of'))
