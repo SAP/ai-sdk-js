@@ -23,7 +23,6 @@ import { OrchestrationResponse } from './orchestration-response.ts';
 import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequest,
-  constructCompletionPostRequestFromConfigReference,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter
 } from './util/index.ts';
@@ -2263,7 +2262,10 @@ describe('orchestration service client', () => {
       };
 
       await expect(() =>
-        new OrchestrationClient([configWithPrompt, fallbackConfig]).chatCompletion({
+        new OrchestrationClient([
+          configWithPrompt,
+          fallbackConfig
+        ]).chatCompletion({
           prompt: { template: [{ role: 'user', content: 'Hi' }] }
         })
       ).rejects.toThrow(/already configured in the constructor/);
