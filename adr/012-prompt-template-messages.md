@@ -63,13 +63,13 @@ The `prompt` field lives at request level only.
 
 The core changes to the `chatCompletion()` method:
 
-- The `messages` field is removed from the `ChatCompletionRequest` type.
+- The `messages` field is deprecated on the `ChatCompletionRequest` type. It keeps working for now and is removed in the next major version.
 - The `chatCompletion()` method gains a `prompt?: Xor<PromptTemplate, TemplateRef>` field.
 - The `messagesHistory` parameter is unchanged.
 - Passing a `prompt: TemplateRef` value alongside anything that would require merging inline messages into the template throws an error, because the SDK cannot modify a remote template.
 
-The `prompt` field is removed from the constructor.
-The constructor accepts either a config ref or module parameters and pipeline module config (filtering, masking, grounding, translation) — no `prompt`.
+The `prompt` field is deprecated on the constructor. It keeps working for now and is removed in the next major version.
+The constructor accepts either a config ref or module parameters and pipeline module config (filtering, masking, grounding, translation); the template is supplied per call.
 Every call to the `chatCompletion()` method that needs a template or ref supplies it inline via the `prompt` field.
 
 ### Config references
@@ -79,14 +79,15 @@ Every call to the `chatCompletion()` method that needs a template or ref supplie
 
 Config references are single-turn by nature: the stored artifact defines the full template and cannot be extended client-side.
 When the constructor holds a config ref, `chatCompletion()` accepts `messagesHistory` and `placeholderValues` but no per-call `prompt`.
-This is enforced by a generic type parameter inferred from the constructor argument (narrowing `chatCompletion()`'s signature) and a runtime throw as a safety net.
+This is enforced at runtime by a throw.
+Narrowing `chatCompletion()`'s signature at compile time via a generic type parameter inferred from the constructor argument is deferred as future work (see the open questions in the pull request).
 Multi-turn conversations must use a local template or a `TemplateRef` instead.
 
 **Impact on existing consumers**: The LangChain integration's `OrchestrationClient` (`packages/langchain/src/orchestration/client.ts`) depends on the `messages` field as its only runtime channel.
 It maps the combined LangChain message list and passes it as `chatCompletion({ messages, ... })`, keeping the template in the constructor config.
 It never sets `messagesHistory` and never passes a per-request `prompt`.
-Removing the `messages` field therefore breaks this client.
-Migrating it means routing its combined list through `messagesHistory` and/or the per-request `prompt`.
+Because `messages` is deprecated rather than removed, this client keeps working unchanged for now.
+Before `messages` is removed in the next major version, the LangChain client must be migrated to route its combined list through `messagesHistory` and/or the per-request `prompt`.
 
 **Local template**:
 
@@ -120,10 +121,12 @@ const resp1 = await client.chatCompletion({
 });
 const res2 = await client.chatCompletion({
   messagesHistory: resp1.getAllMessages(),
-  template: [
-    // Turn 1+
-    { role: 'user', content: 'What is the capital of France?' }
-  ]
+  prompt: {
+    template: [
+      // Turn 1+
+      { role: 'user', content: 'What is the capital of France?' }
+    ]
+  }
 });
 ```
 

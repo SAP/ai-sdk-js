@@ -2220,6 +2220,42 @@ describe('orchestration service client', () => {
       expect(response._data).toEqual(mockResponse);
     });
 
+    it('streams with a request-level prompt template', async () => {
+      const prompt: ChatCompletionRequest = {
+        prompt: { template: [{ role: 'user', content: 'Hi' }] }
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, prompt, true)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).stream(prompt);
+
+      const initialResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-initial.json'
+      );
+
+      for await (const chunk of response.stream) {
+        expect(chunk._data).toEqual(JSON.parse(initialResponse));
+        break;
+      }
+    });
+
     it('throws an error when request-level prompt is combined with deprecated messages', async () => {
       await expect(() =>
         new OrchestrationClient(config).chatCompletion({
@@ -2266,6 +2302,21 @@ describe('orchestration service client', () => {
           configWithPrompt,
           fallbackConfig
         ]).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(/already configured in the constructor/);
+    });
+
+    it('throws an error when request-level prompt is combined with a constructor-level template reference', async () => {
+      const configWithTemplateRef: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: { template_ref: { id: 'abc-123' } },
+          model: { name: 'gpt-5.4-nano' }
+        }
+      };
+
+      await expect(() =>
+        new OrchestrationClient(configWithTemplateRef).chatCompletion({
           prompt: { template: [{ role: 'user', content: 'Hi' }] }
         })
       ).rejects.toThrow(/already configured in the constructor/);

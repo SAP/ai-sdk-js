@@ -576,7 +576,7 @@ function validateRequestPrompt(
 ): Template | TemplateRef {
   if (configs.some(c => c?.promptTemplating?.prompt)) {
     throw new Error(
-      "Cannot set 'prompt' in the request when a prompt is already configured in the constructor. The constructor prompt only supports the deprecated 'messages' field. Migrate to the request-level 'prompt' field only."
+      "Cannot set a request-level 'prompt' when a prompt is already configured in the constructor. Remove the constructor prompt and pass the prompt per call via the request-level 'prompt' field instead."
     );
   }
   if (request.messages?.length) {
