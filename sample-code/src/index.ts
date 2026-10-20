@@ -91,6 +91,16 @@ export {
 } from './rpt.ts';
 
 export {
+  predictClassification,
+  predictRegression,
+  predictRegressionQuantiles,
+  predictFiles,
+  predictResilient,
+  predictWithStringFeatures,
+  stringFeaturesData
+} from './tabpfn.ts';
+
+export {
   listBatches,
   createBatch,
   getBatchById,
