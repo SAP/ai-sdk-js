@@ -529,7 +529,7 @@ export interface GroundingModule {
   /**
    * @example 'document_grounding_service'
    */
-  type: 'document_grounding_service' | any;
+  type: 'document_grounding_service' | (string & {});
   /**
    * Grounding service configuration.
    */

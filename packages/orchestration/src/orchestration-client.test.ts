@@ -1065,9 +1065,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config);
 
-      await expect(
-        client.stream(undefined, controller.signal)
-      ).rejects.toThrow();
+      await expect(client.stream(undefined, controller.signal)).rejects.toThrow(
+        'Request failed with status code 500'
+      );
     });
 
     it('should throw error when stream is called with already aborted controller', async () => {
@@ -1095,9 +1095,9 @@ describe('orchestration service client', () => {
 
       const client = new OrchestrationClient(config);
 
-      await expect(
-        client.stream(undefined, controller.signal)
-      ).rejects.toThrow();
+      await expect(client.stream(undefined, controller.signal)).rejects.toThrow(
+        'aborted'
+      );
     });
   });
 

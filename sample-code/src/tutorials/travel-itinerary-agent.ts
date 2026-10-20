@@ -79,7 +79,9 @@ async function shouldContinueAgent({
     new SystemMessage(
       'You are a classifier. Respond with exactly "FAREWELL" if this is a farewell/goodbye message wishing someone happy travels. Respond with exactly "CONTINUE" if the conversation should continue.'
     ),
-    new HumanMessage(`Assistant message: "${lastMessage.content}"`)
+    new HumanMessage(
+      `Assistant message: "${typeof lastMessage.content === 'string' ? lastMessage.content : JSON.stringify(lastMessage.content)}"`
+    )
   ]);
 
   return result.content === 'FAREWELL' ? END : 'askHuman';

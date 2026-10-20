@@ -118,6 +118,10 @@ import {
   predictRegressionWithConfidenceIntervals,
   predictWithTopK
 } from './rpt.ts';
+import {
+  predictWithScenarioContext,
+  predictWithInlineContext
+} from './tabular-orchestration.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type {
@@ -571,7 +575,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res
         .header('Content-Type', 'text/plain')
         .send(
-          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
+          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${JSON.stringify(embedding)}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens ?? ''}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens ?? ''}`
         );
     } else if (sampleCase === 'fallbackModules') {
       const intermediateFailures = (
@@ -1041,7 +1045,7 @@ app.get('/langchain/stream-azure-openai', async (req, res) => {
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(
-        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+        `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
       );
       res.write('Token usage:\n');
       res.write(
@@ -1088,7 +1092,7 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(
-        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+        `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
       );
       res.write('Token usage:\n');
       res.write(
@@ -1399,6 +1403,25 @@ app.get('/rpt/predict-top-k', async (req, res) => {
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+/* Tabular Orchestration */
+app.get('/tabular-orchestration/predict-scenario-context', async (req, res) => {
+  try {
+    const data = await predictWithScenarioContext();
+    res.send(data);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/tabular-orchestration/predict-inline-context', async (req, res) => {
+  try {
+    const data = await predictWithInlineContext();
+    res.send(data);
   } catch (error: any) {
     sendError(res, error);
   }

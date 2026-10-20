@@ -47,7 +47,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
     config = {
       ...config,
       stream: {
-        ...(config.stream || {}),
+        ...config.stream,
         enabled: true
       }
     };
@@ -117,13 +117,12 @@ export function addStreamOptionsToPromptTemplatingModuleConfig(
     model: {
       ...promptTemplatingModuleConfig.model,
       params: {
-        ...(promptTemplatingModuleConfig.model.params || {}),
+        ...promptTemplatingModuleConfig.model.params,
         ...(streamOptions?.promptTemplating !== null && {
           stream_options: {
             include_usage: true,
-            ...(promptTemplatingModuleConfig.model.params?.stream_options ||
-              {}),
-            ...(streamOptions?.promptTemplating || {})
+            ...promptTemplatingModuleConfig.model.params?.stream_options,
+            ...streamOptions?.promptTemplating
           }
         })
       }
@@ -141,7 +140,7 @@ export function addStreamOptionsToOutputFilteringConfig(
   return {
     ...outputFilteringConfig,
     stream_options: {
-      ...(outputFilteringConfig.stream_options || {}),
+      ...outputFilteringConfig.stream_options,
       ...filteringStreamOptions
     }
   };
@@ -312,7 +311,7 @@ export function addStreamOptions(
   return {
     stream: {
       enabled: true,
-      ...(streamOptions?.global || {})
+      ...streamOptions?.global
     },
     modules: Array.isArray(moduleConfigs) ? modules : modules[0]
   };

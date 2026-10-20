@@ -195,7 +195,7 @@ export class OrchestrationClient extends BaseChatModel<
 
   override bindTools(
     tools: ChatOrchestrationToolType[],
-    kwargs?: Partial<OrchestrationCallOptions> | undefined
+    kwargs?: Partial<OrchestrationCallOptions>
   ): Runnable<
     BaseLanguageModelInput,
     OrchestrationMessageChunk,
@@ -328,7 +328,7 @@ export class OrchestrationClient extends BaseChatModel<
     } else {
       method satisfies never;
       throw new Error(
-        `Unsupported structured output method: ${method}. Supported methods are 'jsonSchema', 'functionCalling', and 'jsonMode'.`
+        `Unsupported structured output method: ${String(method)}. Supported methods are 'jsonSchema', 'functionCalling', and 'jsonMode'.`
       );
     }
 
@@ -360,6 +360,7 @@ export class OrchestrationClient extends BaseChatModel<
    * @param messages - The messages to send to the model.
    * @param options - The call options.
    * @param runManager - The callback manager for the run.
+   * @yields A chat generation chunk.
    * @returns An async generator of chat generation chunks.
    */
   override async *_streamResponseChunks(

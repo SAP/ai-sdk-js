@@ -288,7 +288,7 @@ export class OrchestrationClient {
     const response = await executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/v2/completion`,
-        ...(this.deploymentConfig ?? {})
+        ...this.deploymentConfig
       },
       body,
       requestConfig,
@@ -345,7 +345,9 @@ export class OrchestrationClient {
     try {
       JSON.parse(config);
     } catch (error) {
-      throw new Error(`Could not parse JSON: ${error}`, { cause: error });
+      throw new Error(`Could not parse JSON: ${String(error)}`, {
+        cause: error
+      });
     }
   }
 
@@ -368,7 +370,7 @@ export class OrchestrationClient {
     try {
       parsedObject = yaml.parse(config.promptTemplating.prompt as string);
     } catch (error) {
-      throw new Error(`Error parsing YAML: ${error}`, { cause: error });
+      throw new Error(`Error parsing YAML: ${String(error)}`, { cause: error });
     }
 
     const result =

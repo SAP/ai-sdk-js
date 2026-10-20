@@ -26,19 +26,19 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@langchain/classic": "1.0.51",
+    "@langchain/classic": "1.0.52",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
-    "@langchain/mcp-adapters": "1.1.4",
+    "@langchain/mcp-adapters": "2.0.1",
     "@langchain/textsplitters": "1.0.2",
-    "@modelcontextprotocol/sdk": "1.31.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
     "@opencode-ai/sdk": "^1.18.4",
     "@sap-cloud-sdk/resilience": "catalog:",
     "@sap-cloud-sdk/util": "catalog:",
     "@types/express": "5.0.6",
-    "express": "5.2.1",
+    "express": "5.3.0",
     "langchain": "catalog:",
-    "openai": "7.25.0",
+    "openai": "7.32.0",
     "opencode-ai": "^1.18.4",
     "ws": "8.22.0",
     "zod": "catalog:"
@@ -54,8 +54,9 @@
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-ai-sdk/prompt-registry": "workspace:^",
     "@sap-ai-sdk/rpt": "workspace:^",
+    "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
-    "hyparquet-writer": "0.16.10"
+    "hyparquet-writer": "0.16.11"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
@@ -67,6 +68,7 @@
     "@sap-ai-sdk/openai": "*",
     "@sap-ai-sdk/orchestration": "*",
     "@sap-ai-sdk/prompt-registry": "*",
-    "@sap-ai-sdk/rpt": "*"
+    "@sap-ai-sdk/rpt": "*",
+    "@sap-ai-sdk/tabular-orchestration": "*"
   }
 }

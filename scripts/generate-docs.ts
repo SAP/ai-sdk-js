@@ -202,7 +202,7 @@ async function generateDocs() {
 }
 
 process.on('unhandledRejection', reason => {
-  console.error(`Unhandled rejection at: ${reason}`);
+  console.error(`Unhandled rejection at: ${String(reason)}`);
   process.exit(1);
 });
 
