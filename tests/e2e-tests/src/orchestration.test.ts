@@ -12,6 +12,7 @@ import {
   orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
+  orchestrationGraniteGuardianFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
@@ -133,6 +134,14 @@ describe('orchestration', () => {
     ).toBeDefined();
     expect(() => response.getContent()).toThrow(Error);
     expect(response.getFinishReason()).toEqual('content_filter');
+  });
+
+  it('should run a granite guardian output filter', async () => {
+    const response = await orchestrationGraniteGuardianFiltering();
+
+    // Assert the filter engaged (verdict returned); the specific block/allow
+    // outcome is model-dependent, so it is not asserted here.
+    expect(response.getIntermediateResults().output_filtering).toBeDefined();
   });
 
   it('should allow for custom request parameters', async () => {
