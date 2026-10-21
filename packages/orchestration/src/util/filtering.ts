@@ -112,5 +112,5 @@ export function buildGraniteGuardianFilter<T extends ConfigType>(
       ),
       ...options
     }
-  } as GraniteGuardianFilterReturnType<T>;
+  } satisfies GraniteGuardianFilterReturnType<T>;
 }
