@@ -153,7 +153,9 @@ const raw = await VectorApi.createCollection(body, headers).executeRaw();
 const statusUrl = raw.headers.location as string;
 const collection = await pollAsyncResource({
   read: () =>
-    executeRequest({ url: statusUrl, method: 'get' }, undefined, { headers }).then(
+    executeRequest({ url: statusUrl, method: 'get' }, undefined, {
+      headers
+    }).then(
       r => r.data as CollectionCreatedResponse | CollectionPendingResponse
     ),
   isComplete: r => 'collectionURL' in r, // created-response shape is terminal
