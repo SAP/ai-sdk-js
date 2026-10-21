@@ -39,7 +39,7 @@ That package is private and unpublished, the helper has no exponential backoff a
 
 Promote `pollAsyncResource` into `@sap-ai-sdk/core` as an internal engine, and expose thin per-service convenience wrappers as the primary consumer surface.
 Expose the engine as a pull-model primitive (an async iterator) and layer a thin blocking helper on top that awaits the terminal state and returns `T`.
-Both carry an `AbortSignal` and a `maxWaitTime` budget, and honor `Retry-After` as a wait floor if the service ever emits it.
+Both carry an `AbortSignal` and a `maxWaitTime` budget, and back off on 429 using the retry value the service returns in the response body.
 Defer generator integration, a full poller object, and a runtime strategy enum.
 Several points remain open for team alignment and are recorded below; the status stays `proposed` until they are resolved.
 
@@ -99,23 +99,24 @@ This mirrors the hand-written client pattern in `@sap-ai-sdk/foundation-models`.
 
 ### Question 4: Backoff strategy
 
-**Recommendation: Option A, exponential backoff with jitter.**
-Neither specification declares a 429 response or a `Retry-After` header, so the client cannot rely on a server-provided wait hint.
-AWS waiters use exponential backoff with jitter for exactly this reason, whereas Azure's long-running-operation library can use a fixed interval because its services do return `Retry-After`.
+**Recommendation: a fixed ~60s interval with 429 handling; exponential backoff is optional.**
+The context-registry team confirmed a READ rate limit of ~1200 requests/minute per endpoint and recommended polling once a minute, so a fixed ~60s interval never approaches the limit and 429 is unlikely in normal polling.
+The service does return 429 under load, but the retry value is carried in the response body, not a `Retry-After` header; the helper should read that value and back off when it occurs.
+This leans fixed-interval rather than the ticket's literal "exponential backoff and randomisation"; exponential backoff stays available as an option but is not required by the observed rate limits.
 
-#### Option A: Exponential backoff with jitter
+#### Option A: Fixed interval with 429 handling
 
-**Pros:** Matches the ticket text, needs no server hint, and is safe under concurrent bursts of polling.
+**Pros:** Matches the service team's guidance; a wall-clock `maxWaitTime` is clearer than an attempt count; 429 handling covers the rare throttle.
 
-**Cons:** Slightly more code than a fixed interval.
+**Cons:** Deviates from the literal ticket wording.
 
-#### Option B: Fixed interval
+#### Option B: Exponential backoff with jitter
 
-**Pros:** Simplest, and a wall-clock `maxWaitTime` is clearer than a maximum attempt count.
+**Pros:** Matches the ticket text; resilient under concurrent bursts of polling.
 
-**Cons:** Without a server hint it either polls too often or not often enough; a fixed interval is reasonable only once the service emits `Retry-After`.
+**Cons:** Redundant given the generous rate limit and once-a-minute polling.
 
-If the service later emits `Retry-After` (the progress and ETA work may add it), honor it as a wait floor on top of the backoff.
+Completion times are not yet measured (they depend on the data source and HANA Cloud), but deletion is bounded at ~1 hour, so `maxWaitTime` defaults should be generous (on the order of an hour) and configurable.
 
 ### Question 5: Terminal-model coverage
 
@@ -142,24 +143,29 @@ A full poller object is out of scope.
 
 #### Option A: Blocking helper (consumer-facing, first step)
 
-A per-service wrapper hides the involved flow — call the 202 operation, parse the `Location`, and poll the status operation until the union resolves:
+A per-service wrapper hides the involved flow — call the 202 operation and poll the `Location` URL as-is until the union resolves:
 
 ```ts
 const headers = { 'AI-Resource-Group': resourceGroup };
 const raw = await VectorApi.createCollection(body, headers).executeRaw();
-// 202 Accepted; Location points at /collections/{id}/creationStatus
-const id = (raw.headers.location as string).split('/').at(-2)!;
+// 202 Accepted — raw.headers.location is already the status URL; poll it as-is
+// (no need to parse an id back out of it).
+const statusUrl = raw.headers.location as string;
 const collection = await pollAsyncResource({
-  read: () => VectorApi.getCollectionCreationStatus(id, headers).execute(),
-  // getCollectionCreationStatus returns CollectionCreatedResponse | CollectionPendingResponse
+  read: () =>
+    executeRequest({ url: statusUrl, method: 'get' }, undefined, { headers }).then(
+      r => r.data as CollectionCreatedResponse | CollectionPendingResponse
+    ),
   isComplete: r => 'collectionURL' in r, // created-response shape is terminal
-  intervalMs: 2_000,
-  maxAttempts: 60,
+  intervalMs: 60_000, // context-registry allows ~1200 reads/min, so 1/min is safe
+  maxWaitTime: 60 * 60_000, // operations can run up to ~1h
   signal
 });
 ```
 
-**Pros:** One call for the common case; hides the `executeRaw`/`Location`/union handling; carries `AbortSignal` and backoff internally.
+The wrapper is what encapsulates this, so consumers never parse the `Location` or pick an interval themselves.
+
+**Pros:** One call for the common case; hides the `executeRaw`/`Location`/union handling; carries `AbortSignal`, `maxWaitTime`, and backoff internally.
 
 **Cons:** The caller cannot adjust the loop; built on the pull-model primitive (Option B) underneath.
 
@@ -191,13 +197,19 @@ const state = poller.serialize(); // resume later / in another process
 
 **Cons:** High-level and unnecessary for in-process polling; resumable state is not needed today.
 
-### Service-team inputs needed
+### Service-team inputs
 
-Rather than guess defaults, reach out to the respective service teams for:
+The context-registry (TCR) team answered; the document-grounding (Grounding) team has not yet responded, so its values are assumed by analogy and marked pending.
 
-- Typical and p99 completion time for asynchronous operations, to set `maxWaitTime` defaults.
-- Whether 429 responses with a `Retry-After` header will be emitted at all (its format is already standardised).
-- The planned channel and format for the upcoming progress and ETA feature.
+Context-registry (confirmed):
+
+- READ rate limit ~1200 requests/minute per endpoint; polling once a minute is recommended and safe.
+- Completion time is not yet measured (depends on the data source and HANA Cloud); deletion is bounded at ~1 hour, which sets a generous default `maxWaitTime`.
+- 429 is returned under load, with the retry value in the response body (not a `Retry-After` header).
+- Deletion has no soft-delete state: the resource is removed and a `GET` returns 404 (within ~1 hour); otherwise the `GET` body carries an error message.
+- No progress or ETA signal is planned.
+
+Document-grounding (pending): the same questions are out to `#aif-grounding-support`. Structurally its specification mirrors context-registry — no 429 is declared, no progress field exists, and completion uses the creation-status union, the pipeline status enum, or a 404 on delete — so only the operational numbers (rate limit, completion time, 429 body shape) remain to confirm.
 
 `createMetadataConfiguration` is confirmed asynchronous — the specification declares a 202 with a `Location` header ("Document enumeration in progress") — but has no dedicated status endpoint, so completion is tracked by polling the resource at the returned `Location`.
 
