@@ -5,6 +5,10 @@ import {
 
 import { describe, it, expect } from 'vitest';
 
+import { loadEnv } from './utils/load-env.ts';
+
+loadEnv();
+
 // TEMPORARY (#696 Todo "investigate E2E reliability"): checks whether IBM
 // Granite Guardian is served on the target landscape. Pushed only to run via
 // the dispatched e2e workflow — REVERT after. If confirmed available, migrate
