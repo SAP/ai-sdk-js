@@ -28,8 +28,6 @@ export type {
   LlamaGuard38BOutputFilterConfig,
   GraniteGuardianCategory,
   GraniteGuardianFilterReturnType,
-  GraniteGuardianInputFilterConfig,
-  GraniteGuardianOutputFilterConfig,
   GraniteGuardianFilterOptions,
   AzureFilterThreshold,
   AzureContentSafetyFilterInputParameters,

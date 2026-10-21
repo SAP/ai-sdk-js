@@ -845,22 +845,10 @@ export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
     : LlamaGuard38BOutputFilterConfig;
 
 /**
- * Input filter configuration for IBM Granite Guardian 4.1.
- */
-export type GraniteGuardianInputFilterConfig = GraniteGuardianFilterConfig;
-
-/**
- * Output filter configuration for IBM Granite Guardian 4.1.
- */
-export type GraniteGuardianOutputFilterConfig = GraniteGuardianFilterConfig;
-
-/**
  * Filter return type for IBM Granite Guardian 4.1.
+ * Input and output configs are identical for `granite_guardian_4_1`, so no input/output split is needed.
  */
-export type GraniteGuardianFilterReturnType<T extends ConfigType> =
-  T extends 'input'
-    ? GraniteGuardianInputFilterConfig
-    : GraniteGuardianOutputFilterConfig;
+export type GraniteGuardianFilterReturnType = GraniteGuardianFilterConfig;
 
 /**
  * Additional options for the IBM Granite Guardian 4.1 filter.

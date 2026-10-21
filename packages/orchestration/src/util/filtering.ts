@@ -99,11 +99,11 @@ export function buildLlamaGuard38BFilter<T extends ConfigType>(
  * @returns IBM Granite Guardian 4.1 filter configuration.
  * @example buildGraniteGuardianFilter('output', ['harm'])
  */
-export function buildGraniteGuardianFilter<T extends ConfigType>(
-  type: T,
+export function buildGraniteGuardianFilter(
+  type: ConfigType,
   categories: readonly [GraniteGuardianCategory, ...GraniteGuardianCategory[]],
   options?: GraniteGuardianFilterOptions
-): GraniteGuardianFilterReturnType<T> {
+): GraniteGuardianFilterReturnType {
   return {
     type: 'granite_guardian_4_1',
     config: {
@@ -112,5 +112,5 @@ export function buildGraniteGuardianFilter<T extends ConfigType>(
       ),
       ...options
     }
-  } satisfies GraniteGuardianFilterReturnType<T>;
+  } satisfies GraniteGuardianFilterReturnType;
 }

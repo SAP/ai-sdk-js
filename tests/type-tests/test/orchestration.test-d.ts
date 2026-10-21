@@ -466,11 +466,11 @@ expectError<LlamaGuard38BFilterReturnType<'input'>>(
 /**
  * Filtering Util for Granite Guardian.
  */
-expectType<GraniteGuardianFilterReturnType<'input'>>(
+expectType<GraniteGuardianFilterReturnType>(
   buildGraniteGuardianFilter('input', ['harm'])
 );
 
-expectType<GraniteGuardianFilterReturnType<'output'>>(
+expectType<GraniteGuardianFilterReturnType>(
   buildGraniteGuardianFilter('output', ['harm'], { enable_reasoning: true })
 );
 
