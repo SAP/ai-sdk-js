@@ -46,7 +46,7 @@
     "tag": "beta"
   },
   "scripts": {
-    "compile": "tsc",
+    "compile": "tsrs",
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."

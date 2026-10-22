@@ -9,7 +9,7 @@
     "prebuild": "rm -rf dist",
     "build": "pnpm cds-build && pnpm compile && pnpm cleanup",
     "cds-build": "cds build --production",
-    "compile": "tsc",
+    "compile": "tsrs",
     "cleanup": "rm -f ./dist/srv/srv/**/*.ts ./dist/srv/package-lock.json",
     "deploy:postbuild": "pushd ./dist/srv && npm i --package-lock-only && popd",
     "start": "npx cds-serve",
