@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/context-registry",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "description": "This package provides a client for the SAP AI Core Context Registry service.",
   "keywords": [
     "context-registry",
