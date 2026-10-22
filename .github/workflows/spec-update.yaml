@@ -24,6 +24,7 @@ on:
           - document-grounding
           - orchestration
           - prompt-registry
+          - tabular-orchestration
         #
         # NOTES:
         #
@@ -122,6 +123,9 @@ jobs:
             [prompt-registry.url]="repos/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml"
             [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
 
+            [tabular-orchestration.url]="repos/AI/tabular-ai-orchestration/contents/src/spec/spec.yaml"
+            [tabular-orchestration.path]="packages/tabular-orchestration/src/spec/tabular-orchestration.yaml"
+
             # [rpt.url]="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json"
             # [rpt.path]="packages/rpt/src/spec/rpt.json"
           )
@@ -157,7 +161,7 @@ jobs:
         id: breaking-changes
         if: steps.check-spec-changes.outputs.spec == 'true'
         continue-on-error: true
-        uses: oasdiff/oasdiff-action/breaking@5e81b5c380accc6b523f9d32a637ca630e33620b # v0.1.17
+        uses: oasdiff/oasdiff-action/breaking@b9325c9e0a27ab65b0da3b766522cedec6be81dc # v0.1.18
         with:
           base: 'origin/main:${{ steps.resolve.outputs.file_path }}'
           revision: 'HEAD:${{ steps.resolve.outputs.file_path }}'

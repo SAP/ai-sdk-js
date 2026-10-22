@@ -8,7 +8,7 @@ import {
   ToolMessage
 } from '@langchain/core/messages';
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { MultiServerMCPClient } from '@langchain/mcp-adapters';
+import { MCPAdapter } from '@langchain/mcp-adapters';
 
 import { SDK_KNOWLEDGE } from './knowledge.ts';
 
@@ -70,10 +70,10 @@ const AGENT_SYSTEM_PROMPT = [
   '  Do NOT include dependency bumps, unrelated chore PRs, or this issue itself.'
 ].join('\n');
 
-const mcpClient = new MultiServerMCPClient({
+const mcpClient = new MCPAdapter({
   throwOnLoadError: true,
   prefixToolNameWithServerName: true,
-  mcpServers: {
+  servers: {
     context7: {
       // installed as devDep — no on-demand download (C-1)
       command: 'context7-mcp',
@@ -178,7 +178,7 @@ function scopeToAllowedRepo(
 }
 
 export async function initAgent(): Promise<void> {
-  const mcpTools = await mcpClient.getTools();
+  const mcpTools = await mcpClient.listTools();
 
   tools = mcpTools.filter(
     (t: StructuredToolInterface) =>

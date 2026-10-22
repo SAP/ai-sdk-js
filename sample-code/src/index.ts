@@ -119,7 +119,9 @@ export {
   listDataDestinations,
   createTabularArtifact,
   deleteTabularArtifact,
-  getOrCreateScenarioConfiguration
+  getOrCreateScenarioConfiguration,
+  predictWithScenarioContext,
+  predictWithInlineContext
 } from './tabular-orchestration.ts';
 
 export {

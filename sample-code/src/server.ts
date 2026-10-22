@@ -52,7 +52,10 @@ import {
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent,
-  invokePromptCachingAgent
+  invokePromptCachingAgent,
+  invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
+  invokeReasoningStreamMultiTurn as invokeReasoningStreamMultiTurnOrchestration,
+  streamReasoningOrchestration
 } from './langchain-orchestration.ts';
 import {
   listBatches,
@@ -118,11 +121,17 @@ import {
   predictRegressionWithConfidenceIntervals,
   predictWithTopK
 } from './rpt.ts';
+import {
+  predictWithScenarioContext,
+  predictWithInlineContext
+} from './tabular-orchestration.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type {
   OrchestrationEmbeddingResponse,
-  OrchestrationResponse
+  OrchestrationResponse,
+  ChatModel,
+  ReasoningBlock
 } from '@sap-ai-sdk/orchestration';
 
 import type { AIMessageChunk } from '@langchain/core/messages';
@@ -1108,6 +1117,98 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
   }
 });
 
+app.get(
+  '/langchain/invoke-reasoning-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const result = await invokeReasoningMultiTurnOrchestration();
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get(
+  '/langchain/invoke-reasoning-stream-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const model = req.query.model as ChatModel | undefined;
+      const result = await invokeReasoningStreamMultiTurnOrchestration(model);
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamReasoningOrchestration(controller);
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    let inReasoning = false;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      const deltaReasoning = chunk.additional_kwargs.reasoning_content as
+        | ReasoningBlock[]
+        | undefined;
+      if (deltaReasoning?.length) {
+        if (!inReasoning) {
+          res.write('[reasoning]\n');
+          inReasoning = true;
+        }
+        deltaReasoning.forEach(block => res.write(block.content ?? ''));
+      }
+      const deltaText = typeof chunk.content === 'string' ? chunk.content : '';
+      if (deltaText) {
+        if (inReasoning) {
+          res.write('\n\n[answer]\n');
+          inReasoning = false;
+        }
+        res.write(deltaText);
+      }
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive) {
+      const mergedReasoning = finalResult?.additional_kwargs
+        .reasoning_content as ReasoningBlock[] | undefined;
+      res.write('\n\n--- Merged via concat() ---\n');
+      res.write(
+        `Signature preserved: ${!!mergedReasoning?.some(b => b.signature)}\n`
+      );
+      res.write(
+        `Content blocks (raw): ${JSON.stringify(finalResult?.content)}\n`
+      );
+      res.write(
+        `Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`
+      );
+      res.write(
+        `Output tokens:    ${finalResult?.usage_metadata?.output_tokens ?? 0}\n`
+      );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
 /* Document Grounding */
 app.get(
   '/document-grounding/orchestration-grounding-vector',
@@ -1399,6 +1500,25 @@ app.get('/rpt/predict-top-k', async (req, res) => {
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+/* Tabular Orchestration */
+app.get('/tabular-orchestration/predict-scenario-context', async (req, res) => {
+  try {
+    const data = await predictWithScenarioContext();
+    res.send(data);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/tabular-orchestration/predict-inline-context', async (req, res) => {
+  try {
+    const data = await predictWithInlineContext();
+    res.send(data);
   } catch (error: any) {
     sendError(res, error);
   }
