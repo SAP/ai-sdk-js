@@ -24,7 +24,19 @@ packages:
 
 versioning:
   fixed:
-    - ['@sap-ai-sdk/*']
+    - - '@sap-ai-sdk/ai-api'
+      - 'sap-ai-sdk'
+      - '@sap-ai-sdk/context-registry'
+      - '@sap-ai-sdk/core'
+      - '@sap-ai-sdk/document-grounding'
+      - '@sap-ai-sdk/foundation-models'
+      - '@sap-ai-sdk/langchain'
+      - '@sap-ai-sdk/llm-batch'
+      - '@sap-ai-sdk/openai'
+      - '@sap-ai-sdk/orchestration'
+      - '@sap-ai-sdk/prompt-registry'
+      - '@sap-ai-sdk/rpt'
+      - '@sap-ai-sdk/tabular-orchestration'
   ignore:
     - '@sap-ai-sdk/sample-code'
   maxBump: minor
