@@ -25,6 +25,8 @@ packages:
 versioning:
   fixed:
     - ['@sap-ai-sdk/*']
+  ignore:
+    - '@sap-ai-sdk/sample-code'
   maxBump: minor
   changelog:
     storage: repository
