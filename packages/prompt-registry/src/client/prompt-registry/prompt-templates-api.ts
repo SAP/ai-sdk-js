@@ -105,19 +105,19 @@ export const PromptTemplatesApi = {
    * @param scenario - Scenario field of the resource.
    * @param version - Version field of the resource.
    * @param name - Name field of the resource.
-   * @param queryParameters - Object containing the following keys: $top, $skip.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
+   * @param queryParameters - Object containing the following keys: $top, $skip.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   listPromptTemplateHistory: (
     scenario: string,
     version: string,
     name: string,
-    queryParameters?: { $top?: number; $skip?: number },
     headerParameters?: {
       'AI-Resource-Group'?: string;
       'AI-Resource-Group-Scope'?: 'true' | 'True' | 'false' | 'False';
-    }
+    },
+    queryParameters?: { $top?: number; $skip?: number }
   ) =>
     new OpenApiRequestBuilder<PromptTemplateListResponse>(
       'get',
