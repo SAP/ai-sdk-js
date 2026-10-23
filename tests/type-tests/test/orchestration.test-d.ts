@@ -467,21 +467,21 @@ expectError<LlamaGuard38BFilterReturnType<'input'>>(
  * Filtering Util for Granite Guardian.
  */
 expectType<GraniteGuardianFilterReturnType>(
-  buildGraniteGuardianFilter('input', ['harm'])
+  buildGraniteGuardianFilter(['harm'])
 );
 
 expectType<GraniteGuardianFilterReturnType>(
-  buildGraniteGuardianFilter('output', ['harm'], { enable_reasoning: true })
+  buildGraniteGuardianFilter(['harm'], { enable_reasoning: true })
 );
 
 // Empty category list must be a compile error (non-empty tuple).
-expectError(buildGraniteGuardianFilter('input', []));
+expectError(buildGraniteGuardianFilter([]));
 
 // Missing categories must be a compile error.
-expectError(buildGraniteGuardianFilter('input'));
+expectError(buildGraniteGuardianFilter());
 
 // Unknown category must be a compile error.
-expectError(buildGraniteGuardianFilter('input', ['unknown-category']));
+expectError(buildGraniteGuardianFilter(['unknown-category']));
 
 /**
  * Grounding util.

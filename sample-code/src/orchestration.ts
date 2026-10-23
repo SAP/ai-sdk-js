@@ -398,7 +398,7 @@ export async function orchestrationGraniteGuardianFiltering(): Promise<Orchestra
       output: {
         filters: [
           // Build an IBM Granite Guardian content filter with the `harm` category enabled
-          buildGraniteGuardianFilter('output', ['harm'])
+          buildGraniteGuardianFilter(['harm'])
         ]
       }
     }

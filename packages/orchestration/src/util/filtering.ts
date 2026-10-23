@@ -93,14 +93,12 @@ export function buildLlamaGuard38BFilter<T extends ConfigType>(
  * Note: Granite Guardian requires a separate backend call for each enabled
  * category, so enabling several categories multiplies latency and cost.
  * Prefer the catch-all `harm` category unless a specific category is needed.
- * @param type - Type of the filter, either `input` or `output`.
  * @param categories - Categories to be enabled for filtering. Provide at least one category.
  * @param options - Additional options forwarded to the filter config, e.g. `enable_reasoning` to receive reasoning content for every configured category.
  * @returns IBM Granite Guardian 4.1 filter configuration.
- * @example buildGraniteGuardianFilter('output', ['harm'])
+ * @example buildGraniteGuardianFilter(['harm'])
  */
 export function buildGraniteGuardianFilter(
-  type: ConfigType,
   categories: readonly [GraniteGuardianCategory, ...GraniteGuardianCategory[]],
   options?: GraniteGuardianFilterOptions
 ): GraniteGuardianFilterReturnType {
