@@ -14,6 +14,12 @@ export default defineConfig({
           name: 'scripts',
           include: ['scripts/**/*.test.ts']
         }
+      },
+      {
+        test: {
+          name: 'github-actions',
+          include: ['.github/actions/**/*.test.ts']
+        }
       }
     ]
   }

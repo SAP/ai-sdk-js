@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/tabular-orchestration",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "description": "This package provides a client for predictions with Tabular Foundation Models through the SAP AI Core Tabular AI Orchestration service.",
   "keywords": [
     "rpt",
@@ -49,6 +49,6 @@
     "@sap-cloud-sdk/http-client": "catalog:"
   },
   "devDependencies": {
-    "vitest": "5.0.3"
+    "vitest": "5.0.5"
   }
 }

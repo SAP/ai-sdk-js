@@ -44,7 +44,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody = 
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.maxLength(registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameMax)).check(/*#__PURE__*/ zod.regex(registryControllerPromptControllerCreateUpdatePromptTemplateBodyNameRegExp)),
   "version": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.maxLength(registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionMax)).check(/*#__PURE__*/ zod.regex(registryControllerPromptControllerCreateUpdatePromptTemplateBodyVersionRegExp)),
   "scenario": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.maxLength(registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioMax)).check(/*#__PURE__*/ zod.regex(registryControllerPromptControllerCreateUpdatePromptTemplateBodyScenarioRegExp)),
-  "spec": /*#__PURE__*/ zod.object({
+  "spec": /*#__PURE__*/ zod.catchall(/*#__PURE__*/ zod.object({
   "template": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.string(),
   "content": /*#__PURE__*/ zod.string()
@@ -89,7 +89,9 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateBody = 
   "strict": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.nullish(/*#__PURE__*/ zod.boolean()), registryControllerPromptControllerCreateUpdatePromptTemplateBodySpecToolsItemFunctionStrictDefault).check(/*#__PURE__*/ zod.describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'))
 })
 }))).check(/*#__PURE__*/ zod.describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'))
-})
+}), /*#__PURE__*/ zod.looseObject({
+
+}))
 })
 
 export const RegistryControllerPromptControllerCreateUpdatePromptTemplateResponse = /*#__PURE__*/ zod.object({
@@ -152,7 +154,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse = /*#
   "managedBy": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "isVersionHead": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "resourceGroupId": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
-  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
+  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.catchall(/*#__PURE__*/ zod.object({
   "template": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.string(),
   "content": /*#__PURE__*/ zod.string()
@@ -197,7 +199,9 @@ export const RegistryControllerPromptControllerListPromptTemplatesResponse = /*#
   "strict": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.nullish(/*#__PURE__*/ zod.boolean()), registryControllerPromptControllerListPromptTemplatesResponseResourcesItemSpecToolsItemFunctionStrictDefault).check(/*#__PURE__*/ zod.describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'))
 })
 }))).check(/*#__PURE__*/ zod.describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'))
-}))
+}), /*#__PURE__*/ zod.looseObject({
+
+})))
 }))
 })
 
@@ -292,7 +296,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
   "managedBy": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "isVersionHead": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "resourceGroupId": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
-  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
+  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.catchall(/*#__PURE__*/ zod.object({
   "template": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.string(),
   "content": /*#__PURE__*/ zod.string()
@@ -337,7 +341,9 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryResponse
   "strict": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.nullish(/*#__PURE__*/ zod.boolean()), registryControllerPromptControllerListPromptTemplateHistoryResponseResourcesItemSpecToolsItemFunctionStrictDefault).check(/*#__PURE__*/ zod.describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'))
 })
 }))).check(/*#__PURE__*/ zod.describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'))
-}))
+}), /*#__PURE__*/ zod.looseObject({
+
+})))
 }))
 })
 
@@ -376,7 +382,7 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
   "managedBy": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "isVersionHead": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "resourceGroupId": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
-  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
+  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.catchall(/*#__PURE__*/ zod.object({
   "template": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.string(),
   "content": /*#__PURE__*/ zod.string()
@@ -421,7 +427,9 @@ export const RegistryControllerPromptControllerGetPromptTemplateByUuidResponse =
   "strict": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.nullish(/*#__PURE__*/ zod.boolean()), registryControllerPromptControllerGetPromptTemplateByUuidResponseSpecToolsItemFunctionStrictDefault).check(/*#__PURE__*/ zod.describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'))
 })
 }))).check(/*#__PURE__*/ zod.describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'))
-}))
+}), /*#__PURE__*/ zod.looseObject({
+
+})))
 })
 
 
@@ -545,7 +553,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
   "managedBy": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "isVersionHead": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "resourceGroupId": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
-  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
+  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.catchall(/*#__PURE__*/ zod.object({
   "template": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.string(),
   "content": /*#__PURE__*/ zod.string()
@@ -590,7 +598,9 @@ export const RegistryControllerPromptControllerParsePromptTemplateByIdResponse =
   "strict": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.nullish(/*#__PURE__*/ zod.boolean()), registryControllerPromptControllerParsePromptTemplateByIdResponseResourceSpecToolsItemFunctionStrictDefault).check(/*#__PURE__*/ zod.describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'))
 })
 }))).check(/*#__PURE__*/ zod.describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'))
-}))
+}), /*#__PURE__*/ zod.looseObject({
+
+})))
 }))
 })
 
@@ -661,7 +671,7 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
   "managedBy": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "isVersionHead": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()),
   "resourceGroupId": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
-  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
+  "spec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.catchall(/*#__PURE__*/ zod.object({
   "template": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.string(),
   "content": /*#__PURE__*/ zod.string()
@@ -706,7 +716,9 @@ export const RegistryControllerPromptControllerParsePromptTemplateByNameVersionR
   "strict": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.nullish(/*#__PURE__*/ zod.boolean()), registryControllerPromptControllerParsePromptTemplateByNameVersionResponseResourceSpecToolsItemFunctionStrictDefault).check(/*#__PURE__*/ zod.describe('Whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling guide](docs/guides/function-calling).'))
 })
 }))).check(/*#__PURE__*/ zod.describe('A list of tools the model may call. Used to provide a list of functions the model may generate JSON inputs for. This is the same as the OpenAI definition.\n'))
-}))
+}), /*#__PURE__*/ zod.looseObject({
+
+})))
 }))
 })
 
