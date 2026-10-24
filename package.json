@@ -11,6 +11,7 @@
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
     "changeset": "pnpm change",
+    "trust:publishing": "node scripts/configure-trusted-publishing.ts",
     "test:unit": "vitest run",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
