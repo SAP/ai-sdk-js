@@ -239,8 +239,8 @@ importers:
         specifier: 5.0.5
         version: 5.0.5(vitest@5.0.5)
       jose:
-        specifier: 6.2.12
-        version: 6.2.12
+        specifier: 6.2.13
+        version: 6.2.13
       knip:
         specifier: 6.42.1
         version: 6.42.1
@@ -3488,6 +3488,9 @@ packages:
 
   jose@6.2.12:
     resolution: {integrity: sha512-9NiFmJEex0sy2Dk58j2UGBSHgUs2ypF9eZSu4L6vjOX3Dp96Sw1F3uL+H+D1sx02jZZdzUT0HgvCy59CuvXcWw==}
+
+  jose@6.2.13:
+    resolution: {integrity: sha512-7TIg10ZE1x82YediN+lcrPNvGMKge9yFHQD+Qho/b8y2adfugU3AsvvHfxV0fzyFllT6l9xCjf4RWY9g/Z9PJQ==}
 
   js-tiktoken@1.0.21:
     resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
@@ -7299,6 +7302,8 @@ snapshots:
       node-rsa: 1.1.1
 
   jose@6.2.12: {}
+
+  jose@6.2.13: {}
 
   js-tiktoken@1.0.21:
     dependencies:
