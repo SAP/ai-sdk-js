@@ -688,7 +688,7 @@ export type LlamaGuard38BCategory = keyof LlamaGuard38B;
 /**
  * The filter categories supported for IBM Granite Guardian 4.1 filter.
  */
-export type GraniteGuardianCategory = keyof GraniteGuardian41['categories'];
+export type GraniteGuardian41Category = keyof GraniteGuardian41['categories'];
 
 /**
  * Type for module configurations (input or output).
@@ -848,12 +848,12 @@ export type LlamaGuard38BFilterReturnType<T extends ConfigType> =
  * Filter return type for IBM Granite Guardian 4.1.
  * Input and output configs are identical for `granite_guardian_4_1`, so no input/output split is needed.
  */
-export type GraniteGuardianFilterReturnType = GraniteGuardianFilterConfig;
+export type GraniteGuardian41FilterReturnType = GraniteGuardianFilterConfig;
 
 /**
  * Additional options for the IBM Granite Guardian 4.1 filter.
  */
-export interface GraniteGuardianFilterOptions {
+export interface GraniteGuardian41FilterOptions {
   /**
    * Enable reasoning (think) mode to receive reasoning content for every configured category.
    */

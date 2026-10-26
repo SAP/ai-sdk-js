@@ -6,9 +6,9 @@ import type {
   AzureFilterThreshold,
   LlamaGuard38BCategory,
   LlamaGuard38BFilterReturnType,
-  GraniteGuardianCategory,
-  GraniteGuardianFilterReturnType,
-  GraniteGuardianFilterOptions,
+  GraniteGuardian41Category,
+  GraniteGuardian41FilterReturnType,
+  GraniteGuardian41FilterOptions,
   ConfigType
 } from '../orchestration-types.ts';
 
@@ -96,12 +96,15 @@ export function buildLlamaGuard38BFilter<T extends ConfigType>(
  * @param categories - Categories to be enabled for filtering. Provide at least one category.
  * @param options - Additional options forwarded to the filter config, e.g. `enable_reasoning` to receive reasoning content for every configured category.
  * @returns IBM Granite Guardian 4.1 filter configuration.
- * @example buildGraniteGuardianFilter(['harm'])
+ * @example buildGraniteGuardian41Filter(['harm'])
  */
-export function buildGraniteGuardianFilter(
-  categories: readonly [GraniteGuardianCategory, ...GraniteGuardianCategory[]],
-  options?: GraniteGuardianFilterOptions
-): GraniteGuardianFilterReturnType {
+export function buildGraniteGuardian41Filter(
+  categories: readonly [
+    GraniteGuardian41Category,
+    ...GraniteGuardian41Category[]
+  ],
+  options?: GraniteGuardian41FilterOptions
+): GraniteGuardian41FilterReturnType {
   return {
     type: 'granite_guardian_4_1',
     config: {
@@ -110,5 +113,5 @@ export function buildGraniteGuardianFilter(
       ),
       ...options
     }
-  } satisfies GraniteGuardianFilterReturnType;
+  } satisfies GraniteGuardian41FilterReturnType;
 }

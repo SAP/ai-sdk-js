@@ -7,7 +7,7 @@ import {
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
-  buildGraniteGuardianFilter,
+  buildGraniteGuardian41Filter,
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
@@ -398,7 +398,7 @@ export async function orchestrationGraniteGuardianFiltering(): Promise<Orchestra
       output: {
         filters: [
           // Build an IBM Granite Guardian content filter with the `harm` category enabled
-          buildGraniteGuardianFilter(['harm'])
+          buildGraniteGuardian41Filter(['harm'])
         ]
       }
     }
