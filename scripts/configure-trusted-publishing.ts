@@ -1,9 +1,10 @@
 /* oxlint-disable no-console */
 
-import { spawn } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
+
+import { x } from 'tinyexec';
 
 const repository = 'SAP/ai-sdk-js';
 const publishPermission = 'createPackage';
@@ -45,45 +46,6 @@ export interface TrustConfiguration {
 
 export type TrustAction = { type: 'create' } | { type: 'revoke'; id: string };
 export type RevokeTrustAction = Extract<TrustAction, { type: 'revoke' }>;
-
-interface CommandResult {
-  stdout: string;
-}
-
-function runCommand(
-  command: string,
-  args: string[],
-  cwd: string,
-  captureStdout = true
-): Promise<CommandResult> {
-  const {
-    promise,
-    resolve: resolveCommand,
-    reject: rejectCommand
-  } = Promise.withResolvers<CommandResult>();
-  const child = spawn(command, args, {
-    cwd,
-    env: { ...process.env, PWD: cwd },
-    stdio: ['inherit', captureStdout ? 'pipe' : 'inherit', 'inherit']
-  });
-  let stdout = '';
-
-  child.stdout?.setEncoding('utf8');
-  child.stdout?.on('data', chunk => {
-    stdout += chunk;
-  });
-  child.on('error', rejectCommand);
-  child.on('close', code => {
-    if (code === 0) {
-      resolveCommand({ stdout });
-    } else {
-      rejectCommand(
-        new Error(`${command} ${args.join(' ')} exited with code ${code}`)
-      );
-    }
-  });
-  return promise;
-}
 
 /**
  * Parses the sequence of JSON objects emitted by `npm trust list --json`.
@@ -193,10 +155,17 @@ export function getObsoleteTrustActions(
 }
 
 async function getReleasePackages(root: string): Promise<string[]> {
-  const { stdout } = await runCommand(
+  const { stdout } = await x(
     'pnpm',
     ['list', '--recursive', '--depth=-1', '--json'],
-    root
+    {
+      throwOnError: true,
+      nodeOptions: {
+        cwd: root,
+        env: { ...process.env, PWD: root },
+        stdio: ['inherit', 'pipe', 'inherit']
+      }
+    }
   );
   const workspacePackages = JSON.parse(stdout) as WorkspacePackage[];
 
@@ -216,12 +185,15 @@ async function runNpmTrust(
   args: string[],
   captureStdout = false
 ): Promise<string> {
-  const { stdout } = await runCommand(
-    'npm',
-    ['trust', ...args],
-    tmpdir(),
-    captureStdout
-  );
+  const cwd = tmpdir();
+  const { stdout } = await x('npm', ['trust', ...args], {
+    throwOnError: true,
+    nodeOptions: {
+      cwd,
+      env: { ...process.env, PWD: cwd },
+      stdio: ['inherit', captureStdout ? 'pipe' : 'inherit', 'inherit']
+    }
+  });
   await delay(rateLimitDelayMs);
   return stdout;
 }
