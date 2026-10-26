@@ -697,16 +697,6 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
-      prompt: {
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'translation_response',
-            strict: true,
-            schema: toJsonSchema(translationSchema)
-          }
-        }
-      },
       model: {
         name: 'gpt-5.4-nano'
       }
@@ -715,6 +705,14 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
 
   const response = await orchestrationClient.chatCompletion({
     prompt: {
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'translation_response',
+          strict: true,
+          schema: toJsonSchema(translationSchema)
+        }
+      },
       template: [
         {
           role: 'system',
@@ -770,9 +768,6 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
-      prompt: {
-        tools: [addNumbersTool]
-      },
       model: {
         name: 'anthropic--claude-4.5-haiku'
       }
@@ -781,6 +776,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   const response = await orchestrationClient.chatCompletion({
     prompt: {
+      tools: [addNumbersTool],
       template: [
         {
           role: 'system',
@@ -808,7 +804,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   // Call the model with a new message and the message history
   return orchestrationClient.chatCompletion({
-    prompt: { template: [toolMessage] },
+    prompt: { tools: [addNumbersTool], template: [toolMessage] },
     messagesHistory: allMessages
   });
 }
@@ -872,9 +868,6 @@ export async function chatCompletionStreamWithTools(
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
-      prompt: {
-        tools: [addNumbersTool]
-      },
       model: {
         name: 'anthropic--claude-4.5-haiku'
       }
@@ -883,6 +876,7 @@ export async function chatCompletionStreamWithTools(
   return orchestrationClient.stream(
     {
       prompt: {
+        tools: [addNumbersTool],
         template: [
           {
             role: 'user',
@@ -1246,21 +1240,19 @@ export async function orchestrationQwenResponseFormat(
   });
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      prompt: {
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'translation_response',
-            strict: true,
-            schema: toJsonSchema(translationSchema)
-          }
-        }
-      },
       model: { name: model }
     }
   });
   const response = await orchestrationClient.chatCompletion({
     prompt: {
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'translation_response',
+          strict: true,
+          schema: toJsonSchema(translationSchema)
+        }
+      },
       template: [
         {
           role: 'system',
@@ -1285,13 +1277,13 @@ export async function orchestrationQwenWithToolCalling(
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      prompt: { tools: [addNumbersTool] },
       model: { name: model }
     }
   });
 
   const response = await orchestrationClient.chatCompletion({
     prompt: {
+      tools: [addNumbersTool],
       template: [
         {
           role: 'system',
@@ -1313,7 +1305,7 @@ export async function orchestrationQwenWithToolCalling(
     tool_call_id: toolCall.id
   };
   return orchestrationClient.chatCompletion({
-    prompt: { template: [toolMessage] },
+    prompt: { tools: [addNumbersTool], template: [toolMessage] },
     messagesHistory: allMessages
   });
 }
