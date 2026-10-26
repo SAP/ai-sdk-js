@@ -28,6 +28,7 @@ describe('parse npm trust output', () => {
   "file": "publish-release.yml",
   "permissions": ["createPackage"]
 }
+
 {
   "id": "canary-id",
   "type": "github",

@@ -92,54 +92,14 @@ function runCommand(
  * @returns Parsed trust relationships.
  */
 export function parseJsonObjectSequence(input: string): TrustConfiguration[] {
-  const values: TrustConfiguration[] = [];
-  let start = -1;
-  let depth = 0;
-  let inString = false;
-  let escaped = false;
-
-  for (let index = 0; index < input.length; index++) {
-    const character = input[index];
-
-    if (start === -1) {
-      if (/\s/.test(character)) {
-        continue;
-      }
-      if (character !== '{') {
-        throw new Error(`Unexpected npm JSON output at position ${index}.`);
-      }
-      start = index;
-    }
-
-    if (inString) {
-      if (escaped) {
-        escaped = false;
-      } else if (character === '\\') {
-        escaped = true;
-      } else if (character === '"') {
-        inString = false;
-      }
-      continue;
-    }
-
-    if (character === '"') {
-      inString = true;
-    } else if (character === '{' || character === '[') {
-      depth++;
-    } else if (character === '}' || character === ']') {
-      depth--;
-      if (depth === 0) {
-        values.push(JSON.parse(input.slice(start, index + 1)));
-        start = -1;
-      }
-    }
+  const trimmedInput = input.trim();
+  if (trimmedInput.length === 0) {
+    return [];
   }
 
-  if (start !== -1 || depth !== 0 || inString) {
-    throw new Error('Incomplete JSON emitted by npm trust list.');
-  }
-
-  return values;
+  return trimmedInput
+    .split(/\r?\n[ \t]*\r?\n/)
+    .map(value => JSON.parse(value) as TrustConfiguration);
 }
 
 function isManagedConfiguration(
