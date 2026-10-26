@@ -77,7 +77,7 @@ blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
-  - fast-uri@3.1.9
+  - body-parser@2.4.0
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true
