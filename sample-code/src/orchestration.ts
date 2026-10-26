@@ -215,6 +215,25 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
 }
 
 /**
+ * Send a completion using only message history, without a prompt template.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationMessageHistoryOnly(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    promptTemplating: {
+      model: { name: 'anthropic--claude-4.5-haiku' }
+    }
+  });
+
+  return orchestrationClient.chatCompletion({
+    messagesHistory: [
+      { role: 'system', content: 'You are a concise geography assistant.' },
+      { role: 'user', content: 'What is the capital of France?' }
+    ]
+  });
+}
+
+/**
  * Use a template stored in the prompt registry.
  * @returns The orchestration service response.
  */
