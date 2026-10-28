@@ -54,7 +54,9 @@ export async function orchestrationChatCompletion(
   // execute the request
   const result = await orchestrationClient.chatCompletion(
     {
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
     },
     { signal }
   );
@@ -76,7 +78,11 @@ export async function orchestrationChatCompletionResilient(): Promise<Orchestrat
   });
 
   return orchestrationClient.chatCompletion(
-    { messages: [{ role: 'user', content: 'What is the capital of France?' }] },
+    {
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
+    },
     {
       middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
     }
@@ -104,12 +110,14 @@ export async function chatCompletionStream(
 
   return orchestrationClient.stream(
     {
-      messages: [
-        {
-          role: 'user',
-          content: 'Give me a long introduction of SAP Cloud SDK.'
-        }
-      ]
+      prompt: {
+        template: [
+          {
+            role: 'user',
+            content: 'Give me a long introduction of SAP Cloud SDK.'
+          }
+        ]
+      }
     },
     controller.signal,
     streamOptions
@@ -191,12 +199,16 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
   });
 
   const firstResponse = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    prompt: {
+      template: [{ role: 'user', content: 'What is the capital of France?' }]
+    }
   });
 
   // User can then ask a follow-up question
   const nextResponse = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the typical food there?' }],
+    prompt: {
+      template: [{ role: 'user', content: 'What is the typical food there?' }]
+    },
     messagesHistory: firstResponse.getAllMessages()
   });
 
@@ -311,9 +323,14 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
   try {
     // Trigger the input filters which results in a 400 Bad Request error
     await orchestrationClient.chatCompletion({
-      messages: [
-        { role: 'user', content: 'My social insurance number is ABC123456789.' }
-      ] // Should be filtered by the Llama guard filter
+      prompt: {
+        template: [
+          {
+            role: 'user',
+            content: 'My social insurance number is ABC123456789.'
+          }
+        ] // Should be filtered by the Llama guard filter
+      }
     });
     throw new Error('Input was not filtered as expected.');
   } catch (error: any) {
@@ -354,14 +371,16 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   });
 
   const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        // Should be filtered by the Azure content filter
-        content:
-          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
-      }
-    ]
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          // Should be filtered by the Azure content filter
+          content:
+            'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+        }
+      ]
+    }
   });
 
   // Accessing the content should throw an error
@@ -470,13 +489,15 @@ export async function orchestrationCompletionMasking(): Promise<
   });
 
   const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
-      }
-    ],
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
+        }
+      ]
+    },
     placeholderValues: {
       user: 'Dr. Emily Smith',
       email: 'emily.smith@healthclinic.com'
@@ -520,13 +541,15 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
     }
   });
   return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
-      }
-    ],
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
+        }
+      ]
+    },
     placeholderValues: { groundingInput: "What is SAP's product Joule?" }
   });
 }
@@ -547,7 +570,9 @@ export async function orchestrationRequestConfig(): Promise<OrchestrationRespons
 
   return orchestrationClient.chatCompletion(
     {
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+      prompt: {
+        template: [{ role: 'user', content: 'What is the capital of France?' }]
+      }
     },
     // add a custom header to the request
     {
@@ -617,13 +642,15 @@ export async function orchestrationGrounding(
   );
 
   return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
-      }
-    ],
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+        }
+      ]
+    },
     placeholderValues: {
       groundingRequest: query
     }
@@ -655,23 +682,25 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
   return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user', // image_url content type is only supported in user messages
-        content: [
-          {
-            type: 'text',
-            text: 'Describe the image.'
-          },
-          {
-            type: 'image_url',
-            image_url: {
-              url: '{{?imageUrl}}'
+    prompt: {
+      template: [
+        {
+          role: 'user', // image_url content type is only supported in user messages
+          content: [
+            {
+              type: 'text',
+              text: 'Describe the image.'
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: '{{?imageUrl}}'
+              }
             }
-          }
-        ]
-      }
-    ],
+          ]
+        }
+      ]
+    },
     placeholderValues: {
       // Alternatively, you can provide a public URL of the image here instead.
       imageUrl: encodedString
@@ -709,16 +738,6 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
-      prompt: {
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'translation_response',
-            strict: true,
-            schema: toJsonSchema(translationSchema)
-          }
-        }
-      },
       model: {
         name: 'gpt-5.4-nano'
       }
@@ -726,17 +745,27 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
   });
 
   const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+    prompt: {
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'translation_response',
+          strict: true,
+          schema: toJsonSchema(translationSchema)
+        }
       },
-      {
-        role: 'user',
-        content: '{{?input}}'
-      }
-    ],
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+        },
+        {
+          role: 'user',
+          content: '{{?input}}'
+        }
+      ]
+    },
     placeholderValues: {
       input: 'Hello World! Why is this phrase so famous?'
     }
@@ -780,9 +809,6 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
-      prompt: {
-        tools: [addNumbersTool]
-      },
       model: {
         name: 'anthropic--claude-4.5-haiku'
       }
@@ -790,13 +816,16 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   });
 
   const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful AI that performs addition of two numbers.'
-      },
-      { role: 'user', content: 'What is 2 + 3?' }
-    ]
+    prompt: {
+      tools: [addNumbersTool],
+      template: [
+        {
+          role: 'system',
+          content: 'You are a helpful AI that performs addition of two numbers.'
+        },
+        { role: 'user', content: 'What is 2 + 3?' }
+      ]
+    }
   });
   const allMessages = response.getAllMessages();
   const initialResponse = response.getAssistantMessage();
@@ -816,7 +845,7 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
 
   // Call the model with a new message and the message history
   return orchestrationClient.chatCompletion({
-    messages: [toolMessage],
+    prompt: { tools: [addNumbersTool], template: [toolMessage] },
     messagesHistory: allMessages
   });
 }
@@ -852,12 +881,14 @@ export async function orchestrationTranslation(): Promise<OrchestrationResponse>
   });
 
   return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: '{{?user_input}}'
-      }
-    ],
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content: '{{?user_input}}'
+        }
+      ]
+    },
     placeholderValues: {
       user_input:
         'Write an abstract for a thriller playing at SAP headquarters.'
@@ -878,9 +909,6 @@ export async function chatCompletionStreamWithTools(
   const orchestrationClient = new OrchestrationClient({
     // define the language model to be used
     promptTemplating: {
-      prompt: {
-        tools: [addNumbersTool]
-      },
       model: {
         name: 'anthropic--claude-4.5-haiku'
       }
@@ -888,9 +916,15 @@ export async function chatCompletionStreamWithTools(
   });
   return orchestrationClient.stream(
     {
-      messages: [
-        { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
-      ]
+      prompt: {
+        tools: [addNumbersTool],
+        template: [
+          {
+            role: 'user',
+            content: 'Add the numbers 2 and 3, as well as 4 and 5'
+          }
+        ]
+      }
     },
     controller.signal,
     streamOptions
@@ -946,12 +980,14 @@ export async function orchestrationSapAbapChatCompletion(): Promise<Orchestratio
   });
 
   const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: 'Explain the concept of internal tables in ABAP.'
-      }
-    ]
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content: 'Explain the concept of internal tables in ABAP.'
+        }
+      ]
+    }
   });
 
   return result;
@@ -973,12 +1009,14 @@ export async function orchestrationSonarWithCitations(): Promise<OrchestrationRe
   });
 
   const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: 'What are the latest developments in quantum computing?'
-      }
-    ]
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content: 'What are the latest developments in quantum computing?'
+        }
+      ]
+    }
   });
 
   return result;
@@ -1003,12 +1041,14 @@ export async function orchestrationSonarStreamWithCitations(
 
   return orchestrationClient.stream(
     {
-      messages: [
-        {
-          role: 'user',
-          content: 'What are the latest developments in quantum computing?'
-        }
-      ]
+      prompt: {
+        template: [
+          {
+            role: 'user',
+            content: 'What are the latest developments in quantum computing?'
+          }
+        ]
+      }
     },
     controller.signal
   );
@@ -1051,13 +1091,15 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
   ]);
 
   return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'Write a POSIX-compatible shell script that authenticates with SAP AI Core, calls the orchestration service, and sends a chat completion request implementing both input and output content filtering.'
-      }
-    ]
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content:
+            'Write a POSIX-compatible shell script that authenticates with SAP AI Core, calls the orchestration service, and sends a chat completion request implementing both input and output content filtering.'
+        }
+      ]
+    }
   });
 }
 
@@ -1088,7 +1130,9 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
   ]);
 
   return orchestrationClient.stream({
-    messages: [{ role: 'user', content: 'Give me a short introduction.' }]
+    prompt: {
+      template: [{ role: 'user', content: 'Give me a short introduction.' }]
+    }
   });
 }
 
@@ -1160,15 +1204,17 @@ export async function orchestrationChatCompletionFile(
   const fileData = `data:${mimeType};base64,${await readFile(filePath, 'base64')}`;
 
   return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: instruction },
-          { type: 'file', file: { file_data: fileData, filename } }
-        ]
-      }
-    ]
+    prompt: {
+      template: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: instruction },
+            { type: 'file', file: { file_data: fileData, filename } }
+          ]
+        }
+      ]
+    }
   });
 }
 
@@ -1210,7 +1256,9 @@ export async function orchestrationQwenChatCompletion(
     }
   });
   return orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    prompt: {
+      template: [{ role: 'user', content: 'What is the capital of France?' }]
+    }
   });
 }
 
@@ -1233,28 +1281,28 @@ export async function orchestrationQwenResponseFormat(
   });
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      prompt: {
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'translation_response',
-            strict: true,
-            schema: toJsonSchema(translationSchema)
-          }
-        }
-      },
       model: { name: model }
     }
   });
   const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+    prompt: {
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'translation_response',
+          strict: true,
+          schema: toJsonSchema(translationSchema)
+        }
       },
-      { role: 'user', content: '{{?input}}' }
-    ],
+      template: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+        },
+        { role: 'user', content: '{{?input}}' }
+      ]
+    },
     placeholderValues: { input: 'Hello World! Why is this phrase so famous?' }
   });
   return JSON.parse(response.getContent()!) as TranslationResponse;
@@ -1270,19 +1318,21 @@ export async function orchestrationQwenWithToolCalling(
 ): Promise<OrchestrationResponse> {
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
-      prompt: { tools: [addNumbersTool] },
       model: { name: model }
     }
   });
 
   const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a helpful AI that performs addition of two numbers.'
-      },
-      { role: 'user', content: 'What is 2 + 3?' }
-    ]
+    prompt: {
+      tools: [addNumbersTool],
+      template: [
+        {
+          role: 'system',
+          content: 'You are a helpful AI that performs addition of two numbers.'
+        },
+        { role: 'user', content: 'What is 2 + 3?' }
+      ]
+    }
   });
   const allMessages = response.getAllMessages();
   const toolCall = response.getAssistantMessage()?.tool_calls?.[0];
@@ -1296,7 +1346,7 @@ export async function orchestrationQwenWithToolCalling(
     tool_call_id: toolCall.id
   };
   return orchestrationClient.chatCompletion({
-    messages: [toolMessage],
+    prompt: { tools: [addNumbersTool], template: [toolMessage] },
     messagesHistory: allMessages
   });
 }
@@ -1387,9 +1437,11 @@ export async function orchestrationReasoningContent(
 
   const response = await orchestrationClient.chatCompletion(
     {
-      messages: [
-        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
-      ]
+      prompt: {
+        template: [
+          { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+        ]
+      }
     },
     { signal }
   );
@@ -1397,7 +1449,9 @@ export async function orchestrationReasoningContent(
   // Pass full message history (includes reasoning blocks) to maintain context.
   await orchestrationClient.chatCompletion(
     {
-      messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+      prompt: {
+        template: [{ role: 'user', content: 'Now do the same for 23 * 19.' }]
+      },
       messagesHistory: response.getAllMessages()
     },
     { signal }
@@ -1427,9 +1481,11 @@ export async function orchestrationReasoningContentStream(
   });
   return orchestrationClient.stream(
     {
-      messages: [
-        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
-      ]
+      prompt: {
+        template: [
+          { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+        ]
+      }
     },
     controller.signal
   );
