@@ -279,10 +279,9 @@ export async function resolveDeploymentUrlForModel(
 /**
  * Get the deployment ID for a foundation model scenario.
  * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
- * @param executableId - The scenario ID.
+ * @param executableId - The executable ID of the foundation model (e.g. `'azure-openai'`).
  * @param destination - The destination to use for the request.
  * @returns The ID of the deployment, if found.
- * @internal
  */
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,

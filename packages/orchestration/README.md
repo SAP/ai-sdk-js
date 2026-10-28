@@ -4,6 +4,9 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 
 This package incorporates generative AI orchestration capabilities into your AI activities in SAP AI Core and SAP AI Launchpad.
 
+> **Looking for available models?**
+> Use [`getModels()`](../ai-api/README.md#model-discovery) from `@sap-ai-sdk/ai-api` to list all models available on Gen AI Hub, check their capabilities, and identify which ones support the orchestration service via `filterByOrchestrationCapability(models, 'chat')`.
+
 ### Table of Contents
 
 - [Installation](#installation)

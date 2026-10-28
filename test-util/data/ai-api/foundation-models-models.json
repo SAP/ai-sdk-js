@@ -1,0 +1,63 @@
+{
+  "count": 2,
+  "resources": [
+    {
+      "model": "gpt-4o",
+      "executableId": "azure-openai",
+      "description": "GPT-4o is a high intelligence flagship model for complex, multi-step tasks.",
+      "displayName": "GPT-4o",
+      "provider": "Microsoft",
+      "accessType": "public",
+      "versions": [
+        {
+          "name": "2024-11-20",
+          "isLatest": true,
+          "deprecated": false,
+          "contextLength": 128000,
+          "inputTypes": ["text", "image"],
+          "capabilities": ["vision"],
+          "streamingSupported": true,
+          "orchestrationCapabilities": ["chat", "image_generation"]
+        },
+        {
+          "name": "2024-05-13",
+          "isLatest": false,
+          "deprecated": true,
+          "retirementDate": "2025-06-30T00:00:00Z",
+          "suggestedReplacements": ["2024-11-20"],
+          "contextLength": 128000,
+          "inputTypes": ["text", "image"],
+          "capabilities": ["vision"],
+          "streamingSupported": true,
+          "orchestrationCapabilities": ["chat"]
+        }
+      ],
+      "allowedScenarios": [
+        { "scenarioId": "foundation-models", "executableId": "azure-openai" }
+      ]
+    },
+    {
+      "model": "text-embedding-3-large",
+      "executableId": "azure-openai",
+      "description": "Most capable embedding model for both english and non-english tasks.",
+      "displayName": "Text Embedding 3 Large",
+      "provider": "Microsoft",
+      "accessType": "public",
+      "versions": [
+        {
+          "name": "1",
+          "isLatest": true,
+          "deprecated": false,
+          "contextLength": 8191,
+          "inputTypes": ["text"],
+          "capabilities": [],
+          "streamingSupported": false,
+          "orchestrationCapabilities": ["embedding"]
+        }
+      ],
+      "allowedScenarios": [
+        { "scenarioId": "foundation-models", "executableId": "azure-openai" }
+      ]
+    }
+  ]
+}
