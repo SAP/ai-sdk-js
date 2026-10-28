@@ -1,0 +1,28 @@
+meta {
+  name: Resolve Deployment ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/ai-api/deployment-id
+  body: none
+  auth: none
+}
+
+params:query {
+  model: gpt-4o
+  executableId: azure-openai
+}
+
+docs {
+  Resolves the deployment ID for a model that has a running deployment.
+
+  Required query params:
+  - model        model name, e.g. gpt-4o, text-embedding-3-large
+  - executableId executable/provider ID, e.g. azure-openai, anthropic, gcp-vertexai, aws-bedrock
+
+  Returns the deployment ID string (e.g. "d47571e465344656").
+  Returns 400 if either param is missing.
+  Returns 500 if no running deployment exists for that model.
+}

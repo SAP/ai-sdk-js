@@ -1,0 +1,16 @@
+meta {
+  name: Discover Models (text-generation)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/ai-api/models/discovery?capability=text-generation&activeOnly=true
+  body: none
+  auth: none
+}
+
+docs {
+  Returns all active text generation models.
+  Covers GPT, Claude, Gemini, Mistral, Qwen, Nova, ABAP models and more.
+}
