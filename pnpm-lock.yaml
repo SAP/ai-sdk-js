@@ -84,8 +84,8 @@ importers:
         specifier: 6.2.13
         version: 6.2.13
       knip:
-        specifier: 6.42.1
-        version: 6.42.1
+        specifier: 6.43.0
+        version: 6.43.0
       memfs:
         specifier: 4.80.0
         version: 4.80.0
@@ -556,40 +556,40 @@ importers:
     dependencies:
       '@sap-ai-sdk/ai-api':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/context-registry':
         specifier: canary
-        version: 2.15.1-20261007013624.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/document-grounding':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/foundation-models':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/langchain':
         specifier: canary
-        version: 2.16.1-20260927012911.0(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(langchain@1.5.15(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))
+        version: 2.17.1-20261028011301.0(@langchain/core@1.2.20(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(debug@4.4.3(supports-color@7.2.0))(langchain@1.5.18(@langchain/core@1.2.20(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(supports-color@7.2.0)
       '@sap-ai-sdk/llm-batch':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/openai':
         specifier: canary
-        version: 2.16.1-20260927012911.0(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(supports-color@7.2.0)(ws@8.22.0)
       '@sap-ai-sdk/orchestration':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/prompt-registry':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/rpt':
         specifier: canary
-        version: 2.16.1-20260927012911.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-ai-sdk/sample-code':
         specifier: workspace:^
         version: link:../../sample-code
       '@sap-ai-sdk/tabular-orchestration':
         specifier: canary
-        version: 2.16.1-20261020070745.0
+        version: 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@types/node':
         specifier: 22.20.1
@@ -1444,125 +1444,122 @@ packages:
       zod:
         optional: true
 
-  '@oxc-parser/binding-android-arm-eabi@0.154.0':
-    resolution: {integrity: sha512-sDdEtDl7vKdCvf54j72RJbowE3jCmyRz/+oOB6IAwQxAHZ0eI+Dcj4hvVnm0b9Dy31plUkdmfds9C+/Zt895Tg==}
+  '@oxc-parser/binding-android-arm-eabi@0.155.0':
+    resolution: {integrity: sha512-A6xv7hDtnTm+xlZ7utn6rRQpRMJHRhVr3gjRGqlx0RUX84mNk0pAsy6YN/wWhuOTkaZhRrrzaLxf0NfbH77j2w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [android]
 
-  '@oxc-parser/binding-android-arm64@0.154.0':
-    resolution: {integrity: sha512-UHrDPELzvWZoVkIDdSycj4bzcTMCJG3IbN++mSUgVBaUtNtWHjQ98U6Vz5bpF/1Ic3FYJyYhMr74huO5tVvpZw==}
+  '@oxc-parser/binding-android-arm64@0.155.0':
+    resolution: {integrity: sha512-T1wWwH9/JI5g7Z4kEQwDOwhToxdDhRyOTklH+uuNpJ16m3MZFmGl+l2rKc0NHQdbVRG2LTOBsNjpW3h1BWytPA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [android]
 
-  '@oxc-parser/binding-darwin-arm64@0.154.0':
-    resolution: {integrity: sha512-mokYzajOSXxtSRDWCdHARGdntrKH+rZZ24Jzo8AtafyNzz0NARmpMm26Tc5B6qiGrr6UliWibHCOif1qRN2vaA==}
+  '@oxc-parser/binding-darwin-arm64@0.155.0':
+    resolution: {integrity: sha512-ZoRB3qJxJ8DWA41jHja+YeB0lLfjBy4T+Kr15vnN1k65X3zbJt3rPZftEwN4Ju4tmA4K/T9dWWD7Z8ewQLnrVA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [darwin]
 
-  '@oxc-parser/binding-darwin-x64@0.154.0':
-    resolution: {integrity: sha512-WbtUBrclOVItWfLRSvs+Z/WLtXxJ2Ctv50PyuX894HzDN5/e0qzxVpTNPIVMzOerBhgKtFsSMcfxlYIAbvdVgg==}
+  '@oxc-parser/binding-darwin-x64@0.155.0':
+    resolution: {integrity: sha512-vxtL86BtM+IgrpejA86nbTk5j0HKTIMeuaJ1fQciw6p9RfavPtIPjI7gN34owap0yG9txXBaAWpGdxokNwdqIw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [darwin]
 
-  '@oxc-parser/binding-freebsd-x64@0.154.0':
-    resolution: {integrity: sha512-YooHZSLawOe2fqm+lDdG8oAaQh2NYV/RMYTYzWRLy72stm2BgE9O/8Al6kFENjkmzyyBccDLLBirGxVtpzQfrw==}
+  '@oxc-parser/binding-freebsd-x64@0.155.0':
+    resolution: {integrity: sha512-tN6Ru5e0UVnWaIuiH8jEwnvxuxg7FvhWwSd3oe5oDhOD4ObsSr9/N6WfHLjilUWlPPj65ptwrSDH0Y7lzwTzmw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [freebsd]
 
-  '@oxc-parser/binding-linux-arm-gnueabihf@0.154.0':
-    resolution: {integrity: sha512-hKOwhZbrXdTwc4bGVfbLCXl9f2swl6zWdISocLQSNX9MgPmwHE3qGzOUkCrkuGpwdCVHPnkfOwsqTuYsrP5uNg==}
+  '@oxc-parser/binding-linux-arm-gnueabihf@0.155.0':
+    resolution: {integrity: sha512-h4ozA5n6L6lwolsz9iwunEhKWnIVbmFRots5QxEix0H6nJ5ICpuDa7PuShuhfpIDFe3+Qvyscioyiv+9g+4Syg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [linux]
 
-  '@oxc-parser/binding-linux-arm-musleabihf@0.154.0':
-    resolution: {integrity: sha512-tnjiooXEU013349O/yxKbF5Cusp1CfHWQ8kYR8tGeRzR/P4sOpQGQo21fsS71M0fMD6ESLq+lbvXFWi43PuKeQ==}
+  '@oxc-parser/binding-linux-arm-musleabihf@0.155.0':
+    resolution: {integrity: sha512-058/+LardpfuUlsKIvBGk/CYoakEVcMgqYx8GgyUZeOxFWTojYLlCc1Gb60/y21v3esDhHidgiY/Zbq9LpBhaQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [linux]
 
-  '@oxc-parser/binding-linux-arm64-gnu@0.154.0':
-    resolution: {integrity: sha512-Cao2kj+8d7BT6XJU1gV9eVQjV+Cr+e8vQm3tddDRZiM2hHrMDxwy3j6t+ofaSl0idyuPPCZ4AlpmQoj8yOT1QA==}
+  '@oxc-parser/binding-linux-arm64-gnu@0.155.0':
+    resolution: {integrity: sha512-nrOt2Y3xIAzu+lSPzH0864ieO+iCCXgoo9qFlGANE8Xh0cQ+RP8Wstfp+/wXN2YCyb98cAGzX0VruKYw7it/jw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
 
-  '@oxc-parser/binding-linux-arm64-musl@0.154.0':
-    resolution: {integrity: sha512-uiwA0V3q8llWA7/8r+a9BBjk4j5YMDmi6wfOsyQfGOJMQSLHEiZ3HI8ulea766ykUa9wJFWk9XWEl4uJrZLQqw==}
+  '@oxc-parser/binding-linux-arm64-musl@0.155.0':
+    resolution: {integrity: sha512-KYAayyN5hQbJPtGKtRxlyc8XYmyntOplyXSQzTDrmbz7l/GCrzQbSswvyJFBTH1LGtsZrbXOAfN52i/Kz6kLKg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
 
-  '@oxc-parser/binding-linux-ppc64-gnu@0.154.0':
-    resolution: {integrity: sha512-LICfN0Xs4Zdko+bJy6eOAEQojDuIR26suF2JtOsMaXjgbCrpRSH7/NCvJhY13YvYBx12V6hnwrL8n0lk0rbNJQ==}
+  '@oxc-parser/binding-linux-ppc64-gnu@0.155.0':
+    resolution: {integrity: sha512-CSuSY5hfjtsBnHXydOj8jiNfS1qHbdPZuPz1YL1cSgK7VmNYP+QlZIbG0BBYYBgX/vYEgZwbG9mBdW4YairZ5w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [ppc64]
     os: [linux]
 
-  '@oxc-parser/binding-linux-riscv64-gnu@0.154.0':
-    resolution: {integrity: sha512-gbbSYxLF8ssRbQ2qQPy+2EhGNwNH1bAoRdkk6cnWaKHqmCikpSIPtpXjFbCCtjTi0uojqOM3ghFQwQPbDQsU0Q==}
+  '@oxc-parser/binding-linux-riscv64-gnu@0.155.0':
+    resolution: {integrity: sha512-7KCfOQm+Nz2N8trAXbQkal4TQ5756WVEmhm35y816YHvyFnEfVsICsiV5k0pEszNf/fRm4cm2i6i18SJ6/iCWg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [riscv64]
     os: [linux]
 
-  '@oxc-parser/binding-linux-riscv64-musl@0.154.0':
-    resolution: {integrity: sha512-nSnRYYDLCcRVjSQzF3g6rKqCNYwo5o+aQgnn8BBXfe+ofCgMGlGqkfRyvXm6ptZvoxNkkWtLlqM8W7Xc3j6ZnQ==}
+  '@oxc-parser/binding-linux-riscv64-musl@0.155.0':
+    resolution: {integrity: sha512-JSlhgoK+/g1TGJI5NuADx2+6syhxnQNLCWLXyO5QLFyetomcr/vIxSdiNlmyAv963YXUzCuwAwRG6npZ5xyJ1A==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [riscv64]
     os: [linux]
 
-  '@oxc-parser/binding-linux-s390x-gnu@0.154.0':
-    resolution: {integrity: sha512-BxBQoJKtzRQgZEKQIt6CDUm8RGKC5T8Qo4576yDa5/xgc10X3fBDItMbRabzLtbUBfTqKLl+8AVr/H6CF7W22g==}
+  '@oxc-parser/binding-linux-s390x-gnu@0.155.0':
+    resolution: {integrity: sha512-WFIX+dPokWp64mi434Md3U3lJaTwNxAphvGjpltoyQjGUsdXavOIRrnp9dOS34Hd75HOAwDxAI+YwWOwqmJbtg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [s390x]
     os: [linux]
 
-  '@oxc-parser/binding-linux-x64-gnu@0.154.0':
-    resolution: {integrity: sha512-/whkust2vYy+GjRUVL5cWaJmEu6jkdFfo5mkxgckyeOX61eMwo4iBoiwzeJZeMWAdzb/XOtQyLApHhFht3sOWA==}
+  '@oxc-parser/binding-linux-x64-gnu@0.155.0':
+    resolution: {integrity: sha512-g6xSDC/JpbnVOz5uafMGyK3txBVRFMQTx8opv/yHXGxqV3ZMVl3bf7W8XrSnF68dmy3gM4dgReNryuE53+WkeQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
 
-  '@oxc-parser/binding-linux-x64-musl@0.154.0':
-    resolution: {integrity: sha512-EXURTyW9riw4B/kZnnE+58emAtw6+3VEszQfXUZkRqGaKIcmWDYkZtKB+xY/blHvuZ+Qy/fDclc31nmUCgtkSA==}
+  '@oxc-parser/binding-linux-x64-musl@0.155.0':
+    resolution: {integrity: sha512-6/4xlxKlZJWrQ0uwDFPc0H9+xLu7068CKhX3vIDW3SbvP/lVgnVuT5v6dyugeWskWpuxqF/WJ4WKwhxjU3pG2w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
 
-  '@oxc-parser/binding-openharmony-arm64@0.154.0':
-    resolution: {integrity: sha512-ZRFooyH3qsR6vuR4jFGlG3XM36490SvvXtNaUahBK4zHpooMdTHNaOMtGGJI0EW38m5hi4rOco9kw7ZwCIp28w==}
+  '@oxc-parser/binding-openharmony-arm64@0.155.0':
+    resolution: {integrity: sha512-tltklL0J0XjDxIRTBXWOBhvc2mitcmES45pIxhwDWfxRyqz7Vkeu0NekTZEIxGE4f/lXgq3vZcjjffteQOVorg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [openharmony]
 
-  '@oxc-parser/binding-win32-arm64-msvc@0.154.0':
-    resolution: {integrity: sha512-U0Vp+4lvwUa/PnOCJTZOjydj1rX2+VLHz4Y2vSFqlN8/7LTiURgD7z4uQ9yNv9O/NlU3mELBnPDlu7aaSYG1zQ==}
+  '@oxc-parser/binding-win32-arm64-msvc@0.155.0':
+    resolution: {integrity: sha512-alAb9TzjatUEsOeoncAziUnfdTDxfyswhalFZ9sC6plUgATIUx2NIZ0+bMn6aJ28AduS1OpG/OAisr/YISn4Ig==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [win32]
 
-  '@oxc-parser/binding-win32-ia32-msvc@0.154.0':
-    resolution: {integrity: sha512-Hc8QgsFY5eUUP25we8TISUruibG2cDt0H4IcPG9RKdabb6odkCzIqjV6Gk9beGWGuOwMVCr81H/Su1q363LCCg==}
+  '@oxc-parser/binding-win32-ia32-msvc@0.155.0':
+    resolution: {integrity: sha512-yc5cbSfcGmRv/KpxDFuyk8adEBaWd/9HilWvBbQ4bFbus1V2PUh2mGB2Cfq9rqZTqLeiMT8x0skV+LKp9hOMgQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [ia32]
     os: [win32]
 
-  '@oxc-parser/binding-win32-x64-msvc@0.154.0':
-    resolution: {integrity: sha512-hD7judkUMA/hZPoamvKADs6+an1smp8UTK0aMYRijkvi00K/1vl7vEtmyn2JyQ9S+vibtnfcNzxqTLGyJUZCRQ==}
+  '@oxc-parser/binding-win32-x64-msvc@0.155.0':
+    resolution: {integrity: sha512-8heq6jGq+rfpTDRDjoQiBHw0maQZf3IXkS99pdHQZPoTL5kyF5qyPS0RidUlSdnWDIqxXb5nux7GBD9cT+imUw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [win32]
 
-  '@oxc-project/types@0.150.0':
-    resolution: {integrity: sha512-rDS5/31E9HfPl/CIzGrn0DOlvBbXFseQ5URJ9sYMfstbKLD/c6Gm9vmRzRGDdAXyOIL4zmO37lc9RIwYqVruZw==}
-
-  '@oxc-project/types@0.154.0':
-    resolution: {integrity: sha512-KYOUGQFlLWR+s4QMV2Q9ko38TZm7EdO87Qm7rvZLqk/webse/cDjtyxKhg/47l0byCbs/k46LT8qc4PKjAikzA==}
+  '@oxc-project/types@0.155.0':
+    resolution: {integrity: sha512-SeE8JPwW1xs1tHeNycjUtUBdhorRa8o4jlvjwk49R7/Z291i+4DQa7JJIgOm/TaYQZx+QrPQbVJ/9c8dMIZN8Q==}
 
   '@oxc-resolver/binding-android-arm-eabi@11.24.2':
     resolution: {integrity: sha512-y09e0L0SRI2OA2tUIrjBgoV3eH5hvUKXNkJqXmNo5V2WxIjyC7I7aJfRLMEVpA8yi95f90gFDvO0VMgrDw+vwA==}
@@ -2010,32 +2007,23 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@sap-ai-sdk/ai-api@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-be6+P1kb7KVkLT/sz9icFQddphpp7hefMu/jXnpwmWpdeffD0GRlyIwlWO4xERClxzUbmyDSDttgiQnBBoeyxw==}
+  '@sap-ai-sdk/ai-api@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-Stw6z4dwdeH1pyxTaWpoS9TK2R3Sbhv4Rx29mNDopSjcmlm35Tr77z59nE95tcOD58N6dWzVOVse/b5aLOtNnA==}
 
-  '@sap-ai-sdk/ai-api@2.16.1-20261020070745.0':
-    resolution: {integrity: sha512-BU4MhCwYx0oN8Ozf8tapIy6CuL5z9ZFzsBXb/MH2pQ1QbDYvowqEBPtqG4UmzKHFyRooj2tgmlXwSBBrO53eSw==}
+  '@sap-ai-sdk/context-registry@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-KLCZfAIHHYbaotu06WNqBnkHXZgyCQal8IF9xMZ3r+ho1rw7Sao75CpJROCudMC0ii8wRAAt1QR3hxBVLJBFCQ==}
 
-  '@sap-ai-sdk/context-registry@2.15.1-20261007013624.0':
-    resolution: {integrity: sha512-/IQJ80NZR0FPYynVDc0HiQn/31C1RCH2TptWvgZFLdrdg9s6npMk1XIB0lon2F2/hdk3PmxFFEOdpJheo4xXkA==}
+  '@sap-ai-sdk/core@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-DWPs8E2MA28tP85labtGE6/C1pGXeuRAkh5ZMMK+x/q1jueuPRsWaombJKSR7IYea9eXHSP4qZbmASPpuPao+w==}
 
-  '@sap-ai-sdk/core@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-HAzI/9lTZuFwTZ+oYuT/NAkn0TrzrDdiOrruj8vCjtp9eNWmJSJqdQvKKSx8RGXLDsjIKnAhm6X9HxSIwg/A2Q==}
+  '@sap-ai-sdk/document-grounding@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-ttrPhPPJPUq+9VzH/zn7T2gv7j05gUaPPMtinNyvC9m4q8bNDuJebTv2zvGsd+5C84neqEa+pjxaGQGUHzlgHw==}
 
-  '@sap-ai-sdk/core@2.16.1-20261007013624.0':
-    resolution: {integrity: sha512-qNeBlreG2TzsBeoy9vayJcJgxrIkWjdBw7BAmO/JjXlJpnmmi3SqG/IHVyYAhbQfCEeKW0373xPuWM1jOvc/Bg==}
+  '@sap-ai-sdk/foundation-models@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-WUrW/WNpJhYSxAIH28M4GhX5ollcCItWlzQpMF47OWA0fl+udY2vZwOtGqjKEjmQRUlIQkzbQoYFCjy5KpJMig==}
 
-  '@sap-ai-sdk/core@2.16.1-20261020070745.0':
-    resolution: {integrity: sha512-ZTE/8nSE/h8haHRSK2Xm8CID1aSk2m2xr0cxKovTn7BdKpcsTTjrBKpk3SmOegeZNmZzGyrXGPhWqKZB0vIKBQ==}
-
-  '@sap-ai-sdk/document-grounding@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-BBA5G0DrzDmRP3P1IeDJE+DSOGSv7to+f2AvjYrwySN4/aGQlmyVvSzsKhq5oIrDmy1hCvQktl5AKVHfZRY7ww==}
-
-  '@sap-ai-sdk/foundation-models@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-3WDBUsJ6pZAHqpJe6hQVJzJQTYub5Z+jld/0odornQ/qJZ4kZzVM1edVEWaLNSbFDcddKygdn1IfCI69PJrWhA==}
-
-  '@sap-ai-sdk/langchain@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-3sQI8mvqM2P0kiFqoW9nl11HknxONvEv/ej6KKC3svBDfW9y3lyHnLG4TH2IujJCPeAX3BgFaXTlAqj5+7qMKw==}
+  '@sap-ai-sdk/langchain@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-Xw5CLzN3RkZOq3m02T8Epw+Z6pSx7SYcg4ua5o1ktVIKrbUnaOL2QSVZxt6Y9bjHfPyjOOso6wAZDaRbyVCevw==}
     peerDependencies:
       '@langchain/core': ^1.2.3
       langchain: ^1.5.4
@@ -2043,11 +2031,11 @@ packages:
       langchain:
         optional: true
 
-  '@sap-ai-sdk/llm-batch@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-y2dNgHXbgpOrLo9Jfsj43kJ3m7xnfDbDTwTX3ThVCJx18G8H+Y9JaYJjPz8evLinkHxBWeaqQLxz5HnuLl8Zgw==}
+  '@sap-ai-sdk/llm-batch@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-H7WkeL4WhkpKmCuZkYQH1tA422rPvUuC+BhC4F0rPTxDtTrUoyFDEJz4nY7z5Fk4fDcFVx09pwKrYIDP4FFRjw==}
 
-  '@sap-ai-sdk/openai@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-D6FvyJakyoH4opCka0aprtcyJFjXkBR1fcIWDkFQWiZASdsw1l80Rsi/tVOvtzT9lpCeAYmP9qQ4D0gpvYOOhA==}
+  '@sap-ai-sdk/openai@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-e6TrBfdMoVDFqi9yWW2FiymXdzAzgkkqbCuBOTeyIu/Dfo4drTwRmQuuqyedsktzULbobe86byzicjdDnKlz0w==}
     peerDependencies:
       openai: ^7.5.0
       ws: ^8.20.0
@@ -2055,17 +2043,17 @@ packages:
       ws:
         optional: true
 
-  '@sap-ai-sdk/orchestration@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-VQOzL1agmEMKor+bVpw9uuQzqdBHMhfmhBl82Mr2xd2Uf8QE7fc/ulFpElgGDHRVVwK9BALMqLAFg8fNbMcgog==}
+  '@sap-ai-sdk/orchestration@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-bgLCLbowKi7IFsnmfQP1axKHb8v2NyAuEYxlFx/0G5xeV5OZuM+kcbyJDsR+kMXFK3P31TOSFVYiB9f+pQzjiA==}
 
-  '@sap-ai-sdk/prompt-registry@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-2RnQ6egQFsmmZFT4CSJRK52Up/KY1FR4qAZ8btwvcNzU/KY+Fe4Dafxtr+yHZssTJnyHx1i4aJghcDZj8GNPwA==}
+  '@sap-ai-sdk/prompt-registry@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-2kIEWbmrVgUmQkaMnNvA+ICqLuPi7ZO57HlaryIME6ANLDlBA/T0bZ7t/8vxoiE4Xw/zTfB1zO6vGvLfcYk4MQ==}
 
-  '@sap-ai-sdk/rpt@2.16.1-20260927012911.0':
-    resolution: {integrity: sha512-cFuWcPAhTveb0rDe/lbxyHuC5mSTMdhmGxuGatlA2d6vIYTa5+rfL9TDh/n4esNmypPkdZZbdFx3o/YlbVonxg==}
+  '@sap-ai-sdk/rpt@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-AAGW/9/IgDGWONDBax79PGGEQCFnOunKPdpwLACG7ZLhCJq4WFeCDrIT3R1Lj3MZ4PtQU2zAjAWi0A9qKaiqFw==}
 
-  '@sap-ai-sdk/tabular-orchestration@2.16.1-20261020070745.0':
-    resolution: {integrity: sha512-emLQmf2MnMH+vXVwGE0TjLuOAxezCOspEbSqRRLBdtTPxkN+44RIg4eQ9h/ikamEpAzpoVJoWV4GZfqO3+qN0Q==}
+  '@sap-ai-sdk/tabular-orchestration@2.17.1-20261028011301.0':
+    resolution: {integrity: sha512-5igrnW+noOl8H5FBlQQIilBUVjEwyDzPUH1ZsJ5mPVP0P32PZEMBDZAVZH9tbt23h+MQoqTV07xCwuqCeU1QEw==}
 
   '@sap-cloud-sdk/connectivity@4.9.1':
     resolution: {integrity: sha512-0deJBmdUd1LD1O3CX/wqYjTEKmnrnLsxnrSE8CyGtzbyomjjL1ePEXB3g6QUpQKmClVyOgJG/IbpyJFGGXXL5A==}
@@ -3378,8 +3366,8 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  knip@6.42.1:
-    resolution: {integrity: sha512-gKJVsiT4LJQ0lfc8uSHOCzkOY8adAXNFGarIeODZbJOkBnQRVsG3e0UZFnO4LMwjA82A5tBWX/VgoeTYcjdKiQ==}
+  knip@6.43.0:
+    resolution: {integrity: sha512-8l3cCOg/EXoILO0qcSoMra49yQM91+lEIR4fu5Ko8rrArGX8xKdKZiGI9psPiY6rhLmfLERcMfFEByF0wli5CA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -3814,8 +3802,8 @@ packages:
   outvariant@1.4.3:
     resolution: {integrity: sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA==}
 
-  oxc-parser@0.154.0:
-    resolution: {integrity: sha512-Gr/6fkjZwi937c4Tsz8y0iO4U0FLPkZI6JSVucLAIvQyqh379px7RS8ORIc0HOORbFjXZ6zyqWLl53qxhSeofw==}
+  oxc-parser@0.155.0:
+    resolution: {integrity: sha512-C/ReSf1JUFukK/zvk6jhcNibSssvas5+ktIzK7fbKVd3CedWe59C3QwHEOrEZj/4Rt9+xg0Jeis/Jv1F/KM1mw==}
     engines: {node: ^20.19.0 || >=22.12.0}
 
   oxc-resolver@11.24.2:
@@ -5490,66 +5478,64 @@ snapshots:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
 
-  '@oxc-parser/binding-android-arm-eabi@0.154.0':
+  '@oxc-parser/binding-android-arm-eabi@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-android-arm64@0.154.0':
+  '@oxc-parser/binding-android-arm64@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-darwin-arm64@0.154.0':
+  '@oxc-parser/binding-darwin-arm64@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-darwin-x64@0.154.0':
+  '@oxc-parser/binding-darwin-x64@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-freebsd-x64@0.154.0':
+  '@oxc-parser/binding-freebsd-x64@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-arm-gnueabihf@0.154.0':
+  '@oxc-parser/binding-linux-arm-gnueabihf@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-arm-musleabihf@0.154.0':
+  '@oxc-parser/binding-linux-arm-musleabihf@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-arm64-gnu@0.154.0':
+  '@oxc-parser/binding-linux-arm64-gnu@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-arm64-musl@0.154.0':
+  '@oxc-parser/binding-linux-arm64-musl@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-ppc64-gnu@0.154.0':
+  '@oxc-parser/binding-linux-ppc64-gnu@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-riscv64-gnu@0.154.0':
+  '@oxc-parser/binding-linux-riscv64-gnu@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-riscv64-musl@0.154.0':
+  '@oxc-parser/binding-linux-riscv64-musl@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-s390x-gnu@0.154.0':
+  '@oxc-parser/binding-linux-s390x-gnu@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-x64-gnu@0.154.0':
+  '@oxc-parser/binding-linux-x64-gnu@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-linux-x64-musl@0.154.0':
+  '@oxc-parser/binding-linux-x64-musl@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-openharmony-arm64@0.154.0':
+  '@oxc-parser/binding-openharmony-arm64@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-win32-arm64-msvc@0.154.0':
+  '@oxc-parser/binding-win32-arm64-msvc@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-win32-ia32-msvc@0.154.0':
+  '@oxc-parser/binding-win32-ia32-msvc@0.155.0':
     optional: true
 
-  '@oxc-parser/binding-win32-x64-msvc@0.154.0':
+  '@oxc-parser/binding-win32-x64-msvc@0.155.0':
     optional: true
 
-  '@oxc-project/types@0.150.0': {}
-
-  '@oxc-project/types@0.154.0': {}
+  '@oxc-project/types@0.155.0': {}
 
   '@oxc-resolver/binding-android-arm-eabi@11.24.2':
     optional: true
@@ -5791,32 +5777,23 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sap-ai-sdk/ai-api@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/ai-api@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/ai-api@2.16.1-20261020070745.0':
+  '@sap-ai-sdk/context-registry@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.16.1-20261020070745.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/context-registry@2.15.1-20261007013624.0':
-    dependencies:
-      '@sap-ai-sdk/core': 2.16.1-20261007013624.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-ai-sdk/core@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/core@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.9.1
       '@sap-cloud-sdk/http-client': 4.9.1
@@ -5826,72 +5803,52 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.16.1-20261007013624.0':
+  '@sap-ai-sdk/document-grounding@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/http-client': 4.9.1
-      '@sap-cloud-sdk/openapi': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/core@2.16.1-20261020070745.0':
+  '@sap-ai-sdk/foundation-models@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/http-client': 4.9.1
-      '@sap-cloud-sdk/openapi': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/ai-api': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/document-grounding@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/langchain@2.17.1-20261028011301.0(@langchain/core@1.2.20(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(debug@4.4.3(supports-color@7.2.0))(langchain@1.5.18(@langchain/core@1.2.20(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-ai-sdk/foundation-models@2.16.1-20260927012911.0':
-    dependencies:
-      '@sap-ai-sdk/ai-api': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/http-client': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-ai-sdk/langchain@2.16.1-20260927012911.0(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(langchain@1.5.15(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))':
-    dependencies:
-      '@langchain/core': 1.2.17(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
-      '@sap-ai-sdk/ai-api': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/foundation-models': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/orchestration': 2.16.1-20260927012911.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@langchain/core': 1.2.20(@opentelemetry/api@1.10.0)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
+      '@sap-ai-sdk/ai-api': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/foundation-models': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/orchestration': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     optionalDependencies:
       langchain: 1.5.15(@langchain/core@1.2.17(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0))(@opentelemetry/api@1.9.1)(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/llm-batch@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/llm-batch@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/openai@2.16.1-20260927012911.0(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(ws@8.22.0)':
+  '@sap-ai-sdk/openai@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(openai@7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7))(supports-color@7.2.0)(ws@8.22.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/ai-api': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       openai: 7.43.0(undici@7.30.1)(ws@8.22.0)(zod@4.6.7)
     optionalDependencies:
       ws: 8.22.0
@@ -5899,42 +5856,42 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/orchestration@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/orchestration@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/prompt-registry': 2.16.1-20260927012911.0
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/ai-api': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/prompt-registry': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       yaml: 2.9.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/prompt-registry@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/prompt-registry@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       zod: 4.6.7
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/rpt@2.16.1-20260927012911.0':
+  '@sap-ai-sdk/rpt@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.16.1-20260927012911.0
-      '@sap-ai-sdk/core': 2.16.1-20260927012911.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/http-client': 4.9.1
-      '@sap-cloud-sdk/util': 4.9.1
+      '@sap-ai-sdk/ai-api': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@sap-ai-sdk/tabular-orchestration@2.16.1-20261020070745.0':
+  '@sap-ai-sdk/tabular-orchestration@2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-ai-sdk/ai-api': 2.16.1-20261020070745.0
-      '@sap-ai-sdk/core': 2.16.1-20261020070745.0
-      '@sap-cloud-sdk/connectivity': 4.9.1
-      '@sap-cloud-sdk/http-client': 4.9.1
+      '@sap-ai-sdk/ai-api': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/core': 2.17.1-20261028011301.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/connectivity': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/http-client': 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -7204,12 +7161,12 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  knip@6.42.1:
+  knip@6.43.0:
     dependencies:
       formatly: 0.11.4
       get-tsconfig: 4.14.3
       jiti: 2.7.0
-      oxc-parser: 0.154.0
+      oxc-parser: 0.155.0
       oxc-resolver: 11.24.2
       picomatch: 4.0.7
       smol-toml: 1.9.1
@@ -7633,29 +7590,29 @@ snapshots:
 
   outvariant@1.4.3: {}
 
-  oxc-parser@0.154.0:
+  oxc-parser@0.155.0:
     dependencies:
-      '@oxc-project/types': 0.154.0
+      '@oxc-project/types': 0.155.0
     optionalDependencies:
-      '@oxc-parser/binding-android-arm-eabi': 0.154.0
-      '@oxc-parser/binding-android-arm64': 0.154.0
-      '@oxc-parser/binding-darwin-arm64': 0.154.0
-      '@oxc-parser/binding-darwin-x64': 0.154.0
-      '@oxc-parser/binding-freebsd-x64': 0.154.0
-      '@oxc-parser/binding-linux-arm-gnueabihf': 0.154.0
-      '@oxc-parser/binding-linux-arm-musleabihf': 0.154.0
-      '@oxc-parser/binding-linux-arm64-gnu': 0.154.0
-      '@oxc-parser/binding-linux-arm64-musl': 0.154.0
-      '@oxc-parser/binding-linux-ppc64-gnu': 0.154.0
-      '@oxc-parser/binding-linux-riscv64-gnu': 0.154.0
-      '@oxc-parser/binding-linux-riscv64-musl': 0.154.0
-      '@oxc-parser/binding-linux-s390x-gnu': 0.154.0
-      '@oxc-parser/binding-linux-x64-gnu': 0.154.0
-      '@oxc-parser/binding-linux-x64-musl': 0.154.0
-      '@oxc-parser/binding-openharmony-arm64': 0.154.0
-      '@oxc-parser/binding-win32-arm64-msvc': 0.154.0
-      '@oxc-parser/binding-win32-ia32-msvc': 0.154.0
-      '@oxc-parser/binding-win32-x64-msvc': 0.154.0
+      '@oxc-parser/binding-android-arm-eabi': 0.155.0
+      '@oxc-parser/binding-android-arm64': 0.155.0
+      '@oxc-parser/binding-darwin-arm64': 0.155.0
+      '@oxc-parser/binding-darwin-x64': 0.155.0
+      '@oxc-parser/binding-freebsd-x64': 0.155.0
+      '@oxc-parser/binding-linux-arm-gnueabihf': 0.155.0
+      '@oxc-parser/binding-linux-arm-musleabihf': 0.155.0
+      '@oxc-parser/binding-linux-arm64-gnu': 0.155.0
+      '@oxc-parser/binding-linux-arm64-musl': 0.155.0
+      '@oxc-parser/binding-linux-ppc64-gnu': 0.155.0
+      '@oxc-parser/binding-linux-riscv64-gnu': 0.155.0
+      '@oxc-parser/binding-linux-riscv64-musl': 0.155.0
+      '@oxc-parser/binding-linux-s390x-gnu': 0.155.0
+      '@oxc-parser/binding-linux-x64-gnu': 0.155.0
+      '@oxc-parser/binding-linux-x64-musl': 0.155.0
+      '@oxc-parser/binding-openharmony-arm64': 0.155.0
+      '@oxc-parser/binding-win32-arm64-msvc': 0.155.0
+      '@oxc-parser/binding-win32-ia32-msvc': 0.155.0
+      '@oxc-parser/binding-win32-x64-msvc': 0.155.0
 
   oxc-resolver@11.24.2:
     optionalDependencies:
