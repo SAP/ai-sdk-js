@@ -37,5 +37,5 @@ export type VectorSearchFilter = {
   /**
    * Advanced filter expression for combining metadata filters with boolean logic
    */
-  filter?: BinaryBooleanFilter | ScopedKeyValueListPair | null;
+  filter?: BinaryBooleanFilter | ScopedKeyValueListPair;
 } & Record<string, any>;
