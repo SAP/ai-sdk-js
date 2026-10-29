@@ -213,6 +213,48 @@ describe('construct completion post request from JSON', () => {
       ).toThrowError(/Cannot set both 'prompt' and 'messages'/);
     });
 
+    it('throws when the request prompt is an unparsed string', () => {
+      const jsonConfig = {
+        modules: { prompt_templating: modelConfig }
+      };
+      const request = {
+        prompt: 'An unparsed prompt'
+      } as unknown as ChatCompletionRequest;
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrowError(/Prompt must be parsed/);
+    });
+
+    it('throws when the request prompt template is empty', () => {
+      const jsonConfig = {
+        modules: { prompt_templating: modelConfig }
+      };
+      const request: ChatCompletionRequest = { prompt: { template: [] } };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
+      ).toThrowError(/must contain at least one message/);
+    });
+
+    it('treats a null config prompt as absent and injects the request prompt', () => {
+      const jsonConfig = {
+        modules: {
+          prompt_templating: { ...modelConfig, prompt: null }
+        }
+      };
+      const request: ChatCompletionRequest = { prompt: requestPrompt };
+
+      const result = constructCompletionPostRequestFromJsonModuleConfig(
+        jsonConfig,
+        request
+      );
+
+      expect(result.config.modules.prompt_templating.prompt).toEqual(
+        requestPrompt
+      );
+    });
+
     it('throws a friendly error when modules is not an object or array', () => {
       const jsonConfig = { modules: 'invalid' };
       const request: ChatCompletionRequest = { prompt: requestPrompt };

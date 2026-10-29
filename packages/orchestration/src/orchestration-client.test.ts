@@ -2279,7 +2279,7 @@ describe('orchestration service client', () => {
         new OrchestrationClient(configWithPrompt).chatCompletion({
           prompt: { template: [{ role: 'user', content: 'Hi' }] }
         })
-      ).rejects.toThrow(/already configured in the constructor/);
+      ).rejects.toThrow(/the config already defines a prompt/);
     });
 
     it('throws an error when request-level prompt is combined with a constructor-level prompt in a module config list', async () => {
@@ -2304,7 +2304,7 @@ describe('orchestration service client', () => {
         ]).chatCompletion({
           prompt: { template: [{ role: 'user', content: 'Hi' }] }
         })
-      ).rejects.toThrow(/already configured in the constructor/);
+      ).rejects.toThrow(/the config already defines a prompt/);
     });
 
     it('throws an error when request-level prompt is combined with a constructor-level template reference', async () => {
@@ -2319,7 +2319,7 @@ describe('orchestration service client', () => {
         new OrchestrationClient(configWithTemplateRef).chatCompletion({
           prompt: { template: [{ role: 'user', content: 'Hi' }] }
         })
-      ).rejects.toThrow(/already configured in the constructor/);
+      ).rejects.toThrow(/the config already defines a prompt/);
     });
 
     it('throws an error when request-level prompt is set with a config reference by ID', async () => {
@@ -2366,7 +2366,7 @@ describe('orchestration service client', () => {
         new OrchestrationClient(defaultJsonConfig).chatCompletion({
           prompt: { template: [{ role: 'user', content: 'Hi' }] }
         })
-      ).rejects.toThrow(/JSON config already has 'prompt_templating.prompt'/);
+      ).rejects.toThrow(/the config already defines a prompt/);
     });
   });
 });

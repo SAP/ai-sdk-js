@@ -432,7 +432,25 @@ describe('construct completion post request', () => {
             template: [{ role: 'user', content: 'Hi' }]
           }
         })
-      ).toThrow(/already configured in the constructor/);
+      ).toThrow(/the config already defines a prompt/);
+    });
+
+    it('treats an empty-string constructor prompt as absent and injects the request prompt', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: '',
+          model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
+        }
+      };
+      const completionPostRequest = constructCompletionPostRequest(config, {
+        prompt: {
+          template: [{ role: 'user', content: 'Hi' }]
+        }
+      });
+      expect(
+        (completionPostRequest.config?.modules as ModuleConfigs)
+          ?.prompt_templating?.prompt
+      ).toEqual({ template: [{ role: 'user', content: 'Hi' }] });
     });
 
     it('should throw when a request-level prompt is combined with messages', async () => {

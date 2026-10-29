@@ -47,15 +47,17 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   validateJsonModuleConfigShape(moduleList);
 
   if (request?.prompt) {
-    if (request.messages?.length) {
-      throw new Error(
-        "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
-      );
-    }
-    const modulesWithPrompt = addRequestPromptToModules(
-      moduleList,
-      request.prompt
+    assertConfigHasNoPrompt(
+      moduleList.map(mod => mod?.prompt_templating?.prompt)
     );
+    const prompt = validateRequestPromptShape(request);
+    const modulesWithPrompt = moduleList.map(mod => ({
+      ...mod,
+      prompt_templating: {
+        ...mod.prompt_templating,
+        prompt
+      }
+    }));
     modules = Array.isArray(modules) ? modulesWithPrompt : modulesWithPrompt[0];
   }
 
@@ -106,29 +108,6 @@ function validateJsonModuleConfigShape(
       );
     }
   });
-}
-
-function addRequestPromptToModules(
-  moduleList: Record<string, any>[],
-  requestPrompt: NonNullable<ChatCompletionRequest['prompt']>
-): Record<string, any>[] {
-  const hasExistingPrompt = moduleList.some(
-    mod => mod.prompt_templating.prompt !== undefined
-  );
-
-  if (hasExistingPrompt) {
-    throw new Error(
-      "Cannot set 'prompt' in the request when the JSON config already has 'prompt_templating.prompt'. Remove the prompt from the config or omit the request-level prompt."
-    );
-  }
-
-  return moduleList.map(mod => ({
-    ...mod,
-    prompt_templating: {
-      ...mod.prompt_templating,
-      prompt: requestPrompt
-    }
-  }));
 }
 
 /**
@@ -471,7 +450,8 @@ function buildRequestPromptCompletion(
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
   const configs = Array.isArray(config) ? config : [config];
-  const prompt = validateRequestPrompt(configs, request);
+  assertConfigHasNoPrompt(configs.map(c => c?.promptTemplating?.prompt));
+  const prompt = validateRequestPromptShape(request);
 
   const moduleConfigurations = Array.isArray(config)
     ? config.map(c => buildModulesConfig(c, prompt))
@@ -562,23 +542,36 @@ function rejectRequestPromptMessage(context: string, hint: string): string {
 }
 
 /**
- * Validates a request-level prompt and narrows it to the template or template
- * reference sent to the orchestration service. A request-level prompt is
- * mutually exclusive with a constructor prompt and the deprecated `messages`
- * field, must already be parsed, and must contain at least one message.
- * @param configs - The module configurations to check for a constructor prompt.
+ * Throws if any module configuration already carries a prompt, which conflicts
+ * with a request-level prompt. A prompt counts as present when it is a non-null
+ * object (a template or template reference) or a non-empty string. Works for
+ * both typed (camelCase) and JSON (snake_case) configs: the caller extracts the
+ * prompt from each config in its own casing.
+ * @param prompts - The prompt extracted from each module configuration.
+ */
+function assertConfigHasNoPrompt(prompts: unknown[]): void {
+  const hasPrompt = prompts.some(
+    prompt =>
+      (typeof prompt === 'object' && prompt !== null) ||
+      (typeof prompt === 'string' && prompt.length > 0)
+  );
+  if (hasPrompt) {
+    throw new Error(
+      "Cannot set 'prompt' in the request when the config already defines a prompt. Remove the prompt from the config, or omit the request-level prompt."
+    );
+  }
+}
+
+/**
+ * Validates a request-level prompt's shape, independent of the config type. The
+ * prompt is mutually exclusive with the deprecated `messages` field, must
+ * already be parsed, and must contain at least one message.
  * @param request - The request carrying the request-level prompt.
  * @returns The validated template or template reference.
  */
-function validateRequestPrompt(
-  configs: OrchestrationModuleConfig[],
+function validateRequestPromptShape(
   request: ChatCompletionRequest
 ): Template | TemplateRef {
-  if (configs.some(c => c?.promptTemplating?.prompt)) {
-    throw new Error(
-      "Cannot set a request-level 'prompt' when a prompt is already configured in the constructor. Remove the constructor prompt and pass the prompt per call via the request-level 'prompt' field instead."
-    );
-  }
   if (request.messages?.length) {
     throw new Error(
       "Cannot set both 'prompt' and 'messages' in the request. Use the request-level 'prompt' field for the current turn."
