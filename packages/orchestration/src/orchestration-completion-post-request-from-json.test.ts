@@ -251,7 +251,7 @@ describe('construct completion post request from JSON', () => {
 
       expect(() =>
         constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, request)
-      ).toThrowError(/Prompt must be parsed/);
+      ).toThrowError(/Request-level prompt must be parsed/);
     });
 
     it('throws when the request prompt template is empty', () => {

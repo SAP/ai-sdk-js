@@ -449,8 +449,8 @@ function buildRequestPromptCompletion(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const configs = Array.isArray(config) ? config : [config];
-  assertConfigHasNoPrompt(configs.map(c => c?.promptTemplating?.prompt));
+  const moduleList = Array.isArray(config) ? config : [config];
+  assertConfigHasNoPrompt(moduleList.map(c => c?.promptTemplating?.prompt));
   const prompt = validateRequestPromptShape(request);
 
   const moduleConfigurations = Array.isArray(config)
@@ -576,18 +576,19 @@ function validateRequestPromptShape(
 
   const { prompt } = request;
   if (typeof prompt === 'string') {
-    throw new TypeError('Prompt must be parsed before merging with messages.');
+    throw new TypeError('Request-level prompt must be parsed before use.');
   }
 
-  // A template reference is sent as-is; a local template must carry a message.
   if (isTemplateRef(prompt)) {
     return prompt;
   }
+
   if (!isTemplate(prompt) || !prompt.template?.length) {
     throw new Error(
       'The request-level prompt template must contain at least one message.'
     );
   }
+
   return prompt;
 }
 
