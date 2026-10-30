@@ -2,7 +2,7 @@
 
 ## Status
 
-proposed — pending team alignment on backoff, ergonomics, and terminal-model coverage
+proposed — pending final review (backoff and terminal-model coverage decided; see below)
 
 This ADR covers acceptance criterion #1 of [#659](https://github.com/SAP/ai-sdk-js-backlog/issues/659) ("investigate and decide on approach"), following the Context Registry release ([#663](https://github.com/SAP/ai-sdk-js-backlog/issues/663)).
 No implementation is included; the ticket requires team alignment before code is written.
@@ -99,28 +99,17 @@ This mirrors the hand-written client pattern in `@sap-ai-sdk/foundation-models`.
 
 ### Question 4: Backoff strategy
 
-**Recommendation: a fixed ~60s interval with 429 handling; exponential backoff is optional.**
-The context-registry team confirmed a READ rate limit of ~1200 requests/minute per endpoint and recommended polling once a minute, so a fixed ~60s interval never approaches the limit and 429 is unlikely in normal polling.
-The service does return 429 under load, but the retry value is carried in the response body, not a `Retry-After` header; the helper should read that value and back off when it occurs.
-This leans fixed-interval rather than the ticket's literal "exponential backoff and randomisation"; exponential backoff stays available as an option but is not required by the observed rate limits.
-
-#### Option A: Fixed interval with 429 handling
-
-**Pros:** Matches the service team's guidance; a wall-clock `maxWaitTime` is clearer than an attempt count; 429 handling covers the rare throttle.
-
-**Cons:** Deviates from the literal ticket wording.
-
-#### Option B: Exponential backoff with jitter
-
-**Pros:** Matches the ticket text; resilient under concurrent bursts of polling.
-
-**Cons:** Redundant given the generous rate limit and once-a-minute polling.
+**Decided: exponential backoff with jitter, over a ~60s base interval, plus 429 handling.**
+The context-registry team confirmed a READ rate limit of ~1200 requests/minute per endpoint and recommended polling once a minute, so the base interval sits around 60s and never approaches the limit.
+The service does return 429 under load, with the retry value in the response body (not a `Retry-After` header); the helper reads that value and backs off when it occurs.
+The team agreed to include exponential backoff with jitter as the ticket asks: it is low-effort and sensible even though the rate limit alone would not require it.
 
 Completion times are not yet measured (they depend on the data source and HANA Cloud), but deletion is bounded at ~1 hour, so `maxWaitTime` defaults should be generous (on the order of an hour) and configurable.
 
 ### Question 5: Terminal-model coverage
 
-**Open — team decision, but a single engine covers create, delete, and pipeline.**
+**Decided: cover create, delete, and pipeline in v1, with a single engine.**
+The team chose to handle all three flows now rather than ship create-only and split the rest into follow-ups, which would add organisational overhead for little saved effort.
 All three fit one model: poll until a terminal state, return the resource, and let the caller interpret the outcome.
 
 - **Create:** the resource reaches `ACTIVE` or `ERROR` (context-registry), or the creation-status union resolves to its created shape (document-grounding).
@@ -132,8 +121,7 @@ All three fit one model: poll until a terminal state, return the resource, and l
 - **Pipeline:** `manualTriggerPipeline` has several terminals including the partial-success `FINISHEDWITHERRORS`.
   `isComplete` treats every terminal (`FINISHED`, `FINISHEDWITHERRORS`, `TIMEOUT`) as done, `getFailure` fires only on the `*_FAILED` states, and the caller reads `resource.status` to tell success from partial success.
 
-A separate `pollAsyncResourceWithPartialSuccess` engine is therefore not needed: partial success is the caller's interpretation of the returned resource, not a second engine.
-The only open point is confirming the team wants to cover all three flows in the first version rather than create only.
+A separate `pollAsyncResourceWithPartialSuccess` engine is not needed: partial success is the caller's interpretation of the returned resource, not a second engine.
 
 ### Question 6: Return shape — pull-model primitive, blocking helper, or poller object
 
