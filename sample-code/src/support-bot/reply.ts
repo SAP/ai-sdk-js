@@ -281,6 +281,7 @@ function truncateCodeBlocks(body: string, maxChars = 200): string {
     if (inner.length <= maxChars) {
       return block;
     }
+    // Keep head + tail: error stacks and log tails carry the diagnostic signal
     const head = inner.slice(0, Math.ceil(maxChars / 2));
     const tail = inner.slice(-Math.floor(maxChars / 2));
     return (
