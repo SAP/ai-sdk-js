@@ -621,7 +621,7 @@ function addStreamIfEnabled(
 function mergePromptWithMessages(
   promptTemplating: OrchestrationModuleConfig['promptTemplating'],
   request?: ChatCompletionRequest
-): Template | TemplateRef {
+): Template | TemplateRef | undefined {
   // Legacy path only: the request-level prompt routes to buildRequestPromptCompletion.
   const messages = request?.messages;
 
@@ -629,12 +629,27 @@ function mergePromptWithMessages(
     throw new TypeError('Prompt must be parsed before merging with messages.');
   }
 
-  // If no prompt is defined, we initialize it with an empty template object
-  const prompt = promptTemplating.prompt ?? { template: [] };
+  const prompt = promptTemplating.prompt;
+
+  // With no configured prompt, the current turn comes from `messages`; failing
+  // that, a non-empty history is sent on its own with no prompt template.
+  if (!prompt) {
+    if (messages?.length) {
+      return { template: messages };
+    }
+    if (request?.messagesHistory?.length) {
+      return undefined;
+    }
+    throw new Error(
+      'Either a prompt template, messages, or messagesHistory must be defined.'
+    );
+  }
 
   if (isTemplate(prompt)) {
     if (!prompt.template?.length && !messages?.length) {
-      throw new Error('Either a prompt template or messages must be defined.');
+      throw new Error(
+        'A configured prompt template must contain at least one message.'
+      );
     }
     return {
       ...prompt,
@@ -648,20 +663,25 @@ function mergePromptWithMessages(
 /**
  * Builds a single module configuration with an already-resolved request-level prompt.
  * @param config - The module configuration to build from.
- * @param prompt - The resolved template or template reference.
+ * @param prompt - The resolved template or template reference, or undefined to
+ * omit the prompt entirely (history-only request).
  * @returns The module configuration with the prompt applied.
  */
 function buildModulesConfig(
   config: OrchestrationModuleConfig,
-  prompt: Template | TemplateRef
+  prompt?: Template | TemplateRef
 ): ModuleConfigs {
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
+  // Drop the configured prompt: the resolved `prompt` already incorporates it,
+  // and omitting it entirely yields a valid history-only request.
+  const { prompt: _configuredPrompt, ...promptTemplatingRest } =
+    promptTemplating;
 
   return {
     prompt_templating: {
-      ...promptTemplating,
-      prompt
+      ...promptTemplatingRest,
+      ...(prompt !== undefined && { prompt })
     },
     ...(filtering && Object.keys(filtering).length && { filtering }),
     ...(masking && Object.keys(masking).length && { masking }),

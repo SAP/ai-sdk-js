@@ -28,6 +28,7 @@ export {
   chatCompletionStreamWithJsonModuleConfig,
   chatCompletionStream,
   orchestrationMessageHistoryWithToolCalling,
+  orchestrationMessageHistoryOnly,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef,

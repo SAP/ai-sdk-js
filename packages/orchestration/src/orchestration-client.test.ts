@@ -133,6 +133,47 @@ describe('orchestration service client', () => {
     );
   });
 
+  it('omits prompt from completion config when only messages history is provided', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' }
+      }
+    };
+    const messagesHistory = [{ role: 'user' as const, content: 'Hello' }];
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          config: {
+            modules: {
+              prompt_templating: {
+                model: { name: 'gpt-5.4-nano' }
+              }
+            }
+          },
+          messages_history: messagesHistory
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/v2/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messagesHistory
+    });
+
+    expect(response.getContent()).toEqual(expect.any(String));
+  });
+
   it('calls chatCompletion with some templating configuration (without template)', async () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
@@ -1957,6 +1998,16 @@ describe('orchestration service client', () => {
           model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
         }
       }
+    });
+
+    it('rejects a request-level prompt template without messages', async () => {
+      await expect(
+        new OrchestrationClient(config).chatCompletion({
+          prompt: { template: [] }
+        })
+      ).rejects.toThrow(
+        'The request-level prompt template must contain at least one message.'
+      );
     });
 
     it('calls chatCompletion with a request-level prompt template', async () => {

@@ -199,6 +199,34 @@ describe('construct completion post request from JSON', () => {
       );
     });
 
+    it('rejects an empty request-level prompt template', () => {
+      const jsonConfig = {
+        modules: { prompt_templating: modelConfig }
+      };
+
+      expect(() =>
+        constructCompletionPostRequestFromJsonModuleConfig(jsonConfig, {
+          prompt: { template: [] }
+        })
+      ).toThrow(
+        'The request-level prompt template must contain at least one message.'
+      );
+    });
+
+    it('accepts a request-level template reference without inline messages', () => {
+      const jsonConfig = {
+        modules: { prompt_templating: modelConfig }
+      };
+      const prompt = { template_ref: { id: 'template-id' } };
+
+      const result = constructCompletionPostRequestFromJsonModuleConfig(
+        jsonConfig,
+        { prompt }
+      );
+
+      expect(result.config.modules.prompt_templating.prompt).toEqual(prompt);
+    });
+
     it('throws when both prompt and messages are set in the request', () => {
       const jsonConfig = {
         modules: { prompt_templating: modelConfig }
