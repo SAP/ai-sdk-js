@@ -325,21 +325,6 @@ function buildModules(
     return addStreamOptionsToSingleModuleConfig(config, itemStreamOptions);
   });
 }
-
-// Overload for array with stream options (can have overrides)
-/** @internal */
-export function addStreamOptions(
-  moduleConfigs: ModuleConfigs[],
-  streamOptions?: StreamOptions
-): OrchestrationConfig;
-
-// Overload for single module configuration (no overrides allowed)
-/** @internal */
-export function addStreamOptions(
-  moduleConfigs: ModuleConfigs,
-  streamOptions?: BaseStreamOptions
-): OrchestrationConfig;
-
 /**
  * @internal
  * Adds stream options to module configurations and returns an orchestration config for streaming requests.
@@ -449,16 +434,14 @@ function buildRequestPromptCompletion(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): CompletionPostRequest {
-  const moduleList = Array.isArray(config) ? config : [config];
-  assertConfigHasNoPrompt(moduleList.map(c => c?.promptTemplating?.prompt));
+  const configs = Array.isArray(config) ? config : [config];
+  assertConfigHasNoPrompt(configs.map(c => c?.promptTemplating?.prompt));
   const prompt = validateRequestPromptShape(request);
 
-  const moduleConfigurations = Array.isArray(config)
-    ? config.map(c => buildModulesConfig(c, prompt))
-    : buildModulesConfig(config, prompt);
+  const moduleConfigurations = configs.map(c => buildModulesConfig(c, prompt));
 
   const configWithStream = addStreamIfEnabled(
-    moduleConfigurations,
+    Array.isArray(config) ? moduleConfigurations : moduleConfigurations[0],
     stream,
     streamOptions
   );
@@ -503,12 +486,12 @@ function buildLegacyMessagesCompletion(
       ? { ...request, messages: undefined }
       : request;
 
-  const moduleConfigurations = Array.isArray(config)
-    ? config.map(c => buildLegacyModulesConfig(c, moduleRequest))
-    : buildLegacyModulesConfig(config, moduleRequest);
+  const moduleConfigurations = configs.map(c =>
+    buildLegacyModulesConfig(c, moduleRequest)
+  );
 
   const configWithStream = addStreamIfEnabled(
-    moduleConfigurations,
+    Array.isArray(config) ? moduleConfigurations : moduleConfigurations[0],
     stream,
     streamOptions
   );
@@ -604,15 +587,9 @@ function addStreamIfEnabled(
   stream?: boolean,
   streamOptions?: StreamOptions
 ): OrchestrationConfig {
-  if (!stream) {
-    return { modules: moduleConfigurations };
-  }
-  return Array.isArray(moduleConfigurations)
-    ? addStreamOptions(moduleConfigurations, streamOptions)
-    : addStreamOptions(
-        moduleConfigurations,
-        streamOptions as BaseStreamOptions | undefined
-      );
+  return !stream
+    ? { modules: moduleConfigurations }
+    : addStreamOptions(moduleConfigurations, streamOptions);
 }
 
 function mergePromptWithMessages(
