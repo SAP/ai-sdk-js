@@ -32,14 +32,14 @@
     "@langchain/mcp-adapters": "2.0.1",
     "@langchain/textsplitters": "1.0.2",
     "@modelcontextprotocol/sdk": "1.32.2",
-    "@opencode-ai/sdk": "^1.18.4",
+    "@opencode-ai/sdk": "^1.19.4",
     "@sap-cloud-sdk/resilience": "catalog:",
     "@sap-cloud-sdk/util": "catalog:",
     "@types/express": "5.0.6",
     "express": "5.3.0",
     "langchain": "catalog:",
     "openai": "7.43.0",
-    "opencode-ai": "^1.18.4",
+    "opencode-ai": "^1.19.4",
     "ws": "8.22.0",
     "zod": "catalog:"
   },
@@ -56,7 +56,6 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
-    "@upstash/context7-mcp": "4.4.4",
     "hyparquet-writer": "0.17.0"
   },
   "peerDependencies": {
