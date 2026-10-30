@@ -1,0 +1,16 @@
+meta {
+  name: Get All Models
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/ai-api/models
+  body: none
+  auth: none
+}
+
+docs {
+  Returns all models in the "foundation-models" scenario as AiModelBaseData[].
+  Raw response from the AI Core model discovery endpoint.
+}

@@ -5,7 +5,11 @@ import { join } from 'node:path';
 
 import {
   resolveDeploymentUrl,
-  type AiDeploymentStatus
+  type AiDeploymentStatus,
+  filterByCapability,
+  filterByOrchestrationCapability,
+  filterNonDeprecated,
+  getLatestVersions
 } from '@sap-ai-sdk/ai-api';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
@@ -18,7 +22,12 @@ import {
   stopDeployments,
   deleteDeployments
 } from './ai-api/deployment-api.ts';
-import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
+import {
+  getScenarios,
+  getModelsInScenario,
+  getAllAvailableModels,
+  resolveModelDeploymentId
+} from './ai-api/scenario-api.ts';
 import {
   createCollection,
   createDocumentsWithTimestamp,
@@ -276,6 +285,52 @@ app.get('/ai-api/scenarios', async (req, res) => {
 app.get('/ai-api/models', async (req, res) => {
   try {
     res.send(await getModelsInScenario('foundation-models', 'default'));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/ai-api/models/discovery', async (req, res) => {
+  try {
+    const models = await getAllAvailableModels();
+    const capability = req.query.capability as string | undefined;
+    const orchestrationCapability = req.query.orchestrationCapability as
+      | string
+      | undefined;
+    const latestOnly = req.query.latestOnly === 'true';
+    const activeOnly = req.query.activeOnly === 'true';
+
+    let result = models;
+    if (capability) {
+      result = filterByCapability(result, capability);
+    }
+    if (orchestrationCapability) {
+      result = filterByOrchestrationCapability(result, orchestrationCapability);
+    }
+    if (activeOnly) {
+      result = filterNonDeprecated(result);
+    }
+    if (latestOnly) {
+      res.send(getLatestVersions(result));
+      return;
+    }
+    res.send(result);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/ai-api/deployment-id', async (req, res) => {
+  try {
+    const model = req.query.model as string | undefined;
+    const executableId = req.query.executableId as string | undefined;
+    if (!model || !executableId) {
+      res
+        .status(400)
+        .send('Query params "model" and "executableId" are required.');
+      return;
+    }
+    res.send(await resolveModelDeploymentId(model, executableId));
   } catch (error: any) {
     sendError(res, error);
   }

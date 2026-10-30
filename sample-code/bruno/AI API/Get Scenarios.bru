@@ -1,0 +1,16 @@
+meta {
+  name: Get Scenarios
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/ai-api/scenarios
+  body: none
+  auth: none
+}
+
+docs {
+  Returns all available scenarios from AI Core.
+  The scenario ID "foundation-models" is the one used by model discovery.
+}

@@ -173,6 +173,21 @@ export function mockDeploymentsList(
 /**
  * @internal
  */
+export function mockModelsList(
+  scenarioId: string,
+  response: { data: any; status?: number },
+  resourceGroup = 'default'
+): nock.Scope {
+  return nock(aiCoreDestination.url, {
+    reqheaders: { 'ai-resource-group': resourceGroup }
+  })
+    .get(`/v2/lm/scenarios/${scenarioId}/models`)
+    .reply(response.status ?? 200, response.data);
+}
+
+/**
+ * @internal
+ */
 export async function parseFileToString(
   client: string,
   fileName: string

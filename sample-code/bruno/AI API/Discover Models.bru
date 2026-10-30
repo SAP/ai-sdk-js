@@ -1,0 +1,30 @@
+meta {
+  name: Discover Models
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/ai-api/models/discovery
+  body: none
+  auth: none
+}
+
+params:query {
+  capability: text-generation
+  activeOnly: true
+  latestOnly: true
+}
+
+docs {
+  Filters models by capability, deprecated status, and version.
+
+  Query params (all optional):
+  - capability              filter by version capability, e.g. text-generation, embedding,
+                            image-recognition, reasoning, speech-to-text, image-generation,
+                            speech-to-speech
+  - orchestrationCapability filter by orchestration capability (tenant-specific)
+  - activeOnly              true = exclude deprecated model versions
+  - latestOnly              true = return flat list of { model, executableId, latestVersion }
+                            instead of full AiModelBaseData[]
+}
