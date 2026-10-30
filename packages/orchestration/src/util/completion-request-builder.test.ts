@@ -1,14 +1,14 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 
 import { isOrchestrationModuleConfigList } from '../orchestration-types.ts';
-import { buildAzureContentSafetyFilter } from './filtering.ts';
 import {
   addStreamOptions,
   addStreamOptionsToOutputFilteringConfig,
   addStreamOptionsToPromptTemplatingModuleConfig,
   constructCompletionPostRequest,
   constructCompletionPostRequestFromConfigReference
-} from './module-config.ts';
+} from './completion-request-builder.ts';
+import { buildAzureContentSafetyFilter } from './filtering.ts';
 
 import type { CompletionRequestConfiguration } from '../client/api/schema/completion-request-configuration.ts';
 import type {
@@ -170,6 +170,23 @@ describe('stream util tests', () => {
 });
 
 describe('constructCompletionPostRequestFromConfigReference', () => {
+  it('throws when a request-level prompt is combined with a config reference', () => {
+    const configRef: OrchestrationConfigRef = {
+      id: 'test-config-id'
+    };
+    const request: ChatCompletionRequest = {
+      prompt: {
+        template: [{ role: 'user', content: 'Current turn' }]
+      }
+    };
+
+    expect(() =>
+      constructCompletionPostRequestFromConfigReference(configRef, request)
+    ).toThrowError(
+      "Cannot set 'prompt' in the request when using a config reference. A config reference is single-turn and defines the template server-side. Use 'messagesHistory' for prior turns instead."
+    );
+  });
+
   it('constructs request with config reference by ID', () => {
     const configRef: OrchestrationConfigRef = {
       id: 'test-config-id'
@@ -502,7 +519,7 @@ describe('constructCompletionPostRequest with module fallback configs', () => {
   });
 });
 
-describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
+describe('mergePromptWithMessages via constructCompletionPostRequest', () => {
   it('should throw when the prompt is still an unparsed string', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
@@ -516,7 +533,7 @@ describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
     );
   });
 
-  it('should throw when neither a prompt template nor messages are defined', () => {
+  it('should reject an empty configured prompt even when history is provided', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
         prompt: { template: [] },
@@ -524,8 +541,62 @@ describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
       }
     };
 
+    expect(() =>
+      constructCompletionPostRequest(config, {
+        messagesHistory: [{ role: 'user', content: 'Hello' }]
+      })
+    ).toThrow(
+      'A configured prompt template must contain at least one message.'
+    );
+  });
+
+  it('should reject missing prompt and history input', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4' }
+      }
+    };
+
     expect(() => constructCompletionPostRequest(config)).toThrow(
-      'Either a prompt template or messages must be defined.'
+      'Either a prompt template, messages, or messagesHistory must be defined.'
+    );
+  });
+
+  it('should omit the prompt when only non-empty messages history is provided', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4' }
+      }
+    };
+    const messagesHistory = [{ role: 'user' as const, content: 'Hello' }];
+
+    const result = constructCompletionPostRequest(config, {
+      messagesHistory
+    }) as CompletionRequestConfiguration;
+
+    expect(result).toEqual({
+      config: {
+        modules: {
+          prompt_templating: {
+            model: { name: 'gpt-5.4' }
+          }
+        }
+      },
+      messages_history: messagesHistory
+    });
+  });
+
+  it('should reject an empty messages history when no prompt or messages are provided', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4' }
+      }
+    };
+
+    expect(() =>
+      constructCompletionPostRequest(config, { messagesHistory: [] })
+    ).toThrow(
+      'Either a prompt template, messages, or messagesHistory must be defined.'
     );
   });
 
