@@ -670,14 +670,15 @@ function buildModulesConfig(
 ): ModuleConfigs {
   const { promptTemplating, filtering, masking, grounding, translation } =
     config;
-  // Drop the configured prompt: the resolved `prompt` already incorporates it,
-  // and omitting it entirely yields a valid history-only request.
-  const { prompt: _configuredPrompt, ...promptTemplatingRest } =
+  // Drop the constructor-level prompt
+  // legacy: the resolved `prompt` already incorporates it
+  // new approach: it is always empty anyways
+  const { prompt: _configuredPrompt, ...promptTemplatingWithoutPrompt } =
     promptTemplating;
 
   return {
     prompt_templating: {
-      ...promptTemplatingRest,
+      ...promptTemplatingWithoutPrompt,
       ...(prompt !== undefined && { prompt })
     },
     ...(filtering && Object.keys(filtering).length && { filtering }),
