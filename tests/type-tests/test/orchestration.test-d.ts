@@ -3,6 +3,7 @@ import {
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
   buildLlamaGuard38BFilter,
+  buildGraniteGuardian41Filter,
   buildDpiMaskingProvider,
   buildTranslationConfig,
   isConfigReference
@@ -19,6 +20,7 @@ import type {
   AssistantChatMessage,
   TranslationReturnType,
   LlamaGuard38BFilterReturnType,
+  GraniteGuardian41FilterReturnType,
   OrchestrationConfigRef,
   OrchestrationStreamResponse,
   OrchestrationStreamChunkResponse,
@@ -460,6 +462,26 @@ expectError<LlamaGuard38BFilterReturnType<'input'>>(
 expectError<LlamaGuard38BFilterReturnType<'input'>>(
   buildLlamaGuard38BFilter('output', [])
 );
+
+/**
+ * Filtering Util for Granite Guardian.
+ */
+expectType<GraniteGuardian41FilterReturnType>(
+  buildGraniteGuardian41Filter(['harm'])
+);
+
+expectType<GraniteGuardian41FilterReturnType>(
+  buildGraniteGuardian41Filter(['harm'], { enable_reasoning: true })
+);
+
+// Empty category list must be a compile error (non-empty tuple).
+expectError(buildGraniteGuardian41Filter([]));
+
+// Missing categories must be a compile error.
+expectError(buildGraniteGuardian41Filter());
+
+// Unknown category must be a compile error.
+expectError(buildGraniteGuardian41Filter(['unknown-category']));
 
 /**
  * Grounding util.

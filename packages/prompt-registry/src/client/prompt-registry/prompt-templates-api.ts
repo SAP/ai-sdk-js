@@ -79,8 +79,8 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Delete all imperative prompt templates in the given scenario.
-   * @param scenario - Path parameter.
+   * Delete all imperatively managed prompt templates in a scenario
+   * @param scenario - Scenario field of the resource.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -102,9 +102,9 @@ export const PromptTemplatesApi = {
     ),
   /**
    * List prompt template history
-   * @param scenario - Path parameter.
-   * @param version - Path parameter.
-   * @param name - Path parameter.
+   * @param scenario - Scenario field of the resource.
+   * @param version - Version field of the resource.
+   * @param name - Name field of the resource.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @param queryParameters - Object containing the following keys: $top, $skip.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -130,10 +130,10 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Delete all non-current versions (history) for the given prompt template
-   * @param scenario - Path parameter.
-   * @param version - Path parameter.
-   * @param name - Path parameter.
+   * Delete the version history of an imperatively managed prompt template
+   * @param scenario - Scenario field of the resource.
+   * @param version - Version field of the resource.
+   * @param name - Name field of the resource.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -157,7 +157,7 @@ export const PromptTemplatesApi = {
     ),
   /**
    * Get prompt template by UUID
-   * @param promptTemplateId - Path parameter.
+   * @param promptTemplateId - UUID of the prompt template.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -178,8 +178,8 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Delete prompt template
-   * @param promptTemplateId - Path parameter.
+   * Delete an imperatively managed prompt template
+   * @param promptTemplateId - UUID of the prompt template.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -200,7 +200,7 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Import prompt template
+   * Create an imperatively managed prompt template from a file
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -241,8 +241,8 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Export prompt template
-   * @param promptTemplateId - Path parameter.
+   * Download a prompt template as a file
+   * @param promptTemplateId - UUID of the prompt template.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -263,8 +263,8 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Parse prompt template by ID
-   * @param promptTemplateId - Path parameter.
+   * Fill the placeholders of a prompt template that is identified by its UUID
+   * @param promptTemplateId - UUID of the prompt template.
    * @param body - Request body.
    * @param queryParameters - Object containing the following keys: metadata.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
@@ -294,10 +294,10 @@ export const PromptTemplatesApi = {
       PromptTemplatesApi._defaultBasePath
     ),
   /**
-   * Parse prompt template by name and version
-   * @param scenario - Path parameter.
-   * @param version - Path parameter.
-   * @param name - Path parameter.
+   * Fill the placeholders of a prompt template that is identified by its scenario, name and version
+   * @param scenario - Scenario field of the resource.
+   * @param version - Version field of the resource.
+   * @param name - Name field of the resource.
    * @param body - Request body.
    * @param queryParameters - Object containing the following keys: metadata.
    * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
