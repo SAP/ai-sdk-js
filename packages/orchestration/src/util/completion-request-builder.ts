@@ -550,11 +550,7 @@ function rejectRequestPromptMessage(context: string, hint: string): string {
  * @param prompts - The prompt extracted from each module configuration.
  */
 function assertConfigHasNoPrompt(prompts: unknown[]): void {
-  const hasPrompt = prompts.some(
-    prompt =>
-      (typeof prompt === 'object' && prompt !== null) ||
-      (typeof prompt === 'string' && prompt.length > 0)
-  );
+  const hasPrompt = prompts.some(prompt => prompt);
   if (hasPrompt) {
     throw new Error(
       "Cannot set 'prompt' in the request when the config already defines a prompt. Remove the prompt from the config, or omit the request-level prompt."
