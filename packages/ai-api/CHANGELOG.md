@@ -1,5 +1,7 @@
 # @sap-ai-sdk/ai-api
 
+## 2.17.0
+
 ## 2.16.0
 
 ### Patch Changes
