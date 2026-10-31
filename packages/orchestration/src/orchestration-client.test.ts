@@ -37,7 +37,7 @@ import type {
 } from './orchestration-types.ts';
 
 const defaultJsonConfig = `{
-  "module_configurations": {
+  "modules": {
     "prompt_templating": {
       "model": {
         "name": "gpt-5.4-nano",
@@ -131,6 +131,47 @@ describe('orchestration service client', () => {
     expect(response.getTokenUsage().completion_tokens).toEqual(
       expect.any(Number)
     );
+  });
+
+  it('omits prompt from completion config when only messages history is provided', async () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' }
+      }
+    };
+    const messagesHistory = [{ role: 'user' as const, content: 'Hello' }];
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+
+    mockInference(
+      {
+        data: {
+          config: {
+            modules: {
+              prompt_templating: {
+                model: { name: 'gpt-5.4-nano' }
+              }
+            }
+          },
+          messages_history: messagesHistory
+        }
+      },
+      {
+        data: mockResponse,
+        status: 200
+      },
+      {
+        url: 'inference/deployments/1234/v2/completion'
+      }
+    );
+
+    const response = await new OrchestrationClient(config).chatCompletion({
+      messagesHistory
+    });
+
+    expect(response.getContent()).toEqual(expect.any(String));
   });
 
   it('calls chatCompletion with some templating configuration (without template)', async () => {
@@ -1941,6 +1982,442 @@ describe('orchestration service client', () => {
       expect(debugSpy).toHaveBeenCalledWith(
         expect.stringContaining('do not correspond to any module configuration')
       );
+    });
+  });
+
+  describe('request-level prompt field', () => {
+    const config: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
+      }
+    };
+
+    const jsonConfigWithoutPrompt = JSON.stringify({
+      modules: {
+        prompt_templating: {
+          model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
+        }
+      }
+    });
+
+    it('rejects a request-level prompt template without messages', async () => {
+      await expect(
+        new OrchestrationClient(config).chatCompletion({
+          prompt: { template: [] }
+        })
+      ).rejects.toThrow(
+        'The request-level prompt template must contain at least one message.'
+      );
+    });
+
+    it('calls chatCompletion with a request-level prompt template', async () => {
+      const prompt: ChatCompletionRequest = {
+        prompt: {
+          template: [{ role: 'user', content: 'What is {{?topic}}?' }]
+        },
+        placeholderValues: { topic: 'SAP BTP' }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, prompt)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with a request-level prompt template and messages history', async () => {
+      const prompt: ChatCompletionRequest = {
+        prompt: {
+          template: [{ role: 'user', content: 'Continue our discussion.' }]
+        },
+        messagesHistory: [
+          { role: 'user', content: 'Hello' },
+          { role: 'assistant', content: 'Hi there!' }
+        ]
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, prompt)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with a request-level template reference', async () => {
+      const prompt: ChatCompletionRequest = {
+        prompt: { template_ref: { id: 'abc-123' } },
+        placeholderValues: { topic: 'SAP BTP' }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, prompt)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with a request-level prompt template using JSON config', async () => {
+      const prompt: ChatCompletionRequest = {
+        prompt: { template: [{ role: 'user', content: 'Hello' }] }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequestFromJsonModuleConfig(
+            JSON.parse(jsonConfigWithoutPrompt),
+            prompt
+          )
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(
+        jsonConfigWithoutPrompt
+      ).chatCompletion(prompt);
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with a request-level prompt template using a module config list', async () => {
+      const primaryConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
+        }
+      };
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-5.4-mini', params: { max_tokens: 50 } }
+        }
+      };
+      const configs = [primaryConfig, fallbackConfig] as [
+        OrchestrationModuleConfig,
+        OrchestrationModuleConfig
+      ];
+      const prompt: ChatCompletionRequest = {
+        prompt: { template: [{ role: 'user', content: 'Hi' }] }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(configs, prompt)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configs).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with a config reference and placeholder values without a request-level prompt', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      };
+      const prompt: ChatCompletionRequest = {
+        placeholderValues: { topic: 'SAP BTP' }
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
+            placeholder_values: prompt.placeholderValues
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('calls chatCompletion with a config reference and messages history without a request-level prompt', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      };
+      const prompt: ChatCompletionRequest = {
+        messagesHistory: [
+          { role: 'user', content: 'Hello' },
+          { role: 'assistant', content: 'Hi!' }
+        ]
+      };
+
+      const mockResponse = await parseMockResponse<CompletionPostResponse>(
+        'orchestration',
+        'orchestration-chat-completion-success-response.json'
+      );
+
+      mockInference(
+        {
+          data: {
+            config_ref: { id: configRef.id },
+            config: { stream: { enabled: false } },
+            messages_history: prompt.messagesHistory
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(configRef).chatCompletion(
+        prompt
+      );
+
+      expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(response._data).toEqual(mockResponse);
+    });
+
+    it('streams with a request-level prompt template', async () => {
+      const prompt: ChatCompletionRequest = {
+        prompt: { template: [{ role: 'user', content: 'Hi' }] }
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: constructCompletionPostRequest(config, prompt, true)
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).stream(prompt);
+
+      const initialResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-initial.json'
+      );
+
+      for await (const chunk of response.stream) {
+        expect(chunk._data).toEqual(JSON.parse(initialResponse));
+        break;
+      }
+    });
+
+    it('throws an error when request-level prompt is combined with deprecated messages', async () => {
+      await expect(() =>
+        new OrchestrationClient(config).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] },
+          messages: [{ role: 'user', content: 'Also hi' }]
+        })
+      ).rejects.toThrow(/Cannot set both 'prompt' and 'messages'/);
+    });
+
+    it('throws an error when request-level prompt is combined with a constructor-level prompt', async () => {
+      const configWithPrompt: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: {
+            template: [{ role: 'system', content: 'You are an assistant.' }]
+          },
+          model: { name: 'gpt-5.4-nano' }
+        }
+      };
+
+      await expect(() =>
+        new OrchestrationClient(configWithPrompt).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(/the config already defines a prompt/);
+    });
+
+    it('throws an error when request-level prompt is combined with a constructor-level prompt in a module config list', async () => {
+      const configWithPrompt: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: {
+            template: [{ role: 'system', content: 'System message.' }]
+          },
+          model: { name: 'gpt-5.4-nano' }
+        }
+      };
+      const fallbackConfig: OrchestrationModuleConfig = {
+        promptTemplating: {
+          model: { name: 'gpt-5.4-mini', params: { max_tokens: 50 } }
+        }
+      };
+
+      await expect(() =>
+        new OrchestrationClient([
+          configWithPrompt,
+          fallbackConfig
+        ]).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(/the config already defines a prompt/);
+    });
+
+    it('throws an error when request-level prompt is combined with a constructor-level template reference', async () => {
+      const configWithTemplateRef: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: { template_ref: { id: 'abc-123' } },
+          model: { name: 'gpt-5.4-nano' }
+        }
+      };
+
+      await expect(() =>
+        new OrchestrationClient(configWithTemplateRef).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(/the config already defines a prompt/);
+    });
+
+    it('throws an error when request-level prompt is set with a config reference by ID', async () => {
+      const configRef: OrchestrationConfigRef = {
+        id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      };
+
+      await expect(() =>
+        new OrchestrationClient(configRef).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(
+        /Cannot set 'prompt' in the request when using a config reference/
+      );
+    });
+
+    it('throws an error when request-level prompt is set with a config reference by scenario/name/version', async () => {
+      const configRef: OrchestrationConfigRef = {
+        scenario: 'sdk-test-scenario',
+        name: 'test-orchestration-config',
+        version: '1.0.0'
+      };
+
+      await expect(() =>
+        new OrchestrationClient(configRef).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(
+        /Cannot set 'prompt' in the request when using a config reference/
+      );
+    });
+
+    it('throws an error when request-level prompt is combined with deprecated messages in JSON config', async () => {
+      await expect(() =>
+        new OrchestrationClient(jsonConfigWithoutPrompt).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] },
+          messages: [{ role: 'user', content: 'Also hi' }]
+        })
+      ).rejects.toThrow(/Cannot set both 'prompt' and 'messages'/);
+    });
+
+    it('throws an error when request-level prompt is set but JSON config already has a prompt', async () => {
+      await expect(() =>
+        new OrchestrationClient(defaultJsonConfig).chatCompletion({
+          prompt: { template: [{ role: 'user', content: 'Hi' }] }
+        })
+      ).rejects.toThrow(/the config already defines a prompt/);
     });
   });
 });

@@ -1,10 +1,13 @@
 import {
   constructCompletionPostRequest,
-  buildAzureContentSafetyFilter
+  buildAzureContentSafetyFilter,
+  buildDpiMaskingProvider
 } from './util/index.ts';
 
 import type { CompletionPostRequest } from './client/api/schema/index.ts';
+import type { ModuleConfigs } from './client/api/schema/module-configs.ts';
 import type {
+  MaskingModule,
   OrchestrationModuleConfig,
   StreamOptions
 } from './orchestration-types.ts';
@@ -338,5 +341,161 @@ describe('construct completion post request', () => {
         streamOptions
       );
     expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
+  });
+
+  describe('request-level prompt', () => {
+    const configWithoutPrompt: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: {
+          name: 'gpt-5.4-nano',
+          params: { max_tokens: 50 }
+        }
+      }
+    };
+
+    it('should route a request-level prompt template into prompt.template', async () => {
+      const expectedCompletionPostRequest: CompletionPostRequest = {
+        config: {
+          modules: {
+            prompt_templating: {
+              ...configWithoutPrompt.promptTemplating,
+              prompt: {
+                template: [
+                  { role: 'user', content: 'What is the capital of France?' }
+                ]
+              }
+            }
+          }
+        }
+      };
+      const completionPostRequest = constructCompletionPostRequest(
+        configWithoutPrompt,
+        {
+          prompt: {
+            template: [
+              { role: 'user', content: 'What is the capital of France?' }
+            ]
+          }
+        }
+      );
+      expect(completionPostRequest).toEqual(expectedCompletionPostRequest);
+    });
+
+    it('should apply placeholderValues with a request-level prompt template', async () => {
+      const placeholderValues = { product: 'SAP Cloud SDK' };
+      const completionPostRequest = constructCompletionPostRequest(
+        configWithoutPrompt,
+        {
+          prompt: {
+            template: [{ role: 'user', content: 'Tell me about {{?product}}.' }]
+          },
+          placeholderValues
+        }
+      );
+      expect(completionPostRequest.placeholder_values).toEqual(
+        placeholderValues
+      );
+    });
+
+    it('should route messages to messages_history with a request-level template reference', async () => {
+      const messagesHistory = [{ role: 'user' as const, content: 'Hello' }];
+      const completionPostRequest = constructCompletionPostRequest(
+        configWithoutPrompt,
+        {
+          prompt: { template_ref: { id: 'test-template-id' } },
+          messagesHistory
+        }
+      );
+      expect(completionPostRequest.messages_history).toEqual(messagesHistory);
+      expect(completionPostRequest.config?.modules).toEqual({
+        prompt_templating: {
+          ...configWithoutPrompt.promptTemplating,
+          prompt: { template_ref: { id: 'test-template-id' } }
+        }
+      });
+    });
+
+    it('should throw when a request-level prompt is combined with a constructor prompt', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: {
+            template: [
+              { role: 'system', content: 'You are a helpful assistant.' }
+            ]
+          },
+          model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
+        }
+      };
+      expect(() =>
+        constructCompletionPostRequest(config, {
+          prompt: {
+            template: [{ role: 'user', content: 'Hi' }]
+          }
+        })
+      ).toThrow(/the config already defines a prompt/);
+    });
+
+    it('treats an empty-string constructor prompt as absent and injects the request prompt', async () => {
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: '',
+          model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } }
+        }
+      };
+      const completionPostRequest = constructCompletionPostRequest(config, {
+        prompt: {
+          template: [{ role: 'user', content: 'Hi' }]
+        }
+      });
+      expect(
+        (completionPostRequest.config?.modules as ModuleConfigs)
+          ?.prompt_templating?.prompt
+      ).toEqual({ template: [{ role: 'user', content: 'Hi' }] });
+    });
+
+    it('should throw when a request-level prompt is combined with messages', async () => {
+      expect(() =>
+        constructCompletionPostRequest(configWithoutPrompt, {
+          prompt: {
+            template: [{ role: 'user', content: 'Hi' }]
+          },
+          messages: [{ role: 'user', content: 'Also hi' }]
+        })
+      ).toThrow(/Cannot set both 'prompt' and 'messages'/);
+    });
+
+    it('should propagate masking into modules.masking with a request-level prompt', async () => {
+      const maskingProvider = buildDpiMaskingProvider({
+        method: 'anonymization',
+        entities: ['profile-address']
+      });
+      const config: OrchestrationModuleConfig = {
+        ...configWithoutPrompt,
+        masking: { masking_providers: [maskingProvider] }
+      };
+      const completionPostRequest = constructCompletionPostRequest(config, {
+        prompt: {
+          template: [{ role: 'user', content: 'Hi' }]
+        }
+      });
+      expect(
+        (completionPostRequest.config?.modules as ModuleConfigs)?.masking
+      ).toEqual(config.masking);
+    });
+
+    it('should omit modules.masking when masking is empty with a request-level prompt', async () => {
+      const config: OrchestrationModuleConfig = {
+        ...configWithoutPrompt,
+        masking: {} as MaskingModule
+      };
+      const completionPostRequest = constructCompletionPostRequest(config, {
+        prompt: {
+          template: [{ role: 'user', content: 'Hi' }]
+        }
+      });
+      expect(
+        (completionPostRequest.config?.modules as ModuleConfigs)?.masking
+      ).toBeUndefined();
+    });
   });
 });
