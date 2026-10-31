@@ -1,3 +1,7 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
+
 import {
   assertHttpDestination,
   getServiceBinding,
@@ -59,8 +63,7 @@ export async function getAiCoreDestination(
 
   // Otherwise, get the destination from env or service binding with default service name "aicore".
   if (!aiCoreServiceBinding) {
-    aiCoreServiceBinding =
-      getAiCoreServiceKeyFromEnv() || getServiceBinding('aicore');
+    aiCoreServiceBinding = resolveAiCoreServiceBinding();
     if (!aiCoreServiceBinding) {
       throw new Error(
         'Could not find service credentials for AI Core. Please check the service binding.'
@@ -84,6 +87,31 @@ export async function getAiCoreDestination(
   };
 }
 
+/**
+ * Resolves the AI Core service binding based on the defined precedence:
+ * 1. AICORE_SERVICE_KEY environment variable (full service key JSON)
+ * 2. VCAP_SERVICES binding (via getServiceBinding('aicore'))
+ * 3. Individual environment variables (AICORE_SERVICE_URL/AICORE_BASE_URL, AICORE_TOKEN_URL/AICORE_AUTH_URL, AICORE_CLIENT_ID, AICORE_CLIENT_SECRET)
+ * 4. Configuration file ~/.aicore/config.json (or AICORE_CONFIG_FILE)
+ * @internal
+ */
+export function resolveAiCoreServiceBinding(): Service | undefined {
+  return (
+    getAiCoreServiceKeyFromEnv() ||
+    getServiceBinding('aicore') ||
+    getAiCoreCredentialsFromEnvVars() ||
+    getAiCoreCredentialsFromConfigFile()
+  );
+}
+
+/**
+ * Resets the cached AI Core service binding.
+ * @internal
+ */
+export function resetAiCoreServiceBinding(): void {
+  aiCoreServiceBinding = undefined;
+}
+
 function getAiCoreServiceKeyFromEnv(): Service | undefined {
   const credentials = parseServiceKeyFromEnv(process.env['AICORE_SERVICE_KEY']);
   if (credentials) {
@@ -96,6 +124,75 @@ function getAiCoreServiceKeyFromEnv(): Service | undefined {
       name: 'aicore',
       tags: ['aicore']
     };
+  }
+}
+
+function getAiCoreCredentialsFromEnvVars(): Service | undefined {
+  const serviceUrl =
+    process.env['AICORE_SERVICE_URL'] || process.env['AICORE_BASE_URL'];
+  const tokenUrl =
+    process.env['AICORE_TOKEN_URL'] || process.env['AICORE_AUTH_URL'];
+  const clientId = process.env['AICORE_CLIENT_ID'];
+  const clientSecret = process.env['AICORE_CLIENT_SECRET'];
+
+  if (serviceUrl && tokenUrl && clientId && clientSecret) {
+    logger.debug(
+      'Found individual credentials in environment variables (AICORE_SERVICE_URL/AICORE_BASE_URL, AICORE_TOKEN_URL/AICORE_AUTH_URL, AICORE_CLIENT_ID, AICORE_CLIENT_SECRET).'
+    );
+    return {
+      credentials: {
+        clientid: clientId,
+        clientsecret: clientSecret,
+        url: tokenUrl,
+        serviceurls: {
+          AI_API_URL: serviceUrl
+        }
+      },
+      label: 'aicore',
+      name: 'aicore',
+      tags: ['aicore']
+    };
+  }
+}
+
+function getAiCoreCredentialsFromConfigFile(): Service | undefined {
+  try {
+    const configPath =
+      process.env['AICORE_CONFIG_FILE'] ||
+      join(homedir(), '.aicore', 'config.json');
+
+    if (existsSync(configPath)) {
+      const raw = readFileSync(configPath, 'utf-8');
+      const parsed = JSON.parse(raw);
+      const serviceUrl =
+        parsed.service_url || parsed.base_url || parsed.serviceurls?.AI_API_URL;
+      const tokenUrl = parsed.token_url || parsed.auth_url || parsed.url;
+      const clientId = parsed.client_id || parsed.clientid;
+      const clientSecret = parsed.client_secret || parsed.clientsecret;
+
+      if (serviceUrl && tokenUrl && clientId && clientSecret) {
+        logger.debug(
+          `Found AI Core credentials in configuration file at "${configPath}".`
+        );
+        return {
+          credentials: {
+            clientid: clientId,
+            clientsecret: clientSecret,
+            url: tokenUrl,
+            serviceurls: {
+              AI_API_URL: serviceUrl
+            }
+          },
+          label: 'aicore',
+          name: 'aicore',
+          tags: ['aicore']
+        };
+      }
+    }
+  } catch (err) {
+    logger.warn(
+      `Failed to load AI Core configuration file: ${(err as Error).message}`
+    );
   }
 }
 
