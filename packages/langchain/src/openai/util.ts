@@ -48,10 +48,11 @@ export function isReasoningModel(modelName: string): boolean {
   if (!modelName) {
     return false;
   }
-  if (/^o\d/.test(modelName ?? '')) {
+  if (/^o\d/i.test(modelName ?? '')) {
     return true;
   }
-  if (modelName.startsWith('gpt-5') && !modelName.startsWith('gpt-5-chat')) {
+  const lowerName = modelName.toLowerCase();
+  if (lowerName.startsWith('gpt-5') && !lowerName.startsWith('gpt-5-chat')) {
     return true;
   }
   return false;
@@ -329,12 +330,23 @@ export function mapLangChainToAiClient(
     tool_choice: options?.tool_choice
   };
 
+  const maxCompletionTokens =
+    options?.max_completion_tokens ??
+    options?.maxCompletionTokens ??
+    client.max_completion_tokens;
+
+  const rawMaxTokens = options?.max_tokens ?? client.max_tokens;
+
   if (isReasoningModel(client.modelName)) {
     params.max_completion_tokens =
-      client.max_tokens === -1 ? undefined : client.max_tokens;
+      maxCompletionTokens ?? (rawMaxTokens === -1 ? undefined : rawMaxTokens);
   } else {
-    params.max_tokens =
-      client.max_tokens === -1 ? undefined : client.max_tokens;
+    if (maxCompletionTokens !== undefined) {
+      params.max_completion_tokens = maxCompletionTokens;
+    }
+    if (rawMaxTokens !== undefined && rawMaxTokens !== -1) {
+      params.max_tokens = rawMaxTokens;
+    }
   }
 
   return removeUndefinedProperties<AzureOpenAiChatCompletionParameters>(params);
