@@ -15,6 +15,7 @@ import {
 } from '../../../../test-util/tools.ts';
 import { AzureOpenAiChatClient } from './chat.ts';
 import {
+  isReasoningModel,
   isToolDefinitionLike,
   mapLangChainToAiClient,
   mapOutputToChatResult,
@@ -315,6 +316,91 @@ describe('Mapping Functions', () => {
       };
       const result = mapToolToOpenAiTool(toolInput);
       expect(result).toEqual(expectedOutput);
+    });
+  });
+  describe('isReasoningModel', () => {
+    it('should identify reasoning models correctly', () => {
+      expect(isReasoningModel('o1')).toBe(true);
+      expect(isReasoningModel('o1-mini')).toBe(true);
+      expect(isReasoningModel('o1-preview')).toBe(true);
+      expect(isReasoningModel('o3')).toBe(true);
+      expect(isReasoningModel('o3-mini')).toBe(true);
+      expect(isReasoningModel('O1')).toBe(true);
+      expect(isReasoningModel('gpt-5-mini')).toBe(true);
+      expect(isReasoningModel('gpt-5.4-nano')).toBe(true);
+    });
+
+    it('should return false for non-reasoning models', () => {
+      expect(isReasoningModel('gpt-4o')).toBe(false);
+      expect(isReasoningModel('gpt-4o-mini')).toBe(false);
+      expect(isReasoningModel('gpt-4')).toBe(false);
+      expect(isReasoningModel('gpt-35-turbo')).toBe(false);
+      expect(isReasoningModel('gpt-5-chat')).toBe(false);
+      expect(isReasoningModel('')).toBe(false);
+    });
+  });
+
+  describe('mapLangChainToAiClient token mapping (#1174)', () => {
+    it('should map max_tokens to max_completion_tokens for reasoning models', () => {
+      const client = new AzureOpenAiChatClient({
+        modelName: 'o1',
+        max_tokens: 500
+      });
+      const result = mapLangChainToAiClient(client, []);
+      expect(result.max_completion_tokens).toBe(500);
+      expect(result.max_tokens).toBeUndefined();
+    });
+
+    it('should map max_completion_tokens directly for reasoning models', () => {
+      const client = new AzureOpenAiChatClient({
+        modelName: 'o3-mini',
+        max_completion_tokens: 300
+      });
+      const result = mapLangChainToAiClient(client, []);
+      expect(result.max_completion_tokens).toBe(300);
+      expect(result.max_tokens).toBeUndefined();
+    });
+
+    it('should support maxCompletionTokens alias for reasoning models', () => {
+      const client = new AzureOpenAiChatClient({
+        modelName: 'o1',
+        maxCompletionTokens: 250
+      });
+      const result = mapLangChainToAiClient(client, []);
+      expect(result.max_completion_tokens).toBe(250);
+      expect(result.max_tokens).toBeUndefined();
+    });
+
+    it('should allow options to override max_completion_tokens at call time', () => {
+      const client = new AzureOpenAiChatClient({
+        modelName: 'o1',
+        max_tokens: 500
+      });
+      const result = mapLangChainToAiClient(client, [], {
+        ...defaultOptions,
+        max_completion_tokens: 150
+      });
+      expect(result.max_completion_tokens).toBe(150);
+    });
+
+    it('should map max_tokens to max_tokens for standard models', () => {
+      const client = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        max_tokens: 1000
+      });
+      const result = mapLangChainToAiClient(client, []);
+      expect(result.max_tokens).toBe(1000);
+      expect(result.max_completion_tokens).toBeUndefined();
+    });
+
+    it('should map explicit max_completion_tokens for standard models when provided', () => {
+      const client = new AzureOpenAiChatClient({
+        modelName: 'gpt-4o',
+        max_completion_tokens: 750
+      });
+      const result = mapLangChainToAiClient(client, []);
+      expect(result.max_completion_tokens).toBe(750);
+      expect(result.max_tokens).toBeUndefined();
     });
   });
 });

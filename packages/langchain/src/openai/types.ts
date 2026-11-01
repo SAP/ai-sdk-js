@@ -26,11 +26,17 @@ export type AzureOpenAiChatModelParams = Pick<
   | 'top_p'
   | 'stop'
   | 'max_tokens'
+  | 'max_completion_tokens'
   | 'presence_penalty'
   | 'frequency_penalty'
   | 'logit_bias'
   | 'user'
 > & {
+  /**
+   * The maximum number of tokens allowed for the generated answer.
+   * Alias for `max_completion_tokens` compatible with LangChain standard naming convention.
+   */
+  maxCompletionTokens?: number | null;
   /**
    * Whether the model supports the `strict` argument when passing in tools.
    * If `undefined` the `strict` argument will not be passed to OpenAI.
@@ -68,7 +74,14 @@ export type AzureOpenAiChatCallOptions = BaseChatModelCallOptions &
     | 'tool_choice'
     | 'functions'
     | 'function_call'
+    | 'max_tokens'
+    | 'max_completion_tokens'
   > & {
+    /**
+     * The maximum number of tokens allowed for the generated answer.
+     * Alias for `max_completion_tokens` compatible with LangChain standard naming convention.
+     */
+    maxCompletionTokens?: number | null;
     strict?: boolean;
     tools?: ChatAzureOpenAIToolType[];
     promptIndex?: number;

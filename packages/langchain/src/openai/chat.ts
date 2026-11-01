@@ -57,6 +57,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
   frequency_penalty?: number;
   stop?: string | string[];
   max_tokens?: number;
+  max_completion_tokens?: number | null;
   supportsStrictToolCalling?: boolean;
   modelName: string;
   streaming: boolean = false;
@@ -77,6 +78,8 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     this.presence_penalty = fields.presence_penalty;
     this.frequency_penalty = fields.frequency_penalty;
     this.max_tokens = fields.max_tokens;
+    this.max_completion_tokens =
+      fields.max_completion_tokens ?? fields.maxCompletionTokens;
     // Initialize streaming flags with LangChain-compatible behavior:
     // - `streaming`: true enables auto-streaming in `invoke()` calls
     // - `disableStreaming`: true overrides streaming flag
