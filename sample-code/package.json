@@ -25,10 +25,7 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@hono/node-server": "2.0.6",
-    "@hono/swagger-ui": "0.6.1",
-    "@hono/zod-openapi": "1.5.1",
-    "@langchain/classic": "1.0.55",
+    "@langchain/classic": "1.0.57",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "2.0.1",
@@ -38,12 +35,11 @@
     "@sap-cloud-sdk/util": "catalog:",
     "hono": "4.12.25",
     "langchain": "catalog:",
-    "openai": "7.43.0",
+    "openai": "7.45.1",
     "ws": "8.22.0",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@modelcontextprotocol/server-github": "2025.4.8",
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/context-registry": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
@@ -57,7 +53,7 @@
     "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
     "@upstash/context7-mcp": "4.4.4",
-    "hyparquet-writer": "0.17.0"
+    "hyparquet-writer": "0.18.0"
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
