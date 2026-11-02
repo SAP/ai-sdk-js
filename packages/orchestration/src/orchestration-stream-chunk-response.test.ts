@@ -203,5 +203,79 @@ describe('Orchestration chat completion stream chunk response', () => {
 
       expect(chunkResponse.getDeltaReasoningContent()).toBeUndefined();
     });
+    it('should extract concatenated text when delta.content is an array of content blocks (Anthropic Claude streaming chunks)', () => {
+      const chunkResponse = new OrchestrationStreamChunkResponse({
+        request_id: 'test-claude-id',
+        final_result: {
+          id: 'claude-chunk-1',
+          object: 'chat.completion.chunk',
+          created: 0,
+          model: 'claude-3-5-sonnet',
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: [
+                  { type: 'text', text: 'Hello ' },
+                  { type: 'text_delta', text: 'from Claude!' }
+                ]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      });
+
+      expect(chunkResponse.getDeltaContent()).toBe('Hello from Claude!');
+    });
+
+    it('should extract text from mixed content blocks ignoring non-text blocks', () => {
+      const chunkResponse = new OrchestrationStreamChunkResponse({
+        request_id: 'test-claude-mixed',
+        final_result: {
+          id: 'claude-chunk-2',
+          object: 'chat.completion.chunk',
+          created: 0,
+          model: 'claude-3-5-sonnet',
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: [
+                  { type: 'tool_use', id: 'call_123' },
+                  { type: 'text', text: 'Only text should be extracted' }
+                ]
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      });
+
+      expect(chunkResponse.getDeltaContent()).toBe('Only text should be extracted');
+    });
+
+    it('should handle array of plain string chunks in delta.content', () => {
+      const chunkResponse = new OrchestrationStreamChunkResponse({
+        request_id: 'test-plain-strings',
+        final_result: {
+          id: 'plain-chunk',
+          object: 'chat.completion.chunk',
+          created: 0,
+          model: 'claude-3-5-sonnet',
+          choices: [
+            {
+              index: 0,
+              delta: {
+                content: ['Chunk part 1, ', 'part 2']
+              },
+              finish_reason: ''
+            }
+          ]
+        }
+      });
+
+      expect(chunkResponse.getDeltaContent()).toBe('Chunk part 1, part 2');
+    });
   });
 });

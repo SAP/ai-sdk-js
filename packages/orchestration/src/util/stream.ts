@@ -1,3 +1,28 @@
+/**
+ * Safely extracts text from delta content (handles strings and Anthropic Claude content-block arrays).
+ * @param content - The raw delta content.
+ * @returns The extracted string.
+ */
+export function extractTextFromDeltaContent(content: unknown): string {
+  if (typeof content === 'string') {
+    return content;
+  }
+  if (Array.isArray(content)) {
+    return content
+      .map(item => {
+        if (typeof item === 'string') {
+          return item;
+        }
+        if (typeof item === 'object' && item !== null && 'text' in item) {
+          return (item as { text?: string }).text ?? '';
+        }
+        return '';
+      })
+      .join('');
+  }
+  return '';
+}
+
 import { createLogger } from '@sap-cloud-sdk/util';
 
 import type {
@@ -174,7 +199,8 @@ function mergeMessage(
   }
   return {
     role: existing.role,
-    content: existing.content + (incoming.content ?? ''),
+    content:
+      (existing.content ?? '') + extractTextFromDeltaContent(incoming.content),
     tool_calls: mergeToolCalls(existing.tool_calls, incoming.tool_calls),
     refusal: incoming.refusal ?? existing.refusal,
     reasoning_content: mergeReasoningBlocks(
@@ -294,7 +320,7 @@ function transformStreamingChoice(choice: LlmChoiceStreaming): LlmChoice {
     index: choice.index,
     message: {
       role: 'assistant',
-      content: choice.delta.content,
+      content: extractTextFromDeltaContent(choice.delta.content),
       tool_calls: transformStreamingToolCalls(choice.delta.tool_calls),
       refusal: choice.delta.refusal,
       reasoning_content: choice.delta.reasoning_content
