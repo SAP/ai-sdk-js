@@ -26,6 +26,9 @@ export type {
   LlamaGuard38BFilterReturnType,
   LlamaGuard38BInputFilterConfig,
   LlamaGuard38BOutputFilterConfig,
+  GraniteGuardian41Category,
+  GraniteGuardian41FilterReturnType,
+  GraniteGuardian41FilterOptions,
   AzureFilterThreshold,
   AzureContentSafetyFilterInputParameters,
   AzureContentSafetyFilterOutputParameters,
@@ -66,6 +69,7 @@ export type { ChatModel, EmbeddingModel } from './model-types.ts';
 export {
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
+  buildGraniteGuardian41Filter,
   buildDocumentGroundingConfig,
   buildDpiMaskingProvider,
   buildTranslationConfig

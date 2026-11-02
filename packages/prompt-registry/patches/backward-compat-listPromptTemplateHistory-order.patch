@@ -2,10 +2,11 @@ diff --git a/packages/prompt-registry/src/client/prompt-registry/prompt-template
 index 413273f9..1f76cf70 100644
 --- a/packages/prompt-registry/src/client/prompt-registry/prompt-templates-api.ts
 +++ b/packages/prompt-registry/src/client/prompt-registry/prompt-templates-api.ts
-@@ -79,19 +79,19 @@ export const PromptTemplatesApi = {
-    * @param scenario - Path parameter.
-    * @param version - Path parameter.
-    * @param name - Path parameter.
+@@ -103,19 +103,19 @@ export const PromptTemplatesApi = {
+    * List prompt template history
+    * @param scenario - Scenario field of the resource.
+    * @param version - Version field of the resource.
+    * @param name - Name field of the resource.
 -   * @param queryParameters - Object containing the following keys: $top, $skip.
     * @param headerParameters - Object containing the following keys: AI-Resource-Group, AI-Resource-Group-Scope.
 +   * @param queryParameters - Object containing the following keys: $top, $skip.
