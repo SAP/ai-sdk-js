@@ -25,15 +25,15 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
+    "@hono/node-server": "2.0.6",
+    "@hono/swagger-ui": "0.6.1",
+    "@hono/zod-openapi": "1.5.1",
     "@langchain/classic": "1.0.57",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "2.0.1",
     "@langchain/textsplitters": "1.0.2",
     "@modelcontextprotocol/sdk": "1.32.2",
-    "@hono/node-server": "2.0.6",
-    "@hono/swagger-ui": "0.6.1",
-    "@hono/zod-openapi": "1.5.1",
     "@sap-cloud-sdk/resilience": "catalog:",
     "@sap-cloud-sdk/util": "catalog:",
     "hono": "4.12.25",
