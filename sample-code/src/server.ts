@@ -147,6 +147,7 @@ import type {
 
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
+import type { StreamingApi } from 'hono/utils/stream';
 
 const app = new OpenAPIHono();
 const port = 8080;
@@ -159,6 +160,47 @@ function errorStatus(error: any): ContentfulStatusCode {
 
 function errorBody(error: any): string {
   return error.cause?.response?.data ?? error.message;
+}
+
+async function writeOrchestrationStreamSummary(
+  s: StreamingApi,
+  finishReason: string | undefined,
+  tokenUsage:
+    | {
+        completion_tokens?: number;
+        prompt_tokens?: number;
+        total_tokens?: number;
+      }
+    | undefined
+): Promise<void> {
+  await s.write('\n\n---------------------------\n');
+  await s.write(`Finish reason: ${finishReason}\n`);
+  await s.write('Token usage:\n');
+  await s.write(`  - Completion tokens: ${tokenUsage?.completion_tokens}\n`);
+  await s.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
+  await s.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
+}
+
+async function writeLangChainStreamResult(
+  s: StreamingApi,
+  finalResult: AIMessageChunk | undefined
+): Promise<void> {
+  if (finalResult?.usage_metadata) {
+    await s.write('\n\n---------------------------\n');
+    await s.write(
+      `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
+    );
+    await s.write('Token usage:\n');
+    await s.write(
+      `  - Completion tokens: ${finalResult.usage_metadata?.output_tokens}\n`
+    );
+    await s.write(
+      `  - Prompt tokens: ${finalResult.usage_metadata?.input_tokens}\n`
+    );
+    await s.write(
+      `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
+    );
+  }
 }
 
 /* ── health ─────────────────────────────────────────────────────────────── */
@@ -1044,16 +1086,11 @@ app.openapi(
         for await (const chunk of response.stream) {
           await s.write((chunk.getDeltaContent() ?? '') + '\n');
         }
-        const finishReason = response.getFinishReason();
-        const tokenUsage = response.getTokenUsage();
-        await s.write('\n\n---------------------------\n');
-        await s.write(`Finish reason: ${finishReason}\n`);
-        await s.write('Token usage:\n');
-        await s.write(
-          `  - Completion tokens: ${tokenUsage?.completion_tokens}\n`
+        await writeOrchestrationStreamSummary(
+          s,
+          response.getFinishReason(),
+          response.getTokenUsage()
         );
-        await s.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
-        await s.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
       } catch (error: any) {
         console.error(error.stack);
       }
@@ -1081,16 +1118,11 @@ app.openapi(
         for await (const chunk of response.stream) {
           await s.write((chunk.getDeltaContent() ?? '') + '\n');
         }
-        const finishReason = response.getFinishReason();
-        const tokenUsage = response.getTokenUsage();
-        await s.write('\n\n---------------------------\n');
-        await s.write(`Finish reason: ${finishReason}\n`);
-        await s.write('Token usage:\n');
-        await s.write(
-          `  - Completion tokens: ${tokenUsage?.completion_tokens}\n`
+        await writeOrchestrationStreamSummary(
+          s,
+          response.getFinishReason(),
+          response.getTokenUsage()
         );
-        await s.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
-        await s.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
       } catch (error: any) {
         console.error(error.stack);
       }
@@ -1121,16 +1153,11 @@ app.openapi(
         for await (const chunk of response.stream) {
           await s.write((chunk.getDeltaContent() ?? '') + '\n');
         }
-        const finishReason = response.getFinishReason();
-        const tokenUsage = response.getTokenUsage();
-        await s.write('\n\n---------------------------\n');
-        await s.write(`Finish reason: ${finishReason}\n`);
-        await s.write('Token usage:\n');
-        await s.write(
-          `  - Completion tokens: ${tokenUsage?.completion_tokens}\n`
+        await writeOrchestrationStreamSummary(
+          s,
+          response.getFinishReason(),
+          response.getTokenUsage()
         );
-        await s.write(`  - Prompt tokens: ${tokenUsage?.prompt_tokens}\n`);
-        await s.write(`  - Total tokens: ${tokenUsage?.total_tokens}\n`);
       } catch (error: any) {
         console.error(error.stack);
       }
@@ -1558,22 +1585,7 @@ app.openapi(
           finalResult = finalResult ? finalResult.concat(chunk) : chunk;
         }
         console.log(JSON.stringify(finalResult, null, 2));
-        if (finalResult?.usage_metadata) {
-          await s.write('\n\n---------------------------\n');
-          await s.write(
-            `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
-          );
-          await s.write('Token usage:\n');
-          await s.write(
-            `  - Completion tokens: ${finalResult.usage_metadata?.output_tokens}\n`
-          );
-          await s.write(
-            `  - Prompt tokens: ${finalResult.usage_metadata?.input_tokens}\n`
-          );
-          await s.write(
-            `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
-          );
-        }
+        await writeLangChainStreamResult(s, finalResult);
       } catch (error: any) {
         console.error(error.stack);
       }
@@ -1601,22 +1613,7 @@ app.openapi(
           finalResult = finalResult ? finalResult.concat(chunk) : chunk;
         }
         console.log(JSON.stringify(finalResult, null, 2));
-        if (finalResult?.usage_metadata) {
-          await s.write('\n\n---------------------------\n');
-          await s.write(
-            `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
-          );
-          await s.write('Token usage:\n');
-          await s.write(
-            `  - Completion tokens: ${finalResult.usage_metadata?.output_tokens}\n`
-          );
-          await s.write(
-            `  - Prompt tokens: ${finalResult.usage_metadata?.input_tokens}\n`
-          );
-          await s.write(
-            `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
-          );
-        }
+        await writeLangChainStreamResult(s, finalResult);
       } catch (error: any) {
         console.error(error.stack);
       }
