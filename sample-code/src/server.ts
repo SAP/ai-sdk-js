@@ -162,6 +162,19 @@ function errorBody(error: any): string {
   return error.cause?.response?.data ?? error.message;
 }
 
+function withErrorHandling<T extends Parameters<typeof app.openapi>[1]>(
+  handler: T
+): T {
+  return (async (c: any) => {
+    try {
+      return await (handler as any)(c);
+    } catch (error: any) {
+      console.error(error.stack);
+      return c.text(errorBody(error), errorStatus(error));
+    }
+  }) as unknown as T;
+}
+
 async function writeOrchestrationStreamSummary(
   s: StreamingApi,
   finishReason: string | undefined,
@@ -275,38 +288,33 @@ app.openapi(
     summary: 'Transcribe audio via orchestration',
     responses: { 200: { description: 'Transcription result' } }
   }),
-  async c => {
+  withErrorHandling(async c => {
     const id = c.req.query('id');
-    try {
-      const arrayBuffer = await c.req.arrayBuffer();
-      const wavBase64 = Buffer.from(arrayBuffer).toString('base64');
-      const fileData = `data:audio/wav;base64,${wavBase64}`;
-      const orchestrationClient = new OrchestrationClient({
-        promptTemplating: { model: { name: 'gemini-3.8-flash' } }
-      });
-      const result = await orchestrationClient.chatCompletion({
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Transcribe the spoken words in the audio exactly as heard.\n- If the audio contains silence or no detectable sound, output exactly: [Silence]\n- If the audio contains music without speech, output exactly: [Music]\n- Otherwise return only the transcript with no additional commentary.'
-              },
-              {
-                type: 'file',
-                file: { file_data: fileData, filename: 'speech.wav' }
-              }
-            ]
-          }
-        ]
-      });
-      return c.json({ id, text: result.getContent() ?? '' });
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+    const arrayBuffer = await c.req.arrayBuffer();
+    const wavBase64 = Buffer.from(arrayBuffer).toString('base64');
+    const fileData = `data:audio/wav;base64,${wavBase64}`;
+    const orchestrationClient = new OrchestrationClient({
+      promptTemplating: { model: { name: 'gemini-3.8-flash' } }
+    });
+    const result = await orchestrationClient.chatCompletion({
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Transcribe the spoken words in the audio exactly as heard.\n- If the audio contains silence or no detectable sound, output exactly: [Silence]\n- If the audio contains music without speech, output exactly: [Music]\n- Otherwise return only the transcript with no additional commentary.'
+            },
+            {
+              type: 'file',
+              file: { file_data: fileData, filename: 'speech.wav' }
+            }
+          ]
+        }
+      ]
+    });
+    return c.json({ id, text: result.getContent() ?? '' });
+  })
 );
 
 /* ── AI API ─────────────────────────────────────────────────────────────── */
@@ -322,19 +330,14 @@ app.openapi(
     },
     responses: { 200: { description: 'Deployments list' } }
   }),
-  async c => {
-    try {
-      return c.json(
-        await getDeployments(
-          'default',
-          c.req.query('status') as AiDeploymentStatus
-        )
-      );
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(
+      await getDeployments(
+        'default',
+        c.req.query('status') as AiDeploymentStatus
+      )
+    )
+  )
 );
 
 app.openapi(
@@ -348,19 +351,14 @@ app.openapi(
     },
     responses: { 200: { description: 'Deployments list' } }
   }),
-  async c => {
-    try {
-      return c.json(
-        await getDeploymentsWithDestination(
-          'default',
-          c.req.query('status') as AiDeploymentStatus
-        )
-      );
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(
+      await getDeploymentsWithDestination(
+        'default',
+        c.req.query('status') as AiDeploymentStatus
+      )
+    )
+  )
 );
 
 app.openapi(
@@ -380,15 +378,10 @@ app.openapi(
     },
     responses: { 200: { description: 'Created deployment' } }
   }),
-  async c => {
-    try {
-      const { configurationId } = await c.req.json();
-      return c.json(await createDeployment(configurationId, 'default'));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const { configurationId } = await c.req.json();
+    return c.json(await createDeployment(configurationId, 'default'));
+  })
 );
 
 app.openapi(
@@ -408,15 +401,10 @@ app.openapi(
     },
     responses: { 200: { description: 'Stopped deployments' } }
   }),
-  async c => {
-    try {
-      const { configurationId } = await c.req.json();
-      return c.json(await stopDeployments(configurationId, 'default'));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const { configurationId } = await c.req.json();
+    return c.json(await stopDeployments(configurationId, 'default'));
+  })
 );
 
 app.openapi(
@@ -427,14 +415,7 @@ app.openapi(
     summary: 'Batch delete deployments',
     responses: { 200: { description: 'Deleted deployments' } }
   }),
-  async c => {
-    try {
-      return c.json(await deleteDeployments('default'));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.json(await deleteDeployments('default')))
 );
 
 app.openapi(
@@ -445,14 +426,7 @@ app.openapi(
     summary: 'List scenarios',
     responses: { 200: { description: 'Scenarios list' } }
   }),
-  async c => {
-    try {
-      return c.json(await getScenarios('default'));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.json(await getScenarios('default')))
 );
 
 app.openapi(
@@ -463,14 +437,9 @@ app.openapi(
     summary: 'List models in foundation-models scenario',
     responses: { 200: { description: 'Models list' } }
   }),
-  async c => {
-    try {
-      return c.json(await getModelsInScenario('foundation-models', 'default'));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await getModelsInScenario('foundation-models', 'default'))
+  )
 );
 
 app.openapi(
@@ -488,29 +457,24 @@ app.openapi(
     },
     responses: { 200: { description: 'Filtered models list' } }
   }),
-  async c => {
-    try {
-      const models = await getAllAvailableModels();
-      const capability = c.req.query('capability');
-      const latestOnly = c.req.query('latestOnly') === 'true';
-      const activeOnly = c.req.query('activeOnly') === 'true';
+  withErrorHandling(async c => {
+    const models = await getAllAvailableModels();
+    const capability = c.req.query('capability');
+    const latestOnly = c.req.query('latestOnly') === 'true';
+    const activeOnly = c.req.query('activeOnly') === 'true';
 
-      let result = models;
-      if (capability) {
-        result = filterFoundationModelsByCapability(result, capability);
-      }
-      if (activeOnly) {
-        result = filterFoundationModelsNonDeprecated(result);
-      }
-      if (latestOnly) {
-        return c.json(getFoundationModelLatestVersions(result));
-      }
-      return c.json(result);
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
+    let result = models;
+    if (capability) {
+      result = filterFoundationModelsByCapability(result, capability);
     }
-  }
+    if (activeOnly) {
+      result = filterFoundationModelsNonDeprecated(result);
+    }
+    if (latestOnly) {
+      return c.json(getFoundationModelLatestVersions(result));
+    }
+    return c.json(result);
+  })
 );
 
 app.openapi(
@@ -530,7 +494,7 @@ app.openapi(
       400: { description: 'Missing required query params' }
     }
   }),
-  async c => {
+  withErrorHandling(async c => {
     const model = c.req.query('model');
     const executableId = c.req.query('executableId');
     if (!model || !executableId) {
@@ -539,13 +503,8 @@ app.openapi(
         400
       );
     }
-    try {
-      return c.text(await resolveModelDeploymentId(model, executableId));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+    return c.text(await resolveModelDeploymentId(model, executableId));
+  })
 );
 
 app.openapi(
@@ -556,19 +515,14 @@ app.openapi(
     summary: 'Resolve deployment URL for gpt-5.4',
     responses: { 200: { description: 'Deployment URL' } }
   }),
-  async c => {
-    try {
-      return c.text(
-        (await resolveDeploymentUrl({
-          scenarioId: 'foundation-models',
-          model: { name: 'gpt-5.4' }
-        })) ?? ''
-      );
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(
+      (await resolveDeploymentUrl({
+        scenarioId: 'foundation-models',
+        model: { name: 'gpt-5.4' }
+      })) ?? ''
+    )
+  )
 );
 
 /* ── Foundation Models (Azure OpenAI) ──────────────────────────────────── */
@@ -581,15 +535,10 @@ app.openapi(
     summary: 'Chat completion',
     responses: { 200: { description: 'Chat response' } }
   }),
-  async c => {
-    try {
-      const response = await chatCompletion();
-      return c.text(String(response.getContent() ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const response = await chatCompletion();
+    return c.text(String(response.getContent() ?? ''));
+  })
 );
 
 app.openapi(
@@ -600,15 +549,10 @@ app.openapi(
     summary: 'Chat completion with destination',
     responses: { 200: { description: 'Chat response' } }
   }),
-  async c => {
-    try {
-      const response = await chatCompletionWithDestination();
-      return c.text(String(response.getContent() ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const response = await chatCompletionWithDestination();
+    return c.text(String(response.getContent() ?? ''));
+  })
 );
 
 app.openapi(
@@ -628,16 +572,11 @@ app.openapi(
         for await (const chunk of response.stream.toContentStream()) {
           await s.write(chunk);
         }
-        const finishReason = response.getFinishReason();
-        const tokenUsage = response.getTokenUsage()!;
-        await s.write('\n\n---------------------------\n');
-        await s.write(`Finish reason: ${finishReason}\n`);
-        await s.write('Token usage:\n');
-        await s.write(
-          `  - Completion tokens: ${tokenUsage.completion_tokens}\n`
+        await writeOrchestrationStreamSummary(
+          s,
+          response.getFinishReason() ?? undefined,
+          response.getTokenUsage()
         );
-        await s.write(`  - Prompt tokens: ${tokenUsage.prompt_tokens}\n`);
-        await s.write(`  - Total tokens: ${tokenUsage.total_tokens}\n`);
       } catch (error: any) {
         console.error(error.stack);
       }
@@ -653,21 +592,16 @@ app.openapi(
     summary: 'Compute embedding',
     responses: { 200: { description: 'Embedding result' } }
   }),
-  async c => {
-    try {
-      const response = await computeEmbedding();
-      if (!response.getEmbedding()?.length) {
-        return c.text(
-          'No embedding vector returned.',
-          500 as ContentfulStatusCode
-        );
-      }
-      return c.text('Number crunching success, got a nice vector.');
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
+  withErrorHandling(async c => {
+    const response = await computeEmbedding();
+    if (!response.getEmbedding()?.length) {
+      return c.text(
+        'No embedding vector returned.',
+        500 as ContentfulStatusCode
+      );
     }
-  }
+    return c.text('Number crunching success, got a nice vector.');
+  })
 );
 
 app.openapi(
@@ -678,15 +612,10 @@ app.openapi(
     summary: 'Chat completion with function call',
     responses: { 200: { description: 'Tool chain response' } }
   }),
-  async c => {
-    try {
-      const response = await chatCompletionWithFunctionCall();
-      return c.text(String(response.getContent() ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const response = await chatCompletionWithFunctionCall();
+    return c.text(String(response.getContent() ?? ''));
+  })
 );
 
 /* ── Foundation Models (OpenAI SDK) ────────────────────────────────────── */
@@ -699,14 +628,9 @@ app.openapi(
     summary: 'Chat completion',
     responses: { 200: { description: 'Chat response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await openAiSdkChatCompletion()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await openAiSdkChatCompletion()) ?? ''))
+  )
 );
 
 app.openapi(
@@ -738,14 +662,9 @@ app.openapi(
     summary: 'Chat completion with parsing',
     responses: { 200: { description: 'Parsed response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await openAiSdkChatCompletionParse()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await openAiSdkChatCompletionParse()) ?? ''))
+  )
 );
 
 app.openapi(
@@ -756,14 +675,9 @@ app.openapi(
     summary: 'Chat completion with per-request model',
     responses: { 200: { description: 'Chat response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await chatCompletionPerRequestModel()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await chatCompletionPerRequestModel()) ?? ''))
+  )
 );
 
 app.openapi(
@@ -774,17 +688,12 @@ app.openapi(
     summary: 'Compute embedding',
     responses: { 200: { description: 'Embedding dimensions' } }
   }),
-  async c => {
-    try {
-      const embedding = await openAiSdkComputeEmbedding();
-      return c.text(
-        `Got embedding vector with ${embedding.length} dimensions.`
-      );
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const embedding = await openAiSdkComputeEmbedding();
+    return c.text(
+      `Got embedding vector with ${embedding.length} dimensions.`
+    );
+  })
 );
 
 app.openapi(
@@ -795,14 +704,9 @@ app.openapi(
     summary: 'Responses API',
     responses: { 200: { description: 'Response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await responsesApi()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await responsesApi()) ?? ''))
+  )
 );
 
 app.openapi(
@@ -836,14 +740,9 @@ app.openapi(
     summary: 'Responses API with parsing',
     responses: { 200: { description: 'Parsed response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await responsesApiParse()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await responsesApiParse()) ?? ''))
+  )
 );
 
 app.openapi(
@@ -854,14 +753,9 @@ app.openapi(
     summary: 'Responses API (stateful)',
     responses: { 200: { description: 'Response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await responsesApiStateful()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await responsesApiStateful()) ?? ''))
+  )
 );
 
 app.openapi(
@@ -872,14 +766,9 @@ app.openapi(
     summary: 'Responses API (multi-turn)',
     responses: { 200: { description: 'Response' } }
   }),
-  async c => {
-    try {
-      return c.text(String((await responsesApiMultiTurn()) ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(String((await responsesApiMultiTurn()) ?? ''))
+  )
 );
 
 /* ── Orchestration ──────────────────────────────────────────────────────── */
@@ -920,17 +809,12 @@ app.openapi(
     },
     responses: { 200: { description: 'File chat response' } }
   }),
-  async c => {
+  withErrorHandling(async c => {
     const fileType = c.req.query('type') as 'pdf' | 'csv' | 'docx' | 'mp3';
     const model = c.req.query('model');
-    try {
-      const result = await orchestrationChatCompletionFile(fileType, { model });
-      return c.text(String(result.getContent() ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+    const result = await orchestrationChatCompletionFile(fileType, { model });
+    return c.text(String(result.getContent() ?? ''));
+  })
 );
 
 app.openapi(
@@ -944,8 +828,8 @@ app.openapi(
     },
     responses: { 200: { description: 'Sample case result' } }
   }),
-  async c => {
-    const sampleCase = c.req.param('sampleCase');
+  withErrorHandling(async c => {
+    const sampleCase = c.req.param('sampleCase')!;
 
     const testCase =
       {
@@ -970,94 +854,89 @@ app.openapi(
         reasoningContent: orchestrationReasoningContent
       }[sampleCase] || orchestrationChatCompletion;
 
-    try {
-      const result = await testCase();
-      if (sampleCase === 'inputFiltering') {
-        return c.text(
-          `Input filter applied successfully with response:\n${JSON.stringify(result, null, 2)}`
-        );
-      }
-      if (sampleCase === 'outputFiltering') {
-        return c.text(
-          `Output filter applied successfully with threshold results:\n${JSON.stringify((result as OrchestrationResponse).getIntermediateResults().output_filtering!.data!, null, 2)}`
-        );
-      }
-      if (sampleCase === 'responseFormat') {
-        return c.text(
-          `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
-        );
-      }
-      if (sampleCase === 'embeddingWithMasking') {
-        const embeddingResult = result as OrchestrationEmbeddingResponse;
-        const embedding = embeddingResult
-          .getEmbeddings()
-          .map(item => item.embedding);
-        return c.text(
-          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${JSON.stringify(embedding)}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens ?? ''}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens ?? ''}`
-        );
-      }
-      if (sampleCase === 'fallbackModules') {
-        const intermediateFailures = (
-          result as OrchestrationResponse
-        ).getIntermediateFailures();
-        const content = (result as OrchestrationResponse).getContent();
-        return c.text(
-          `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
-        );
-      }
-      if (sampleCase === 'sonarWithCitations') {
-        const sonarResult = result as OrchestrationResponse;
-        const content = sonarResult.getContent();
-        const citations = sonarResult.getCitations();
-        let response = `Response: ${content}\n\n`;
-        if (citations?.length) {
-          response += 'Citations:\n';
-          response +=
-            citations
-              .map(
-                citation =>
-                  `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}`
-              )
-              .join('\n') + '\n';
-        } else {
-          response += 'No citations found in the response.\n';
-        }
-        return c.text(response);
-      }
-      if (sampleCase === 'cacheControl') {
-        const [first, second] = result as [
-          OrchestrationResponse,
-          OrchestrationResponse
-        ];
-        const firstUsage = first.getTokenUsage();
-        const secondUsage = second.getTokenUsage();
-        return c.text(
-          '--- First call (cache write) ---\n' +
-            `Response: ${first.getContent()}\n` +
-            `Cache tokens created: ${firstUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
-            `Cache tokens read: ${firstUsage.prompt_tokens_details?.cached_tokens ?? 0}\n\n` +
-            '--- Second call (cache read) ---\n' +
-            `Response: ${second.getContent()}\n` +
-            `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
-            `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
-        );
-      }
-      if (sampleCase === 'reasoningContent') {
-        const reasoningResult = result as OrchestrationResponse;
-        const reasoning = reasoningResult.getReasoningContent();
-        return c.text(
-          '--- Reasoning ---\n' +
-            `${reasoning ? reasoning.join('\n') : '(none)'}\n\n` +
-            '--- Answer ---\n' +
-            `${reasoningResult.getContent()}`
-        );
-      }
-      return c.text((result as OrchestrationResponse).getContent() ?? '');
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
+    const result = await testCase();
+    if (sampleCase === 'inputFiltering') {
+      return c.text(
+        `Input filter applied successfully with response:\n${JSON.stringify(result, null, 2)}`
+      );
     }
-  }
+    if (sampleCase === 'outputFiltering') {
+      return c.text(
+        `Output filter applied successfully with threshold results:\n${JSON.stringify((result as OrchestrationResponse).getIntermediateResults().output_filtering!.data!, null, 2)}`
+      );
+    }
+    if (sampleCase === 'responseFormat') {
+      return c.text(
+        `Response format applied successfully with response:\n${JSON.stringify(result, null, 2)}`
+      );
+    }
+    if (sampleCase === 'embeddingWithMasking') {
+      const embeddingResult = result as OrchestrationEmbeddingResponse;
+      const embedding = embeddingResult
+        .getEmbeddings()
+        .map(item => item.embedding);
+      return c.text(
+        `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${JSON.stringify(embedding)}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens ?? ''}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens ?? ''}`
+      );
+    }
+    if (sampleCase === 'fallbackModules') {
+      const intermediateFailures = (
+        result as OrchestrationResponse
+      ).getIntermediateFailures();
+      const content = (result as OrchestrationResponse).getContent();
+      return c.text(
+        `Fallback modules executed successfully.\nIntermediate Failures: ${JSON.stringify(intermediateFailures, null, 2)}\nFinal Content: ${content}`
+      );
+    }
+    if (sampleCase === 'sonarWithCitations') {
+      const sonarResult = result as OrchestrationResponse;
+      const content = sonarResult.getContent();
+      const citations = sonarResult.getCitations();
+      let response = `Response: ${content}\n\n`;
+      if (citations?.length) {
+        response += 'Citations:\n';
+        response +=
+          citations
+            .map(
+              citation =>
+                `  [${citation.ref_id ?? ''}] ${citation.title}: ${citation.url}`
+            )
+            .join('\n') + '\n';
+      } else {
+        response += 'No citations found in the response.\n';
+      }
+      return c.text(response);
+    }
+    if (sampleCase === 'cacheControl') {
+      const [first, second] = result as [
+        OrchestrationResponse,
+        OrchestrationResponse
+      ];
+      const firstUsage = first.getTokenUsage();
+      const secondUsage = second.getTokenUsage();
+      return c.text(
+        '--- First call (cache write) ---\n' +
+          `Response: ${first.getContent()}\n` +
+          `Cache tokens created: ${firstUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
+          `Cache tokens read: ${firstUsage.prompt_tokens_details?.cached_tokens ?? 0}\n\n` +
+          '--- Second call (cache read) ---\n' +
+          `Response: ${second.getContent()}\n` +
+          `Cache tokens created: ${secondUsage.prompt_tokens_details?.cache_creation_tokens ?? 0}\n` +
+          `Cache tokens read: ${secondUsage.prompt_tokens_details?.cached_tokens ?? 0}`
+      );
+    }
+    if (sampleCase === 'reasoningContent') {
+      const reasoningResult = result as OrchestrationResponse;
+      const reasoning = reasoningResult.getReasoningContent();
+      return c.text(
+        '--- Reasoning ---\n' +
+          `${reasoning ? reasoning.join('\n') : '(none)'}\n\n` +
+          '--- Answer ---\n' +
+          `${reasoningResult.getContent()}`
+      );
+    }
+    return c.text((result as OrchestrationResponse).getContent() ?? '');
+  })
 );
 
 app.openapi(
@@ -1088,7 +967,7 @@ app.openapi(
         }
         await writeOrchestrationStreamSummary(
           s,
-          response.getFinishReason(),
+          response.getFinishReason() ?? undefined,
           response.getTokenUsage()
         );
       } catch (error: any) {
@@ -1120,7 +999,7 @@ app.openapi(
         }
         await writeOrchestrationStreamSummary(
           s,
-          response.getFinishReason(),
+          response.getFinishReason() ?? undefined,
           response.getTokenUsage()
         );
       } catch (error: any) {
@@ -1155,7 +1034,7 @@ app.openapi(
         }
         await writeOrchestrationStreamSummary(
           s,
-          response.getFinishReason(),
+          response.getFinishReason() ?? undefined,
           response.getTokenUsage()
         );
       } catch (error: any) {
@@ -1208,14 +1087,7 @@ app.openapi(
     summary: 'Invoke LangChain chain (Azure OpenAI)',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invoke());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.text(await invoke()))
 );
 
 app.openapi(
@@ -1226,14 +1098,7 @@ app.openapi(
     summary: 'Invoke reasoning with max tokens',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeReasoningWithMaxTokens());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.text(await invokeReasoningWithMaxTokens()))
 );
 
 app.openapi(
@@ -1244,14 +1109,9 @@ app.openapi(
     summary: 'Invoke with structured output (JSON schema)',
     responses: { 200: { description: 'Structured output' } }
   }),
-  async c => {
-    try {
-      return c.json(await invokeWithStructuredOutputJsonSchema());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await invokeWithStructuredOutputJsonSchema())
+  )
 );
 
 app.openapi(
@@ -1274,7 +1134,7 @@ app.openapi(
       400: { description: 'Invalid method' }
     }
   }),
-  async c => {
+  withErrorHandling(async c => {
     const validMethods = ['functionCalling', 'jsonMode', 'jsonSchema'] as const;
     const method = (c.req.query('method') ?? 'jsonSchema') as string;
     if (!validMethods.includes(method as (typeof validMethods)[number])) {
@@ -1287,18 +1147,13 @@ app.openapi(
     }
     const includeRaw =
       c.req.query('includeRaw') === 'true' || c.req.query('includeRaw') === '1';
-    try {
-      return c.json(
-        await orchestrationInvokeWithStructuredOutput(
-          method as (typeof validMethods)[number],
-          includeRaw
-        )
-      );
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+    return c.json(
+      await orchestrationInvokeWithStructuredOutput(
+        method as (typeof validMethods)[number],
+        includeRaw
+      )
+    );
+  })
 );
 
 app.openapi(
@@ -1309,14 +1164,7 @@ app.openapi(
     summary: 'Invoke chain (Azure OpenAI)',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeChain());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.text(await invokeChain()))
 );
 
 app.openapi(
@@ -1327,14 +1175,7 @@ app.openapi(
     summary: 'Invoke chain (orchestration)',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.json(await invokeChainOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.json(await invokeChainOrchestration()))
 );
 
 app.openapi(
@@ -1345,14 +1186,9 @@ app.openapi(
     summary: 'Invoke chain with input filter (orchestration)',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.json(await invokeChainWithInputFilterOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await invokeChainWithInputFilterOrchestration())
+  )
 );
 
 app.openapi(
@@ -1363,14 +1199,9 @@ app.openapi(
     summary: 'Invoke chain with output filter (orchestration)',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.json(await invokeChainWithOutputFilterOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await invokeChainWithOutputFilterOrchestration())
+  )
 );
 
 app.openapi(
@@ -1381,14 +1212,7 @@ app.openapi(
     summary: 'Invoke chain with masking (orchestration)',
     responses: { 200: { description: 'Chain result' } }
   }),
-  async c => {
-    try {
-      return c.json(await invokeChainWithMasking());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.json(await invokeChainWithMasking()))
 );
 
 app.openapi(
@@ -1399,14 +1223,7 @@ app.openapi(
     summary: 'Invoke RAG chain',
     responses: { 200: { description: 'RAG result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeRagChain());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.text(await invokeRagChain()))
 );
 
 app.openapi(
@@ -1417,14 +1234,7 @@ app.openapi(
     summary: 'Invoke tool chain (Azure OpenAI)',
     responses: { 200: { description: 'Tool chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeToolChain());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.text(await invokeToolChain()))
 );
 
 app.openapi(
@@ -1435,14 +1245,9 @@ app.openapi(
     summary: 'Invoke MCP tool chain (orchestration)',
     responses: { 200: { description: 'MCP tool chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeMcpToolChainOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(await invokeMcpToolChainOrchestration())
+  )
 );
 
 app.openapi(
@@ -1453,14 +1258,9 @@ app.openapi(
     summary: 'Invoke tool chain (orchestration)',
     responses: { 200: { description: 'Tool chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeToolChainOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(await invokeToolChainOrchestration())
+  )
 );
 
 app.openapi(
@@ -1471,14 +1271,9 @@ app.openapi(
     summary: 'Invoke stateful LangGraph chain (orchestration)',
     responses: { 200: { description: 'Stateful chain result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeLangGraphChainOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(await invokeLangGraphChainOrchestration())
+  )
 );
 
 app.openapi(
@@ -1489,14 +1284,7 @@ app.openapi(
     summary: 'Invoke dynamic model agent',
     responses: { 200: { description: 'Agent result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeDynamicModelAgent());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.text(await invokeDynamicModelAgent()))
 );
 
 app.openapi(
@@ -1507,22 +1295,17 @@ app.openapi(
     summary: 'Invoke prompt caching agent',
     responses: { 200: { description: 'Caching agent result' } }
   }),
-  async c => {
-    try {
-      const [first, second] = await invokePromptCachingAgent();
-      let response = '--- First call (cache write) ---\n';
-      response += `Response: ${first.content}\ncacheCreationTokens: ${first.cacheCreationTokens ?? 0}\n`;
-      response += `Cache tokens read: ${first.cachedTokens ?? 0}\n\n`;
-      response += '--- Second call (cache read) ---\n';
-      response += `Response: ${second.content}\n`;
-      response += `Cache tokens created: ${second.cacheCreationTokens ?? 0}\n`;
-      response += `Cache tokens read: ${second.cachedTokens ?? 0}\n`;
-      return c.text(response);
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const [first, second] = await invokePromptCachingAgent();
+    let response = '--- First call (cache write) ---\n';
+    response += `Response: ${first.content}\ncacheCreationTokens: ${first.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${first.cachedTokens ?? 0}\n\n`;
+    response += '--- Second call (cache read) ---\n';
+    response += `Response: ${second.content}\n`;
+    response += `Cache tokens created: ${second.cacheCreationTokens ?? 0}\n`;
+    response += `Cache tokens read: ${second.cachedTokens ?? 0}\n`;
+    return c.text(response);
+  })
 );
 
 app.openapi(
@@ -1533,14 +1316,9 @@ app.openapi(
     summary: 'Invoke reasoning multi-turn (orchestration)',
     responses: { 200: { description: 'Reasoning result' } }
   }),
-  async c => {
-    try {
-      return c.text(await invokeReasoningMultiTurnOrchestration());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.text(await invokeReasoningMultiTurnOrchestration())
+  )
 );
 
 app.openapi(
@@ -1554,15 +1332,10 @@ app.openapi(
     },
     responses: { 200: { description: 'Reasoning result' } }
   }),
-  async c => {
-    try {
-      const model = c.req.query('model') as ChatModel | undefined;
-      return c.text(await invokeReasoningStreamMultiTurnOrchestration(model));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const model = c.req.query('model') as ChatModel | undefined;
+    return c.text(await invokeReasoningStreamMultiTurnOrchestration(model));
+  })
 );
 
 app.openapi(
@@ -1783,18 +1556,13 @@ app.openapi(
     summary: 'Grounding via help.sap.com',
     responses: { 200: { description: 'Grounding result' } }
   }),
-  async c => {
-    try {
-      const groundingResult = await orchestrationGrounding(
-        'Give me a short introduction of SAP AI Core.',
-        'help.sap.com'
-      );
-      return c.text(String(groundingResult.getContent() ?? ''));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const groundingResult = await orchestrationGrounding(
+      'Give me a short introduction of SAP AI Core.',
+      'help.sap.com'
+    );
+    return c.text(String(groundingResult.getContent() ?? ''));
+  })
 );
 
 /* ── Prompt Registry ────────────────────────────────────────────────────── */
@@ -1835,14 +1603,7 @@ app.openapi(
     summary: 'List batches',
     responses: { 200: { description: 'Batches list' } }
   }),
-  async c => {
-    try {
-      return c.json(await listBatches());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => c.json(await listBatches()))
 );
 
 app.openapi(
@@ -1865,15 +1626,10 @@ app.openapi(
     },
     responses: { 200: { description: 'Created batch' } }
   }),
-  async c => {
-    try {
-      const { inputUri, outputUri } = await c.req.json();
-      return c.json(await createBatch(inputUri, outputUri));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c => {
+    const { inputUri, outputUri } = await c.req.json();
+    return c.json(await createBatch(inputUri, outputUri));
+  })
 );
 
 app.openapi(
@@ -1887,14 +1643,9 @@ app.openapi(
     },
     responses: { 200: { description: 'Batch details' } }
   }),
-  async c => {
-    try {
-      return c.json(await getBatchById(c.req.param('batchId')));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await getBatchById(c.req.param('batchId')!))
+  )
 );
 
 app.openapi(
@@ -1908,14 +1659,9 @@ app.openapi(
     },
     responses: { 200: { description: 'Batch status' } }
   }),
-  async c => {
-    try {
-      return c.json(await getBatchStatus(c.req.param('batchId')));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await getBatchStatus(c.req.param('batchId')!))
+  )
 );
 
 app.openapi(
@@ -1929,14 +1675,9 @@ app.openapi(
     },
     responses: { 200: { description: 'Cancelled batch' } }
   }),
-  async c => {
-    try {
-      return c.json(await cancelBatch(c.req.param('batchId')));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await cancelBatch(c.req.param('batchId')!))
+  )
 );
 
 app.openapi(
@@ -1950,14 +1691,9 @@ app.openapi(
     },
     responses: { 200: { description: 'Deleted batch' } }
   }),
-  async c => {
-    try {
-      return c.json(await deleteBatch(c.req.param('batchId')));
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await deleteBatch(c.req.param('batchId')!))
+  )
 );
 
 /* ── RPT ────────────────────────────────────────────────────────────────── */
@@ -2073,14 +1809,9 @@ app.openapi(
     summary: 'Predict with scenario context',
     responses: { 200: { description: 'Prediction result' } }
   }),
-  async c => {
-    try {
-      return c.json(await predictWithScenarioContext());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await predictWithScenarioContext())
+  )
 );
 
 app.openapi(
@@ -2091,14 +1822,9 @@ app.openapi(
     summary: 'Predict with inline context',
     responses: { 200: { description: 'Prediction result' } }
   }),
-  async c => {
-    try {
-      return c.json(await predictWithInlineContext());
-    } catch (error: any) {
-      console.error(error.stack);
-      return c.text(errorBody(error), errorStatus(error));
-    }
-  }
+  withErrorHandling(async c =>
+    c.json(await predictWithInlineContext())
+  )
 );
 
 /* ── OpenAPI docs ───────────────────────────────────────────────────────── */
