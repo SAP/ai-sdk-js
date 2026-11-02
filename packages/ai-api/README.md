@@ -47,17 +47,13 @@ Pass `scenarioId` to query a different scenario, or `resourceGroup` to target a 
 ```ts
 import {
   getModels,
-  filterByOrchestrationCapability,
-  filterByCapability
+  filterFoundationModelsByCapability
 } from '@sap-ai-sdk/ai-api';
 
 const models = await getModels();
 
-// Models usable via the orchestration service for chat
-const chatModels = filterByOrchestrationCapability(models, 'chat');
-
 // Models with vision (image input) capability
-const visionModels = filterByCapability(models, 'vision');
+const visionModels = filterFoundationModelsByCapability(models, 'vision');
 ```
 
 ### Filter Deprecated Models
@@ -65,18 +61,18 @@ const visionModels = filterByCapability(models, 'vision');
 ```ts
 import {
   getModels,
-  filterNonDeprecated,
-  getLatestVersions
+  filterFoundationModelsNonDeprecated,
+  getFoundationModelLatestVersions
 } from '@sap-ai-sdk/ai-api';
 
 const models = await getModels();
 
 // Remove deprecated versions; exclude models with no active versions left
-const activeModels = filterNonDeprecated(models);
+const activeModels = filterFoundationModelsNonDeprecated(models);
 
 // Get just the latest version info per model
-const latestVersions = getLatestVersions(models);
-// [{ model: 'gpt-4o', executableId: 'azure-openai', latestVersion: { name: '2024-11-20', ... } }]
+const latestVersions = getFoundationModelLatestVersions(models);
+// [{ model: 'gpt-4o', executableId: 'azure-openai', latestVersions: [{ name: '2024-11-20', ... }] }]
 ```
 
 ### Resolve a Deployment ID
@@ -88,6 +84,25 @@ const deploymentId = await getFoundationModelDeploymentId(
   'gpt-4o',
   'azure-openai'
 );
+```
+
+### Resolve an Orchestration Deployment
+
+```ts
+import {
+  getOrchestrationDeploymentId,
+  getOrchestrationDeploymentUrl
+} from '@sap-ai-sdk/ai-api';
+
+// Resolve by resource group (uses the running orchestration deployment in that group)
+const deploymentId = await getOrchestrationDeploymentId({
+  resourceGroup: 'my-group'
+});
+
+// Or resolve the full deployment URL directly
+const deploymentUrl = await getOrchestrationDeploymentUrl({
+  resourceGroup: 'my-group'
+});
 ```
 
 > To use foundation models directly, see [`@sap-ai-sdk/foundation-models`](../foundation-models/README.md).

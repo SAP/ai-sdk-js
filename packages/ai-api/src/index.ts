@@ -11,9 +11,10 @@ export type {
 export {
   resolveDeploymentUrl,
   getFoundationModelDeploymentId,
+  getOrchestrationDeploymentId,
+  getOrchestrationDeploymentUrl,
   getModels,
-  filterByCapability,
-  filterByOrchestrationCapability,
-  filterNonDeprecated,
-  getLatestVersions
+  filterFoundationModelsByCapability,
+  filterFoundationModelsNonDeprecated,
+  getFoundationModelLatestVersions
 } from './utils/index.ts';

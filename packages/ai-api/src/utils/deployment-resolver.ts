@@ -306,7 +306,6 @@ export async function getFoundationModelDeploymentId(
  * @param deploymentConfig - The deployment configuration (resource group or deployment ID).
  * @param destination - The destination to use for the request.
  * @returns The ID of the deployment, if found.
- * @internal
  */
 export async function getOrchestrationDeploymentId(
   deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
@@ -321,4 +320,35 @@ export async function getOrchestrationDeploymentId(
     ...deploymentConfig,
     destination
   });
+}
+
+/**
+ * Get the deployment URL for an orchestration scenario.
+ * @param deploymentConfig - The deployment configuration (resource group or deployment ID).
+ * @param destination - The destination to use for the request.
+ * @returns The URL of the deployment, if found.
+ */
+export async function getOrchestrationDeploymentUrl(
+  deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
+  destination?: HttpDestinationOrFetchOptions
+): Promise<string> {
+  if (isDeploymentIdConfig(deploymentConfig)) {
+    return resolveDeploymentUrlById(
+      deploymentConfig.deploymentId,
+      (deploymentConfig as ResourceGroupConfig).resourceGroup ?? 'default',
+      destination
+    );
+  }
+
+  const url = await resolveDeploymentUrl({
+    scenarioId: 'orchestration',
+    ...deploymentConfig,
+    destination
+  });
+  if (!url) {
+    throw new Error(
+      `Orchestration deployment has no deployment URL. Ensure the deployment is running.`
+    );
+  }
+  return url;
 }

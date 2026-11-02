@@ -7,10 +7,9 @@ import {
   parseMockResponse
 } from '../../../../test-util/mock-http.ts';
 import {
-  filterByCapability,
-  filterByOrchestrationCapability,
-  filterNonDeprecated,
-  getLatestVersions,
+  filterFoundationModelsByCapability,
+  filterFoundationModelsNonDeprecated,
+  getFoundationModelLatestVersions,
   getModels
 } from './model-discovery.ts';
 
@@ -76,51 +75,25 @@ describe('model discovery', () => {
     });
   });
 
-  describe('filterByOrchestrationCapability()', () => {
-    it('returns models with the given orchestration capability', () => {
-      const result = filterByOrchestrationCapability(mockModels, 'chat');
-      expect(result).toHaveLength(1);
-      expect(result[0].model).toBe('gpt-4o');
-    });
-
-    it('returns models with embedding orchestration capability', () => {
-      const result = filterByOrchestrationCapability(mockModels, 'embedding');
-      expect(result).toHaveLength(1);
-      expect(result[0].model).toBe('text-embedding-3-large');
-    });
-
-    it('excludes deprecated-only versions when filtering', () => {
-      // gpt-4o has 'image_generation' only on its non-deprecated version
-      const result = filterByOrchestrationCapability(
-        mockModels,
-        'image_generation'
-      );
-      expect(result).toHaveLength(1);
-      expect(result[0].model).toBe('gpt-4o');
-    });
-
-    it('returns an empty array when no models match', () => {
-      const result = filterByOrchestrationCapability(mockModels, 'nonexistent');
-      expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('filterByCapability()', () => {
+  describe('filterFoundationModelsByCapability()', () => {
     it('returns models with the given capability', () => {
-      const result = filterByCapability(mockModels, 'vision');
+      const result = filterFoundationModelsByCapability(mockModels, 'vision');
       expect(result).toHaveLength(1);
       expect(result[0].model).toBe('gpt-4o');
     });
 
     it('returns an empty array when no models match', () => {
-      const result = filterByCapability(mockModels, 'nonexistent');
+      const result = filterFoundationModelsByCapability(
+        mockModels,
+        'nonexistent'
+      );
       expect(result).toHaveLength(0);
     });
   });
 
-  describe('filterNonDeprecated()', () => {
+  describe('filterFoundationModelsNonDeprecated()', () => {
     it('removes deprecated versions from each model', () => {
-      const result = filterNonDeprecated(mockModels);
+      const result = filterFoundationModelsNonDeprecated(mockModels);
       const gpt4o = result.find(m => m.model === 'gpt-4o');
       expect(gpt4o).toBeDefined();
       expect(gpt4o!.versions).toHaveLength(1);
@@ -136,42 +109,62 @@ describe('model discovery', () => {
           versions: [{ name: '1', isLatest: false, deprecated: true }]
         }
       ];
-      const result = filterNonDeprecated(allDeprecated);
+      const result = filterFoundationModelsNonDeprecated(allDeprecated);
       expect(result).toHaveLength(0);
     });
 
     it('keeps models that have at least one active version', () => {
-      const result = filterNonDeprecated(mockModels);
+      const result = filterFoundationModelsNonDeprecated(mockModels);
       expect(result).toHaveLength(2);
     });
   });
 
-  describe('getLatestVersions()', () => {
-    it('returns one entry per model with isLatest: true', () => {
-      const result = getLatestVersions(mockModels);
+  describe('getFoundationModelLatestVersions()', () => {
+    it('returns one entry per model', () => {
+      const result = getFoundationModelLatestVersions(mockModels);
       expect(result).toHaveLength(2);
     });
 
-    it('includes the model name, executableId, and the latest version object', () => {
-      const result = getLatestVersions(mockModels);
+    it('returns the version marked isLatest when present', () => {
+      const result = getFoundationModelLatestVersions(mockModels);
       const gpt4o = result.find(r => r.model === 'gpt-4o');
       expect(gpt4o).toBeDefined();
       expect(gpt4o!.executableId).toBe('azure-openai');
-      expect(gpt4o!.latestVersion.name).toBe('2024-11-20');
-      expect(gpt4o!.latestVersion.isLatest).toBe(true);
+      expect(gpt4o!.latestVersions).toHaveLength(1);
+      expect(gpt4o!.latestVersions[0].name).toBe('2024-11-20');
+      expect(gpt4o!.latestVersions[0].isLatest).toBe(true);
     });
 
-    it('excludes models with no version marked as latest', () => {
+    it('returns all versions when none is marked as latest', () => {
       const noLatest: AiModelBaseData[] = [
         {
           model: 'no-latest',
           executableId: 'azure-openai',
           description: 'No latest version',
+          versions: [
+            { name: '1', isLatest: false, deprecated: false },
+            { name: '2', isLatest: false, deprecated: false }
+          ]
+        }
+      ];
+      const result = getFoundationModelLatestVersions(noLatest);
+      expect(result).toHaveLength(1);
+      expect(result[0].latestVersions).toHaveLength(2);
+    });
+
+    it('returns the single version even if not marked as latest', () => {
+      const singleVersion: AiModelBaseData[] = [
+        {
+          model: 'single',
+          executableId: 'azure-openai',
+          description: 'Single version',
           versions: [{ name: '1', isLatest: false, deprecated: false }]
         }
       ];
-      const result = getLatestVersions(noLatest);
-      expect(result).toHaveLength(0);
+      const result = getFoundationModelLatestVersions(singleVersion);
+      expect(result).toHaveLength(1);
+      expect(result[0].latestVersions).toHaveLength(1);
+      expect(result[0].latestVersions[0].name).toBe('1');
     });
   });
 });
