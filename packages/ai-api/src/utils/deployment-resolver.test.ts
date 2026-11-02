@@ -271,10 +271,7 @@ describe('getOrchestrationDeploymentId', () => {
   });
 
   it('returns the deployment ID by looking up the orchestration scenario', async () => {
-    mockDeploymentsList(
-      { scenarioId: 'orchestration' },
-      { id: 'orch-dep-1' }
-    );
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: 'orch-dep-1' });
 
     const id = await getOrchestrationDeploymentId({});
     expect(id).toBe('orch-dep-1');
