@@ -341,10 +341,8 @@ export function mapLangChainToAiClient(
     params.max_completion_tokens =
       maxCompletionTokens ?? (rawMaxTokens === -1 ? undefined : rawMaxTokens);
   } else {
-    if (maxCompletionTokens !== undefined) {
-      params.max_completion_tokens = maxCompletionTokens;
-    }
-    if (rawMaxTokens !== undefined && rawMaxTokens !== -1) {
+    params.max_completion_tokens = maxCompletionTokens;
+    if (rawMaxTokens !== -1) {
       params.max_tokens = rawMaxTokens;
     }
   }
