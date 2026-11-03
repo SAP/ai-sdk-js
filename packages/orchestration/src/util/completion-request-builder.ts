@@ -39,8 +39,9 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
   stream?: boolean
 ): Record<string, any> {
   let { modules } = config;
+  const isModulesArray = Array.isArray(modules);
 
-  const moduleList: Record<string, any>[] = Array.isArray(modules)
+  const moduleList: Record<string, any>[] = isModulesArray
     ? modules
     : [modules];
 
@@ -58,7 +59,7 @@ export function constructCompletionPostRequestFromJsonModuleConfig(
         prompt
       }
     }));
-    modules = Array.isArray(modules) ? modulesWithPrompt : modulesWithPrompt[0];
+    modules = isModulesArray ? modulesWithPrompt : modulesWithPrompt[0];
   }
 
   if (stream) {
@@ -314,19 +315,6 @@ function warnAboutMissingOutputFiltering(
 
 /**
  * @internal
- * Adds stream options to module configurations for streaming requests.
- */
-function buildModules(
-  configs: ModuleConfigs[],
-  options?: StreamOptions
-): ModuleConfigs[] {
-  return configs.map((config, index) => {
-    const itemStreamOptions = getStreamOptionsForItem(options, index);
-    return addStreamOptionsToSingleModuleConfig(config, itemStreamOptions);
-  });
-}
-/**
- * @internal
  * Adds stream options to module configurations and returns an orchestration config for streaming requests.
  * Validates overrides and warns about unused or invalid override indices.
  * @param moduleConfigs - Single or array of module configurations.
@@ -350,7 +338,12 @@ export function addStreamOptions(
   warnAboutShortOverridesArray(streamOptions, configs.length);
   warnAboutMissingOutputFiltering(moduleConfigs, streamOptions);
 
-  const modules = buildModules(configs, streamOptions);
+  const modules = configs.map((config, index) =>
+    addStreamOptionsToSingleModuleConfig(
+      config,
+      getStreamOptionsForItem(streamOptions, index)
+    )
+  );
 
   return {
     stream: {
@@ -438,7 +431,7 @@ function buildRequestPromptCompletion(
   assertConfigHasNoPrompt(configs.map(c => c?.promptTemplating?.prompt));
   const prompt = validateRequestPromptShape(request);
 
-  const moduleConfigurations = configs.map(c => buildModulesConfig(c, prompt));
+  const moduleConfigurations = configs.map(c => buildModuleConfigs(c, prompt));
 
   const configWithStream = addStreamIfEnabled(
     Array.isArray(config) ? moduleConfigurations : moduleConfigurations[0],
@@ -487,7 +480,7 @@ function buildLegacyMessagesCompletion(
       : request;
 
   const moduleConfigurations = configs.map(c =>
-    buildLegacyModulesConfig(c, moduleRequest)
+    buildLegacyModuleConfigs(c, moduleRequest)
   );
 
   const configWithStream = addStreamIfEnabled(
@@ -641,7 +634,7 @@ function mergePromptWithMessages(
  * omit the prompt entirely (history-only request).
  * @returns The module configuration with the prompt applied.
  */
-function buildModulesConfig(
+function buildModuleConfigs(
   config: OrchestrationModuleConfig,
   prompt?: Template | TemplateRef
 ): ModuleConfigs {
@@ -665,11 +658,11 @@ function buildModulesConfig(
   };
 }
 
-function buildLegacyModulesConfig(
+function buildLegacyModuleConfigs(
   config: OrchestrationModuleConfig,
   request?: ChatCompletionRequest
 ): ModuleConfigs {
-  return buildModulesConfig(
+  return buildModuleConfigs(
     config,
     mergePromptWithMessages(config.promptTemplating, request)
   );
