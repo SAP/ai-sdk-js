@@ -68,7 +68,7 @@ export interface ChatCompletionRequest {
 
   /**
    * New chat messages, including template messages.
-   * @deprecated Since v2.17.0. Pass the current turn via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
+   * @deprecated Since v2.18.0. Pass the current turn via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
    * @example
    * messages: [
    *   {
@@ -126,7 +126,7 @@ export interface PromptTemplatingModule {
    *
    * This is meant for static instructions included with every call.
    * For per-request templating, use `messages` in `.chatCompletion()` instead.
-   * @deprecated Since v2.17.0. Supply the prompt per call via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
+   * @deprecated Since v2.18.0. Supply the prompt per call via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
    * @example
    * prompt: {
    *   template: [
