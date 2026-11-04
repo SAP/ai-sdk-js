@@ -1,5 +1,6 @@
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
-import { executeRequest } from '@sap-ai-sdk/core';
+import { executeRequest, withGenAiSpan, startGenAiSpan } from '@sap-ai-sdk/core';
+import type { AddEventFn } from '@sap-ai-sdk/core';
 import { RegistryControllerPromptControllerCreateUpdatePromptTemplateBody } from '@sap-ai-sdk/prompt-registry/internal.js';
 import { createLogger } from '@sap-cloud-sdk/util';
 
@@ -48,6 +49,41 @@ const logger = createLogger({
   package: 'orchestration',
   messageContext: 'orchestration-client'
 });
+
+/** Emit GenAI semantic convention message events when content capture is opted in. */
+const captureContent =
+  typeof process !== 'undefined' &&
+  process.env?.OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT === 'true';
+
+function emitMessageEvents(
+  addEvent: AddEventFn,
+  messages: import('./client/api/schema/index.ts').ChatMessages | undefined
+): void {
+  if (!captureContent || !messages?.length) return;
+  for (const msg of messages) {
+    const content =
+      typeof msg.content === 'string'
+        ? msg.content
+        : JSON.stringify(msg.content);
+    addEvent(`gen_ai.${msg.role}.message`, {
+      'gen_ai.event.content': JSON.stringify({ role: msg.role, content })
+    });
+  }
+}
+
+function emitChoiceEvent(
+  addEvent: AddEventFn,
+  response: import('./orchestration-response.ts').OrchestrationResponse
+): void {
+  if (!captureContent) return;
+  addEvent('gen_ai.choice', {
+    'gen_ai.event.content': JSON.stringify({
+      finish_reason: response.getFinishReason() ?? 'stop',
+      index: 0,
+      message: { role: 'assistant', content: response.getContent() ?? '' }
+    })
+  });
+}
 
 /**
  * Client for the SAP AI Core Orchestration Service.
@@ -179,12 +215,48 @@ export class OrchestrationClient {
         'Messages provided with an orchestration config reference will be sent as messages_history.'
       );
     }
-    const response = await this.executeRequest({
-      request,
-      requestConfig,
-      stream: false
-    });
-    return new OrchestrationResponse(response);
+    const model = this.getConfiguredModel();
+    return withGenAiSpan(
+      `chat ${model}`,
+      {
+        'gen_ai.system': 'sap-aicore',
+        'gen_ai.operation.name': 'chat',
+        'gen_ai.request.model': model
+      },
+      async (update, _setError, addEvent) => {
+        if (captureContent && request?.messages?.length) {
+          update({ 'gen_ai.request.messages': JSON.stringify(request.messages).slice(0, 65536) });
+        }
+        emitMessageEvents(addEvent, request?.messages);
+        const response = await this.executeRequest({
+          request,
+          requestConfig,
+          stream: false
+        });
+        const orchResponse = new OrchestrationResponse(response);
+        emitChoiceEvent(addEvent, orchResponse);
+        if (captureContent) {
+          const content = orchResponse.getContent();
+          if (content) update({ 'gen_ai.completion': content.slice(0, 32768) });
+        }
+        const usage = orchResponse.getTokenUsage();
+        if (usage) {
+          update({
+            'gen_ai.usage.input_tokens': usage.prompt_tokens,
+            'gen_ai.usage.output_tokens': usage.completion_tokens
+          });
+        }
+        const finishReason = orchResponse.getFinishReason();
+        if (finishReason) {
+          update({ 'gen_ai.response.finish_reasons': finishReason });
+        }
+        const requestId = orchResponse.getRequestId();
+        if (requestId) {
+          update({ 'gen_ai.response.id': requestId });
+        }
+        return orchResponse;
+      }
+    );
   }
 
   /**
@@ -231,15 +303,63 @@ export class OrchestrationClient {
         }
       }
 
-      return await this.createStreamResponse(
-        {
-          request,
-          requestConfig,
-          stream: true,
-          streamOptions: options
-        },
-        controller
-      );
+      const model = this.getConfiguredModel();
+      const { result: streamResponse, update, addEvent, end } =
+        await startGenAiSpan(
+          `chat ${model}`,
+          {
+            'gen_ai.system': 'sap-aicore',
+            'gen_ai.operation.name': 'chat',
+            'gen_ai.request.model': model
+          },
+          () =>
+            this.createStreamResponse(
+              {
+                request,
+                requestConfig,
+                stream: true,
+                streamOptions: options
+              },
+              controller
+            )
+        );
+
+      emitMessageEvents(addEvent, request?.messages);
+      if (captureContent && request?.messages?.length) {
+        update({ 'gen_ai.request.messages': JSON.stringify(request.messages).slice(0, 65536) });
+      }
+
+      streamResponse._onStreamEnd = () => {
+        if (captureContent) {
+          addEvent('gen_ai.choice', {
+            'gen_ai.event.content': JSON.stringify({
+              finish_reason: streamResponse.getFinishReason() ?? 'stop',
+              index: 0,
+              message: { role: 'assistant', content: streamResponse.getContent() ?? '' }
+            })
+          });
+          const content = streamResponse.getContent();
+          if (content) update({ 'gen_ai.completion': content.slice(0, 32768) });
+        }
+        const usage = streamResponse.getTokenUsage();
+        if (usage) {
+          update({
+            'gen_ai.usage.input_tokens': usage.prompt_tokens,
+            'gen_ai.usage.output_tokens': usage.completion_tokens
+          });
+        }
+        const finishReason = streamResponse.getFinishReason();
+        if (finishReason) {
+          update({ 'gen_ai.response.finish_reasons': finishReason });
+        }
+        const requestId = streamResponse.getRequestId();
+        if (requestId) {
+          update({ 'gen_ai.response.id': requestId });
+        }
+        end();
+      };
+
+      return streamResponse;
     } catch (error) {
       controller.abort();
       throw error;
@@ -335,6 +455,27 @@ export class OrchestrationClient {
       ._pipe(OrchestrationStream._processStreamEnd, response);
 
     return response;
+  }
+
+  /**
+   * Extracts the model name from the config for use in span names and attributes.
+   * Returns 'unknown' for config references and JSON configs where the model
+   * name is not available at construction time.
+   */
+  private getConfiguredModel(): string {
+    if (typeof this.config === 'string' || isConfigReference(this.config)) {
+      return 'unknown';
+    }
+    if (Array.isArray(this.config)) {
+      return (
+        (this.config[0] as OrchestrationModuleConfig)?.promptTemplating?.model
+          ?.name ?? 'unknown'
+      );
+    }
+    return (
+      (this.config as OrchestrationModuleConfig).promptTemplating?.model
+        ?.name ?? 'unknown'
+    );
   }
 
   /**

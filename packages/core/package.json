@@ -38,6 +38,7 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
+    "@opentelemetry/api": ">=1.0.0",
     "@sap-cloud-sdk/connectivity": "catalog:",
     "@sap-cloud-sdk/http-client": "catalog:",
     "@sap-cloud-sdk/openapi": "catalog:",

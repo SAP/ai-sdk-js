@@ -86,6 +86,8 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
         `Orchestration used ${intermediateFailures.length} fallback(s) before success`
       );
     }
+
+    response._onStreamEnd?.();
   }
 
   /**

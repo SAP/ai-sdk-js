@@ -8,6 +8,7 @@ This package incorporates generative AI orchestration capabilities into your AI 
 
 - [Installation](#installation)
 - [Documentation](#documentation)
+- [OpenTelemetry](#opentelemetry)
 - [Support, Feedback, Contribution](#support-feedback-contribution)
 - [License](#license)
 
@@ -20,6 +21,21 @@ npm install @sap-ai-sdk/orchestration
 ## Documentation
 
 Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.
+
+## OpenTelemetry
+
+`OrchestrationClient` emits OpenTelemetry spans following the [GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) automatically — no code changes required.
+
+```ts
+// chatCompletion: span covers the full HTTP round-trip
+const response = await client.chatCompletion({ messages: [...] });
+
+// stream: span stays open until the last chunk is consumed
+const streamResponse = await client.stream({ messages: [...] });
+for await (const chunk of streamResponse.stream) { /* ... */ }
+```
+
+Spans include `gen_ai.system`, `gen_ai.operation.name`, `gen_ai.request.model`, token usage, and finish reason. See the [OpenTelemetry guide](../../docs/open-telemetry.md) for setup instructions, the full attribute reference, and examples for building a multi-turn agent trace hierarchy.
 
 ## Support, Feedback, Contribution
 

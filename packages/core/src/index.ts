@@ -18,3 +18,5 @@ export type {
   LlmBatchModel
 } from './model-types.ts';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';
+export { withGenAiSpan, startGenAiSpan, withAgentSpan, withToolSpan } from './tracing.ts';
+export type { UpdateFn, SetErrorFn, AddEventFn, AgentSpanOptions } from './tracing.ts';

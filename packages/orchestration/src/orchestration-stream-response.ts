@@ -27,6 +27,8 @@ const logger = createLogger({
 export class OrchestrationStreamResponse<T> {
   public _openStream = true;
   public _data: Partial<CompletionPostResponse> = {};
+  /** @internal Called once when the stream is fully consumed. Used for OTel span finalisation. */
+  public _onStreamEnd?: () => void;
   private _stream: OrchestrationStream<T> | undefined;
   private _rawResponse: HttpResponse | undefined;
 
