@@ -216,7 +216,6 @@ describe('addStreamOptions with module fallback configs', () => {
       }
     };
 
-    // @ts-expect-error overrides are not supported for single configs
     expect(() => addStreamOptions(config, streamOptions)).toThrow(
       'Overrides in stream options are not supported when a single module configuration is provided.'
     );
