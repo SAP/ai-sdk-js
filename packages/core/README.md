@@ -5,6 +5,7 @@
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
 This package contains core utility functions that we reuse in the SDK to set the context and execute HTTP requests.
+It also exports OpenTelemetry tracing helpers (`withAgentSpan`, `withToolSpan`, `withGenAiSpan`, `startGenAiSpan`) for teams that want to instrument their own agentic loops and tool executions with [GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
 
 ### Installation
 
@@ -15,6 +16,8 @@ npm install @sap-ai-sdk/core
 ## Documentation
 
 Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.
+
+For OpenTelemetry integration details, see the [OpenTelemetry guide](../../docs/open-telemetry.md).
 
 ## Support, Feedback, Contribution
 
