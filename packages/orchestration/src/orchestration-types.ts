@@ -38,7 +38,6 @@ import type { ChatModel, EmbeddingModel } from './model-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
- * Only `prompt`, `messagesHistory`, and `placeholderValues` are accepted here.
  * Model parameters (`temperature`, `max_tokens`, etc.), `tools`, and `response_format`
  * must be configured in the {@link OrchestrationModuleConfig} passed to the constructor.
  */
