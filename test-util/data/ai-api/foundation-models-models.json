@@ -1,5 +1,5 @@
 {
-  "count": 2,
+  "count": 4,
   "resources": [
     {
       "model": "gpt-4o",
@@ -53,6 +53,37 @@
           "capabilities": [],
           "streamingSupported": false,
           "orchestrationCapabilities": ["embedding"]
+        }
+      ],
+      "allowedScenarios": [
+        { "scenarioId": "foundation-models", "executableId": "azure-openai" }
+      ]
+    },
+    {
+      "model": "deprecated-vision-only",
+      "executableId": "azure-openai",
+      "description": "Model whose only vision-capable version is deprecated.",
+      "versions": [
+        {
+          "name": "1",
+          "isLatest": true,
+          "deprecated": true,
+          "capabilities": ["vision"]
+        }
+      ],
+      "allowedScenarios": [
+        { "scenarioId": "foundation-models", "executableId": "azure-openai" }
+      ]
+    },
+    {
+      "model": "no-capabilities-field",
+      "executableId": "azure-openai",
+      "description": "Model with a version that omits the capabilities field entirely.",
+      "versions": [
+        {
+          "name": "1",
+          "isLatest": true,
+          "deprecated": false
         }
       ],
       "allowedScenarios": [

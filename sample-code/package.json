@@ -25,9 +25,6 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@hono/node-server": "2.0.6",
-    "@hono/swagger-ui": "0.6.1",
-    "@hono/zod-openapi": "1.5.1",
     "@langchain/classic": "1.0.57",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
@@ -36,10 +33,11 @@
     "@modelcontextprotocol/sdk": "1.32.2",
     "@sap-cloud-sdk/resilience": "catalog:",
     "@sap-cloud-sdk/util": "catalog:",
-    "hono": "4.12.25",
+    "@types/express": "5.0.6",
+    "express": "5.3.0",
     "langchain": "catalog:",
     "openai": "7.45.1",
-    "ws": "8.22.0",
+    "ws": "8.22.1",
     "zod": "catalog:"
   },
   "devDependencies": {

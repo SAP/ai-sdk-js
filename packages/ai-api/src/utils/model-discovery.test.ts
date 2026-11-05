@@ -40,7 +40,7 @@ describe('model discovery', () => {
         data: { count: 2, resources: mockModels }
       });
       const models = await getModels();
-      expect(models).toHaveLength(2);
+      expect(models).toHaveLength(4);
       expect(models[0].model).toBe('gpt-4o');
       expect(models[1].model).toBe('text-embedding-3-large');
     });
@@ -61,7 +61,7 @@ describe('model discovery', () => {
         .reply(200, { count: 2, resources: mockModels });
 
       const models = await getModels({ resourceGroup: 'my-group' });
-      expect(models).toHaveLength(2);
+      expect(models).toHaveLength(4);
     });
 
     it('wraps API errors with a descriptive message', async () => {
@@ -89,6 +89,16 @@ describe('model discovery', () => {
       );
       expect(result).toHaveLength(0);
     });
+
+    it('excludes models where the capability only exists on deprecated versions', () => {
+      const result = filterFoundationModelsByCapability(mockModels, 'vision');
+      expect(result.map(m => m.model)).not.toContain('deprecated-vision-only');
+    });
+
+    it('does not throw and excludes models whose versions omit the capabilities field', () => {
+      const result = filterFoundationModelsByCapability(mockModels, 'vision');
+      expect(result.map(m => m.model)).not.toContain('no-capabilities-field');
+    });
   });
 
   describe('filterFoundationModelsNonDeprecated()', () => {
@@ -115,14 +125,14 @@ describe('model discovery', () => {
 
     it('keeps models that have at least one active version', () => {
       const result = filterFoundationModelsNonDeprecated(mockModels);
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(3);
     });
   });
 
   describe('getFoundationModelLatestVersions()', () => {
     it('returns one entry per model', () => {
       const result = getFoundationModelLatestVersions(mockModels);
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(4);
     });
 
     it('returns the version marked isLatest when present', () => {
