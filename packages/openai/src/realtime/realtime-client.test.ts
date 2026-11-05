@@ -97,10 +97,12 @@ describe('SapOpenAiRealtimeWs', () => {
     );
     const socket = MockWebSocket.instances[0];
     expect(socket.url).toBe(client.url.toString());
+    // openai-node lowercases WS header keys before passing them to the socket;
+    // HTTP header names are case-insensitive (RFC 9110), so SAP AI Core still reads them.
     expect(socket.options.headers).toMatchObject({
-      Authorization: expect.stringMatching(/^Bearer /),
-      'AI-Resource-Group': 'default',
-      'AI-Client-Type': 'AI SDK JavaScript'
+      authorization: expect.stringMatching(/^Bearer /),
+      'ai-resource-group': 'default',
+      'ai-client-type': 'AI SDK JavaScript'
     });
   });
 
@@ -111,7 +113,7 @@ describe('SapOpenAiRealtimeWs', () => {
     });
 
     const socket = MockWebSocket.instances[0];
-    expect(socket.options.headers?.['AI-Client-Type']).toBe(
+    expect(socket.options.headers?.['ai-client-type']).toBe(
       'AI SDK JavaScript,my-app'
     );
     expect(client).toBeInstanceOf(SapOpenAiRealtimeWs);
@@ -134,7 +136,7 @@ describe('SapOpenAiRealtimeWs', () => {
     });
 
     expect(
-      MockWebSocket.instances[0].options.headers?.['AI-Resource-Group']
+      MockWebSocket.instances[0].options.headers?.['ai-resource-group']
     ).toBe('my-rg');
   });
 
