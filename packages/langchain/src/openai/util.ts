@@ -45,17 +45,16 @@ import type { ChatResult } from '@langchain/core/outputs';
  * @internal
  */
 export function isReasoningModel(modelName: string): boolean {
-  const lowerModelName = modelName?.toLowerCase();
-
-  if (!lowerModelName) {
+  if (!modelName) {
     return false;
   }
-
-  return (
-    /^o\d/.test(lowerModelName) ||
-    (lowerModelName.startsWith('gpt-5') &&
-      !lowerModelName.startsWith('gpt-5-chat'))
-  );
+  if (/^o\d/.test(modelName ?? '')) {
+    return true;
+  }
+  if (modelName.startsWith('gpt-5') && !modelName.startsWith('gpt-5-chat')) {
+    return true;
+  }
+  return false;
 }
 
 /**
