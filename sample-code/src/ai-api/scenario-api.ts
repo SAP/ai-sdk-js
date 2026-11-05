@@ -1,8 +1,4 @@
-import {
-  ScenarioApi,
-  getModels,
-  getFoundationModelDeploymentId
-} from '@sap-ai-sdk/ai-api';
+import { ScenarioApi, getModels } from '@sap-ai-sdk/ai-api';
 
 import type {
   AiScenarioList,
@@ -44,17 +40,4 @@ export async function getModelsInScenario(
  */
 export async function getAllAvailableModels(): Promise<AiModelBaseData[]> {
   return getModels();
-}
-
-/**
- * Resolve the deployment ID for a specific foundation model.
- * @param modelName - Name of the model (e.g. 'gpt-4o').
- * @param executableId - Executable ID of the model (e.g. 'azure-openai').
- * @returns The deployment ID.
- */
-export async function resolveModelDeploymentId(
-  modelName: string,
-  executableId: string
-): Promise<string> {
-  return getFoundationModelDeploymentId(modelName, executableId);
 }
