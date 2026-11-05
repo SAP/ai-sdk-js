@@ -5,6 +5,9 @@ import { join } from 'node:path';
 
 import {
   resolveDeploymentUrl,
+  filterFoundationModelsByCapability,
+  filterFoundationModelsNonDeprecated,
+  getFoundationModelLatestVersions,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -18,7 +21,11 @@ import {
   stopDeployments,
   deleteDeployments
 } from './ai-api/deployment-api.ts';
-import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
+import {
+  getScenarios,
+  getModelsInScenario,
+  getAllAvailableModels
+} from './ai-api/scenario-api.ts';
 import {
   createCollection,
   createDocumentsWithTimestamp,
@@ -276,6 +283,26 @@ app.get('/ai-api/scenarios', async (req, res) => {
 app.get('/ai-api/models', async (req, res) => {
   try {
     res.send(await getModelsInScenario('foundation-models', 'default'));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/ai-api/models/discovery', async (req, res) => {
+  try {
+    let models = await getAllAvailableModels();
+    const { capability, latestOnly, activeOnly } = req.query;
+
+    if (typeof capability === 'string') {
+      models = filterFoundationModelsByCapability(models, capability);
+    }
+    if (activeOnly === 'true') {
+      models = filterFoundationModelsNonDeprecated(models);
+    }
+    if (latestOnly === 'true') {
+      return res.send(getFoundationModelLatestVersions(models));
+    }
+    res.send(models);
   } catch (error: any) {
     sendError(res, error);
   }

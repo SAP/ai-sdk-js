@@ -11,7 +11,9 @@ import {
   getAllDeployments,
   resolveDeploymentId,
   resolveDeploymentUrlById,
-  resolveDeploymentUrlForModel
+  resolveDeploymentUrlForModel,
+  getOrchestrationDeploymentId,
+  getOrchestrationDeploymentUrl
 } from './deployment-resolver.ts';
 
 describe('deployment resolver', () => {
@@ -255,5 +257,76 @@ describe('resolveDeploymentUrlForModel', () => {
     ).rejects.toThrow(
       "Deployment for model 'gpt-4.1' has no deployment URL. Ensure the deployment is running."
     );
+  });
+});
+
+describe('getOrchestrationDeploymentId', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('returns the deployment ID by looking up the orchestration scenario', async () => {
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: 'orch-dep-1' });
+
+    const id = await getOrchestrationDeploymentId({});
+    expect(id).toBe('orch-dep-1');
+  });
+
+  it('returns the deployment ID directly when DeploymentIdConfig is provided', async () => {
+    const id = await getOrchestrationDeploymentId({
+      deploymentId: 'explicit-id'
+    });
+    expect(id).toBe('explicit-id');
+  });
+});
+
+describe('getOrchestrationDeploymentUrl', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('resolves the deployment URL by looking up the orchestration scenario', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'orchestration' },
+      {
+        id: 'orch-dep-1',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/orch-dep-1`
+      }
+    );
+
+    const url = await getOrchestrationDeploymentUrl({});
+    expect(url).toContain('orch-dep-1');
+  });
+
+  it('throws when the orchestration deployment has no URL', async () => {
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: 'orch-dep-1' });
+
+    await expect(getOrchestrationDeploymentUrl({})).rejects.toThrow(
+      'Orchestration deployment has no deployment URL.'
+    );
+  });
+
+  it('resolves the deployment URL by ID when DeploymentIdConfig is provided', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/orch-explicit')
+      .reply(200, {
+        id: 'orch-explicit',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/orch-explicit`
+      });
+
+    const url = await getOrchestrationDeploymentUrl({
+      deploymentId: 'orch-explicit'
+    });
+    expect(url).toContain('orch-explicit');
   });
 });

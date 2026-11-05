@@ -279,10 +279,9 @@ export async function resolveDeploymentUrlForModel(
 /**
  * Get the deployment ID for a foundation model scenario.
  * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments. If model and deployment ID are given, the model is verified against the deployment.
- * @param executableId - The scenario ID.
+ * @param executableId - The executable ID of the foundation model (e.g. `'azure-openai'`).
  * @param destination - The destination to use for the request.
  * @returns The ID of the deployment, if found.
- * @internal
  */
 export async function getFoundationModelDeploymentId(
   modelDeployment: ModelDeployment,
@@ -307,7 +306,6 @@ export async function getFoundationModelDeploymentId(
  * @param deploymentConfig - The deployment configuration (resource group or deployment ID).
  * @param destination - The destination to use for the request.
  * @returns The ID of the deployment, if found.
- * @internal
  */
 export async function getOrchestrationDeploymentId(
   deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
@@ -322,4 +320,35 @@ export async function getOrchestrationDeploymentId(
     ...deploymentConfig,
     destination
   });
+}
+
+/**
+ * Get the deployment URL for an orchestration scenario.
+ * @param deploymentConfig - The deployment configuration (resource group or deployment ID).
+ * @param destination - The destination to use for the request.
+ * @returns The URL of the deployment, if found.
+ */
+export async function getOrchestrationDeploymentUrl(
+  deploymentConfig: ResourceGroupConfig | DeploymentIdConfig,
+  destination?: HttpDestinationOrFetchOptions
+): Promise<string> {
+  if (isDeploymentIdConfig(deploymentConfig)) {
+    return resolveDeploymentUrlById(
+      deploymentConfig.deploymentId,
+      (deploymentConfig as ResourceGroupConfig).resourceGroup ?? 'default',
+      destination
+    );
+  }
+
+  const url = await resolveDeploymentUrl({
+    scenarioId: 'orchestration',
+    ...deploymentConfig,
+    destination
+  });
+  if (!url) {
+    throw new Error(
+      `Orchestration deployment has no deployment URL. Ensure the deployment is running.`
+    );
+  }
+  return url;
 }
