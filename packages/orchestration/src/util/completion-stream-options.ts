@@ -236,6 +236,7 @@ function addStreamOptionsToSingleModuleConfig(
 }
 
 /**
+ * @internal
  * Wraps module configurations in an orchestration config, enabling streaming when requested.
  * @param moduleConfigurations - Single or array of module configurations.
  * @param stream - Whether to enable streaming.

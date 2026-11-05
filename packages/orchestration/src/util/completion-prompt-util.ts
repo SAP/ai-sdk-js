@@ -9,6 +9,7 @@ import type {
 } from '../orchestration-types.ts';
 
 /**
+ * @internal
  * Builds the error message for rejecting a request-level prompt on an entry
  * point that structurally cannot carry one.
  * @param context - The rejecting entry point, e.g. `'a config reference'`.
@@ -23,6 +24,7 @@ export function rejectRequestPromptMessage(
 }
 
 /**
+ * @internal
  * Throws if any module configuration already carries a prompt, which conflicts
  * with a request-level prompt. A prompt counts as present when it is a non-null
  * object (a template or template reference) or a non-empty string. Works for
@@ -40,6 +42,7 @@ export function assertConfigHasNoPrompt(prompts: unknown[]): void {
 }
 
 /**
+ * @internal
  * Validates a request-level prompt's shape, independent of the config type. The
  * prompt is mutually exclusive with the deprecated `messages` field, must
  * already be parsed, and must contain at least one message.
@@ -116,6 +119,7 @@ function mergePromptWithMessages(
 }
 
 /**
+ * @internal
  * Builds a single module configuration with an already-resolved request-level prompt.
  * @param config - The module configuration to build from.
  * @param prompt - The resolved template or template reference, or undefined to
@@ -146,6 +150,7 @@ export function buildModuleConfigs(
   };
 }
 
+/** @internal */
 export function buildLegacyModuleConfigs(
   config: OrchestrationModuleConfig,
   request?: ChatCompletionRequest
@@ -162,6 +167,7 @@ function isTemplate(template: unknown): template is Template {
   );
 }
 
+/** @internal */
 export function isTemplateRef<T>(
   template: T
 ): template is Extract<T, TemplateRef> {
