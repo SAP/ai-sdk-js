@@ -5,7 +5,14 @@
  */
 
 /**
- * Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.
+ * Cache control directive for prompt caching. When set on a content block, marks it as a cache breakpoint.
+ * **Note:** this field has no equivalent in the standard OpenAI Chat Completions API. It is modelled on Anthropic's prompt caching API and is a custom extension introduced by this service.
+ * Supported providers:
+ * - **Anthropic Claude models** — maps to Anthropic's native `cache_control` header. - **Azure OpenAI GPT-5.6+ Standard PAYG deployments** — translated to
+ *   `prompt_cache_breakpoint: {mode: explicit}` on the wire. Supported on user
+ *   message content blocks (text, image, file) on both the Responses API path
+ *   (GPT-6+ models) and the Chat Completions path (GPT-5.6 models). System message
+ *   cache breakpoints are not supported on Azure. Not supported on PTU-M deployments.
  *
  */
 export type CacheControl = {
