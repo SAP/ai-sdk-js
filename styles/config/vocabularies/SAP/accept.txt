@@ -1,6 +1,9 @@
 SAP S/4HANA
 SAP Cloud SDK
 SAP Cloud SDK for AI
+Anthropic
+Vercel
+AWS
 Cloud Foundry
 Fieldglass
 Ariba
@@ -166,3 +169,4 @@ RPT
 README(s)
 ADR(s)
 config(s)
+subclassing

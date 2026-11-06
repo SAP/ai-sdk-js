@@ -1,5 +1,6 @@
 import {
   buildAzureContentSafetyFilter,
+  buildGraniteGuardian41Filter,
   buildLlamaGuard38BFilter
 } from './filtering.ts';
 
@@ -80,6 +81,81 @@ describe('Content filter util', () => {
         }
       };
       expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+  });
+
+  describe('Granite Guardian filter', () => {
+    it('builds a filter config for a single category', () => {
+      const filterConfig = buildGraniteGuardian41Filter(['harm']);
+      const expectedFilterConfig = {
+        type: 'granite_guardian_4_1',
+        config: {
+          categories: {
+            harm: true
+          }
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('builds a filter config for multiple categories', () => {
+      const filterConfig = buildGraniteGuardian41Filter(['harm', 'violence']);
+      const expectedFilterConfig = {
+        type: 'granite_guardian_4_1',
+        config: {
+          categories: {
+            harm: true,
+            violence: true
+          }
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('builds filter config without duplicates', () => {
+      const filterConfig = buildGraniteGuardian41Filter([
+        'harm',
+        'social_bias',
+        'harm'
+      ]);
+      const expectedFilterConfig = {
+        type: 'granite_guardian_4_1',
+        config: {
+          categories: {
+            harm: true,
+            social_bias: true
+          }
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('forwards enable_reasoning when requested', () => {
+      const filterConfig = buildGraniteGuardian41Filter(['harm'], {
+        enable_reasoning: true
+      });
+      const expectedFilterConfig = {
+        type: 'granite_guardian_4_1',
+        config: {
+          categories: {
+            harm: true
+          },
+          enable_reasoning: true
+        }
+      };
+      expect(filterConfig).toEqual(expectedFilterConfig);
+    });
+
+    it('forwards enable_reasoning: false verbatim', () => {
+      const filterConfig = buildGraniteGuardian41Filter(['harm'], {
+        enable_reasoning: false
+      });
+      expect(filterConfig.config.enable_reasoning).toBe(false);
+    });
+
+    it('omits enable_reasoning when no options are passed', () => {
+      const filterConfig = buildGraniteGuardian41Filter(['harm']);
+      expect(filterConfig.config).not.toHaveProperty('enable_reasoning');
     });
   });
 });

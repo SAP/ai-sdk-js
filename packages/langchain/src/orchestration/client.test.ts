@@ -52,11 +52,10 @@ describe('orchestration service client', () => {
       'orchestration',
       'orchestration-chat-completion-success-response.json'
     );
-    mockResponseInputFilterError =
-      await parseMockResponse<OrchestrationErrorResponse>(
-        'orchestration',
-        'orchestration-chat-completion-input-filter-error.json'
-      );
+    const inputFilterError = await parseMockResponse<
+      OrchestrationErrorResponse['error']
+    >('orchestration', 'orchestration-chat-completion-input-filter-error.json');
+    mockResponseInputFilterError = { error: inputFilterError };
     mockResponseStream = await parseFileToString(
       'orchestration',
       'orchestration-chat-completion-stream-chunks.txt'
@@ -173,6 +172,68 @@ describe('orchestration service client', () => {
         'Request failed with status code 400'
       );
     }, 1000);
+
+    const errorMetadata = { request_id: 'test-request-id', code: 400 };
+
+    it.each([
+      [
+        'request body validation error',
+        {
+          ...errorMetadata,
+          location: 'Request Body',
+          message: 'Invalid request body.'
+        }
+      ],
+      [
+        'input parameter validation error list',
+        [
+          {
+            ...errorMetadata,
+            location: 'Input Parameters',
+            message: 'Invalid input parameter.'
+          }
+        ]
+      ],
+      [
+        'legacy input filter error',
+        [
+          {
+            ...errorMetadata,
+            location: 'Input Filter',
+            message: 'Content filtered.'
+          }
+        ]
+      ],
+      [
+        'unsupported model error among multiple errors',
+        [
+          {
+            ...errorMetadata,
+            location: 'Unknown Module',
+            message: 'Unknown error.'
+          },
+          {
+            location: 'LLM Module',
+            ...errorMetadata,
+            message:
+              "Model name 'broken-model-name' is not supported. Model name must be one of: gpt-5, gpt-4o."
+          }
+        ]
+      ]
+    ])('throws immediately when %s occurs', async (_description, error) => {
+      const response: OrchestrationErrorResponse = { error };
+      mockInferenceWithResilience(response, { retry: 0 }, 400);
+      const onFailedAttempt = vi.fn<() => void>();
+      const client = new OrchestrationClient(config, {
+        maxRetries: 1000,
+        onFailedAttempt
+      });
+
+      await expect(client.invoke(messages)).rejects.toThrow(
+        'Request failed with status code 400'
+      );
+      expect(onFailedAttempt).not.toHaveBeenCalled();
+    });
 
     it('throws when delay exceeds timeout during streaming', async () => {
       vi.useFakeTimers();

@@ -30,6 +30,7 @@ import {
 } from './util.ts';
 
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
+import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 import type { OrchestrationMessageChunk } from './orchestration-message-chunk.ts';
@@ -49,11 +50,39 @@ import type {
 import type { AIMessageChunk, BaseMessage } from '@langchain/core/messages';
 import type { ChatResult } from '@langchain/core/outputs';
 
-function isInputFilteringError(error: any): boolean {
-  return (
-    error.cause?.status === 400 &&
-    error.cause?.response?.data?.location?.includes('Input Filter')
-  );
+const IRRECOVERABLE_ERROR_LOCATIONS = new Set([
+  'Input Parameters',
+  'Request Body',
+  'Filtering Module - Input Filter',
+  // Legacy value
+  'Input Filter'
+]);
+
+function isIrrecoverableError(error: Record<string, unknown>): boolean {
+  // LangChain exposes FailedAttemptHandler errors as `any`.
+  const cause = error?.cause as
+    | {
+        status?: number;
+        response?: {
+          data?: OrchestrationErrorResponse;
+        };
+      }
+    | undefined;
+  if (cause?.status !== 400) {
+    return false;
+  }
+  const responseError = cause.response?.data?.error || [];
+  const errors = Array.isArray(responseError) ? responseError : [responseError];
+  return errors.some(err => {
+    const { location, message } = err ?? {};
+    return (
+      (typeof location === 'string' &&
+        IRRECOVERABLE_ERROR_LOCATIONS.has(location)) ||
+      (location === 'LLM Module' &&
+        typeof message === 'string' &&
+        message.includes('Model name must be one of'))
+    );
+  });
 }
 
 /**
@@ -79,10 +108,10 @@ export class OrchestrationClient extends BaseChatModel<
     deploymentConfig?: ResourceGroupConfig,
     destination?: HttpDestinationOrFetchOptions
   ) {
-    // Avoid retry if the error is due to input filtering
+    // Avoid retries for errors that cannot succeed without changing the request.
     const { onFailedAttempt } = langchainOptions;
     langchainOptions.onFailedAttempt = error => {
-      if (isInputFilteringError(error)) {
+      if (isIrrecoverableError(error)) {
         throw error;
       }
       onFailedAttempt?.(error);

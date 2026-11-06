@@ -14,6 +14,7 @@ export {
   orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
+  orchestrationGraniteGuardianFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,

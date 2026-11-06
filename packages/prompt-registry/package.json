@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/prompt-registry",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "description": "",
   "keywords": [
     "ai-api",
@@ -47,6 +47,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "vitest": "5.0.4"
+    "vitest": "5.0.5"
   }
 }
