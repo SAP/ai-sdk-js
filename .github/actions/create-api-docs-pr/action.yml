@@ -23,7 +23,7 @@ runs:
         MAJOR_VERSION=$(echo "$FULL_VERSION" | cut -d. -f1)
         echo "major-version=$MAJOR_VERSION" >> "$GITHUB_OUTPUT"
 
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - uses: actions/checkout@v7.0.1
       with:
         repository: SAP/ai-sdk
         path: ai-sdk
