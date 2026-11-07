@@ -9,8 +9,8 @@ import {
 } from '../../../test-util/mock-http.ts';
 import { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
 import { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
+import { constructEmbeddingPostRequest } from './util/embedding-request-builder.ts';
 import { buildDpiMaskingProvider } from './util/masking.ts';
-import { constructEmbeddingPostRequest } from './util/module-config.ts';
 
 import type { EmbeddingsPostResponse } from './client/api/schema/index.ts';
 import type {
