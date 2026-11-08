@@ -582,8 +582,8 @@ importers:
         version: 5.3.0(supports-color@7.2.0)
     devDependencies:
       '@sap/cds-dk':
-        specifier: 10.2.0
-        version: 10.2.0
+        specifier: 10.2.1
+        version: 10.2.1
 
   sample-code:
     dependencies:
@@ -2278,8 +2278,8 @@ packages:
     engines: {node: '>=22'}
     hasBin: true
 
-  '@sap/cds-dk@10.2.0':
-    resolution: {integrity: sha512-ZFbl6ItNLvRPzxu+7j/mgCoXMFQAQVhyRUWIVSrCDn1VwN/9rz7B47e9Uz+UVliXwG35nIkYa1HJOxLp4Yawow==}
+  '@sap/cds-dk@10.2.1':
+    resolution: {integrity: sha512-YFmgbc4N7WqdBJdrO5QPvSEQO3b7pXQI2aqqNhf0VNsynbEXYsniykyozvTo2bAy1+7NbgJmOFlAmzY9vI8H8Q==}
     hasBin: true
     bundledDependencies:
       - '@cap-js/asyncapi'
@@ -6109,7 +6109,7 @@ snapshots:
 
   '@sap/cds-compiler@7.2.1': {}
 
-  '@sap/cds-dk@10.2.0': {}
+  '@sap/cds-dk@10.2.1': {}
 
   '@sap/cds-fiori@2.3.0(@sap/cds@10.2.2(@eslint/js@10.0.1)(supports-color@7.2.0))':
     dependencies:
