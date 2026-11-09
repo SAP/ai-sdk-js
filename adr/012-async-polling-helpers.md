@@ -4,7 +4,6 @@
 
 proposed — pending final review (backoff and terminal-model coverage decided; see below)
 
-
 ## Context
 
 Several services expose asynchronous (long-running) operations that return `202 Accepted` and must be polled until they reach a terminal state.
