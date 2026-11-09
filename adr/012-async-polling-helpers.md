@@ -34,11 +34,11 @@ That package is private and unpublished, the helper has no exponential backoff a
 
 ## Decision
 
-Promote `pollAsyncResource` into `@sap-ai-sdk/core` as an internal engine, and expose thin per-service convenience wrappers as the primary consumer surface.
-Expose the engine as a pull-model primitive (an async iterator) and layer a thin blocking helper on top that awaits the terminal state and returns `T`.
-Both carry an `AbortSignal` and a `maxWaitTime` budget, and back off on 429 using the retry value the service returns in the response body.
+Promote `pollAsyncResource` into `@sap-ai-sdk/core` as an internal engine shaped as a pull-model primitive (an async iterator).
+Expose a thin blocking helper and per-service convenience wrappers as the public v1 surface; exposing the primitive directly is a follow-up if callers need to drive the loop themselves.
+The helper and wrappers carry an `AbortSignal` and a `maxWaitTime` budget, and back off on 429 using the retry value the service returns in the response body.
 Defer generator integration, a full poller object, and a runtime strategy enum.
-Several points remain open for team alignment and are recorded below; the status stays `proposed` until they are resolved.
+The decisions and recommendations behind this are recorded below; the status stays `proposed` pending final review approval.
 
 ## Discussion
 
