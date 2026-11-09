@@ -97,8 +97,6 @@ describe('SapOpenAiRealtimeWs', () => {
     );
     const socket = MockWebSocket.instances[0];
     expect(socket.url).toBe(client.url.toString());
-    // openai-node lowercases WS header keys before passing them to the socket;
-    // HTTP header names are case-insensitive (RFC 9110), so SAP AI Core still reads them.
     expect(socket.options.headers).toMatchObject({
       authorization: expect.stringMatching(/^Bearer /),
       'ai-resource-group': 'default',
