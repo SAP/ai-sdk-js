@@ -63,7 +63,7 @@
     "orval": "8.46.0",
     "oxfmt": "0.76.0",
     "oxlint": "1.91.0",
-    "oxlint-tsgolint": "7.0.2005",
+    "oxlint-tsgolint": "7.0.2006",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vitest": "5.1.0",
