@@ -10,7 +10,6 @@
   "scripts": {
     "postinstall": "pnpm compile",
     "compile": "pnpm -r compile",
-    "changeset": "pnpm change",
     "test:unit": "vitest run",
     "test:type": "pnpm type-tests test",
     "test:e2e": "pnpm e2e-tests test",
@@ -22,6 +21,7 @@
     "apply-patches": "pnpm -r run --if-present apply-patches",
     "doc": "node scripts/generate-docs.ts",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api run",
+    "context-registry": "pnpm -F=@sap-ai-sdk/context-registry run",
     "core": "pnpm -F=@sap-ai-sdk/core run",
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding run",
     "foundation-models": "pnpm -F=@sap-ai-sdk/foundation-models run",
@@ -36,7 +36,10 @@
     "smoke-tests": "pnpm -F=@sap-ai-sdk/smoke-tests run",
     "sample-code": "pnpm -F=@sap-ai-sdk/sample-code run",
     "sample-cap": "pnpm -F=@sap-ai-sdk/sample-cap run",
-    "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'"
+    "check:deps": "knip --config knip.config.mjs -W '!.' -W '!./sample-cap'",
+    "changeset": "pnpm change",
+    "prettier": "pnpm oxfmt",
+    "eslint": "pnpm oxlint"
   },
   "devDependencies": {
     "@actions/core": "3.0.1",
@@ -52,18 +55,18 @@
     "@sap-cloud-sdk/util": "4.9.1",
     "@types/node": "22.20.5",
     "@typescript/native": "npm:typescript@7.0.2",
-    "@vitest/coverage-v8": "5.0.5",
-    "jose": "6.2.14",
+    "@vitest/coverage-v8": "5.1.0",
+    "jose": "6.2.15",
     "knip": "6.44.1",
     "memfs": "4.80.0",
     "nock": "14.0.17",
     "orval": "8.46.0",
-    "oxfmt": "0.75.0",
-    "oxlint": "1.90.0",
+    "oxfmt": "0.76.0",
+    "oxlint": "1.91.0",
     "oxlint-tsgolint": "7.0.2005",
     "typedoc": "0.28.20",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vitest": "5.0.5",
+    "vitest": "5.1.0",
     "zod": "4.6.7"
   },
   "devEngines": {
