@@ -88,4 +88,4 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_MSG_AUTHOR: ' '
           SLACK_ICON: https://sap.github.io/cloud-sdk/img/logo.png
-        uses: rtCamp/action-slack-notify@v2.4.0
+        uses: rtCamp/action-slack-notify@v2.4.1

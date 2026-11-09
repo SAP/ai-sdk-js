@@ -24,7 +24,21 @@ packages:
 
 versioning:
   fixed:
-    - ['@sap-ai-sdk/*']
+    - - '@sap-ai-sdk/ai-api'
+      - 'sap-ai-sdk'
+      - '@sap-ai-sdk/context-registry'
+      - '@sap-ai-sdk/core'
+      - '@sap-ai-sdk/document-grounding'
+      - '@sap-ai-sdk/foundation-models'
+      - '@sap-ai-sdk/langchain'
+      - '@sap-ai-sdk/llm-batch'
+      - '@sap-ai-sdk/openai'
+      - '@sap-ai-sdk/orchestration'
+      - '@sap-ai-sdk/prompt-registry'
+      - '@sap-ai-sdk/rpt'
+      - '@sap-ai-sdk/tabular-orchestration'
+  ignore:
+    - '@sap-ai-sdk/sample-code'
   maxBump: minor
   changelog:
     storage: repository
@@ -63,8 +77,7 @@ blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
-  - '@sap-cloud-sdk/*'
-  - zod@4.6.6
+  - body-parser@2.4.0
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true

@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import { AIMessage, AIMessageChunk } from '@langchain/core/messages';
 import { toJsonSchema } from '@langchain/core/utils/json_schema';
 import { isInteropZodSchema } from '@langchain/core/utils/types';
@@ -17,6 +19,7 @@ import type {
   CompletionPostResponse,
   FunctionObject,
   MessageToolCalls,
+  ReasoningBlock,
   SystemChatMessage,
   TokenUsage,
   ToolChatMessage,
@@ -30,12 +33,18 @@ import type { ChatOrchestrationToolType } from './types.ts';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type {
   BaseMessage,
+  ContentBlock,
   HumanMessage,
   SystemMessage,
   ToolMessage
 } from '@langchain/core/messages';
 import type { ToolCall, ToolCallChunk } from '@langchain/core/messages/tool';
 import type { ChatResult } from '@langchain/core/outputs';
+
+const logger = createLogger({
+  package: 'langchain',
+  messageContext: 'orchestration-util'
+});
 
 /**
  * Maps a {@link ChatOrchestrationToolType} to {@link FunctionObject}.
@@ -160,11 +169,63 @@ function mapAiMessageToOrchestrationAssistantMessage(
   const tool_calls =
     mapLangChainToolCallToOrchestrationToolCall(message.tool_calls) ??
     message.additional_kwargs.tool_calls;
+  const reasoning_content = extractReasoningBlocks(message);
+  const content = cloneMessageContent(
+    stripReasoningFromContent(message.content)
+  );
+  // Reasoning is forwarded to the service only from `additional_kwargs.reasoning_content`.
+  // Reasoning blocks placed directly in `content` are treated as output-only (matching the
+  // OpenAI Chat Completions convention) and are stripped from the request.
+  if (!reasoning_content?.length && contentHasReasoning(message.content)) {
+    logger.warn(
+      'Reasoning blocks found in message content but not in `additional_kwargs.reasoning_content`. ' +
+        'Reasoning is not forwarded to the orchestration service from content; provide it via ' +
+        '`additional_kwargs.reasoning_content` to round-trip reasoning (including signatures).'
+    );
+  }
   return {
     ...(tool_calls?.length ? { tool_calls } : {}),
-    content: cloneMessageContent(message.content),
+    ...(reasoning_content?.length ? { reasoning_content } : {}),
+    content,
     role: 'assistant'
   } as AssistantChatMessage;
+}
+
+function extractReasoningBlocks(
+  message: AIMessage
+): ReasoningBlock[] | undefined {
+  const rawBlocks = message.additional_kwargs.reasoning_content;
+  if (Array.isArray(rawBlocks) && rawBlocks.length) {
+    return rawBlocks as ReasoningBlock[];
+  }
+  return undefined;
+}
+
+function contentHasReasoning(content: AIMessage['content']): boolean {
+  return (
+    Array.isArray(content) &&
+    content.some(
+      b => b && typeof b === 'object' && 'type' in b && b.type === 'reasoning'
+    )
+  );
+}
+
+function stripReasoningFromContent(
+  content: AIMessage['content']
+): AIMessage['content'] {
+  if (!Array.isArray(content)) {
+    return content;
+  }
+  const stripped = (
+    content as (ContentBlock.Reasoning | ContentBlock.Text)[]
+  ).filter(b => b.type !== 'reasoning');
+  if (!stripped.length) {
+    return '';
+  }
+  if (stripped.length === 1 && stripped[0].type === 'text') {
+    return (stripped[0] as ContentBlock.Text).text;
+  }
+  return stripped;
 }
 
 function cloneMessageContent<TContent>(content: TContent): TContent {
@@ -391,15 +452,18 @@ export function mapOutputToChatResult(
         tool_calls: mapOrchestrationToLangChainToolCall(
           choice.message.tool_calls
         ),
+        additional_kwargs: {
+          tool_calls: choice.message.tool_calls,
+          intermediate_results,
+          ...(choice.message.reasoning_content?.length && {
+            reasoning_content: choice.message.reasoning_content
+          })
+        },
         response_metadata: { tokenUsage },
         usage_metadata: usage
           ? buildUsageMetadata(usage)
           : { input_tokens: 0, output_tokens: 0, total_tokens: 0 }
       }),
-      additional_kwargs: {
-        tool_calls: choice.message.tool_calls,
-        intermediate_results
-      },
       generationInfo: {
         finish_reason: choice.finish_reason,
         index: choice.index,
@@ -445,13 +509,15 @@ export function mapOrchestrationChunkToLangChainMessageChunk(
 ): AIMessageChunk {
   const choice = chunk._data.final_result?.choices[0];
   const content = chunk.getDeltaContent() ?? '';
+  const deltaReasoning = choice?.delta.reasoning_content;
   const toolCallChunks = choice?.delta.tool_calls;
   const usage = chunk.getTokenUsage();
   return new AIMessageChunk({
     content,
     additional_kwargs: {
       // TODO: Fix duplicated intermediate results when using concat() method for streaming chunks.
-      intermediate_results: chunk._data.intermediate_results
+      intermediate_results: chunk._data.intermediate_results,
+      ...(deltaReasoning?.length && { reasoning_content: deltaReasoning })
     },
     ...(toolCallChunks && {
       tool_call_chunks: mapOrchestrationToLangChainToolCallChunk(toolCallChunks)

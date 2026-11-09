@@ -6,15 +6,7 @@ import { setFailed, info } from '@actions/core';
 import { getPackages } from '@manypkg/get-packages';
 
 import { messageTypes, type MessageType } from './changeset-types.ts';
-
-interface Change {
-  packageNames: string[];
-  commit: string;
-  type: MessageType;
-  version: string;
-  summary: string;
-  dependencies?: string;
-}
+import { parseContent, type Change } from './parse-content.ts';
 
 interface ContentByVersion {
   version: string;
@@ -38,50 +30,6 @@ function splitByVersion(changelog: string): ContentByVersion[] {
     });
 }
 
-function getMessageType(matchedType: string | undefined): MessageType {
-  if (!matchedType) {
-    throw new Error('Missing message type');
-  }
-  const type = messageTypes.find(({ name, alternatives }) =>
-    [name, ...alternatives].includes(matchedType.toLowerCase())
-  );
-  if (!type) {
-    throw new Error(`Invalid message type: ${matchedType}`);
-  }
-  return type;
-}
-
-function getSummary(matchedSummary: string | undefined): string {
-  const summary = matchedSummary?.trim();
-  if (!summary) {
-    throw new Error('Empty or missing summary');
-  }
-  return summary;
-}
-
-function parseContent(
-  content: string,
-  version: string,
-  packageName: string
-): Change[] {
-  const contentRegex =
-    /- ((?<commit>.*?):) (\[(?<type>.*?)\])? ?(?<summary>[^]*?)(?=(\n- |\n### |$))/g;
-
-  info(`parsing content for ${packageName} v${version}`);
-
-  return [...content.matchAll(contentRegex)].map(({ groups }) => {
-    const type = getMessageType(groups?.type);
-    const summary = getSummary(groups?.summary);
-    return {
-      version,
-      summary,
-      packageNames: [packageName],
-      commit: groups?.commit ? `(${groups.commit})` : '',
-      type
-    };
-  });
-}
-
 function parseChangelog(changelog: string): Change[] {
   const packageName = getPackageName(changelog);
   const [latest] = splitByVersion(changelog);
@@ -93,9 +41,9 @@ function formatMessagesOfType(messages: Change[], type: MessageType): string {
     .filter(msg => msg.type.name === type.name)
     .map(
       msg =>
-        `- [${msg.packageNames.join(', ')}] ${msg.summary} ${msg.commit}${
-          msg.dependencies || ''
-        }`
+        `- [${msg.packageNames.join(', ')}] ${msg.summary}${
+          msg.commit ? ` ${msg.commit}` : ''
+        }${msg.dependencies || ''}`
     )
     .join('\n');
 

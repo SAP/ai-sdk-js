@@ -1,0 +1,33 @@
+"@sap-ai-sdk/context-registry@2.17.0":
+  dir: packages/context-registry
+  intents:
+    - social-terms-strive
+"@sap-ai-sdk/core@2.17.0":
+  dir: packages/core
+  intents:
+    - big-cats-walk
+    - cool-fireants-hear
+    - model-types-sync-2026-10-02
+"@sap-ai-sdk/langchain@2.17.0":
+  dir: packages/langchain
+  intents:
+    - fix-additional-kwargs-on-ai-message
+    - polite-mugs-work
+    - reasoning-content-round-trip
+"@sap-ai-sdk/orchestration@2.17.0":
+  dir: packages/orchestration
+  intents:
+    - brave-ducks-wink
+    - legal-parrots-camp
+    - orchestration-spec-rel-1-23-0
+    - preserve-streaming-token-usage-details
+    - three-ghosts-rush
+"@sap-ai-sdk/prompt-registry@2.17.0":
+  dir: packages/prompt-registry
+  intents:
+    - fine-cases-start
+    - legal-parrots-camp
+"@sap-ai-sdk/tabular-orchestration@2.17.0":
+  dir: packages/tabular-orchestration
+  intents:
+    - brave-tables-predict

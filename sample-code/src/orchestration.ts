@@ -7,6 +7,7 @@ import {
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
+  buildGraniteGuardian41Filter,
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
@@ -378,6 +379,46 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
   throw new Error(
     `Output was not filtered as expected. The LLM response was:\n${result.getContent()}`
   );
+}
+
+/**
+ * Apply an IBM Granite Guardian content filter to the output.
+ * Granite Guardian is the recommended alternative to the deprecated Llama Guard filter.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationGraniteGuardianFiltering(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      }
+    },
+    filtering: {
+      output: {
+        filters: [
+          // Build an IBM Granite Guardian content filter with the `harm` category enabled
+          buildGraniteGuardian41Filter(['harm'])
+        ]
+      }
+    }
+  });
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        // Likely to be filtered by the Granite Guardian `harm` category
+        content:
+          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+      }
+    ]
+  });
+
+  logger.info(
+    `Granite Guardian output filter result: ${result.getIntermediateResults().output_filtering?.message ?? 'content allowed'}`
+  );
+  return result;
 }
 
 /**

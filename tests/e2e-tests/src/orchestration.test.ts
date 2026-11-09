@@ -12,6 +12,7 @@ import {
   orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
+  orchestrationGraniteGuardianFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
@@ -128,6 +129,16 @@ describe('orchestration', () => {
     const response = await orchestrationOutputFiltering();
 
     expect(response.getIntermediateResults()).toBeDefined();
+    expect(
+      response.getIntermediateResults().output_filtering!.data
+    ).toBeDefined();
+    expect(() => response.getContent()).toThrow(Error);
+    expect(response.getFinishReason()).toEqual('content_filter');
+  });
+
+  it('should run a granite guardian output filter', async () => {
+    const response = await orchestrationGraniteGuardianFiltering();
+
     expect(
       response.getIntermediateResults().output_filtering!.data
     ).toBeDefined();

@@ -1,21 +1,41 @@
 openapi: 3.0.0
 info:
-  version: 0.0.1
-  title: Prompt Registry API
-  description: Prompt Storage service for Design time & Runtime prompt templates.
+  title: Prompt Registry
+  description: The Prompt Registry simplifies the lifecycle management of prompt templates across design and runtime environments. It comes with an imperative and declarative interface. This API specification describes the imperative API for managing prompt templates and also allows the retrieval of declarative managed prompt templates. A prompt template consists of chat messages where placeholders can be defined together with default values. Additional information such as metadata tags can be added to the resource as well.
+  version: 0.14.4
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1.aws
 tags:
-  - name: prompt templates
-    description: Tag for prompt templates operations
-  - name: orchestration configs
-    description: Tag for orchestration configs operations
+  - name: Prompt Templates
+    description: Lifecycle management of prompt templates
+  - name: Orchestration Configs
+    description: Lifecycle management of orchestration configs
+externalDocs:
+  description: Documentation for SAP AI Core - Prompt Registry
+  url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry?version=CLOUD
 paths:
   /lm/promptTemplates:
     post:
       operationId: registry.controller.prompt_controller.create_update_prompt_template
       x-sap-cloud-sdk-operation-name: createUpdatePromptTemplate
       description: Create or update a prompt template
+      summary: Prompt template create
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -42,30 +62,36 @@ paths:
       operationId: registry.controller.prompt_controller.list_prompt_templates
       x-sap-cloud-sdk-operation-name: listPromptTemplates
       description: List prompt templates
+      summary: Prompt template list
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: query
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: name
           in: query
+          description: Name field of the resource.
           schema:
             type: string
         - name: version
           in: query
+          description: Version field of the resource.
           schema:
             type: string
         - name: retrieve
           in: query
+          description: Whether to retrieve 'imperative', 'declarative', or 'both'.
           schema:
             type: string
             default: both
         - name: includeSpec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
             default: false
@@ -95,15 +121,17 @@ paths:
     delete:
       operationId: registry.controller.prompt_controller.delete_prompt_templates_by_scenario
       x-sap-cloud-sdk-operation-name: deletePromptTemplatesByScenario
-      description: Delete all imperative prompt templates in the given scenario.
+      summary: Prompt template scenario delete
+      description: Delete all imperatively managed prompt templates in a scenario
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
       responses:
@@ -123,25 +151,29 @@ paths:
     delete:
       operationId: registry.controller.prompt_controller.delete_prompt_template_history
       x-sap-cloud-sdk-operation-name: deletePromptTemplateHistory
-      description: Delete all non-current versions (history) for the given prompt template
+      summary: Prompt template history delete
+      description: Delete the version history of an imperatively managed prompt template
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: version
           in: path
           required: true
+          description: Version field of the resource.
           schema:
             type: string
         - name: name
           in: path
           required: true
+          description: Name field of the resource.
           schema:
             type: string
       responses:
@@ -161,23 +193,27 @@ paths:
       operationId: registry.controller.prompt_controller.list_prompt_template_history
       x-sap-cloud-sdk-operation-name: listPromptTemplateHistory
       description: List prompt template history
+      summary: Prompt template history
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
+          description: Scenario field of the resource.
           required: true
           schema:
             type: string
         - name: version
           in: path
+          description: Version field of the resource.
           required: true
           schema:
             type: string
         - name: name
           in: path
+          description: Name field of the resource.
           required: true
           schema:
             type: string
@@ -208,14 +244,16 @@ paths:
       operationId: registry.controller.prompt_controller.get_prompt_template_by_uuid
       x-sap-cloud-sdk-operation-name: getPromptTemplateByUuid
       description: Get prompt template by UUID
+      summary: Prompt template get
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
+          description: UUID of the prompt template.
           schema:
             type: string
             format: uuid
@@ -235,14 +273,16 @@ paths:
     delete:
       operationId: registry.controller.prompt_controller.delete_prompt_template
       x-sap-cloud-sdk-operation-name: deletePromptTemplate
-      description: Delete prompt template
+      description: Delete an imperatively managed prompt template
+      summary: Prompt template delete
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
+          description: UUID of the prompt template.
           required: true
           schema:
             type: string
@@ -264,9 +304,10 @@ paths:
     post:
       operationId: registry.controller.prompt_controller.import_prompt_template
       x-sap-cloud-sdk-operation-name: importPromptTemplate
-      description: Import prompt template
+      summary: Prompt template create
+      description: Create an imperatively managed prompt template from a file
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
@@ -294,15 +335,17 @@ paths:
     get:
       operationId: registry.controller.prompt_controller.export_prompt_template
       x-sap-cloud-sdk-operation-name: exportPromptTemplate
-      description: Export prompt template
+      summary: Prompt template export
+      description: Download a prompt template as a file
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
+          description: UUID of the prompt template.
           schema:
             type: string
             format: uuid
@@ -322,19 +365,22 @@ paths:
     post:
       operationId: registry.controller.prompt_controller.parse_prompt_template_by_id
       x-sap-cloud-sdk-operation-name: parsePromptTemplateById
-      description: Parse prompt template by ID
+      summary: Prompt template fill
+      description: Fill the placeholders of a prompt template that is identified by its UUID
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: promptTemplateId
           in: path
           required: true
+          description: UUID of the prompt template.
           schema:
             type: string
             format: uuid
         - name: metadata
+          description: Whether to not include metadata in the response.
           in: query
           schema:
             type: boolean
@@ -361,29 +407,34 @@ paths:
     post:
       operationId: registry.controller.prompt_controller.parse_prompt_template_by_name_version
       x-sap-cloud-sdk-operation-name: parsePromptTemplateByNameVersion
-      description: Parse prompt template by name and version
+      summary: Prompt template fill
+      description: Fill the placeholders of a prompt template that is identified by its scenario, name and version
       tags:
-        - prompt templates
+        - Prompt Templates
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - $ref: '#/components/parameters/ai-resource-group-scope'
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: version
           in: path
           required: true
+          description: Version field of the resource.
           schema:
             type: string
         - name: name
           in: path
           required: true
+          description: Name field of the resource.
           schema:
             type: string
         - name: metadata
           in: query
+          description: Whether to not include metadata in the response.
           schema:
             type: boolean
             default: false
@@ -409,9 +460,10 @@ paths:
     post:
       operationId: registry.controller.orchestration_config_controller.create_update_orchestration_config
       x-sap-cloud-sdk-operation-name: createUpdateOrchestrationConfig
-      description: Create or update an orchestration config
+      description: Create or update an imperatively managed orchestration config
+      summary: Orchestration config create
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
       requestBody:
@@ -436,25 +488,30 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_configs
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigs
-      description: List orchestration configs
+      description: List imperatively and declaratively managed orchestration config
+      summary: Orchestration config list
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: query
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: name
           in: query
+          description: Name field of the resource.
           schema:
             type: string
         - name: version
           in: query
+          description: Version field of the resource.
           schema:
             type: string
         - name: retrieve
           in: query
+          description: Whether to retrieve 'imperative', 'declarative', or 'both'.
           schema:
             type: string
             default: both
@@ -465,23 +522,25 @@ paths:
         - name: include_spec
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use includeSpec instead'
+          description: 'DEPRECATED: Use includeSpec instead.'
           schema:
             type: boolean
             default: false
         - name: includeSpec
           in: query
+          description: Whether the spec should be included in the response.
           schema:
             type: boolean
         - name: resolve_template_ref
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          description: 'DEPRECATED: Use resolveTemplateRef instead.'
           schema:
             type: boolean
             default: false
         - name: resolveTemplateRef
           in: query
+          description: Whether a template reference should be resolved
           schema:
             type: boolean
         - $ref: '#/components/parameters/top'
@@ -510,14 +569,16 @@ paths:
     delete:
       operationId: registry.controller.orchestration_config_controller.delete_orchestration_configs_by_scenario
       x-sap-cloud-sdk-operation-name: deleteOrchestrationConfigsByScenario
-      description: Delete all imperative orchestration configs in the given scenario.
+      summary: Orchestration config scenario delete
+      description: Delete all imperatively managed orchestration configs in a scenario
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
       responses:
@@ -537,24 +598,28 @@ paths:
     delete:
       operationId: registry.controller.orchestration_config_controller.delete_orchestration_config_history
       x-sap-cloud-sdk-operation-name: deleteOrchestrationConfigHistory
-      description: Delete all non-current versions (history) for the given orchestration config
+      summary: Orchestration config history delete
+      description: Delete the version history of an imperatively managed orchestration config
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: version
           in: path
           required: true
+          description: Version field of the resource.
           schema:
             type: string
         - name: name
           in: path
           required: true
+          description: Name field of the resource.
           schema:
             type: string
       responses:
@@ -573,46 +638,52 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
-      description: List orchestration config history
+      summary: Orchestration config history
+      description: Obtain the history of edits of a particular imperatively managed orchestration config
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: scenario
           in: path
           required: true
+          description: Scenario field of the resource.
           schema:
             type: string
         - name: version
           in: path
           required: true
+          description: Version field of the resource.
           schema:
             type: string
         - name: name
           in: path
           required: true
+          description: Name field of the resource.
           schema:
             type: string
         - name: include_spec
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use includeSpec instead'
+          description: 'DEPRECATED: Use includeSpec instead.'
           schema:
             type: boolean
             default: false
         - name: includeSpec
           in: query
+          description: Whether include the spec section or not.
           schema:
             type: boolean
         - name: resolve_template_ref
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          description: 'DEPRECATED: Use resolveTemplateRef instead.'
           schema:
             type: boolean
             default: false
         - name: resolveTemplateRef
           in: query
+          description: Whether a template reference should be resolved
           schema:
             type: boolean
         - $ref: '#/components/parameters/top'
@@ -641,26 +712,29 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.get_orchestration_config_by_uuid
       x-sap-cloud-sdk-operation-name: getOrchestrationConfigByUuid
-      description: Get orchestration config by UUID
+      summary: Orchestration config get
+      description: Retrieve a orchestration config by its UUID
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: orchestrationConfigId
           in: path
           required: true
+          description: UUID of the resource.
           schema:
             type: string
             format: uuid
         - name: resolve_template_ref
           in: query
           deprecated: true
-          description: 'DEPRECATED: Use resolveTemplateRef instead'
+          description: 'DEPRECATED: Use resolveTemplateRef instead.'
           schema:
             type: boolean
             default: false
         - name: resolveTemplateRef
           in: query
+          description: Whether a template reference should be resolved
           schema:
             type: boolean
       responses:
@@ -679,14 +753,16 @@ paths:
     delete:
       operationId: registry.controller.orchestration_config_controller.delete_orchestration_config
       x-sap-cloud-sdk-operation-name: deleteOrchestrationConfig
-      description: Delete orchestration config
+      summary: Orchestration config delete
+      description: Delete an imperatively managed orchestration config
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: orchestrationConfigId
           in: path
           required: true
+          description: UUID of the resource.
           schema:
             type: string
             format: uuid
@@ -707,9 +783,10 @@ paths:
     post:
       operationId: registry.controller.orchestration_config_controller.import_orchestration_config
       x-sap-cloud-sdk-operation-name: importOrchestrationConfig
-      description: Import orchestration config
+      summary: Orchestration config create
+      description: Create an imperatively managed orchestration config from a file
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
       requestBody:
@@ -736,14 +813,16 @@ paths:
     get:
       operationId: registry.controller.orchestration_config_controller.export_orchestration_config
       x-sap-cloud-sdk-operation-name: exportOrchestrationConfig
-      description: Export orchestration config
+      summary: Orchestration config export
+      description: Download an orchestration config as a file
       tags:
-        - orchestration configs
+        - Orchestration Configs
       parameters:
         - $ref: '#/components/parameters/ai-resource-group'
         - name: orchestrationConfigId
           in: path
           required: true
+          description: UUID of the resource.
           schema:
             type: string
             format: uuid
@@ -760,6 +839,14 @@ paths:
         default:
           $ref: '#/components/responses/CommonError'
 components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: OAuth client credentials (client ID and secret) are required. These can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
     PromptTemplate:
       oneOf:
@@ -1631,6 +1718,11 @@ components:
           default: 2
           minimum: 0
           maximum: 5
+        drop_unsupported_params:
+          type: boolean
+          default: true
+          description: |
+            Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.
     PartialPromptTemplatingModuleConfig:
       description: |
         Partial prompt templating configuration for use with config_ref overrides. model is optional so that only the prompt can be overridden without repeating the model config.
@@ -1670,6 +1762,39 @@ components:
           type: boolean
           description: Filter prompts for harmful content such as jailbreaks and prompt injections.
           default: false
+    AfterLastRoleTargetSelector:
+      type: object
+      additionalProperties: false
+      required:
+        - after_last_role
+      properties:
+        after_last_role:
+          type: string
+          description: |
+            Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.
+          enum:
+            - system
+            - user
+            - assistant
+            - developer
+            - tool
+    LastMessagesTargetSelector:
+      type: object
+      additionalProperties: false
+      required:
+        - last_messages
+      properties:
+        last_messages:
+          type: integer
+          minimum: 1
+          description: |
+            Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.
+    InputFilterTargetSelector:
+      oneOf:
+        - $ref: '#/components/schemas/AfterLastRoleTargetSelector'
+        - $ref: '#/components/schemas/LastMessagesTargetSelector'
+      description: |
+        Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.
     AzureContentSafetyInputFilterConfig:
       type: object
       required:
@@ -1684,6 +1809,8 @@ components:
           example: azure_content_safety
         config:
           $ref: '#/components/schemas/AzureContentSafetyInput'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
     LlamaGuard38b:
       deprecated: true
       description: 'Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.'
@@ -1736,10 +1863,69 @@ components:
           example: llama_guard_3_8b
         config:
           $ref: '#/components/schemas/LlamaGuard38b'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
+    GraniteGuardian41:
+      description: Configuration for IBM Granite Guardian 4.1 filter provider.
+      type: object
+      additionalProperties: false
+      required:
+        - categories
+      properties:
+        enable_reasoning:
+          type: boolean
+          default: false
+          description: "Enable reasoning (think) mode for Granite Guardian. Applies to every configured category. Returns reasoning content when enabled, e.g. 'harm': {'verdict': true, 'reasoning': '...'}"
+        categories:
+          description: 'Content criteria to evaluate. Note: Granite Guardian requires separate calls for each configured content category. Recommendation: Use only `harm` catch all content category.'
+          type: object
+          additionalProperties: false
+          minProperties: 1
+          properties:
+            harm:
+              type: boolean
+              description: Catch-all criterion for generally harmful content.
+            social_bias:
+              type: boolean
+              description: Detect prejudice or discrimination based on identity or protected characteristics.
+            jailbreak:
+              type: boolean
+              description: Detect attempts to manipulate the model into producing harmful or otherwise undesired outputs.
+            violence:
+              type: boolean
+              description: Detect content promoting or depicting physical, mental, or sexual harm.
+            profanity:
+              type: boolean
+              description: Detect offensive language or insults.
+            sexual_content:
+              type: boolean
+              description: Detect explicit or suggestive material of a sexual nature.
+            unethical_behavior:
+              type: boolean
+              description: Detect content describing actions that violate moral or legal standards.
+    GraniteGuardianFilterConfig:
+      type: object
+      description: Filter configuration for IBM Granite Guardian filter provider.
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - granite_guardian_4_1
+          example: granite_guardian_4_1
+        config:
+          $ref: '#/components/schemas/GraniteGuardian41'
+        target_selector:
+          $ref: '#/components/schemas/InputFilterTargetSelector'
     InputFilterConfig:
       oneOf:
         - $ref: '#/components/schemas/AzureContentSafetyInputFilterConfig'
         - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
+        - $ref: '#/components/schemas/GraniteGuardianFilterConfig'
     InputFilteringConfig:
       type: object
       required:
@@ -1787,6 +1973,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AzureContentSafetyOutputFilterConfig'
         - $ref: '#/components/schemas/LlamaGuard38bFilterConfig'
+        - $ref: '#/components/schemas/GraniteGuardianFilterConfig'
     FilteringStreamOptions:
       description: Stream options for output filtering. Will be ignored if stream is false.
       type: object
@@ -2412,3 +2599,4 @@ components:
         type: integer
         minimum: 0
         default: 0
+x-sap-shortText: Simplify the lifecycle management of prompt templates of your business AI scenarios.

@@ -1,5 +1,15 @@
 # @sap-ai-sdk/core
 
+## 2.17.0
+
+### Minor Changes
+
+- [feat] Add `gemini-3.8-flash` to the model types.
+
+- [feat] Add `gpt-6-astra`, `gpt-6-luna`, `gpt-6.1-sol`, `gemini-3.6-flash`, and `nvidia--llama-nemotron-embed-1b` to the model types.
+
+- [Improvement] Remove deprecated models `cohere--command-a-reasoning` (retirement date: 2026-10-30), `mistralai--mistral-medium-instruct` (retirement date: 2026-11-30) — use `mistralai--mistral-medium` instead, `gemini-2.5-flash-lite` (retirement date: 2026-10-20) — use `gemini-3.5-flash-lite` instead, `sap-rpt-1.5` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead, `sap-rpt-1.5-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead, `sap-rpt-1-small` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead and `sap-rpt-1-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead.
+
 ## 2.16.0
 
 ### Minor Changes

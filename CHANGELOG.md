@@ -1,3 +1,5 @@
+## 2.17.0
+
 [//]: # "Please don't delete the following comments and keep them in the beginning of this document. Also, keep the first line empty."
 
 [//]: # (Example known issue: Making OData requests using a proxy defined in the environment variables is not possible \(see improvements\).)
@@ -25,6 +27,42 @@
 -
 
 ### Implementation changed
+
+# 2.17.0
+## Compatibility Notes
+
+- [orchestration, prompt-registry] `LlamaGuard38B` and `LlamaGuard38BFilterConfig` are now marked as deprecated and will be removed on 2027-09-20.
+  Migrate usages before that date.
+
+## New Features
+
+- [context-registry] Add tabular context registry package.
+- [core] Add `gemini-3.8-flash` to the model types.
+- [core] Add `gpt-6-astra`, `gpt-6-luna`, `gpt-6.1-sol`, `gemini-3.6-flash`, and `nvidia--llama-nemotron-embed-1b` to the model types.
+- [langchain] Add reasoning content support to the Orchestration LangChain client.
+  Reasoning blocks from model responses are surfaced in `AIMessage.additional_kwargs.reasoning_content`(preserving the `signature` for encrypted thinking), for both non-streaming and streaming responses.
+  On subsequent turns, reasoning is forwarded back to the Orchestration service in `reasoning_content` from `additional_kwargs.reasoning_content`.
+  Reasoning placed directly in message `content` is treated as output only and is not forwarded.
+- [orchestration] Update generated client to latest spec (rel-1.13.2).
+  Add optional `provider_specific_fields` property to `LlmChoice` and `LlmChoiceStreaming` response types.
+- [orchestration] Update the generated client to spec v1.23.
+  Adds the IBM Granite Guardian 4.1 content filter.
+  Adds input filter target selectors.
+  Adds the `drop_unsupported_params` option on `LLMModelDetails`.
+- [prompt-registry] Update generated client to latest spec.
+  Add `deleteOrchestrationConfigsByScenario`, `deleteOrchestrationConfigHistory`, `deletePromptTemplatesByScenario`, and `deletePromptTemplateHistory` API functions.
+- [tabular-orchestration] Add experimental Tabular AI Orchestration package with `TabularOrchestrationClient` for predictions with Tabular Foundation Models.
+
+## Fixed Issues
+
+- [langchain] Additional `additional_kwargs` properties (including `tool_calls`, `intermediate_results`, and `reasoning_content`) are now correctly placed on the `AIMessage` instead of the generation object.
+- [langchain] Avoid retrying irrecoverable orchestration request and unsupported-model errors.
+- [orchestration] Preserve `prompt_tokens_details` and `completion_tokens_details` in streamed token usage to fix missing cache and reasoning token details in `OrchestrationStreamResponse.getTokenUsage()` and `getIntermediateResults()`.
+- [orchestration] Fix missing prompt template or messages not being detected when no prompt is configured.
+
+## Improvements
+
+- [core] Remove deprecated models `cohere--command-a-reasoning` (retirement date: 2026-10-30), `mistralai--mistral-medium-instruct` (retirement date: 2026-11-30) — use `mistralai--mistral-medium` instead, `gemini-2.5-flash-lite` (retirement date: 2026-10-20) — use `gemini-3.5-flash-lite` instead, `sap-rpt-1.5` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead, `sap-rpt-1.5-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead, `sap-rpt-1-small` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead and `sap-rpt-1-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead.
 
 -
 

@@ -71,7 +71,7 @@ jobs:
           path: reports/
           retention-days: 7
       - name: 'Run Fosstars Rating'
-        uses: SAP/fosstars-rating-core-action@v1.14.0
+        uses: SAP-archive/fosstars-rating-core-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Slack Notification'

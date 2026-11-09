@@ -1,4 +1,5 @@
 import { OrchestrationStreamChunkResponse } from '@sap-ai-sdk/orchestration';
+import { createLogger } from '@sap-cloud-sdk/util';
 
 import {
   AIMessage,
@@ -30,6 +31,7 @@ import type {
   ToolCallChunk as OrchestrationToolCallChunk,
   CompletionPostResponseStreaming,
   FunctionObject,
+  ReasoningBlock,
   TokenUsage
 } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -153,6 +155,85 @@ describe('mapBaseMessageToChatMessage', () => {
     expect(result[0]).toEqual({
       role: 'assistant',
       content: 'AI message content'
+    });
+  });
+
+  it('should round-trip reasoning_content from additional_kwargs into AssistantChatMessage', () => {
+    const rawBlocks = [{ content: 'Let me think.', signature: 'sig123' }];
+    const aiMessage = new AIMessage({
+      content: [
+        { type: 'reasoning', reasoning: 'Let me think.' },
+        { type: 'text', text: 'The answer is 42.' }
+      ],
+      additional_kwargs: { reasoning_content: rawBlocks }
+    });
+
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'assistant',
+      content: 'The answer is 42.',
+      reasoning_content: rawBlocks
+    });
+  });
+
+  it('does not forward reasoning from content and warns when additional_kwargs has none', () => {
+    const logger = createLogger({
+      package: 'langchain',
+      messageContext: 'orchestration-util'
+    });
+    const warnSpy = vi.spyOn(logger, 'warn');
+
+    const aiMessage = new AIMessage({
+      content: [
+        { type: 'reasoning', reasoning: 'Thinking hard.' },
+        { type: 'text', text: 'Result.' }
+      ]
+    });
+
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'assistant',
+      content: 'Result.'
+    });
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Reasoning blocks found in message content')
+    );
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when reasoning is provided via additional_kwargs', () => {
+    const logger = createLogger({
+      package: 'langchain',
+      messageContext: 'orchestration-util'
+    });
+    const warnSpy = vi.spyOn(logger, 'warn');
+
+    const aiMessage = new AIMessage({
+      content: [
+        { type: 'reasoning', reasoning: 'Let me think.' },
+        { type: 'text', text: 'The answer is 42.' }
+      ],
+      additional_kwargs: {
+        reasoning_content: [{ content: 'Let me think.', signature: 'sig123' }]
+      }
+    });
+
+    mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+
+  it('should not include reasoning_content when AIMessage has no reasoning', () => {
+    const aiMessage = new AIMessage('Plain answer.');
+
+    const result = mapLangChainMessagesToOrchestrationMessages([aiMessage]);
+
+    expect(result[0]).toEqual({
+      role: 'assistant',
+      content: 'Plain answer.'
     });
   });
 
@@ -539,6 +620,110 @@ describe('mapOutputToChatResult', () => {
 
     expect(message.usage_metadata?.output_token_details).toBeUndefined();
   });
+
+  it('surfaces reasoning_content in additional_kwargs, content stays plain answer text', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'The answer is 42.',
+              role: 'assistant',
+              reasoning_content: [
+                { content: 'Let me think step by step.' },
+                { content: 'I concluded it is 42.' }
+              ]
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: { completion_tokens: 10, prompt_tokens: 5, total_tokens: 15 }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.content).toBe('The answer is 42.');
+    expect(message.additional_kwargs.reasoning_content).toEqual([
+      { content: 'Let me think step by step.' },
+      { content: 'I concluded it is 42.' }
+    ]);
+  });
+
+  it('keeps content-less reasoning blocks (encrypted/redacted thinking) in additional_kwargs', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: {
+              content: 'The answer is 42.',
+              role: 'assistant',
+              reasoning_content: [
+                { content: 'Visible thinking.' },
+                { signature: 'encrypted-sig' }
+              ]
+            },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: { completion_tokens: 10, prompt_tokens: 5, total_tokens: 15 }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.content).toBe('The answer is 42.');
+    expect(message.additional_kwargs.reasoning_content).toEqual([
+      { content: 'Visible thinking.' },
+      { signature: 'encrypted-sig' }
+    ]);
+  });
+
+  it('falls back to plain string content when reasoning_content is absent', () => {
+    const completionResponse: CompletionPostResponse = {
+      final_result: {
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1634840000,
+        model: 'test-model',
+        choices: [
+          {
+            message: { content: 'Hello world', role: 'assistant' },
+            finish_reason: 'stop',
+            index: 0
+          }
+        ],
+        usage: { completion_tokens: 5, prompt_tokens: 3, total_tokens: 8 }
+      },
+      request_id: 'req-123',
+      intermediate_results: {}
+    };
+
+    const result = mapOutputToChatResult(completionResponse);
+    const message = result.generations[0].message as AIMessage;
+
+    expect(message.content).toBe('Hello world');
+    expect(
+      (result.generations[0].message as AIMessage).additional_kwargs
+        .reasoning_content
+    ).toBeUndefined();
+  });
 });
 
 describe('mapToolToOrchestrationFunction', () => {
@@ -600,7 +785,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
     content?: string,
     toolCallChunks?: OrchestrationToolCallChunk[],
     finishReason?: string,
-    tokenUsage?: TokenUsage
+    tokenUsage?: TokenUsage,
+    reasoningBlocks?: ReasoningBlock[]
   ): OrchestrationStreamChunkResponse {
     const mockData: CompletionPostResponseStreaming = {
       request_id: 'req-123',
@@ -617,7 +803,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
               delta: {
                 role: 'assistant',
                 content: content || '',
-                tool_calls: toolCallChunks
+                tool_calls: toolCallChunks,
+                ...(reasoningBlocks && { reasoning_content: reasoningBlocks })
               },
               finish_reason: finishReason || ''
             }
@@ -637,7 +824,8 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
             delta: {
               role: 'assistant',
               content: content || '',
-              tool_calls: toolCallChunks
+              tool_calls: toolCallChunks,
+              ...(reasoningBlocks && { reasoning_content: reasoningBlocks })
             },
             finish_reason: finishReason || ''
           }
@@ -761,6 +949,68 @@ describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
         reasoning: 7
       }
     });
+  });
+
+  it('surfaces delta reasoning blocks (with signatures) in additional_kwargs, content stays plain string', () => {
+    const mockChunk = createMockChunk(
+      'The answer.',
+      undefined,
+      undefined,
+      undefined,
+      [{ content: 'Let me think.', signature: 'sig-abc' }]
+    );
+
+    const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
+
+    expect(result.content).toBe('The answer.');
+    expect(result.additional_kwargs.reasoning_content).toEqual([
+      { content: 'Let me think.', signature: 'sig-abc' }
+    ]);
+  });
+
+  it('preserves a signature-only reasoning block (encrypted thinking) in additional_kwargs', () => {
+    const mockChunk = createMockChunk('', undefined, 'stop', undefined, [
+      { content: '', signature: 'encrypted-sig' }
+    ]);
+
+    const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
+
+    expect(result.content).toBe('');
+    expect(result.additional_kwargs.reasoning_content).toEqual([
+      { content: '', signature: 'encrypted-sig' }
+    ]);
+  });
+
+  it('omits reasoning_content from additional_kwargs when the delta has none', () => {
+    const mockChunk = createMockChunk('Hello');
+
+    const result = mapOrchestrationChunkToLangChainMessageChunk(mockChunk);
+
+    expect(result.content).toBe('Hello');
+    expect(result.additional_kwargs.reasoning_content).toBeUndefined();
+  });
+
+  it('accumulates reasoning_content across chunks via concat (does not overwrite)', () => {
+    const chunk1 = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk('The ', undefined, undefined, undefined, [
+        { content: 'Let me ' }
+      ])
+    );
+    const chunk2 = mapOrchestrationChunkToLangChainMessageChunk(
+      createMockChunk('answer.', undefined, undefined, undefined, [
+        { content: 'think.', signature: 'sig' }
+      ])
+    );
+
+    const merged = chunk1.concat(chunk2);
+
+    expect(merged.content).toBe('The answer.');
+    // Reasoning deltas accumulate as the stream progresses; later chunks must not
+    // overwrite earlier ones.
+    expect(merged.additional_kwargs.reasoning_content).toEqual([
+      { content: 'Let me ' },
+      { content: 'think.', signature: 'sig' }
+    ]);
   });
 });
 
