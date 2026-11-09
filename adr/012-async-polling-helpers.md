@@ -128,29 +128,37 @@ A full poller object is out of scope.
 
 #### Option A: Blocking helper (consumer-facing, first step)
 
-A per-service wrapper hides the involved flow — call the 202 operation and poll the `Location` URL as-is until the union resolves:
+A per-service wrapper owns the involved flow — call the 202 operation, read the `Location`, and poll it as-is until the union resolves.
+The wrapper is a named function; consumers just call it:
 
 ```ts
-const headers = { 'AI-Resource-Group': resourceGroup };
-const raw = await VectorApi.createCollection(body, headers).executeRaw();
-// 202 Accepted — raw.headers.location is already the status URL; poll it as-is
-// (no need to parse an id back out of it).
-const statusUrl = raw.headers.location as string;
-const collection = await pollAsyncResource({
-  read: () =>
-    executeRequest({ url: statusUrl, method: 'get' }, undefined, {
-      headers
-    }).then(
-      r => r.data as CollectionCreatedResponse | CollectionPendingResponse
-    ),
-  isComplete: r => 'collectionURL' in r, // created-response shape is terminal
-  intervalMs: 60_000, // context-registry allows ~1200 reads/min, so 1/min is safe
-  maxWaitTime: 60 * 60_000, // operations can run up to ~1h
-  signal
-});
+// Inside the document-grounding wrapper:
+async function createCollectionAndWait(
+  body: CollectionRequest,
+  headers: { 'AI-Resource-Group': string },
+  opts?: { signal?: AbortSignal }
+): Promise<CollectionCreatedResponse> {
+  const raw = await VectorApi.createCollection(body, headers).executeRaw();
+  const statusUrl = raw.headers.location as string; // already the status URL — no id parsing
+  return pollAsyncResource({
+    read: () =>
+      executeRequest({ url: statusUrl, method: 'get' }, undefined, { headers }).then(
+        r => r.data as CollectionCreatedResponse | CollectionPendingResponse
+      ),
+    isComplete: r => 'collectionURL' in r, // created-response shape is terminal
+    intervalMs: 60_000, // context-registry allows ~1200 reads/min, so 1/min is safe
+    maxWaitTime: 60 * 60_000, // operations can run up to ~1h
+    ...opts
+  });
+}
+
+// Consumer:
+const collection = await createCollectionAndWait(body, headers);
 ```
 
-The wrapper is what encapsulates this, so consumers never parse the `Location` or pick an interval themselves.
+Consumers never parse the `Location` or pick an interval themselves.
+
+(An alternative worth weighing at implementation time: let `pollAsyncResource` accept the raw 202 response and extract the `Location` itself, so the wrapper is even thinner.)
 
 **Pros:** One call for the common case; hides the `executeRaw`/`Location`/union handling; carries `AbortSignal`, `maxWaitTime`, and backoff internally.
 
@@ -158,10 +166,11 @@ The wrapper is what encapsulates this, so consumers never parse the `Location` o
 
 #### Option B: Pull-model primitive (the building block)
 
-The same read, exposed as an iterator the caller advances (proposed shape; the merged helper currently returns a `Promise`):
+The same wrapper, but the primitive is exposed as an iterator the caller advances instead of a `Promise` (the merged helper currently returns a `Promise`):
 
 ```ts
-for await (const state of pollCollectionCreation(id, headers)) {
+// createCollectionAndWait yields each poll instead of awaiting to completion:
+for await (const state of createCollectionPolls(body, headers)) {
   if ('collectionURL' in state) break; // terminal: created
   reportProgress(state); // still pending (CollectionPendingResponse)
 }
@@ -174,10 +183,11 @@ for await (const state of pollCollectionCreation(id, headers)) {
 #### Option C: Full poller object with resumable state
 
 ```ts
-const poller = createPoller(id);
-poller.onProgress(cb);
-await poller.pollUntilDone();
-const state = poller.serialize(); // resume later / in another process
+// A poller object wrapping the same createCollection flow:
+const poller = createCollectionPoller(body, headers);
+poller.onProgress(state => reportProgress(state));
+const collection = await poller.pollUntilDone();
+const saved = poller.serialize(); // resume later / in another process
 ```
 
 **Pros:** Rich control; resumable across processes.
