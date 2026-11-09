@@ -171,20 +171,23 @@ catalogs:
       specifier: ^1.4.18
       version: 1.6.1
     '@sap-cloud-sdk/connectivity':
-      specifier: ^4.9.2-20261020094528.0
-      version: 4.9.2-20261031011356.0
+      specifier: ^4.9.1
+      version: 4.9.1
+    '@sap-cloud-sdk/generator-common':
+      specifier: ^4.9.1
+      version: 4.9.1
     '@sap-cloud-sdk/http-client':
-      specifier: ^4.9.2-20261020094528.0
-      version: 4.9.2-20261031011356.0
+      specifier: ^4.9.1
+      version: 4.9.1
     '@sap-cloud-sdk/openapi':
-      specifier: ^4.9.2-20261020094528.0
-      version: 4.9.2-20261031011356.0
+      specifier: ^4.9.1
+      version: 4.9.1
     '@sap-cloud-sdk/resilience':
-      specifier: ^4.9.2-20261020094528.0
-      version: 4.9.2-20261031011356.0
+      specifier: ^4.9.1
+      version: 4.9.1
     '@sap-cloud-sdk/util':
-      specifier: ^4.9.2-20261020094528.0
-      version: 4.9.2-20261031011356.0
+      specifier: ^4.9.1
+      version: 4.9.1
     langchain:
       specifier: ^1.5.14
       version: 1.6.1
@@ -215,20 +218,20 @@ importers:
         specifier: workspace:^
         version: link:packages/orchestration
       '@sap-cloud-sdk/connectivity':
-        specifier: 4.9.2-20261020094528.0
-        version: 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 'catalog:'
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/generator-common':
-        specifier: 4.9.2-20261020094528.0
-        version: 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 'catalog:'
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
-        specifier: 4.9.2-20261020094528.0
-        version: 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 'catalog:'
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi-generator':
         specifier: 4.9.2-20261020094528.0
         version: 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
-        specifier: 4.9.2-20261020094528.0
-        version: 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 'catalog:'
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@types/node':
         specifier: 22.20.5
         version: 22.20.5
@@ -336,10 +339,10 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: 5.1.0
@@ -359,16 +362,16 @@ importers:
     dependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: 5.1.0
@@ -394,13 +397,13 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: 5.1.0
@@ -422,10 +425,10 @@ importers:
         version: link:../orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@langchain/core':
         specifier: 'catalog:'
@@ -460,10 +463,10 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@types/ws':
         specifier: 8.18.2
@@ -491,17 +494,17 @@ importers:
         version: link:../prompt-registry
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       yaml:
         specifier: ^2.9.0
         version: 2.9.1
     devDependencies:
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       vitest:
         specifier: 5.1.0
         version: 5.1.0(@opentelemetry/api@1.10.0)(@types/node@22.20.5)(@vitest/coverage-v8@5.1.0)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -529,13 +532,13 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: 5.1.0
@@ -551,14 +554,14 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@redocly/cli':
         specifier: ^2.64.0
-        version: 2.75.0
+        version: 2.76.0
       vitest:
         specifier: 5.0.4
         version: 5.0.4(@opentelemetry/api@1.10.0)(@types/node@22.20.5)(@vitest/coverage-v8@5.1.0)(vite@8.3.5(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -573,10 +576,10 @@ importers:
         version: link:../core
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       vitest:
         specifier: 5.1.0
@@ -629,10 +632,10 @@ importers:
         version: 1.32.2(@cfworker/json-schema@4.1.6)(supports-color@7.2.0)(zod@4.6.7)
       '@sap-cloud-sdk/resilience':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@types/express':
         specifier: 5.0.6
         version: 5.0.6
@@ -720,7 +723,7 @@ importers:
         version: link:../../packages/tabpfn
       '@sap-cloud-sdk/util':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
     devDependencies:
       '@types/async-retry':
         specifier: ^1.4.9
@@ -815,10 +818,10 @@ importers:
         version: link:../../packages/tabular-orchestration
       '@sap-cloud-sdk/connectivity':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/http-client':
         specifier: 'catalog:'
-        version: 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        version: 4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       tsd:
         specifier: ^0.33.0
         version: 0.33.0
@@ -2135,8 +2138,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@redocly/cli@2.75.0':
-    resolution: {integrity: sha512-jShlmyHydk8i8bGvvkLDhfKOwAnACG5s1Okwv+S323OoFUajOLOy1uOfNIiEAIZZIaLreoatkvXYcdavc0u9RQ==}
+  '@redocly/cli@2.76.0':
+    resolution: {integrity: sha512-o967iiLTq4B9oPDBqclurfLn3HOhQvYNwJ+BEkZoW/p5PwIycqIoaNv+Q+Uabb4cH/XnSyo646tCAscnjzZ6Ig==}
     engines: {node: '>=22.12.0 || >=20.19.0 <21.0.0', npm: '>=10'}
     hasBin: true
 
@@ -2290,23 +2293,17 @@ packages:
   '@sap-cloud-sdk/connectivity@4.9.1':
     resolution: {integrity: sha512-0deJBmdUd1LD1O3CX/wqYjTEKmnrnLsxnrSE8CyGtzbyomjjL1ePEXB3g6QUpQKmClVyOgJG/IbpyJFGGXXL5A==}
 
-  '@sap-cloud-sdk/connectivity@4.9.2-20261020094528.0':
-    resolution: {integrity: sha512-cY8v4+/vfnCMFA/0eK7jE6pGkVIWyVKjyvlxOO9YVel1YCvRpvu/ni2/bo8Q08ymVMxWAIfdBAHDOOKKarP6Dw==}
-
   '@sap-cloud-sdk/connectivity@4.9.2-20261031011356.0':
     resolution: {integrity: sha512-OZI03eGv0Ut/sicsnBVcqLzN5T+lTRsjMcTDUAtWgQMJyjCVJVw9fzwV8wy12IXB61FvAxR32ELSjLf4SMbwrQ==}
 
   '@sap-cloud-sdk/generator-common@4.9.1':
     resolution: {integrity: sha512-LmFDe6PHNnbQDA86PSJFzCsQgJkD0COw7Gj/NKFm7hDZrMSOksqrhF1wWkomdpDNDjF7vXEnhsaTrTtI+YxvyQ==}
 
-  '@sap-cloud-sdk/generator-common@4.9.2-20261020094528.0':
-    resolution: {integrity: sha512-O3rxQfPmAfF/AArvLme/aTbu0Obtm15c1+D0tPSDWRyASaY/uMBsyWoGtCD/nGS26MbtARVhfGxLKmyorqsn9w==}
+  '@sap-cloud-sdk/generator-common@4.9.2-20261031011356.0':
+    resolution: {integrity: sha512-7WoGi+CYwCuvvDuBc6mn1sZdEbBIYVyR+dtds+ksANFQa0vp2lQ1AScPJb38rmE2R/DI1M4dXswqdTbSrJwa0w==}
 
   '@sap-cloud-sdk/http-client@4.9.1':
     resolution: {integrity: sha512-bsF8T/syitm+GI8eInOB1AfvHsTYJ8Qvg5dfGt5SGXEQjqV2amFEulPp7edNTzCLo0+BBbBa/jhvqLCvXSoV6A==}
-
-  '@sap-cloud-sdk/http-client@4.9.2-20261020094528.0':
-    resolution: {integrity: sha512-XAs6+Njcy4vIzPSJhGXkcrmq64IUbiYZoozOVwqL75S8OK9OiL5+F765lNgyfQoErDlmfvqQ+DF1EMZPM+QJcQ==}
 
   '@sap-cloud-sdk/http-client@4.9.2-20261031011356.0':
     resolution: {integrity: sha512-nOVDzZyLgPkSOF9ohgqxni71/VUgfPVt8Tf9cGo+hIPNb1UOZUAprlELPvrQWMkjNPyVfPfs1As6fmhUil1cTQ==}
@@ -2329,9 +2326,6 @@ packages:
 
   '@sap-cloud-sdk/util@4.9.1':
     resolution: {integrity: sha512-1tuv+c6o2Y8/1F3UEdqiv3TPWzZDpCjxuDpAFtFBM8C+weum8ixgwc2YXEWvBzWvtSEl7C5L/o8jBqiuhcXF4w==}
-
-  '@sap-cloud-sdk/util@4.9.2-20261020094528.0':
-    resolution: {integrity: sha512-hEzphDKixW6sAfYAD00dOsZ4Moe6xi1yV7P1zjIBlPvAzaczKDVohqq7eoBjodIO/KfXWBvqYp7yEXF8r1XcyA==}
 
   '@sap-cloud-sdk/util@4.9.2-20261031011356.0':
     resolution: {integrity: sha512-UqwmedFdtA8x8dhBPumbBwFJSt/NAjs7dzR0Io8BMLfeq9j5sNbI6E0IOFNdzRvs9ZAh1RXthFH6878jtasp7Q==}
@@ -5976,7 +5970,7 @@ snapshots:
   '@oxlint/binding-win32-x64-msvc@1.91.0':
     optional: true
 
-  '@redocly/cli@2.75.0': {}
+  '@redocly/cli@2.76.0': {}
 
   '@rolldown/binding-android-arm-eabi@1.2.16':
     optional: true
@@ -6159,21 +6153,6 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/connectivity@4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
-    dependencies:
-      '@sap-cloud-sdk/resilience': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap/xsenv': 6.2.2(supports-color@7.2.0)
-      '@sap/xssec': 4.16.0
-      async-retry: 1.3.3
-      axios: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      jks-js: 1.1.7
-      jsonwebtoken: 9.0.3
-      safe-stable-stringify: 2.5.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
   '@sap-cloud-sdk/connectivity@4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@sap-cloud-sdk/resilience': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -6202,9 +6181,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/generator-common@4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@sap-cloud-sdk/generator-common@4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@sap-cloud-sdk/util': 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       fast-levenshtein: 3.0.0
       glob: 13.0.6
       prettier: 3.9.10
@@ -6225,16 +6204,6 @@ snapshots:
       - debug
       - supports-color
 
-  '@sap-cloud-sdk/http-client@4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
-    dependencies:
-      '@sap-cloud-sdk/connectivity': 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/resilience': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      axios: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
   '@sap-cloud-sdk/http-client@4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@sap-cloud-sdk/connectivity': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -6248,9 +6217,9 @@ snapshots:
   '@sap-cloud-sdk/openapi-generator@4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
-      '@sap-cloud-sdk/generator-common': 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/generator-common': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@sap-cloud-sdk/openapi': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@sap-cloud-sdk/util': 4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-cloud-sdk/util': 4.9.2-20261031011356.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       content-type: 2.1.0
       js-yaml: 5.5.0
       openapi-types: 12.1.3
@@ -6303,17 +6272,6 @@ snapshots:
       - supports-color
 
   '@sap-cloud-sdk/util@4.9.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
-    dependencies:
-      axios: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      logform: 2.7.0
-      voca: 1.4.1
-      winston: 3.19.0
-      winston-transport: 4.9.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@sap-cloud-sdk/util@4.9.2-20261020094528.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       axios: 1.21.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       logform: 2.7.0
