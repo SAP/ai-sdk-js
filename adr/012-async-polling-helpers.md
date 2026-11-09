@@ -4,8 +4,6 @@
 
 proposed — pending final review (backoff and terminal-model coverage decided; see below)
 
-This ADR covers acceptance criterion #1 of [#659](https://github.com/SAP/ai-sdk-js-backlog/issues/659) ("investigate and decide on approach"), following the Context Registry release ([#663](https://github.com/SAP/ai-sdk-js-backlog/issues/663)).
-No implementation is included; the ticket requires team alignment before code is written.
 
 ## Context
 
