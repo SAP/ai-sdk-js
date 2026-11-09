@@ -25,4 +25,6 @@ export * from './regressor-tab-pfn-config-input.js';
 export * from './table.js';
 export * from './target.js';
 export * from './predict-request.js';
+export * from './predict-request-config.js';
+export * from './predict-multipart.js';
 export * from './prediction.js';
