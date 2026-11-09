@@ -18,7 +18,7 @@ You send the labeled training rows and the rows you want predicted in a single r
 ## Installation
 
 ```
-$ npm install @sap-ai-sdk/tabpfn
+npm install @sap-ai-sdk/tabpfn
 ```
 
 ## Documentation
