@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/api.yaml -o ./src/client",
     "postgenerate": "rm ./src/client/api/*.ts && pnpm rename-generated-files && pnpm lint:fix",
     "rename-generated-files": "node ../../scripts/postgenerate-orchestration.ts ./src/client/api"
   },

@@ -38,7 +38,7 @@
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "pnpm generate:azure-openai",
-    "generate:azure-openai": "cd ./src/azure-openai/spec && openapi-generator --resolveExternal false --generateESM --clearOutputDir -i ./inference.json -o ../client --schemaPrefix AzureOpenAi && cd ..",
+    "generate:azure-openai": "cd ./src/azure-openai/spec && openapi-generator --resolveExternal false --generateEsm --clearOutputDir -i ./inference.json -o ../client --schemaPrefix AzureOpenAi && cd ..",
     "postgenerate:azure-openai": "rm ./src/azure-openai/client/inference/*.ts && pnpm lint:fix"
   },
   "dependencies": {
