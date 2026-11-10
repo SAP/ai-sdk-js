@@ -673,8 +673,8 @@ importers:
         specifier: 8.18.2
         version: 8.18.2
       '@upstash/context7-mcp':
-        specifier: 4.5.0
-        version: 4.5.0(supports-color@7.2.0)
+        specifier: 4.5.1
+        version: 4.5.1(supports-color@7.2.0)
       hyparquet-writer:
         specifier: 0.18.0
         version: 0.18.0
@@ -2706,8 +2706,8 @@ packages:
     resolution: {integrity: sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==}
     hasBin: true
 
-  '@upstash/context7-mcp@4.5.0':
-    resolution: {integrity: sha512-BTMM4j2ZuZdAHE1sERUCcty1eRcom4LCE04iv2XIi9b9RKhJKQsXMG7gZLgx7FX5uyyaW6xki7ReuhRM4bphZQ==}
+  '@upstash/context7-mcp@4.5.1':
+    resolution: {integrity: sha512-rUD1IdPVihgV8iifD7EvmtdH5X53zwvAUJ1a/ltaIla80m7Nga+lgx5Mk2ckLMF7r5WjDkFfd7qEQ54xbvEwiA==}
     engines: {node: '>=20.18.1'}
     hasBin: true
 
@@ -6403,7 +6403,7 @@ snapshots:
     dependencies:
       '@typescript/old': typescript@6.0.3
 
-  '@upstash/context7-mcp@4.5.0(supports-color@7.2.0)':
+  '@upstash/context7-mcp@4.5.1(supports-color@7.2.0)':
     dependencies:
       '@modelcontextprotocol/node': 2.1.1(@modelcontextprotocol/server@2.3.1)
       '@modelcontextprotocol/server': 2.3.1
