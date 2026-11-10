@@ -20,18 +20,9 @@ export type RegressorTabPFNConfig = {
   inference_config?: Record<string, any> | null;
   inference_precision?: 'autocast' | 'auto' | null;
   /**
-   * Default: true.
-   */
-  ignore_pretraining_limits?: boolean;
-  /**
    * Default: 4.
    */
   n_preprocessing_jobs?: number;
   fit_mode?: FitMode;
-  /**
-   * Stringified `torch.device`s
-   */
-  device?: string[] | null;
   memory_saving_mode?: boolean | null;
-  model_path?: string | null;
 };

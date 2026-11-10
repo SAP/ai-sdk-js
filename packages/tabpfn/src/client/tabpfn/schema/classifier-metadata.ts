@@ -30,7 +30,7 @@ export type ClassifierMetadata = {
    */
   package_version: string;
   /**
-   * The configuration the run used. Settings the request left to the model are null; `device` and `model_path` carry what the container resolved.
+   * The configuration the run used. Settings the request left to the model are null.
    */
   tabpfn_config: ClassifierTabPFNConfig;
   /**

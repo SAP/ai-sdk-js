@@ -12,3 +12,61 @@ actions:
     remove: true
   - target: $.paths['/metrics']
     remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig-Input'].properties['model_path']
+    remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig-Input'].properties['device']
+    remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig-Input'].properties['ignore_pretraining_limits']
+    remove: true
+  - target: $.components.schemas['RegressorTabPFNConfig-Input'].properties['model_path']
+    remove: true
+  - target: $.components.schemas['RegressorTabPFNConfig-Input'].properties['device']
+    remove: true
+  - target: $.components.schemas['RegressorTabPFNConfig-Input'].properties['ignore_pretraining_limits']
+    remove: true
+  - target: $.components.schemas['PredictRequest'].properties['model_version']
+    remove: true
+  - target: $.components.schemas['PredictRequestConfig'].properties['model_version']
+    remove: true
+  - target: $.components.schemas['PredictRequest'].properties['context']
+    remove: true
+  - target: $.components.schemas['PredictRequestConfig'].properties['context']
+    remove: true
+  - target: $.components.schemas['FitMode'].enum[?(@ == 'fit_with_cache')]
+    remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig-Input'].properties['fit_mode']
+    update:
+      description: '`fit_preprocessors` (default), `low_memory` and `batched` are served.'
+  - target: $.components.schemas['RegressorTabPFNConfig-Input'].properties['fit_mode']
+    update:
+      description: '`fit_preprocessors` (default), `low_memory` and `batched` are served.'
+  - target: $.components.schemas['PredictRequest'].properties['tabpfn_systems'].items.enum[?(@ == 'thinking')]
+    remove: true
+  - target: $.components.schemas['PredictRequest'].properties['tabpfn_systems']
+    update:
+      description: 'Preprocessing stages to run. `["preprocessing", "text"]` (default) is the full pipeline including text embeddings; `["preprocessing"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `"text"` needs `"preprocessing"`.'
+  - target: $.components.schemas['PredictRequestConfig'].properties['tabpfn_systems'].items.enum[?(@ == 'thinking')]
+    remove: true
+  - target: $.components.schemas['PredictRequestConfig'].properties['tabpfn_systems']
+    update:
+      description: 'Preprocessing stages to run. `["preprocessing", "text"]` (default) is the full pipeline including text embeddings; `["preprocessing"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `"text"` needs `"preprocessing"`.'
+  - target: $.components.schemas['PredictResponse'].properties['model_id']
+    remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig'].properties['model_path']
+    remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig'].properties['device']
+    remove: true
+  - target: $.components.schemas['ClassifierTabPFNConfig'].properties['ignore_pretraining_limits']
+    remove: true
+  - target: $.components.schemas['RegressorTabPFNConfig'].properties['model_path']
+    remove: true
+  - target: $.components.schemas['RegressorTabPFNConfig'].properties['device']
+    remove: true
+  - target: $.components.schemas['RegressorTabPFNConfig'].properties['ignore_pretraining_limits']
+    remove: true
+  - target: $.components.schemas['ClassifierMetadata'].properties['tabpfn_config']
+    update:
+      description: 'The configuration the run used. Settings the request left to the model are null.'
+  - target: $.components.schemas['RegressorMetadata'].properties['tabpfn_config']
+    update:
+      description: 'The configuration the run used. Settings the request left to the model are null.'

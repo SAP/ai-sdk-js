@@ -7,8 +7,4 @@
 /**
  * Representation of the 'FitMode' schema.
  */
-export type FitMode =
-  | 'low_memory'
-  | 'fit_preprocessors'
-  | 'fit_with_cache'
-  | 'batched';
+export type FitMode = 'low_memory' | 'fit_preprocessors' | 'batched';

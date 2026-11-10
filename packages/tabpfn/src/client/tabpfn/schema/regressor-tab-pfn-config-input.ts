@@ -38,29 +38,16 @@ export type RegressorTabPFNConfigInput = {
    */
   inference_precision?: 'autocast' | 'auto' | null;
   /**
-   * DISABLED in this container: sending a value other than the default is rejected with 422.
-   * Default: true.
-   */
-  ignore_pretraining_limits?: boolean;
-  /**
    * CPU workers used for per-estimator preprocessing.
    * Default: 4.
    */
   n_preprocessing_jobs?: number;
   /**
-   * `fit_preprocessors` (default), `low_memory` and `batched` are served. `fit_with_cache` is rejected with 400: this container has no model cache.
+   * `fit_preprocessors` (default), `low_memory` and `batched` are served.
    */
   fit_mode?: FitMode;
-  /**
-   * DISABLED in this container: sending it is rejected with 422.
-   */
-  device?: string[] | null;
   /**
    * Omit to let the container decide: off below 10,000 training rows, on from there.
    */
   memory_saving_mode?: boolean | null;
-  /**
-   * DISABLED in this container: only `null`, `"auto"` or `"default"` are accepted; anything else is rejected with 422. Select a model with the top-level `model_version` instead.
-   */
-  model_path?: string | null;
 };

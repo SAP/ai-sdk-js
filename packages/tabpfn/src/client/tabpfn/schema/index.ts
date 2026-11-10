@@ -17,7 +17,6 @@ export * from './classifier-output-type.js';
 export * from './classifier-predict-params.js';
 export * from './classifier-tab-pfn-config-input.js';
 export * from './error-response.js';
-export * from './predict-request-context.js';
 export * from './regressor-config.js';
 export * from './regressor-output-type.js';
 export * from './regressor-predict-params.js';

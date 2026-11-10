@@ -17,8 +17,4 @@ export type PredictResponse = {
     | ({ task: 'classification' } & ClassifierMetadata)
     | ({ task: 'regression' } & RegressorMetadata);
   usage: InputUsage;
-  /**
-   * Always null in this container.
-   */
-  model_id?: string | null;
 };

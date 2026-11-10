@@ -310,7 +310,7 @@
           },
           "tabpfn_config": {
             "$ref": "#/components/schemas/ClassifierTabPFNConfig",
-            "description": "The configuration the run used. Settings the request left to the model are null; `device` and `model_path` carry what the container resolved."
+            "description": "The configuration the run used. Settings the request left to the model are null."
           },
           "classes": {
             "anyOf": [
@@ -450,11 +450,6 @@
             ],
             "title": "Inference Precision"
           },
-          "ignore_pretraining_limits": {
-            "type": "boolean",
-            "title": "Ignore Pretraining Limits",
-            "default": true
-          },
           "n_preprocessing_jobs": {
             "type": "integer",
             "title": "N Preprocessing Jobs",
@@ -463,22 +458,6 @@
           "fit_mode": {
             "$ref": "#/components/schemas/FitMode",
             "default": "fit_preprocessors"
-          },
-          "device": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Device",
-            "description": "Stringified `torch.device`s"
           },
           "memory_saving_mode": {
             "anyOf": [
@@ -490,17 +469,6 @@
               }
             ],
             "title": "Memory Saving Mode"
-          },
-          "model_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model Path"
           },
           "balance_probabilities": {
             "anyOf": [
@@ -519,12 +487,7 @@
         "title": "ClassifierTabPFNConfig"
       },
       "FitMode": {
-        "enum": [
-          "low_memory",
-          "fit_preprocessors",
-          "fit_with_cache",
-          "batched"
-        ],
+        "enum": ["low_memory", "fit_preprocessors", "batched"],
         "title": "FitMode",
         "type": "string"
       },
@@ -593,18 +556,6 @@
           },
           "usage": {
             "$ref": "#/components/schemas/InputUsage"
-          },
-          "model_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model Id",
-            "description": "Always null in this container."
           }
         },
         "additionalProperties": false,
@@ -649,7 +600,7 @@
           },
           "tabpfn_config": {
             "$ref": "#/components/schemas/RegressorTabPFNConfig",
-            "description": "The configuration the run used. Settings the request left to the model are null; `device` and `model_path` carry what the container resolved."
+            "description": "The configuration the run used. Settings the request left to the model are null."
           }
         },
         "additionalProperties": false,
@@ -749,11 +700,6 @@
             ],
             "title": "Inference Precision"
           },
-          "ignore_pretraining_limits": {
-            "type": "boolean",
-            "title": "Ignore Pretraining Limits",
-            "default": true
-          },
           "n_preprocessing_jobs": {
             "type": "integer",
             "title": "N Preprocessing Jobs",
@@ -762,22 +708,6 @@
           "fit_mode": {
             "$ref": "#/components/schemas/FitMode",
             "default": "fit_preprocessors"
-          },
-          "device": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array",
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Device",
-            "description": "Stringified `torch.device`s"
           },
           "memory_saving_mode": {
             "anyOf": [
@@ -789,17 +719,6 @@
               }
             ],
             "title": "Memory Saving Mode"
-          },
-          "model_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model Path"
           }
         },
         "additionalProperties": false,
@@ -979,12 +898,6 @@
             "title": "Inference Precision",
             "description": "Numeric precision of the forward pass."
           },
-          "ignore_pretraining_limits": {
-            "default": true,
-            "title": "Ignore Pretraining Limits",
-            "type": "boolean",
-            "description": "DISABLED in this container: sending a value other than the default is rejected with 422."
-          },
           "n_preprocessing_jobs": {
             "default": 4,
             "title": "N Preprocessing Jobs",
@@ -994,24 +907,7 @@
           "fit_mode": {
             "$ref": "#/components/schemas/FitMode",
             "default": "fit_preprocessors",
-            "description": "`fit_preprocessors` (default), `low_memory` and `batched` are served. `fit_with_cache` is rejected with 400: this container has no model cache."
-          },
-          "device": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "description": "DISABLED in this container: sending it is rejected with 422.",
-            "title": "Device"
+            "description": "`fit_preprocessors` (default), `low_memory` and `batched` are served."
           },
           "memory_saving_mode": {
             "anyOf": [
@@ -1025,19 +921,6 @@
             "default": null,
             "title": "Memory Saving Mode",
             "description": "Omit to let the container decide: off below 10,000 training rows, on from there."
-          },
-          "model_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "title": "Model Path",
-            "description": "DISABLED in this container: only `null`, `\"auto\"` or `\"default\"` are accepted; anything else is rejected with 422. Select a model with the top-level `model_version` instead."
           },
           "balance_probabilities": {
             "anyOf": [
@@ -1089,26 +972,6 @@
         "title": "ErrorResponse",
         "type": "object",
         "description": "Body of every error the application raises. Unrouted paths and wrong methods (404, 405) return `{\"detail\": \"...\"}` instead."
-      },
-      "PredictRequestContext": {
-        "additionalProperties": false,
-        "properties": {
-          "model_id": {
-            "anyOf": [
-              {
-                "format": "uuid",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "title": "Model Id"
-          }
-        },
-        "title": "PredictRequestContext",
-        "type": "object"
       },
       "RegressorConfig": {
         "additionalProperties": false,
@@ -1265,12 +1128,6 @@
             "title": "Inference Precision",
             "description": "Numeric precision of the forward pass."
           },
-          "ignore_pretraining_limits": {
-            "default": true,
-            "title": "Ignore Pretraining Limits",
-            "type": "boolean",
-            "description": "DISABLED in this container: sending a value other than the default is rejected with 422."
-          },
           "n_preprocessing_jobs": {
             "default": 4,
             "title": "N Preprocessing Jobs",
@@ -1280,24 +1137,7 @@
           "fit_mode": {
             "$ref": "#/components/schemas/FitMode",
             "default": "fit_preprocessors",
-            "description": "`fit_preprocessors` (default), `low_memory` and `batched` are served. `fit_with_cache` is rejected with 400: this container has no model cache."
-          },
-          "device": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "minItems": 1,
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "description": "DISABLED in this container: sending it is rejected with 422.",
-            "title": "Device"
+            "description": "`fit_preprocessors` (default), `low_memory` and `batched` are served."
           },
           "memory_saving_mode": {
             "anyOf": [
@@ -1311,19 +1151,6 @@
             "default": null,
             "title": "Memory Saving Mode",
             "description": "Omit to let the container decide: off below 10,000 training rows, on from there."
-          },
-          "model_path": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "title": "Model Path",
-            "description": "DISABLED in this container: only `null`, `\"auto\"` or `\"default\"` are accepted; anything else is rejected with 422. Select a model with the top-level `model_version` instead."
           }
         },
         "title": "RegressorTabPFNConfig",
@@ -1419,23 +1246,14 @@
               }
             }
           },
-          "model_version": {
-            "type": "string",
-            "enum": ["v2", "v2.5", "v2.6", "v3", "v3.5"],
-            "description": "Model family to fit with. This image serves v3, v3.5; any other listed value is rejected with 400. Omit for v3.5."
-          },
           "tabpfn_systems": {
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["preprocessing", "text", "thinking"]
+              "enum": ["preprocessing", "text"]
             },
             "default": ["preprocessing", "text"],
-            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`. `\"thinking\"` is rejected with 422."
-          },
-          "context": {
-            "$ref": "#/components/schemas/PredictRequestContext",
-            "description": "Accepted for compatibility. A non-null `model_id` without training data is rejected with 400."
+            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`."
           },
           "X_train": {
             "$ref": "#/components/schemas/Table"
@@ -1473,23 +1291,14 @@
               }
             }
           },
-          "model_version": {
-            "type": "string",
-            "enum": ["v2", "v2.5", "v2.6", "v3", "v3.5"],
-            "description": "Model family to fit with. This image serves v3, v3.5; any other listed value is rejected with 400. Omit for v3.5."
-          },
           "tabpfn_systems": {
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["preprocessing", "text", "thinking"]
+              "enum": ["preprocessing", "text"]
             },
             "default": ["preprocessing", "text"],
-            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`. `\"thinking\"` is rejected with 422."
-          },
-          "context": {
-            "$ref": "#/components/schemas/PredictRequestContext",
-            "description": "Accepted for compatibility. A non-null `model_id` without training data is rejected with 400."
+            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`."
           }
         },
         "description": "The JSON carried in the `request` part of a multipart upload."
