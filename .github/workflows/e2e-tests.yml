@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   e2e-tests:
     strategy:
@@ -38,7 +42,6 @@ jobs:
         id: sample-app
         working-directory: ./sample-code
         # TODO: use background: true
-        shell: bash
         run: |
           pnpm local &
           JOB_ID=$!

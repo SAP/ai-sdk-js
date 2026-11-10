@@ -1,5 +1,12 @@
 # @sap-ai-sdk/orchestration
 
+## 2.18.0
+
+### Minor Changes
+
+- [feat] Add `buildGraniteGuardian41Filter()` to build an IBM Granite Guardian 4.1 content filter.
+  Like the deprecated Llama Guard filter, it is a SAP-hosted content filter for the orchestration service.
+
 ## 2.17.0
 
 ### Minor Changes

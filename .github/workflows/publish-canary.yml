@@ -13,6 +13,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   publish:
     name: Publish canary to NPM
@@ -33,7 +37,6 @@ jobs:
         if: github.event_name == 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
         run: |
           last_sha=$(gh run list \
             --workflow=publish-canary.yml \
@@ -49,7 +52,6 @@ jobs:
 
       - name: publish
         if: steps.check-changes.outputs.skip != 'true'
-        shell: bash
         env:
           INPUTS_TAG: ${{ inputs.tag || 'canary' }}
         run: |
@@ -72,4 +74,4 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_MSG_AUTHOR: ''
           SLACK_ICON: https://sap.github.io/ai-sdk/img/AI-SDK-Logo.svg
-        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
+        uses: rtCamp/action-slack-notify@06cc13f74fa8d4d2296c09455d91e9453e4025f4 # v2.4.1
