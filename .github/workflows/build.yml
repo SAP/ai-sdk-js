@@ -8,6 +8,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -41,7 +45,7 @@ jobs:
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@4d1dc0c91ee400dcf8a6dddf2f705ac36542e304 # v8.4
+        uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65 # v8.4.1
       - name: Wait for type tests
         wait: test-type
 
@@ -52,7 +56,6 @@ jobs:
     steps:
       - uses: $/.github/actions/setup
       - name: Enforce generated code is up to date
-        shell: bash
         run: |
           pnpm generate
           pnpm apply-patches

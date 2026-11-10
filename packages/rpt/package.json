@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/rpt",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "description": "This package provides a client for SAP’s Relational Pretrained Transformer model, SAP-RPT-1.",
   "keywords": [
     "ai-api",
@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/rpt",
     "make-rpt-internal": "node ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
@@ -51,6 +51,6 @@
     "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }

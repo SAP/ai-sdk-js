@@ -134,6 +134,7 @@ export async function responsesApiStateful(): Promise<string | undefined> {
   });
 
   const first = await client.responses.create({
+    store: true,
     instructions: 'You are a helpful assistant.',
     input: 'What is the capital of France?'
   });
