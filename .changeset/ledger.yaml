@@ -1,3 +1,7 @@
+"@sap-ai-sdk/ai-api@2.18.0":
+  dir: packages/ai-api
+  intents:
+    - clean-dogs-listen
 "@sap-ai-sdk/context-registry@2.17.0":
   dir: packages/context-registry
   intents:
@@ -22,11 +26,19 @@
     - orchestration-spec-rel-1-23-0
     - preserve-streaming-token-usage-details
     - three-ghosts-rush
+"@sap-ai-sdk/orchestration@2.18.0":
+  dir: packages/orchestration
+  intents:
+    - granite-guardian-filter
 "@sap-ai-sdk/prompt-registry@2.17.0":
   dir: packages/prompt-registry
   intents:
     - fine-cases-start
     - legal-parrots-camp
+"@sap-ai-sdk/prompt-registry@2.18.0":
+  dir: packages/prompt-registry
+  intents:
+    - early-taxis-win
 "@sap-ai-sdk/tabular-orchestration@2.17.0":
   dir: packages/tabular-orchestration
   intents:
