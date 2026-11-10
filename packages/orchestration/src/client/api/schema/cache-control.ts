@@ -12,7 +12,9 @@
  *   `prompt_cache_breakpoint: {mode: explicit}` on the wire. Supported on user
  *   message content blocks (text, image, file) on both the Responses API path
  *   (GPT-6+ models) and the Chat Completions path (GPT-5.6 models). System message
- *   cache breakpoints are not supported on Azure. Not supported on PTU-M deployments.
+ *   cache breakpoints are not supported on Azure. `CacheControl.ttl` is Anthropic-only
+ *   and is ignored for Azure; configure Azure cache TTL through `prompt_cache_options`
+ *   where supported. Not supported on PTU-M deployments.
  *
  */
 export type CacheControl = {
