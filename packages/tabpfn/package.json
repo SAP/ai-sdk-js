@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/tabpfn.json -o ./src/client",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/tabpfn.json -o ./src/client",
     "pregenerate": "pnpm postprocess-spec",
     "postgenerate": "pnpm update-imports && pnpm make-tabpfn-internal && pnpm lint:fix",
     "postprocess-spec": "redocly bundle ./src/spec/tabpfnopenapispecs.yaml --overlay=./src/spec/tabpfn-predict-overlay.yaml --remove-unused-components --output ./src/spec/tabpfn.json && node ./scripts/postprocess-tabpfn-spec.ts ./src/spec/tabpfn.json",
