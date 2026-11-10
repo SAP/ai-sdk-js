@@ -66,6 +66,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   generate:
     name: 'Download, Generate, Compile and Push'
@@ -105,7 +109,6 @@ jobs:
 
       - name: 'Resolve specification file paths'
         id: resolve
-        shell: bash
         run: |
           declare -A SERVICES=(
             [ai-api.url]="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml"

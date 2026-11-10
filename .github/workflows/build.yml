@@ -8,6 +8,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -52,7 +56,6 @@ jobs:
     steps:
       - uses: $/.github/actions/setup
       - name: Enforce generated code is up to date
-        shell: bash
         run: |
           pnpm generate
           pnpm apply-patches

@@ -13,6 +13,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   publish:
     name: Publish canary to NPM
@@ -33,7 +37,6 @@ jobs:
         if: github.event_name == 'schedule'
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
         run: |
           last_sha=$(gh run list \
             --workflow=publish-canary.yml \
@@ -49,7 +52,6 @@ jobs:
 
       - name: publish
         if: steps.check-changes.outputs.skip != 'true'
-        shell: bash
         env:
           INPUTS_TAG: ${{ inputs.tag || 'canary' }}
         run: |
