@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   find-stale-branches:
     name: 'Find stale spec-update branches'

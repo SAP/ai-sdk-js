@@ -5,6 +5,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   verify-environment:
     name: Verify Release Environment Gate
