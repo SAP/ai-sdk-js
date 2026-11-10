@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
     "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/rpt",
     "make-rpt-internal": "node ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
