@@ -106,6 +106,34 @@ describe('deployment resolver', () => {
     ).rejects.toThrow('No deployment matched the given criteria');
   });
 
+  it('should not include destination credentials in the error message', async () => {
+    nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default'
+      }
+    })
+      .get('/v2/lm/deployments')
+      .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
+      .reply(200, {
+        count: 0,
+        resources: []
+      });
+
+    await expect(
+      resolveDeploymentId({
+        scenarioId: 'foundation-models',
+        destination: {
+          url: 'https://example.com',
+          authTokens: [{ type: 'Bearer', value: 'SECRET_TOKEN', error: null }]
+        } as any
+      })
+    ).rejects.toThrow(
+      expect.objectContaining({
+        message: expect.not.stringContaining('SECRET_TOKEN')
+      })
+    );
+  });
+
   it('should consider custom resource group', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', resourceGroup: 'otherId' },

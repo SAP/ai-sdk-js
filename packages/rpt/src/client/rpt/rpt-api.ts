@@ -19,7 +19,7 @@ import type {
 export const RptApi = {
   _defaultBasePath: undefined,
   /**
-   * Create a request builder for execution of post requests to the '/predict' endpoint.
+   * Create a request builder for execution of post requests to the "/predict" endpoint.
    * @param body - Request body.
    * @param headerParameters - Object containing the following keys: Content-Encoding.
    * @returns The request builder, use the `execute()` method to trigger the request.
@@ -41,7 +41,7 @@ export const RptApi = {
       RptApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of post requests to the '/predict_parquet' endpoint.
+   * Create a request builder for execution of post requests to the "/predict_parquet" endpoint.
    * @param body - Request body.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
@@ -80,7 +80,7 @@ export const RptApi = {
       RptApi._defaultBasePath
     ),
   /**
-   * Create a request builder for execution of get requests to the '/health' endpoint.
+   * Create a request builder for execution of get requests to the "/health" endpoint.
    * @returns The request builder, use the `execute()` method to trigger the request.
    */
   health: () =>

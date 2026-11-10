@@ -11,6 +11,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
@@ -27,7 +31,6 @@ jobs:
       # OWASP runs in Docker and cannot see the runner's pnpm install. Put the
       # standalone pnpm bundle in the mounted workspace instead.
       - name: Install pnpm for OWASP container
-        shell: bash
         run: |
           PNPM_VERSION="$(pnpm --version)"
           archive="${RUNNER_TEMP}/pnpm-linux-x64-musl.tar.gz"

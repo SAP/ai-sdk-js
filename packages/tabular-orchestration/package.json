@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/tabular-orchestration",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "description": "This package provides a client for predictions with Tabular Foundation Models through the SAP AI Core Tabular AI Orchestration service.",
   "keywords": [
     "rpt",
@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/tabular-orchestration.yaml -o ./src/client -s ./src/spec/options-per-service.json",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/tabular-orchestration.yaml -o ./src/client -s ./src/spec/options-per-service.json",
     "postgenerate": "pnpm update-imports && pnpm make-experimental && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/tabular-orchestration",
     "make-experimental": "node ../../scripts/postgenerate-tabular-orchestration.ts ./src/client/tabular-orchestration/predict-api.ts"
@@ -49,6 +49,6 @@
     "@sap-cloud-sdk/http-client": "catalog:"
   },
   "devDependencies": {
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }

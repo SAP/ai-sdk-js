@@ -12,6 +12,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   get-orchestration-reference:
     runs-on: ubuntu-latest
@@ -23,7 +27,6 @@ jobs:
         env:
           TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
-          set -o pipefail
           ORCH_VERSION=$(curl --fail --silent --request GET \
             --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" \
             -H "Authorization: Bearer $TOKEN" \

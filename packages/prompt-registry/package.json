@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/prompt-registry",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "description": "",
   "keywords": [
     "ai-api",
@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/prompt-registry.yaml -o ./src/client",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/prompt-registry.yaml -o ./src/client",
     "apply-patches": "node ../../scripts/apply-patches.ts .",
     "postgenerate": "pnpm update-imports && pnpm orval && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/prompt-registry"
@@ -47,6 +47,6 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }

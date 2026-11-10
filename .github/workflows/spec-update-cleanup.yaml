@@ -32,6 +32,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   auth:
     permissions:

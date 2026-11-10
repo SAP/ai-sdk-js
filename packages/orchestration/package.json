@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/orchestration",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "description": "",
   "keywords": [
     "llm-access",
@@ -37,7 +37,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/api.yaml -o ./src/client",
     "postgenerate": "rm ./src/client/api/*.ts && pnpm rename-generated-files && pnpm lint:fix",
     "rename-generated-files": "node ../../scripts/postgenerate-orchestration.ts ./src/client/api"
   },
@@ -51,6 +51,6 @@
   "devDependencies": {
     "@sap-cloud-sdk/connectivity": "catalog:",
     "@sap-cloud-sdk/http-client": "catalog:",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }

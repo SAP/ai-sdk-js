@@ -1,5 +1,11 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.18.0
+
+### Minor Changes
+
+- [feat] prompt-registry: updated generated client to latest spec
+
 ## 2.17.0
 
 ### Minor Changes
