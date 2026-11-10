@@ -119,8 +119,9 @@ export async function resolveDeployment(
   }
 
   if (!deployments.length) {
+    const { destination: _destination, ...loggable } = opts;
     throw new Error(
-      `No deployment matched the given criteria: ${JSON.stringify(opts)}. Make sure the deployment is successful, as it is a prerequisite before consuming orchestration or foundation models.`
+      `No deployment matched the given criteria: ${JSON.stringify(loggable)}. Make sure the deployment is successful, as it is a prerequisite before consuming orchestration or foundation models.`
     );
   }
   return deployments[0];

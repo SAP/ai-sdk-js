@@ -22,6 +22,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 env:
   BLACKDUCK_SKIP_PHONE_HOME: true
 

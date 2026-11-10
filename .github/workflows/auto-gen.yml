@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   generate:
     if: ${{ github.event.pull_request.user.type != 'Bot' && github.repository == github.event.pull_request.head.repo.full_name }}
@@ -25,12 +29,10 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true
       - name: Generate and apply patches
-        shell: bash
         run: |
           pnpm generate
           pnpm apply-patches
       - name: Commit Changes if needed
-        shell: bash
         env:
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}

@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/document-grounding",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "description": "",
   "keywords": [
     "document-grounding",
@@ -39,7 +39,7 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/api.yaml -o ./src/client -s ./src/spec/options-per-service.json && pnpm update-imports && pnpm lint:fix",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/api.yaml -o ./src/client -s ./src/spec/options-per-service.json && pnpm update-imports && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/api",
     "apply-patches": "node ../../scripts/apply-patches.ts ."
   },
