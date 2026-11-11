@@ -335,8 +335,9 @@ export function hasConfiguredPrompt(
     | LangChainOrchestrationModuleConfig
     | LangChainOrchestrationModuleConfigList
 ): boolean {
-  const configs = Array.isArray(config) ? config : [config];
-  return configs.some(c => c.promptTemplating?.prompt);
+  return (Array.isArray(config) ? config : [config]).some(
+    c => c.promptTemplating?.prompt
+  );
 }
 
 function messageSupportsCacheControl(message: ChatMessage): boolean {
