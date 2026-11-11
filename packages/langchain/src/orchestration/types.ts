@@ -87,6 +87,11 @@ export type LangChainOrchestrationModuleConfig = Omit<
   'promptTemplating'
 > & {
   promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    /**
+     * @deprecated Since v2.19.0. Supply the system message or template as part of the message list passed to `invoke`, `stream`, or `_generate` instead.
+     * A standing prompt template or template reference applied to every call.
+     * While set, the current call's messages are routed through the deprecated `messages` field of the underlying orchestration client.
+     */
     prompt?: Xor<PromptTemplate, TemplateRef>;
   };
 };

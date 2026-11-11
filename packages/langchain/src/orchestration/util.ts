@@ -29,7 +29,11 @@ import type {
 } from '@sap-ai-sdk/orchestration/internal.js';
 import type { Xor } from '@sap-cloud-sdk/util';
 
-import type { ChatOrchestrationToolType } from './types.ts';
+import type {
+  ChatOrchestrationToolType,
+  LangChainOrchestrationModuleConfig,
+  LangChainOrchestrationModuleConfigList
+} from './types.ts';
 import type { ToolDefinition } from '@langchain/core/language_models/base';
 import type {
   BaseMessage,
@@ -312,6 +316,27 @@ export function mapLangChainMessagesToOrchestrationMessages(
   messages: BaseMessage[]
 ): ChatMessage[] {
   return messages.map(mapBaseMessageToChatMessage);
+}
+
+/**
+ * Checks whether any of the merged module configurations carries a constructor
+ * prompt.
+ * When one does, the current call's messages are forwarded through the
+ * deprecated `messages` field so the base client applies its legacy per-config
+ * merge and routing.
+ * Otherwise the messages travel through the request-level `prompt` field (see
+ * `adr/012-prompt-template-messages.md`).
+ * @param config - The merged module configuration or fallback list.
+ * @returns True when at least one configuration defines a prompt.
+ * @internal
+ */
+export function hasConfiguredPrompt(
+  config:
+    | LangChainOrchestrationModuleConfig
+    | LangChainOrchestrationModuleConfigList
+): boolean {
+  const configs = Array.isArray(config) ? config : [config];
+  return configs.some(c => c.promptTemplating?.prompt);
 }
 
 function messageSupportsCacheControl(message: ChatMessage): boolean {

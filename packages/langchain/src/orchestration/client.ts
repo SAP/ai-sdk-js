@@ -26,7 +26,8 @@ import {
   mapOutputToChatResult,
   mapToolToChatCompletionTool,
   mapOrchestrationChunkToLangChainMessageChunk,
-  applyCacheControlToLastMessage
+  applyCacheControlToLastMessage,
+  hasConfiguredPrompt
 } from './util.ts';
 
 import type { ResourceGroupConfig } from '@sap-ai-sdk/ai-api';
@@ -202,7 +203,14 @@ export class OrchestrationClient extends BaseChatModel<
 
         return orchestrationClient.chatCompletion(
           {
-            messages: allMessages,
+            // When a config defines a prompt, the current turn is forwarded
+            // through the deprecated `messages` field so the base client applies
+            // its legacy merge and routing. Otherwise it travels through the
+            // request-level `prompt` field.
+            // TODO: remove the deprecated messages branch in the next major version release
+            ...(hasConfiguredPrompt(mergedOrchestrationConfig)
+              ? { messages: allMessages }
+              : { prompt: { template: allMessages } }),
             placeholderValues
           },
           {
@@ -422,7 +430,17 @@ export class OrchestrationClient extends BaseChatModel<
       },
       () =>
         orchestrationClient.stream(
-          { messages: orchestrationMessages, placeholderValues },
+          {
+            // When a config defines a prompt, the current turn is forwarded
+            // through the deprecated `messages` field so the base client applies
+            // its legacy merge and routing. Otherwise it travels through the
+            // request-level `prompt` field.
+            // TODO: remove the deprecated messages branch in the next major version release
+            ...(hasConfiguredPrompt(mergedOrchestrationConfig)
+              ? { messages: orchestrationMessages }
+              : { prompt: { template: orchestrationMessages } }),
+            placeholderValues
+          },
           options.signal,
           options.streamOptions,
           customRequestConfig
