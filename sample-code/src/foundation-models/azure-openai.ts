@@ -97,9 +97,12 @@ export async function chatCompletionResilient(): Promise<AzureOpenAiChatCompleti
 export async function chatCompletionWithDestination(): Promise<AzureOpenAiChatCompletionResponse> {
   const response = await new AzureOpenAiChatClient('gpt-5.4', {
     destinationName: 'e2e-aicore'
-  }).run({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
-  });
+  }).run(
+    {
+      messages: [{ role: 'user', content: 'What is the capital of France?' }]
+    },
+    { middleware: resilience() }
+  );
 
   // Use getContent() to access the content responded by LLM.
   logger.info(response.getContent());
