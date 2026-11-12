@@ -149,12 +149,10 @@ const resp1 = await client.chatCompletion({
 });
 const res2 = await client.chatCompletion({
   messagesHistory: resp1.getAllMessages(),
-  prompt: {
-    template: [
-      // Turn 1+
-      { role: 'user', content: 'What is the capital of France?' }
-    ]
-  }
+  template: [
+    // Turn 1+
+    { role: 'user', content: 'What is the capital of France?' }
+  ]
 });
 ```
 
