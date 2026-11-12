@@ -56,7 +56,7 @@ export async function orchestrationChatCompletion(
     {
       messages: [{ role: 'user', content: 'What is the capital of France?' }]
     },
-    { signal }
+    { signal, middleware: resilience() }
   );
 
   // use getContent() to access the LLM response
