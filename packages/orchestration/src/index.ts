@@ -97,6 +97,5 @@ export type {
   FunctionObject,
   Error as OrchestrationError,
   Citation,
-  ReasoningBlock,
-  TemplateRef
+  ReasoningBlock
 } from './client/api/schema/index.ts';
