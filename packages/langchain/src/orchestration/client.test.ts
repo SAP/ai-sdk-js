@@ -1,3 +1,4 @@
+import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import { constructCompletionPostRequest } from '@sap-ai-sdk/orchestration/internal.js';
 
 import { type AIMessageChunk } from '@langchain/core/messages';
@@ -21,7 +22,6 @@ import {
 import { addNumbersTool } from '../../../../test-util/tools.ts';
 import { OrchestrationClient } from './client.ts';
 
-import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -833,7 +833,10 @@ describe('orchestration service client', () => {
 
       const spy = vi
         .spyOn(OrchestrationClientBase.prototype, 'chatCompletion')
-        .mockResolvedValue({ getContent: () => 'ok', _data: mockResponse } as any);
+        .mockResolvedValue({
+          getContent: () => 'ok',
+          _data: mockResponse
+        } as any);
 
       const client = new OrchestrationClient(config);
       await client.invoke(messages);
@@ -850,7 +853,9 @@ describe('orchestration service client', () => {
       const configWithPrompt: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           ...config.promptTemplating,
-          prompt: { template: [{ role: 'system', content: 'You are helpful.' }] }
+          prompt: {
+            template: [{ role: 'system', content: 'You are helpful.' }]
+          }
         }
       };
 
@@ -862,7 +867,10 @@ describe('orchestration service client', () => {
 
       const spy = vi
         .spyOn(OrchestrationClientBase.prototype, 'chatCompletion')
-        .mockResolvedValue({ getContent: () => 'ok', _data: mockResponse } as any);
+        .mockResolvedValue({
+          getContent: () => 'ok',
+          _data: mockResponse
+        } as any);
 
       const client = new OrchestrationClient(configWithPrompt);
       await client.invoke(messages);
@@ -905,7 +913,9 @@ describe('orchestration service client', () => {
       const configWithPrompt: LangChainOrchestrationModuleConfig = {
         promptTemplating: {
           ...config.promptTemplating,
-          prompt: { template: [{ role: 'system', content: 'You are helpful.' }] }
+          prompt: {
+            template: [{ role: 'system', content: 'You are helpful.' }]
+          }
         }
       };
 
