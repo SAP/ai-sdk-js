@@ -21,6 +21,7 @@ import {
 import { addNumbersTool } from '../../../../test-util/tools.ts';
 import { OrchestrationClient } from './client.ts';
 
+import { OrchestrationClient as OrchestrationClientBase } from '@sap-ai-sdk/orchestration';
 import type { OrchestrationErrorResponse } from '@sap-ai-sdk/orchestration';
 import type { CompletionPostResponse } from '@sap-ai-sdk/orchestration/internal.js';
 
@@ -820,6 +821,117 @@ describe('orchestration service client', () => {
     }
 
     expect(streamSpy).toHaveBeenCalled();
+  });
+
+  describe('prompt routing', () => {
+    it('passes prompt.template to chatCompletion when no constructor prompt is set', async () => {
+      mockInference(
+        { data: () => true },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const spy = vi
+        .spyOn(OrchestrationClientBase.prototype, 'chatCompletion')
+        .mockResolvedValue({ getContent: () => 'ok', _data: mockResponse } as any);
+
+      const client = new OrchestrationClient(config);
+      await client.invoke(messages);
+
+      expect(spy).toHaveBeenCalledOnce();
+      const [requestBody] = spy.mock.calls[0];
+      expect(requestBody).toHaveProperty('prompt');
+      expect(requestBody).not.toHaveProperty('messages');
+
+      spy.mockRestore();
+    });
+
+    it('passes messages to chatCompletion when a constructor prompt is set', async () => {
+      const configWithPrompt: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          ...config.promptTemplating,
+          prompt: { template: [{ role: 'system', content: 'You are helpful.' }] }
+        }
+      };
+
+      mockInference(
+        { data: () => true },
+        { data: mockResponse, status: 200 },
+        endpoint
+      );
+
+      const spy = vi
+        .spyOn(OrchestrationClientBase.prototype, 'chatCompletion')
+        .mockResolvedValue({ getContent: () => 'ok', _data: mockResponse } as any);
+
+      const client = new OrchestrationClient(configWithPrompt);
+      await client.invoke(messages);
+
+      expect(spy).toHaveBeenCalledOnce();
+      const [requestBody] = spy.mock.calls[0];
+      expect(requestBody).toHaveProperty('messages');
+      expect(requestBody).not.toHaveProperty('prompt');
+
+      spy.mockRestore();
+    });
+
+    it('passes prompt.template to stream when no constructor prompt is set', async () => {
+      mockInference(
+        { data: () => true },
+        { data: mockResponseStream, status: 200 },
+        endpoint
+      );
+
+      const spy = vi
+        .spyOn(OrchestrationClientBase.prototype, 'stream')
+        .mockResolvedValue({ stream: (async function* () {})() } as any);
+
+      const client = new OrchestrationClient(config);
+      const stream = await client.stream('Hello!');
+      // drain the stream
+      for await (const _ of stream) {
+        // no-op
+      }
+
+      expect(spy).toHaveBeenCalledOnce();
+      const [requestBody] = spy.mock.calls[0];
+      expect(requestBody).toHaveProperty('prompt');
+      expect(requestBody).not.toHaveProperty('messages');
+
+      spy.mockRestore();
+    });
+
+    it('passes messages to stream when a constructor prompt is set', async () => {
+      const configWithPrompt: LangChainOrchestrationModuleConfig = {
+        promptTemplating: {
+          ...config.promptTemplating,
+          prompt: { template: [{ role: 'system', content: 'You are helpful.' }] }
+        }
+      };
+
+      mockInference(
+        { data: () => true },
+        { data: mockResponseStream, status: 200 },
+        endpoint
+      );
+
+      const spy = vi
+        .spyOn(OrchestrationClientBase.prototype, 'stream')
+        .mockResolvedValue({ stream: (async function* () {})() } as any);
+
+      const client = new OrchestrationClient(configWithPrompt);
+      const stream = await client.stream('Hello!');
+      for await (const _ of stream) {
+        // no-op
+      }
+
+      expect(spy).toHaveBeenCalledOnce();
+      const [requestBody] = spy.mock.calls[0];
+      expect(requestBody).toHaveProperty('messages');
+      expect(requestBody).not.toHaveProperty('prompt');
+
+      spy.mockRestore();
+    });
   });
 
   describe('module fallback configs', () => {
