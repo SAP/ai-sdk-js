@@ -6,19 +6,11 @@ The sample application is running on Cloud Foundry and uses the current canary v
 
 ## Deployment approach
 
-The smoke test app is deployed via `scripts/create-deployment.ts` rather than a plain `cf push` of the workspace.
-This is intentional:
+The smoke test app is deployed via `scripts/create-deployment.ts` rather than a plain `cf push` of the workspace root:
 
-- Cloud Foundry rebuilds binary dependencies during staging by running `npm install` (including package scripts).
-  The trampoline package placed at the CF push root has empty `dependencies`/`devDependencies`, so Cloud Foundry has nothing to install and no build scripts are executed.
-- Cloud Foundry's npm integration queries the registry unconditionally (requiring a token) even when `node_modules` and lock files are uploaded.
-  The empty trampoline `package.json` sidesteps this.
-- `pnpm` resolves dependencies with our custom strategy, and `pnpm deploy` is needed to materialize workspace packages into the self-contained deployment package.
-  Without a trampoline, Cloud Foundry would need a valid npm lock file to avoid re-resolution of dependencies (for example via `npm shrinkwrap`).
-- Cloud Foundry's Node.js buildpack uses npm and can be confused by the `node_modules` layout produced by `pnpm`.
-
-The trampoline package at the CF push root forwards all scripts to the inner `deploy/` directory via `cd deploy && npm run <script>`, so any scripts used by Cloud Foundry (`npm run start`, etc.) still work correctly.
-These changes may be reverted once Cloud Foundry supports `pnpm` natively.
+- `pnpm deploy` is used to materialize workspace packages (such as `@sap-ai-sdk/sample-code`) and production dependencies into a self-contained deployment directory.
+- Cloud Foundry's Node.js buildpack natively supports `pnpm` on the `cflinuxfs5` stack, detecting `pnpm-lock.yaml` and staging the application directly with `pnpm`.
+- `cf push` is executed from the self-contained deployment directory.
 
 ## Deploying a new version of the sample code app
 
@@ -34,9 +26,8 @@ To deploy a new version of the sample application manually, make sure to provide
 Then, run:
 
 ```bash
-pnpm smoke-tests create-deployment
 pnpm smoke-tests cf-login
-pnpm smoke-tests exec cf push
+pnpm smoke-tests create-deployment
 ```
 
 This copies the `dist` directory of the sample code app, logs in to SAP BTP and pushes the application using the CF CLI.

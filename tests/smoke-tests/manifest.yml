@@ -2,6 +2,7 @@ applications:
   - name: smoke-test-app
     path: .
     memory: 512M
+    stack: cflinuxfs5
     buildpacks:
       - nodejs_buildpack
     services:
