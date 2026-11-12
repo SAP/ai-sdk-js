@@ -6,6 +6,7 @@
 
 import type { CacheControl } from './cache-control.js';
 import type { FunctionObject } from './function-object.js';
+import type { PromptCacheBreakpoint } from './prompt-cache-breakpoint.js';
 /**
  * Representation of the 'ChatCompletionTool' schema.
  */
@@ -15,5 +16,6 @@ export type ChatCompletionTool = {
    */
   type: 'function';
   function: FunctionObject;
+  prompt_cache_breakpoint?: PromptCacheBreakpoint;
   cache_control?: CacheControl;
 };

@@ -7,6 +7,7 @@
 import type { CacheControl } from './cache-control.js';
 import type { FileContent } from './file-content.js';
 import type { ImageContentUrl } from './image-content-url.js';
+import type { PromptCacheBreakpoint } from './prompt-cache-breakpoint.js';
 /**
  * Representation of the 'UserChatMessageContentItem' schema.
  */
@@ -15,5 +16,6 @@ export type UserChatMessageContentItem = {
   text?: string;
   image_url?: ImageContentUrl;
   file?: FileContent;
+  prompt_cache_breakpoint?: PromptCacheBreakpoint;
   cache_control?: CacheControl;
 };

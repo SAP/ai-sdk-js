@@ -593,8 +593,11 @@ components:
           $ref: '#/components/schemas/ImageContentUrl'
         file:
           $ref: '#/components/schemas/FileContent'
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         cache_control:
           $ref: '#/components/schemas/CacheControl'
+          deprecated: true
       required:
         - type
     ImageContentUrl:
@@ -728,29 +731,66 @@ components:
           enum: ['text']
         text:
           type: string
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         cache_control:
           $ref: '#/components/schemas/CacheControl'
-    CacheControl:
+          deprecated: true
+    PromptCacheBreakpoint:
       type: object
       description: >
-        Cache control directive for prompt caching. When set on a content block,
-        marks it as a cache breakpoint.
+        Marks the end of a reusable prompt prefix for explicit prompt caching.
+        Content up to and including the marked block is eligible for caching.
 
-        **Note:** this field has no equivalent in the standard OpenAI Chat Completions
-        API. It is modelled on Anthropic's prompt caching API and is a custom extension
-        introduced by this service.
+        This is the native Azure OpenAI / OpenAI field name. The orchestration service
+        passes it through unchanged for Azure models and translates it to the appropriate
+        provider-native format for other providers.
 
         Supported providers:
 
-        - **Anthropic Claude models** — maps to Anthropic's native `cache_control` header.
-        - **Azure OpenAI GPT-5.6+ Standard PAYG deployments** — translated to
+        - **Azure OpenAI GPT-5.6+ Standard PAYG deployments** — passed through as
           `prompt_cache_breakpoint: {mode: explicit}` on the wire. Supported on user
-          message content blocks (text, image, file) on both the Responses API path
-          (GPT-6+ models) and the Chat Completions path (GPT-5.6 models). System message
-          cache breakpoints are not supported on Azure. `CacheControl.ttl` is Anthropic-only
-          and is ignored for Azure; configure Azure cache TTL through `prompt_cache_options`
-          where supported. Not supported on PTU-M deployments. The prompt prefix through the
-          breakpoint must contain at least 1,024 tokens to be cacheable.
+          message content blocks (text, image, file) on both the Chat Completions path
+          (GPT-5.6 models) and the Responses API path (GPT-6+ models). System message
+          breakpoints are not supported on Azure. Configure cache TTL and mode through
+          `prompt_cache_options`. Not supported on PTU-M deployments. The prompt prefix
+          through the breakpoint must contain at least 1,024 tokens to be cacheable.
+        - **Anthropic Claude models** — translated to `cache_control: {type: ephemeral}`
+          on the wire. The `ttl` field maps to Anthropic's native `ttl` on the cache
+          control block; if omitted the Anthropic default applies. TTL is ignored for
+          Azure (use `prompt_cache_options.ttl` instead).
+        - **AWS Bedrock Anthropic models** — translated to `cachePoint: {type: default}`
+          on the wire. The `ttl` field is ignored (Bedrock does not support TTL on cache
+          points).
+      additionalProperties: false
+      required:
+        - mode
+      properties:
+        mode:
+          type: string
+          enum: ['explicit']
+          default: 'explicit'
+        ttl:
+          type: string
+          description: >
+            Optional cache TTL hint. Supported on Anthropic models only; ignored for
+            Azure (configure TTL via `prompt_cache_options.ttl`) and AWS Bedrock.
+            Allowed values match Anthropic's supported TTLs.
+          enum: ['5m', '1h']
+    CacheControl:
+      type: object
+      deprecated: true
+      description: >
+        **Deprecated.** Use `prompt_cache_breakpoint: {mode: explicit}` instead.
+
+        `cache_control` is Anthropic's native field name and was the original public API
+        surface for this service. It is retained for backward compatibility with existing
+        Anthropic consumers. New integrations should use `prompt_cache_breakpoint`.
+
+        For Anthropic models, `cache_control: {type: ephemeral}` continues to work and
+        is translated to Anthropic's native `cache_control` on the wire. The `ttl` field
+        is supported here for backward compatibility; new integrations should use
+        `prompt_cache_breakpoint` with its `ttl` field instead.
       additionalProperties: false
       required:
         - type
@@ -1466,8 +1506,11 @@ components:
           description: The type of the tool. Currently, only `function` is supported.
         function:
           $ref: '#/components/schemas/FunctionObject'
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         cache_control:
           $ref: '#/components/schemas/CacheControl'
+          deprecated: true
       required:
         - type
         - function

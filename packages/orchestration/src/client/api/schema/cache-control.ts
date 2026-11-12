@@ -5,18 +5,11 @@
  */
 
 /**
- * Cache control directive for prompt caching. When set on a content block, marks it as a cache breakpoint.
- * **Note:** this field has no equivalent in the standard OpenAI Chat Completions API. It is modelled on Anthropic's prompt caching API and is a custom extension introduced by this service.
- * Supported providers:
- * - **Anthropic Claude models** — maps to Anthropic's native `cache_control` header. - **Azure OpenAI GPT-5.6+ Standard PAYG deployments** — translated to
- *   `prompt_cache_breakpoint: {mode: explicit}` on the wire. Supported on user
- *   message content blocks (text, image, file) on both the Responses API path
- *   (GPT-6+ models) and the Chat Completions path (GPT-5.6 models). System message
- *   cache breakpoints are not supported on Azure. `CacheControl.ttl` is Anthropic-only
- *   and is ignored for Azure; configure Azure cache TTL through `prompt_cache_options`
- *   where supported. Not supported on PTU-M deployments. The prompt prefix through the
- *   breakpoint must contain at least 1,024 tokens to be cacheable.
+ * **Deprecated.** Use `prompt_cache_breakpoint: {mode: explicit}` instead.
+ * `cache_control` is Anthropic's native field name and was the original public API surface for this service. It is retained for backward compatibility with existing Anthropic consumers. New integrations should use `prompt_cache_breakpoint`.
+ * For Anthropic models, `cache_control: {type: ephemeral}` continues to work and is translated to Anthropic's native `cache_control` on the wire. The `ttl` field is supported here for backward compatibility; new integrations should use `prompt_cache_breakpoint` with its `ttl` field instead.
  *
+ * @deprecated
  */
 export type CacheControl = {
   type: 'ephemeral';
