@@ -34,7 +34,7 @@ export type TokenUsage = {
      */
     cached_tokens?: number;
     /**
-     * Number of tokens written to the cache (Anthropic only).
+     * Number of tokens written to the cache on this request. Populated for Anthropic models (mapped from `cache_creation_input_tokens`) and Azure OpenAI GPT-5.6+ Standard PAYG deployments (mapped from `cache_write_tokens` on both the Chat Completions and Responses API paths).
      *
      */
     cache_creation_tokens?: number;
