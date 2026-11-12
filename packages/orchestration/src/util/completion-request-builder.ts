@@ -1,3 +1,5 @@
+import { createLogger } from '@sap-cloud-sdk/util';
+
 import {
   type ChatCompletionRequest,
   type StreamOptions,
@@ -23,6 +25,11 @@ import type {
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
   PartialOrchestrationConfig
 } from '../client/api/schema/index.ts';
+
+const logger = createLogger({
+  package: 'orchestration',
+  messageContext: 'orchestration-client'
+});
 
 /**
  * @internal
@@ -270,6 +277,12 @@ function buildLegacyMessagesCompletion(
     routeMessagesToHistory && request?.messages?.length
       ? [...(request.messagesHistory || []), ...request.messages]
       : request?.messagesHistory;
+
+  if (routeMessagesToHistory && request?.messages?.length) {
+    logger.debug(
+      'Messages provided with a TemplateRef will be sent as messages_history.'
+    );
+  }
 
   return {
     config: configWithStream,
