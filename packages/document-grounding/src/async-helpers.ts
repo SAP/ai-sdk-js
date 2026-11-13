@@ -9,7 +9,7 @@ import type {
   CollectionCreatedResponse,
   CollectionPendingResponse,
   CollectionRequest,
-  GetPipelineStatus,
+  GetPipelineExecutionById,
   ManualPipelineTrigger
 } from './client/api/index.ts';
 
@@ -28,16 +28,26 @@ const PIPELINE_FAILURE_STATES = new Set([
   'DELETION_FAILED'
 ]);
 
-function collectionIdFromLocation(created: HttpResponse): string {
+/**
+ * Reads the id that follows `segment` in the `Location` header of a `202` response,
+ * e.g. the collection id in `.../collections/{id}/creationStatus` or the execution id
+ * in `.../executions/{id}`. We rely only on that segment, not the full path shape.
+ * @param created - The `202 Accepted` response.
+ * @param segment - The path segment the id follows (e.g. `collections`, `executions`).
+ * @returns The id extracted from the header.
+ */
+function idFromLocation(created: HttpResponse, segment: string): string {
   const location = created.headers?.location;
   if (typeof location !== 'string') {
-    throw new Error('createCollection did not return a Location header');
+    throw new Error(
+      `Expected a Location header for the ${segment} id but got none`
+    );
   }
-  // We only rely on a `collections/{id}` segment; the full creation-status path is
-  // `.../vector/collections/{id}/creationStatus` but may drift if the client changes.
-  const match = /collections\/([^/?#]+)/.exec(location);
+  const match = new RegExp(`${segment}/([^/?#]+)`).exec(location);
   if (!match) {
-    throw new Error(`Unexpected createCollection Location header: ${location}`);
+    throw new Error(
+      `Unexpected Location header for the ${segment} id: ${location}`
+    );
   }
   return match[1];
 }
@@ -60,7 +70,7 @@ export function createCollectionAndWait(
     {
       statusRead: created =>
         VectorApi.getCollectionCreationStatus(
-          collectionIdFromLocation(created),
+          idFromLocation(created, 'collections'),
           headers
         ),
       // The generated creation-status schema models only pending (`monitorURL`) and
@@ -76,27 +86,34 @@ export function createCollectionAndWait(
 }
 
 /**
- * Triggers a grounding pipeline and polls its execution status until it finishes.
- * A `FINISHEDWITHERRORS` status is reported as a partial outcome; `TIMEOUT` and the
- * `*_FAILED` states are reported as failures.
+ * Triggers a grounding pipeline and polls the triggered execution until it finishes.
+ * The execution id is taken from the `Location` header of the `202` response, so polling
+ * follows the run that was just triggered rather than pipeline-wide status (which could
+ * report a previous run as finished). A `FINISHEDWITHERRORS` status is reported as a
+ * partial outcome; `TIMEOUT` and the `*_FAILED` states are reported as failures.
  * @param body - The pipeline trigger payload (must include `pipelineId`).
  * @param headers - Request headers, including the AI resource group.
  * @param options - Polling and request configuration.
- * @returns The terminal poll result with the pipeline status.
+ * @returns The terminal poll result with the pipeline execution status.
  */
 export function runPipelineAndWait(
   body: ManualPipelineTrigger,
   headers: ResourceGroupHeaders,
   options?: CreateAndWaitOptions
-): Promise<PollResult<GetPipelineStatus>> {
+): Promise<PollResult<GetPipelineExecutionById>> {
   const pipelineId = body.pipelineId;
   if (!pipelineId) {
     throw new Error('runPipelineAndWait requires body.pipelineId');
   }
-  return createAndWait<GetPipelineStatus>(
+  return createAndWait<GetPipelineExecutionById>(
     PipelinesApi.manualTriggerPipeline(body, headers),
     {
-      statusRead: () => PipelinesApi.getPipelineStatus(pipelineId, headers),
+      statusRead: created =>
+        PipelinesApi.getExecutionDetailsByIdForPipelineExecution(
+          pipelineId,
+          idFromLocation(created, 'executions'),
+          headers
+        ),
       isComplete: status =>
         status.status === 'FINISHED' || status.status === 'FINISHEDWITHERRORS',
       getFailure: status => {

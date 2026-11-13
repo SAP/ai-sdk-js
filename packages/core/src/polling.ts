@@ -153,6 +153,14 @@ export async function* pollEach<T>(
   let consecutiveErrors = 0;
   let lastResource: T | undefined;
 
+  // Bound the whole poll — including an in-flight read — by the wall-clock budget.
+  const deadlineTimer = armDeadlineAbort(
+    controller,
+    started,
+    maxWaitTime,
+    () => lastResource
+  );
+
   try {
     for (;;) {
       abortSignal.throwIfAborted();
@@ -175,7 +183,7 @@ export async function* pollEach<T>(
         }
         const errorHint = getRetryAfter?.(error);
         await sleepUntilNextPoll(
-          errorHint ?? intervalMs,
+          errorHint ?? nextInterval(intervalMs, backoff, consecutiveErrors),
           deadline,
           sleep,
           abortSignal
@@ -204,10 +212,42 @@ export async function* pollEach<T>(
       await sleepUntilNextPoll(waitMs, deadline, sleep, abortSignal);
     }
   } finally {
+    clearTimeout(deadlineTimer);
     signal?.removeEventListener('abort', forwardAbort);
     // Cancel any in-flight read/sleep if the consumer stopped early.
     controller.abort();
   }
+}
+
+/**
+ * Arms a timer that aborts `controller` with a {@link PollTimeoutError} once the wall-clock
+ * budget expires, so a stalled read or sleep is cancelled rather than hanging. Returns
+ * undefined (no timer) for budgets beyond the 32-bit timer range; the between-poll deadline
+ * check still applies there.
+ * @param controller - The engine's abort controller.
+ * @param started - Poll start timestamp in milliseconds.
+ * @param maxWaitTime - Wall-clock budget in milliseconds.
+ * @param getLastResource - Returns the most recently observed resource, for the error.
+ * @returns The timer handle, or undefined when no timer was armed.
+ */
+function armDeadlineAbort(
+  controller: AbortController,
+  started: number,
+  maxWaitTime: number,
+  getLastResource: () => unknown
+): ReturnType<typeof setTimeout> | undefined {
+  if (maxWaitTime > MAX_TIMER_DELAY_MS) {
+    return undefined;
+  }
+  const timer = setTimeout(
+    () =>
+      controller.abort(
+        new PollTimeoutError(Date.now() - started, getLastResource())
+      ),
+    Math.max(maxWaitTime, 0)
+  );
+  timer.unref?.();
+  return timer;
 }
 
 /**

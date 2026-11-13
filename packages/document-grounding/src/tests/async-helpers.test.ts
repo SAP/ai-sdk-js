@@ -17,7 +17,10 @@ const basePath = '/v2/lm/document-grounding';
 const collectionId = 'col-123';
 const creationStatusPath = `${basePath}/vector/collections/${collectionId}/creationStatus`;
 const pipelineId = 'pipe-1';
-const statusPath = `${basePath}/pipelines/${pipelineId}/status`;
+const executionId = 'exec-1';
+const triggerPath = `${basePath}/pipelines/trigger`;
+const executionLocation = `${basePath}/pipelines/${pipelineId}/executions/${executionId}`;
+const executionPath = `${basePath}/pipelines/${pipelineId}/executions/${executionId}`;
 
 describe('document-grounding async helpers', () => {
   beforeEach(() => {
@@ -70,14 +73,14 @@ describe('document-grounding async helpers', () => {
   });
 
   describe('runPipelineAndWait', () => {
-    it('reports success when the pipeline finishes', async () => {
+    it('polls the triggered execution (from the Location header), not pipeline-wide status', async () => {
       const scope = nock(aiCoreDestination.url)
-        .post(`${basePath}/pipelines/trigger`)
-        .reply(202, {})
-        .get(statusPath)
-        .reply(200, { status: 'INPROGRESS' })
-        .get(statusPath)
-        .reply(200, { status: 'FINISHED' });
+        .post(triggerPath)
+        .reply(202, {}, { Location: executionLocation })
+        .get(executionPath)
+        .reply(200, { id: executionId, status: 'INPROGRESS' })
+        .get(executionPath)
+        .reply(200, { id: executionId, status: 'FINISHED' });
 
       const result = await runPipelineAndWait({ pipelineId }, headers, {
         intervalMs: 0
@@ -87,12 +90,12 @@ describe('document-grounding async helpers', () => {
       expect(scope.isDone()).toBe(true);
     });
 
-    it('reports a partial outcome when the pipeline finishes with errors', async () => {
+    it('reports a partial outcome when the execution finishes with errors', async () => {
       nock(aiCoreDestination.url)
-        .post(`${basePath}/pipelines/trigger`)
-        .reply(202, {})
-        .get(statusPath)
-        .reply(200, { status: 'FINISHEDWITHERRORS' });
+        .post(triggerPath)
+        .reply(202, {}, { Location: executionLocation })
+        .get(executionPath)
+        .reply(200, { id: executionId, status: 'FINISHEDWITHERRORS' });
 
       const result = await runPipelineAndWait({ pipelineId }, headers, {
         intervalMs: 0
@@ -106,16 +109,24 @@ describe('document-grounding async helpers', () => {
 
     it('reports a failure outcome on a terminal failure status', async () => {
       nock(aiCoreDestination.url)
-        .post(`${basePath}/pipelines/trigger`)
-        .reply(202, {})
-        .get(statusPath)
-        .reply(200, { status: 'TIMEOUT' });
+        .post(triggerPath)
+        .reply(202, {}, { Location: executionLocation })
+        .get(executionPath)
+        .reply(200, { id: executionId, status: 'TIMEOUT' });
 
       const result = await runPipelineAndWait({ pipelineId }, headers, {
         intervalMs: 0
       });
 
       expect(result).toMatchObject({ outcome: 'failure', reason: 'TIMEOUT' });
+    });
+
+    it('throws when the trigger response has no Location header', async () => {
+      nock(aiCoreDestination.url).post(triggerPath).reply(202, {});
+
+      await expect(
+        runPipelineAndWait({ pipelineId }, headers, { intervalMs: 0 })
+      ).rejects.toThrow(/Location header/);
     });
 
     it('throws when pipelineId is missing', () => {

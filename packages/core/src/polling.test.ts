@@ -167,6 +167,27 @@ describe('pollUntilTerminal', () => {
     expect(sleep).toHaveBeenCalledWith(5_000, expect.anything());
   });
 
+  it('applies exponential backoff to retryable errors', async () => {
+    let call = 0;
+    const read = vi.fn<() => Promise<Status>>(async () => {
+      call += 1;
+      if (call <= 3) {
+        throw httpError(503);
+      }
+      return { status: 'ACTIVE' };
+    });
+    await pollUntilTerminal({
+      ...base,
+      read,
+      sleep,
+      intervalMs: 1_000,
+      backoff: { kind: 'exponential' },
+      maxConsecutiveErrors: 5,
+      maxWaitTime: 60_000
+    });
+    expect(sleep.mock.calls.map(c => c[0])).toEqual([1_000, 2_000, 4_000]);
+  });
+
   it('retries a retryable error and continues', async () => {
     let call = 0;
     const read = vi.fn<() => Promise<Status>>(async () => {
@@ -263,6 +284,23 @@ describe('pollUntilTerminal', () => {
         signal: controller.signal
       })
     ).rejects.toThrow(/abort/i);
+    expect(read).toHaveBeenCalledTimes(1);
+  });
+
+  it('bounds an in-flight read by the wall-clock budget', async () => {
+    // A read that never settles on its own must still be cancelled at maxWaitTime.
+    // A well-behaved read rejects when its AbortSignal fires.
+    const read = vi.fn<(signal: AbortSignal) => Promise<Status>>(
+      signal =>
+        new Promise<Status>((_resolve, reject) => {
+          signal.addEventListener('abort', () => reject(signal.reason), {
+            once: true
+          });
+        })
+    );
+    await expect(
+      pollUntilTerminal({ ...base, read, maxWaitTime: 20 })
+    ).rejects.toBeInstanceOf(PollTimeoutError);
     expect(read).toHaveBeenCalledTimes(1);
   });
 
