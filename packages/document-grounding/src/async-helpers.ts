@@ -1,8 +1,10 @@
 import { createAndWait } from '@sap-ai-sdk/core';
+
 import { PipelinesApi, VectorApi } from './client/api/index.ts';
 
 import type { CreateAndWaitOptions, PollResult } from '@sap-ai-sdk/core';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
+
 import type {
   CollectionCreatedResponse,
   CollectionPendingResponse,
@@ -11,7 +13,9 @@ import type {
   ManualPipelineTrigger
 } from './client/api/index.ts';
 
-type ResourceGroupHeaders = { 'AI-Resource-Group': string };
+interface ResourceGroupHeaders {
+  'AI-Resource-Group': string;
+}
 
 type CollectionStatus = CollectionCreatedResponse | CollectionPendingResponse;
 

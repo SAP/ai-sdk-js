@@ -1,4 +1,5 @@
 import { createAndWait, deleteAndWait } from '@sap-ai-sdk/core';
+
 import { DataDestinationsApi } from './client/context-registry/index.ts';
 
 import type {
@@ -6,12 +7,15 @@ import type {
   DeleteAndWaitOptions,
   PollResult
 } from '@sap-ai-sdk/core';
+
 import type {
   CreateDataDestination,
   GetDataDestination
 } from './client/context-registry/index.ts';
 
-type ResourceGroupHeaders = { 'AI-Resource-Group': string };
+interface ResourceGroupHeaders {
+  'AI-Resource-Group': string;
+}
 
 /**
  * Creates (or updates) a data destination and polls until it is active.

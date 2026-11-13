@@ -1,8 +1,12 @@
 import { setTimeout as delay } from 'node:timers/promises';
-import { OpenApiRequestBuilder } from './openapi-request-builder.ts';
 
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-import type { CustomRequestConfig, HttpResponse } from '@sap-cloud-sdk/http-client';
+import type {
+  CustomRequestConfig,
+  HttpResponse
+} from '@sap-cloud-sdk/http-client';
+
+import type { OpenApiRequestBuilder } from './openapi-request-builder.ts';
 
 const DEFAULT_MAX_WAIT_MS = 60 * 60 * 1_000;
 const DEFAULT_INTERVAL_MS = 5_000;
@@ -98,6 +102,7 @@ export class PollTimeoutError extends Error {
  * @typeParam T - The polled resource type.
  * @param options - Polling configuration.
  * @returns An async generator yielding each polled resource and returning the terminal result.
+ * @yields The resource observed on each poll.
  * @throws PollTimeoutError if the budget is exhausted.
  * @throws The original error on a fatal response or after too many consecutive retryable errors.
  */
@@ -205,9 +210,7 @@ function nextInterval(
   }
   const exponential = intervalMs * 2 ** Math.max(pollCount - 1, 0);
   const capped = Math.min(exponential, backoff.maxIntervalMs ?? exponential);
-  const jitter = backoff.jitter
-    ? capped * backoff.jitter * Math.random()
-    : 0;
+  const jitter = backoff.jitter ? capped * backoff.jitter * Math.random() : 0;
   return capped + jitter;
 }
 
@@ -262,7 +265,7 @@ async function sleepWithSignal(
   ms: number,
   signal?: AbortSignal
 ): Promise<void> {
-  for (let remaining = ms; remaining; ) {
+  for (let remaining = ms; remaining;) {
     const currentDelay = Math.min(remaining, MAX_TIMER_DELAY_MS);
     try {
       await delay(currentDelay, undefined, { signal });
@@ -389,8 +392,7 @@ export async function deleteAndWait<StatusT>(
         throw error;
       }
     },
-    isComplete: status =>
-      status === undefined || descriptor.isComplete(status),
+    isComplete: status => status === undefined || descriptor.isComplete(status),
     getFailure: status =>
       status === undefined ? undefined : descriptor.getFailure?.(status),
     ...pollOptions
