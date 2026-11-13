@@ -56,6 +56,29 @@ async function runCli(...args: string[]): Promise<void> {
   await execFileAsync(process.execPath, [cli, ...args], { cwd });
 }
 
+async function commitFixture(message: string): Promise<string> {
+  await execFileAsync(
+    'git',
+    [
+      '-c',
+      'user.name=Release Test',
+      '-c',
+      'user.email=release-test@example.invalid',
+      '-c',
+      'commit.gpgsign=false',
+      '-c',
+      `core.hooksPath=${resolve(cwd, 'no-hooks')}`,
+      'commit',
+      '--allow-empty',
+      '-qm',
+      message
+    ],
+    { cwd }
+  );
+  const { stdout } = await execFileAsync('git', ['rev-parse', 'HEAD'], { cwd });
+  return stdout.trim();
+}
+
 beforeEach(async () => {
   cwd = await mkdtemp(resolve(tmpdir(), 'ai-sdk-release-test-'));
   await writeFixtureFile(
@@ -96,24 +119,7 @@ beforeEach(async () => {
     resolve(cwd, 'node_modules')
   );
   await execFileAsync('git', ['init', '-q', '-b', 'main'], { cwd });
-  await execFileAsync(
-    'git',
-    [
-      '-c',
-      'user.name=Release Test',
-      '-c',
-      'user.email=release-test@example.invalid',
-      '-c',
-      'commit.gpgsign=false',
-      '-c',
-      `core.hooksPath=${resolve(cwd, 'no-hooks')}`,
-      'commit',
-      '--allow-empty',
-      '-qm',
-      'Fixture baseline'
-    ],
-    { cwd }
-  );
+  await commitFixture('Fixture baseline');
 });
 
 afterEach(async () => {
@@ -151,6 +157,30 @@ describe('version-packages', () => {
     );
     expect(currentRelease).toContain('  - Keep the nested detail.');
     expect(currentRelease).not.toContain('Previously released change.');
+  });
+
+  it('merges identical summaries with full commit hashes', async () => {
+    await writeChangeset(
+      "'@sap-ai-sdk/core': patch",
+      '[fix] Preserve SDK behavior.'
+    );
+    await execFileAsync('git', ['add', '.changeset/release.md'], { cwd });
+    const firstCommit = await commitFixture('Add first changeset');
+    await writeFixtureFile(
+      '.changeset/second.md',
+      "---\n'@sap-ai-sdk/ai-api': patch\n---\n\n[fix] Preserve SDK behavior.\n"
+    );
+    await execFileAsync('git', ['add', '.changeset/second.md'], { cwd });
+    const secondCommit = await commitFixture('Add second changeset');
+
+    await versionPackages(cwd);
+
+    const changelog = await readFile(resolve(cwd, 'CHANGELOG.md'), 'utf8');
+    expect(firstCommit).toHaveLength(40);
+    expect(secondCommit).toHaveLength(40);
+    expect(changelog).toContain(
+      `- [ai-api, core] Preserve SDK behavior. (${firstCommit}, ${secondCommit})`
+    );
   });
 
   it('refuses an empty plan without changing the root version or changelog', async () => {
