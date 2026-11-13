@@ -310,9 +310,7 @@ app.get('/ai-api/models/discovery', async (req, res) => {
 
 app.get('/ai-api/deployment-id', async (req, res) => {
   try {
-    res.send(
-      await getFoundationModelDeploymentId('gpt-5.4', 'azure-openai')
-    );
+    res.send(await getFoundationModelDeploymentId('gpt-5.4', 'azure-openai'));
   } catch (error: any) {
     sendError(res, error);
   }

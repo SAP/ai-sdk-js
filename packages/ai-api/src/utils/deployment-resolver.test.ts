@@ -12,7 +12,6 @@ import {
   resolveDeploymentId,
   resolveDeploymentUrlById,
   resolveDeploymentUrlForModel,
-  getFoundationModelDeploymentId,
   getFoundationModelDeploymentUrl,
   getOrchestrationDeploymentId,
   getOrchestrationDeploymentUrl
