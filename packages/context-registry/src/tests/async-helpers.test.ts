@@ -5,7 +5,10 @@ import {
   aiCoreDestination,
   mockClientCredentialsGrantCall
 } from '../../../../test-util/mock-http.ts';
-import { createDataDestinationAndWait } from '../async-helpers.ts';
+import {
+  createDataDestinationAndWait,
+  deleteDataDestinationAndWait
+} from '../async-helpers.ts';
 
 import type { CreateDataDestination } from '../client/context-registry/index.ts';
 
@@ -77,6 +80,29 @@ describe('context-registry async helpers', () => {
       outcome: 'failure',
       reason: 'credential validation failed'
     });
+    expect(scope.isDone()).toBe(true);
+  });
+
+  it('deleteDataDestinationAndWait polls until the status read returns 404', async () => {
+    const scope = nock(aiCoreDestination.url)
+      .delete(path)
+      .reply(202, { name })
+      .get(path)
+      .reply(200, {
+        type: 'AZURE',
+        name,
+        status: 'ACTIVE',
+        createdAt: '2024-02-15T12:45:00.000Z',
+        updatedAt: '2024-02-15T12:45:00.000Z'
+      })
+      .get(path)
+      .reply(404, { error: 'not found' });
+
+    const result = await deleteDataDestinationAndWait(name, headers, {
+      intervalMs: 0
+    });
+
+    expect(result).toEqual({ outcome: 'success', resource: undefined });
     expect(scope.isDone()).toBe(true);
   });
 });

@@ -19,6 +19,9 @@ interface ResourceGroupHeaders {
 
 type CollectionStatus = CollectionCreatedResponse | CollectionPendingResponse;
 
+// Manually mirrors the failure states of the generated PipelineExecutionStatus enum.
+// A new generated failure state not listed here falls through to maxWaitTime (reported
+// as a PollTimeoutError) until it is added.
 const PIPELINE_FAILURE_STATES = new Set([
   'TIMEOUT',
   'CREATION_FAILED',
@@ -30,7 +33,8 @@ function collectionIdFromLocation(created: HttpResponse): string {
   if (typeof location !== 'string') {
     throw new Error('createCollection did not return a Location header');
   }
-  // Location points at .../vector/collections/{id}/creationStatus.
+  // We only rely on a `collections/{id}` segment; the full creation-status path is
+  // `.../vector/collections/{id}/creationStatus` but may drift if the client changes.
   const match = /collections\/([^/?#]+)/.exec(location);
   if (!match) {
     throw new Error(`Unexpected createCollection Location header: ${location}`);
@@ -63,8 +67,8 @@ export function createCollectionAndWait(
       // created (`collectionURL`) responses — there is no terminal failure state, so
       // `getFailure` cannot be defined. A server-side failure that never yields
       // `collectionURL` is bounded by `maxWaitTime` and surfaces as a PollTimeoutError.
-      // Follow-up (grounding service team): confirm the failure representation and add
-      // `getFailure` once one exists.
+      // Follow-up (#659, grounding service team): confirm the failure representation
+      // and add `getFailure` once one exists.
       isComplete: status => 'collectionURL' in status
     },
     options

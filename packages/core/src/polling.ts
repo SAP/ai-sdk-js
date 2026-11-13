@@ -15,7 +15,8 @@ const MIN_POLL_INTERVAL_MS = 1;
 const MAX_TIMER_DELAY_MS = 2_147_483_647;
 
 /**
- * Outcome of a failed or partially-successful terminal poll.
+ * A non-success terminal outcome. Despite the name this also covers `'partial'`
+ * (a terminal state that completed with errors), not only hard failures.
  */
 export interface PollFailure {
   /** 'failure' for a hard failure, 'partial' for a terminal state that completed with errors. */
@@ -26,7 +27,7 @@ export interface PollFailure {
 
 /**
  * Discriminated result of a completed poll.
- * @typeParam T - The polled resource type.
+ * @template T - The polled resource type.
  */
 export type PollResult<T> =
   | { outcome: 'success'; resource: T }
@@ -47,7 +48,7 @@ export interface Backoff {
 
 /**
  * Options for the low-level polling engine.
- * @typeParam T - The polled resource type.
+ * @template T - The polled resource type.
  */
 export interface PollEngineOptions<T> {
   /** Performs a single poll (e.g. a status GET). Throws on non-2xx responses. */
@@ -62,7 +63,12 @@ export interface PollEngineOptions<T> {
   intervalMs?: number;
   /** Backoff strategy for the wait between polls. Defaults to a fixed interval. */
   backoff?: Backoff;
-  /** Returns a server-provided wait hint in milliseconds, read from a poll result or a thrown 429 error. */
+  /**
+   * Returns a server-provided wait hint in milliseconds, read from a poll result or a
+   * thrown 429 error. The engine stays transport-agnostic and defaults this to unset;
+   * the HTTP wrappers ({@link createAndWait}/{@link deleteAndWait}) inject a
+   * `Retry-After` header parser since header parsing is an HTTP-layer concern.
+   */
   getRetryAfter?: (hint: unknown) => number | undefined;
   /** Classifies a thrown error as retryable (back off and continue) or fatal (propagate). */
   classifyError?: (error: unknown) => 'retryable' | 'fatal';
@@ -103,7 +109,12 @@ export class PollTimeoutError extends Error {
  * progress or stop early. Returns a {@link PollResult} once a terminal state is reached.
  * Honors a wall-clock budget (throwing {@link PollTimeoutError}), server retry hints on 429,
  * and a fixed or exponential backoff between polls.
- * @typeParam T - The polled resource type.
+ *
+ * Note: the terminal {@link PollResult} is the generator's RETURN value, not a yielded value.
+ * A plain `for await (const r of pollEach(...))` observes only the per-poll resources and
+ * discards the result; capture it via the `.value` of the final `.next()` (see
+ * {@link pollUntilTerminal}) or the `for await` loop's completion.
+ * @template T - The polled resource type.
  * @param options - Polling configuration.
  * @returns An async generator yielding each polled resource and returning the terminal result.
  * @yields The resource observed on each poll.
@@ -177,6 +188,9 @@ export async function* pollEach<T>(
       onPoll?.(resource);
       yield resource;
 
+      // getFailure is checked before isComplete on purpose: a terminal state can satisfy
+      // both (e.g. a pipeline 'FINISHEDWITHERRORS' is "complete" AND a partial failure),
+      // so failure/partial must win and never be reported as a plain success.
       const failure = getFailure?.(resource);
       if (failure) {
         return { outcome: failure.outcome, resource, reason: failure.reason };
@@ -200,7 +214,7 @@ export async function* pollEach<T>(
  * Polls a resource until it reaches a terminal state and returns the result.
  *
  * Convenience wrapper over {@link pollEach} for the common "wait until done" case.
- * @typeParam T - The polled resource type.
+ * @template T - The polled resource type.
  * @param options - Polling configuration.
  * @returns The terminal {@link PollResult}.
  * @throws PollTimeoutError if the budget is exhausted.
@@ -208,6 +222,9 @@ export async function* pollEach<T>(
 export async function pollUntilTerminal<T>(
   options: PollEngineOptions<T>
 ): Promise<PollResult<T>> {
+  // Drive the generator manually rather than `for await`: the terminal PollResult is the
+  // generator's return value, which a `for await` loop would discard. We ignore each
+  // yielded resource and keep pulling until `done`, then return the final `.value`.
   const iterator = pollEach(options);
   let next = await iterator.next();
   while (!next.done) {
@@ -250,6 +267,9 @@ async function sleepUntilNextPoll(
   await sleep(clamped, signal);
 }
 
+// Only transient statuses are retried: 429 (rate limit) and 502/503/504 (gateway /
+// availability) typically clear on their own. A bare 500 is treated as fatal — it is
+// usually a deterministic server error that retrying will not resolve.
 function defaultClassifyError(error: unknown): 'retryable' | 'fatal' {
   const status = getHttpStatus(error);
   if (status === 429 || status === 502 || status === 503 || status === 504) {
@@ -270,29 +290,40 @@ function readNumber(value: unknown): number | undefined {
   return typeof value === 'number' ? value : undefined;
 }
 
-function getHttpStatus(error: unknown): number | undefined {
+// HTTP errors nest transport details differently per client layer: the status and
+// headers may sit on the error itself, on `.response`, or — once wrapped, e.g. SAP's
+// ErrorWithCause — on `.cause` / `.cause.response`. Collect those layers once so the
+// status/header lookups below share a single traversal.
+function errorLayers(error: unknown): Record<string, unknown>[] {
   if (!isRecord(error)) {
-    return undefined;
+    return [];
   }
-  const response = isRecord(error.response) ? error.response : undefined;
   const cause = isRecord(error.cause) ? error.cause : undefined;
-  const causeResponse =
-    cause && isRecord(cause.response) ? cause.response : undefined;
-  return (
-    readNumber(error.status) ??
-    readNumber(response?.status) ??
-    readNumber(cause?.status) ??
-    readNumber(causeResponse?.status)
-  );
+  return [
+    error,
+    isRecord(error.response) ? error.response : undefined,
+    cause,
+    cause && isRecord(cause.response) ? cause.response : undefined
+  ].filter((layer): layer is Record<string, unknown> => layer !== undefined);
+}
+
+function getHttpStatus(error: unknown): number | undefined {
+  for (const layer of errorLayers(error)) {
+    const status = readNumber(layer.status);
+    if (status !== undefined) {
+      return status;
+    }
+  }
+  return undefined;
 }
 
 function getErrorCode(error: unknown): string | undefined {
-  if (!isRecord(error)) {
-    return undefined;
+  for (const layer of errorLayers(error)) {
+    if (typeof layer.code === 'string') {
+      return layer.code;
+    }
   }
-  const cause = isRecord(error.cause) ? error.cause : undefined;
-  const code = error.code ?? cause?.code;
-  return typeof code === 'string' ? code : undefined;
+  return undefined;
 }
 
 /**
@@ -303,24 +334,15 @@ function getErrorCode(error: unknown): string | undefined {
  * @returns The wait hint in milliseconds, or undefined when none is present.
  */
 function retryAfterMsFromError(hint: unknown): number | undefined {
-  if (!isRecord(hint)) {
-    return undefined;
+  let raw: unknown;
+  for (const layer of errorLayers(hint)) {
+    if (isRecord(layer.headers)) {
+      raw = layer.headers['retry-after'] ?? layer.headers['Retry-After'];
+      if (raw !== undefined) {
+        break;
+      }
+    }
   }
-  const response = isRecord(hint.response) ? hint.response : undefined;
-  const cause = isRecord(hint.cause) ? hint.cause : undefined;
-  const causeResponse =
-    cause && isRecord(cause.response) ? cause.response : undefined;
-  const responseHeaders =
-    response && isRecord(response.headers) ? response.headers : undefined;
-  const causeHeaders =
-    causeResponse && isRecord(causeResponse.headers)
-      ? causeResponse.headers
-      : undefined;
-  const headers = responseHeaders ?? causeHeaders;
-  if (!headers) {
-    return undefined;
-  }
-  const raw = headers['retry-after'] ?? headers['Retry-After'];
   if (typeof raw !== 'string' && typeof raw !== 'number') {
     return undefined;
   }
@@ -350,7 +372,7 @@ async function sleepWithSignal(
 
 /**
  * Describes how to poll one asynchronous operation to completion.
- * @typeParam StatusT - The status resource type returned by `statusRead`.
+ * @template StatusT - The status resource type returned by `statusRead`.
  */
 export interface AsyncFlowDescriptor<StatusT> {
   /**
@@ -390,10 +412,10 @@ export interface CreateAndWaitOptions {
  */
 export interface DeleteAndWaitOptions extends CreateAndWaitOptions {
   /**
-   * When true, a `404` from the status read is treated as "deleted".
-   * Only honored because the delete request itself returned a success status first,
-   * which proves the resource existed — so a `404` for a never-created, mistyped, or
-   * unauthorized resource cannot be mistaken for a successful deletion.
+   * When true, a `404` from the status read is treated as "deleted". Honored only when
+   * this flag is set; the delete request itself must have returned 2xx first (a non-2xx
+   * throws before polling). For a non-idempotent delete API that implies the resource
+   * existed; an API that returns 2xx for an absent resource could report a false "deleted".
    */
   notFoundMeansDeleted?: boolean;
 }
@@ -404,7 +426,22 @@ export interface DeleteAndWaitOptions extends CreateAndWaitOptions {
  * Executes the `202 Accepted` request builder, then polls the status request described by
  * `descriptor` until completion. Standard {@link OpenApiRequestBuilder} ergonomics are preserved:
  * `destination` and `requestConfig` are forwarded to both requests.
- * @typeParam StatusT - The status resource type.
+ * @example
+ * ```ts
+ * const result = await createAndWait(
+ *   SomeApi.createThing(body, headers),
+ *   {
+ *     statusRead: () => SomeApi.getThingStatus(id, headers),
+ *     isComplete: status => status.state === 'ACTIVE',
+ *     getFailure: status =>
+ *       status.state === 'ERROR' ? { outcome: 'failure', reason: status.message } : undefined
+ *   }
+ * );
+ * if (result.outcome === 'success') {
+ *   // result.resource is the terminal status
+ * }
+ * ```
+ * @template StatusT - The status resource type.
  * @param builder - The request builder for the asynchronous operation (returns `202`).
  * @param descriptor - How to read and interpret the status resource.
  * @param options - Polling and request configuration.
@@ -437,10 +474,10 @@ export async function createAndWait<StatusT>(
 /**
  * Runs an asynchronous delete operation and polls until the resource is gone.
  *
- * Executes the delete request builder (proving the resource existed), then polls the status
- * request until it reports a terminal state or — when {@link DeleteAndWaitOptions.notFoundMeansDeleted}
+ * Executes the delete request builder (which throws on a non-2xx response), then polls the
+ * status request until it reports a terminal state or — when {@link DeleteAndWaitOptions.notFoundMeansDeleted}
  * is set — returns a `404`.
- * @typeParam StatusT - The status resource type.
+ * @template StatusT - The status resource type.
  * @param builder - The request builder for the delete operation (returns `202`).
  * @param descriptor - How to read and interpret the status resource.
  * @param options - Polling and request configuration.
@@ -459,13 +496,16 @@ export async function deleteAndWait<StatusT>(
     ...pollOptions
   } = options;
   signal?.throwIfAborted();
-  // The delete request must succeed first; executeRaw throws on a non-2xx response,
-  // so reaching this point proves the resource existed.
+  // The delete must return 2xx first (executeRaw throws on non-2xx). For a non-idempotent
+  // delete API this means the resource existed; see DeleteAndWaitOptions.notFoundMeansDeleted.
   const deleted = await builder.executeRaw(destination, {
     ...requestConfig,
     signal
   });
   return pollUntilTerminal<StatusT | undefined>({
+    // Sentinel contract: the status resource is `undefined` once the resource is gone
+    // (a gated 404). The three callbacks below all treat `undefined` as "deleted" —
+    // isComplete returns true, getFailure returns none, and the result resource is undefined.
     read: async pollSignal => {
       try {
         return await descriptor
