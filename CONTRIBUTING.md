@@ -94,7 +94,8 @@ If this is the case, follow these steps:
    For a major release, set `majorVersion` to the exact target version, such as `3.0.0`.
    Leave it empty for minor and patch releases.
    This bumps the version on the `main` branch and creates a tag and draft release with release notes on GitHub.
-2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**. This triggers the `publish-release` workflow, which runs `pnpm changeset publish` to publish the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
+2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**.
+   This triggers the `publish-release` workflow, which publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
 
 Finally, check that everything is published as expected on npm.
 
