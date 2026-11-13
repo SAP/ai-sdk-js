@@ -781,13 +781,11 @@ components:
           S3: '#/components/schemas/S3DataDestinationCreateRequest'
           GCS: '#/components/schemas/GCSDataDestinationCreateRequest'
           AZURE: '#/components/schemas/AzureDataDestinationCreateRequest'
-          DELTA_SHARING: '#/components/schemas/DeltaSharingDataDestinationCreateRequest'
       oneOf:
         - $ref: '#/components/schemas/HDLDataDestinationCreateRequest'
         - $ref: '#/components/schemas/S3DataDestinationCreateRequest'
         - $ref: '#/components/schemas/GCSDataDestinationCreateRequest'
         - $ref: '#/components/schemas/AzureDataDestinationCreateRequest'
-        - $ref: '#/components/schemas/DeltaSharingDataDestinationCreateRequest'
 
     DataDestinationCreateBase:
       type: object
@@ -798,7 +796,7 @@ components:
           description: 'Optional description of the data destination'
         adapterType:
           type: string
-          enum: [File, DeltaShare]
+          enum: [File]
           default: File
           description: 'Adapter type for data access.'
         labels:
@@ -941,39 +939,6 @@ components:
         - type: object
           required: [account_name, container_uri, sas_token]
 
-    DeltaSharingDataDestinationCreateRequest:
-      allOf:
-        - $ref: '#/components/schemas/DataDestinationCreateBase'
-        - type: object
-          required: [type, config]
-          properties:
-            type:
-              type: string
-              enum: [DELTA_SHARING]
-            config:
-              $ref: '#/components/schemas/DeltaSharingConnectionConfig'
-            adapterType:
-              type: string
-              enum: [DeltaShare]
-              default: DeltaShare
-              description: 'Adapter type for Delta Sharing'
-
-    DeltaSharingConnectionConfig:
-      type: object
-      required:
-        - host
-      properties:
-        host:
-          type: string
-          pattern: '^[a-zA-Z0-9]([a-zA-Z0-9\-\.]*[a-zA-Z0-9])?(:[0-9]+)?$'
-          example: 'ccc727c8-ffff-4c37-ffff-ede322dcfa8f.sharing.hdl.canary-eu10.hanacloud.ondemand.com'
-          description: "Delta Sharing server hostname. Only alphanumeric characters, hyphens, dots, and an optional port are allowed. Do not include 'https://' or any URL scheme."
-        provider:
-          type: string
-          enum: [hdlf]
-          description: 'Delta Sharing provider. Optional, defaults to hdlf if not specified.'
-      additionalProperties: false
-
     S3PatchConfig:
       type: object
       description: 'S3 credential fields for PATCH.'
@@ -1027,8 +992,8 @@ components:
           type: string
           minLength: 1
           maxLength: 63
-          pattern: "^(ext|int)\\.ai\\.sap\\.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$"
-          description: 'Label key following SAP AI Core format: (ext|int).ai.sap.com/suffix'
+          pattern: "^(ext)\\.ai\\.sap\\.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$"
+          description: "Label key must start with 'ext.ai.sap.com/' and follow the pattern"
         value:
           type: string
           minLength: 1
@@ -1091,11 +1056,9 @@ components:
           S3: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
           GCS: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
           AZURE: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
-          DELTA_SHARING: '#/components/schemas/DeltaSharingDataDestinationGetResponse'
       oneOf:
         - $ref: '#/components/schemas/HDLDataDestinationGetResponse'
         - $ref: '#/components/schemas/ObjectStoreDataDestinationGetResponse'
-        - $ref: '#/components/schemas/DeltaSharingDataDestinationGetResponse'
 
     HDLDataDestinationGetResponse:
       allOf:
@@ -1129,20 +1092,6 @@ components:
             adapterType:
               type: string
               enum: [File]
-
-    DeltaSharingDataDestinationGetResponse:
-      allOf:
-        - $ref: '#/components/schemas/BaseDataDestinationResponse'
-        - type: object
-          required:
-            - type
-          properties:
-            type:
-              type: string
-              enum: [DELTA_SHARING]
-            adapterType:
-              type: string
-              enum: [DeltaShare]
 
     BaseDataDestinationResponse:
       type: object
@@ -1388,10 +1337,7 @@ components:
           example: CSV
         path:
           type: string
-          description: |
-            Absolute path to the data (must start with '/').
-            - For file-based artifacts (HDL, S3, GCS, AZURE): Standard file path (e.g., /data/customers.parquet)
-            - For Delta Sharing artifacts (DELTA_SHARING): Format /<share>/<schema>/<table> (e.g., /sample_data/tpch/customer)
+          description: "Absolute path to the data artifact (must start with '/'). For file-based artifacts, use a standard file path (e.g., /data/customers.parquet)."
           pattern: '^\/.*'
           example: '/data/ingest/customer_data/file1.csv'
         csnMetadata:
