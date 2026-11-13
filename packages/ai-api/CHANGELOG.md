@@ -1,5 +1,11 @@
 # @sap-ai-sdk/ai-api
 
+## 2.18.0
+
+### Patch Changes
+
+- [fix] Exclude destinations from deployment resolution errors to avoid exposing credentials.
+
 ## 2.17.0
 
 ## 2.16.0

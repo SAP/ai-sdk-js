@@ -12,6 +12,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   get-orchestration-reference:
     runs-on: ubuntu-latest
@@ -28,7 +32,7 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3.raw" | yq -r .version)
 
-          if [ -z "$ORCH_VERSION" ]; then
+          if [ -z "$ORCH_VERSION" ] || [ "$ORCH_VERSION" = "null" ]; then
               echo "Failed to fetch orchestration version"
               exit 1
           fi

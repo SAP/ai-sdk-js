@@ -6,6 +6,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   draft-github-release:
     runs-on: ubuntu-latest

@@ -1,3 +1,5 @@
+## 2.18.0
+
 ## 2.17.0
 
 [//]: # "Please don't delete the following comments and keep them in the beginning of this document. Also, keep the first line empty."
@@ -25,6 +27,17 @@
 ### Signature changed
 
 -
+
+# 2.18.0
+## New Features
+
+- [orchestration] Add `buildGraniteGuardian41Filter()` to build an IBM Granite Guardian 4.1 content filter.
+  Like the deprecated Llama Guard filter, it is a SAP-hosted content filter for the orchestration service.
+- [prompt-registry] prompt-registry: updated generated client to latest spec
+
+## Fixed Issues
+
+- [ai-api] Exclude destinations from deployment resolution errors to avoid exposing credentials.
 
 ### Implementation changed
 

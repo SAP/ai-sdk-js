@@ -6,6 +6,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   check-release-notes-pr:
     name: Check Release Notes PR Status
