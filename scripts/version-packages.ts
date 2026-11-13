@@ -21,6 +21,8 @@ interface ChangelogEntry {
 }
 
 const execFileAsync = promisify(execFile);
+const changesetSummaryRegex = /^\[([^\]]+)\]([\s\S]*)$/;
+const changelogVersionRegex = /^# \d+\.\d+\.\d+$/m;
 
 async function formatChangelog(
   releasePlan: ReleasePlan,
@@ -40,7 +42,7 @@ async function formatChangelog(
   const entries = new Map<string, ChangelogEntry>();
 
   changesets.forEach((changeset, index) => {
-    const match = changeset.summary.match(/^\[([^\]]+)\]\s*([\s\S]*)$/);
+    const match = changesetSummaryRegex.exec(changeset.summary);
     const category = match?.[1].toLowerCase();
     const type = messageTypes.find(({ name, alternatives }) =>
       [name, ...alternatives].includes(category || '')
@@ -72,7 +74,9 @@ async function formatChangelog(
     const messages = [...entries.values()]
       .filter(entry => entry.type.name === type.name)
       .map(entry => {
-        const packages = [...entry.packages].sort().join(', ');
+        const packages = [...entry.packages]
+          .sort((left, right) => left.localeCompare(right))
+          .join(', ');
         const commit = entry.commits.size
           ? ` (${[...entry.commits].join(', ')})`
           : '';
@@ -120,7 +124,7 @@ export async function versionPackages(
   const rootPackagePath = resolve(cwd, 'package.json');
   const changelogPath = resolve(cwd, 'CHANGELOG.md');
   const rootChangelog = await readFile(changelogPath, 'utf8');
-  const previousVersion = rootChangelog.match(/^# \d+\.\d+\.\d+$/m);
+  const previousVersion = changelogVersionRegex.exec(rootChangelog);
   if (previousVersion?.index === undefined) {
     throw new Error(
       'Could not find the first released version in CHANGELOG.md.'
