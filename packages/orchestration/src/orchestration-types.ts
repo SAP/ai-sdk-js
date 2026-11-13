@@ -75,6 +75,58 @@ export interface ChatCompletionRequest {
 }
 
 /**
+ * Per-call inputs for a {@link OrchestrationClient} builder's `create` method.
+ * The prompt is not included here: it is supplied only through the `config` builder's `create`, whose options type adds it.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export interface OrchestrationCreateOptions {
+  /**
+   * Prior conversation turns, appended to the request as context and never merged into a prompt template.
+   */
+  messagesHistory?: ChatMessages;
+  /**
+   * Values for the `{{?placeholder}}` variables in the prompt template.
+   * @example
+   * placeholderValues: {
+   *   product: 'SAP Cloud SDK'
+   * }
+   */
+  placeholderValues?: Record<string, string>;
+  /**
+   * Whether to stream the response.
+   * When `true`, `create` returns an {@link OrchestrationStreamResponse}; otherwise an {@link OrchestrationResponse}.
+   */
+  stream?: boolean;
+  /**
+   * Streaming options. Only applies when `stream` is `true`.
+   */
+  streamOptions?: StreamOptions;
+}
+
+/**
+ * Per-call inputs for the `config` builder's `create` method.
+ * Adds the current-turn `prompt` to {@link OrchestrationCreateOptions}, because the inline configuration is the only source whose template can be extended per call.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export interface OrchestrationCreateOptionsWithPrompt extends OrchestrationCreateOptions {
+  /**
+   * The current turn's chat messages, appended to the inline prompt template.
+   * @example
+   * prompt: [{ role: 'user', content: 'What is the capital of France?' }]
+   */
+  prompt?: ChatMessages;
+}
+
+/**
+ * Transport configuration for a builder's `create` method, passed as its optional second argument.
+ * Use `headers` to pass service-specific headers, and `signal` to cancel the request.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationCreateRequestConfig = CustomRequestConfig & {
+  headers?: OrchestrationRequestHeaders;
+};
+
+/**
  * LLM model details.
  */
 export type LlmModelDetails = Omit<
@@ -250,6 +302,60 @@ export interface OrchestrationModuleConfig {
    */
   translation?: TranslationModule;
 }
+
+/**
+ * Orchestration module configuration without a standing prompt template.
+ * Derived from {@link OrchestrationModuleConfig} by dropping the inline `promptTemplating.prompt.template`, because the `config` source supplies the template content per call through `create({ prompt })` (see ADR 012).
+ * `tools`, `response_format`, and `defaults` remain configurable, as they are fixed at construction time. A standing template or remote template reference is not allowed here — pass a config with a standing prompt to `config` instead.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithoutTemplate = Omit<
+  OrchestrationModuleConfig,
+  'promptTemplating'
+> & {
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt?: Omit<PromptTemplate, 'template'> & { template?: never };
+  };
+};
+
+/**
+ * Orchestration module configuration whose standing prompt is an inline template.
+ * Derived from {@link OrchestrationModuleConfig} by requiring `promptTemplating.prompt` to be a {@link PromptTemplate} with a `template`.
+ * The messages are fixed in the configuration, so the `config` builder's `create` omits `prompt`.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithInlineTemplate = Omit<
+  OrchestrationModuleConfig,
+  'promptTemplating'
+> & {
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt: PromptTemplate & { template: TemplatingChatMessage };
+  };
+};
+
+/**
+ * Orchestration module configuration whose standing prompt is a remote prompt-registry {@link TemplateRef}.
+ * Derived from {@link OrchestrationModuleConfig} by requiring `promptTemplating.prompt` to be a `TemplateRef`.
+ * The template is resolved remotely, so the `config` builder's `create` omits `prompt`.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithTemplateRef = Omit<
+  OrchestrationModuleConfig,
+  'promptTemplating'
+> & {
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt: TemplateRef;
+  };
+};
+
+/**
+ * Orchestration module configuration whose standing prompt is already set, either as an inline template or as a remote prompt-registry template reference.
+ * Because the messages are fixed in the configuration, the `config` builder's `create` omits `prompt`.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithTemplate =
+  | OrchestrationConfigWithInlineTemplate
+  | OrchestrationConfigWithTemplateRef;
 
 /**
  * Non-empty list of orchestration module configurations for module fallback.
