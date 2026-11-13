@@ -46,7 +46,7 @@ export function createDataDestinationAndWait(
       isComplete: status => status.status === 'ACTIVE',
       getFailure: status =>
         status.status === 'ERROR'
-          ? { outcome: 'failure', reason: status.errorMessage ?? 'ERROR' }
+          ? { outcome: 'failure', reason: status.errorMessage || 'ERROR' }
           : undefined
     },
     options
@@ -80,7 +80,7 @@ export function deleteDataDestinationAndWait(
       isComplete: () => false,
       getFailure: status =>
         status.status === 'ERROR'
-          ? { outcome: 'failure', reason: status.errorMessage ?? 'ERROR' }
+          ? { outcome: 'failure', reason: status.errorMessage || 'ERROR' }
           : undefined
     },
     { notFoundMeansDeleted: true, ...options }

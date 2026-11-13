@@ -224,6 +224,48 @@ describe('pollUntilTerminal', () => {
     expect(sleep.mock.calls.map(c => c[0])).toEqual([400, 400, 200]);
   });
 
+  it('reads the retry hint from a thrown error', async () => {
+    let call = 0;
+    const read = vi.fn<() => Promise<Status>>(async () => {
+      call += 1;
+      if (call === 1) {
+        throw httpError(429);
+      }
+      return { status: 'ACTIVE' };
+    });
+    await pollUntilTerminal({
+      ...base,
+      read,
+      sleep,
+      intervalMs: 1_000,
+      getRetryAfter: hint => (hint instanceof Error ? 7_000 : undefined)
+    });
+    expect(sleep).toHaveBeenCalledWith(7_000, expect.anything());
+  });
+
+  it('aborts an in-flight wait when the signal fires mid-sleep', async () => {
+    const controller = new AbortController();
+    const read = vi.fn<() => Promise<Status>>(async () => ({
+      status: 'PENDING'
+    }));
+    // Abort while the engine is waiting between polls.
+    const abortingSleep = vi.fn<
+      (ms: number, signal?: AbortSignal) => Promise<void>
+    >(async (_ms, signal) => {
+      controller.abort();
+      signal?.throwIfAborted();
+    });
+    await expect(
+      pollUntilTerminal({
+        ...base,
+        read,
+        sleep: abortingSleep,
+        signal: controller.signal
+      })
+    ).rejects.toThrow(/abort/i);
+    expect(read).toHaveBeenCalledTimes(1);
+  });
+
   it('throws immediately when the signal is already aborted', async () => {
     const read = vi.fn<() => Promise<Status>>();
     const controller = new AbortController();

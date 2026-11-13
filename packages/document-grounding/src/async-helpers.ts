@@ -19,14 +19,23 @@ interface ResourceGroupHeaders {
 
 type CollectionStatus = CollectionCreatedResponse | CollectionPendingResponse;
 
+const PIPELINE_FAILURE_STATES = new Set([
+  'TIMEOUT',
+  'CREATION_FAILED',
+  'DELETION_FAILED'
+]);
+
 function collectionIdFromLocation(created: HttpResponse): string {
-  const location = created.headers?.location as string | undefined;
-  if (!location) {
+  const location = created.headers?.location;
+  if (typeof location !== 'string') {
     throw new Error('createCollection did not return a Location header');
   }
-  // Location points at /vector/collections/{id}/creationStatus
-  const segments = location.split('/').filter(Boolean);
-  return segments[segments.length - 2];
+  // Location points at .../vector/collections/{id}/creationStatus.
+  const match = /collections\/([^/?#]+)/.exec(location);
+  if (!match) {
+    throw new Error(`Unexpected createCollection Location header: ${location}`);
+  }
+  return match[1];
 }
 
 /**
@@ -50,6 +59,12 @@ export function createCollectionAndWait(
           collectionIdFromLocation(created),
           headers
         ),
+      // The generated creation-status schema models only pending (`monitorURL`) and
+      // created (`collectionURL`) responses — there is no terminal failure state, so
+      // `getFailure` cannot be defined. A server-side failure that never yields
+      // `collectionURL` is bounded by `maxWaitTime` and surfaces as a PollTimeoutError.
+      // Follow-up (grounding service team): confirm the failure representation and add
+      // `getFailure` once one exists.
       isComplete: status => 'collectionURL' in status
     },
     options
@@ -80,14 +95,18 @@ export function runPipelineAndWait(
       statusRead: () => PipelinesApi.getPipelineStatus(pipelineId, headers),
       isComplete: status =>
         status.status === 'FINISHED' || status.status === 'FINISHEDWITHERRORS',
-      getFailure: status =>
-        status.status === 'FINISHEDWITHERRORS'
-          ? { outcome: 'partial', reason: 'pipeline finished with errors' }
-          : status.status === 'TIMEOUT' ||
-              status.status === 'CREATION_FAILED' ||
-              status.status === 'DELETION_FAILED'
-            ? { outcome: 'failure', reason: String(status.status) }
-            : undefined
+      getFailure: status => {
+        if (status.status === 'FINISHEDWITHERRORS') {
+          return {
+            outcome: 'partial',
+            reason: 'pipeline finished with errors'
+          };
+        }
+        if (status.status && PIPELINE_FAILURE_STATES.has(status.status)) {
+          return { outcome: 'failure', reason: String(status.status) };
+        }
+        return undefined;
+      }
     },
     options
   );

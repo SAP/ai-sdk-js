@@ -11,6 +11,7 @@ import type { OpenApiRequestBuilder } from './openapi-request-builder.ts';
 const DEFAULT_MAX_WAIT_MS = 60 * 60 * 1_000;
 const DEFAULT_INTERVAL_MS = 5_000;
 const DEFAULT_MAX_CONSECUTIVE_ERRORS = 5;
+const MIN_POLL_INTERVAL_MS = 1;
 const MAX_TIMER_DELAY_MS = 2_147_483_647;
 
 /**
@@ -71,7 +72,10 @@ export interface PollEngineOptions<T> {
   onPoll?: (resource: T) => void;
   /** Signal that cancels polling and waiting. */
   signal?: AbortSignal;
-  /** Override the sleep function, e.g. for testing. */
+  /**
+   * Override the sleep function. Test seam only.
+   * @internal
+   */
   sleep?: (ms: number, signal?: AbortSignal) => Promise<void>;
 }
 
@@ -125,58 +129,70 @@ export async function* pollEach<T>(
   } = options;
 
   signal?.throwIfAborted();
-  const abortSignal = signal ?? new AbortController().signal;
+  // The engine owns an AbortController linked to the caller's signal so an early
+  // `break`/`return` from this generator cancels any in-flight read or sleep (B3 pull-model).
+  const controller = new AbortController();
+  const abortSignal = controller.signal;
+  const forwardAbort = () => controller.abort(signal?.reason);
+  signal?.addEventListener('abort', forwardAbort, { once: true });
+
   const started = Date.now();
   const deadline = started + maxWaitTime;
   let pollCount = 0;
   let consecutiveErrors = 0;
   let lastResource: T | undefined;
 
-  for (;;) {
-    abortSignal.throwIfAborted();
-    if (Date.now() >= deadline) {
-      throw new PollTimeoutError(Date.now() - started, lastResource);
-    }
-
-    let resource: T;
-    try {
-      resource = await read(abortSignal);
-      consecutiveErrors = 0;
-    } catch (error) {
+  try {
+    for (;;) {
       abortSignal.throwIfAborted();
-      if (classifyError(error) === 'fatal') {
-        throw error;
+      if (Date.now() >= deadline) {
+        throw new PollTimeoutError(Date.now() - started, lastResource);
       }
-      consecutiveErrors += 1;
-      if (consecutiveErrors > maxConsecutiveErrors) {
-        throw error;
+
+      let resource: T;
+      try {
+        resource = await read(abortSignal);
+        consecutiveErrors = 0;
+      } catch (error) {
+        abortSignal.throwIfAborted();
+        if (classifyError(error) === 'fatal') {
+          throw error;
+        }
+        consecutiveErrors += 1;
+        if (consecutiveErrors > maxConsecutiveErrors) {
+          throw error;
+        }
+        const errorHint = getRetryAfter?.(error);
+        await sleepUntilNextPoll(
+          errorHint ?? intervalMs,
+          deadline,
+          sleep,
+          abortSignal
+        );
+        continue;
       }
-      const errorHint = getRetryAfter?.(error);
-      await sleepUntilNextPoll(
-        errorHint ?? intervalMs,
-        deadline,
-        sleep,
-        abortSignal
-      );
-      continue;
-    }
 
-    lastResource = resource;
-    pollCount += 1;
-    onPoll?.(resource);
-    yield resource;
+      lastResource = resource;
+      pollCount += 1;
+      onPoll?.(resource);
+      yield resource;
 
-    const failure = getFailure?.(resource);
-    if (failure) {
-      return { outcome: failure.outcome, resource, reason: failure.reason };
-    }
-    if (isComplete(resource)) {
-      return { outcome: 'success', resource };
-    }
+      const failure = getFailure?.(resource);
+      if (failure) {
+        return { outcome: failure.outcome, resource, reason: failure.reason };
+      }
+      if (isComplete(resource)) {
+        return { outcome: 'success', resource };
+      }
 
-    const hint = getRetryAfter?.(resource);
-    const waitMs = hint ?? nextInterval(intervalMs, backoff, pollCount);
-    await sleepUntilNextPoll(waitMs, deadline, sleep, abortSignal);
+      const hint = getRetryAfter?.(resource);
+      const waitMs = hint ?? nextInterval(intervalMs, backoff, pollCount);
+      await sleepUntilNextPoll(waitMs, deadline, sleep, abortSignal);
+    }
+  } finally {
+    signal?.removeEventListener('abort', forwardAbort);
+    // Cancel any in-flight read/sleep if the consumer stopped early.
+    controller.abort();
   }
 }
 
@@ -222,10 +238,16 @@ async function sleepUntilNextPoll(
 ): Promise<void> {
   signal?.throwIfAborted();
   const remaining = deadline - Date.now();
-  const clamped = Math.max(Math.min(requestedMs, remaining), 0);
-  if (clamped > 0) {
-    await sleep(clamped, signal);
+  if (remaining <= 0) {
+    return;
   }
+  // ponytail: floor the wait so a zero/near-zero interval can't spin the loop without
+  // the clock advancing. Raise MIN_POLL_INTERVAL_MS if tighter pacing is ever needed.
+  const clamped = Math.min(
+    Math.max(requestedMs, MIN_POLL_INTERVAL_MS),
+    remaining
+  );
+  await sleep(clamped, signal);
 }
 
 function defaultClassifyError(error: unknown): 'retryable' | 'fatal' {
@@ -240,25 +262,74 @@ function defaultClassifyError(error: unknown): 'retryable' | 'fatal' {
   return 'fatal';
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function readNumber(value: unknown): number | undefined {
+  return typeof value === 'number' ? value : undefined;
+}
+
 function getHttpStatus(error: unknown): number | undefined {
-  if (typeof error !== 'object' || error === null) {
+  if (!isRecord(error)) {
     return undefined;
   }
-  const record = error as Record<string, any>;
+  const response = isRecord(error.response) ? error.response : undefined;
+  const cause = isRecord(error.cause) ? error.cause : undefined;
+  const causeResponse =
+    cause && isRecord(cause.response) ? cause.response : undefined;
   return (
-    record.status ??
-    record.response?.status ??
-    record.cause?.status ??
-    record.cause?.response?.status
+    readNumber(error.status) ??
+    readNumber(response?.status) ??
+    readNumber(cause?.status) ??
+    readNumber(causeResponse?.status)
   );
 }
 
 function getErrorCode(error: unknown): string | undefined {
-  if (typeof error !== 'object' || error === null) {
+  if (!isRecord(error)) {
     return undefined;
   }
-  const record = error as Record<string, any>;
-  return record.code ?? record.cause?.code;
+  const cause = isRecord(error.cause) ? error.cause : undefined;
+  const code = error.code ?? cause?.code;
+  return typeof code === 'string' ? code : undefined;
+}
+
+/**
+ * Extracts a server-provided wait hint, in milliseconds, from a thrown HTTP error's
+ * `Retry-After` header (delta-seconds or an HTTP-date). Returns undefined for a
+ * successfully-read poll resource or a value without the header.
+ * @param hint - A thrown error or a successfully-read poll resource.
+ * @returns The wait hint in milliseconds, or undefined when none is present.
+ */
+function retryAfterMsFromError(hint: unknown): number | undefined {
+  if (!isRecord(hint)) {
+    return undefined;
+  }
+  const response = isRecord(hint.response) ? hint.response : undefined;
+  const cause = isRecord(hint.cause) ? hint.cause : undefined;
+  const causeResponse =
+    cause && isRecord(cause.response) ? cause.response : undefined;
+  const responseHeaders =
+    response && isRecord(response.headers) ? response.headers : undefined;
+  const causeHeaders =
+    causeResponse && isRecord(causeResponse.headers)
+      ? causeResponse.headers
+      : undefined;
+  const headers = responseHeaders ?? causeHeaders;
+  if (!headers) {
+    return undefined;
+  }
+  const raw = headers['retry-after'] ?? headers['Retry-After'];
+  if (typeof raw !== 'string' && typeof raw !== 'number') {
+    return undefined;
+  }
+  const seconds = Number(raw);
+  if (Number.isFinite(seconds)) {
+    return Math.max(seconds, 0) * 1_000;
+  }
+  const dateMs = Date.parse(String(raw));
+  return Number.isNaN(dateMs) ? undefined : Math.max(dateMs - Date.now(), 0);
 }
 
 async function sleepWithSignal(
@@ -344,15 +415,21 @@ export async function createAndWait<StatusT>(
   descriptor: AsyncFlowDescriptor<StatusT>,
   options: CreateAndWaitOptions = {}
 ): Promise<PollResult<StatusT>> {
-  const { destination, requestConfig, ...pollOptions } = options;
-  const created = await builder.executeRaw(destination, requestConfig);
+  const { destination, requestConfig, signal, ...pollOptions } = options;
+  signal?.throwIfAborted();
+  const created = await builder.executeRaw(destination, {
+    ...requestConfig,
+    signal
+  });
   return pollUntilTerminal<StatusT>({
-    read: signal =>
+    read: pollSignal =>
       descriptor
         .statusRead(created)
-        .execute(destination, { ...requestConfig, signal }),
+        .execute(destination, { ...requestConfig, signal: pollSignal }),
     isComplete: descriptor.isComplete,
     getFailure: descriptor.getFailure,
+    getRetryAfter: retryAfterMsFromError,
+    signal,
     ...pollOptions
   });
 }
@@ -374,18 +451,30 @@ export async function deleteAndWait<StatusT>(
   descriptor: AsyncFlowDescriptor<StatusT>,
   options: DeleteAndWaitOptions = {}
 ): Promise<PollResult<StatusT | undefined>> {
-  const { destination, requestConfig, notFoundMeansDeleted, ...pollOptions } =
-    options;
+  const {
+    destination,
+    requestConfig,
+    notFoundMeansDeleted,
+    signal,
+    ...pollOptions
+  } = options;
+  signal?.throwIfAborted();
   // The delete request must succeed first; executeRaw throws on a non-2xx response,
   // so reaching this point proves the resource existed.
-  const deleted = await builder.executeRaw(destination, requestConfig);
+  const deleted = await builder.executeRaw(destination, {
+    ...requestConfig,
+    signal
+  });
   return pollUntilTerminal<StatusT | undefined>({
-    read: async signal => {
+    read: async pollSignal => {
       try {
         return await descriptor
           .statusRead(deleted)
-          .execute(destination, { ...requestConfig, signal });
+          .execute(destination, { ...requestConfig, signal: pollSignal });
       } catch (error) {
+        // A 404 ends polling only when opted in. Note: a single transient/misrouted
+        // 404 is accepted as "deleted" without a retry budget — acceptable because the
+        // delete returned 2xx first, but revisit if spurious 404s are observed.
         if (notFoundMeansDeleted && getHttpStatus(error) === 404) {
           return undefined;
         }
@@ -395,6 +484,8 @@ export async function deleteAndWait<StatusT>(
     isComplete: status => status === undefined || descriptor.isComplete(status),
     getFailure: status =>
       status === undefined ? undefined : descriptor.getFailure?.(status),
+    getRetryAfter: retryAfterMsFromError,
+    signal,
     ...pollOptions
   });
 }
