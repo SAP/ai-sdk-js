@@ -9,8 +9,8 @@ export type {
 } from './utils/index.ts';
 
 export {
-  resolveDeploymentUrl,
   getFoundationModelDeploymentId,
+  getFoundationModelDeploymentUrl,
   getOrchestrationDeploymentId,
   getOrchestrationDeploymentUrl,
   getModels,

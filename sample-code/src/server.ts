@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import {
-  resolveDeploymentUrl,
+  getFoundationModelDeploymentId,
   filterFoundationModelsByCapability,
   filterFoundationModelsNonDeprecated,
   getFoundationModelLatestVersions,
@@ -308,13 +308,10 @@ app.get('/ai-api/models/discovery', async (req, res) => {
   }
 });
 
-app.get('/ai-api/deployment-url', async (req, res) => {
+app.get('/ai-api/deployment-id', async (req, res) => {
   try {
     res.send(
-      await resolveDeploymentUrl({
-        scenarioId: 'foundation-models',
-        model: { name: 'gpt-5.4' }
-      })
+      await getFoundationModelDeploymentId('gpt-5.4', 'azure-openai')
     );
   } catch (error: any) {
     sendError(res, error);

@@ -70,11 +70,12 @@ export function filterFoundationModelsByCapability(
   models: AiModelBaseData[],
   capability: string
 ): AiModelBaseData[] {
-  return models.filter(model =>
-    model.versions.some(
-      version =>
-        !version.deprecated && version.capabilities?.includes(capability)
-    )
+  return models.filter(
+    model =>
+      model.versions.filter(
+        version =>
+          !version.deprecated && version.capabilities?.includes(capability)
+      ).length > 0
   );
 }
 

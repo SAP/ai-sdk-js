@@ -12,6 +12,8 @@ import {
   resolveDeploymentId,
   resolveDeploymentUrlById,
   resolveDeploymentUrlForModel,
+  getFoundationModelDeploymentId,
+  getFoundationModelDeploymentUrl,
   getOrchestrationDeploymentId,
   getOrchestrationDeploymentUrl
 } from './deployment-resolver.ts';
@@ -106,6 +108,34 @@ describe('deployment resolver', () => {
         model: { name: 'gpt-5-mini', version: '0613' }
       })
     ).rejects.toThrow('No deployment matched the given criteria');
+  });
+
+  it('should not include destination credentials in the error message', async () => {
+    nock(aiCoreDestination.url, {
+      reqheaders: {
+        'ai-resource-group': 'default'
+      }
+    })
+      .get('/v2/lm/deployments')
+      .query({ scenarioId: 'foundation-models', status: 'RUNNING' })
+      .reply(200, {
+        count: 0,
+        resources: []
+      });
+
+    await expect(
+      resolveDeploymentId({
+        scenarioId: 'foundation-models',
+        destination: {
+          url: 'https://example.com',
+          authTokens: [{ type: 'Bearer', value: 'SECRET_TOKEN', error: null }]
+        } as any
+      })
+    ).rejects.toThrow(
+      expect.objectContaining({
+        message: expect.not.stringContaining('SECRET_TOKEN')
+      })
+    );
   });
 
   it('should consider custom resource group', async () => {
@@ -328,5 +358,58 @@ describe('getOrchestrationDeploymentUrl', () => {
       deploymentId: 'orch-explicit'
     });
     expect(url).toContain('orch-explicit');
+  });
+});
+
+describe('getFoundationModelDeploymentUrl', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('resolves the deployment URL by model name', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      {
+        id: 'fm-dep-1',
+        model: { name: 'gpt-4o', version: 'latest' },
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/fm-dep-1`
+      }
+    );
+
+    const url = await getFoundationModelDeploymentUrl('gpt-4o', 'azure-openai');
+    expect(url).toContain('fm-dep-1');
+  });
+
+  it('resolves the deployment URL by deployment ID when DeploymentIdConfig is provided', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/fm-explicit')
+      .reply(200, {
+        id: 'fm-explicit',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/fm-explicit`
+      });
+
+    const url = await getFoundationModelDeploymentUrl(
+      { deploymentId: 'fm-explicit' },
+      'azure-openai'
+    );
+    expect(url).toContain('fm-explicit');
+  });
+
+  it('throws when the deployment has no URL', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      { id: 'fm-no-url', model: { name: 'gpt-4o', version: 'latest' } }
+    );
+
+    await expect(
+      getFoundationModelDeploymentUrl('gpt-4o', 'azure-openai')
+    ).rejects.toThrow(
+      "Deployment for model 'gpt-4o' has no deployment URL. Ensure the deployment is running."
+    );
   });
 });

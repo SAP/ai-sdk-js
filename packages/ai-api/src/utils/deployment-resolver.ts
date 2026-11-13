@@ -119,8 +119,9 @@ export async function resolveDeployment(
   }
 
   if (!deployments.length) {
+    const { destination: _destination, ...loggable } = opts;
     throw new Error(
-      `No deployment matched the given criteria: ${JSON.stringify(opts)}. Make sure the deployment is successful, as it is a prerequisite before consuming orchestration or foundation models.`
+      `No deployment matched the given criteria: ${JSON.stringify(loggable)}. Make sure the deployment is successful, as it is a prerequisite before consuming orchestration or foundation models.`
     );
   }
   return deployments[0];
@@ -297,6 +298,27 @@ export async function getFoundationModelDeploymentId(
     executableId,
     model: translateToFoundationModel(modelDeployment),
     resourceGroup: getResourceGroup(modelDeployment),
+    destination
+  });
+}
+
+/**
+ * Get the deployment URL for a foundation model scenario.
+ * @param modelDeployment - This configuration is used to retrieve a deployment. Depending on the configuration use either the given deployment ID or the model name to retrieve matching deployments.
+ * @param executableId - The executable ID of the foundation model (e.g. `'azure-openai'`).
+ * @param destination - The destination to use for the request.
+ * @returns The URL of the deployment, if found.
+ */
+export async function getFoundationModelDeploymentUrl(
+  modelDeployment: ModelDeployment,
+  executableId: string,
+  destination?: HttpDestinationOrFetchOptions
+): Promise<string> {
+  const resourceGroup = getResourceGroup(modelDeployment) ?? 'default';
+  return resolveDeploymentUrlForModel(modelDeployment, {
+    scenarioId: 'foundation-models',
+    executableId,
+    resourceGroup,
     destination
   });
 }

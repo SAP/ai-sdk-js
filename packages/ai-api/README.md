@@ -75,12 +75,20 @@ const latestVersions = getFoundationModelLatestVersions(models);
 // [{ model: 'gpt-4o', executableId: 'azure-openai', latestVersions: [{ name: '2024-11-20', ... }] }]
 ```
 
-### Resolve a Deployment ID
+### Resolve a Deployment ID or URL
 
 ```ts
-import { getFoundationModelDeploymentId } from '@sap-ai-sdk/ai-api';
+import {
+  getFoundationModelDeploymentId,
+  getFoundationModelDeploymentUrl
+} from '@sap-ai-sdk/ai-api';
 
 const deploymentId = await getFoundationModelDeploymentId(
+  'gpt-4o',
+  'azure-openai'
+);
+
+const deploymentUrl = await getFoundationModelDeploymentUrl(
   'gpt-4o',
   'azure-openai'
 );
