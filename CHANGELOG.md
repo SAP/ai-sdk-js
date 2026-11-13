@@ -1,7 +1,3 @@
-## 2.18.0
-
-## 2.17.0
-
 [//]: # "Please don't delete the following comments and keep them in the beginning of this document. Also, keep the first line empty."
 
 [//]: # (Example known issue: Making OData requests using a proxy defined in the environment variables is not possible \(see improvements\).)

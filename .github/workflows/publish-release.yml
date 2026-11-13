@@ -80,7 +80,7 @@ jobs:
           package-manager-cache: false
       - name: publish
         run: |
-          pnpm publish -r
+          pnpm changeset publish
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)

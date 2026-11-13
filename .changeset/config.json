@@ -1,14 +1,7 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.0.2/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
   "fixed": [["@sap-ai-sdk/*"]],
-  "linked": [],
   "access": "public",
   "baseBranch": "main",
-  "updateInternalDependencies": "patch",
-  "ignore": [],
-  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
-    "onlyUpdatePeerDependentsWhenOutOfRange": true
-  }
+  "bumpVersionsWithWorkspaceProtocolOnly": true
 }
