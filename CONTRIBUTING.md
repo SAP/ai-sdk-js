@@ -90,12 +90,11 @@ To release a new version, ensure that the following prerequisites are met:
 
 If this is the case, follow these steps:
 
-1. **Bump the version**: Execute the `bump` workflow from the `main` branch.
-   For a major release, set `majorVersion` to the exact target version, such as `3.0.0`.
-   Leave it empty for minor and patch releases.
-   This bumps the version on the `main` branch and creates a tag and draft release with release notes on GitHub.
+1. **Review and merge the release PR**: The `release-pr` workflow creates a draft Changesets release PR or updates the existing one after changesets reach `main`.
+   Mark it ready for review and check the target version and changelogs, including any major version bump, before merging.
+   After the merge, the workflow creates a tag, a draft GitHub release and the documentation release-notes PR.
 2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**.
-   This triggers the `publish-release` workflow, which publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
+   This triggers the `publish-release` workflow, which runs `pnpm changeset publish` to publish the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
 
 Finally, check that everything is published as expected on npm.
 
@@ -107,7 +106,7 @@ To fix issues in published packages, you need to publish a new version.
 If you find an issue with the release or something fails before publishing, you can revert the release.
 Make sure to:
 
-- Revert the bump commit.
+- Revert the merged release PR.
 - Delete the draft release.
 - Delete the version tag.
 
