@@ -96,14 +96,10 @@ async function formatChangelog(
 /**
  * Apply the native Changesets release plan and update the unified changelog and root version.
  * @param cwd - Workspace root directory.
- * @param releasePlan - Native release plan, if already loaded.
  * @returns The new fixed SDK version.
  */
-export async function versionPackages(
-  cwd = process.cwd(),
-  releasePlan?: ReleasePlan
-): Promise<string> {
-  releasePlan ||= await getReleasePlan(cwd);
+export async function versionPackages(cwd = process.cwd()): Promise<string> {
+  const releasePlan = await getReleasePlan(cwd);
   if (releasePlan.preState?.mode === 'pre') {
     throw new Error(
       'Exit Changesets prerelease mode before making a stable release.'

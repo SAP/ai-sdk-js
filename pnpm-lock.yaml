@@ -297,15 +297,6 @@ importers:
         specifier: 4.6.7
         version: 4.6.7
 
-  .github/actions/changesets-fixed-version-bump:
-    dependencies:
-      '@actions/core':
-        specifier: ^3.0.0
-        version: 3.0.1
-      '@changesets/get-release-plan':
-        specifier: 5.0.2
-        version: 5.0.2
-
   .github/actions/check-pr:
     dependencies:
       '@actions/core':
