@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import {
-  OrchestrationClient,
+  Orchestration,
   OrchestrationEmbeddingClient,
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
@@ -26,7 +26,8 @@ import type {
   OrchestrationErrorResponse,
   ChatCompletionTool,
   ToolChatMessage,
-  PromptTemplatingModule
+  OrchestrationConfigWithoutPrompt,
+  ChatMessages
 } from '@sap-ai-sdk/orchestration';
 
 const logger = createLogger({
@@ -42,22 +43,24 @@ const logger = createLogger({
 export async function orchestrationChatCompletion(
   signal?: AbortSignal
 ): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
   // execute the request
-  const result = await orchestrationClient.chatCompletion(
-    {
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
-    },
-    { signal }
-  );
+  const result = await orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      }
+    })
+    .create(
+      {
+        prompt: [{ role: 'user', content: 'What is the capital of France?' }]
+      },
+      { signal }
+    );
 
   // use getContent() to access the LLM response
   logger.info(result.getContent());
@@ -71,16 +74,22 @@ export async function orchestrationChatCompletion(
  * @returns The orchestration service response.
  */
 export async function orchestrationChatCompletionResilient(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion(
-    { messages: [{ role: 'user', content: 'What is the capital of France?' }] },
-    {
-      middleware: resilience({ timeout: 30000, circuitBreaker: true, retry: 1 })
-    }
-  );
+  return orchestrationClient
+    .config({
+      promptTemplating: { model: { name: 'anthropic--claude-4.5-haiku' } }
+    })
+    .create(
+      { prompt: [{ role: 'user', content: 'What is the capital of France?' }] },
+      {
+        middleware: resilience({
+          timeout: 30000,
+          circuitBreaker: true,
+          retry: 1
+        })
+      }
+    );
 }
 
 /**
@@ -93,27 +102,30 @@ export async function chatCompletionStream(
   controller: AbortController,
   streamOptions?: StreamOptions
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.stream(
-    {
-      messages: [
-        {
-          role: 'user',
-          content: 'Give me a long introduction of SAP Cloud SDK.'
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
         }
-      ]
-    },
-    controller.signal,
-    streamOptions
-  );
+      }
+    })
+    .create(
+      {
+        prompt: [
+          {
+            role: 'user',
+            content: 'Give me a long introduction of SAP Cloud SDK.'
+          }
+        ],
+        stream: true,
+        streamOptions
+      },
+      { signal: controller.signal }
+    );
 }
 
 /**
@@ -121,25 +133,25 @@ export async function chatCompletionStream(
  * @returns The orchestration service response.
  */
 export async function orchestrationTemplating(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      prompt: {
-        template: [
-          // define "country" as variable by wrapping it with "{{? ... }}"
-          { role: 'user', content: 'What is the capital of {{?country}}?' }
-        ]
-      },
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion({
-    // give the actual value for the variable "country"
-    placeholderValues: { country: 'France' }
-  });
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      }
+    })
+    .create({
+      // define "country" as variable by wrapping it with "{{? ... }}"
+      prompt: [
+        { role: 'user', content: 'What is the capital of {{?country}}?' }
+      ],
+      // give the actual value for the variable "country"
+      placeholderValues: { country: 'France' }
+    });
 }
 
 /**
@@ -168,12 +180,14 @@ export async function chatCompletionStreamWithJsonModuleConfig(
     }
   }`;
 
-  const orchestrationClient = new OrchestrationClient(jsonConfig);
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.stream(
-    { placeholderValues: { input: 'SAP Cloud SDK' } },
-    controller.signal
-  );
+  return orchestrationClient
+    .rawConfigJson(jsonConfig)
+    .create(
+      { placeholderValues: { input: 'SAP Cloud SDK' }, stream: true },
+      { signal: controller.signal }
+    );
 }
 
 /**
@@ -181,22 +195,24 @@ export async function chatCompletionStreamWithJsonModuleConfig(
  * @returns The orchestration service response.
  */
 export async function orchestrationMessageHistory(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
+  const orchestrationClient = new Orchestration();
+
+  // define the language model to be used
+  const moduleConfig = {
     promptTemplating: {
       model: {
         name: 'anthropic--claude-4.5-haiku'
       }
     }
-  });
+  };
 
-  const firstResponse = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
+  const firstResponse = await orchestrationClient.config(moduleConfig).create({
+    prompt: [{ role: 'user', content: 'What is the capital of France?' }]
   });
 
   // User can then ask a follow-up question
-  const nextResponse = await orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the typical food there?' }],
+  const nextResponse = await orchestrationClient.config(moduleConfig).create({
+    prompt: [{ role: 'user', content: 'What is the typical food there?' }],
     messagesHistory: firstResponse.getAllMessages()
   });
 
@@ -208,25 +224,27 @@ export async function orchestrationMessageHistory(): Promise<OrchestrationRespon
  * @returns The orchestration service response.
  */
 export async function orchestrationPromptRegistry(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      prompt: {
-        template_ref: {
-          name: 'get-capital',
-          scenario: 'e2e-test',
-          version: '0.0.1'
-        }
-      },
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion({
-    placeholderValues: { input: 'France' }
-  });
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        prompt: {
+          template_ref: {
+            name: 'get-capital',
+            scenario: 'e2e-test',
+            version: '0.0.1'
+          }
+        },
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      }
+    })
+    .create({
+      placeholderValues: { input: 'France' }
+    });
 }
 
 /**
@@ -234,18 +252,20 @@ export async function orchestrationPromptRegistry(): Promise<OrchestrationRespon
  * @returns The orchestration service response.
  */
 export async function OrchestrationConfigRef(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    scenario: 'sdk-test-scenario',
-    name: 'test-config-for-OrchestrationTest',
-    version: '0.0.1'
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion({
-    placeholderValues: {
-      phrase: 'Happy New Year!',
-      number: '3'
-    }
-  });
+  return orchestrationClient
+    .config({
+      scenario: 'sdk-test-scenario',
+      name: 'test-config-for-OrchestrationTest',
+      version: '0.0.1'
+    })
+    .create({
+      placeholderValues: {
+        phrase: 'Happy New Year!',
+        number: '3'
+      }
+    });
 }
 
 /**
@@ -254,8 +274,13 @@ export async function OrchestrationConfigRef(): Promise<OrchestrationResponse> {
  * @returns The orchestration service response.
  */
 export async function orchestrationCompletionPromptRegistryScoped(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient(
-    {
+  const orchestrationClient = new Orchestration(
+    // provide resource group where the template is stored
+    { resourceGroup: 'ai-sdk-js-e2e' }
+  );
+
+  return orchestrationClient
+    .config({
       promptTemplating: {
         prompt: {
           // refer to a prompt template stored at resource group scope
@@ -271,14 +296,10 @@ export async function orchestrationCompletionPromptRegistryScoped(): Promise<Orc
           name: 'anthropic--claude-4.5-haiku'
         }
       }
-    },
-    // provide resource group where the template is stored
-    { resourceGroup: 'ai-sdk-js-e2e' }
-  );
-
-  return orchestrationClient.chatCompletion({
-    placeholderValues: { country: 'France' }
-  });
+    })
+    .create({
+      placeholderValues: { country: 'France' }
+    });
 }
 
 /**
@@ -286,7 +307,9 @@ export async function orchestrationCompletionPromptRegistryScoped(): Promise<Orc
  * @returns The orchestration service error response.
  */
 export async function orchestrationInputFiltering(): Promise<OrchestrationErrorResponse> {
-  const orchestrationClient = new OrchestrationClient({
+  const orchestrationClient = new Orchestration();
+
+  const moduleConfig = {
     // define the language model to be used
     promptTemplating: {
       model: {
@@ -306,12 +329,12 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
         ]
       }
     }
-  });
+  };
 
   try {
     // Trigger the input filters which results in a 400 Bad Request error
-    await orchestrationClient.chatCompletion({
-      messages: [
+    await orchestrationClient.config(moduleConfig).create({
+      prompt: [
         { role: 'user', content: 'My social insurance number is ABC123456789.' }
       ] // Should be filtered by the Llama guard filter
     });
@@ -331,38 +354,40 @@ export async function orchestrationInputFiltering(): Promise<OrchestrationErrorR
  * @returns The orchestration service response.
  */
 export async function orchestrationOutputFiltering(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    },
-    filtering: {
-      output: {
-        filters: [
-          // Build Azure content filter with only safe content allowed for hate and violence
-          buildAzureContentSafetyFilter('output', {
-            hate: 'ALLOW_SAFE',
-            violence: 'ALLOW_SAFE'
-          }),
-          // Build Llama guard content filter with categories 'privacy' enabled
-          buildLlamaGuard38BFilter('output', ['privacy'])
-        ]
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        // Should be filtered by the Azure content filter
-        content:
-          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+  const result = await orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      },
+      filtering: {
+        output: {
+          filters: [
+            // Build Azure content filter with only safe content allowed for hate and violence
+            buildAzureContentSafetyFilter('output', {
+              hate: 'ALLOW_SAFE',
+              violence: 'ALLOW_SAFE'
+            }),
+            // Build Llama guard content filter with categories 'privacy' enabled
+            buildLlamaGuard38BFilter('output', ['privacy'])
+          ]
+        }
       }
-    ]
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          // Should be filtered by the Azure content filter
+          content:
+            'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+        }
+      ]
+    });
 
   // Accessing the content should throw an error
   try {
@@ -387,33 +412,35 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
  * @returns The orchestration service response.
  */
 export async function orchestrationGraniteGuardianFiltering(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    },
-    filtering: {
-      output: {
-        filters: [
-          // Build an IBM Granite Guardian content filter with the `harm` category enabled
-          buildGraniteGuardian41Filter(['harm'])
-        ]
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        // Likely to be filtered by the Granite Guardian `harm` category
-        content:
-          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+  const result = await orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      },
+      filtering: {
+        output: {
+          filters: [
+            // Build an IBM Granite Guardian content filter with the `harm` category enabled
+            buildGraniteGuardian41Filter(['harm'])
+          ]
+        }
       }
-    ]
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          // Likely to be filtered by the Granite Guardian `harm` category
+          content:
+            'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+        }
+      ]
+    });
 
   logger.info(
     `Granite Guardian output filter result: ${result.getIntermediateResults().output_filtering?.message ?? 'content allowed'}`
@@ -428,60 +455,62 @@ export async function orchestrationGraniteGuardianFiltering(): Promise<Orchestra
 export async function orchestrationCompletionMasking(): Promise<
   string | undefined
 > {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    },
-    masking: {
-      masking_providers: [
-        buildDpiMaskingProvider({
-          method: 'pseudonymization',
-          entities: [
-            'profile-email',
-            {
-              type: 'profile-person',
-              replacement_strategy: {
-                method: 'fabricated_data'
-              }
-            },
-            {
-              type: 'custom',
-              regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
-              replacement_strategy: {
-                method: 'constant',
-                value: 'REDACTED_ID'
-              }
-            },
-            {
-              type: 'custom',
-              regex: '[0-9]{4}[-/][0-9]{2}[-/][0-9]{2}',
-              replacement_strategy: {
-                method: 'constant',
-                value: 'REDACTED_DATE'
-              }
-            }
-          ]
-        })
-      ]
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
+  const response = await orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      },
+      masking: {
+        masking_providers: [
+          buildDpiMaskingProvider({
+            method: 'pseudonymization',
+            entities: [
+              'profile-email',
+              {
+                type: 'profile-person',
+                replacement_strategy: {
+                  method: 'fabricated_data'
+                }
+              },
+              {
+                type: 'custom',
+                regex: '\\b[0-9]{4}-[0-9]{4}-[0-9]{3,5}\\b',
+                replacement_strategy: {
+                  method: 'constant',
+                  value: 'REDACTED_ID'
+                }
+              },
+              {
+                type: 'custom',
+                regex: '[0-9]{4}[-/][0-9]{2}[-/][0-9]{2}',
+                replacement_strategy: {
+                  method: 'constant',
+                  value: 'REDACTED_DATE'
+                }
+              }
+            ]
+          })
+        ]
       }
-    ],
-    placeholderValues: {
-      user: 'Dr. Emily Smith',
-      email: 'emily.smith@healthclinic.com'
-    }
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content:
+            'Write a professional email to my doctor, {{?user}}, at {{?email}}, asking to reschedule my appointment originally set for 2024-12-15 due to a personal conflict. My patient ID is 8947-2219-550.'
+        }
+      ],
+      placeholderValues: {
+        user: 'Dr. Emily Smith',
+        email: 'emily.smith@healthclinic.com'
+      }
+    });
   return response.getContent();
 }
 
@@ -490,45 +519,47 @@ export async function orchestrationCompletionMasking(): Promise<
  * @returns The orchestration service response.
  */
 export async function orchestrationMaskGroundingInput(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    },
-    grounding: buildDocumentGroundingConfig({
-      placeholders: {
-        input: ['groundingInput'],
-        output: 'groundingOutput'
-      },
-      filters: [
-        {
-          data_repository_type: 'help.sap.com'
+  const orchestrationClient = new Orchestration();
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
         }
-      ]
-    }),
-    masking: {
-      masking_providers: [
-        buildDpiMaskingProvider({
-          method: 'pseudonymization',
-          entities: ['profile-org'],
-          mask_grounding_input: true,
-          allowlist: ['Joule']
-        })
-      ]
-    }
-  });
-  return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
+      },
+      grounding: buildDocumentGroundingConfig({
+        placeholders: {
+          input: ['groundingInput'],
+          output: 'groundingOutput'
+        },
+        filters: [
+          {
+            data_repository_type: 'help.sap.com'
+          }
+        ]
+      }),
+      masking: {
+        masking_providers: [
+          buildDpiMaskingProvider({
+            method: 'pseudonymization',
+            entities: ['profile-org'],
+            mask_grounding_input: true,
+            allowlist: ['Joule']
+          })
+        ]
       }
-    ],
-    placeholderValues: { groundingInput: "What is SAP's product Joule?" }
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingInput}} Context: {{?groundingOutput}}'
+        }
+      ],
+      placeholderValues: { groundingInput: "What is SAP's product Joule?" }
+    });
 }
 
 /**
@@ -536,24 +567,26 @@ export async function orchestrationMaskGroundingInput(): Promise<OrchestrationRe
  * @returns The orchestration service response.
  */
 export async function orchestrationRequestConfig(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion(
-    {
-      messages: [{ role: 'user', content: 'What is the capital of France?' }]
-    },
-    // add a custom header to the request
-    {
-      headers: { 'x-custom-header': 'custom-value' }
-    }
-  );
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      }
+    })
+    .create(
+      {
+        prompt: [{ role: 'user', content: 'What is the capital of France?' }]
+      },
+      // add a custom header to the request
+      {
+        headers: { 'x-custom-header': 'custom-value' }
+      }
+    );
 }
 
 /**
@@ -568,7 +601,7 @@ export async function orchestrationFromJson(): Promise<
     join(import.meta.dirname, '..', 'src', 'model-orchestration-config.json'),
     'utf-8'
   );
-  const response = await new OrchestrationClient(jsonConfig).chatCompletion();
+  const response = await new Orchestration().rawConfigJson(jsonConfig).create();
 
   logger.info(response.getContent());
   return response;
@@ -586,8 +619,12 @@ export async function orchestrationGrounding(
   dataRepositoryType: 'vector' | 'help.sap.com' = 'vector',
   dataRepositories: string[] = ['*']
 ): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient(
-    {
+  const orchestrationClient = new Orchestration({
+    resourceGroup: 'ai-sdk-js-e2e'
+  });
+
+  return orchestrationClient
+    .config({
       // define the language model to be used
       promptTemplating: {
         model: {
@@ -612,22 +649,19 @@ export async function orchestrationGrounding(
           metadata_params: ['context']
         })
       })
-    },
-    { resourceGroup: 'ai-sdk-js-e2e' }
-  );
-
-  return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content:
-          'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content:
+            'UserQuestion: {{?groundingRequest}} Context: {{?groundingOutput}}'
+        }
+      ],
+      placeholderValues: {
+        groundingRequest: query
       }
-    ],
-    placeholderValues: {
-      groundingRequest: query
-    }
-  });
+    });
 }
 
 /**
@@ -635,14 +669,7 @@ export async function orchestrationGrounding(
  * @returns The orchestration service response.
  */
 export async function orchestrationChatCompletionImage(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
   const imageFilePath = join(
     import.meta.dirname,
@@ -654,29 +681,38 @@ export async function orchestrationChatCompletionImage(): Promise<OrchestrationR
   const mimeType = 'image/png';
   const encodedString = `data:${mimeType};base64,${await readFile(imageFilePath, 'base64')}`;
 
-  return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user', // image_url content type is only supported in user messages
-        content: [
-          {
-            type: 'text',
-            text: 'Describe the image.'
-          },
-          {
-            type: 'image_url',
-            image_url: {
-              url: '{{?imageUrl}}'
-            }
-          }
-        ]
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
       }
-    ],
-    placeholderValues: {
-      // Alternatively, you can provide a public URL of the image here instead.
-      imageUrl: encodedString
-    }
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user', // image_url content type is only supported in user messages
+          content: [
+            {
+              type: 'text',
+              text: 'Describe the image.'
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: '{{?imageUrl}}'
+              }
+            }
+          ]
+        }
+      ],
+      placeholderValues: {
+        // Alternatively, you can provide a public URL of the image here instead.
+        imageUrl: encodedString
+      }
+    });
 }
 
 /**
@@ -706,41 +742,43 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
       .string()
       .meta({ description: 'The translation of the input sentence.' })
   });
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      prompt: {
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'translation_response',
-            strict: true,
-            schema: toJsonSchema(translationSchema)
-          }
-        }
-      },
-      model: {
-        name: 'gpt-5.4-nano'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
-      },
-      {
-        role: 'user',
-        content: '{{?input}}'
+  const response = await orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        prompt: {
+          response_format: {
+            type: 'json_schema',
+            json_schema: {
+              name: 'translation_response',
+              strict: true,
+              schema: toJsonSchema(translationSchema)
+            }
+          }
+        },
+        model: {
+          name: 'gpt-5.4-nano'
+        }
       }
-    ],
-    placeholderValues: {
-      input: 'Hello World! Why is this phrase so famous?'
-    }
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+        },
+        {
+          role: 'user',
+          content: '{{?input}}'
+        }
+      ],
+      placeholderValues: {
+        input: 'Hello World! Why is this phrase so famous?'
+      }
+    });
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
@@ -777,8 +815,10 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
     }
   };
 
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
+  const orchestrationClient = new Orchestration();
+
+  // define the language model to be used
+  const moduleConfig = {
     promptTemplating: {
       prompt: {
         tools: [addNumbersTool]
@@ -787,10 +827,10 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
         name: 'anthropic--claude-4.5-haiku'
       }
     }
-  });
+  };
 
-  const response = await orchestrationClient.chatCompletion({
-    messages: [
+  const response = await orchestrationClient.config(moduleConfig).create({
+    prompt: [
       {
         role: 'system',
         content: 'You are a helpful AI that performs addition of two numbers.'
@@ -815,8 +855,8 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
   }
 
   // Call the model with a new message and the message history
-  return orchestrationClient.chatCompletion({
-    messages: [toolMessage],
+  return orchestrationClient.config(moduleConfig).create({
+    prompt: [toolMessage],
     messagesHistory: allMessages
   });
 }
@@ -826,43 +866,45 @@ export async function orchestrationMessageHistoryWithToolCalling(): Promise<Orch
  * @returns The orchestration service response.
  */
 export async function orchestrationTranslation(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
-      }
-    },
-    translation: {
-      input: buildTranslationConfig('input', {
-        targetLanguage: 'de-DE',
-        translateMessagesHistory: true,
-        applyTo: [
-          {
-            category: 'placeholders',
-            items: ['user_input'],
-            sourceLanguage: 'en-US'
-          }
-        ]
-      }),
-      output: buildTranslationConfig('output', {
-        sourceLanguage: 'de-DE',
-        targetLanguage: 'en-US'
-      })
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: '{{?user_input}}'
+  return orchestrationClient
+    .config({
+      promptTemplating: {
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
+      },
+      translation: {
+        input: buildTranslationConfig('input', {
+          targetLanguage: 'de-DE',
+          translateMessagesHistory: true,
+          applyTo: [
+            {
+              category: 'placeholders',
+              items: ['user_input'],
+              sourceLanguage: 'en-US'
+            }
+          ]
+        }),
+        output: buildTranslationConfig('output', {
+          sourceLanguage: 'de-DE',
+          targetLanguage: 'en-US'
+        })
       }
-    ],
-    placeholderValues: {
-      user_input:
-        'Write an abstract for a thriller playing at SAP headquarters.'
-    }
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content: '{{?user_input}}'
+        }
+      ],
+      placeholderValues: {
+        user_input:
+          'Write an abstract for a thriller playing at SAP headquarters.'
+      }
+    });
 }
 
 /**
@@ -875,26 +917,32 @@ export async function chatCompletionStreamWithTools(
   controller: AbortController,
   streamOptions?: StreamOptions
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-  const orchestrationClient = new OrchestrationClient({
-    // define the language model to be used
-    promptTemplating: {
-      prompt: {
-        tools: [addNumbersTool]
-      },
-      model: {
-        name: 'anthropic--claude-4.5-haiku'
+  const orchestrationClient = new Orchestration();
+  return orchestrationClient
+    .config({
+      // define the language model to be used
+      promptTemplating: {
+        prompt: {
+          tools: [addNumbersTool]
+        },
+        model: {
+          name: 'anthropic--claude-4.5-haiku'
+        }
       }
-    }
-  });
-  return orchestrationClient.stream(
-    {
-      messages: [
-        { role: 'user', content: 'Add the numbers 2 and 3, as well as 4 and 5' }
-      ]
-    },
-    controller.signal,
-    streamOptions
-  );
+    })
+    .create(
+      {
+        prompt: [
+          {
+            role: 'user',
+            content: 'Add the numbers 2 and 3, as well as 4 and 5'
+          }
+        ],
+        stream: true,
+        streamOptions
+      },
+      { signal: controller.signal }
+    );
 }
 
 /**
@@ -936,23 +984,25 @@ export async function orchestrationEmbeddingWithMasking(): Promise<Orchestration
  * @returns The orchestration service response.
  */
 export async function orchestrationSapAbapChatCompletion(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: {
-        name: 'sap-abap-1',
-        version: 'latest'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: 'Explain the concept of internal tables in ABAP.'
+  const result = await orchestrationClient
+    .config({
+      promptTemplating: {
+        model: {
+          name: 'sap-abap-1',
+          version: 'latest'
+        }
       }
-    ]
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content: 'Explain the concept of internal tables in ABAP.'
+        }
+      ]
+    });
 
   return result;
 }
@@ -963,23 +1013,25 @@ export async function orchestrationSapAbapChatCompletion(): Promise<Orchestratio
  * @returns The orchestration service response with citations.
  */
 export async function orchestrationSonarWithCitations(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: {
-        name: 'sonar',
-        version: 'latest'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  const result = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: 'What are the latest developments in quantum computing?'
+  const result = await orchestrationClient
+    .config({
+      promptTemplating: {
+        model: {
+          name: 'sonar',
+          version: 'latest'
+        }
       }
-    ]
-  });
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content: 'What are the latest developments in quantum computing?'
+        }
+      ]
+    });
 
   return result;
 }
@@ -992,26 +1044,29 @@ export async function orchestrationSonarWithCitations(): Promise<OrchestrationRe
 export async function orchestrationSonarStreamWithCitations(
   controller: AbortController
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: {
-        name: 'sonar',
-        version: 'latest'
-      }
-    }
-  });
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.stream(
-    {
-      messages: [
-        {
-          role: 'user',
-          content: 'What are the latest developments in quantum computing?'
+  return orchestrationClient
+    .config({
+      promptTemplating: {
+        model: {
+          name: 'sonar',
+          version: 'latest'
         }
-      ]
-    },
-    controller.signal
-  );
+      }
+    })
+    .create(
+      {
+        prompt: [
+          {
+            role: 'user',
+            content: 'What are the latest developments in quantum computing?'
+          }
+        ],
+        stream: true
+      },
+      { signal: controller.signal }
+    );
 }
 
 /**
@@ -1019,46 +1074,54 @@ export async function orchestrationSonarStreamWithCitations(
  * @returns The orchestration service response.
  */
 export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient([
-    {
-      // First configuration with a non-orchestration model to trigger module fallback
-      promptTemplating: {
-        model: {
-          name: 'sap-rpt-1.6'
-        }
-      }
-    },
-    {
-      // Second configuration with a slow model with a short timeout to trigger fallback
-      promptTemplating: {
-        model: {
-          name: 'gpt-5.4',
-          timeout: 1, // 1 s timeout to trigger timeout error
-          params: {
-            reasoning_effort: 'high'
-          }
-        }
-      }
-    },
-    {
-      // Third configuration with a valid model that will succeed
-      promptTemplating: {
-        model: {
-          name: 'anthropic--claude-4.5-haiku'
-        }
-      }
-    }
-  ]);
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.chatCompletion({
-    messages: [
+  // With a fallback list, the prompt travels inside each configuration, so every entry can bring its own.
+  const prompt = {
+    template: [
       {
-        role: 'user',
+        role: 'user' as const,
         content:
           'Write a POSIX-compatible shell script that authenticates with SAP AI Core, calls the orchestration service, and sends a chat completion request implementing both input and output content filtering.'
       }
     ]
-  });
+  };
+
+  return orchestrationClient
+    .config([
+      {
+        // First configuration with a non-orchestration model to trigger module fallback
+        promptTemplating: {
+          model: {
+            name: 'sap-rpt-1.6'
+          },
+          prompt
+        }
+      },
+      {
+        // Second configuration with a slow model with a short timeout to trigger fallback
+        promptTemplating: {
+          model: {
+            name: 'gpt-5.4',
+            timeout: 1, // 1 s timeout to trigger timeout error
+            params: {
+              reasoning_effort: 'high'
+            }
+          },
+          prompt
+        }
+      },
+      {
+        // Third configuration with a valid model that will succeed
+        promptTemplating: {
+          model: {
+            name: 'anthropic--claude-4.5-haiku'
+          },
+          prompt
+        }
+      }
+    ])
+    .create();
 }
 
 /**
@@ -1068,28 +1131,39 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
 export async function orchestrationStreamWithFallbackConfigs(): Promise<
   OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
 > {
-  const orchestrationClient = new OrchestrationClient([
-    {
-      promptTemplating: {
-        model: {
-          name: 'sap-rpt-1.6'
-        }
-      }
-    },
-    // In the streaming scenario, timeouts will not trigger module fallback.
-    // Therefore, this is not tested in this example.
-    {
-      promptTemplating: {
-        model: {
-          name: 'anthropic--claude-4.5-haiku'
-        }
-      }
-    }
-  ]);
+  const orchestrationClient = new Orchestration();
 
-  return orchestrationClient.stream({
-    messages: [{ role: 'user', content: 'Give me a short introduction.' }]
-  });
+  // With a fallback list, the prompt travels inside each configuration, so every entry can bring its own.
+  const prompt = {
+    template: [
+      { role: 'user' as const, content: 'Give me a short introduction.' }
+    ]
+  };
+
+  return orchestrationClient
+    .config([
+      {
+        promptTemplating: {
+          model: {
+            name: 'sap-rpt-1.6'
+          },
+          prompt
+        }
+      },
+      // In the streaming scenario, timeouts will not trigger module fallback.
+      // Therefore, this is not tested in this example.
+      {
+        promptTemplating: {
+          model: {
+            name: 'anthropic--claude-4.5-haiku'
+          },
+          prompt
+        }
+      }
+    ])
+    .create({
+      stream: true
+    });
 }
 
 type FileType = 'pdf' | 'csv' | 'docx' | 'mp3';
@@ -1141,35 +1215,38 @@ export async function orchestrationChatCompletionFile(
   const { filename, mimeType, model, instruction } = fileTypeConfig[fileType];
   const modelName = options.model || model;
 
-  const promptTemplating: PromptTemplatingModule = {
-    model: {
-      name: modelName
-    }
-  };
+  const promptTemplating: OrchestrationConfigWithoutPrompt['promptTemplating'] =
+    {
+      model: {
+        name: modelName
+      }
+    };
   if (modelName.startsWith('sonar')) {
     promptTemplating.model.params = {
       disable_search: true
     };
   }
 
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating
-  });
+  const orchestrationClient = new Orchestration();
 
   const filePath = join(import.meta.dirname, '..', 'resources', filename);
   const fileData = `data:${mimeType};base64,${await readFile(filePath, 'base64')}`;
 
-  return orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: instruction },
-          { type: 'file', file: { file_data: fileData, filename } }
-        ]
-      }
-    ]
-  });
+  return orchestrationClient
+    .config({
+      promptTemplating
+    })
+    .create({
+      prompt: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: instruction },
+            { type: 'file', file: { file_data: fileData, filename } }
+          ]
+        }
+      ]
+    });
 }
 
 /**
@@ -1204,14 +1281,16 @@ export function orchestrationChatCompletionMp3File(): Promise<OrchestrationRespo
 export async function orchestrationQwenChatCompletion(
   model = 'qwen3.6-flash'
 ): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: { name: model }
-    }
-  });
-  return orchestrationClient.chatCompletion({
-    messages: [{ role: 'user', content: 'What is the capital of France?' }]
-  });
+  const orchestrationClient = new Orchestration();
+  return orchestrationClient
+    .config({
+      promptTemplating: {
+        model: { name: model }
+      }
+    })
+    .create({
+      prompt: [{ role: 'user', content: 'What is the capital of France?' }]
+    });
 }
 
 /**
@@ -1231,32 +1310,34 @@ export async function orchestrationQwenResponseFormat(
       .string()
       .meta({ description: 'The translation of the input sentence.' })
   });
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      prompt: {
-        response_format: {
-          type: 'json_schema',
-          json_schema: {
-            name: 'translation_response',
-            strict: true,
-            schema: toJsonSchema(translationSchema)
+  const orchestrationClient = new Orchestration();
+  const response = await orchestrationClient
+    .config({
+      promptTemplating: {
+        prompt: {
+          response_format: {
+            type: 'json_schema',
+            json_schema: {
+              name: 'translation_response',
+              strict: true,
+              schema: toJsonSchema(translationSchema)
+            }
           }
-        }
-      },
-      model: { name: model }
-    }
-  });
-  const response = await orchestrationClient.chatCompletion({
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
-      },
-      { role: 'user', content: '{{?input}}' }
-    ],
-    placeholderValues: { input: 'Hello World! Why is this phrase so famous?' }
-  });
+        },
+        model: { name: model }
+      }
+    })
+    .create({
+      prompt: [
+        {
+          role: 'system',
+          content:
+            'You are a helpful AI that translates simple sentences into different languages. The user will provide the sentence. You then choose a language at random and provide the translation.'
+        },
+        { role: 'user', content: '{{?input}}' }
+      ],
+      placeholderValues: { input: 'Hello World! Why is this phrase so famous?' }
+    });
   return JSON.parse(response.getContent()!) as TranslationResponse;
 }
 
@@ -1268,15 +1349,16 @@ export async function orchestrationQwenResponseFormat(
 export async function orchestrationQwenWithToolCalling(
   model = 'qwen3-max'
 ): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
+  const orchestrationClient = new Orchestration();
+  const moduleConfig = {
     promptTemplating: {
       prompt: { tools: [addNumbersTool] },
       model: { name: model }
     }
-  });
+  };
 
-  const response = await orchestrationClient.chatCompletion({
-    messages: [
+  const response = await orchestrationClient.config(moduleConfig).create({
+    prompt: [
       {
         role: 'system',
         content: 'You are a helpful AI that performs addition of two numbers.'
@@ -1295,8 +1377,8 @@ export async function orchestrationQwenWithToolCalling(
     content: `The sum of ${args.a} and ${args.b} is ${args.a + args.b}.`,
     tool_call_id: toolCall.id
   };
-  return orchestrationClient.chatCompletion({
-    messages: [toolMessage],
+  return orchestrationClient.config(moduleConfig).create({
+    prompt: [toolMessage],
     messagesHistory: allMessages
   });
 }
@@ -1309,39 +1391,41 @@ export async function orchestrationQwenWithToolCalling(
 export async function orchestrationCacheControl(): Promise<
   [OrchestrationResponse, OrchestrationResponse]
 > {
-  const orchestrationClient = new OrchestrationClient({
+  const orchestrationClient = new Orchestration();
+
+  const moduleConfig: OrchestrationConfigWithoutPrompt = {
     promptTemplating: {
       model: {
         name: 'anthropic--claude-4.5-haiku'
-      },
-      prompt: {
-        template: [
-          {
-            role: 'system',
-            content: [
-              {
-                type: 'text',
-                // Repeated filler text to exceed Anthropic's minimum cacheable token threshold (4096 tokens for Haiku 4.5).
-                text:
-                  'You are a knowledgeable assistant. ' +
-                  'You have deep expertise in science, technology, history, literature, mathematics, and many other fields. '.repeat(
-                    220
-                  ),
-                cache_control: { type: 'ephemeral', ttl: '5m' }
-              }
-            ]
-          },
-          { role: 'user', content: '{{?question}}' }
-        ]
       }
     }
-  });
+  };
+
+  const prompt: ChatMessages = [
+    {
+      role: 'system',
+      content: [
+        {
+          type: 'text',
+          // Repeated filler text to exceed Anthropic's minimum cacheable token threshold (4096 tokens for Haiku 4.5).
+          text:
+            'You are a knowledgeable assistant. ' +
+            'You have deep expertise in science, technology, history, literature, mathematics, and many other fields. '.repeat(
+              220
+            ),
+          cache_control: { type: 'ephemeral', ttl: '5m' }
+        }
+      ]
+    },
+    { role: 'user', content: '{{?question}}' }
+  ];
 
   const request = {
+    prompt,
     placeholderValues: { question: 'What is the speed of light?' }
   };
 
-  const first = await orchestrationClient.chatCompletion(request);
+  const first = await orchestrationClient.config(moduleConfig).create(request);
   logger.info('First call (cache write):');
   logger.info(first.getContent());
   logger.info(
@@ -1351,7 +1435,7 @@ export async function orchestrationCacheControl(): Promise<
     `Cache tokens read: ${first.getTokenUsage().prompt_tokens_details?.cached_tokens ?? 0}`
   );
 
-  const second = await orchestrationClient.chatCompletion(request);
+  const second = await orchestrationClient.config(moduleConfig).create(request);
   logger.info('Second call (cache read):');
   logger.info(second.getContent());
   logger.info(
@@ -1374,7 +1458,9 @@ export async function orchestrationCacheControl(): Promise<
 export async function orchestrationReasoningContent(
   signal?: AbortSignal
 ): Promise<OrchestrationResponse> {
-  const orchestrationClient = new OrchestrationClient({
+  const orchestrationClient = new Orchestration();
+
+  const moduleConfig = {
     promptTemplating: {
       model: {
         name: 'gemini-3.8-flash',
@@ -1383,11 +1469,11 @@ export async function orchestrationReasoningContent(
         params: { reasoning_effort: 'high' }
       }
     }
-  });
+  };
 
-  const response = await orchestrationClient.chatCompletion(
+  const response = await orchestrationClient.config(moduleConfig).create(
     {
-      messages: [
+      prompt: [
         { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
       ]
     },
@@ -1395,9 +1481,9 @@ export async function orchestrationReasoningContent(
   );
 
   // Pass full message history (includes reasoning blocks) to maintain context.
-  await orchestrationClient.chatCompletion(
+  await orchestrationClient.config(moduleConfig).create(
     {
-      messages: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
+      prompt: [{ role: 'user', content: 'Now do the same for 23 * 19.' }],
       messagesHistory: response.getAllMessages()
     },
     { signal }
@@ -1415,22 +1501,25 @@ export async function orchestrationReasoningContent(
 export async function orchestrationReasoningContentStream(
   controller: AbortController
 ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
-  const orchestrationClient = new OrchestrationClient({
-    promptTemplating: {
-      model: {
-        name: 'gemini-3.8-flash',
-        // reasoning_effort is harmonized across providers; orchestration maps it
-        // to each model's native reasoning configuration.
-        params: { reasoning_effort: 'high' }
+  const orchestrationClient = new Orchestration();
+  return orchestrationClient
+    .config({
+      promptTemplating: {
+        model: {
+          name: 'gemini-3.8-flash',
+          // reasoning_effort is harmonized across providers; orchestration maps it
+          // to each model's native reasoning configuration.
+          params: { reasoning_effort: 'high' }
+        }
       }
-    }
-  });
-  return orchestrationClient.stream(
-    {
-      messages: [
-        { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
-      ]
-    },
-    controller.signal
-  );
+    })
+    .create(
+      {
+        prompt: [
+          { role: 'user', content: 'Explain step by step: what is 15 * 17?' }
+        ],
+        stream: true
+      },
+      { signal: controller.signal }
+    );
 }

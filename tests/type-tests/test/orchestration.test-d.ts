@@ -1,5 +1,6 @@
 import {
   OrchestrationClient,
+  Orchestration,
   buildAzureContentSafetyFilter,
   buildDocumentGroundingConfig,
   buildLlamaGuard38BFilter,
@@ -964,4 +965,108 @@ expectType<OrchestrationError[] | undefined>(
       }
     ]).chatCompletion()
   ).getIntermediateFailures()
+);
+
+/**
+ * Fluent builder API — prompt gating and stream-overload typing.
+ */
+const builderClient = new Orchestration();
+const inlineConfig = {
+  promptTemplating: { model: { name: 'gpt-5.4-nano' } }
+} as const;
+const builderConfigRef: OrchestrationConfigRef = { id: 'config-id' };
+
+// `config` builder: non-streaming `create` returns a response.
+expectType<Promise<OrchestrationResponse>>(
+  builderClient.config(inlineConfig).create({
+    prompt: [{ role: 'user', content: 'Hello' }]
+  })
+);
+
+// `config` builder: `stream: true` returns a stream response.
+expectType<
+  Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>
+>(builderClient.config(inlineConfig).create({ stream: true }));
+
+// `config` builder: empty `create` returns a non-streaming response.
+expectType<Promise<OrchestrationResponse>>(
+  builderClient.config(inlineConfig).create()
+);
+
+// `config` entry: config-time `tools` and `response_format` are still allowed (they are not the per-call prompt).
+expectType<Promise<OrchestrationResponse>>(
+  builderClient
+    .config({
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' },
+        prompt: { response_format: { type: 'text' }, tools: [] }
+      }
+    })
+    .create({ prompt: [{ role: 'user', content: 'Hello' }] })
+);
+
+// `config` entry: a config whose prompt is an inline template resolves to the template builder; `create` omits `prompt`.
+expectType<Promise<OrchestrationResponse>>(
+  builderClient
+    .config({
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' },
+        prompt: {
+          template: [{ role: 'system', content: 'You are helpful.' }]
+        }
+      }
+    })
+    .create({ placeholderValues: { country: 'France' } })
+);
+
+// `config` entry: a config whose prompt is a `template_ref` resolves to the template builder; `create` omits `prompt`.
+expectType<Promise<OrchestrationResponse>>(
+  builderClient
+    .config({
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' },
+        prompt: { template_ref: { id: 'template-id' } }
+      }
+    })
+    .create({ placeholderValues: { country: 'France' } })
+);
+
+// `config` entry (template builder): `create` does not accept a `prompt`.
+expectError(
+  builderClient
+    .config({
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano' },
+        prompt: { template_ref: { id: 'template-id' } }
+      }
+    })
+    .create({ prompt: [{ role: 'user', content: 'Hello' }] })
+);
+
+// `configRef` builder: `create` does not accept a `prompt`.
+expectError(
+  builderClient
+    .config(builderConfigRef)
+    .create({ prompt: [{ role: 'user', content: 'Hello' }] })
+);
+
+// `configList` builder: `create` does not accept a `prompt`.
+expectError(
+  builderClient
+    .config([inlineConfig])
+    .create({ prompt: [{ role: 'user', content: 'Hello' }] })
+);
+
+// `rawConfigJson` builder: `create` does not accept a `prompt`.
+expectError(
+  builderClient
+    .rawConfigJson('{}')
+    .create({ prompt: [{ role: 'user', content: 'Hello' }] })
+);
+
+// `streamOptions` is only typeable alongside `stream: true`.
+expectError(
+  builderClient
+    .config(inlineConfig)
+    .create({ streamOptions: { global: { chunk_size: 10 } } })
 );

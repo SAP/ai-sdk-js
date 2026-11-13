@@ -1,5 +1,9 @@
 export type {
   OrchestrationModuleConfig,
+  OrchestrationConfigWithoutTemplate as OrchestrationConfigWithoutPrompt,
+  OrchestrationConfigWithTemplate,
+  OrchestrationConfigWithInlineTemplate,
+  OrchestrationConfigWithTemplateRef,
   OrchestrationModuleConfigList,
   OrchestrationConfigRef,
   OrchestrationConfigRefById,
@@ -12,6 +16,9 @@ export type {
   TranslationModule,
   PromptTemplate,
   ChatCompletionRequest,
+  OrchestrationCreateOptions,
+  OrchestrationCreateOptionsWithPrompt,
+  OrchestrationCreateRequestConfig,
   RequestOptions,
   StreamOptions,
   StreamOptionsWithOverrides,
@@ -61,6 +68,12 @@ export { OrchestrationStreamResponse } from './orchestration-stream-response.ts'
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 export { OrchestrationStream } from './orchestration-stream.ts';
 export { OrchestrationClient } from './orchestration-client.ts';
+export { Orchestration } from './orchestration.ts';
+export type {
+  OrchestrationConfigBuilder,
+  OrchestrationConfigWithTemplateBuilder,
+  OrchestrationRawConfigJsonBuilder
+} from './builders/index.ts';
 export { OrchestrationResponse } from './orchestration-response.ts';
 export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
 export { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
@@ -97,5 +110,6 @@ export type {
   FunctionObject,
   Error as OrchestrationError,
   Citation,
-  ReasoningBlock
+  ReasoningBlock,
+  OrchestrationConfig
 } from './client/api/schema/index.ts';
