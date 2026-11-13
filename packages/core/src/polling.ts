@@ -1,4 +1,8 @@
 import { setTimeout as delay } from 'node:timers/promises';
+import { OpenApiRequestBuilder } from './openapi-request-builder.ts';
+
+import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+import type { CustomRequestConfig, HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const DEFAULT_MAX_WAIT_MS = 60 * 60 * 1_000;
 const DEFAULT_INTERVAL_MS = 5_000;
@@ -268,4 +272,127 @@ async function sleepWithSignal(
     }
     remaining -= currentDelay;
   }
+}
+
+/**
+ * Describes how to poll one asynchronous operation to completion.
+ * @typeParam StatusT - The status resource type returned by `statusRead`.
+ */
+export interface AsyncFlowDescriptor<StatusT> {
+  /**
+   * Builds the status-read request from the initial `202 Accepted` response.
+   * The raw response is provided so the status URL can be taken from a `Location`
+   * header or the response body when needed.
+   */
+  statusRead: (created: HttpResponse) => OpenApiRequestBuilder<StatusT>;
+  /** Returns true when the status resource has reached a successful terminal state. */
+  isComplete: (status: StatusT) => boolean;
+  /** Returns a failure/partial outcome if the status resource reached a failed or partial terminal state. */
+  getFailure?: (status: StatusT) => PollFailure | undefined;
+}
+
+/**
+ * Options for {@link createAndWait}.
+ */
+export interface CreateAndWaitOptions {
+  /** The destination to execute the requests against. */
+  destination?: HttpDestinationOrFetchOptions;
+  /** Custom request configuration forwarded to both the create and the status requests. */
+  requestConfig?: CustomRequestConfig;
+  /** Wall-clock budget in milliseconds before a {@link PollTimeoutError} is thrown. */
+  maxWaitTime?: number;
+  /** Base interval between polls in milliseconds. */
+  intervalMs?: number;
+  /** Backoff strategy for the wait between polls. Defaults to a fixed interval. */
+  backoff?: Backoff;
+  /** Signal that cancels polling and waiting. */
+  signal?: AbortSignal;
+  /** Called after each successful poll with the current status resource. */
+  onPoll?: (status: unknown) => void;
+}
+
+/**
+ * Options for {@link deleteAndWait}.
+ */
+export interface DeleteAndWaitOptions extends CreateAndWaitOptions {
+  /**
+   * When true, a `404` from the status read is treated as "deleted".
+   * Only honored because the delete request itself returned a success status first,
+   * which proves the resource existed — so a `404` for a never-created, mistyped, or
+   * unauthorized resource cannot be mistaken for a successful deletion.
+   */
+  notFoundMeansDeleted?: boolean;
+}
+
+/**
+ * Runs an asynchronous create (or trigger) operation and polls until it reaches a terminal state.
+ *
+ * Executes the `202 Accepted` request builder, then polls the status request described by
+ * `descriptor` until completion. Standard {@link OpenApiRequestBuilder} ergonomics are preserved:
+ * `destination` and `requestConfig` are forwarded to both requests.
+ * @typeParam StatusT - The status resource type.
+ * @param builder - The request builder for the asynchronous operation (returns `202`).
+ * @param descriptor - How to read and interpret the status resource.
+ * @param options - Polling and request configuration.
+ * @returns The terminal {@link PollResult}.
+ */
+export async function createAndWait<StatusT>(
+  builder: OpenApiRequestBuilder<unknown>,
+  descriptor: AsyncFlowDescriptor<StatusT>,
+  options: CreateAndWaitOptions = {}
+): Promise<PollResult<StatusT>> {
+  const { destination, requestConfig, ...pollOptions } = options;
+  const created = await builder.executeRaw(destination, requestConfig);
+  return pollUntilTerminal<StatusT>({
+    read: signal =>
+      descriptor
+        .statusRead(created)
+        .execute(destination, { ...requestConfig, signal }),
+    isComplete: descriptor.isComplete,
+    getFailure: descriptor.getFailure,
+    ...pollOptions
+  });
+}
+
+/**
+ * Runs an asynchronous delete operation and polls until the resource is gone.
+ *
+ * Executes the delete request builder (proving the resource existed), then polls the status
+ * request until it reports a terminal state or — when {@link DeleteAndWaitOptions.notFoundMeansDeleted}
+ * is set — returns a `404`.
+ * @typeParam StatusT - The status resource type.
+ * @param builder - The request builder for the delete operation (returns `202`).
+ * @param descriptor - How to read and interpret the status resource.
+ * @param options - Polling and request configuration.
+ * @returns The terminal {@link PollResult}; the resource is `undefined` when a `404` ended polling.
+ */
+export async function deleteAndWait<StatusT>(
+  builder: OpenApiRequestBuilder<unknown>,
+  descriptor: AsyncFlowDescriptor<StatusT>,
+  options: DeleteAndWaitOptions = {}
+): Promise<PollResult<StatusT | undefined>> {
+  const { destination, requestConfig, notFoundMeansDeleted, ...pollOptions } =
+    options;
+  // The delete request must succeed first; executeRaw throws on a non-2xx response,
+  // so reaching this point proves the resource existed.
+  const deleted = await builder.executeRaw(destination, requestConfig);
+  return pollUntilTerminal<StatusT | undefined>({
+    read: async signal => {
+      try {
+        return await descriptor
+          .statusRead(deleted)
+          .execute(destination, { ...requestConfig, signal });
+      } catch (error) {
+        if (notFoundMeansDeleted && getHttpStatus(error) === 404) {
+          return undefined;
+        }
+        throw error;
+      }
+    },
+    isComplete: status =>
+      status === undefined || descriptor.isComplete(status),
+    getFailure: status =>
+      status === undefined ? undefined : descriptor.getFailure?.(status),
+    ...pollOptions
+  });
 }

@@ -1,11 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   PollTimeoutError,
+  createAndWait,
+  deleteAndWait,
   pollEach,
   pollUntilTerminal
 } from './polling.ts';
 import type { Mock } from 'vitest';
-import type { PollEngineOptions } from './polling.ts';
+import type { AsyncFlowDescriptor, PollEngineOptions } from './polling.ts';
+import type { OpenApiRequestBuilder } from './openapi-request-builder.ts';
 
 interface Status {
   status: 'PENDING' | 'ACTIVE' | 'ERROR' | 'PARTIAL';
@@ -233,5 +236,60 @@ describe('pollEach', () => {
     expect(first.value).toEqual({ status: 'PENDING' });
     await iterator.return?.(undefined as never);
     expect(read).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('createAndWait / deleteAndWait', () => {
+  function builderStub(): OpenApiRequestBuilder<unknown> {
+    return {
+      executeRaw: vi.fn(async () => ({
+        status: 202,
+        data: {},
+        headers: {},
+        request: {}
+      }))
+    } as unknown as OpenApiRequestBuilder<unknown>;
+  }
+
+  function statusBuilder(execute: () => Promise<Status>): OpenApiRequestBuilder<Status> {
+    return { execute: vi.fn(execute) } as unknown as OpenApiRequestBuilder<Status>;
+  }
+
+  const descriptor = (execute: () => Promise<Status>): AsyncFlowDescriptor<Status> => ({
+    statusRead: () => statusBuilder(execute),
+    isComplete: (s: Status) => s.status === 'ACTIVE',
+    getFailure: (s: Status) =>
+      s.status === 'ERROR' ? { outcome: 'failure', reason: 'failed' } : undefined
+  });
+
+  it('createAndWait polls the status read until complete', async () => {
+    const queue: Status[] = [{ status: 'PENDING' }, { status: 'ACTIVE' }];
+    const result = await createAndWait(builderStub(), descriptor(async () => queue.shift()!), {
+      intervalMs: 0
+    });
+    expect(result).toEqual({ outcome: 'success', resource: { status: 'ACTIVE' } });
+  });
+
+  it('deleteAndWait treats a 404 as deleted only when notFoundMeansDeleted is set', async () => {
+    const result = await deleteAndWait(
+      builderStub(),
+      descriptor(async () => {
+        throw { status: 404 };
+      }),
+      { intervalMs: 0, notFoundMeansDeleted: true }
+    );
+    expect(result).toEqual({ outcome: 'success', resource: undefined });
+  });
+
+  it('deleteAndWait propagates a 404 when notFoundMeansDeleted is not set', async () => {
+    await expect(
+      deleteAndWait(
+        builderStub(),
+        descriptor(async () => {
+          throw { status: 404 };
+        }),
+        { intervalMs: 0 }
+      )
+    ).rejects.toEqual({ status: 404 });
   });
 });

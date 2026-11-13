@@ -18,10 +18,19 @@ export type {
   LlmBatchModel
 } from './model-types.ts';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';
-export { pollEach, pollUntilTerminal, PollTimeoutError } from './polling.ts';
+export {
+  pollEach,
+  pollUntilTerminal,
+  createAndWait,
+  deleteAndWait,
+  PollTimeoutError
+} from './polling.ts';
 export type {
   PollFailure,
   PollResult,
   Backoff,
-  PollEngineOptions
+  PollEngineOptions,
+  AsyncFlowDescriptor,
+  CreateAndWaitOptions,
+  DeleteAndWaitOptions
 } from './polling.ts';
