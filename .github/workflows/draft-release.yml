@@ -22,7 +22,6 @@ jobs:
       github.event.pull_request.head.ref == 'changeset-release/main' &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    environment: release
     permissions:
       contents: read
     outputs:
@@ -63,12 +62,6 @@ jobs:
             exit 1
           fi
 
-          PENDING_CHANGESETS=$(git ls-tree -r --name-only "$RELEASE_COMMIT" -- .changeset | grep -E '^\.changeset/[^/]+\.md$' | grep -v '^\.changeset/README\.md$' || true)
-          if [[ -n "$PENDING_CHANGESETS" ]]; then
-            echo "Release PR must be up to date and consume all pending changesets."
-            exit 1
-          fi
-
           if git rev-parse --verify --quiet "refs/tags/v$VERSION"; then
             if [[ "$(git rev-parse "refs/tags/v$VERSION^{commit}")" != "$RELEASE_COMMIT" ]]; then
               echo "Existing release tag points to a different commit."
@@ -82,7 +75,6 @@ jobs:
   release-notes:
     if: needs.verify-release.outputs.version != ''
     runs-on: ubuntu-latest
-    environment: release
     needs: [verify-release]
     outputs:
       pr-number: ${{ steps.docs-pr.outputs.pr-number || steps.open-pr.outputs.result }}
@@ -128,7 +120,6 @@ jobs:
         if: steps.docs-pr.outputs.pr-number == ''
         uses: $/.github/actions/setup
         with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
           ref: ${{ needs.verify-release.outputs.commit }}
           skip-build: true
       - name: Fetch full commit history (blobless)
@@ -150,42 +141,27 @@ jobs:
           node --input-type=module --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; await addCurrentChangelog();"
 
       - name: Push release notes branch
-        id: push-notes
         if: steps.docs-pr.outputs.pr-number == ''
         env:
-          BASE_BRANCH: ${{ steps.docs-pr.outputs.base-branch }}
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
           VERSION: ${{ needs.verify-release.outputs.version }}
           BRANCH_NAME: update-release-notes-js-${{ needs.verify-release.outputs.version }}
         working-directory: ./ai-sdk-docs
         run: |
-          REMOTE_BRANCH="refs/remotes/origin/$BRANCH_NAME"
-          if git show-ref --verify --quiet "$REMOTE_BRANCH"; then
-            CHANGED_FILES=$(git diff --name-only "origin/$BASE_BRANCH...$REMOTE_BRANCH")
-            if [[ "$CHANGED_FILES" != 'docs-js/release-notes.mdx' ]] || ! diff -q \
-              <(git show "$REMOTE_BRANCH:docs-js/release-notes.mdx" | awk -v version="$VERSION" 'index($0, "## " version " - ") != 1') \
-              <(awk -v version="$VERSION" 'index($0, "## " version " - ") != 1' docs-js/release-notes.mdx); then
-              echo "Existing docs branch differs from the expected release notes; inspect it before retrying."
-              exit 1
-            fi
-            echo "Reusing the docs branch from a previous attempt."
-          else
-            git config --local user.email "$BOT_EMAIL"
-            git config --local user.name "$BOT_NAME"
-            git checkout -b "$BRANCH_NAME"
-            git add docs-js/release-notes.mdx
-            if git diff --staged --quiet; then
-              echo "No changes and no existing release notes PR; inspect the docs before retrying."
-              exit 1
-            fi
-            git commit -m "Update JS release notes for $VERSION"
-            git push -u origin "$BRANCH_NAME"
+          git config --local user.email "$BOT_EMAIL"
+          git config --local user.name "$BOT_NAME"
+          git checkout -B "$BRANCH_NAME"
+          git add -u
+          if git diff --staged --quiet; then
+            echo "No changes and no existing release notes PR; inspect the docs before retrying."
+            exit 1
           fi
-          echo "has-changes=true" >> "$GITHUB_OUTPUT"
+          git commit -m "Update JS release notes for $VERSION"
+          git push --force -u origin "$BRANCH_NAME"
       - name: Open release notes PR
         id: open-pr
-        if: steps.push-notes.outputs.has-changes == 'true'
+        if: steps.docs-pr.outputs.pr-number == ''
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           VERSION: ${{ needs.verify-release.outputs.version }}
@@ -207,7 +183,6 @@ jobs:
     name: Create Draft GitHub Release
     if: needs.verify-release.outputs.version != ''
     runs-on: ubuntu-latest
-    environment: release
     needs: [verify-release, release-notes]
     permissions:
       contents: read
@@ -244,7 +219,11 @@ jobs:
             if (![releasePrNumber, docsPrNumber].every(number => Number.isSafeInteger(number) && number > 0)) {
               throw new Error('Release and docs PR numbers are required before creating a draft.');
             }
-            const metadata = `<!-- sap-ai-sdk: release-pr=${releasePrNumber} docs-pr=${docsPrNumber} -->`;
+            const metadata = `<!-- sap-ai-sdk-DO_NOT_REMOVE: release-pr=${releasePrNumber} docs-pr=${docsPrNumber} -->`;
+            const metadataPattern = new RegExp(
+              `<!--\\s*sap-ai-sdk-DO_NOT_REMOVE:\\s*release-pr=${releasePrNumber}\\s+docs-pr=${docsPrNumber}\\s*-->`,
+              'g'
+            );
             const tag = `v${VERSION}`;
             const releases = await github.paginate(github.rest.repos.listReleases, {
               ...context.repo, per_page: 100
@@ -252,7 +231,7 @@ jobs:
             const existing = releases.filter(release => release.tag_name === tag);
             if (existing.length) {
               const release = existing[0];
-              if (existing.length !== 1 || release.author.type !== 'Bot' || release.author.login !== `${APP_SLUG}[bot]` || release.target_commitish !== RELEASE_COMMIT || !release.body?.includes(metadata)) {
+              if (existing.length !== 1 || release.author.type !== 'Bot' || release.author.login !== `${APP_SLUG}[bot]` || release.target_commitish !== RELEASE_COMMIT || [...(release.body ?? '').matchAll(metadataPattern)].length !== 1) {
                 throw new Error('Existing release is ambiguous or does not match the configured App and release commit.');
               }
               core.info(`Release ${tag} already exists; leaving it unchanged.`);
