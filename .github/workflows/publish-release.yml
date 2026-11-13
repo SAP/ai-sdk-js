@@ -79,8 +79,10 @@ jobs:
         with:
           package-manager-cache: false
       - name: publish
-        run: |
-          pnpm changeset publish
+        env:
+          GIT_COMMITTER_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+        run: pnpm changeset publish
 
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)

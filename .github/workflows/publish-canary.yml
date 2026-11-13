@@ -53,6 +53,8 @@ jobs:
       - name: publish
         if: steps.check-changes.outputs.skip != 'true'
         env:
+          GIT_COMMITTER_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
           INPUTS_TAG: ${{ inputs.tag || 'canary' }}
         run: |
           if [ "${INPUTS_TAG}" = "latest" ] || [[ "${INPUTS_TAG}" == v* ]]; then
