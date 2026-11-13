@@ -80,6 +80,8 @@ pnpm lint:fix
 
 ## Releases
 
+Create release notes with `pnpm changeset`; inspect planned releases with `pnpm changeset status`.
+
 To release a new version, ensure that the following prerequisites are met:
 
 - The smoke tests are passing.
@@ -89,10 +91,10 @@ To release a new version, ensure that the following prerequisites are met:
 If this is the case, follow these steps:
 
 1. **Bump the version**: Execute the `bump` workflow from the `main` branch.
-   If you want to release a new major version, enter the full major version as a precaution.
-   Skip providing a version for minor and patch version releases.
+   For a major release, set `majorVersion` to the exact target version, such as `3.0.0`.
+   Leave it empty for minor and patch releases.
    This bumps the version on the `main` branch and creates a tag and draft release with release notes on GitHub.
-2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**. This triggers the `publish` workflow that publishes the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
+2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**. This triggers the `publish-release` workflow, which runs `pnpm changeset publish` to publish the new version to [`npmjs.com`](https://www.npmjs.com/settings/sap-ai-sdk/packages).
 
 Finally, check that everything is published as expected on npm.
 
