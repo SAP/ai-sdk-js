@@ -17,7 +17,6 @@ jobs:
   release-pr:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: release
     steps:
       - name: Generate GitHub App token
         id: app-token
