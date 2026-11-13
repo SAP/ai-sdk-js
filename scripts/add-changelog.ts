@@ -5,7 +5,7 @@ import { promisify } from 'node:util';
 import { getPackageVersion } from './get-package-version.ts';
 
 const COMMIT_LINK_PREFIX = 'https://github.com/SAP/ai-sdk-js/commit/';
-const COMMIT_HASH_REFERENCE = /\(([0-9a-f]{7,40})\)$/gm;
+const COMMIT_HASH_REFERENCE = /\(([0-9a-f]{7,40}(?:, [0-9a-f]{7,40})*)\)$/gm;
 const execFileAsync = promisify(execFile);
 
 async function expandCommitHash(commitHash: string): Promise<string | null> {
@@ -17,31 +17,55 @@ async function expandCommitHash(commitHash: string): Promise<string | null> {
   }
 }
 
+async function abbreviateCommitHash(
+  commitHash: string
+): Promise<string | null> {
+  const { stdout } = await execFileAsync('git', [
+    'rev-parse',
+    '--short',
+    commitHash
+  ]);
+  return stdout.trim();
+}
+
 /**
- * Converts changelog commit hash references to GitHub commit links.
+ * Converts single and grouped changelog commit references to GitHub links with short labels.
  * @param changelog - Changelog content.
- * @param resolveCommitHash - Resolver that expands short commit hashes.
+ * @param resolveCommitHash - Resolver that expands legacy short commit hashes.
+ * @param resolveShortCommitHash - Resolver that abbreviates full commit hashes for link labels.
  * @returns Changelog content with linked commit hashes.
  */
 export async function linkCommitHashes(
   changelog: string,
-  resolveCommitHash = expandCommitHash
+  resolveCommitHash = expandCommitHash,
+  resolveShortCommitHash = abbreviateCommitHash
 ): Promise<string> {
   const replacements = await Promise.all(
     [...changelog.matchAll(COMMIT_HASH_REFERENCE)].map(async match => {
-      let expandedCommitHash: string | null;
+      const commitReferences = await Promise.all(
+        match[1].split(', ').map(async commitHash => {
+          try {
+            const isFullHash = commitHash.length === 40;
+            const expandedCommitHash = isFullHash
+              ? commitHash
+              : await resolveCommitHash(commitHash);
+            if (!expandedCommitHash) {
+              return commitHash;
+            }
+            const shortCommitHash = isFullHash
+              ? await resolveShortCommitHash(commitHash)
+              : commitHash;
 
-      try {
-        expandedCommitHash = await resolveCommitHash(match[1]);
-      } catch {
-        expandedCommitHash = null;
-      }
+            return shortCommitHash
+              ? `[${shortCommitHash}](${COMMIT_LINK_PREFIX}${expandedCommitHash})`
+              : commitHash;
+          } catch {
+            return commitHash;
+          }
+        })
+      );
 
-      return {
-        match: match[0],
-        commitHash: match[1],
-        expandedCommitHash
-      };
+      return `(${commitReferences.join(', ')})`;
     })
   );
 
@@ -50,11 +74,7 @@ export async function linkCommitHashes(
     if (!replacement) {
       throw new Error('Could not find replacement for commit hash.');
     }
-    if (!replacement.expandedCommitHash) {
-      return replacement.match;
-    }
-
-    return `([${replacement.commitHash}](${COMMIT_LINK_PREFIX}${replacement.expandedCommitHash}))`;
+    return replacement;
   });
 }
 

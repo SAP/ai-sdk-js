@@ -37,7 +37,7 @@ async function formatChangelog(
   );
   const commits = await getCommitsThatAddFiles(
     changesets.map(changeset => `.changeset/${changeset.id}.md`),
-    { cwd, short: true }
+    { cwd }
   );
   const entries = new Map<string, ChangelogEntry>();
 
