@@ -117,6 +117,7 @@ jobs:
               owner, repo, state: 'all', head: `${owner}:${branch}`, base, per_page: 100
             });
             const pr = prs.find(pr =>
+              (pr.state === 'open' || pr.merged_at !== null) &&
               pr.user?.type === 'Bot' && pr.user.login === `${process.env.APP_SLUG}[bot]` &&
               pr.head.ref === branch && pr.head.repo?.full_name === `${owner}/${repo}` &&
               pr.base.ref === base && pr.base.repo.full_name === `${owner}/${repo}`
