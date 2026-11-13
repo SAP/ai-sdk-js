@@ -18,8 +18,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: release
-    outputs:
-      version: ${{ steps.release-version.outputs.version }}
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -33,9 +31,8 @@ jobs:
         with:
           ref: ${{ github.sha }}
           token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: true
-      - name: Fetch full commit history and tags (blobless)
-        run: git fetch --filter=blob:none --tags --unshallow
+      - name: Fetch full commit history (blobless)
+        run: git fetch --filter=blob:none --unshallow
       - name: Create or update release PR
         uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
@@ -44,97 +41,3 @@ jobs:
           commit-message: 'chore: version packages'
           pr-title: 'chore: version packages'
           pr-draft: create
-      - name: Check for an untagged release
-        id: release-version
-        run: |
-          VERSION=$(git show "$GITHUB_SHA:package.json" | node -p "JSON.parse(require('node:fs').readFileSync(0, 'utf8')).version")
-          if ! git rev-parse --verify --quiet "refs/tags/v$VERSION"; then
-            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Tag release
-        if: steps.release-version.outputs.version != ''
-        env:
-          VERSION: ${{ steps.release-version.outputs.version }}
-          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
-          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-        run: |
-          git config --local user.email "$BOT_EMAIL"
-          git config --local user.name "$BOT_NAME"
-          git tag "v$VERSION" "$GITHUB_SHA" -m "v$VERSION"
-          git push origin "refs/tags/v$VERSION"
-  release-notes:
-    if: needs.release-pr.outputs.version != ''
-    runs-on: ubuntu-latest
-    environment: release
-    needs: [release-pr]
-    outputs:
-      pr-url: ${{ steps.open-pr.outputs.pr-url }}
-    permissions:
-      contents: read
-    steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        with:
-          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
-          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
-          owner: SAP
-          repositories: ai-sdk
-          permission-contents: write
-          permission-pull-requests: write
-      - name: Checkout current repository
-        uses: $/.github/actions/setup
-        with:
-          node-version: ${{ vars.DEFAULT_NODE_VERSION }}
-          ref: ${{ github.sha }}
-      - name: Fetch full commit history (blobless)
-        run: git fetch --filter=blob:none --unshallow
-
-      - name: Checkout Docs Repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: SAP/ai-sdk
-          token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
-          path: ./ai-sdk-docs
-          persist-credentials: true
-      - name: Update release notes file
-        id: update-notes
-        run: |
-          node --input-type=module --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; await addCurrentChangelog();"
-
-      - name: Open release notes PR
-        id: open-pr
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
-          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
-          VERSION: ${{ needs.release-pr.outputs.version }}
-          BRANCH_NAME: update-release-notes-js-${{ needs.release-pr.outputs.version }}
-        working-directory: ./ai-sdk-docs
-        run: |
-          git config --local user.email "$BOT_EMAIL"
-          git config --local user.name "$BOT_NAME"
-          git checkout -b "$BRANCH_NAME"
-
-          # Stage release notes
-          git add docs-js/release-notes.mdx
-
-          if git diff --staged --quiet; then
-            echo "No changes to commit."
-            # Output an empty pr-url if no changes
-            echo "pr-url=" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "Update JS release notes for $VERSION"
-            git push -u origin "$BRANCH_NAME"
-            PR_BODY="Auto-created by release-pr workflow."
-            PR_TITLE="chore: Update JS Release Notes for $VERSION"
-            PR_URL=$(gh pr create --head "$BRANCH_NAME" --title "${PR_TITLE}" --body "${PR_BODY}" --repo "SAP/ai-sdk")
-            echo "Release notes PR created: $PR_URL"
-            if [[ -n "$PR_URL" ]]; then
-              echo "pr-url=$PR_URL" >> "$GITHUB_OUTPUT"
-            else
-              echo "Failed to create PR or extract URL."
-              echo "pr-url=" >> "$GITHUB_OUTPUT"
-            fi
-          fi
