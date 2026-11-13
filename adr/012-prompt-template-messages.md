@@ -62,44 +62,44 @@ The fix is acknowledged but not yet committed, and there is no workaround.
 The client exposes a **fluent builder**.
 An entry method on the client selects the configuration source and returns a builder.
 The entry method determines, **at the type level**, whether a prompt may still be supplied.
-A terminal `run()` sends the request, and `stream()` sits beside it for streaming.
+A terminal `create()` sends the request; passing `stream: true` streams it.
 
 ```ts
-client.config(configWithoutPrompt).prompt([message]).run();
-client.configRef(configRef).run();
-client.configRef([configRef]).run();
-client.configList([configWithPrompt]).run();
-client.raw().config(configInGeneratedFormat).run();
-client.raw().configJson(jsonString).run();
+client.config(configWithoutPrompt).create({ prompt: [message] });
+client.configRef(configRef).create();
+client.configList([configWithPrompt]).create();
+client.rawConfig(configInGeneratedFormat).create();
+client.rawConfigJson(jsonString).create();
 ```
 
 The design rests on one idea: the prompt travels with whichever source owns it, and the builder type reflects that.
 
-- `config(config)` takes a configuration whose type **omits** the prompt, so the builder it returns offers `.prompt([...])`.
+- `config(config)` takes a configuration whose type **omits** the prompt, so the builder it returns accepts `prompt` in `create({ prompt: [...] })`.
   The caller supplies the prompt per call, and it is the only path that does.
-- `configRef(ref)` and `configRef([ref])` take one or more references to a server-side template.
-  The template lives in the registry, so the returned builder offers **no** `.prompt()` — the prompt is already defined remotely.
+- `configRef(ref)` takes a reference to a server-side template.
+  The template lives in the registry, so the returned builder's `create()` **omits** `prompt` — the prompt is already defined remotely.
 - `configList([config])` takes a fallback list where **each** configuration carries its own prompt.
   A fallback list is tried in order until one configuration succeeds, and a fallback from a premium model to a cheaper one often needs a different prompt per entry.
   Carrying the prompt inside each configuration is what lets every entry bring its own.
-  The returned builder offers no `.prompt()`, because the prompts already live inside the configurations.
-- `raw().config(config)` and `raw().configJson(json)` are the low-level escape hatch.
+  The returned builder's `create()` omits `prompt`, because the prompts already live inside the configurations.
+- `rawConfig(config)` and `rawConfigJson(json)` are the low-level escape hatch.
   They accept the generated request format — a typed `OrchestrationConfig` object or its JSON string — which already specifies everything, prompts and fallback list included.
-  These builders are terminal: `run()` and `stream()`, no `.prompt()`.
+  Their `create()` omits `prompt`.
 
-Because the entry method fixes whether `.prompt()` exists, no runtime throw is needed to reject a prompt where none is allowed — a misuse does not compile.
-`run()` and `stream()` take an optional `{ messagesHistory?, placeholderValues? }` for the per-call inputs that are not the prompt.
-The exact option shapes, and the builder type names, are left to a proof of concept.
+Because the entry method fixes whether `create()` accepts a prompt, no runtime throw is needed to reject a prompt where none is allowed — a misuse does not compile.
+`create(body, requestConfig?)` takes the per-call inputs in `body` (`messagesHistory?`, `placeholderValues?`, `stream?`, `streamOptions?`, and — on the `config` builder only — `prompt?`), and transport concerns (`signal`, `headers`) in the optional second argument.
+The return type is overloaded on `body.stream`: `true` yields a stream response, otherwise a single completion response.
 
 **Impact on existing consumers**: The LangChain integration's `OrchestrationClient` (`packages/langchain/src/orchestration/client.ts`) depends on the `messages` field as its only runtime channel.
 It maps the combined LangChain message list and passes it as `chatCompletion({ messages, ... })`, keeping the template in the constructor config.
-Migrating it means building its request through `config(...).prompt(...)` instead.
+Migrating it means building its request through `config(...).create({ prompt })` instead.
+The existing `chatCompletion()` and `stream()` methods remain, deprecated, so this migration can land separately.
 
 ### Consequences
 
 Per-fallback prompts become expressible: `configList` carries a prompt inside each configuration.
 The question of whether a prompt is allowed is answered by the type system rather than a runtime check, so invalid combinations fail to compile instead of throwing.
-The generated `OrchestrationConfig` type must be exported publicly to back `raw().config()`; today it is reachable only through the internal entry point.
+The generated `OrchestrationConfig` type must be exported publicly to back `rawConfig()`; today it is reachable only through the internal entry point.
 The trade-off is a larger API surface: five entry methods and their builders replace a single `chatCompletion()` call, and callers must learn which entry point matches their configuration source.
 
 ## Alternatives
