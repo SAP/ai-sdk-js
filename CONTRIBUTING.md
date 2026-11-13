@@ -90,7 +90,7 @@ To release a new version, ensure that the following prerequisites are met:
 
 If this is the case, follow these steps:
 
-1. **Review and merge the release PR**: The `release-pr` workflow creates a draft Changesets release PR or updates the existing one after changesets reach `main`.
+1. **Review and merge the release PR**: The `release-pr` workflow creates a draft hangesets release PR or updates the existing one after changesets reach `main`.
    Mark it ready for review and check the target version and changelogs, including any major version bump, before merging.
    After the merge, the workflow creates a tag, a draft GitHub release and the documentation release-notes PR.
 2. **Publish to npm**: Find the draft release in the [GitHub releases](https://github.com/SAP/ai-sdk-js/releases), check the release notes, and press **Publish release**.
