@@ -20,35 +20,6 @@ packages:
   - .github/actions/check-public-api
   - .github/actions/get-changelog
   - .github/actions/changesets-fixed-version-bump
-  - .github/actions/merge-and-write-changelogs
-
-versioning:
-  fixed:
-    - - '@sap-ai-sdk/ai-api'
-      - 'sap-ai-sdk'
-      - '@sap-ai-sdk/context-registry'
-      - '@sap-ai-sdk/core'
-      - '@sap-ai-sdk/document-grounding'
-      - '@sap-ai-sdk/foundation-models'
-      - '@sap-ai-sdk/langchain'
-      - '@sap-ai-sdk/llm-batch'
-      - '@sap-ai-sdk/openai'
-      - '@sap-ai-sdk/orchestration'
-      - '@sap-ai-sdk/prompt-registry'
-      - '@sap-ai-sdk/rpt'
-      - '@sap-ai-sdk/tabular-orchestration'
-  ignore:
-    - '@sap-ai-sdk/sample-code'
-  maxBump: minor
-  changelog:
-    storage: repository
-  # POC: openai/rpt could graduate onto a parallel prerelease track ("alpha" lane).
-  # A fixed group must move lanes together, so this requires first narrowing `fixed`
-  # above to exclude them, e.g. fixed: [['@sap-ai-sdk/core', '@sap-ai-sdk/ai-api', ...]]
-  # (listing the group members explicitly, minus openai/rpt), then:
-  # lanes:
-  #   '@sap-ai-sdk/openai': alpha
-  #   '@sap-ai-sdk/rpt': alpha
 
 allowBuilds:
   '@swc/core': true

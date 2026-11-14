@@ -15,4 +15,4 @@ runs:
       shell: bash
       env:
         INPUT_MAJORVERSION: ${{ inputs.majorVersion }}
-      run: node ${{ github.action_path }}/index.ts
+      run: node "$GITHUB_ACTION_PATH/index.ts"

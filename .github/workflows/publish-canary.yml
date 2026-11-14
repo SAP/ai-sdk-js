@@ -53,6 +53,8 @@ jobs:
       - name: publish
         if: steps.check-changes.outputs.skip != 'true'
         env:
+          GIT_COMMITTER_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
           INPUTS_TAG: ${{ inputs.tag || 'canary' }}
         run: |
           if [ "${INPUTS_TAG}" = "latest" ] || [[ "${INPUTS_TAG}" == v* ]]; then
@@ -60,9 +62,19 @@ jobs:
             exit 1
           fi
 
-          date=`date +%Y%m%d%H%M%S`
-          pnpm -r exec pnpm version prepatch --preid "${date}" --no-git-tag-version --no-git-checks
-          pnpm publish -r --tag "${INPUTS_TAG}" --no-git-checks
+          rm -f .changeset/*.md
+          cat > .changeset/canary-release.md <<'EOF'
+          ---
+          '@sap-ai-sdk/core': patch
+          ---
+
+          [impr] Canary release.
+          EOF
+          date=$(date +%Y%m%d%H%M%S)
+          pnpm changeset pre enter "${date}"
+          pnpm changeset version
+          pnpm changeset pre exit
+          pnpm changeset publish --tag "${INPUTS_TAG}"
       - name: Notify Slack on failure
         if: ${{ github.event_name == 'schedule' && (failure() || cancelled()) }}
         env:
