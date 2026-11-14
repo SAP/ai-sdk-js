@@ -10,6 +10,7 @@ packages:
   - packages/orchestration
   - packages/prompt-registry
   - packages/rpt
+  - packages/tabpfn
   - packages/tabular-orchestration
   - sample-cap
   - sample-code
@@ -69,13 +70,13 @@ permissions:
 catalog:
   '@langchain/core': ^1.2.13
   '@langchain/langgraph': ^1.4.18
-  '@sap-cloud-sdk/connectivity': ^4.10.0
-  '@sap-cloud-sdk/generator-common': ^4.10.0
-  '@sap-cloud-sdk/http-client': ^4.10.0
-  '@sap-cloud-sdk/openapi': ^4.10.0
-  '@sap-cloud-sdk/openapi-generator': ^4.10.0
-  '@sap-cloud-sdk/resilience': ^4.10.0
-  '@sap-cloud-sdk/util': ^4.10.0
+  '@sap-cloud-sdk/connectivity': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/generator-common': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/http-client': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/openapi': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/openapi-generator': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/resilience': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/util': 4.10.1-20261110104223.0
   langchain: ^1.5.14
   zod: ^4.6.6
 
@@ -84,6 +85,14 @@ minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
   - body-parser@2.4.0
+  - '@sap-cloud-sdk/connectivity@4.10.1-20261110104223.0'
+  - '@sap-cloud-sdk/generator-common@4.10.1-20261110104223.0'
+  - '@sap-cloud-sdk/http-client@4.10.1-20261110104223.0'
+  - '@sap-cloud-sdk/openapi-generator@4.10.1-20261110104223.0'
+  - '@sap-cloud-sdk/openapi@4.10.1-20261110104223.0'
+  - '@sap-cloud-sdk/resilience@4.10.1-20261110104223.0'
+  - '@sap-cloud-sdk/util@4.10.1-20261110104223.0'
+  - '@redocly/cli@2.77.0'
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true
