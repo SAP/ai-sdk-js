@@ -598,8 +598,8 @@ importers:
   sample-code:
     dependencies:
       '@langchain/classic':
-        specifier: 1.0.59
-        version: 1.0.59(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(undici@8.12.3)(ws@8.22.2)
+        specifier: 1.0.60
+        version: 1.0.60(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(undici@8.12.3)(ws@8.22.2)
       '@langchain/core':
         specifier: 'catalog:'
         version: 1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2)
@@ -1258,11 +1258,11 @@ packages:
     peerDependencies:
       tslib: '2'
 
-  '@langchain/classic@1.0.59':
-    resolution: {integrity: sha512-/tsEaBzryQGGuwvm30hyifjVriFLl2N+QuebxnJwTXneFL9ucMNmyrTwxlYrBGQjksVDO0o2s+fS6z7vVRDDLw==}
+  '@langchain/classic@1.0.60':
+    resolution: {integrity: sha512-KG5Vho3BFUcHSjQxoRViqz4wshiRwm9Bh48oTEp0X05L8OGYm0+EOe85gehpyjRJjfbfh+kRmOy/fe9lgh+C0A==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@langchain/core': ^1.3.5
+      '@langchain/core': ^1.3.7
       cheerio: '*'
       peggy: ^5.1.1
       typeorm: '*'
@@ -1310,11 +1310,11 @@ packages:
       '@langchain/core': ^1.2.6
       '@langchain/langgraph': ^1.4.18
 
-  '@langchain/openai@1.8.2':
-    resolution: {integrity: sha512-pA0ns3ikApRpCbvrShDqmIkPisbbZ3Ygr1HSsmJdrl+gqkVBeLKxS+P0c+DIpzXKoGVg0nuvQCb/ZXLM5Ti+iw==}
+  '@langchain/openai@1.8.3':
+    resolution: {integrity: sha512-boBsfQ0dR4iUd5GHQtPKL5cJrFFih19+y5OqZ2J4gThare4R/2o2ORacb98fjfIp7SruEc5SEzdJ1OGdf1oi4Q==}
     engines: {node: '>=22'}
     peerDependencies:
-      '@langchain/core': ^1.3.5
+      '@langchain/core': ^1.3.7
 
   '@langchain/protocol@0.0.21':
     resolution: {integrity: sha512-HJS8Cd5GJ437MIrCnbrPHx0FJcluyOk5HdZzD081ap4SBzfWpAj/6AtI7fqpNSMo6VZEoEdaN9fIts8R0XR1AQ==}
@@ -5187,10 +5187,10 @@ snapshots:
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.9.1)
       tslib: 2.9.1
 
-  '@langchain/classic@1.0.59(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(undici@8.12.3)(ws@8.22.2)':
+  '@langchain/classic@1.0.60(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(undici@8.12.3)(ws@8.22.2)':
     dependencies:
       '@langchain/core': 1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2)
-      '@langchain/openai': 1.8.2(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(undici@8.12.3)(ws@8.22.2)
+      '@langchain/openai': 1.8.3(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(undici@8.12.3)(ws@8.22.2)
       '@langchain/textsplitters': 1.0.2(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))
       handlebars: 4.7.10
       js-yaml: 5.5.0
@@ -5260,7 +5260,7 @@ snapshots:
       '@modelcontextprotocol/core': 2.4.0
       zod: 4.6.7
 
-  '@langchain/openai@1.8.2(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(undici@8.12.3)(ws@8.22.2)':
+  '@langchain/openai@1.8.3(@langchain/core@1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2))(undici@8.12.3)(ws@8.22.2)':
     dependencies:
       '@langchain/core': 1.3.5(@opentelemetry/api@1.10.0)(openai@7.55.0(undici@8.12.3)(ws@8.22.2)(zod@4.6.7))(ws@8.22.2)
       js-tiktoken: 1.0.21
