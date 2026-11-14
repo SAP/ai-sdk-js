@@ -9,10 +9,10 @@
  */
 export type LabelKeyValuePair = {
   /**
-   * Label key following SAP AI Core format: (ext|int).ai.sap.com/suffix
+   * Label key must start with 'ext.ai.sap.com/' and follow the pattern
    * Max Length: 63.
    * Min Length: 1.
-   * Pattern: "^(ext|int)\\.ai\\.sap\\.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$".
+   * Pattern: "^(ext)\\.ai\\.sap\\.com/(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]){1,48}$".
    */
   key: string;
   /**
