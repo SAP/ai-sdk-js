@@ -113,3 +113,8 @@ export type LlmBatchModel = LiteralUnion<
   | 'gpt-5.4'
   | 'gpt-5.4-mini'
 >;
+
+/**
+ * TabPFN foundation models for tabular prediction via in-context learning.
+ */
+export type TabpfnModel = LiteralUnion<'tabpfn-3.5-plus'>;

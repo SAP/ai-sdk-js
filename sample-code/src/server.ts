@@ -122,6 +122,11 @@ import {
   predictWithTopK
 } from './rpt.ts';
 import {
+  predictClassification,
+  predictWithStringFeatures,
+  stringFeaturesData
+} from './tabpfn.ts';
+import {
   predictWithScenarioContext,
   predictWithInlineContext
 } from './tabular-orchestration.ts';
@@ -1519,6 +1524,59 @@ app.get('/tabular-orchestration/predict-inline-context', async (req, res) => {
   try {
     const data = await predictWithInlineContext();
     res.send(data);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/tabpfn/predict', async (req, res) => {
+  try {
+    const data = await predictClassification();
+    res.send(JSON.stringify(data, null, 2));
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/tabpfn/predict-string-features', async (req, res) => {
+  try {
+    const data = await predictWithStringFeatures();
+    const classLabels: string[] =
+      'classes' in data.metadata
+        ? (data.metadata.classes ?? []).map(String)
+        : [];
+    const predictions = data.prediction as number[][];
+
+    const trainLines = [
+      'Training data:',
+      'product                price    label',
+      '─'.repeat(50),
+      ...stringFeaturesData.xTrain.map(
+        (row, i) =>
+          `${row.product.padEnd(22)} $${String(row.price.toFixed(2)).padStart(7)}   ${stringFeaturesData.yTrain[i]}`
+      )
+    ];
+
+    const probHeader = classLabels.map(l => l.padStart(10)).join('  ');
+    const testLines = [
+      '',
+      'Predictions:',
+      `${'product'.padEnd(22)} ${'price'.padStart(8)}   ${'predicted'.padEnd(10)}   ${probHeader}`,
+      '─'.repeat(70),
+      ...predictions.map((probs, i) => {
+        const row = stringFeaturesData.xTest[i];
+        const bestIdx = probs.indexOf(Math.max(...probs));
+        const bestLabel = classLabels[bestIdx] ?? `class_${bestIdx}`;
+        const probStr = probs
+          .map(p => `${(p * 100).toFixed(1)}%`.padStart(10))
+          .join('  ');
+        return `${row.product.padEnd(22)} $${String(row.price.toFixed(2)).padStart(7)}   ${bestLabel.padEnd(10)}   ${probStr}`;
+      })
+    ];
+
+    res
+      .header('Content-Type', 'text/plain')
+      .send([...trainLines, ...testLines].join('\n'));
   } catch (error: any) {
     sendError(res, error);
   }
