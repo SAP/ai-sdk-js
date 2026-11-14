@@ -1,32 +1,243 @@
 name: draft-release
 
 on:
-  push:
-    tags: ['v*']
+  pull_request:
+    branches: [main]
+    types: [closed]
 
 permissions: {}
+
+concurrency: ${{ github.workflow }}-${{ github.event.pull_request.number }}
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  draft-github-release:
+  verify-release:
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.base.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'changeset-release/main' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+    outputs:
+      version: ${{ steps.release-version.outputs.version }}
+      commit: ${{ steps.release-version.outputs.commit }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: read
+      - name: Verify release PR author
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_AUTHOR_TYPE: ${{ github.event.pull_request.user.type }}
+        run: |
+          if [[ "$PR_AUTHOR_TYPE" != 'Bot' || "$PR_AUTHOR" != "${APP_SLUG}[bot]" ]]; then
+            echo "Release PR must be created by the configured GitHub App."
+            exit 1
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify version bump
+        id: release-version
+        env:
+          RELEASE_COMMIT: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          PREVIOUS_VERSION=$(git show "$RELEASE_COMMIT^:package.json" | jq -r '.version')
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ || "$VERSION" == "$PREVIOUS_VERSION" ]]; then
+            echo "Release PR must bump the stable SDK version."
+            exit 1
+          fi
+
+          if git rev-parse --verify --quiet "refs/tags/v$VERSION"; then
+            if [[ "$(git rev-parse "refs/tags/v$VERSION^{commit}")" != "$RELEASE_COMMIT" ]]; then
+              echo "Existing release tag points to a different commit."
+              exit 1
+            fi
+            echo "Reusing the existing tag for version $VERSION."
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
+
+  release-notes:
+    if: needs.verify-release.outputs.version != ''
+    runs-on: ubuntu-latest
+    needs: [verify-release]
+    outputs:
+      pr-number: ${{ steps.docs-pr.outputs.pr-number || steps.open-pr.outputs.result }}
+    permissions:
+      contents: read
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Find existing release notes PR
+        id: docs-pr
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          VERSION: ${{ needs.verify-release.outputs.version }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const owner = 'SAP';
+            const repo = 'ai-sdk';
+            const { data: repository } = await github.rest.repos.get({ owner, repo });
+            const base = repository.default_branch;
+            const branch = `update-release-notes-js-${process.env.VERSION}`;
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'all', head: `${owner}:${branch}`, base, per_page: 100
+            });
+            const pr = prs.find(pr =>
+              (pr.state === 'open' || pr.merged_at !== null) &&
+              pr.user?.type === 'Bot' && pr.user.login === `${process.env.APP_SLUG}[bot]` &&
+              pr.head.ref === branch && pr.head.repo?.full_name === `${owner}/${repo}` &&
+              pr.base.ref === base && pr.base.repo.full_name === `${owner}/${repo}`
+            );
+            core.setOutput('base-branch', base);
+            core.setOutput('pr-number', pr?.number ?? '');
+      - name: Checkout current repository
+        if: steps.docs-pr.outputs.pr-number == ''
+        uses: $/.github/actions/setup
+        with:
+          ref: ${{ needs.verify-release.outputs.commit }}
+          skip-build: true
+      - name: Fetch full commit history (blobless)
+        if: steps.docs-pr.outputs.pr-number == ''
+        run: git fetch --filter=blob:none --unshallow
+
+      - name: Checkout Docs Repo
+        if: steps.docs-pr.outputs.pr-number == ''
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: SAP/ai-sdk
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+          path: ./ai-sdk-docs
+          persist-credentials: true
+      - name: Update release notes file
+        if: steps.docs-pr.outputs.pr-number == ''
+        run: |
+          node --input-type=module --eval "import { addCurrentChangelog } from './scripts/add-changelog.ts'; await addCurrentChangelog();"
+
+      - name: Push release notes branch
+        if: steps.docs-pr.outputs.pr-number == ''
+        env:
+          BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
+          BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}
+          VERSION: ${{ needs.verify-release.outputs.version }}
+          BRANCH_NAME: update-release-notes-js-${{ needs.verify-release.outputs.version }}
+        working-directory: ./ai-sdk-docs
+        run: |
+          git config --local user.email "$BOT_EMAIL"
+          git config --local user.name "$BOT_NAME"
+          git checkout -B "$BRANCH_NAME"
+          git add -u
+          if git diff --staged --quiet; then
+            echo "No changes and no existing release notes PR; inspect the docs before retrying."
+            exit 1
+          fi
+          git commit -m "Update JS release notes for $VERSION"
+          git push --force -u origin "$BRANCH_NAME"
+      - name: Open release notes PR
+        id: open-pr
+        if: steps.docs-pr.outputs.pr-number == ''
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          VERSION: ${{ needs.verify-release.outputs.version }}
+          BRANCH_NAME: update-release-notes-js-${{ needs.verify-release.outputs.version }}
+          BASE_BRANCH: ${{ steps.docs-pr.outputs.base-branch }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const { VERSION, BRANCH_NAME, BASE_BRANCH } = process.env;
+            const { data: pr } = await github.rest.pulls.create({
+              owner: 'SAP', repo: 'ai-sdk', head: BRANCH_NAME, base: BASE_BRANCH,
+              title: `chore: Update JS Release Notes for ${VERSION}`,
+              body: 'Auto-created by draft-release workflow.'
+            });
+            core.info(`Release notes PR: ${pr.html_url}`);
+            return pr.number;
+
+  draft-github-release:
+    name: Create Draft GitHub Release
+    if: needs.verify-release.outputs.version != ''
+    runs-on: ubuntu-latest
+    needs: [verify-release, release-notes]
+    permissions:
+      contents: read
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
       - uses: $/.github/actions/setup
+        with:
+          ref: ${{ needs.verify-release.outputs.commit }}
+          skip-build: true
       - name: Get Changelog
         id: get-changelog
         uses: ./.github/actions/get-changelog # zizmor: ignore[self-repository]
-      - name: Create Draft Release
+      - name: Create or reuse draft release
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          VERSION: ${{ needs.verify-release.outputs.version }}
+          RELEASE_COMMIT: ${{ needs.verify-release.outputs.commit }}
+          RELEASE_PR_NUMBER: ${{ github.event.pull_request.number }}
+          DOCS_PR_NUMBER: ${{ needs.release-notes.outputs.pr-number }}
           CHANGELOG: ${{ steps.get-changelog.outputs.changelog }}
-        run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
-            --verify-tag \
-            --notes "$CHANGELOG" \
-            --draft
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const { APP_SLUG, VERSION, RELEASE_COMMIT, RELEASE_PR_NUMBER, DOCS_PR_NUMBER, CHANGELOG } = process.env;
+            const releasePrNumber = Number(RELEASE_PR_NUMBER);
+            const docsPrNumber = Number(DOCS_PR_NUMBER);
+            if (![releasePrNumber, docsPrNumber].every(number => Number.isSafeInteger(number) && number > 0)) {
+              throw new Error('Release and docs PR numbers are required before creating a draft.');
+            }
+            const metadata = `<!-- sap-ai-sdk-DO_NOT_REMOVE: release-pr=${releasePrNumber} docs-pr=${docsPrNumber} -->`;
+            const metadataPattern = new RegExp(
+              `<!--\\s*sap-ai-sdk-DO_NOT_REMOVE:\\s*release-pr=${releasePrNumber}\\s+docs-pr=${docsPrNumber}\\s*-->`,
+              'g'
+            );
+            const tag = `v${VERSION}`;
+            const releases = await github.paginate(github.rest.repos.listReleases, {
+              ...context.repo, per_page: 100
+            });
+            const existing = releases.filter(release => release.tag_name === tag);
+            if (existing.length) {
+              const release = existing[0];
+              if (existing.length !== 1 || release.author.type !== 'Bot' || release.author.login !== `${APP_SLUG}[bot]` || release.target_commitish !== RELEASE_COMMIT || [...(release.body ?? '').matchAll(metadataPattern)].length !== 1) {
+                throw new Error('Existing release is ambiguous or does not match the configured App and release commit.');
+              }
+              core.info(`Release ${tag} already exists; leaving it unchanged.`);
+              return;
+            }
+            await github.rest.repos.createRelease({
+              ...context.repo, tag_name: tag, target_commitish: RELEASE_COMMIT,
+              name: tag, body: `${CHANGELOG}\n\n${metadata}`, draft: true
+            });

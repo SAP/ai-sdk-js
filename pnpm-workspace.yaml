@@ -19,7 +19,6 @@ packages:
   - .github/actions/check-pr
   - .github/actions/check-public-api
   - .github/actions/get-changelog
-  - .github/actions/changesets-fixed-version-bump
 
 allowBuilds:
   '@swc/core': true

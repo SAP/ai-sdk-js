@@ -6,20 +6,91 @@ on:
 
 permissions: {}
 
+concurrency: ${{ github.workflow }}-${{ github.event.release.tag_name }}
+
 defaults:
   run:
     shell: bash
 
 jobs:
+  verify-release:
+    if: github.event.release.author.type == 'Bot' && github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.release-source.outputs.version }}
+      commit: ${{ steps.release-source.outputs.commit }}
+      docs-pr-number: ${{ steps.provenance.outputs.docs-pr-number }}
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: read
+          permission-pull-requests: read
+      - name: Verify release provenance
+        id: provenance
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const release = context.payload.release;
+            const bot = `${process.env.APP_SLUG}[bot]`;
+            const commit = release.target_commitish;
+            if (release.author.login !== bot || !/^[0-9a-f]{40}$/.test(commit) || !/^v\d+\.\d+\.\d+$/.test(release.tag_name)) {
+              throw new Error('Release must be created by the configured GitHub App at a full commit SHA.');
+            }
+            const metadata = [...(release.body ?? '').matchAll(/<!--\s*sap-ai-sdk-DO_NOT_REMOVE:\s*release-pr=(\d+)\s+docs-pr=(\d+)\s*-->/g)];
+            if (metadata.length !== 1) {
+              throw new Error('Release must contain the original release and docs PR numbers.');
+            }
+            const releasePrNumber = Number(metadata[0][1]);
+            const docsPrNumber = Number(metadata[0][2]);
+            if (![releasePrNumber, docsPrNumber].every(number => Number.isSafeInteger(number) && number > 0)) {
+              throw new Error('Invalid PR numbers in release metadata.');
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo, pull_number: releasePrNumber
+            });
+            const fullName = `${context.repo.owner}/${context.repo.repo}`;
+            if (!pr.merged || pr.merge_commit_sha !== commit ||
+                pr.user?.type !== 'Bot' || pr.user.login !== bot ||
+                pr.base.ref !== 'main' || pr.base.repo.full_name !== fullName ||
+                pr.head.ref !== 'changeset-release/main' || pr.head.repo?.full_name !== fullName) {
+              throw new Error('Release target must be the exact merge commit of the configured App\'s release PR.');
+            }
+            core.setOutput('docs-pr-number', docsPrNumber);
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ github.event.release.tag_name }}
+          persist-credentials: false
+      - name: Verify release source
+        id: release-source
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_COMMIT: ${{ github.event.release.target_commitish }}
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          if [[ "$RELEASE_TAG" != "v$VERSION" || "$(git rev-parse HEAD)" != "$RELEASE_COMMIT" ]]; then
+            echo "Release tag must match the SDK version and the release commit."
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
+
   check-release-notes-pr:
     name: Check Release Notes PR Status
     runs-on: ubuntu-latest
-    environment: release
+    needs: [verify-release]
     outputs:
-      release-notes-branch: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
-      is-merged: ${{ steps.check-pr-status.outputs.merged }}
-    permissions:
-      contents: read
+      pr-number: ${{ steps.docs-pr.outputs.pr-number }}
+      is-merged: ${{ steps.docs-pr.outputs.is-merged }}
     steps:
       - name: Generate GitHub App token
         id: app-token
@@ -31,37 +102,34 @@ jobs:
           repositories: ai-sdk
           permission-contents: read
           permission-pull-requests: read
-      - uses: $/.github/actions/setup
-        with:
-          package-manager-cache: false
-      - name: Determine Release Notes PR Branch Name
-        id: determine-branch-name
-        run: |
-          VERSION=$(pnpm node -p "require('./package.json').version")
-          echo "Using version: $VERSION"
-          BRANCH_NAME="update-release-notes-js-$VERSION"
-          echo "release-notes-branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
-
-      - name: Check PR Status (Exists, Merged)
-        id: check-pr-status
+      - name: Verify release notes PR
+        id: docs-pr
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          BRANCH_NAME: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
-        run: |
-          echo "Checking status for PR associated with branch: $BRANCH_NAME"
-
-          # Get merged status. If gh pr view fails (e.g., PR not found), the step will fail.
-          MERGED_OUTPUT=$(gh pr view "$BRANCH_NAME" --repo "SAP/ai-sdk" --json state --jq '.state == "MERGED" | tostring')
-
-          # This part only runs if the above command succeeded
-          echo "PR found. Is Merged: $MERGED_OUTPUT"
-          echo "merged=$MERGED_OUTPUT" >> "$GITHUB_OUTPUT"
-
-      - name: 'Check Whether Release Notes PR Can Be Merged'
-        if: steps.check-pr-status.outputs.merged == 'false'
-        uses: ./.github/actions/pr-is-mergeable # zizmor: ignore[self-repository]
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          VERSION: ${{ needs.verify-release.outputs.version }}
+          PR_NUMBER: ${{ needs.verify-release.outputs.docs-pr-number }}
         with:
-          pr-ref: ${{ steps.determine-branch-name.outputs.release-notes-branch }}
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const owner = 'SAP';
+            const repo = 'ai-sdk';
+            const { data: repository } = await github.rest.repos.get({ owner, repo });
+            const { data: pr } = await github.rest.pulls.get({
+              owner, repo, pull_number: Number(process.env.PR_NUMBER)
+            });
+            if (pr.user?.type !== 'Bot' || pr.user.login !== `${process.env.APP_SLUG}[bot]` ||
+                pr.head.ref !== `update-release-notes-js-${process.env.VERSION}` || pr.head.repo?.full_name !== `${owner}/${repo}` ||
+                pr.base.ref !== repository.default_branch || pr.base.repo.full_name !== `${owner}/${repo}`) {
+              throw new Error('Stored docs PR must match the configured App, SDK version and docs repository.');
+            }
+            core.setOutput('pr-number', pr.number);
+            core.setOutput('is-merged', pr.merged);
+      - name: Check Whether Release Notes PR Can Be Merged
+        if: steps.docs-pr.outputs.is-merged == 'false'
+        uses: $/.github/actions/pr-is-mergeable
+        with:
+          pr-ref: ${{ steps.docs-pr.outputs.pr-number }}
           repo: SAP/ai-sdk
           token: ${{ steps.app-token.outputs.token }}
           excluded-check-runs: '{"Build Cloud SDK Documentation": ["dependabot"]}'
@@ -70,13 +138,14 @@ jobs:
     name: Publish to NPM
     runs-on: ubuntu-latest
     environment: release
-    needs: [check-release-notes-pr]
+    needs: [verify-release, check-release-notes-pr]
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: $/.github/actions/setup
         with:
+          ref: ${{ needs.verify-release.outputs.commit }}
           package-manager-cache: false
       - name: publish
         env:
@@ -87,7 +156,6 @@ jobs:
   merge-release-notes-pr:
     name: Merge Release Notes PR (if needed)
     runs-on: ubuntu-latest
-    environment: release
     needs: [check-release-notes-pr, publish-npm]
     if: needs.check-release-notes-pr.outputs.is-merged == 'false'
     steps:
@@ -101,13 +169,12 @@ jobs:
           repositories: ai-sdk
           permission-contents: write
           permission-pull-requests: write
-      - name: 'Merge Release Notes PR'
+      - name: Merge Release Notes PR
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          BRANCH_NAME: ${{ needs.check-release-notes-pr.outputs.release-notes-branch }}
-        run: |
-          echo "Attempting to merge PR for branch: $BRANCH_NAME"
-          gh pr merge --squash "$BRANCH_NAME" --delete-branch --auto --repo "SAP/ai-sdk"
+          PR_NUMBER: ${{ needs.check-release-notes-pr.outputs.pr-number }}
+        run: gh pr merge --squash "$PR_NUMBER" --delete-branch --auto --repo "SAP/ai-sdk"
+
   refresh-context7:
     name: Refresh Context7 Docs
     runs-on: ubuntu-latest
