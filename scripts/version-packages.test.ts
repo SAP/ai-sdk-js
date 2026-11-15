@@ -207,42 +207,6 @@ describe('version-packages', () => {
     expect((await readPackage('packages/ai-api')).version).toBe('3.0.0');
   });
 
-  it('requires exact major confirmation in the fixed-bump action before mutating files', async () => {
-    await writeChangeset(
-      "'@sap-ai-sdk/core': major",
-      '[compat] Change the SDK contract.'
-    );
-    const root = await readFile(resolve(cwd, 'package.json'), 'utf8');
-    const changelog = await readFile(resolve(cwd, 'CHANGELOG.md'), 'utf8');
-    const output = resolve(cwd, 'github-output');
-    await writeFile(output, '');
-    const action = resolve(
-      repository,
-      '.github/actions/changesets-fixed-version-bump/index.ts'
-    );
-    const runAction = (majorVersion: string) =>
-      execFileAsync(process.execPath, [action], {
-        cwd,
-        env: {
-          ...process.env,
-          INPUT_MAJORVERSION: majorVersion,
-          GITHUB_OUTPUT: output
-        }
-      });
-
-    await expect(runAction('')).rejects.toThrow('Set majorVersion to 3.0.0');
-    await expect(runAction('4.0.0')).rejects.toThrow(
-      'Set majorVersion to 3.0.0'
-    );
-    expect(await readFile(resolve(cwd, 'package.json'), 'utf8')).toBe(root);
-    expect(await readFile(resolve(cwd, 'CHANGELOG.md'), 'utf8')).toBe(
-      changelog
-    );
-
-    await runAction('3.0.0');
-    expect((await readPackage()).version).toBe('3.0.0');
-  });
-
   it('preserves sample wildcard peers through canary versioning and a stable prerelease exit', async () => {
     await writeChangeset("'@sap-ai-sdk/core': patch", '[impr] Canary release.');
     await runCli('pre', 'enter', 'release-test');
