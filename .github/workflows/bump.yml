@@ -2,6 +2,11 @@ name: bump
 
 on:
   workflow_dispatch:
+    inputs:
+      majorVersion:
+        description: 'Full target version required to confirm a major release, e.g. 3.0.0.'
+        type: string
+        required: false
 
 permissions: {}
 
@@ -28,17 +33,13 @@ jobs:
           ref: 'main'
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true
-      - name: Bump version
+      - name: Fetch full commit history (blobless)
+        run: git fetch --filter=blob:none --unshallow
+      - name: Bump version and write changelogs
         id: bump
-        run: |
-          pnpm version -r
-          VERSION=$(pnpm node -p "require('./package.json').version")
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-      - name: Merge and write changelogs
-        id: merge-changelogs
-        env:
-          VERSION: ${{ steps.bump.outputs.version }}
-        uses: ./.github/actions/merge-and-write-changelogs # zizmor: ignore[self-repository]
+        uses: ./.github/actions/changesets-fixed-version-bump # zizmor: ignore[self-repository]
+        with:
+          majorVersion: ${{ inputs.majorVersion }}
       - name: Commit and tag
         uses: ./.github/actions/commit-and-tag # zizmor: ignore[self-repository]
         with:
