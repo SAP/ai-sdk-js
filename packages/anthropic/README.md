@@ -36,6 +36,9 @@ Configure an AI Core service binding or `AICORE_SERVICE_KEY` for local developme
 To select a deployment explicitly, pass `{ deployment: { deploymentId, resourceGroup }, destination?, clientType?, anthropicConfig? }`.
 The upstream `model` field remains required; SAP AI Core selects the actual model through the resolved deployment URL.
 
+`anthropicConfig` and `withOptions()` accept transport settings such as fetch, middleware, retries, and timeouts.
+They preserve SAP-managed deployment routing and authentication:
+
 ## Streaming
 
 ```ts

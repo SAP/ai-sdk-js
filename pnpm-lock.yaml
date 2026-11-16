@@ -817,6 +817,9 @@ importers:
 
   tests/type-tests:
     devDependencies:
+      '@sap-ai-sdk/anthropic':
+        specifier: workspace:^
+        version: link:../../packages/anthropic
       '@sap-ai-sdk/core':
         specifier: workspace:^
         version: link:../../packages/core

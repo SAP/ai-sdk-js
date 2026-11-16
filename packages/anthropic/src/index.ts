@@ -1,5 +1,9 @@
 export { SapAnthropicBedrockInvoke } from './client.ts';
 export type {
+  SapAnthropicBeta,
+  SapAnthropicBedrockInvokeConfig,
   SapAnthropicBedrockInvokeInput,
-  SapAnthropicBedrockInvokeOptions
+  SapAnthropicBedrockInvokeOptions,
+  SapAnthropicMessages,
+  SapAnthropicModelName
 } from './types.ts';

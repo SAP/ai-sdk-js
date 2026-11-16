@@ -2,37 +2,39 @@ import {
   getResourceGroup,
   resolveDeploymentUrlForModel
 } from '@sap-ai-sdk/ai-api/internal.js';
-import { getAiCoreDestination } from '@sap-ai-sdk/core';
-import { ErrorWithCause } from '@sap-cloud-sdk/util';
 
-import { AnthropicBedrock } from '@anthropic-ai/bedrock-sdk';
+import {
+  SapAnthropicBedrockClient,
+  pickAnthropicConfig
+} from './bedrock-client.ts';
 
 import type {
+  SapAnthropicBeta,
+  SapAnthropicBedrockInvokeConfig,
   SapAnthropicBedrockInvokeInput,
-  SapAnthropicBedrockInvokeOptions
+  SapAnthropicBedrockInvokeOptions,
+  SapAnthropicMessages
 } from './types.ts';
-import type { ClientOptions } from '@anthropic-ai/bedrock-sdk';
-import type { Middleware } from '@anthropic-ai/sdk';
-
-interface SapAnthropicBedrockInvokeConfig extends Omit<
-  ClientOptions,
-  'awsAccessKey' | 'awsSecretKey' | 'awsSessionToken'
-> {
-  baseURL: string;
-  resourceGroup: string;
-  sapOptions: SapAnthropicBedrockInvokeOptions;
-}
 
 /**
  * A configured Anthropic Bedrock client for Claude on SAP AI Core.
  * SAP handles deployment routing and authentication. The upstream SDK handles
  * Invoke payload adaptation, binary EventStream decoding, and message helpers.
+ * Only Messages resources are exposed.
  * Use {@link SapAnthropicBedrockInvoke.createClient} to create an instance.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
-export class SapAnthropicBedrockInvoke extends AnthropicBedrock {
-  private readonly resourceGroup: string;
-  private readonly sapOptions: SapAnthropicBedrockInvokeOptions;
+export class SapAnthropicBedrockInvoke {
+  readonly #client: SapAnthropicBedrockClient;
+
+  /**
+   * Native Messages methods and helpers supported through Bedrock Invoke.
+   */
+  readonly messages: SapAnthropicMessages;
+  /**
+   * Beta Messages methods and helpers. Availability depends on the deployed model.
+   */
+  readonly beta: SapAnthropicBeta;
 
   /**
    * Creates an Anthropic client for a Claude deployment on SAP AI Core.
@@ -61,69 +63,51 @@ export class SapAnthropicBedrockInvoke extends AnthropicBedrock {
       destination: options.destination
     });
 
-    return new SapAnthropicBedrockInvoke({
-      ...options.anthropicConfig,
-      baseURL: baseUrl,
-      resourceGroup,
-      sapOptions: options
-    });
+    return new SapAnthropicBedrockInvoke(
+      new SapAnthropicBedrockClient({
+        ...pickAnthropicConfig(options.anthropicConfig),
+        baseURL: baseUrl,
+        resourceGroup,
+        sapOptions: options
+      })
+    );
   }
 
-  private constructor(config: SapAnthropicBedrockInvokeConfig) {
-    super({
-      // Keep SAP context in the upstream options so withOptions() clones retain it.
-      ...config,
-      // Disable AWS signing and ambient AWS bearer tokens; SAP owns authentication.
-      apiKey: '',
-      skipAuth: true
-    });
-    this.resourceGroup = config.resourceGroup;
-    this.sapOptions = config.sapOptions;
-  }
-
-  protected override backendMiddleware(): readonly Middleware[] {
-    return [
-      // The upstream middleware adapts the request first and decodes the response last.
-      ...super.backendMiddleware(),
-      async (request, next) => {
-        const url = new URL(request.url);
-        const bedrockPath =
-          /\/model\/[^/]+\/(invoke(?:-with-response-stream)?)$/;
-        const match = url.pathname.match(bedrockPath);
-        if (!match) {
-          throw new Error(
-            `Unsupported SAP AI Core Bedrock request path: ${url.pathname}. Use the Messages API through Invoke.`
-          );
-        }
-        url.pathname = url.pathname.replace(bedrockPath, '/$1');
-
-        const destination = await getAiCoreDestination(
-          this.sapOptions.destination
-        );
-        const authToken = destination.authTokens?.[0];
-        if (!authToken?.value || authToken.error) {
-          const message =
-            'Could not retrieve an authentication token from the AI Core destination.';
-          throw authToken?.error
-            ? new ErrorWithCause(message, new Error(authToken.error))
-            : new Error(message);
-        }
-
-        const headers = new Headers(request.headers);
-        headers.set('authorization', `Bearer ${authToken.value}`);
-        headers.set('ai-resource-group', this.resourceGroup);
-        headers.set(
-          'ai-client-type',
-          ['AI SDK JavaScript', this.sapOptions.clientType]
-            .filter(Boolean)
-            .join(',')
-        );
-        if (match[1] === 'invoke-with-response-stream') {
-          headers.set('accept', 'application/vnd.amazon.eventstream');
-        }
-
-        return next({ ...request, url: url.toString(), headers });
+  private constructor(client: SapAnthropicBedrockClient) {
+    this.#client = client;
+    this.messages = {
+      create: client.messages.create.bind(client.messages),
+      parse: client.messages.parse.bind(client.messages),
+      stream: client.messages.stream.bind(client.messages)
+    };
+    this.beta = {
+      messages: {
+        create: client.beta.messages.create.bind(client.beta.messages),
+        parse: client.beta.messages.parse.bind(client.beta.messages),
+        stream: client.beta.messages.stream.bind(client.beta.messages),
+        toolRunner: client.beta.messages.toolRunner.bind(client.beta.messages)
       }
-    ];
+    };
+  }
+
+  /**
+   * Maximum time in milliseconds to wait for a response before retrying.
+   * @returns The configured timeout in milliseconds.
+   */
+  get timeout(): number {
+    return this.#client.timeout;
+  }
+
+  /**
+   * Creates a client with updated transport options and the same SAP deployment.
+   * @param options - Upstream transport options to override.
+   * @returns A client retaining SAP routing, authentication, and resource group.
+   */
+  withOptions(
+    options: SapAnthropicBedrockInvokeConfig
+  ): SapAnthropicBedrockInvoke {
+    return new SapAnthropicBedrockInvoke(
+      this.#client.withOptions(pickAnthropicConfig(options))
+    );
   }
 }

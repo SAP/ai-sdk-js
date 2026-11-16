@@ -8,6 +8,7 @@ import { SapAnthropicBedrockInvoke } from './client.ts';
 
 import type * as AiApi from '@sap-ai-sdk/ai-api/internal.js';
 
+import type { SapAnthropicBedrockInvokeConfig } from './types.ts';
 import type { MessageStreamEvent } from '@anthropic-ai/sdk/resources/messages';
 
 vi.mock('@sap-ai-sdk/ai-api/internal.js', async importOriginal => ({
@@ -242,6 +243,99 @@ describe('SapAnthropicBedrockInvoke', () => {
     );
   });
 
+  it('hides first-party resources and upstream routing options at runtime', async () => {
+    const client = await createClient();
+    expect(Object.keys(client.beta)).toEqual(['messages']);
+    expect(client).not.toHaveProperty('completions');
+    expect(client).not.toHaveProperty('baseURL');
+    expect(client).not.toHaveProperty('apiKey');
+    expect(client.messages).not.toHaveProperty('countTokens');
+    expect(client.messages).not.toHaveProperty('batches');
+    expect(client.beta.messages).not.toHaveProperty('countTokens');
+    expect(client.beta.messages).not.toHaveProperty('batches');
+    expect(client.beta.messages.toolRunner).toBeTypeOf('function');
+  });
+
+  it('ignores runtime routing and auth overrides when cloning', async () => {
+    const client = (await createClient()).withOptions({
+      timeout: 1000,
+      baseURL: 'https://other.example',
+      credentials: {},
+      awsAccessKey: 'aws-key',
+      skipAuth: false
+    } as SapAnthropicBedrockInvokeConfig);
+    await client.messages.create(params);
+    const [url, init] = fetch.mock.calls[0];
+    const request = new Request(url, init);
+    expect(request.url).toBe(`${deploymentUrl}/invoke`);
+    expect(request.headers.get('authorization')).toBe('Bearer sap-token');
+    expect(request.headers.has('x-amz-date')).toBe(false);
+    expect(client.timeout).toBe(1000);
+  });
+
+  it('preserves future model operation suffixes and query parameters', async () => {
+    const client = await SapAnthropicBedrockInvoke.createClient({
+      deployment: model,
+      anthropicConfig: {
+        fetch,
+        maxRetries: 0,
+        middleware: [
+          async (request, next) =>
+            next({
+              ...request,
+              url: `${deploymentUrl}/model/future-model/future-operation/nested?option=1`
+            })
+        ]
+      }
+    });
+    await client.messages.create(params);
+    expect(fetch.mock.calls[0][0]).toBe(
+      `${deploymentUrl}/future-operation/nested?option=1`
+    );
+  });
+
+  it('negotiates streaming for future operations using upstream request options', async () => {
+    fetch.mockImplementation(async () => createBinaryResponse(events));
+    const client = (await createClient()).withOptions({
+      middleware: [
+        async (middlewareRequest, next) =>
+          next({
+            ...middlewareRequest,
+            url: `${deploymentUrl}/model/future-model/future-operation`
+          })
+      ]
+    });
+    expect(await client.messages.stream(params).finalText()).toBe(
+      'Hello from Claude'
+    );
+    const [url, init] = fetch.mock.calls[0];
+    const request = new Request(url, init);
+    expect(request.url).toBe(`${deploymentUrl}/future-operation`);
+    expect(request.headers.get('accept')).toBe(
+      'application/vnd.amazon.eventstream'
+    );
+  });
+
+  it.each([
+    `${deploymentUrl}/v1/files`,
+    'https://other.example/model/test/invoke',
+    `${deploymentUrl}-other/model/test/invoke`
+  ])('rejects requests outside the deployment model prefix: %s', async url => {
+    const client = await SapAnthropicBedrockInvoke.createClient({
+      deployment: model,
+      anthropicConfig: {
+        fetch,
+        maxRetries: 0,
+        middleware: [async (request, next) => next({ ...request, url })]
+      }
+    });
+    await expect(client.messages.create(params)).rejects.toThrow(
+      'Unsupported SAP AI Core Bedrock request path:'
+    );
+    expect(fetch).not.toHaveBeenCalled();
+    expect(getAiCoreDestination).not.toHaveBeenCalled();
+  });
+
   it('propagates upstream HTTP errors', async () => {
     fetch.mockImplementation(async () =>
       Response.json(
@@ -282,6 +376,25 @@ describe('SapAnthropicBedrockInvoke', () => {
     await expect(client.messages.create(params)).rejects.toThrow(
       'Could not retrieve an authentication token from the AI Core destination.'
     );
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it('preserves the cause of a destination authentication error', async () => {
+    vi.mocked(getAiCoreDestination).mockResolvedValue({
+      url: 'https://api.ai.example',
+      authTokens: [
+        {
+          type: 'Bearer',
+          value: 'invalid-token',
+          error: 'Token retrieval failed',
+          http_header: { key: 'Authorization', value: 'Bearer invalid-token' }
+        }
+      ]
+    });
+    const client = await createClient();
+    await expect(client.messages.create(params)).rejects.toMatchObject({
+      cause: expect.objectContaining({ message: 'Token retrieval failed' })
+    });
     expect(fetch).not.toHaveBeenCalled();
   });
 });
