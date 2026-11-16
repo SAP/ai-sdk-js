@@ -526,7 +526,7 @@ app.get('/anthropic/messages', (_req, res) =>
 
 app.get('/anthropic/messages-stream', async (_req, res) => {
   try {
-    const stream = await anthropicMessagesStream();
+    const stream = anthropicMessagesStream();
     res.on('close', () => stream.abort());
     if (res.destroyed) {
       stream.abort();

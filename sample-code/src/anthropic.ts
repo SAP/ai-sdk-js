@@ -8,11 +8,10 @@ import type { Message } from '@anthropic-ai/sdk/resources/messages';
  * @returns The Anthropic message, including content blocks and token usage.
  */
 export async function createMessage(): Promise<Message> {
-  const model = 'anthropic--claude-4.6-sonnet';
-  const client = await SapAnthropicBedrockInvoke.createClient(model);
+  const client = new SapAnthropicBedrockInvoke();
 
   return client.messages.create({
-    model,
+    model: 'anthropic--claude-4.6-sonnet',
     max_tokens: 100,
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });
@@ -22,12 +21,11 @@ export async function createMessage(): Promise<Message> {
  * Stream a Claude Sonnet 4.6 message through Bedrock Invoke.
  * @returns The native Anthropic stream with text events and final-message helpers.
  */
-export async function streamMessage(): Promise<MessageStream> {
-  const model = 'anthropic--claude-4.6-sonnet';
-  const client = await SapAnthropicBedrockInvoke.createClient(model);
+export function streamMessage(): MessageStream {
+  const client = new SapAnthropicBedrockInvoke();
 
   return client.messages.stream({
-    model,
+    model: 'anthropic--claude-4.6-sonnet',
     max_tokens: 100,
     messages: [{ role: 'user', content: 'What is the capital of France?' }]
   });

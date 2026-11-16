@@ -1,9 +1,4 @@
 import {
-  getResourceGroup,
-  resolveDeploymentUrlForModel
-} from '@sap-ai-sdk/ai-api/internal.js';
-
-import {
   SapAnthropicBedrockClient,
   pickAnthropicConfig
 } from './bedrock-client.ts';
@@ -11,7 +6,6 @@ import {
 import type {
   SapAnthropicBeta,
   SapAnthropicBedrockInvokeConfig,
-  SapAnthropicBedrockInvokeInput,
   SapAnthropicBedrockInvokeOptions,
   SapAnthropicMessages
 } from './types.ts';
@@ -21,10 +15,14 @@ import type {
  * SAP handles deployment routing and authentication. The upstream SDK handles
  * Invoke payload adaptation, binary EventStream decoding, and message helpers.
  * Only Messages resources are exposed.
- * Use {@link SapAnthropicBedrockInvoke.createClient} to create an instance.
+ *
+ * The request `model` selects a running AWS Bedrock deployment in the configured resource group:
+ * a model name such as `anthropic--claude-4.6-sonnet`, a model name and version such as
+ * `anthropic--claude-4.6-sonnet:1`, or a deployment ID. Model names take precedence over deployment IDs.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class SapAnthropicBedrockInvoke {
+  readonly #options: SapAnthropicBedrockInvokeOptions;
   readonly #client: SapAnthropicBedrockClient;
 
   /**
@@ -37,12 +35,11 @@ export class SapAnthropicBedrockInvoke {
   readonly beta: SapAnthropicBeta;
 
   /**
-   * Creates an Anthropic client for a Claude deployment on SAP AI Core.
-   * @param input - Deployment and client options, or a model name as shorthand.
-   * @returns A client with native Anthropic Messages methods and streaming helpers.
+   * Creates an Anthropic client for Claude deployments on SAP AI Core.
+   * @param options - Resource group, destination, and client options.
    * @example
    * ```ts
-   * const client = await SapAnthropicBedrockInvoke.createClient('anthropic--claude-4.6-sonnet');
+   * const client = new SapAnthropicBedrockInvoke();
    * const message = await client.messages.create({
    *   model: 'anthropic--claude-4.6-sonnet',
    *   max_tokens: 100,
@@ -50,30 +47,13 @@ export class SapAnthropicBedrockInvoke {
    * });
    * ```
    */
-  static async createClient(
-    input: SapAnthropicBedrockInvokeInput
-  ): Promise<SapAnthropicBedrockInvoke> {
-    const options: SapAnthropicBedrockInvokeOptions =
-      typeof input === 'string' ? { deployment: input } : input;
-    const resourceGroup = getResourceGroup(options.deployment) ?? 'default';
-    const baseUrl = await resolveDeploymentUrlForModel(options.deployment, {
-      scenarioId: 'foundation-models',
-      executableId: 'aws-bedrock',
-      resourceGroup,
-      destination: options.destination
+  constructor(options: SapAnthropicBedrockInvokeOptions = {}) {
+    const { anthropicConfig, ...sapOptions } = options;
+    const client = new SapAnthropicBedrockClient({
+      ...pickAnthropicConfig(anthropicConfig),
+      sapOptions
     });
-
-    return new SapAnthropicBedrockInvoke(
-      new SapAnthropicBedrockClient({
-        ...pickAnthropicConfig(options.anthropicConfig),
-        baseURL: baseUrl,
-        resourceGroup,
-        sapOptions: options
-      })
-    );
-  }
-
-  private constructor(client: SapAnthropicBedrockClient) {
+    this.#options = options;
     this.#client = client;
     this.messages = {
       create: client.messages.create.bind(client.messages),
@@ -99,15 +79,16 @@ export class SapAnthropicBedrockInvoke {
   }
 
   /**
-   * Creates a client with updated transport options and the same SAP deployment.
+   * Creates a client with updated transport options and the same SAP configuration.
    * @param options - Upstream transport options to override.
    * @returns A client retaining SAP routing, authentication, and resource group.
    */
   withOptions(
     options: SapAnthropicBedrockInvokeConfig
   ): SapAnthropicBedrockInvoke {
-    return new SapAnthropicBedrockInvoke(
-      this.#client.withOptions(pickAnthropicConfig(options))
-    );
+    return new SapAnthropicBedrockInvoke({
+      ...this.#options,
+      anthropicConfig: { ...this.#options.anthropicConfig, ...options }
+    });
   }
 }

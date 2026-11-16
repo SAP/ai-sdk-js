@@ -272,6 +272,27 @@ describe('resolveDeploymentUrlForModel', () => {
     expect(url).toContain('inference/deployments/dep-001');
   });
 
+  it('serves repeated model lookups from the cache', async () => {
+    const deploymentUrl = `${aiCoreDestination.url}/v2/inference/deployments/dep-001`;
+    const scope = mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      {
+        id: 'dep-001',
+        model: { name: 'gpt-4.1', version: 'latest' },
+        deploymentUrl
+      }
+    );
+
+    await resolveDeploymentUrlForModel('gpt-4.1', baseOptions);
+    expect(scope.isDone()).toBe(true);
+    expect(
+      await resolveDeploymentUrlForModel(
+        { modelName: 'gpt-4.1', modelVersion: 'latest' },
+        baseOptions
+      )
+    ).toBe(deploymentUrl);
+  });
+
   it('throws when model deployment has no URL', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },

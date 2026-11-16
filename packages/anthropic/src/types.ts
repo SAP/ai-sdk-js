@@ -1,5 +1,3 @@
-import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
-import type { AwsBedrockChatModel } from '@sap-ai-sdk/core';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
 import type {
@@ -51,21 +49,14 @@ export type SapAnthropicBedrockInvokeConfig = Pick<
 >;
 
 /**
- * Claude model suggestions, with support for additional model names.
- */
-export type SapAnthropicModelName =
-  | Extract<AwsBedrockChatModel, `anthropic--${string}`>
-  | (string & Record<never, never>);
-
-/**
- * Options for accessing Claude through a SAP AI Core AWS Bedrock deployment.
+ * Options for accessing Claude through SAP AI Core AWS Bedrock deployments.
  */
 export interface SapAnthropicBedrockInvokeOptions {
   /**
-   * Model name, model/version configuration, or deployment ID, with an optional resource group.
-   * Select a deployment hosting an Anthropic Claude model.
+   * Resource group of the Claude deployments.
+   * @defaultValue 'default'
    */
-  deployment: ModelDeployment<SapAnthropicModelName>;
+  resourceGroup?: string;
   /**
    * Custom destination. Defaults to the AI Core service binding or local service key.
    */
@@ -80,10 +71,3 @@ export interface SapAnthropicBedrockInvokeOptions {
    */
   anthropicConfig?: SapAnthropicBedrockInvokeConfig;
 }
-
-/**
- * Client options or a model name, which is shorthand for `{ deployment: modelName }`.
- */
-export type SapAnthropicBedrockInvokeInput =
-  | SapAnthropicBedrockInvokeOptions
-  | SapAnthropicModelName;

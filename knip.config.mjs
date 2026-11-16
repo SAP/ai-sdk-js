@@ -11,7 +11,6 @@ export default {
       ],
       // spawned as CLI processes by the MCP client, so knip can't trace them
       ignoreDependencies: [
-        '@modelcontextprotocol/server-github',
         '@upstash/context7-mcp'
       ]
     },

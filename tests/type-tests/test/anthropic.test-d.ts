@@ -2,29 +2,21 @@ import { SapAnthropicBedrockInvoke } from '@sap-ai-sdk/anthropic';
 
 import { expectType, expectAssignable, expectError } from 'tsd';
 
-import type {
-  SapAnthropicBedrockInvokeConfig,
-  SapAnthropicModelName
-} from '@sap-ai-sdk/anthropic';
+import type { SapAnthropicBedrockInvokeConfig } from '@sap-ai-sdk/anthropic';
 
-expectType<Promise<SapAnthropicBedrockInvoke>>(
-  SapAnthropicBedrockInvoke.createClient('anthropic--claude-4.6-sonnet')
-);
-expectType<Promise<SapAnthropicBedrockInvoke>>(
-  SapAnthropicBedrockInvoke.createClient({
-    deployment: { deploymentId: 'deployment-123', resourceGroup: 'custom-rg' },
+expectType<SapAnthropicBedrockInvoke>(new SapAnthropicBedrockInvoke());
+expectType<SapAnthropicBedrockInvoke>(
+  new SapAnthropicBedrockInvoke({
+    resourceGroup: 'custom-rg',
+    clientType: 'test',
     anthropicConfig: { timeout: 1000, maxRetries: 0 }
   })
 );
-expectType<Promise<SapAnthropicBedrockInvoke>>(
-  SapAnthropicBedrockInvoke.createClient({
-    deployment: { modelName: 'anthropic--future-claude', modelVersion: '1' }
-  })
+expectError(
+  new SapAnthropicBedrockInvoke({ deployment: { deploymentId: 'd123' } })
 );
-expectAssignable<SapAnthropicModelName>('anthropic--future-claude');
-expectError(SapAnthropicBedrockInvoke.createClient({ clientType: 'test' }));
 
-declare const client: SapAnthropicBedrockInvoke;
+const client = new SapAnthropicBedrockInvoke();
 const params = {
   model: 'anthropic--future-claude',
   max_tokens: 64,
@@ -97,8 +89,7 @@ expectError(client.withOptions({ config: null }));
 expectError(client.withOptions({ profile: 'test' }));
 expectError(client.withOptions({ webhookKey: 'test-key' }));
 expectError(
-  SapAnthropicBedrockInvoke.createClient({
-    deployment: 'anthropic--claude-4.6-sonnet',
+  new SapAnthropicBedrockInvoke({
     anthropicConfig: { baseURL: 'https://other.example' }
   })
 );

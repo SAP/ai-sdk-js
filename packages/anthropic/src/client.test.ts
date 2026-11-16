@@ -1,3 +1,5 @@
+import { deploymentCache } from '@sap-ai-sdk/ai-api/internal.js';
+
 import { APIError } from '@anthropic-ai/sdk';
 import { EventStreamCodec } from '@smithy/core/event-streams';
 import nock from 'nock';
@@ -8,6 +10,7 @@ import {
   mockDeploymentsList
 } from '../../../test-util/mock-http.ts';
 import { dummyToken } from '../../../test-util/mock-jwt.ts';
+import { placeholderBaseUrl } from './bedrock-client.ts';
 import { SapAnthropicBedrockInvoke } from './client.ts';
 
 import type {
@@ -127,40 +130,78 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   afterEach(() => {
     nock.cleanAll();
+    deploymentCache.clear();
   });
 
-  async function createClient(
+  function createClient(
     destination?: SapAnthropicBedrockInvokeOptions['destination']
-  ): Promise<SapAnthropicBedrockInvoke> {
-    return SapAnthropicBedrockInvoke.createClient({
-      deployment: { modelName: model, resourceGroup: 'custom-rg' },
+  ): SapAnthropicBedrockInvoke {
+    return new SapAnthropicBedrockInvoke({
+      resourceGroup: 'custom-rg',
       destination,
       clientType: 'test-app',
       anthropicConfig: { fetch, maxRetries: 0 }
     });
   }
 
-  it('resolves a bare model name through the Bedrock executable', async () => {
-    expect(await SapAnthropicBedrockInvoke.createClient(model)).toBeInstanceOf(
-      SapAnthropicBedrockInvoke
+  it('selects the deployment by model name and version per request', async () => {
+    nock.cleanAll();
+    mockClientCredentialsGrantCall();
+    const otherUrl =
+      'https://api.ai.example/v2/inference/deployments/deployment-456';
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'aws-bedrock',
+        resourceGroup: 'custom-rg'
+      },
+      defaultDeployment,
+      {
+        id: 'deployment-456',
+        model: { name: model, version: '1' },
+        deploymentUrl: otherUrl
+      }
     );
+    const client = createClient();
+    await client.messages.create(params);
+    await client.messages.create({ ...params, model: `${model}:1` });
+    expect(fetch.mock.calls.map(([url]) => url)).toEqual([
+      `${deploymentUrl}/invoke`,
+      `${otherUrl}/invoke`
+    ]);
   });
 
-  it('forwards deployment ID, resource group, and custom destination', async () => {
+  it('fails before sending inference when no deployment matches the model', async () => {
+    const client = createClient();
+    await expect(
+      client.messages.create({ ...params, model: 'anthropic--unknown' })
+    ).rejects.toThrow(
+      "No running AWS Bedrock deployment with model name or deployment ID 'anthropic--unknown' found in resource group 'custom-rg'."
+    );
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it('uses the default resource group and custom destination', async () => {
     const destination = getMockedAiCoreDestination({
       url: 'https://custom.ai.example'
     });
     const scope = nock(destination.url, {
-      reqheaders: { 'ai-resource-group': 'custom-rg' }
+      reqheaders: { 'ai-resource-group': 'default' }
     })
-      .get('/v2/lm/deployments/deployment-123')
-      .reply(200, { deploymentUrl });
-    const deployment = {
-      deploymentId: 'deployment-123',
-      resourceGroup: 'custom-rg'
-    };
-    const client = await SapAnthropicBedrockInvoke.createClient({
-      deployment,
+      .get('/v2/lm/deployments')
+      .query(true)
+      .reply(200, {
+        resources: [
+          {
+            id: defaultDeployment.id,
+            deploymentUrl,
+            details: {
+              resources: { backendDetails: { model: defaultDeployment.model } }
+            }
+          }
+        ]
+      });
+    const client = new SapAnthropicBedrockInvoke({
       destination,
       anthropicConfig: { fetch, maxRetries: 0 }
     });
@@ -169,12 +210,40 @@ describe('SapAnthropicBedrockInvoke', () => {
     const [url, init] = fetch.mock.calls[0];
     const request = new Request(url, init);
     expect(request.url).toBe(`${deploymentUrl}/invoke`);
-    expect(request.headers.get('authorization')).toBe(`Bearer ${dummyToken}`);
-    expect(request.headers.get('ai-resource-group')).toBe('custom-rg');
+    expect(request.headers.get('ai-resource-group')).toBe('default');
+  });
+
+  it('selects the deployment by ID per request from a single cached listing', async () => {
+    nock.cleanAll();
+    mockClientCredentialsGrantCall();
+    const customUrl =
+      'https://api.ai.example/v2/inference/deployments/custom-123';
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'aws-bedrock',
+        resourceGroup: 'custom-rg'
+      },
+      defaultDeployment,
+      {
+        id: 'custom-123',
+        model: { name: 'custom-claude' },
+        deploymentUrl: customUrl
+      }
+    );
+    const client = createClient();
+    await client.messages.create({ ...params, model: 'custom-123' });
+    await client.messages.create({ ...params, model: 'custom-123' });
+    await client.messages.create(params);
+    expect(fetch.mock.calls.map(([url]) => url)).toEqual([
+      `${customUrl}/invoke`,
+      `${customUrl}/invoke`,
+      `${deploymentUrl}/invoke`
+    ]);
   });
 
   it('uses Invoke with upstream payload adaptation and SAP headers', async () => {
-    const client = await createClient();
+    const client = createClient();
     expect(await client.messages.create(params)).toEqual(message);
     const [url, init] = fetch.mock.calls[0];
     const request = new Request(url, init);
@@ -195,7 +264,7 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   it('resolves destination tokens for every request', async () => {
     const destination = getMockedAiCoreDestination();
-    const client = await createClient(destination);
+    const client = createClient(destination);
     await client.messages.create(params);
     destination.authTokens![0] = {
       ...destination.authTokens![0],
@@ -214,7 +283,7 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   it('decodes fragmented binary streams with native text and message helpers', async () => {
     fetch.mockImplementation(async () => createBinaryResponse(events));
-    const client = await createClient();
+    const client = createClient();
     const stream = client.messages.stream(params);
     const onText = vi.fn<(text: string, snapshot: string) => void>();
     stream.on('text', onText);
@@ -234,7 +303,7 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   it('preserves raw typed stream iteration', async () => {
     fetch.mockImplementation(async () => createBinaryResponse(events));
-    const client = await createClient();
+    const client = createClient();
     const stream = await client.messages.create({ ...params, stream: true });
     const received: MessageStreamEvent[] = [];
     for await (const event of stream) {
@@ -246,7 +315,7 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('preserves SAP context when cloning with upstream options', async () => {
-    const client = (await createClient()).withOptions({ timeout: 1000 });
+    const client = createClient().withOptions({ timeout: 1000 });
     expect(client.timeout).toBe(1000);
     await client.messages.create(params);
     const [url, init] = fetch.mock.calls[0];
@@ -256,7 +325,7 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('hides first-party resources and upstream routing options at runtime', async () => {
-    const client = await createClient();
+    const client = createClient();
     expect(Object.keys(client.beta)).toEqual(['messages']);
     expect(client).not.toHaveProperty('completions');
     expect(client).not.toHaveProperty('baseURL');
@@ -269,7 +338,7 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('ignores runtime routing and auth overrides when cloning', async () => {
-    const client = (await createClient()).withOptions({
+    const client = createClient().withOptions({
       timeout: 1000,
       baseURL: 'https://other.example',
       credentials: {},
@@ -286,8 +355,7 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('preserves future model operation suffixes and query parameters', async () => {
-    const client = await SapAnthropicBedrockInvoke.createClient({
-      deployment: model,
+    const client = new SapAnthropicBedrockInvoke({
       anthropicConfig: {
         fetch,
         maxRetries: 0,
@@ -295,7 +363,7 @@ describe('SapAnthropicBedrockInvoke', () => {
           async (request, next) =>
             next({
               ...request,
-              url: `${deploymentUrl}/model/future-model/future-operation/nested?option=1`
+              url: `${placeholderBaseUrl}/model/${model}/future-operation/nested?option=1`
             })
         ]
       }
@@ -308,12 +376,12 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   it('negotiates streaming for future operations using upstream request options', async () => {
     fetch.mockImplementation(async () => createBinaryResponse(events));
-    const client = (await createClient()).withOptions({
+    const client = createClient().withOptions({
       middleware: [
         async (middlewareRequest, next) =>
           next({
             ...middlewareRequest,
-            url: `${deploymentUrl}/model/future-model/future-operation`
+            url: `${placeholderBaseUrl}/model/${model}/future-operation`
           })
       ]
     });
@@ -329,12 +397,11 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it.each([
-    `${deploymentUrl}/v1/files`,
-    'https://other.example/model/test/invoke',
-    `${deploymentUrl}-other/model/test/invoke`
-  ])('rejects requests outside the deployment model prefix: %s', async url => {
-    const client = await SapAnthropicBedrockInvoke.createClient({
-      deployment: model,
+    `${placeholderBaseUrl}/v1/files`,
+    `${placeholderBaseUrl}/model/${model}`,
+    'https://other.example/model/test/invoke'
+  ])('rejects requests outside the model operation prefix: %s', async url => {
+    const client = new SapAnthropicBedrockInvoke({
       anthropicConfig: {
         fetch,
         maxRetries: 0,
@@ -357,7 +424,7 @@ describe('SapAnthropicBedrockInvoke', () => {
         { status: 400 }
       )
     );
-    const client = await createClient();
+    const client = createClient();
     await expect(client.messages.create(params)).rejects.toMatchObject({
       status: 400
     });
@@ -373,7 +440,7 @@ describe('SapAnthropicBedrockInvoke', () => {
         }
       ])
     );
-    const client = await createClient();
+    const client = createClient();
     await expect(
       client.messages.stream(params).finalMessage()
     ).rejects.toBeInstanceOf(APIError);
@@ -381,7 +448,7 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   it('fails before sending inference when destination authentication is missing', async () => {
     const destination = getMockedAiCoreDestination();
-    const client = await createClient(destination);
+    const client = createClient(destination);
     destination.authTokens = [];
     await expect(client.messages.create(params)).rejects.toThrow(
       'Could not retrieve an authentication token from the AI Core destination.'
@@ -391,7 +458,7 @@ describe('SapAnthropicBedrockInvoke', () => {
 
   it('preserves the cause of a destination authentication error', async () => {
     const destination = getMockedAiCoreDestination();
-    const client = await createClient(destination);
+    const client = createClient(destination);
     destination.authTokens![0].error = 'Token retrieval failed';
     await expect(client.messages.create(params)).rejects.toMatchObject({
       cause: expect.objectContaining({ message: 'Token retrieval failed' })

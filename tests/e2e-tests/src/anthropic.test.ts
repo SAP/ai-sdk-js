@@ -21,7 +21,7 @@ describe('Claude via Anthropic Bedrock SDK', () => {
   });
 
   it('should stream text and accumulate a final message', async () => {
-    const stream = await anthropicMessagesStream();
+    const stream = anthropicMessagesStream();
     let content = '';
     for await (const event of stream) {
       if (
