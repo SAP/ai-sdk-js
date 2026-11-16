@@ -117,6 +117,11 @@ export {
 } from './openai.ts';
 
 export {
+  messages as anthropicMessages,
+  messagesStream as anthropicMessagesStream
+} from './anthropic.ts';
+
+export {
   listDataDestinations,
   createTabularArtifact,
   deleteTabularArtifact,

@@ -9,6 +9,7 @@ Parts of the sample code are also used in E2E tests.
 - [Usage](#usage)
   - [AI API](#ai-api)
   - [Foundation Models (Azure OpenAI)](#foundation-models-azure-openai)
+  - [Anthropic (Claude via Bedrock Invoke)](#anthropic-claude-via-bedrock-invoke)
   - [Orchestration](#orchestration)
   - [LangChain](#langchain)
   - [Document Grounding](#document-grounding)
@@ -142,6 +143,29 @@ Once the streaming is done, finish reason and token usage are printed out.
 `GET /azure-openai/embedding`
 
 Get embedding vector for the input.
+
+### Anthropic (Claude via Bedrock Invoke)
+
+The [Anthropic samples](src/anthropic.ts) use `@sap-ai-sdk/anthropic` with the official Anthropic Bedrock SDK.
+They require a running `anthropic--claude-4.6-sonnet` deployment in resource group `default` and the AI Core credentials described in [Local Deployment](#local-deployment).
+
+#### Messages
+
+`GET /anthropic/messages`
+
+Ask Claude for the capital of France and return the native Anthropic message as JSON, including content blocks and token usage.
+
+#### Message Streaming
+
+`GET /anthropic/messages-stream`
+
+Stream named Anthropic events as `text/event-stream`, including `content_block_delta` text updates and the final `message_stop` event.
+The sample returns the native `MessageStream`, which supports text events, `finalText()` and `finalMessage()`.
+The server aborts generation when the HTTP client disconnects.
+
+```sh
+curl -N http://localhost:8080/anthropic/messages-stream
+```
 
 ### Orchestration
 
