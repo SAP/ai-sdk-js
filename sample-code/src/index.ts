@@ -14,6 +14,7 @@ export {
   orchestrationCompletionPromptRegistryScoped,
   orchestrationInputFiltering,
   orchestrationOutputFiltering,
+  orchestrationGraniteGuardianFiltering,
   orchestrationRequestConfig,
   orchestrationCompletionMasking,
   orchestrationMaskGroundingInput,
@@ -114,6 +115,15 @@ export {
   responsesApiStateful,
   responsesApiMultiTurn
 } from './openai.ts';
+
+export {
+  listDataDestinations,
+  createTabularArtifact,
+  deleteTabularArtifact,
+  getOrCreateScenarioConfiguration,
+  predictWithScenarioContext,
+  predictWithInlineContext
+} from './tabular-orchestration.ts';
 
 export {
   realtimeTextToAudio,

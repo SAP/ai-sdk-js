@@ -75,7 +75,7 @@ export class OrchestrationEmbeddingClient {
     return executeRequest(
       {
         url: `/inference/deployments/${deploymentId}/v2/embeddings`,
-        ...(this.deploymentConfig ?? {})
+        ...this.deploymentConfig
       },
       body,
       requestConfig,

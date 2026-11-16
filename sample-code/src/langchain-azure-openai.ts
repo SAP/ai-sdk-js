@@ -1,9 +1,10 @@
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 import {
   AzureOpenAiChatClient,
   AzureOpenAiEmbeddingClient
 } from '@sap-ai-sdk/langchain';
+import { resilience } from '@sap-cloud-sdk/resilience';
 
 import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
 import { MemoryVectorStore } from '@langchain/classic/vectorstores/memory';
@@ -33,7 +34,9 @@ export async function invoke(): Promise<string> {
   });
 
   // invoke a prompt
-  const response = await client.invoke('What is the capital of France?');
+  const response = await client.invoke('What is the capital of France?', {
+    requestConfig: { middleware: resilience() }
+  });
 
   // create an output parser
   const parser = new StringOutputParser();

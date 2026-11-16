@@ -1,7 +1,9 @@
 name: publish-canary
 
 on:
-  workflow_call:
+  schedule:
+    - cron: '0 1 * * MON-FRI'
+  workflow_dispatch:
     inputs:
       tag:
         description: 'Dist tag for the release. If you chose something different than "canary", make sure to delete it once it is not needed anymore.'
@@ -11,40 +13,56 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   publish:
+    name: Publish canary to NPM
     runs-on: ubuntu-latest
-    environment: release
+    environment: canary-release
     permissions:
       contents: read
       id-token: write
 
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
           pnpm-install-args: ''
           package-manager-cache: false
 
-      - name: prepare canary changeset
+      - name: Check for changes since last canary
+        id: check-changes
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          rm -f .changeset/*.md || true
-          cat <<EOT >> .changeset/canary-release-changeset.md
-          ---
-          '@sap-ai-sdk/core': patch
-          ---
-
-          Canary release
-          EOT
+          last_sha=$(gh run list \
+            --workflow=publish-canary.yml \
+            --event=schedule \
+            --status=success \
+            --limit=1 \
+            --json headSha \
+            --jq '.[0].headSha // empty')
+          if [ -n "$last_sha" ] && [ "$last_sha" = "$(git rev-parse HEAD)" ]; then
+            echo "No new commits since last canary release ($last_sha), skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: publish
+        if: steps.check-changes.outputs.skip != 'true'
         env:
-          INPUTS_TAG: ${{ inputs.tag }}
+          INPUTS_TAG: ${{ inputs.tag || 'canary' }}
         run: |
+          if [ "${INPUTS_TAG}" = "latest" ] || [[ "${INPUTS_TAG}" == v* ]]; then
+            echo "Canary releases must not publish to the latest dist tag or v* tags."
+            exit 1
+          fi
+
           date=`date +%Y%m%d%H%M%S`
-          pnpm changeset pre enter "${date}"
-          pnpm changeset version
-          pnpm changeset pre exit
-          pnpm changeset publish --tag "${INPUTS_TAG}"
+          pnpm -r exec pnpm version prepatch --preid "${date}" --no-git-tag-version --no-git-checks
+          pnpm publish -r --tag "${INPUTS_TAG}" --no-git-checks
       - name: Notify Slack on failure
         if: ${{ github.event_name == 'schedule' && (failure() || cancelled()) }}
         env:
@@ -56,4 +74,4 @@ jobs:
           SLACK_COLOR: ${{ job.status }}
           SLACK_MSG_AUTHOR: ''
           SLACK_ICON: https://sap.github.io/ai-sdk/img/AI-SDK-Logo.svg
-        uses: rtCamp/action-slack-notify@33ca3be66c6f378fe1610fd1d5258632dbed5e58 # v2.4.0
+        uses: rtCamp/action-slack-notify@06cc13f74fa8d4d2296c09455d91e9453e4025f4 # v2.4.1

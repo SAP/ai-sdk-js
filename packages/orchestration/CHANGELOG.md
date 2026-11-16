@@ -1,5 +1,45 @@
 # @sap-ai-sdk/orchestration
 
+## 2.18.0
+
+### Minor Changes
+
+- [feat] Add `buildGraniteGuardian41Filter()` to build an IBM Granite Guardian 4.1 content filter.
+  Like the deprecated Llama Guard filter, it is a SAP-hosted content filter for the orchestration service.
+
+## 2.17.0
+
+### Minor Changes
+
+- [feat] Update generated client to latest spec (rel-1.13.2).
+  Add optional `provider_specific_fields` property to `LlmChoice` and `LlmChoiceStreaming` response types.
+
+- [compat] `LlamaGuard38B` and `LlamaGuard38BFilterConfig` are now marked as deprecated and will be removed on 2027-09-20.
+  Migrate usages before that date.
+
+- [feat] Update the generated client to spec v1.23.
+  Adds the IBM Granite Guardian 4.1 content filter.
+  Adds input filter target selectors.
+  Adds the `drop_unsupported_params` option on `LLMModelDetails`.
+
+### Patch Changes
+
+- [fix] Preserve `prompt_tokens_details` and `completion_tokens_details` in streamed token usage to fix missing cache and reasoning token details in `OrchestrationStreamResponse.getTokenUsage()` and `getIntermediateResults()`.
+
+- [fix] Fix missing prompt template or messages not being detected when no prompt is configured.
+
+## 2.16.0
+
+### Patch Changes
+
+- Updated dependencies [0da56e2]
+- Updated dependencies [3483acb]
+- Updated dependencies [94b36e5]
+- Updated dependencies [4b2c014]
+  - @sap-ai-sdk/core@2.16.0
+  - @sap-ai-sdk/ai-api@2.16.0
+  - @sap-ai-sdk/prompt-registry@2.16.0
+
 ## 2.15.0
 
 ### Minor Changes

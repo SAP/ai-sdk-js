@@ -3,13 +3,15 @@
   "include": [
     "./packages/ai-api/**/*",
     "./packages/core/**/*",
+    "./packages/context-registry/**/*",
     "./packages/document-grounding/**/*",
     "./packages/foundation-models/**/*",
     "./packages/langchain/**/*",
     "./packages/openai/**/*",
     "./packages/orchestration/**/*",
     "./packages/prompt-registry/**/*",
-    "./packages/rpt/**/*"
+    "./packages/rpt/**/*",
+    "./packages/tabular-orchestration/**/*"
   ],
   "exclude": [
     "**/*.spec.ts",
@@ -24,6 +26,9 @@
     },
     {
       "path": "./packages/core"
+    },
+    {
+      "path": "./packages/context-registry"
     },
     {
       "path": "./packages/document-grounding"
@@ -45,6 +50,9 @@
     },
     {
       "path": "./packages/rpt"
+    },
+    {
+      "path": "./packages/tabular-orchestration"
     }
   ],
   "typedocOptions": {
@@ -52,6 +60,7 @@
     "entryPoints": [
       "packages/ai-api/src/index.ts",
       "packages/core/src/index.ts",
+      "packages/context-registry/src/index.ts",
       "packages/document-grounding/src/index.ts",
       "packages/foundation-models/src/index.ts",
       "packages/langchain/src/index.ts",
@@ -60,7 +69,8 @@
       "packages/openai/src/realtime/index.ts",
       "packages/orchestration/src/index.ts",
       "packages/prompt-registry/src/index.ts",
-      "packages/rpt/src/index.ts"
+      "packages/rpt/src/index.ts",
+      "packages/tabular-orchestration/src/index.ts"
     ],
     "name": "SAP AI SDK for JavaScript",
     "readme": "DOCUMENTATION.md",

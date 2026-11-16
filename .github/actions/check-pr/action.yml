@@ -1,0 +1,14 @@
+name: 'Check PR'
+description: 'Checks the current PR for semantical correctness and appropriate changelog.'
+inputs:
+  changed-files:
+    description: 'Changed files in the .changeset directory on the current PR.'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Run check-pr
+      shell: bash
+      env:
+        INPUT_CHANGED-FILES: ${{ inputs.changed-files }}
+      run: node ${{ github.action_path }}/index.ts

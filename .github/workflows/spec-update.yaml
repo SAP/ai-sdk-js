@@ -20,9 +20,11 @@ on:
         required: false
         options:
           - ai-api
+          - context-registry
           - document-grounding
           - orchestration
           - prompt-registry
+          - tabular-orchestration
         #
         # NOTES:
         #
@@ -64,6 +66,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   generate:
     name: 'Download, Generate, Compile and Push'
@@ -77,10 +83,10 @@ jobs:
       CREATE_PR: ${{ inputs.create-pr }}
       BRANCH: spec-update/${{ inputs.service }}/${{ inputs.ref }}
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
-          persist-credentials: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
       - name: 'Checkout or Create Branch'
         id: branch
@@ -103,7 +109,6 @@ jobs:
 
       - name: 'Resolve specification file paths'
         id: resolve
-        shell: bash
         run: |
           declare -A SERVICES=(
             [ai-api.url]="repos/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml"
@@ -115,8 +120,14 @@ jobs:
             [orchestration.url]="repos/AI/llm-orchestration/contents/src/spec/v2.yaml"
             [orchestration.path]="packages/orchestration/src/spec/api.yaml"
 
+            [context-registry.url]="repos/AI/context-registry/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml"
+            [context-registry.path]="packages/context-registry/src/spec/context-registry.yaml"
+
             [prompt-registry.url]="repos/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml"
             [prompt-registry.path]="packages/prompt-registry/src/spec/prompt-registry.yaml"
+
+            [tabular-orchestration.url]="repos/AI/tabular-ai-orchestration/contents/src/spec/spec.yaml"
+            [tabular-orchestration.path]="packages/tabular-orchestration/src/spec/tabular-orchestration.yaml"
 
             # [rpt.url]="repos/DL-COE/sap-rpt-resources/contents/sap-rpt-1_openapi.json"
             # [rpt.path]="packages/rpt/src/spec/rpt.json"
@@ -153,7 +164,7 @@ jobs:
         id: breaking-changes
         if: steps.check-spec-changes.outputs.spec == 'true'
         continue-on-error: true
-        uses: oasdiff/oasdiff-action/breaking@9c0494cfee8b8fcc9fb383ed2d5d3fbdae169b93 # v0.1.15
+        uses: oasdiff/oasdiff-action/breaking@8a211b41745fcecdfa4a86531ffbf08934fb14f6 # v0.1.23
         with:
           base: 'origin/main:${{ steps.resolve.outputs.file_path }}'
           revision: 'HEAD:${{ steps.resolve.outputs.file_path }}'

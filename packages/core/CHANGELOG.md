@@ -1,5 +1,38 @@
 # @sap-ai-sdk/core
 
+## 2.18.0
+
+## 2.17.0
+
+### Minor Changes
+
+- [feat] Add `gemini-3.8-flash` to the model types.
+
+- [feat] Add `gpt-6-astra`, `gpt-6-luna`, `gpt-6.1-sol`, `gemini-3.6-flash`, and `nvidia--llama-nemotron-embed-1b` to the model types.
+
+- [Improvement] Remove deprecated models `cohere--command-a-reasoning` (retirement date: 2026-10-30), `mistralai--mistral-medium-instruct` (retirement date: 2026-11-30) — use `mistralai--mistral-medium` instead, `gemini-2.5-flash-lite` (retirement date: 2026-10-20) — use `gemini-3.5-flash-lite` instead, `sap-rpt-1.5` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead, `sap-rpt-1.5-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead, `sap-rpt-1-small` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead and `sap-rpt-1-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead.
+
+## 2.16.0
+
+### Minor Changes
+
+- 0da56e2: [feat] Add `LlmBatchModel` type for models supported in LLM batch processing.
+  `BatchCreateRequest.spec.model` now uses this type for IDE autocomplete.
+- 94b36e5: [Improvement] Added `mistralai--mistral-medium`, `sap-rpt-1.5`, `sap-rpt-1.5-large`, `sap-rpt-1.6`, `sap-rpt-1.6-large`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` to the available model list.
+  Remove deprecated models `gpt-4.1-nano` (retirement date: 2026-10-14), `gemini-2.5-flash` (retirement date: 2026-10-16) and `gemini-2.5-pro` (retirement date: 2026-10-16).
+- 4b2c014: [feat] Add `gemini-3.5-flash-lite` to the available model list.
+  Remove deprecated model `mistralai--mistral-large-instruct` (retirement date: 2026-09-30).
+
+### Patch Changes
+
+- 3483acb: [fix] Set the default http agent socket timeout for AI Core requests to 1201 seconds (1201000 ms).
+  This overrides the Cloud SDK default of 5 seconds, which is too short for chat and streaming completions.
+  The value covers the orchestration server-side maximum of 1200 seconds plus 1 second of leeway.
+  Keep-alive is now disabled on these requests.
+  This avoids reusing stale sockets that a load balancer may have closed during the longer timeout.
+  Both settings apply only to the service-binding destination.
+  You can still override them with a custom destination's `agentOptions` or `CustomRequestConfig.httpsAgent`.
+
 ## 2.15.0
 
 ### Minor Changes

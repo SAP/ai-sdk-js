@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from 'node:assert';
 
 import {
   SseStream,
@@ -466,7 +466,9 @@ describe('toReadableStream', () => {
     const first = await reader.read();
     expect(first.done).toBe(false);
 
-    await expect(reader.read()).rejects.toThrow();
+    await expect(reader.read()).rejects.toThrow(
+      'Converting circular structure to JSON'
+    );
     expect(controller.signal.aborted).toBe(true);
   });
 

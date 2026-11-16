@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   find-stale-branches:
     name: 'Find stale spec-update branches'
@@ -58,7 +62,7 @@ jobs:
     strategy:
       matrix:
         include: ${{ fromJson(needs.find-stale-branches.outputs.branches) }}
-    uses: ./.github/workflows/spec-update-cleanup.yaml
+    uses: $/.github/workflows/spec-update-cleanup.yaml
     with:
       service: ${{ matrix.service }}
       ref: ${{ matrix.ref }}

@@ -34,7 +34,7 @@ export type LLMModelDetails = {
    */
   params?: Record<string, any>;
   /**
-   * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models.
+   * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.
    * Default: 600.
    * Maximum: 1200.
    * Minimum: 1.
@@ -46,4 +46,10 @@ export type LLMModelDetails = {
    * Maximum: 5.
    */
   max_retries?: number;
+  /**
+   * Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.
+   *
+   * Default: true.
+   */
+  drop_unsupported_params?: boolean;
 };

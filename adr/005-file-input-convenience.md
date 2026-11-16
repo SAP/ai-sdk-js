@@ -47,12 +47,12 @@ Response for unsupported MIME type (claude).
 
 ```json5
 {
-  "error": {
-    "request_id": "6226262a-80a9-9072-b9aa-3040fa54db4c",
-    "code": 400,
-    "message": "400 - LLM Module: Model 'anthropic--claude-4.5-haiku' only supports PDF documents. Please provide a valid PDF file.",
-    "location": "LLM Module",
-    "intermediate_results": { /*...*/ }
+  error: {
+    request_id: '6226262a-80a9-9072-b9aa-3040fa54db4c',
+    code: 400,
+    message: "400 - LLM Module: Model 'anthropic--claude-4.5-haiku' only supports PDF documents. Please provide a valid PDF file.",
+    location: 'LLM Module',
+    intermediate_results: {/*...*/}
   }
 }
 ```
@@ -61,12 +61,12 @@ Response for unsupported MIME type (gemini).
 
 ```json5
 {
-  "error": {
-    "request_id": "7a4a3f19-643a-94dd-8b72-f83b1bcb5544",
-    "code": 400,
-    "message": "400 - LLM Module: Unable to submit request because it has a mimeType parameter with value xx, which is not supported. Update the mimeType and try again. Learn more: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini",
-    "location": "LLM Module",
-    "intermediate_results": { /*...*/ }
+  error: {
+    request_id: '7a4a3f19-643a-94dd-8b72-f83b1bcb5544',
+    code: 400,
+    message: '400 - LLM Module: Unable to submit request because it has a mimeType parameter with value xx, which is not supported. Update the mimeType and try again. Learn more: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini',
+    location: 'LLM Module',
+    intermediate_results: {/*...*/}
   }
 }
 ```
@@ -147,6 +147,7 @@ Helpful links:
 - [RFC 6838 - Media Types](https://datatracker.ietf.org/doc/html/rfc6838)
 - [MDN Web Docs - Data URLs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)
 - [MDN Web Docs - MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+
 <!-- vale on -->
 
 ## Decision

@@ -1,9 +1,14 @@
+/* oxlint-disable no-console */
+
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
 import {
   resolveDeploymentUrl,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
+import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
 
-/* oxlint-disable no-console */
 import express from 'express';
 
 import {
@@ -47,7 +52,10 @@ import {
   invokeMcpToolChain as invokeMcpToolChainOrchestration,
   invokeWithStructuredOutput as orchestrationInvokeWithStructuredOutput,
   invokeDynamicModelAgent,
-  invokePromptCachingAgent
+  invokePromptCachingAgent,
+  invokeReasoningMultiTurn as invokeReasoningMultiTurnOrchestration,
+  invokeReasoningStreamMultiTurn as invokeReasoningStreamMultiTurnOrchestration,
+  streamReasoningOrchestration
 } from './langchain-orchestration.ts';
 import {
   listBatches,
@@ -57,6 +65,7 @@ import {
   cancelBatch,
   deleteBatch
 } from './llm-batch.ts';
+import { attachRealtimeWs } from './openai-realtime-ws.ts';
 import {
   chatCompletion as openAiSdkChatCompletion,
   chatCompletionStream as openAiSdkChatCompletionStream,
@@ -112,11 +121,17 @@ import {
   predictRegressionWithConfidenceIntervals,
   predictWithTopK
 } from './rpt.ts';
+import {
+  predictWithScenarioContext,
+  predictWithInlineContext
+} from './tabular-orchestration.ts';
 
 import type { RetrievalPerFilterSearchResult } from '@sap-ai-sdk/document-grounding';
 import type {
   OrchestrationEmbeddingResponse,
-  OrchestrationResponse
+  OrchestrationResponse,
+  ChatModel,
+  ReasoningBlock
 } from '@sap-ai-sdk/orchestration';
 
 import type { AIMessageChunk } from '@langchain/core/messages';
@@ -133,8 +148,60 @@ server.on('error', (error: Error) => {
   process.exit(1);
 });
 
+attachRealtimeWs(server);
+
+app.post(
+  '/openai-realtime/transcribe',
+  express.raw({ type: 'audio/wav', limit: '10mb' }),
+  async (req, res) => {
+    const id = req.query.id as string | undefined;
+    try {
+      const wavBase64 = (req.body as Buffer).toString('base64');
+      const fileData = `data:audio/wav;base64,${wavBase64}`;
+      const orchestrationClient = new OrchestrationClient({
+        promptTemplating: { model: { name: 'gemini-3.8-flash' } }
+      });
+      const result = await orchestrationClient.chatCompletion({
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: 'Transcribe the spoken words in the audio exactly as heard.\n- If the audio contains silence or no detectable sound, output exactly: [Silence]\n- If the audio contains music without speech, output exactly: [Music]\n- Otherwise return only the transcript with no additional commentary.'
+              },
+              {
+                type: 'file',
+                file: { file_data: fileData, filename: 'speech.wav' }
+              }
+            ]
+          }
+        ]
+      });
+      res.json({ id, text: result.getContent() ?? '' });
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get('/openai-realtime', async (_req, res) => {
+  const html = await readFile(
+    join(import.meta.dirname, 'openai-realtime-spa.html'),
+    'utf8'
+  );
+  res.header('Content-Type', 'text/html').send(html);
+});
+
+app.get('/img/ai-sdk-logo.svg', async (_req, res) => {
+  const svg = await readFile(
+    join(import.meta.dirname, '..', 'img', 'ai-sdk-logo.svg')
+  );
+  res.header('Content-Type', 'image/svg+xml').send(svg);
+});
+
 app.get(['/', '/health'], (req, res) => {
-  res.send('Hello World! 🌍');
+  res.send('Hello World! 🌍<br><a href="/openai-realtime">Realtime Demo</a>');
 });
 
 function sendError(res: any, error: any, send: boolean = true) {
@@ -513,7 +580,7 @@ app.get('/orchestration/:sampleCase', async (req, res) => {
       res
         .header('Content-Type', 'text/plain')
         .send(
-          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${embedding}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens}`
+          `Embedding with masking applied successfully:${JSON.stringify(embeddingResult.getIntermediateResults()?.input_masking?.data, null, 2)}\nEmbeddings: ${JSON.stringify(embedding)}\nUsage - Prompt tokens: ${embeddingResult.getTokenUsage()?.prompt_tokens ?? ''}\nUsage - Total tokens: ${embeddingResult.getTokenUsage()?.total_tokens ?? ''}`
         );
     } else if (sampleCase === 'fallbackModules') {
       const intermediateFailures = (
@@ -983,7 +1050,7 @@ app.get('/langchain/stream-azure-openai', async (req, res) => {
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(
-        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+        `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
       );
       res.write('Token usage:\n');
       res.write(
@@ -1030,7 +1097,7 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
     if (connectionAlive && finalResult?.usage_metadata) {
       res.write('\n\n---------------------------\n');
       res.write(
-        `Finish reason:  ${finalResult.response_metadata?.finish_reason}\n`
+        `Finish reason:  ${typeof finalResult.response_metadata?.finish_reason === 'string' ? finalResult.response_metadata.finish_reason : ''}\n`
       );
       res.write('Token usage:\n');
       res.write(
@@ -1041,6 +1108,98 @@ app.get('/langchain/stream-orchestration', async (req, res) => {
       );
       res.write(
         `  - Total tokens: ${finalResult.usage_metadata?.total_tokens}\n`
+      );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get(
+  '/langchain/invoke-reasoning-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const result = await invokeReasoningMultiTurnOrchestration();
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get(
+  '/langchain/invoke-reasoning-stream-multi-turn-orchestration',
+  async (req, res) => {
+    try {
+      const model = req.query.model as ChatModel | undefined;
+      const result = await invokeReasoningStreamMultiTurnOrchestration(model);
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(result);
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get('/langchain/stream-reasoning-orchestration', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamReasoningOrchestration(controller);
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    let inReasoning = false;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      const deltaReasoning = chunk.additional_kwargs.reasoning_content as
+        | ReasoningBlock[]
+        | undefined;
+      if (deltaReasoning?.length) {
+        if (!inReasoning) {
+          res.write('[reasoning]\n');
+          inReasoning = true;
+        }
+        deltaReasoning.forEach(block => res.write(block.content ?? ''));
+      }
+      const deltaText = typeof chunk.content === 'string' ? chunk.content : '';
+      if (deltaText) {
+        if (inReasoning) {
+          res.write('\n\n[answer]\n');
+          inReasoning = false;
+        }
+        res.write(deltaText);
+      }
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive) {
+      const mergedReasoning = finalResult?.additional_kwargs
+        .reasoning_content as ReasoningBlock[] | undefined;
+      res.write('\n\n--- Merged via concat() ---\n');
+      res.write(
+        `Signature preserved: ${!!mergedReasoning?.some(b => b.signature)}\n`
+      );
+      res.write(
+        `Content blocks (raw): ${JSON.stringify(finalResult?.content)}\n`
+      );
+      res.write(
+        `Reasoning tokens: ${finalResult?.usage_metadata?.output_token_details?.reasoning ?? 0}\n`
+      );
+      res.write(
+        `Output tokens:    ${finalResult?.usage_metadata?.output_tokens ?? 0}\n`
       );
     }
   } catch (error: any) {
@@ -1341,6 +1500,25 @@ app.get('/rpt/predict-top-k', async (req, res) => {
     res.write(`Prediction: ${JSON.stringify(data.predictions, null, 2)}\n`);
 
     res.end();
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+/* Tabular Orchestration */
+app.get('/tabular-orchestration/predict-scenario-context', async (req, res) => {
+  try {
+    const data = await predictWithScenarioContext();
+    res.send(data);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/tabular-orchestration/predict-inline-context', async (req, res) => {
+  try {
+    const data = await predictWithInlineContext();
+    res.send(data);
   } catch (error: any) {
     sendError(res, error);
   }

@@ -1,5 +1,24 @@
 # @sap-ai-sdk/llm-batch
 
+## 2.18.0
+
+## 2.17.0
+
+## 2.16.0
+
+### Minor Changes
+
+- 0da56e2: [feat] Add `LlmBatchModel` type for models supported in LLM batch processing.
+  `BatchCreateRequest.spec.model` now uses this type for IDE autocomplete.
+
+### Patch Changes
+
+- Updated dependencies [0da56e2]
+- Updated dependencies [3483acb]
+- Updated dependencies [94b36e5]
+- Updated dependencies [4b2c014]
+  - @sap-ai-sdk/core@2.16.0
+
 ## 2.15.0
 
 ### Patch Changes

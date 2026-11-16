@@ -1,5 +1,31 @@
 # @sap-ai-sdk/prompt-registry
 
+## 2.18.0
+
+### Minor Changes
+
+- [feat] prompt-registry: updated generated client to latest spec
+
+## 2.17.0
+
+### Minor Changes
+
+- [feat] Update generated client to latest spec.
+  Add `deleteOrchestrationConfigsByScenario`, `deleteOrchestrationConfigHistory`, `deletePromptTemplatesByScenario`, and `deletePromptTemplateHistory` API functions.
+
+- [compat] `LlamaGuard38B` and `LlamaGuard38BFilterConfig` are now marked as deprecated and will be removed on 2027-09-20.
+  Migrate usages before that date.
+
+## 2.16.0
+
+### Patch Changes
+
+- Updated dependencies [0da56e2]
+- Updated dependencies [3483acb]
+- Updated dependencies [94b36e5]
+- Updated dependencies [4b2c014]
+  - @sap-ai-sdk/core@2.16.0
+
 ## 2.15.0
 
 ### Patch Changes

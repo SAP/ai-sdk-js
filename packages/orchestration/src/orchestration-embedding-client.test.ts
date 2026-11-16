@@ -306,12 +306,18 @@ describe('orchestration embedding service client', () => {
       }
     );
 
+    let err: unknown;
     try {
       await new OrchestrationEmbeddingClient(config).embed(request);
-      throw new Error('Expected an error to be thrown');
-    } catch (error: any) {
-      expect(error.cause?.response?.data?.error).toMatchSnapshot();
+    } catch (e) {
+      err = e;
     }
+    expect(err).toBeDefined();
+    // ErrorWithCause-shaped error from SAP HTTP client
+    const httpErr = err as {
+      cause?: { response?: { data?: { error?: unknown } } };
+    };
+    expect(httpErr.cause?.response?.data?.error).toMatchSnapshot();
   });
 
   it('should throw error when embedding is called with already aborted controller', async () => {
@@ -346,7 +352,7 @@ describe('orchestration embedding service client', () => {
 
     await expect(
       client.embed(request, { signal: AbortSignal.abort() })
-    ).rejects.toThrow();
+    ).rejects.toThrow('aborted');
 
     expect(scope.isDone()).toBe(false);
   });

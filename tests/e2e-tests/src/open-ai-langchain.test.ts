@@ -15,7 +15,7 @@ describe('LangChain OpenAI Access', () => {
     expect(result).toContain('Paris');
   });
 
-  it('executes invoke as part of a chain ', async () => {
+  it('executes invoke as part of a chain', async () => {
     const result = await invokeChain();
     expect(result).toContain('Paris');
   });

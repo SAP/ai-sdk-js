@@ -1,5 +1,6 @@
 /* oxlint-disable no-console */
 import { resolve } from 'node:path';
+
 import { transformFile } from './util.ts';
 
 const filePath = process.argv[2];

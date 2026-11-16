@@ -1,0 +1,8 @@
+name: 'Check License'
+description: 'Checks if the licenses of the production dependencies are allowed.'
+runs:
+  using: composite
+  steps:
+    - name: Check licenses
+      run: node ${{ github.action_path }}/check-license.ts
+      shell: bash

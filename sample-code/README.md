@@ -13,6 +13,7 @@ Parts of the sample code are also used in E2E tests.
   - [LangChain](#langchain)
   - [Document Grounding](#document-grounding)
   - [Prompt Registry](#prompt-registry)
+  - [Tabular Orchestration](#tabular-orchestration)
 - [Tutorial](#tutorial)
 
 ## Local Deployment
@@ -365,6 +366,21 @@ The created collection will be deleted at the end of the flow.
 `GET /prompt-registry/template`
 
 Create a prompt template and delete it.
+
+### Tabular Orchestration
+
+#### Predict with Scenario Context
+
+`GET /tabular-orchestration/predict-scenario-context`
+
+Predict sales groups using context rows selected from the tabular artifacts of a scenario configuration.
+The scenario configuration is looked up by name and context rows are sampled using the configured selection strategy.
+
+#### Predict with Inline Context
+
+`GET /tabular-orchestration/predict-inline-context`
+
+Predict sales groups with context rows provided inline in the request, without a scenario configuration.
 
 ## Tutorial
 

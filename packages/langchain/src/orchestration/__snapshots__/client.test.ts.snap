@@ -8,7 +8,39 @@ exports[`orchestration service client > resilience > returns successful response
     "AIMessage",
   ],
   "kwargs": {
-    "additional_kwargs": {},
+    "additional_kwargs": {
+      "intermediate_results": {
+        "llm": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "message": {
+                "content": "Hello! How can I assist you today?",
+                "role": "assistant",
+              },
+            },
+          ],
+          "created": 1754390060,
+          "id": "chatcmpl-C19HolLlkUltFBAMq4Jdgi4dMUFKg",
+          "model": "gpt-4o-2024-08-06",
+          "object": "chat.completion",
+          "system_fingerprint": "fp_ee1d74bde0",
+          "usage": {
+            "completion_tokens": 10,
+            "prompt_tokens": 9,
+            "total_tokens": 19,
+          },
+        },
+        "templating": [
+          {
+            "content": "Hello!",
+            "role": "user",
+          },
+        ],
+      },
+      "tool_calls": undefined,
+    },
     "content": "Hello! How can I assist you today?",
     "invalid_tool_calls": [],
     "response_metadata": {
@@ -47,7 +79,39 @@ exports[`orchestration service client > resilience > returns successful response
     "AIMessage",
   ],
   "kwargs": {
-    "additional_kwargs": {},
+    "additional_kwargs": {
+      "intermediate_results": {
+        "llm": {
+          "choices": [
+            {
+              "finish_reason": "stop",
+              "index": 0,
+              "message": {
+                "content": "Hello! How can I assist you today?",
+                "role": "assistant",
+              },
+            },
+          ],
+          "created": 1754390060,
+          "id": "chatcmpl-C19HolLlkUltFBAMq4Jdgi4dMUFKg",
+          "model": "gpt-4o-2024-08-06",
+          "object": "chat.completion",
+          "system_fingerprint": "fp_ee1d74bde0",
+          "usage": {
+            "completion_tokens": 10,
+            "prompt_tokens": 9,
+            "total_tokens": 19,
+          },
+        },
+        "templating": [
+          {
+            "content": "Hello!",
+            "role": "user",
+          },
+        ],
+      },
+      "tool_calls": undefined,
+    },
     "content": "Hello! How can I assist you today?",
     "invalid_tool_calls": [],
     "response_metadata": {

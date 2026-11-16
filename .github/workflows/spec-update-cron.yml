@@ -12,6 +12,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   get-orchestration-reference:
     runs-on: ubuntu-latest
@@ -28,7 +32,7 @@ jobs:
             -H "Authorization: Bearer $TOKEN" \
             -H "Accept: application/vnd.github.v3.raw" | yq -r .version)
 
-          if [ -z "$ORCH_VERSION" ]; then
+          if [ -z "$ORCH_VERSION" ] || [ "$ORCH_VERSION" = "null" ]; then
               echo "Failed to fetch orchestration version"
               exit 1
           fi
@@ -57,7 +61,7 @@ jobs:
     permissions: &spec-update-permissions
       contents: write
       pull-requests: write
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: ai-api
       ref: main
@@ -65,9 +69,18 @@ jobs:
     secrets: &spec-update-secrets
       GH_TOOLS_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
+  update-context-registry:
+    permissions: *spec-update-permissions
+    uses: $/.github/workflows/spec-update.yaml
+    with:
+      service: context-registry
+      ref: main
+      create-pr: true
+    secrets: *spec-update-secrets
+
   update-document-grounding:
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: document-grounding
       ref: main
@@ -76,9 +89,18 @@ jobs:
 
   update-prompt-registry:
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: prompt-registry
+      ref: main
+      create-pr: true
+    secrets: *spec-update-secrets
+
+  update-tabular-orchestration:
+    permissions: *spec-update-permissions
+    uses: $/.github/workflows/spec-update.yaml
+    with:
+      service: tabular-orchestration
       ref: main
       create-pr: true
     secrets: *spec-update-secrets
@@ -86,7 +108,7 @@ jobs:
   update-orchestration:
     needs: get-orchestration-reference
     permissions: *spec-update-permissions
-    uses: ./.github/workflows/spec-update.yaml
+    uses: $/.github/workflows/spec-update.yaml
     with:
       service: orchestration
       ref: ${{ needs.get-orchestration-reference.outputs.orchestration-branch }}
@@ -97,8 +119,10 @@ jobs:
     needs:
       - get-orchestration-reference
       - update-ai-api
+      - update-context-registry
       - update-document-grounding
       - update-prompt-registry
+      - update-tabular-orchestration
       - update-orchestration
     if: failure()
     runs-on: ubuntu-latest

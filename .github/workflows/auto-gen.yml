@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   generate:
     if: ${{ github.event.pull_request.user.type != 'Bot' && github.repository == github.event.pull_request.head.repo.full_name }}
@@ -14,23 +18,21 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           permission-contents: write
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
           ref: ${{ github.head_ref }}
-          persist-credentials: true
           token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
       - name: Generate and apply patches
-        shell: bash
         run: |
           pnpm generate
           pnpm apply-patches
       - name: Commit Changes if needed
-        shell: bash
         env:
           BOT_EMAIL: ${{ vars.SAP_AI_SDK_BOT_EMAIL }}
           BOT_NAME: ${{ vars.SAP_AI_SDK_BOT_NAME }}

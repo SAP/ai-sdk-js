@@ -1,19 +1,54 @@
 packages:
   - packages/ai-api
+  - packages/context-registry
   - packages/core
   - packages/document-grounding
   - packages/foundation-models
-  - packages/openai
   - packages/langchain
-  - packages/orchestration
   - packages/llm-batch
+  - packages/openai
+  - packages/orchestration
   - packages/prompt-registry
   - packages/rpt
+  - packages/tabular-orchestration
   - sample-cap
   - sample-code
   - tests/e2e-tests
   - tests/smoke-tests
   - tests/type-tests
+  - .github/actions/check-pr
+  - .github/actions/check-public-api
+  - .github/actions/get-changelog
+  - .github/actions/changesets-fixed-version-bump
+  - .github/actions/merge-and-write-changelogs
+
+versioning:
+  fixed:
+    - - '@sap-ai-sdk/ai-api'
+      - 'sap-ai-sdk'
+      - '@sap-ai-sdk/context-registry'
+      - '@sap-ai-sdk/core'
+      - '@sap-ai-sdk/document-grounding'
+      - '@sap-ai-sdk/foundation-models'
+      - '@sap-ai-sdk/langchain'
+      - '@sap-ai-sdk/llm-batch'
+      - '@sap-ai-sdk/openai'
+      - '@sap-ai-sdk/orchestration'
+      - '@sap-ai-sdk/prompt-registry'
+      - '@sap-ai-sdk/rpt'
+      - '@sap-ai-sdk/tabular-orchestration'
+  ignore:
+    - '@sap-ai-sdk/sample-code'
+  maxBump: minor
+  changelog:
+    storage: repository
+  # POC: openai/rpt could graduate onto a parallel prerelease track ("alpha" lane).
+  # A fixed group must move lanes together, so this requires first narrowing `fixed`
+  # above to exclude them, e.g. fixed: [['@sap-ai-sdk/core', '@sap-ai-sdk/ai-api', ...]]
+  # (listing the group members explicitly, minus openai/rpt), then:
+  # lanes:
+  #   '@sap-ai-sdk/openai': alpha
+  #   '@sap-ai-sdk/rpt': alpha
 
 allowBuilds:
   '@swc/core': true
@@ -21,17 +56,34 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
-gitBranchLockfile: true
-mergeGitBranchLockfilesBranchPattern:
-  - main
-  - renovate/*
+permissions:
+  dotenv:
+    skills: false
+
+# Fix/investigate: does not work as expected because checkout action uses detached HEAD
+# gitBranchLockfile: true
+# mergeGitBranchLockfilesBranchPattern:
+#   - main
+#   - renovate/*
+
+catalog:
+  '@langchain/core': ^1.2.13
+  '@langchain/langgraph': ^1.4.18
+  '@sap-cloud-sdk/connectivity': ^4.10.0
+  '@sap-cloud-sdk/generator-common': ^4.10.0
+  '@sap-cloud-sdk/http-client': ^4.10.0
+  '@sap-cloud-sdk/openapi': ^4.10.0
+  '@sap-cloud-sdk/openapi-generator': ^4.10.0
+  '@sap-cloud-sdk/resilience': ^4.10.0
+  '@sap-cloud-sdk/util': ^4.10.0
+  langchain: ^1.5.14
+  zod: ^4.6.6
 
 blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
-  - '@sap-cloud-sdk/*'
-  - 'hono@4.12.34'
+  - body-parser@2.4.0
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true
@@ -40,3 +92,10 @@ trustPolicyExclude:
   - 'picomatch@4.0.5'
   - 'undici-types@6.21.0'
 trustPolicyIgnoreAfter: 131400 # 3 months
+
+# deuplicate dep resolution where possible
+autoDedupe: true
+dedupeInjectedDeps: true
+dedupePeerDependents: true
+lockfile:
+  includeResolutionSettings: true

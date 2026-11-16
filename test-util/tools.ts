@@ -1,5 +1,6 @@
-import * as zodV4 from 'zod/v4';
 import * as zodV3 from 'zod/v3';
+import * as zodV4 from 'zod/v4';
+
 import type { ChatCompletionTool } from '../packages/orchestration/src/client/api/schema/index.ts';
 
 /**
@@ -58,5 +59,7 @@ export const multiplyNumbersTool: ChatCompletionTool = {
 export const joke = zodV4.object({
   setup: zodV4.string().meta({ description: 'The setup of the joke' }),
   punchline: zodV4.string().meta({ description: 'The punchline to the joke' }),
-  rating: zodV4.number().meta({ description: 'How funny the joke is, from 1 to 10' })
+  rating: zodV4
+    .number()
+    .meta({ description: 'How funny the joke is, from 1 to 10' })
 });

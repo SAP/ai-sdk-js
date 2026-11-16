@@ -7,6 +7,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   e2e-tests:
     strategy:
@@ -25,7 +29,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
       - name: Create .env file
         env:
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }} # zizmor: ignore[overprovisioned-secrets]
@@ -38,7 +42,6 @@ jobs:
         id: sample-app
         working-directory: ./sample-code
         # TODO: use background: true
-        shell: bash
         run: |
           pnpm local &
           JOB_ID=$!

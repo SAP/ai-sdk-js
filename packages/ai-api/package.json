@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/ai-api",
-  "version": "2.15.0",
+  "version": "2.18.0",
   "description": "",
   "keywords": [
     "ai-api",
@@ -36,15 +36,15 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateESM --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm update-imports && pnpm lint:fix",
+    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/AI_CORE_API.yaml -o ./src/client && pnpm update-imports && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/AI_CORE_API"
   },
   "dependencies": {
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.9.1",
-    "@sap-cloud-sdk/util": "^4.9.1"
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "vitest": "5.0.0"
+    "vitest": "5.1.0"
   }
 }

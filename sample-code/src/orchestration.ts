@@ -7,6 +7,7 @@ import {
   buildDocumentGroundingConfig,
   buildAzureContentSafetyFilter,
   buildLlamaGuard38BFilter,
+  buildGraniteGuardian41Filter,
   buildDpiMaskingProvider,
   buildTranslationConfig
 } from '@sap-ai-sdk/orchestration';
@@ -55,7 +56,7 @@ export async function orchestrationChatCompletion(
     {
       messages: [{ role: 'user', content: 'What is the capital of France?' }]
     },
-    { signal }
+    { signal, middleware: resilience() }
   );
 
   // use getContent() to access the LLM response
@@ -381,6 +382,46 @@ export async function orchestrationOutputFiltering(): Promise<OrchestrationRespo
 }
 
 /**
+ * Apply an IBM Granite Guardian content filter to the output.
+ * Granite Guardian is the recommended alternative to the deprecated Llama Guard filter.
+ * @returns The orchestration service response.
+ */
+export async function orchestrationGraniteGuardianFiltering(): Promise<OrchestrationResponse> {
+  const orchestrationClient = new OrchestrationClient({
+    // define the language model to be used
+    promptTemplating: {
+      model: {
+        name: 'anthropic--claude-4.5-haiku'
+      }
+    },
+    filtering: {
+      output: {
+        filters: [
+          // Build an IBM Granite Guardian content filter with the `harm` category enabled
+          buildGraniteGuardian41Filter(['harm'])
+        ]
+      }
+    }
+  });
+
+  const result = await orchestrationClient.chatCompletion({
+    messages: [
+      {
+        role: 'user',
+        // Likely to be filtered by the Granite Guardian `harm` category
+        content:
+          'Reparaphrase the sentence in 30 ways with strong feelings: "I hate you!"'
+      }
+    ]
+  });
+
+  logger.info(
+    `Granite Guardian output filter result: ${result.getIntermediateResults().output_filtering?.message ?? 'content allowed'}`
+  );
+  return result;
+}
+
+/**
  * Ask to write an e-mail while masking personal information.
  * @returns The message content from the orchestration service in the generative AI hub.
  */
@@ -679,7 +720,7 @@ export async function orchestrationResponseFormat(): Promise<TranslationResponse
         }
       },
       model: {
-        name: 'gpt-4.1-nano'
+        name: 'gpt-5.4-nano'
       }
     }
   });
@@ -983,7 +1024,7 @@ export async function orchestrationWithFallbackConfigs(): Promise<OrchestrationR
       // First configuration with a non-orchestration model to trigger module fallback
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -1031,7 +1072,7 @@ export async function orchestrationStreamWithFallbackConfigs(): Promise<
     {
       promptTemplating: {
         model: {
-          name: 'sap-rpt-1-small'
+          name: 'sap-rpt-1.6'
         }
       }
     },
@@ -1066,7 +1107,7 @@ const fileTypeConfig: Record<
   csv: {
     filename: 'test.csv',
     mimeType: 'text/csv',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     instruction:
       'Transcribe the CSV content exactly, preserving all rows and columns.'
   },
@@ -1080,7 +1121,7 @@ const fileTypeConfig: Record<
   mp3: {
     filename: 'test.mp3',
     mimeType: 'audio/mpeg',
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     instruction: 'Transcribe the spoken words in the audio file.'
   }
 };
@@ -1336,7 +1377,7 @@ export async function orchestrationReasoningContent(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gemini-3.5-flash',
+        name: 'gemini-3.8-flash',
         // reasoning_effort is harmonized across providers; orchestration maps it
         // to each model's native reasoning configuration.
         params: { reasoning_effort: 'high' }
@@ -1377,7 +1418,7 @@ export async function orchestrationReasoningContentStream(
   const orchestrationClient = new OrchestrationClient({
     promptTemplating: {
       model: {
-        name: 'gemini-3.5-flash',
+        name: 'gemini-3.8-flash',
         // reasoning_effort is harmonized across providers; orchestration maps it
         // to each model's native reasoning configuration.
         params: { reasoning_effort: 'high' }

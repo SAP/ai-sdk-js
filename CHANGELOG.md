@@ -1,3 +1,7 @@
+## 2.18.0
+
+## 2.17.0
+
 [//]: # "Please don't delete the following comments and keep them in the beginning of this document. Also, keep the first line empty."
 
 [//]: # (Example known issue: Making OData requests using a proxy defined in the environment variables is not possible \(see improvements\).)
@@ -24,9 +28,99 @@
 
 -
 
+# 2.18.0
+## New Features
+
+- [orchestration] Add `buildGraniteGuardian41Filter()` to build an IBM Granite Guardian 4.1 content filter.
+  Like the deprecated Llama Guard filter, it is a SAP-hosted content filter for the orchestration service.
+- [prompt-registry] prompt-registry: updated generated client to latest spec
+
+## Fixed Issues
+
+- [ai-api] Exclude destinations from deployment resolution errors to avoid exposing credentials.
+
 ### Implementation changed
 
+# 2.17.0
+## Compatibility Notes
+
+- [orchestration, prompt-registry] `LlamaGuard38B` and `LlamaGuard38BFilterConfig` are now marked as deprecated and will be removed on 2027-09-20.
+  Migrate usages before that date.
+
+## New Features
+
+- [context-registry] Add tabular context registry package.
+- [core] Add `gemini-3.8-flash` to the model types.
+- [core] Add `gpt-6-astra`, `gpt-6-luna`, `gpt-6.1-sol`, `gemini-3.6-flash`, and `nvidia--llama-nemotron-embed-1b` to the model types.
+- [langchain] Add reasoning content support to the Orchestration LangChain client.
+  Reasoning blocks from model responses are surfaced in `AIMessage.additional_kwargs.reasoning_content`(preserving the `signature` for encrypted thinking), for both non-streaming and streaming responses.
+  On subsequent turns, reasoning is forwarded back to the Orchestration service in `reasoning_content` from `additional_kwargs.reasoning_content`.
+  Reasoning placed directly in message `content` is treated as output only and is not forwarded.
+- [orchestration] Update generated client to latest spec (rel-1.13.2).
+  Add optional `provider_specific_fields` property to `LlmChoice` and `LlmChoiceStreaming` response types.
+- [orchestration] Update the generated client to spec v1.23.
+  Adds the IBM Granite Guardian 4.1 content filter.
+  Adds input filter target selectors.
+  Adds the `drop_unsupported_params` option on `LLMModelDetails`.
+- [prompt-registry] Update generated client to latest spec.
+  Add `deleteOrchestrationConfigsByScenario`, `deleteOrchestrationConfigHistory`, `deletePromptTemplatesByScenario`, and `deletePromptTemplateHistory` API functions.
+- [tabular-orchestration] Add experimental Tabular AI Orchestration package with `TabularOrchestrationClient` for predictions with Tabular Foundation Models.
+
+## Fixed Issues
+
+- [langchain] Additional `additional_kwargs` properties (including `tool_calls`, `intermediate_results`, and `reasoning_content`) are now correctly placed on the `AIMessage` instead of the generation object.
+- [langchain] Avoid retrying irrecoverable orchestration request and unsupported-model errors.
+- [orchestration] Preserve `prompt_tokens_details` and `completion_tokens_details` in streamed token usage to fix missing cache and reasoning token details in `OrchestrationStreamResponse.getTokenUsage()` and `getIntermediateResults()`.
+- [orchestration] Fix missing prompt template or messages not being detected when no prompt is configured.
+
+## Improvements
+
+- [core] Remove deprecated models `cohere--command-a-reasoning` (retirement date: 2026-10-30), `mistralai--mistral-medium-instruct` (retirement date: 2026-11-30) — use `mistralai--mistral-medium` instead, `gemini-2.5-flash-lite` (retirement date: 2026-10-20) — use `gemini-3.5-flash-lite` instead, `sap-rpt-1.5` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead, `sap-rpt-1.5-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead, `sap-rpt-1-small` (retirement date: 2026-12-31) — use `sap-rpt-1.6` instead and `sap-rpt-1-large` (retirement date: 2026-12-31) — use `sap-rpt-1.6-large` instead.
+
 -
+
+# 2.16.0
+## Compatibility Notes
+
+- [openai] Raise the minimum required openai package version to 7.5.0. (875e285)
+- [rpt] Deprecate `sap-rpt-1-small` and `sap-rpt-1-large`.
+  These model names remain functional until their retirement date (2026-12-31). (ba5b1b4)
+- [rpt] The server default changed from for `parse_data_types` changed from `true` to `false`.
+  Pass `parse_data_types: true` explicitly if you relied on the old default. (ba5b1b4)
+- [rpt] The `RptClient` constructor no longer has a default model name.
+  Pass one of the known model names explicitly, e.g. `'sap-rpt-1.5'`. (ba5b1b4)
+- [rpt] Widen `TargetColumnConfig.prediction_placeholder` to accept `null`.
+  The type is now `string | number | null` (was `string | number`). (ba5b1b4)
+
+## New Features
+
+- [core, llm-batch] Add `LlmBatchModel` type for models supported in LLM batch processing.
+  `BatchCreateRequest.spec.model` now uses this type for IDE autocomplete. (0da56e2)
+- [core] Add `gemini-3.5-flash-lite` to the available model list.
+  Remove deprecated model `mistralai--mistral-large-instruct` (retirement date: 2026-09-30). (4b2c014)
+- [rpt] Add a `confidence_interval` field to `PredictResponsePayload` predictions for regression tasks. (ba5b1b4)
+- [rpt] Default gzip compression level to 1 for RPT predict requests. (ba5b1b4)
+- [rpt] Add an `explanations` field to `prediction_config`; read feature importance scores per query row from the response. (ba5b1b4)
+- [rpt] Expand `ColumnType` from 3 to 16 values (`integer`, `int16`, `int32`, `int64`, `uint8`, `decimal`, `double`, `boolean`, `largestring`, `uuid`, `time`, `datetime`, `timestamp`).
+  Map the new numeric variants to `number`; all other new variants (including `datetime` and `timestamp`, which are full ISO strings) map to `string`. (ba5b1b4)
+- [rpt] Add `context_mode` to `PredictionConfig` and `PredictResponseMetadata` (from RPT spec v1.6.0). (21556db)
+
+## Fixed Issues
+
+- [core] Set the default http agent socket timeout for AI Core requests to 1201 seconds (1201000 ms).
+  This overrides the Cloud SDK default of 5 seconds, which is too short for chat and streaming completions.
+  The value covers the orchestration server-side maximum of 1200 seconds plus 1 second of leeway.
+  Keep-alive is now disabled on these requests.
+  This avoids reusing stale sockets that a load balancer may have closed during the longer timeout.
+  Both settings apply only to the service-binding destination.
+  You can still override them with a custom destination's `agentOptions` or `CustomRequestConfig.httpsAgent`. (3483acb)
+- [langchain] Normalize invalid tool message content to empty string to prevent AI Core 400 errors when MCP tools return empty results. (4cda527)
+
+## Improvements
+
+- [core] Added `mistralai--mistral-medium`, `sap-rpt-1.5`, `sap-rpt-1.5-large`, `sap-rpt-1.6`, `sap-rpt-1.6-large`, `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` to the available model list.
+  Remove deprecated models `gpt-4.1-nano` (retirement date: 2026-10-14), `gemini-2.5-flash` (retirement date: 2026-10-16) and `gemini-2.5-pro` (retirement date: 2026-10-16). (94b36e5)
+- [document-grounding] Update document grounding specification. (478fc53)
 
 # 2.15.0
 ## Compatibility Notes

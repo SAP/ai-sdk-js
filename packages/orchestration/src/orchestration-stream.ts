@@ -42,6 +42,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processChunk(
+    this: void,
     stream: OrchestrationStream<CompletionPostResponseStreaming>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
     for await (const chunk of stream) {
@@ -50,6 +51,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
   }
 
   static async *_processOrchestrationStreamChunkResponse(
+    this: void,
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
@@ -65,6 +67,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
   }
 
   static async *_processStreamEnd(
+    this: void,
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>,
     response?: OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<OrchestrationStreamChunkResponse> {
@@ -92,6 +95,7 @@ export class OrchestrationStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processContentStream(
+    this: void,
     stream: OrchestrationStream<OrchestrationStreamChunkResponse>
   ): AsyncGenerator<string> {
     for await (const chunk of stream) {

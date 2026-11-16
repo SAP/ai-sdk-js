@@ -1,4 +1,5 @@
 import { DeploymentApi } from '@sap-ai-sdk/ai-api';
+import { resilience } from '@sap-cloud-sdk/resilience';
 
 import type {
   AiDeploymentBulkModificationResponse,
@@ -23,7 +24,7 @@ export async function getDeployments(
   const queryParams = status ? { status } : {};
   return DeploymentApi.deploymentQuery(queryParams, {
     'AI-Resource-Group': resourceGroup
-  }).execute();
+  }).execute(undefined, { middleware: resilience() });
 }
 
 /**
@@ -40,9 +41,7 @@ export async function getDeploymentsWithDestination(
   const queryParams = status ? { status } : {};
   return DeploymentApi.deploymentQuery(queryParams, {
     'AI-Resource-Group': resourceGroup
-  }).execute({
-    destinationName: 'e2e-aicore'
-  });
+  }).execute({ destinationName: 'e2e-aicore' }, { middleware: resilience() });
 }
 
 /**

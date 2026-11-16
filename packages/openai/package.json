@@ -1,6 +1,6 @@
 {
   "name": "@sap-ai-sdk/openai",
-  "version": "2.15.0",
+  "version": "2.18.0",
   "description": "SAP AI SDK integration with the official OpenAI npm package for Azure OpenAI on SAP AI Core",
   "keywords": [
     "azure-openai",
@@ -54,14 +54,14 @@
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
-    "@sap-cloud-sdk/connectivity": "^4.9.1",
-    "@sap-cloud-sdk/util": "^4.9.1"
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:"
   },
   "devDependencies": {
-    "@types/ws": "8.18.1",
-    "openai": "7.5.0",
-    "vitest": "5.0.0",
-    "ws": "8.21.3"
+    "@types/ws": "8.18.2",
+    "openai": "7.55.0",
+    "vitest": "5.1.0",
+    "ws": "8.22.2"
   },
   "peerDependencies": {
     "openai": "^7.5.0",

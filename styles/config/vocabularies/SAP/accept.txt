@@ -1,6 +1,9 @@
 SAP S/4HANA
 SAP Cloud SDK
 SAP Cloud SDK for AI
+Anthropic
+Vercel
+AWS
 Cloud Foundry
 Fieldglass
 Ariba
@@ -25,6 +28,9 @@ JCo
 OAuth
 API's
 SDK's
+RPT's
+explainability
+subpath
 SAMLAssertion
 zoneId
 CRDs
@@ -47,6 +53,7 @@ GUIDs
 Blust
 Streifeneder
 ESM
+PoC
 
 subaccount
 microservices
@@ -124,6 +131,8 @@ subscribable
 Sandeep
 browserified
 untrusted
+async
+handwrite
 
 v2
 v4
@@ -151,7 +160,13 @@ impr
 breakpoints?
 [Rr]ealtime
 compat
+passthrough
+TFMs?
 repo
 [Bb]ackport(ed|ing)?
 [Ee]xplainability
 RPT
+README(s)
+ADR(s)
+config(s)
+subclassing

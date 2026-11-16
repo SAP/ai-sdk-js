@@ -46,6 +46,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processChunk(
+    this: void,
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiCreateChatCompletionStreamResponse>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
     for await (const chunk of stream) {
@@ -57,6 +58,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processToolCalls(
+    this: void,
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
@@ -112,6 +114,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processFinishReason(
+    this: void,
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {
@@ -142,7 +145,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
                 break;
               default:
                 logger.error(
-                  `Choice ${choiceIndex}: Stream finished with unknown reason '${finishReason}'.`
+                  `Choice ${choiceIndex}: Stream finished with unknown reason '${String(finishReason)}'.`
                 );
             }
           }
@@ -156,6 +159,7 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
    * @internal
    */
   static async *_processTokenUsage(
+    this: void,
     stream: AzureOpenAiChatCompletionStream<AzureOpenAiChatCompletionStreamChunkResponse>,
     response?: AzureOpenAiChatCompletionStreamResponse<AzureOpenAiChatCompletionStreamChunkResponse>
   ): AsyncGenerator<AzureOpenAiChatCompletionStreamChunkResponse> {

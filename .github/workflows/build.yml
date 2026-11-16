@@ -8,6 +8,10 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -20,7 +24,7 @@ jobs:
         node-version: [26, 24, 22]
 
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
         with:
           node-version: ${{ matrix.node-version }}
       # type-check can run in parallel to unit tests
@@ -41,7 +45,7 @@ jobs:
         if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
+        uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65 # v8.4.1
       - name: Wait for type tests
         wait: test-type
 
@@ -50,9 +54,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: sap/cloud-sdk-js/.github/actions/setup@main
+      - uses: $/.github/actions/setup
       - name: Enforce generated code is up to date
-        shell: bash
         run: |
           pnpm generate
           pnpm apply-patches
@@ -74,14 +77,14 @@ jobs:
       # Independent read-only checks — run them concurrently.
       - parallel:
           - name: Check public API
-            uses: sap/cloud-sdk-js/.github/actions/check-public-api@main
+            uses: ./.github/actions/check-public-api # zizmor: ignore[self-repository]
             with:
               force_internal_exports: 'false'
               ignored_path_pattern: '.*?/client/.*?/schema|.*?/zod/.*?'
           - name: Check dependencies
             run: pnpm check:deps --reporter=github-actions
           - name: License Check
-            uses: sap/cloud-sdk-js/.github/actions/check-license@main
+            uses: ./.github/actions/check-license # zizmor: ignore[self-repository]
           - name: API Doc Check
             run: pnpm doc
       - wait-all:

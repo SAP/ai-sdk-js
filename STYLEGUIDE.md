@@ -264,7 +264,7 @@ Use single quotes, unless not possible otherwise, e.g. when your string contains
 
 ```ts
 /* Don't use double quotes */
-const foo = "foo";
+const foo = 'foo';
 ```
 
 ✅ Examples of **correct** code:
@@ -672,14 +672,14 @@ Use `.test` not `.spec` to differentiate test files.
 
 ```ts
 /* Don't use .spec.ts */
-test-file.spec.ts
+test - file.spec.ts;
 ```
 
 ✅ Examples of **correct** code:
 
 ```ts
 /* Use .test.ts */
-test-file.test.ts
+test - file.test.ts;
 ```
 
 ### Use it and describe notation
@@ -717,16 +717,16 @@ This makes it easier to keep the file structures in sync and find tests for a un
 
 ```ts
 /* Don't create a separate test directory */
-src/some-unit.ts
-test/some-unit.spec.ts
+src / some - unit.ts;
+test / some - unit.spec.ts;
 ```
 
 ✅ Examples of **correct** code:
 
 ```ts
 /* Create test files next to productive files */
-src/some-unit.ts
-src/some-unit.test.ts
+src / some - unit.ts;
+src / some - unit.test.ts;
 ```
 
 ## Promises
@@ -869,6 +869,28 @@ function fn(arr) {
   const accessorFn = foo => foo.bar;
   return arr.map(item => accessorFn(item));
 }
+```
+
+## Prose
+
+### Write one sentence per line in markdown files ✓
+
+Markdown files (ADRs, READMEs, docs) must contain one sentence per line.
+This rule is enforced by Vale.
+It makes diffs cleaner and prose easier to maintain — adding or rewording a sentence touches exactly one line.
+Code blocks and tables are exempt.
+
+❌ Examples of **incorrect** prose:
+
+```markdown
+The client is stateless. It holds no conversation history between calls.
+```
+
+✅ Examples of **correct** prose:
+
+```markdown
+The client is stateless.
+It holds no conversation history between calls.
 ```
 
 ## GitHub Actions

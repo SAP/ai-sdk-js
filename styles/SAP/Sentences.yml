@@ -1,5 +1,5 @@
 extends: existence
-message: "Each sentence should have its own line."
+message: 'Each sentence should have its own line.'
 nonword: true
 scope: paragraph
 level: error

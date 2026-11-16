@@ -8,4 +8,20 @@
       <packageUrl regex="true">^pkg:npm/express@.*$</packageUrl>
       <vulnerabilityName>CVE-2024-10491</vulnerabilityName>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+         file name: node-forge:1.4.0
+         GHSA-86w9-cpqp-85rv: RSA PKCS#1 v1.5 signature forgery via nested DigestAlgorithm - not exploitable as node-forge is only present transitively via jks-js (@sap-cloud-sdk/connectivity) for Java keystore parsing; RSA signature verification is not used in this project. No patched release is available yet.
+      ]]></notes>
+      <packageUrl>pkg:npm/node-forge</packageUrl>
+      <vulnerabilityName>GHSA-86w9-cpqp-85rv</vulnerabilityName>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+         @sap/cds-dk bundles handlebars 4.7.9 in its published package. @sap/cds-dk is a development-only dependency and is not included in production artifacts.
+      ]]></notes>
+      <filePath regex="true">.*/@sap/cds-dk/node_modules/handlebars/.*</filePath>
+      <cve>CVE-2026-106445</cve>
+      <cve>CVE-2026-106446</cve>
+   </suppress>
 </suppressions>

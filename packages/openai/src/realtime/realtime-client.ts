@@ -35,8 +35,8 @@ export class SapOpenAiRealtimeWs extends OpenAIRealtimeWS {
       ...userWsOptions,
       headers: {
         ...userWsOptions?.headers,
-        'AI-Resource-Group': context.resourceGroup,
-        'AI-Client-Type': ['AI SDK JavaScript', clientType]
+        'ai-resource-group': context.resourceGroup,
+        'ai-client-type': ['AI SDK JavaScript', clientType]
           .filter(Boolean)
           .join(',')
       }
