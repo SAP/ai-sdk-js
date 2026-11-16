@@ -212,6 +212,69 @@ client.config(configList).create();
 **Tradeoff**: One entry point to learn instead of five, and the call site reads the same regardless of source.
 But the source shapes are no longer visible in the method name, so which overload applies — and therefore whether `create()` accepts a `prompt` — is legible only through the types, not the call itself.
 
+### Option D — OpenAI call-site framing over Option C
+
+Option D keeps Option C's accessor and type-level prompt gate unchanged.
+It adds a framing: the terminal call reads like OpenAI, and a documented root object wraps the standalone client.
+
+Orchestration configuration has no OpenAI analogue, so it cannot sit inside `create()` the way OpenAI's `messages` do.
+Matching OpenAI therefore means matching the **call site**: the verb is `create`, and streaming is `create({ stream: true })` with an overloaded return.
+Everything above `create()` is SAP-specific.
+
+The request splits into four axes, each on its own hop: connection, deployment, static pipeline config (`config()`, carrying the prompt gate), and dynamic input (`create()`).
+
+```ts
+new SapAi(connection)
+  .orchestration(deploymentConfig)
+  .config(staticConfig)
+  .create({ prompt: [message], stream: true });
+```
+
+`orchestration(deploymentConfig)` returns the same `Orchestration` handle a caller can construct directly, so the standalone form drops the root and merges connection and deployment into the constructor:
+
+```ts
+new Orchestration(connectionAndDeployment)
+  .config(staticConfig)
+  .create({ prompt: [message] });
+
+// identity
+sapAi.orchestration(deploymentConfig)  ≡  new Orchestration(connectionAndDeployment)
+```
+
+Deployment lives on the per-service hop rather than the root, because the root fans out to several services that each resolve their own deployment — which is what makes the full shape four single-purpose hops.
+The static-versus-dynamic split is the feature: `config()` configures the pipeline once, `create()` sends dynamic input per call.
+
+**Scope**: `SapAi` is proposal-only, and whether to build it is a separate decision.
+Option D is designed so the standalone `Orchestration` ships first and a future `SapAi` wraps it without changing the handle, builder, or terminal.
+
+#### Per-package install model
+
+A desirable property for `SapAi` is that each service accessor exists — at the type level — only when its package is imported.
+This is viable through TypeScript module augmentation, but with one inversion: core owns the `SapAi` class with an empty, open interface, and each service package augments it, because augmentation can only patch an existing declaration, never add a new top-level `SapAi`.
+
+```ts
+// @sap-ai-sdk/core
+export class SapAi {
+  /* connection */
+}
+export interface SapAi {} // open for augmentation
+
+// @sap-ai-sdk/orchestration — patches SapAi when imported
+declare module '@sap-ai-sdk/core' {
+  interface SapAi {
+    orchestration(deployment: DeploymentConfig): Orchestration;
+  }
+}
+SapAi.prototype.orchestration = function (deployment) {
+  /* ... */
+};
+```
+
+A proof of concept would need to confirm the key risk: the unlock trigger is import, not install, and the types-only augmentation and the runtime `prototype` assignment must be wired together or a typed call fails at runtime.
+
+**Tradeoff**: The terminal call site matches OpenAI, and the four-axis model carves connection, deployment, pipeline, and dynamic input so no hop does double duty, resolving the objection that connection lived on a thing named `Orchestration`.
+The cost is a four-hop chain at the root altitude and a documented root that does not yet exist, so the shippable and documented surfaces differ until `SapAi` is built.
+
 ## How Java and Python handle this
 
 This section is for comparison only.
