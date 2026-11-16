@@ -1,28 +1,29 @@
-import { resolveDeploymentUrlForModel } from '@sap-ai-sdk/ai-api/internal.js';
-import { getAiCoreDestination } from '@sap-ai-sdk/core';
-
 import { APIError } from '@anthropic-ai/sdk';
 import { EventStreamCodec } from '@smithy/core/event-streams';
+import nock from 'nock';
 
+import {
+  getMockedAiCoreDestination,
+  mockClientCredentialsGrantCall,
+  mockDeploymentsList
+} from '../../../test-util/mock-http.ts';
+import { dummyToken } from '../../../test-util/mock-jwt.ts';
 import { SapAnthropicBedrockInvoke } from './client.ts';
 
-import type * as AiApi from '@sap-ai-sdk/ai-api/internal.js';
-
-import type { SapAnthropicBedrockInvokeConfig } from './types.ts';
+import type {
+  SapAnthropicBedrockInvokeConfig,
+  SapAnthropicBedrockInvokeOptions
+} from './types.ts';
 import type { MessageStreamEvent } from '@anthropic-ai/sdk/resources/messages';
-
-vi.mock('@sap-ai-sdk/ai-api/internal.js', async importOriginal => ({
-  ...(await importOriginal<typeof AiApi>()),
-  resolveDeploymentUrlForModel: vi.fn<typeof resolveDeploymentUrlForModel>()
-}));
-
-vi.mock('@sap-ai-sdk/core', () => ({
-  getAiCoreDestination: vi.fn<typeof getAiCoreDestination>()
-}));
 
 const deploymentUrl =
   'https://api.ai.example/v2/inference/deployments/deployment-123';
 const model = 'anthropic--claude-4.6-sonnet';
+const defaultDeployment = {
+  id: 'deployment-123',
+  model: { name: model, version: 'latest' },
+  deploymentUrl
+};
 const params = {
   model,
   max_tokens: 32,
@@ -103,42 +104,57 @@ describe('SapAnthropicBedrockInvoke', () => {
   const fetch = vi.fn<typeof globalThis.fetch>();
 
   beforeEach(() => {
-    vi.mocked(resolveDeploymentUrlForModel).mockResolvedValue(deploymentUrl);
-    vi.mocked(getAiCoreDestination).mockResolvedValue({
-      url: 'https://api.ai.example',
-      authTokens: [
-        {
-          type: 'Bearer',
-          value: 'sap-token',
-          error: null,
-          http_header: { key: 'Authorization', value: 'Bearer sap-token' }
-        }
-      ]
-    });
+    mockClientCredentialsGrantCall();
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'aws-bedrock',
+        resourceGroup: 'default'
+      },
+      defaultDeployment
+    );
+    mockDeploymentsList(
+      {
+        scenarioId: 'foundation-models',
+        executableId: 'aws-bedrock',
+        resourceGroup: 'custom-rg'
+      },
+      defaultDeployment
+    );
     fetch.mockReset();
     fetch.mockImplementation(async () => Response.json(message));
   });
 
-  async function createClient(): Promise<SapAnthropicBedrockInvoke> {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  async function createClient(
+    destination?: SapAnthropicBedrockInvokeOptions['destination']
+  ): Promise<SapAnthropicBedrockInvoke> {
     return SapAnthropicBedrockInvoke.createClient({
       deployment: { modelName: model, resourceGroup: 'custom-rg' },
+      destination,
       clientType: 'test-app',
       anthropicConfig: { fetch, maxRetries: 0 }
     });
   }
 
   it('resolves a bare model name through the Bedrock executable', async () => {
-    await SapAnthropicBedrockInvoke.createClient(model);
-    expect(resolveDeploymentUrlForModel).toHaveBeenCalledWith(model, {
-      scenarioId: 'foundation-models',
-      executableId: 'aws-bedrock',
-      resourceGroup: 'default',
-      destination: undefined
-    });
+    expect(await SapAnthropicBedrockInvoke.createClient(model)).toBeInstanceOf(
+      SapAnthropicBedrockInvoke
+    );
   });
 
   it('forwards deployment ID, resource group, and custom destination', async () => {
-    const destination = { url: 'https://custom.ai.example' };
+    const destination = getMockedAiCoreDestination({
+      url: 'https://custom.ai.example'
+    });
+    const scope = nock(destination.url, {
+      reqheaders: { 'ai-resource-group': 'custom-rg' }
+    })
+      .get('/v2/lm/deployments/deployment-123')
+      .reply(200, { deploymentUrl });
     const deployment = {
       deploymentId: 'deployment-123',
       resourceGroup: 'custom-rg'
@@ -149,13 +165,12 @@ describe('SapAnthropicBedrockInvoke', () => {
       anthropicConfig: { fetch, maxRetries: 0 }
     });
     await client.messages.create(params);
-    expect(resolveDeploymentUrlForModel).toHaveBeenCalledWith(deployment, {
-      scenarioId: 'foundation-models',
-      executableId: 'aws-bedrock',
-      resourceGroup: 'custom-rg',
-      destination
-    });
-    expect(getAiCoreDestination).toHaveBeenCalledWith(destination);
+    expect(scope.isDone()).toBe(true);
+    const [url, init] = fetch.mock.calls[0];
+    const request = new Request(url, init);
+    expect(request.url).toBe(`${deploymentUrl}/invoke`);
+    expect(request.headers.get('authorization')).toBe(`Bearer ${dummyToken}`);
+    expect(request.headers.get('ai-resource-group')).toBe('custom-rg');
   });
 
   it('uses Invoke with upstream payload adaptation and SAP headers', async () => {
@@ -169,7 +184,7 @@ describe('SapAnthropicBedrockInvoke', () => {
       messages: params.messages,
       anthropic_version: 'bedrock-2023-05-31'
     });
-    expect(request.headers.get('authorization')).toBe('Bearer sap-token');
+    expect(request.headers.get('authorization')).toBe(`Bearer ${dummyToken}`);
     expect(request.headers.get('ai-resource-group')).toBe('custom-rg');
     expect(request.headers.get('ai-client-type')).toBe(
       'AI SDK JavaScript,test-app'
@@ -179,25 +194,22 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('resolves destination tokens for every request', async () => {
-    const client = await createClient();
+    const destination = getMockedAiCoreDestination();
+    const client = await createClient(destination);
     await client.messages.create(params);
-    vi.mocked(getAiCoreDestination).mockResolvedValue({
-      url: 'https://api.ai.example',
-      authTokens: [
-        {
-          type: 'Bearer',
-          value: 'refreshed-token',
-          error: null,
-          http_header: { key: 'Authorization', value: 'Bearer refreshed-token' }
-        }
-      ]
-    });
+    destination.authTokens![0] = {
+      ...destination.authTokens![0],
+      value: 'refreshed-token',
+      http_header: {
+        key: 'Authorization',
+        value: 'Bearer refreshed-token'
+      }
+    };
     await client.messages.create(params);
     const [url, init] = fetch.mock.calls[1];
     expect(new Request(url, init).headers.get('authorization')).toBe(
       'Bearer refreshed-token'
     );
-    expect(getAiCoreDestination).toHaveBeenCalledTimes(2);
   });
 
   it('decodes fragmented binary streams with native text and message helpers', async () => {
@@ -268,7 +280,7 @@ describe('SapAnthropicBedrockInvoke', () => {
     const [url, init] = fetch.mock.calls[0];
     const request = new Request(url, init);
     expect(request.url).toBe(`${deploymentUrl}/invoke`);
-    expect(request.headers.get('authorization')).toBe('Bearer sap-token');
+    expect(request.headers.get('authorization')).toBe(`Bearer ${dummyToken}`);
     expect(request.headers.has('x-amz-date')).toBe(false);
     expect(client.timeout).toBe(1000);
   });
@@ -333,7 +345,6 @@ describe('SapAnthropicBedrockInvoke', () => {
       'Unsupported SAP AI Core Bedrock request path:'
     );
     expect(fetch).not.toHaveBeenCalled();
-    expect(getAiCoreDestination).not.toHaveBeenCalled();
   });
 
   it('propagates upstream HTTP errors', async () => {
@@ -369,10 +380,9 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('fails before sending inference when destination authentication is missing', async () => {
-    vi.mocked(getAiCoreDestination).mockResolvedValue({
-      url: 'https://api.ai.example'
-    });
-    const client = await createClient();
+    const destination = getMockedAiCoreDestination();
+    const client = await createClient(destination);
+    destination.authTokens = [];
     await expect(client.messages.create(params)).rejects.toThrow(
       'Could not retrieve an authentication token from the AI Core destination.'
     );
@@ -380,18 +390,9 @@ describe('SapAnthropicBedrockInvoke', () => {
   });
 
   it('preserves the cause of a destination authentication error', async () => {
-    vi.mocked(getAiCoreDestination).mockResolvedValue({
-      url: 'https://api.ai.example',
-      authTokens: [
-        {
-          type: 'Bearer',
-          value: 'invalid-token',
-          error: 'Token retrieval failed',
-          http_header: { key: 'Authorization', value: 'Bearer invalid-token' }
-        }
-      ]
-    });
-    const client = await createClient();
+    const destination = getMockedAiCoreDestination();
+    const client = await createClient(destination);
+    destination.authTokens![0].error = 'Token retrieval failed';
     await expect(client.messages.create(params)).rejects.toMatchObject({
       cause: expect.objectContaining({ message: 'Token retrieval failed' })
     });

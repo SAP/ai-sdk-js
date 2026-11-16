@@ -7,7 +7,7 @@ import type { Message } from '@anthropic-ai/sdk/resources/messages';
  * Ask Claude Sonnet 4.6 about the capital of France through Bedrock Invoke.
  * @returns The Anthropic message, including content blocks and token usage.
  */
-export async function messages(): Promise<Message> {
+export async function createMessage(): Promise<Message> {
   const model = 'anthropic--claude-4.6-sonnet';
   const client = await SapAnthropicBedrockInvoke.createClient(model);
 
@@ -22,7 +22,7 @@ export async function messages(): Promise<Message> {
  * Stream a Claude Sonnet 4.6 message through Bedrock Invoke.
  * @returns The native Anthropic stream with text events and final-message helpers.
  */
-export async function messagesStream(): Promise<MessageStream> {
+export async function streamMessage(): Promise<MessageStream> {
   const model = 'anthropic--claude-4.6-sonnet';
   const client = await SapAnthropicBedrockInvoke.createClient(model);
 

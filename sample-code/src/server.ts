@@ -20,8 +20,8 @@ import {
 } from './ai-api/deployment-api.ts';
 import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
 import {
-  messages as anthropicMessages,
-  messagesStream as anthropicMessagesStream
+  createMessage as anthropicMessages,
+  streamMessage as anthropicMessagesStream
 } from './anthropic.ts';
 import {
   createCollection,
@@ -518,13 +518,11 @@ app.get('/openai/responses-multi-turn', async (req, res) => {
 });
 
 /* Foundation Models (Claude via Anthropic Bedrock SDK) */
-app.get('/anthropic/messages', async (_req, res) => {
-  try {
-    res.json(await anthropicMessages());
-  } catch (error) {
-    sendError(res, error);
-  }
-});
+app.get('/anthropic/messages', (_req, res) =>
+  anthropicMessages()
+    .then(message => res.json(message))
+    .catch(error => sendError(res, error))
+);
 
 app.get('/anthropic/messages-stream', async (_req, res) => {
   try {

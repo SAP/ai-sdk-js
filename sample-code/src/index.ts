@@ -117,8 +117,8 @@ export {
 } from './openai.ts';
 
 export {
-  messages as anthropicMessages,
-  messagesStream as anthropicMessagesStream
+  createMessage as anthropicMessages,
+  streamMessage as anthropicMessagesStream
 } from './anthropic.ts';
 
 export {

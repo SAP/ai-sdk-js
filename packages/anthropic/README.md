@@ -1,4 +1,4 @@
-# SAP Cloud SDK for AI Anthropic Client
+# @sap-ai-sdk/anthropic
 
 > [!warning]
 > This package is still in **beta** and is subject to breaking changes. Use it with caution.
@@ -37,7 +37,7 @@ To select a deployment explicitly, pass `{ deployment: { deploymentId, resourceG
 The upstream `model` field remains required; SAP AI Core selects the actual model through the resolved deployment URL.
 
 `anthropicConfig` and `withOptions()` accept transport settings such as fetch, middleware, retries, and timeouts.
-They preserve SAP-managed deployment routing and authentication:
+They preserve SAP-managed deployment routing and authentication.
 
 ## Streaming
 
@@ -50,3 +50,12 @@ const stream = client.messages.stream({
 stream.on('text', text => process.stdout.write(text));
 const message = await stream.finalMessage();
 ```
+
+## Support, Feedback, Contribution
+
+Contribution and feedback are encouraged and always welcome.
+For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](https://github.com/SAP/ai-sdk-js/blob/main/CONTRIBUTING.md).
+
+## License
+
+The SAP Cloud SDK for AI is released under the [Apache License Version 2.0](http://www.apache.org/licenses/).

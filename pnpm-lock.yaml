@@ -768,6 +768,9 @@ importers:
       '@sap-ai-sdk/ai-api':
         specifier: canary
         version: 2.18.1-20261116011312.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@sap-ai-sdk/anthropic':
+        specifier: workspace:^
+        version: link:../../packages/anthropic
       '@sap-ai-sdk/context-registry':
         specifier: canary
         version: 2.18.1-20261116011312.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)

@@ -1,5 +1,8 @@
-import { getAiCoreDestination } from '@sap-ai-sdk/core';
-import { ErrorWithCause, pick } from '@sap-cloud-sdk/util';
+import {
+  formatAiClientTypeHeader,
+  getAiCoreAuthToken
+} from '@sap-ai-sdk/core/internal.js';
+import { pick } from '@sap-cloud-sdk/util';
 
 import { AnthropicBedrock } from '@anthropic-ai/bedrock-sdk';
 
@@ -71,26 +74,17 @@ export class SapAnthropicBedrockClient extends AnthropicBedrock {
         // Preserve the operation suffix so new upstream model operations can pass through.
         url.pathname = deploymentPath + modelPath.slice(operationStart);
 
-        const destination = await getAiCoreDestination(
-          this.sapOptions.destination
+        const authToken = await getAiCoreAuthToken(
+          this.sapOptions.destination,
+          'Could not retrieve an authentication token from the AI Core destination.'
         );
-        const authToken = destination.authTokens?.[0];
-        if (!authToken?.value || authToken.error) {
-          const message =
-            'Could not retrieve an authentication token from the AI Core destination.';
-          throw authToken?.error
-            ? new ErrorWithCause(message, new Error(authToken.error))
-            : new Error(message);
-        }
 
         const headers = new Headers(request.headers);
-        headers.set('authorization', `Bearer ${authToken.value}`);
+        headers.set('authorization', `Bearer ${authToken}`);
         headers.set('ai-resource-group', this.resourceGroup);
         headers.set(
           'ai-client-type',
-          ['AI SDK JavaScript', this.sapOptions.clientType]
-            .filter(Boolean)
-            .join(',')
+          formatAiClientTypeHeader(this.sapOptions.clientType)
         );
         if (context.options?.stream) {
           headers.set('accept', 'application/vnd.amazon.eventstream');
