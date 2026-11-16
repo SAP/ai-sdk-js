@@ -33,7 +33,7 @@ Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/
 
 ## Packages
 
-This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
+This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/).
 
 ### @sap-ai-sdk/ai-api
 
@@ -52,7 +52,9 @@ npm install @sap-ai-sdk/ai-api
 
 ### @sap-ai-sdk/anthropic
 
-This experimental package provides Claude access through SAP AI Core Bedrock Invoke, using the official Anthropic Bedrock SDK and its native streaming helpers. See the [package README](packages/anthropic/README.md) for usage.
+This experimental package provides Claude access through SAP AI Core Bedrock Invoke.
+It uses the official Anthropic Bedrock SDK and its native streaming helpers.
+See the [package README](packages/anthropic/README.md) for usage.
 
 #### Installation
 

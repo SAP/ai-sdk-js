@@ -161,7 +161,7 @@ Ask Claude for the capital of France and return the native Anthropic message as 
 
 Stream named Anthropic events as `text/event-stream`, including `content_block_delta` text updates and the final `message_stop` event.
 The sample returns the native `MessageStream`, which supports text events, `finalText()` and `finalMessage()`.
-The server aborts generation when the HTTP client disconnects.
+The server aborts generation when the http client disconnects.
 
 ```sh
 curl -N http://localhost:8080/anthropic/messages-stream
