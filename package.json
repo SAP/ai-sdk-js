@@ -21,6 +21,7 @@
     "apply-patches": "pnpm -r run --if-present apply-patches",
     "doc": "node scripts/generate-docs.ts",
     "ai-api": "pnpm -F=@sap-ai-sdk/ai-api run",
+    "anthropic": "pnpm -F=@sap-ai-sdk/anthropic run",
     "context-registry": "pnpm -F=@sap-ai-sdk/context-registry run",
     "core": "pnpm -F=@sap-ai-sdk/core run",
     "document-grounding": "pnpm -F=@sap-ai-sdk/document-grounding run",
