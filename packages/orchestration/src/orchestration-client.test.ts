@@ -1485,7 +1485,7 @@ describe('orchestration service client', () => {
     it('logs debug and routes messages to messages_history when using a prompt template reference', async () => {
       const logger = createLogger({
         package: 'orchestration',
-        messageContext: 'orchestration-client'
+        messageContext: 'orchestration-utils'
       });
 
       const debugSpy = vi.spyOn(logger, 'debug');
@@ -1545,7 +1545,7 @@ describe('orchestration service client', () => {
     it('logs debug and routes messages to messages_history when streaming with a prompt template reference', async () => {
       const logger = createLogger({
         package: 'orchestration',
-        messageContext: 'orchestration-client'
+        messageContext: 'orchestration-utils'
       });
 
       const debugSpy = vi.spyOn(logger, 'debug');
