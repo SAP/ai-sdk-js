@@ -1,3 +1,5 @@
+import { formatAiClientTypeHeader } from '@sap-ai-sdk/core/internal.js';
+
 import { OpenAIRealtimeWS } from 'openai/realtime/ws';
 
 import { SapAzureOpenAi } from '../azure-openai.ts';
@@ -36,9 +38,7 @@ export class SapOpenAiRealtimeWs extends OpenAIRealtimeWS {
       headers: {
         ...userWsOptions?.headers,
         'ai-resource-group': context.resourceGroup,
-        'ai-client-type': ['AI SDK JavaScript', clientType]
-          .filter(Boolean)
-          .join(',')
+        'ai-client-type': formatAiClientTypeHeader(clientType)
       }
     };
   }

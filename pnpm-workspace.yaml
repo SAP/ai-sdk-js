@@ -1,5 +1,6 @@
 packages:
   - packages/ai-api
+  - packages/anthropic
   - packages/context-registry
   - packages/core
   - packages/document-grounding
@@ -25,6 +26,7 @@ packages:
 versioning:
   fixed:
     - - '@sap-ai-sdk/ai-api'
+      - '@sap-ai-sdk/anthropic'
       - 'sap-ai-sdk'
       - '@sap-ai-sdk/context-registry'
       - '@sap-ai-sdk/core'

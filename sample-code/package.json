@@ -25,6 +25,8 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
+    "@anthropic-ai/bedrock-sdk": "0.34.4",
+    "@anthropic-ai/sdk": "0.133.0",
     "@langchain/classic": "1.0.61",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
@@ -42,6 +44,7 @@
   },
   "devDependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/anthropic": "workspace:^",
     "@sap-ai-sdk/context-registry": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
@@ -58,6 +61,7 @@
   },
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
+    "@sap-ai-sdk/anthropic": "*",
     "@sap-ai-sdk/context-registry": "*",
     "@sap-ai-sdk/document-grounding": "*",
     "@sap-ai-sdk/foundation-models": "*",

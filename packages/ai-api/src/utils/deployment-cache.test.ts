@@ -132,6 +132,25 @@ describe('deployment cache', () => {
     ).toEqual('deployment-id1');
   });
 
+  it('should index listed deployments by ID within the listing scope', () => {
+    const opts = { scenarioId: 'foundation-models', resourceGroup: 'rg' };
+    deploymentCache.setAll(opts, [
+      mockAiDeployment('deployment-id1', { name: 'gpt-5-mini' }),
+      mockAiDeployment('deployment-id2', { name: 'gpt-5-mini' })
+    ]);
+
+    expect(deploymentCache.getById(opts, 'deployment-id2')?.id).toEqual(
+      'deployment-id2'
+    );
+    expect(
+      deploymentCache.getById(
+        { ...opts, resourceGroup: 'other' },
+        'deployment-id2'
+      )
+    ).toBeUndefined();
+    expect(deploymentCache.getById(opts, 'gpt-5-mini')).toBeUndefined();
+  });
+
   it('should ignore model versions without model name', () => {
     const opts = {
       scenarioId: 'foundation-models'

@@ -2,6 +2,7 @@ import {
   resolveDeploymentUrlForModel,
   getResourceGroup
 } from '@sap-ai-sdk/ai-api/internal.js';
+import { formatAiClientTypeHeader } from '@sap-ai-sdk/core/internal.js';
 
 import { createTokenProvider } from './token-provider.ts';
 
@@ -72,9 +73,7 @@ export async function createSapOpenAiContext(
       azureADTokenProvider: createTokenProvider(destination),
       defaultHeaders: {
         'ai-resource-group': resourceGroup,
-        'ai-client-type': ['AI SDK JavaScript', clientType]
-          .filter(Boolean)
-          .join(',')
+        'ai-client-type': formatAiClientTypeHeader(clientType)
       }
     },
     deployment,
