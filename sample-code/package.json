@@ -19,8 +19,8 @@
     "local": "node --env-file-if-exists=.env src/server.ts",
     "agent-tutorial": "node --env-file-if-exists=.env src/tutorials/travel-itinerary-agent.ts",
     "realtime-demo": "node --env-file-if-exists=.env src/openai-realtime.ts",
-    "compile": "tsc",
-    "dev": "tsc -w",
+    "compile": "tsrs",
+    "dev": "tsrs -w",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt ."
   },

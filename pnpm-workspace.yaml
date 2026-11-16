@@ -83,7 +83,14 @@ blockExoticSubdeps: true
 minimumReleaseAge: 5760
 minimumReleaseAgeExclude:
   - '@sap-ai-sdk/*'
-  - body-parser@2.4.0
+  - '@tsrs/darwin-arm64@0.23.0-ts7.1.0-beta'
+  - '@tsrs/darwin-x64@0.23.0-ts7.1.0-beta'
+  - '@tsrs/linux-arm64-gnu@0.23.0-ts7.1.0-beta'
+  - '@tsrs/linux-arm64-musl@0.23.0-ts7.1.0-beta'
+  - '@tsrs/linux-x64-gnu@0.23.0-ts7.1.0-beta'
+  - '@tsrs/linux-x64-musl@0.23.0-ts7.1.0-beta'
+  - '@tsrs/win32-x64@0.23.0-ts7.1.0-beta'
+  - tsrs@0.23.0-ts7.1.0-beta
   # Add minimum age exceptions for audit issues here
   # - sample-package@0.1.0
 shellEmulator: true
@@ -91,6 +98,8 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   - 'picomatch@4.0.5'
   - 'undici-types@6.21.0'
+  - 'tsrs'
+  - tsrs
 trustPolicyIgnoreAfter: 131400 # 3 months
 
 # deuplicate dep resolution where possible
