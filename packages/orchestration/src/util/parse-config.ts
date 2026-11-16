@@ -8,7 +8,9 @@ import { assertIsOrchestrationModuleConfigList } from '../orchestration-types.ts
 import type { TemplatingChatMessage } from '../client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
-  OrchestrationModuleConfigList
+  OrchestrationModuleConfigList,
+  OrchestrationConfigWithTemplate,
+  OrchestrationConfigWithoutTemplate
 } from '../orchestration-types.ts';
 
 const logger = createLogger({
@@ -80,18 +82,26 @@ function parseAndMergeTemplating(
 }
 
 /**
- * Check whether a parsed module config carries a standing prompt, that is, an inline `template` or a remote `template_ref`.
- * Run this on the result of {@link parseTemplatingModule}, so a YAML-string prompt has already been expanded into an inline `template`.
- * @param config - The parsed orchestration module configuration.
- * @returns Whether `promptTemplating.prompt` resolves to a standing template or template reference.
+ * Check whether a module config carries a standing prompt, that is, an inline `template`, a remote `template_ref`, or a YAML string (which always expands to an inline `template`).
+ * This is a type guard that keys off exactly the shape the `config` overloads distinguish, so the compile-time gate and the runtime branch stay in lockstep: a config is prompt-less ({@link OrchestrationConfigWithoutTemplate}) only when `promptTemplating.prompt` is absent or an object with neither `template` nor `template_ref`.
+ * Run it on the raw, unparsed config, before {@link parseTemplatingModule} expands a YAML-string prompt.
+ * @param config - A module configuration without a standing prompt, or with one (inline, remote, or YAML).
+ * @returns Whether `promptTemplating.prompt` is (or resolves to) a standing template or template reference.
  * @internal
  */
-export function hasStandingPrompt(config: OrchestrationModuleConfig): boolean {
+export function hasStandingPrompt(
+  config: OrchestrationConfigWithTemplate | OrchestrationConfigWithoutTemplate
+): config is OrchestrationConfigWithTemplate {
   const { prompt } = config.promptTemplating;
-  if (!prompt || typeof prompt === 'string') {
+  if (!prompt) {
     return false;
   }
-  return 'template' in prompt || 'template_ref' in prompt;
+
+  return (
+    typeof prompt === 'string' ||
+    'template' in prompt ||
+    'template_ref' in prompt
+  );
 }
 
 /**

@@ -137,18 +137,14 @@ export class Orchestration {
       );
     }
 
-    const parsed = parseTemplatingModule(config);
-    if (hasStandingPrompt(parsed)) {
+    if (hasStandingPrompt(config)) {
       return new OrchestrationConfigWithTemplateBuilder(
-        parsed as OrchestrationConfigWithTemplate,
+        parseTemplatingModule(config),
         this
       );
     }
 
-    return new OrchestrationConfigBuilder(
-      parsed as OrchestrationConfigWithoutTemplate,
-      this
-    );
+    return new OrchestrationConfigBuilder(config, this);
   }
 
   /**
