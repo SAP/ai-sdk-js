@@ -56,6 +56,10 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
+permissions:
+  dotenv:
+    skills: false
+
 # Fix/investigate: does not work as expected because checkout action uses detached HEAD
 # gitBranchLockfile: true
 # mergeGitBranchLockfilesBranchPattern:
@@ -88,3 +92,10 @@ trustPolicyExclude:
   - 'picomatch@4.0.5'
   - 'undici-types@6.21.0'
 trustPolicyIgnoreAfter: 131400 # 3 months
+
+# deuplicate dep resolution where possible
+autoDedupe: true
+dedupeInjectedDeps: true
+dedupePeerDependents: true
+lockfile:
+  includeResolutionSettings: true
