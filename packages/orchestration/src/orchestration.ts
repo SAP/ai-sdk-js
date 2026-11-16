@@ -278,7 +278,3 @@ export class Orchestration {
     return response;
   }
 }
-
-const c = new SapAi({});
-c.orchestration({ id: 'fjdksl' }).create({ streamOptions: { enabled: true } });
-
