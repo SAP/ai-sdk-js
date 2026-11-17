@@ -27,6 +27,7 @@
   "dependencies": {
     "@langchain/classic": "1.0.61",
     "@langchain/core": "catalog:",
+    "@langchain/openai": "^1.8.4",
     "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "2.0.3",
     "@langchain/textsplitters": "1.0.2",
@@ -36,7 +37,7 @@
     "@types/express": "5.0.6",
     "express": "5.3.0",
     "langchain": "catalog:",
-    "openai": "7.55.0",
+    "openai": "7.56.0",
     "ws": "8.22.2",
     "zod": "catalog:"
   },

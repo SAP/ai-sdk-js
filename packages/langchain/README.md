@@ -21,6 +21,12 @@ npm install langchain @langchain/core
 npm install @sap-ai-sdk/langchain
 ```
 
+OpenAI-specific integrations are available from `@sap-ai-sdk/langchain/openai` and require the optional `@langchain/openai` peer dependency:
+
+```bash
+npm install @langchain/openai
+```
+
 ## Documentation
 
 Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.

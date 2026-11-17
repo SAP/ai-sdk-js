@@ -36,11 +36,26 @@ import {
   invokeChain,
   invokeRagChain,
   invoke,
+  invokeLcAzureOpenAi,
+  invokeLcAzureOpenAiResponses,
+  invokeLcAzureOpenAiResponsesReasoning,
+  invokeLcAzureOpenAiResponsesStructuredOutput,
+  invokeLcAzureOpenAiResponsesToolCalling,
   invokeToolChain,
   streamChain,
   invokeWithStructuredOutputJsonSchema,
+  invokeWithStructuredOutputToolCalling,
   invokeReasoningWithMaxTokens
 } from './langchain-azure-openai.ts';
+import {
+  embedQueryOpenAi,
+  invokeChatOpenAi,
+  invokeChatOpenAiAgent,
+  invokeChatOpenAiReasoning,
+  invokeChatOpenAiResponses,
+  invokeChatOpenAiStructuredOutput,
+  streamChatOpenAi
+} from './langchain-openai.ts';
 import {
   invokeChain as invokeChainOrchestration,
   invokeChainWithInputFilter as invokeChainWithInputFilterOrchestration,
@@ -852,6 +867,63 @@ app.get('/langchain/invoke', async (req, res) => {
   }
 });
 
+app.get('/langchain/invoke-lc-azure-openai', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await invokeLcAzureOpenAi());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain/invoke-lc-azure-openai-responses', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeLcAzureOpenAiResponses());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get(
+  '/langchain/invoke-lc-azure-openai-responses-tool-calling',
+  async (req, res) => {
+    try {
+      res
+        .header('Content-Type', 'text/plain')
+        .send(await invokeLcAzureOpenAiResponsesToolCalling());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get(
+  '/langchain/invoke-lc-azure-openai-responses-structured-output',
+  async (req, res) => {
+    try {
+      res
+        .header('Content-Type', 'text/plain')
+        .send(await invokeLcAzureOpenAiResponsesStructuredOutput());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
+app.get(
+  '/langchain/invoke-lc-azure-openai-responses-reasoning',
+  async (req, res) => {
+    try {
+      res
+        .header('Content-Type', 'text/plain')
+        .send(await invokeLcAzureOpenAiResponsesReasoning());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
+
 app.get('/langchain/invoke-reasoning-with-max-tokens', async (req, res) => {
   try {
     res
@@ -870,6 +942,19 @@ app.get('/langchain/invoke-with-structured-output', async (req, res) => {
     sendError(res, error);
   }
 });
+
+app.get(
+  '/langchain/invoke-with-structured-output-tool-calling',
+  async (req, res) => {
+    try {
+      res
+        .header('Content-Type', 'text/plain')
+        .send(await invokeWithStructuredOutputToolCalling());
+    } catch (error: any) {
+      sendError(res, error);
+    }
+  }
+);
 
 app.get(
   '/langchain/invoke-with-structured-output-orchestration',
@@ -901,6 +986,107 @@ app.get(
     }
   }
 );
+
+/* LangChain OpenAI (@langchain/openai with @sap-ai-sdk/openai) */
+app.get('/langchain-openai/invoke', async (req, res) => {
+  try {
+    res.header('Content-Type', 'text/plain').send(await invokeChatOpenAi());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain-openai/invoke-responses', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeChatOpenAiResponses());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain-openai/stream', async (req, res) => {
+  const controller = new AbortController();
+  try {
+    const stream = await streamChatOpenAi(controller);
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    let connectionAlive = true;
+    res.on('close', () => {
+      controller.abort();
+      connectionAlive = false;
+      res.end();
+    });
+
+    let finalResult: AIMessageChunk | undefined;
+    for await (const chunk of stream) {
+      if (!connectionAlive) {
+        break;
+      }
+      res.write(chunk.text);
+      finalResult = finalResult ? finalResult.concat(chunk) : chunk;
+    }
+    if (connectionAlive && finalResult?.usage_metadata) {
+      res.write('\n\n---------------------------\n');
+      res.write('Token usage:\n');
+      res.write(
+        `  - Completion tokens: ${finalResult.usage_metadata.output_tokens}\n`
+      );
+      res.write(
+        `  - Prompt tokens: ${finalResult.usage_metadata.input_tokens}\n`
+      );
+      res.write(
+        `  - Total tokens: ${finalResult.usage_metadata.total_tokens}\n`
+      );
+    }
+  } catch (error: any) {
+    sendError(res, error, false);
+  } finally {
+    res.end();
+  }
+});
+
+app.get('/langchain-openai/invoke-agent', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeChatOpenAiAgent());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain-openai/invoke-structured-output', async (req, res) => {
+  try {
+    res.send(await invokeChatOpenAiStructuredOutput());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain-openai/invoke-reasoning', async (req, res) => {
+  try {
+    res
+      .header('Content-Type', 'text/plain')
+      .send(await invokeChatOpenAiReasoning());
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/langchain-openai/embedding', async (req, res) => {
+  try {
+    const embedding = await embedQueryOpenAi();
+    res
+      .header('Content-Type', 'text/plain')
+      .send(`Got embedding vector with ${embedding.length} dimensions.`);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
 
 app.get('/langchain/invoke-chain', async (req, res) => {
   try {

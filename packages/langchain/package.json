@@ -26,6 +26,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./openai": {
+      "types": "./dist/openai/index.d.ts",
+      "default": "./dist/openai/index.js"
+    },
     "./orchestration/prompt-caching-middleware": {
       "types": "./dist/orchestration/prompt-caching-middleware/index.d.ts",
       "default": "./dist/orchestration/prompt-caching-middleware/index.js"
@@ -51,15 +55,20 @@
   },
   "devDependencies": {
     "@langchain/core": "catalog:",
+    "@langchain/openai": "^1.8.4",
     "@langchain/langgraph": "catalog:",
     "langchain": "catalog:",
     "zod": "catalog:"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.13",
+    "@langchain/openai": "^1.8.4",
     "langchain": "^1.5.14"
   },
   "peerDependenciesMeta": {
+    "@langchain/openai": {
+      "optional": true
+    },
     "langchain": {
       "optional": true
     }

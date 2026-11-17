@@ -2,8 +2,9 @@ import { resolve } from 'node:path';
 
 import {
   AzureOpenAiChatClient,
-  AzureOpenAiEmbeddingClient
-} from '@sap-ai-sdk/langchain';
+  AzureOpenAiEmbeddingClient,
+  LcAzureOpenAi
+} from '@sap-ai-sdk/langchain/openai';
 import { resilience } from '@sap-cloud-sdk/resilience';
 
 import { TextLoader } from '@langchain/classic/document_loaders/fs/text';
@@ -43,6 +44,111 @@ export async function invoke(): Promise<string> {
 
   // parse the response
   return parser.invoke(response);
+}
+
+/**
+ * Ask GPT about the capital of France using the LangChain AzureOpenAI client.
+ * @returns The answer from GPT.
+ */
+export async function invokeLcAzureOpenAi(): Promise<string> {
+  const client = await LcAzureOpenAi.createClient({
+    deployment: 'gpt-5.4',
+    clientType: 'sample-code',
+    langChainConfig: {
+      maxTokens: 1000
+    }
+  });
+
+  const response = await client.invoke('What is the capital of France?');
+  return response.text;
+}
+
+/**
+ * Ask GPT through the OpenAI Responses API using LangChain.
+ * @returns The answer from GPT.
+ */
+export async function invokeLcAzureOpenAiResponses(): Promise<string> {
+  const client = await LcAzureOpenAi.createClient({
+    deployment: 'gpt-5.4',
+    clientType: 'sample-code-responses',
+    langChainConfig: {
+      maxTokens: 1000,
+      useResponsesApi: true
+    }
+  });
+
+  const response = await client.invoke('What is the capital of France?');
+  return response.text;
+}
+
+/**
+ * Ask GPT to use a tool through the OpenAI Responses API.
+ * @returns The serialized tool call.
+ */
+export async function invokeLcAzureOpenAiResponsesToolCalling(): Promise<string> {
+  const client = await LcAzureOpenAi.createClient({
+    deployment: 'gpt-5.4',
+    clientType: 'sample-code-responses-tool',
+    langChainConfig: {
+      useResponsesApi: true
+    }
+  });
+  const addNumbers = tool(
+    ({ a, b }: { a: number; b: number }) => String(a + b),
+    {
+      name: 'add_numbers',
+      description: 'Add two numbers.',
+      schema: z.object({ a: z.number(), b: z.number() })
+    }
+  );
+
+  const response = await client
+    .bindTools([addNumbers], { tool_choice: 'add_numbers' })
+    .invoke('What is 2 + 3?');
+  return JSON.stringify(response.tool_calls);
+}
+
+/**
+ * Request a response matching a schema through the OpenAI Responses API.
+ * @returns The serialized structured response.
+ */
+export async function invokeLcAzureOpenAiResponsesStructuredOutput(): Promise<string> {
+  const client = await LcAzureOpenAi.createClient({
+    deployment: 'gpt-5.4',
+    clientType: 'sample-code-responses-schema',
+    langChainConfig: {
+      useResponsesApi: true
+    }
+  });
+  const answerSchema = z.object({
+    answer: z.string(),
+    confidence: z.number().min(0).max(1)
+  });
+
+  const response = await client
+    .withStructuredOutput(answerSchema, { name: 'answer', strict: true })
+    .invoke('What is the capital of France? Return your confidence.');
+  return JSON.stringify(response);
+}
+
+/**
+ * Use a reasoning model through the OpenAI Responses API.
+ * @returns The answer from the reasoning model.
+ */
+export async function invokeLcAzureOpenAiResponsesReasoning(): Promise<string> {
+  const client = await LcAzureOpenAi.createClient({
+    deployment: 'gpt-5.4',
+    clientType: 'sample-code-responses-reasoning',
+    langChainConfig: {
+      useResponsesApi: true
+    }
+  });
+
+  const response = await client.invoke(
+    'Reason briefly and answer: what is the capital of France?',
+    { reasoning: { effort: 'low' } }
+  );
+  return response.text;
 }
 
 /**

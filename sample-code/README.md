@@ -271,6 +271,38 @@ For example, use `buildTranslationConfig()` function to build a SAP Document Tra
 
 Invoke LangChain Azure OpenAI client with a simple input to get chat completion response.
 
+`GET /langchain/invoke-lc-azure-openai`
+
+Invoke the deployment-resolving `LcAzureOpenAi` LangChain client.
+
+The following routes exercise the same client through the OpenAI Responses API:
+
+- `GET /langchain/invoke-lc-azure-openai-responses`
+- `GET /langchain/invoke-lc-azure-openai-responses-tool-calling`
+- `GET /langchain/invoke-lc-azure-openai-responses-structured-output`
+- `GET /langchain/invoke-lc-azure-openai-responses-reasoning`
+
+`GET /langchain/invoke-reasoning-with-max-tokens`
+
+Invoke a reasoning model with an explicit maximum token limit.
+
+`GET /langchain/invoke-tool-chain`
+
+Invoke a LangChain tool and continue the conversation with its result.
+
+`GET /langchain/invoke-with-structured-output`
+
+Get a response matching a JSON schema.
+
+`GET /langchain/invoke-with-structured-output-tool-calling`
+
+Get structured output using tool calling.
+
+#### Invoke with the LangChain AzureOpenAI Client
+
+The `LcAzureOpenAi` client resolves a SAP AI Core deployment and exposes the
+LangChain `AzureOpenAI` API.
+
 #### Invoke a Chain with Templating
 
 `GET /langchain/invoke-chain`
@@ -321,6 +353,51 @@ Stream chat completion response with Azure OpenAI using LangChain.
 `GET /langchain/stream-orchestration`
 
 Stream chat completion response with orchestration service using LangChain.
+
+### LangChain OpenAI
+
+These samples use `ChatOpenAI` and `OpenAIEmbeddings` from `@langchain/openai`.
+`createOpenAiConfig()` from `@sap-ai-sdk/openai` resolves the SAP AI Core deployment and provides the token provider, which are passed as `configuration`.
+
+#### Invoke
+
+`GET /langchain-openai/invoke`
+
+Get a chat completion response using the Chat Completions API.
+
+`GET /langchain-openai/invoke-responses`
+
+Get a response using the Responses API.
+
+#### Stream
+
+`GET /langchain-openai/stream`
+
+Stream a chat completion response, including token usage.
+
+#### Agent with Tool Calling
+
+`GET /langchain-openai/invoke-agent`
+
+Let a LangChain agent call a tool to answer a question.
+
+#### Structured Output
+
+`GET /langchain-openai/invoke-structured-output`
+
+Get a response matching a Zod schema using the Responses API.
+
+#### Reasoning
+
+`GET /langchain-openai/invoke-reasoning`
+
+Use a reasoning model with low reasoning effort.
+
+#### Embedding
+
+`GET /langchain-openai/embedding`
+
+Get an embedding vector using `OpenAIEmbeddings`.
 
 ### Document Grounding
 

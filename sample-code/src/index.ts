@@ -44,10 +44,17 @@ export {
 } from './orchestration.ts';
 export {
   invoke,
+  invokeLcAzureOpenAi,
+  invokeLcAzureOpenAiResponses,
+  invokeLcAzureOpenAiResponsesReasoning,
+  invokeLcAzureOpenAiResponsesStructuredOutput,
+  invokeLcAzureOpenAiResponsesToolCalling,
+  invokeReasoningWithMaxTokens,
   invokeWithStructuredOutputJsonSchema,
   invokeWithStructuredOutputToolCalling,
   invokeChain,
-  invokeRagChain
+  invokeRagChain,
+  invokeToolChain
 } from './langchain-azure-openai.ts';
 export {
   invokeChain as orchestrationInvokeChain,
@@ -60,6 +67,15 @@ export {
   streamChain,
   streamChainWithFallbackConfigs as orchestrationStreamChainWithFallbackConfigs
 } from './langchain-orchestration.ts';
+export {
+  embedQueryOpenAi,
+  invokeChatOpenAi,
+  invokeChatOpenAiAgent,
+  invokeChatOpenAiReasoning,
+  invokeChatOpenAiResponses,
+  invokeChatOpenAiStructuredOutput,
+  streamChatOpenAi
+} from './langchain-openai.ts';
 export {
   getDeployments,
   getDeploymentsWithDestination,

@@ -1,1 +1,1 @@
-export * from './openai/index.ts';
+export * from './index.ts';

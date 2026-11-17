@@ -10,6 +10,7 @@
     "lint:fix": "oxfmt ."
   },
   "devDependencies": {
+    "@langchain/openai": "^1.8.4",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
