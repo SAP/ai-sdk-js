@@ -450,7 +450,7 @@ function checkPrerequisites(): string {
     `  ${styleText(['dim'], 'Windows: winget install --id sox_ng.sox_ng -e')}`
   );
   console.error('');
-  process.exit(1);
+  return process.exit(1);
 }
 
 /**

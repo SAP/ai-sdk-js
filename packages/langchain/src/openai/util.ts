@@ -130,6 +130,7 @@ function mapAzureOpenAiToLangChainToolCall(
       type: 'tool_call'
     }));
   }
+  return undefined;
 }
 
 /**
@@ -199,6 +200,7 @@ function mapLangChainToolCallToAzureOpenAiToolCall(
       }
     }));
   }
+  return undefined;
 }
 
 /**

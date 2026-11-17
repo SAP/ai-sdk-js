@@ -266,7 +266,7 @@ export async function invokeLangGraphChainStream(): Promise<string> {
     firstResponse =
       firstResponse === undefined ? chunk : firstResponse.concat(chunk);
   }
-  const firstResponseStr = firstResponse!
+  const firstResponseStr = (firstResponse ?? [])
     .map(chunk => chunk?.content ?? '')
     .join('');
 
@@ -283,7 +283,7 @@ export async function invokeLangGraphChainStream(): Promise<string> {
     secondResponse =
       secondResponse === undefined ? chunk : secondResponse.concat(chunk);
   }
-  const secondResponseStr = secondResponse!
+  const secondResponseStr = (secondResponse ?? [])
     .map(chunk => chunk?.content ?? '')
     .join('');
 

@@ -3,7 +3,6 @@ import { supportedAzureFilterThresholds } from '../orchestration-types.ts';
 import type {
   AzureContentSafetyFilterParameters,
   AzureContentSafetyFilterReturnType,
-  AzureFilterThreshold,
   LlamaGuard38BCategory,
   LlamaGuard38BFilterReturnType,
   GraniteGuardian41Category,
@@ -43,7 +42,7 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
         ...Object.fromEntries(
           Object.entries(rest).map(([key, value]) => [
             key,
-            supportedAzureFilterThresholds[value as AzureFilterThreshold]
+            supportedAzureFilterThresholds[value]
           ])
         ),
         ...(prompt_shield !== undefined && { prompt_shield })
@@ -59,7 +58,7 @@ export function buildAzureContentSafetyFilter<T extends ConfigType>(
       ...Object.fromEntries(
         Object.entries(restConfig).map(([key, value]) => [
           key,
-          supportedAzureFilterThresholds[value as AzureFilterThreshold]
+          supportedAzureFilterThresholds[value]
         ])
       ),
       ...(protected_material_code !== undefined && { protected_material_code })
