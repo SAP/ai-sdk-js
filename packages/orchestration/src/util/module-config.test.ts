@@ -17,15 +17,15 @@ import type {
   PromptTemplatingModuleConfig
 } from '../client/api/schema/index.ts';
 import type {
+  StreamOptions,
+  ModuleStreamOptions
+} from '../orchestration-streaming-types.ts';
+import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
   OrchestrationModuleConfigList
 } from '../orchestration-types.ts';
-import type {
-  StreamOptions,
-  ModuleStreamOptions
-} from '../orchestration-streaming-types.ts';
 
 describe('stream util tests', () => {
   const defaultOrchestrationModules: OrchestrationModuleConfig = {

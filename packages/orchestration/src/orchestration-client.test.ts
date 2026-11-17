@@ -29,14 +29,14 @@ import {
 
 import type { CompletionPostResponse } from './client/api/schema/index.ts';
 import type {
+  StreamOptions,
+  StreamOptionsWithOverrides
+} from './orchestration-streaming-types.ts';
+import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest
 } from './orchestration-types.ts';
-import type {
-  StreamOptions,
-  StreamOptionsWithOverrides
-} from './orchestration-streaming-types.ts';
 
 const defaultJsonConfig = `{
   "module_configurations": {

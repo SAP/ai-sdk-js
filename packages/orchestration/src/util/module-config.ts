@@ -1,6 +1,11 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 
 import {
+  type StreamOptions,
+  type StreamOptionsWithoutOverrides,
+  type ModuleStreamOptions
+} from '../orchestration-streaming-types.ts';
+import {
   type ChatCompletionRequest,
   type OrchestrationConfigRefById,
   type OrchestrationConfigRefByName,
@@ -9,11 +14,6 @@ import {
   type EmbeddingModuleConfig,
   type EmbeddingRequest
 } from '../orchestration-types.ts';
-import {
-  type StreamOptions,
-  type StreamOptionsWithoutOverrides,
-  type ModuleStreamOptions
-} from '../orchestration-streaming-types.ts';
 
 import type {
   CompletionPostRequest,
