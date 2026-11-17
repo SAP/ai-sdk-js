@@ -322,6 +322,51 @@ Stream chat completion response with Azure OpenAI using LangChain.
 
 Stream chat completion response with orchestration service using LangChain.
 
+### LangChain OpenAI
+
+These samples use `ChatOpenAI` and `OpenAIEmbeddings` from `@langchain/openai`.
+`createOpenAiConfig()` from `@sap-ai-sdk/openai` resolves the SAP AI Core deployment and provides the token provider, which are passed as `configuration`.
+
+#### Invoke
+
+`GET /langchain-openai/invoke`
+
+Get a chat completion response using the Chat Completions API.
+
+`GET /langchain-openai/invoke-responses`
+
+Get a response using the Responses API.
+
+#### Stream
+
+`GET /langchain-openai/stream`
+
+Stream a chat completion response, including token usage.
+
+#### Agent with Tool Calling
+
+`GET /langchain-openai/invoke-agent`
+
+Let a LangChain agent call a tool to answer a question.
+
+#### Structured Output
+
+`GET /langchain-openai/invoke-structured-output`
+
+Get a response matching a Zod schema using the Responses API.
+
+#### Reasoning
+
+`GET /langchain-openai/invoke-reasoning`
+
+Use a reasoning model with low reasoning effort.
+
+#### Embedding
+
+`GET /langchain-openai/embedding`
+
+Get an embedding vector using `OpenAIEmbeddings`.
+
 ### Document Grounding
 
 #### E2E flow for Orchestration Grounding using `vector` as the Data Repository
