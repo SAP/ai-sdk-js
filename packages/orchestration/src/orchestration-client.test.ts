@@ -31,10 +31,12 @@ import type { CompletionPostResponse } from './client/api/schema/index.ts';
 import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
-  ChatCompletionRequest,
+  ChatCompletionRequest
+} from './orchestration-types.ts';
+import type {
   StreamOptions,
   StreamOptionsWithOverrides
-} from './orchestration-types.ts';
+} from './orchestration-streaming-types.ts';
 
 const defaultJsonConfig = `{
   "module_configurations": {
@@ -1227,7 +1229,7 @@ describe('orchestration service client', () => {
       }
     });
 
-    it('warns when unsupported stream options (BaseStreamOptions fields) are provided with config reference', async () => {
+    it('warns when unsupported stream options (StreamOptionsWithoutOverrides fields) are provided with config reference', async () => {
       const logger = createLogger({
         package: 'orchestration',
         messageContext: 'orchestration-client'

@@ -13,10 +13,6 @@ export type {
   PromptTemplate,
   ChatCompletionRequest,
   RequestOptions,
-  StreamOptions,
-  StreamOptionsWithOverrides,
-  BaseStreamOptions,
-  ModuleStreamOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
   DpiMaskingConfig,
@@ -57,6 +53,13 @@ export {
   isConfigReference,
   isOrchestrationModuleConfigList
 } from './orchestration-types.ts';
+export type {
+  StreamOptions,
+  StreamOptionsWithOverrides,
+  StreamOptionsWithoutOverrides,
+  StreamOptionsWithoutOverrides as BaseStreamOptions,
+  ModuleStreamOptions
+} from './orchestration-streaming-types.ts';
 export { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 export { OrchestrationStream } from './orchestration-stream.ts';

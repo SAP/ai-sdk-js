@@ -20,10 +20,12 @@ import type {
   OrchestrationModuleConfig,
   OrchestrationConfigRef,
   ChatCompletionRequest,
-  OrchestrationModuleConfigList,
+  OrchestrationModuleConfigList
+} from '../orchestration-types.ts';
+import type {
   StreamOptions,
   ModuleStreamOptions
-} from '../orchestration-types.ts';
+} from '../orchestration-streaming-types.ts';
 
 describe('stream util tests', () => {
   const defaultOrchestrationModules: OrchestrationModuleConfig = {

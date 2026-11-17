@@ -5,9 +5,9 @@ import {
 
 import type { CompletionPostRequest } from './client/api/schema/index.ts';
 import type {
-  OrchestrationModuleConfig,
-  StreamOptions
+  OrchestrationModuleConfig
 } from './orchestration-types.ts';
+import type { StreamOptions } from './orchestration-streaming-types.ts';
 
 describe('construct completion post request', () => {
   const defaultConfig: OrchestrationModuleConfig = {
