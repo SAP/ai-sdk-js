@@ -1,25 +1,28 @@
-import { isConfigReference } from '../orchestration-types.ts';
+import { isConfigReference } from '../../orchestration-types.ts';
 import {
   constructCompletionPostRequest,
   constructCompletionPostRequestFromConfigReference
-} from '../util/index.ts';
+} from '../../util/index.ts';
 
-import type { CompletionPostRequest } from '../client/api/schema/index.ts';
-import type { OrchestrationResponse } from '../orchestration-response.ts';
-import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
-import type { OrchestrationStreamResponse } from '../orchestration-stream-response.ts';
+import type { CompletionPostRequest } from '../../client/api/schema/index.ts';
+import type { OrchestrationResponse } from '../../orchestration-response.ts';
+import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
+import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
+import type {
+  StreamOptionsWithoutOverrides,
+  NewStreamOptionsWithFallbacks,
+  NewStreamOptionsWithoutFallbacks
+} from '../../orchestration-streaming-types.ts';
 import type {
   ChatCompletionRequest,
-  BaseStreamOptions,
-  StreamOptions,
   OrchestrationConfigWithTemplate,
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName,
   OrchestrationModuleConfigList,
   OrchestrationCreateOptions,
   OrchestrationCreateRequestConfig
-} from '../orchestration-types.ts';
-import type { Orchestration } from '../orchestration.ts';
+} from '../../orchestration-types.ts';
+import type { CompletionApi } from '../orchestration-completion.ts';
 
 /**
  * Configuration source for a request whose prompt is fixed, so its `create` omits `prompt`.
@@ -35,14 +38,14 @@ type ConfigWithTemplateSource =
  * Builder for a request whose prompt is already fixed by its configuration source.
  * Handles a module configuration with a standing prompt (inline template or remote `TemplateRef`), a stored configuration reference, and a fallback list of module configurations.
  * Its `create` omits `prompt`, because none of these sources can be extended inline.
- * Obtain it from {@link Orchestration.config}.
+ * Obtain it from {@link CompletionApi.config}.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class OrchestrationConfigWithTemplateBuilder {
   private config: ConfigWithTemplateSource;
-  private client: Orchestration;
+  private client: CompletionApi;
 
-  constructor(config: ConfigWithTemplateSource, client: Orchestration) {
+  constructor(config: ConfigWithTemplateSource, client: CompletionApi) {
     this.config = config;
     this.client = client;
   }
@@ -56,20 +59,31 @@ export class OrchestrationConfigWithTemplateBuilder {
    */
   create(
     body: OrchestrationCreateOptions & {
-      stream: true;
-      streamOptions?: StreamOptions;
+      stream:
+        | true
+        | { enabled: true }
+        | (Omit<NewStreamOptionsWithoutFallbacks, 'enabled'> & {
+            enabled?: true | undefined;
+          })
+        | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
+            enabled?: true | undefined;
+          });
     },
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>;
   create(
     body?: OrchestrationCreateOptions & {
-      stream?: false;
-      streamOptions?: never;
+      stream?: false | { enabled: false | undefined };
     },
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   create(
-    body?: OrchestrationCreateOptions,
+    body?: OrchestrationCreateOptions & {
+      stream?:
+        | boolean
+        | NewStreamOptionsWithoutFallbacks
+        | NewStreamOptionsWithFallbacks;
+    },
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
     | OrchestrationResponse
@@ -79,7 +93,7 @@ export class OrchestrationConfigWithTemplateBuilder {
       messagesHistory: body?.messagesHistory,
       placeholderValues: body?.placeholderValues
     };
-    const streamEnabled = body?.stream === true;
+    const streamEnabled = !!body?.stream;
 
     let postRequest: CompletionPostRequest;
     if (isConfigReference(this.config)) {
@@ -100,7 +114,7 @@ export class OrchestrationConfigWithTemplateBuilder {
         this.config,
         request,
         streamEnabled,
-        body?.streamOptions as BaseStreamOptions | undefined
+        body?.streamOptions as StreamOptionsWithoutOverrides | undefined
       );
     }
 

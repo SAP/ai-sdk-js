@@ -2,21 +2,21 @@ import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { executeRequest } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
 
-import {
-  OrchestrationConfigBuilder,
-  OrchestrationConfigWithTemplateBuilder,
-  OrchestrationRawConfigJsonBuilder
-} from './builders/index.ts';
-import { OrchestrationResponse } from './orchestration-response.ts';
-import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
-import { OrchestrationStream } from './orchestration-stream.ts';
-import { isConfigReference } from './orchestration-types.ts';
+import { OrchestrationResponse } from '../orchestration-response.ts';
+import { OrchestrationStreamResponse } from '../orchestration-stream-response.ts';
+import { OrchestrationStream } from '../orchestration-stream.ts';
+import { isConfigReference } from '../orchestration-types.ts';
 import {
   parseTemplatingModule,
   parseModuleConfigList,
   validateJsonConfig,
   hasStandingPrompt
-} from './util/parse-config.ts';
+} from '../util/parse-config.ts';
+import {
+  OrchestrationConfigBuilder,
+  OrchestrationConfigWithTemplateBuilder,
+  OrchestrationRawConfigJsonBuilder
+} from './builders/index.ts';
 
 import type {
   DeploymentIdConfig,
@@ -25,8 +25,8 @@ import type {
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
-import type { CompletionPostRequest } from './client/api/schema/index.ts';
-import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
+import type { CompletionPostRequest } from '../client/api/schema/index.ts';
+import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
 import type {
   OrchestrationConfigWithoutTemplate,
   OrchestrationConfigWithTemplate,
@@ -36,7 +36,7 @@ import type {
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName,
   OrchestrationCreateRequestConfig
-} from './orchestration-types.ts';
+} from '../orchestration-types.ts';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -44,17 +44,17 @@ const logger = createLogger({
 });
 
 /**
- * Client for the SAP AI Core Orchestration Service that exposes a fluent builder API.
- * Construct it with connection information only, then choose a configuration source with {@link config} or {@link rawConfigJson} and call `create` on the returned builder.
+ * Completion API for the SAP AI Core Orchestration Service that exposes a fluent builder API.
+ * Choose a configuration source with {@link config} or {@link rawConfigJson} and call `create` on the returned builder.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
-export class Orchestration {
+export class CompletionApi {
   private options: (ResourceGroupConfig | DeploymentIdConfig) & {
     destination?: HttpDestinationOrFetchOptions;
   };
 
   /**
-   * Creates an instance of the orchestration client with connection information only.
+   * Creates an instance of the completion API with connection information only.
    * @param options - Connection information: a {@link ResourceGroupConfig} or {@link DeploymentIdConfig} to scope the deployment, or a `{ destination }` object. Omit to resolve the deployment from the default resource group.
    */
   constructor(

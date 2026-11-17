@@ -34,7 +34,11 @@ import type {
   PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
 import type { ChatModel, EmbeddingModel } from './model-types.ts';
-import type { StreamOptions } from './orchestration-streaming-types.ts';
+import type {
+  NewStreamOptionsWithFallbacks,
+  NewStreamOptionsWithoutFallbacks,
+  StreamOptions
+} from './orchestration-streaming-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
@@ -93,14 +97,19 @@ export interface OrchestrationCreateOptions {
    */
   placeholderValues?: Record<string, string>;
   /**
-   * Whether to stream the response.
-   * When `true`, `create` returns an {@link OrchestrationStreamResponse}; otherwise an {@link OrchestrationResponse}.
+   * Whether to stream the response, optionally carrying stream options.
+   * Pass `true` or a stream options object to stream, or omit it (or pass `false`) for a single response.
+   * When streaming, `create` returns an {@link OrchestrationStreamResponse}, otherwise an {@link OrchestrationResponse}.
+   * Use the plain object form to set stream options, or {@link NewStreamOptionsWithFallbacks} to set per-config options for module fallback.
+   * @example
+   * stream: true
+   * @example
+   * stream: { chunk_size: 100 }
    */
-  stream?: boolean;
-  /**
-   * Streaming options. Only applies when `stream` is `true`.
-   */
-  streamOptions?: StreamOptions;
+  stream?:
+    | boolean
+    | NewStreamOptionsWithoutFallbacks
+    | NewStreamOptionsWithFallbacks;
 }
 
 /**

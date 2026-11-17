@@ -1,27 +1,27 @@
-import { constructCompletionPostRequestFromJsonModuleConfig } from '../util/index.ts';
+import { constructCompletionPostRequestFromJsonModuleConfig } from '../../util/index.ts';
 
-import type { CompletionPostRequest } from '../client/api/schema/index.ts';
-import type { OrchestrationResponse } from '../orchestration-response.ts';
-import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
-import type { OrchestrationStreamResponse } from '../orchestration-stream-response.ts';
+import type { CompletionPostRequest } from '../../client/api/schema/index.ts';
+import type { OrchestrationResponse } from '../../orchestration-response.ts';
+import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
+import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
 import type {
   ChatCompletionRequest,
   OrchestrationCreateOptions,
   OrchestrationCreateRequestConfig
-} from '../orchestration-types.ts';
-import type { Orchestration } from '../orchestration.ts';
+} from '../../orchestration-types.ts';
+import type { CompletionApi } from '../orchestration-completion.ts';
 
 /**
  * Builder for a request backed by a JSON string configuration (exported from AI Launchpad).
  * Its `create` omits `prompt`, because the configuration already specifies everything.
- * Obtain it from {@link Orchestration.rawConfigJson}.
+ * Obtain it from {@link CompletionApi.rawConfigJson}.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class OrchestrationRawConfigJsonBuilder {
   private json: string;
-  private client: Orchestration;
+  private client: CompletionApi;
 
-  constructor(json: string, client: Orchestration) {
+  constructor(json: string, client: CompletionApi) {
     this.json = json;
     this.client = client;
   }
@@ -45,7 +45,7 @@ export class OrchestrationRawConfigJsonBuilder {
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   create(
-    body?: OrchestrationCreateOptions,
+    body?: OrchestrationCreateOptions & { stream?: boolean },
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
     | OrchestrationResponse
@@ -55,7 +55,7 @@ export class OrchestrationRawConfigJsonBuilder {
       messagesHistory: body?.messagesHistory,
       placeholderValues: body?.placeholderValues
     };
-    const streamEnabled = body?.stream === true;
+    const streamEnabled = !!body?.stream;
     const postRequest = constructCompletionPostRequestFromJsonModuleConfig(
       JSON.parse(this.json),
       request,

@@ -9,9 +9,9 @@ import {
   parseFileToString,
   parseMockResponse
 } from '../../../test-util/mock-http.ts';
+import { Orchestration } from './new/orchestration.ts';
 import { OrchestrationResponse } from './orchestration-response.ts';
 import { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
-import { Orchestration } from './orchestration.ts';
 import {
   constructCompletionPostRequestFromJsonModuleConfig,
   constructCompletionPostRequestFromConfigReference,
@@ -84,7 +84,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .config(config)
       .create({ prompt });
 
@@ -101,7 +101,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .config(config)
       .create({ prompt, stream: true });
 
@@ -133,7 +133,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .config([primaryConfig, fallbackConfig])
       .create();
 
@@ -157,7 +157,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .config(configRef)
       .create({ placeholderValues: { input: 'Paris' } });
 
@@ -190,7 +190,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .config(inlineTemplateConfig)
       .create({ placeholderValues: { input: 'France' } });
 
@@ -219,7 +219,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .config(templateRefConfig)
       .create({ placeholderValues: { input: 'Paris' } });
 
@@ -244,7 +244,7 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration()
+    const response = await new Orchestration().completion
       .rawConfigJson(defaultJsonConfig)
       .create();
 
