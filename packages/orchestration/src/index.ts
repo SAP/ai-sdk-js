@@ -57,9 +57,14 @@ export type {
   StreamOptions,
   StreamOptionsWithOverrides,
   StreamOptionsWithoutOverrides,
-  StreamOptionsWithoutOverrides as BaseStreamOptions,
   ModuleStreamOptions
 } from './orchestration-streaming-types.ts';
+
+export type {
+  /** @deprecated Use `StreamOptionsWithoutOverrides` instead. */
+  StreamOptionsWithoutOverrides as BaseStreamOptions
+} from './orchestration-streaming-types.ts';
+
 export { OrchestrationStreamResponse } from './orchestration-stream-response.ts';
 export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 export { OrchestrationStream } from './orchestration-stream.ts';
