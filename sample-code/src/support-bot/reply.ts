@@ -81,6 +81,25 @@ function parseIssueBody(body: string) {
   };
 }
 
+// ── Slack output gate ───────────────────────────────────────────────────────
+
+// The answer is attacker-influenced (indirect prompt injection via the issue body) and is posted
+// verbatim to Slack, where mrkdwn treats `<!...>` as broadcasts and `<...>` as link/mention markup.
+// A prompt constraint can't guarantee the model won't emit these, so neutralize them in code here —
+// the one place every answer passes through before it reaches the Slack payload. This makes the
+// output inert regardless of what the model was steered into producing: no @here/@channel pings,
+// no forged mentions, no cloaked links.
+function neutralizeSlackControls(answer: string): string {
+  return (
+    answer
+      // Broadcasts: <!here>, <!channel>, <!everyone> — defang the leading `<!` so Slack renders it as text.
+      .replace(/<!(here|channel|everyone)\b/gi, '&lt;!$1')
+      // User/group/link mentions: <@U…>, <!subteam^…>, <#C…>, <https://…|text> — break the opening `<`.
+      .replace(/<(?=[@#!])/g, '&lt;')
+      .replace(/<(?=https?:)/gi, '&lt;')
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 const { bugDescription, errorMessages, cleanBody } = parseIssueBody(rawBody);
@@ -98,8 +117,9 @@ const enrichedBody = [
 try {
   await initAgent();
   const answer = await askBot(title, enrichedBody || undefined, issueNumber);
-  // Output only the answer — captured by GitHub Action
-  process.stdout.write(answer);
+  // Output only the answer — captured by GitHub Action and posted to Slack.
+  // Defang Slack control tokens before they leave this process.
+  process.stdout.write(neutralizeSlackControls(answer));
 } finally {
   await closeAgent();
 }
