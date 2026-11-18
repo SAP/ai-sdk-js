@@ -163,6 +163,7 @@ export async function resolveDeploymentId(
  * If more than one deployment matches the criteria, the first one's URL is returned.
  * @param opts - The options for the deployment resolution.
  * @returns A promise of the deployment URL, if a deployment was found, fails otherwise.
+ * @internal
  */
 export async function resolveDeploymentUrl(
   opts: DeploymentResolutionOptions
