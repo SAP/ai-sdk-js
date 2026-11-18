@@ -72,7 +72,7 @@ describe('Orchestration client fluent builder API', () => {
     { role: 'user', content: 'Hello' }
   ];
 
-  it('sends an inline-config request via config().create({ prompt })', async () => {
+  it('sends an inline-config request via completion().create({ prompt })', async () => {
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-success-response.json'
@@ -84,15 +84,15 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration().completion
-      .config(config)
+    const response = await new Orchestration()
+      .completion(config)
       .create({ prompt });
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response._data).toEqual(mockResponse);
   });
 
-  it('streams an inline-config request via config().create({ prompt, stream: true })', async () => {
+  it('streams an inline-config request via completion().create({ prompt, stream: true })', async () => {
     mockInference(
       {
         data: constructCompletionPostRequest(config, { messages: prompt }, true)
@@ -101,14 +101,14 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration().completion
-      .config(config)
+    const response = await new Orchestration()
+      .completion(config)
       .create({ prompt, stream: true });
 
     expect(response).toBeInstanceOf(OrchestrationStreamResponse);
   });
 
-  it('sends a config-list request via config().create()', async () => {
+  it('sends a config-list request via completion.useFallbacks().create()', async () => {
     const fallbackConfig: OrchestrationModuleConfig = {
       promptTemplating: {
         model: { name: 'gpt-5.4', params: { max_tokens: 50 } },
@@ -134,14 +134,14 @@ describe('Orchestration client fluent builder API', () => {
     );
 
     const response = await new Orchestration().completion
-      .config([primaryConfig, fallbackConfig])
+      .useFallbacks([primaryConfig, fallbackConfig])
       .create();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response._data).toEqual(mockResponse);
   });
 
-  it('sends a config-ref request via config().create()', async () => {
+  it('sends a config-ref request via completion.useConfigReference().create()', async () => {
     const configRef: OrchestrationConfigRef = { id: 'config-id' };
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
@@ -158,14 +158,14 @@ describe('Orchestration client fluent builder API', () => {
     );
 
     const response = await new Orchestration().completion
-      .config(configRef)
+      .useConfigReference(configRef)
       .create({ placeholderValues: { input: 'Paris' } });
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response._data).toEqual(mockResponse);
   });
 
-  it('sends an inline-template request via config().create()', async () => {
+  it('sends an inline-template request via completion.useConfigWithTemplate().create()', async () => {
     const inlineTemplateConfig: OrchestrationConfigWithInlineTemplate = {
       promptTemplating: {
         model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } },
@@ -191,14 +191,14 @@ describe('Orchestration client fluent builder API', () => {
     );
 
     const response = await new Orchestration().completion
-      .config(inlineTemplateConfig)
+      .useConfigWithTemplate(inlineTemplateConfig)
       .create({ placeholderValues: { input: 'France' } });
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response._data).toEqual(mockResponse);
   });
 
-  it('sends a template-ref request via config().create()', async () => {
+  it('sends a template-ref request via completion().create()', async () => {
     const templateRefConfig: OrchestrationConfigWithTemplateRef = {
       promptTemplating: {
         model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } },
@@ -219,15 +219,15 @@ describe('Orchestration client fluent builder API', () => {
       { url: 'inference/deployments/1234/v2/completion' }
     );
 
-    const response = await new Orchestration().completion
-      .config(templateRefConfig)
+    const response = await new Orchestration()
+      .completion(templateRefConfig)
       .create({ placeholderValues: { input: 'Paris' } });
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response._data).toEqual(mockResponse);
   });
 
-  it('sends a JSON-config request via rawConfigJson().create()', async () => {
+  it('sends a JSON-config request via completion.useRawJsonConfig().create()', async () => {
     const mockResponse = await parseMockResponse<CompletionPostResponse>(
       'orchestration',
       'orchestration-chat-completion-success-response.json'
@@ -245,10 +245,148 @@ describe('Orchestration client fluent builder API', () => {
     );
 
     const response = await new Orchestration().completion
-      .rawConfigJson(defaultJsonConfig)
+      .useRawJsonConfig(defaultJsonConfig)
       .create();
 
     expect(response).toBeInstanceOf(OrchestrationResponse);
     expect(response._data).toEqual(mockResponse);
+  });
+
+  it('sends a merged request via completion.create({ modules, prompt })', async () => {
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+    mockInference(
+      { data: constructCompletionPostRequest(config, { messages: prompt }) },
+      { data: mockResponse, status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' }
+    );
+
+    const response = await new Orchestration().completion.create({
+      modules: config,
+      prompt
+    });
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response._data).toEqual(mockResponse);
+  });
+
+  it('streams a merged inline-template request via completion.create({ modules, stream: true })', async () => {
+    const inlineTemplateConfig: OrchestrationConfigWithInlineTemplate = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } },
+        prompt: {
+          template: [
+            { role: 'user', content: 'What is the capital of {{?input}}?' }
+          ]
+        }
+      }
+    };
+    mockInference(
+      {
+        data: constructCompletionPostRequest(
+          inlineTemplateConfig,
+          { placeholderValues: { input: 'France' } },
+          true
+        )
+      },
+      { data: streamMockResponse, status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' }
+    );
+
+    const response = await new Orchestration().completion.create({
+      modules: inlineTemplateConfig,
+      placeholderValues: { input: 'France' },
+      stream: true
+    });
+
+    expect(response).toBeInstanceOf(OrchestrationStreamResponse);
+  });
+
+  it('sends a merged fallback-list request via completion.create({ modules })', async () => {
+    const fallbackConfig: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4', params: { max_tokens: 50 } },
+        prompt: { template: [{ role: 'user', content: 'Hello' }] }
+      }
+    };
+    const primaryConfig: OrchestrationModuleConfig = {
+      promptTemplating: {
+        model: { name: 'gpt-5.4-nano', params: { max_tokens: 50 } },
+        prompt: { template: [{ role: 'user', content: 'Hello' }] }
+      }
+    };
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+    mockInference(
+      {
+        data: constructCompletionPostRequest([primaryConfig, fallbackConfig])
+      },
+      { data: mockResponse, status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' }
+    );
+
+    const response = await new Orchestration().completion.create({
+      modules: [primaryConfig, fallbackConfig]
+    });
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response._data).toEqual(mockResponse);
+  });
+
+  it('sends a merged config-ref request via completion.create({ id })', async () => {
+    const configRef: OrchestrationConfigRef = { id: 'config-id' };
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+    mockInference(
+      {
+        data: constructCompletionPostRequestFromConfigReference(configRef, {
+          placeholderValues: { input: 'Paris' }
+        })
+      },
+      { data: mockResponse, status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' }
+    );
+
+    const response = await new Orchestration().completion.create({
+      id: 'config-id',
+      placeholderValues: { input: 'Paris' }
+    });
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response._data).toEqual(mockResponse);
+  });
+
+  it('sends a request via completion.post() given a JSON string', async () => {
+    const mockResponse = await parseMockResponse<CompletionPostResponse>(
+      'orchestration',
+      'orchestration-chat-completion-success-response.json'
+    );
+    const wireBody = constructCompletionPostRequest(config, {
+      messages: prompt
+    });
+    mockInference(
+      { data: wireBody },
+      { data: mockResponse, status: 200 },
+      { url: 'inference/deployments/1234/v2/completion' }
+    );
+
+    const response = await new Orchestration().completion.post(
+      JSON.stringify(wireBody)
+    );
+
+    expect(response).toBeInstanceOf(OrchestrationResponse);
+    expect(response._data).toEqual(mockResponse);
+  });
+
+  it('throws when completion.post() is given an invalid JSON string', async () => {
+    await expect(
+      new Orchestration().completion.post('{ not valid json')
+    ).rejects.toThrow(/Could not parse JSON/);
   });
 });

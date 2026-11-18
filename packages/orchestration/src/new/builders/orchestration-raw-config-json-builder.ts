@@ -14,7 +14,7 @@ import type { CompletionApi } from '../orchestration-completion.ts';
 /**
  * Builder for a request backed by a JSON string configuration (exported from AI Launchpad).
  * Its `create` omits `prompt`, because the configuration already specifies everything.
- * Obtain it from {@link CompletionApi.rawConfigJson}.
+ * Obtain it from {@link CompletionApi.useRawJsonConfig}.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class OrchestrationRawConfigJsonBuilder {

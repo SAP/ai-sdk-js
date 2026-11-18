@@ -38,7 +38,7 @@ type ConfigWithTemplateSource =
  * Builder for a request whose prompt is already fixed by its configuration source.
  * Handles a module configuration with a standing prompt (inline template or remote `TemplateRef`), a stored configuration reference, and a fallback list of module configurations.
  * Its `create` omits `prompt`, because none of these sources can be extended inline.
- * Obtain it from {@link CompletionApi.config}.
+ * Obtain it from {@link CompletionApi.useConfigWithTemplate}, {@link CompletionApi.useConfigReference}, or {@link CompletionApi.useFallbacks}.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class OrchestrationConfigWithTemplateBuilder {

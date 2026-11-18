@@ -1,10 +1,12 @@
-import { CompletionApi } from './orchestration-completion.ts';
+import { createCompletionApi } from './orchestration-completion.ts';
 
 import type {
   DeploymentIdConfig,
   ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
+
+import type { CompletionApi } from './orchestration-completion.ts';
 
 /**
  * Client for the SAP AI Core Orchestration Service that exposes a fluent builder API.
@@ -14,7 +16,7 @@ import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity'
 export class Orchestration {
   /**
    * Completion API for the orchestration service.
-   * Choose a configuration source with `config` or `rawConfigJson` and call `create` on the returned builder.
+   * Call it directly to select a configuration source by shape, or call one of its `use*` methods to select a source explicitly, then call `create` on the returned builder.
    * @experimental This property is experimental and may change at any time without prior notice.
    */
   completion: CompletionApi;
@@ -28,14 +30,6 @@ export class Orchestration {
       destination?: HttpDestinationOrFetchOptions;
     } = {}
   ) {
-    this.completion = new CompletionApi(options);
+    this.completion = createCompletionApi(options);
   }
 }
-
-// new Orchestration().completion(/*CONFIG*/);
-// new Orchestration().completion.withConfigIncludingTemplate(/*CONFIG*/);
-// new Orchestration().completion.withConfigExcludingTemplate(/*CONFIG*/);
-// new Orchestration().completion.withFallbackConfig(/*CONFIG*/);
-// new Orchestration().completion.withConfigReference(/*CONFIG*/);
-// new Orchestration().completion.withRawJsonConfig(/*CONFIG*/);
-

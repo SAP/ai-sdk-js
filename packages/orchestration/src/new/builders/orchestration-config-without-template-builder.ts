@@ -1,25 +1,25 @@
-import { constructCompletionPostRequest } from '../util/index.ts';
+import { constructCompletionPostRequest } from '../../util/index.ts';
 
-import type { OrchestrationResponse } from '../orchestration-response.ts';
-import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
-import type { OrchestrationStreamResponse } from '../orchestration-stream-response.ts';
+import type { OrchestrationResponse } from '../../orchestration-response.ts';
+import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
+import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
 import type {
   StreamOptionsWithoutOverrides,
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
-} from '../orchestration-streaming-types.ts';
+} from '../../orchestration-streaming-types.ts';
 import type {
   ChatCompletionRequest,
   OrchestrationConfigWithoutTemplate,
   OrchestrationCreateOptionsWithPrompt,
   OrchestrationCreateRequestConfig
-} from '../orchestration-types.ts';
+} from '../../orchestration-types.ts';
 import type { CompletionApi } from '../orchestration-completion.ts';
 
 /**
  * Builder for a request backed by an inline module configuration.
  * Its `create` accepts a per-call `prompt` — the current turn appended to the inline template.
- * Obtain it from {@link CompletionApi.config}.
+ * Obtain it from {@link CompletionApi.useConfigWithoutTemplate}.
  * @experimental This class is experimental and may change at any time without prior notice.
  */
 export class OrchestrationConfigWithoutTemplateBuilder {
