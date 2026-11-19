@@ -76,14 +76,13 @@ await new Orchestration().completion
     }
   ])
   .create({
-    fallbacks: [
+    promptConfigs: [
       {
         model: 'amazon--nova-lite',
         messages: [
           { role: 'assistant', content: 'You are a helpful assistant.' }
         ]
       },
-
       {
         model: { name: 'amazon--nova-micro' },
         messages: [
@@ -96,7 +95,8 @@ await new Orchestration().completion
 
 // config reference
 await new Orchestration().completion
-  .withModules({ id: 'ID' })
+  .withConfigRef({ id: 'ID' }) // xor?
+  .withModules()
   .create({ stream: true });
 
 // RAW JSON CONFIG as an object
@@ -129,7 +129,11 @@ await new Orchestration().completion.postStream(
           ]
         }
       }
-    }
+    },
+    stream: { enabled: true }
   }
 }`
 );
+
+// TODO: check for fallbacks, if you can have equally long lists
+// TODO: config_ref => new function+ overrides + scenario vs. id
