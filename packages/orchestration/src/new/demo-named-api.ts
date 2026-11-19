@@ -88,9 +88,10 @@ await new Orchestration().completion.post({
   }
 });
 
-// RAW JSON CONFIG as a string (parsed and sent as-is)
-await new Orchestration().completion.post(
-  `{
+// RAW JSON CONFIG as a string (unparsed and sent as-is)
+await new Orchestration().completion
+  .useRawJsonConfig(
+    `{
   "config": {
     "modules": {
       "prompt_templating": {
@@ -101,11 +102,10 @@ await new Orchestration().completion.post(
           ]
         }
       }
-    },
-    "stream": { "enabled": true }
+    }
   }
-}`,
-  { stream: true }
-);
+}`
+  )
+  .create({ stream: true });
 
 //TODO: config-ref: Either name+scenario+version or ID

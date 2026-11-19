@@ -115,3 +115,21 @@ await new Orchestration().completion.post({
     stream: { enabled: true }
   }
 });
+
+// RAW JSON CONFIG as a string (unparsed and sent as-is)
+await new Orchestration().completion.postStream(
+  `{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": { "name": "amazon--nova-lite" },
+        "prompt": {
+          "template": [
+            { "role": "assistant", "content": "You are a helpful assistant." }
+          ]
+        }
+      }
+    }
+  }
+}`
+);

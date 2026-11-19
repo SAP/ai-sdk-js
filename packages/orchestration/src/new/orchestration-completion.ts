@@ -12,16 +12,16 @@ import {
   validateJsonConfig
 } from '../util/parse-config.ts';
 import {
+  buildFallbackChainPostRequest,
+  buildSingleCompletionPostRequest
+} from './builders/completion-request-helpers.ts';
+import {
   OrchestrationConfigBuilder,
   OrchestrationConfigWithTemplateBuilder,
   OrchestrationRawConfigJsonBuilder,
   OrchestrationFallbacksBuilder,
   OrchestrationModulesBuilder
 } from './builders/index.ts';
-import {
-  buildFallbackChainPostRequest,
-  buildSingleCompletionPostRequest
-} from './builders/completion-request-helpers.ts';
 
 import type {
   DeploymentIdConfig,
@@ -32,6 +32,14 @@ import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 import type { CompletionPostRequest } from '../client/api/schema/index.ts';
 import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
+import type {
+  OrchestrationConfigWithoutTemplate,
+  OrchestrationConfigWithTemplate,
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName,
+  OrchestrationModuleConfigList,
+  OrchestrationCreateRequestConfig
+} from '../orchestration-types.ts';
 import type {
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
@@ -44,14 +52,6 @@ import type {
   OrchestrationCompletionCreateOptionsWithMessages,
   OrchestrationCompletionCreateOptionsWithTemplateRef
 } from './orchestration-types.ts';
-import type {
-  OrchestrationConfigWithoutTemplate,
-  OrchestrationConfigWithTemplate,
-  OrchestrationConfigRefById,
-  OrchestrationConfigRefByName,
-  OrchestrationModuleConfigList,
-  OrchestrationCreateRequestConfig
-} from '../orchestration-types.ts';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -68,7 +68,7 @@ type CompletionApiOptions = (ResourceGroupConfig | DeploymentIdConfig) & {
 /**
  * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
  */
-type StreamEnabledField = {
+interface StreamEnabledField {
   stream:
     | true
     | { enabled: true }
@@ -78,14 +78,14 @@ type StreamEnabledField = {
     | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
         enabled?: true | undefined;
       });
-};
+}
 
 /**
  * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
  */
-type StreamDisabledField = {
+interface StreamDisabledField {
   stream?: false | { enabled: false | undefined };
-};
+}
 
 /**
  * Resolve the deployment, send a pre-built completion request body, and log fallback usage.
@@ -235,11 +235,15 @@ export class CompletionApi {
       | OrchestrationConfigRefByName;
     if (
       isConfigReference(
-        singleConfig as OrchestrationConfigRefById | OrchestrationConfigRefByName
+        singleConfig as
+          | OrchestrationConfigRefById
+          | OrchestrationConfigRefByName
       )
     ) {
       return this.useConfigReference(
-        singleConfig as OrchestrationConfigRefById | OrchestrationConfigRefByName
+        singleConfig as
+          | OrchestrationConfigRefById
+          | OrchestrationConfigRefByName
       );
     }
     return new OrchestrationModulesBuilder(
@@ -338,7 +342,8 @@ export class CompletionApi {
    * @returns A single response.
    */
   create(
-    body: OrchestrationCompletionCreateOptionsWithMessages & StreamDisabledField,
+    body: OrchestrationCompletionCreateOptionsWithMessages &
+      StreamDisabledField,
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   /**
@@ -424,7 +429,7 @@ export class CompletionApi {
    * Send a pre-built completion request body to the orchestration service.
    * This is the low-level transport beneath the builder API: the builders returned by the `use*` methods assemble a body and route it through here. Call it directly only when you already hold a complete {@link CompletionPostRequest} wire body, or its JSON serialization as a string.
    * Pass the body as an object, or as a JSON string that is parsed and sent as-is.
-   * Streaming is driven by the body itself — set `config.stream.enabled` to `true` to stream the response. The return type is the union of both outcomes; narrow it with `instanceof`, or use a builder's `create` for a statically typed result.
+   * Streaming is driven by the body itself — set `config.stream.enabled` to `true` to stream the response. The return type is the union of both outcomes; narrow it with `instanceof`, call {@link postStream} for a statically typed stream result, or use a builder's `create`.
    * @experimental This method is experimental and may change at any time without prior notice.
    * @param body - A complete completion request body, or a JSON string that parses into one. Set `config.stream.enabled` to `true` to stream the response.
    * @param requestConfig - Transport configuration (`signal`, `headers`).
@@ -437,13 +442,67 @@ export class CompletionApi {
     | OrchestrationResponse
     | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
-    let requestBody: CompletionPostRequest;
+    return this.dispatch(body, requestConfig);
+  }
+
+  /**
+   * Send a pre-built completion request body to the orchestration service as a streaming request.
+   * Like {@link post}, but forces `config.stream.enabled` to `true` and narrows the return type to the stream response, so you do not need to set the stream flag on the body or narrow the result yourself.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - A complete completion request body, or a JSON string that parses into one. Any `config.stream` block is overridden to enable streaming.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A stream response.
+   */
+  async postStream(
+    body: CompletionPostRequest | string,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>> {
+    const requestBody = this.parseBody(body);
+    // Force streaming on without rebuilding the body: `CompletionPostRequest` is
+    // a discriminated union (by `config` vs `config_ref`), so spreading into a
+    // fresh literal loses the arm. Clone shallowly and override the nested
+    // `stream` flag on the clone's `config` in place.
+    const streamingBody = {
+      ...requestBody,
+      config: {
+        ...requestBody.config,
+        stream: { ...requestBody.config?.stream, enabled: true }
+      }
+    } as CompletionPostRequest;
+    return this.dispatch(streamingBody, requestConfig) as Promise<
+      OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+    >;
+  }
+
+  /**
+   * Parse a request body given as an object or JSON string into a {@link CompletionPostRequest}.
+   * @param body - The request body, or a JSON string that parses into one.
+   * @returns The request body object.
+   */
+  private parseBody(
+    body: CompletionPostRequest | string
+  ): CompletionPostRequest {
     if (typeof body === 'string') {
       validateJsonConfig(body);
-      requestBody = JSON.parse(body) as CompletionPostRequest;
-    } else {
-      requestBody = body;
+      return JSON.parse(body) as CompletionPostRequest;
     }
+    return body;
+  }
+
+  /**
+   * Resolve the deployment and send a request body, streaming the response when `config.stream.enabled` is `true`.
+   * @param body - The request body, or a JSON string that parses into one.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A stream response when the body enables streaming, otherwise a non-streaming response.
+   */
+  private async dispatch(
+    body: CompletionPostRequest | string,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<
+    | OrchestrationResponse
+    | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  > {
+    const requestBody = this.parseBody(body);
 
     const streaming = requestBody.config?.stream?.enabled === true;
 
