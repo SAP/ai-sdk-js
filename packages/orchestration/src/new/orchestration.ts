@@ -1,12 +1,10 @@
-import { createCompletionApi } from './orchestration-completion.ts';
+import { CompletionApi } from './orchestration-completion.ts';
 
 import type {
   DeploymentIdConfig,
   ResourceGroupConfig
 } from '@sap-ai-sdk/ai-api/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
-
-import type { CompletionApi } from './orchestration-completion.ts';
 
 /**
  * Client for the SAP AI Core Orchestration Service that exposes a fluent builder API.
@@ -30,6 +28,6 @@ export class Orchestration {
       destination?: HttpDestinationOrFetchOptions;
     } = {}
   ) {
-    this.completion = createCompletionApi(options);
+    this.completion = new CompletionApi(options);
   }
 }

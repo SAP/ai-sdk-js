@@ -8,11 +8,11 @@ import type { CompletionPostRequest } from '../../client/api/schema/index.ts';
 import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
 import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
+import type { StreamOptionsWithoutOverrides } from '../../orchestration-streaming-types.ts';
 import type {
-  StreamOptionsWithoutOverrides,
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
-} from '../../orchestration-streaming-types.ts';
+} from '../orchestration-streaming-types.ts';
 import type {
   ChatCompletionRequest,
   OrchestrationConfigWithTemplate,

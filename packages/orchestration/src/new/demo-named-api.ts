@@ -1,47 +1,7 @@
 // oxlint-disable no-unused-vars
 import { Orchestration } from './orchestration.ts';
 
-// Questions:
-// - prompt registry and models?
-// - streaming with strings? extra function? (.stream())
-// Usage???
-
-const completion = new Orchestration().completion({
-  promptTemplating: {
-    model: { name: 'amazon--nova-lite' }
-  }
-});
-
-await completion.create({
-  prompt: [{ role: 'assistant', content: 'You are a helpful assistant.' }]
-});
-
-// OVERLOADED API
-await new Orchestration()
-  .completion({
-    promptTemplating: {
-      model: { name: 'amazon--nova-lite' },
-      prompt: {
-        template: [
-          { role: 'assistant', content: 'You are a helpful assistant.' }
-        ]
-      }
-    }
-  })
-  .create({ stream: true });
-
-await new Orchestration()
-  .completion({
-    promptTemplating: {
-      model: { name: 'amazon--nova-lite' }
-    }
-  })
-  .create({
-    prompt: [{ role: 'assistant', content: 'You are a helpful assistant.' }],
-    stream: true
-  });
-
-// NAMED API
+// inline template in config
 await new Orchestration().completion
   .useConfigWithTemplate({
     promptTemplating: {
@@ -55,6 +15,19 @@ await new Orchestration().completion
   })
   .create({ stream: true });
 
+// template ref in config
+await new Orchestration().completion
+  .useConfigWithTemplate({
+    promptTemplating: {
+      model: { name: 'amazon--nova-lite' },
+      prompt: { template_ref: { id: 'ID' } }
+    }
+  })
+  .create({
+    stream: true
+  });
+
+// no template in config
 await new Orchestration().completion
   .useConfigWithoutTemplate({
     promptTemplating: {
@@ -62,11 +35,11 @@ await new Orchestration().completion
     }
   })
   .create({
-    // TODO: Don't call this prompt - either template or messages
-    prompt: [{ role: 'assistant', content: 'You are a helpful assistant.' }],
+    messages: [{ role: 'assistant', content: 'You are a helpful assistant.' }],
     stream: true
   });
 
+// fallbacks
 await new Orchestration().completion
   .useFallbacks([
     {
@@ -93,24 +66,10 @@ await new Orchestration().completion
   ])
   .create({ stream: true });
 
-//TODO: Either name+scenario+version or ID
+// config reference
 await new Orchestration().completion
   .useConfigReference({ id: 'ID' })
   .create({ stream: true });
-
-await new Orchestration().completion.create({
-  modules: {
-    promptTemplating: {
-      model: { name: 'amazon--nova-lite' },
-      prompt: {
-        template: [
-          { role: 'assistant', content: 'You are a helpful assistant.' }
-        ]
-      }
-    }
-  },
-  stream: true
-});
 
 // RAW JSON CONFIG as an object
 await new Orchestration().completion.post({
@@ -149,18 +108,4 @@ await new Orchestration().completion.post(
   { stream: true }
 );
 
-// MERGED create: module config without a standing prompt, non-streaming
-await new Orchestration().completion.create({
-  modules: {
-    promptTemplating: {
-      model: { name: 'amazon--nova-lite' }
-    }
-  },
-  prompt: [{ role: 'assistant', content: 'You are a helpful assistant.' }]
-});
-
-// MERGED create: config reference (fields passed directly, not under `modules`)
-await new Orchestration().completion.create({
-  id: 'ID',
-  stream: true
-});
+//TODO: config-ref: Either name+scenario+version or ID

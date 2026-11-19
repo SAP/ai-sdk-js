@@ -69,11 +69,3 @@ export type StreamOptionsWithOverrides = BaseStreamOptions & {
 export type StreamOptions =
   | StreamOptionsWithoutOverrides
   | StreamOptionsWithOverrides;
-
-export type NewStreamOptionsWithoutFallbacks = GlobalStreamOptions & {
-  moduleOptions: ModuleStreamOptions;
-};
-
-export type NewStreamOptionsWithFallbacks = GlobalStreamOptions & {
-  moduleOptions: ModuleStreamOptions[];
-};

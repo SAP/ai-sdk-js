@@ -3,11 +3,11 @@ import { constructCompletionPostRequest } from '../../util/index.ts';
 import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
 import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
+import type { StreamOptionsWithoutOverrides } from '../../orchestration-streaming-types.ts';
 import type {
-  StreamOptionsWithoutOverrides,
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
-} from '../../orchestration-streaming-types.ts';
+} from '../orchestration-streaming-types.ts';
 import type {
   ChatCompletionRequest,
   OrchestrationConfigWithoutTemplate,
@@ -74,7 +74,7 @@ export class OrchestrationConfigWithoutTemplateBuilder {
     | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
     const request: ChatCompletionRequest = {
-      messages: body?.prompt,
+      messages: body?.messages,
       messagesHistory: body?.messagesHistory,
       placeholderValues: body?.placeholderValues
     };

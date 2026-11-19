@@ -9,14 +9,19 @@ import { isConfigReference } from '../orchestration-types.ts';
 import {
   parseTemplatingModule,
   parseModuleConfigList,
-  validateJsonConfig,
-  hasStandingPrompt
+  validateJsonConfig
 } from '../util/parse-config.ts';
 import {
   OrchestrationConfigBuilder,
   OrchestrationConfigWithTemplateBuilder,
-  OrchestrationRawConfigJsonBuilder
+  OrchestrationRawConfigJsonBuilder,
+  OrchestrationFallbacksBuilder,
+  OrchestrationModulesBuilder
 } from './builders/index.ts';
+import {
+  buildFallbackChainPostRequest,
+  buildSingleCompletionPostRequest
+} from './builders/completion-request-helpers.ts';
 
 import type {
   DeploymentIdConfig,
@@ -30,15 +35,21 @@ import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-c
 import type {
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
-} from '../orchestration-streaming-types.ts';
+} from './orchestration-streaming-types.ts';
+import type {
+  OrchestrationCompletionConfig,
+  OrchestrationCompletionConfigList,
+  OrchestrationCompletionCreateFallbacksOptions,
+  OrchestrationCompletionCreateOptions,
+  OrchestrationCompletionCreateOptionsWithMessages,
+  OrchestrationCompletionCreateOptionsWithTemplateRef
+} from './orchestration-types.ts';
 import type {
   OrchestrationConfigWithoutTemplate,
   OrchestrationConfigWithTemplate,
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName,
   OrchestrationModuleConfigList,
-  OrchestrationCreateOptions,
-  OrchestrationCreateOptionsWithPrompt,
   OrchestrationCreateRequestConfig
 } from '../orchestration-types.ts';
 
@@ -55,9 +66,9 @@ type CompletionApiOptions = (ResourceGroupConfig | DeploymentIdConfig) & {
 };
 
 /**
- * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object. Narrows a merged `create` call to a streaming response.
+ * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
  */
-interface StreamEnabledField {
+type StreamEnabledField = {
   stream:
     | true
     | { enabled: true }
@@ -67,176 +78,14 @@ interface StreamEnabledField {
     | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
         enabled?: true | undefined;
       });
-}
+};
 
 /**
- * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`. Narrows a merged `create` call to a single response.
+ * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
  */
-interface StreamDisabledField {
+type StreamDisabledField = {
   stream?: false | { enabled: false | undefined };
-}
-
-/**
- * Merged `create` source whose prompt is fixed by the configuration, so no per-call `prompt` is accepted.
- * A module configuration with a standing prompt or a fallback list goes under `modules`; a stored configuration reference passes its fields (`id`, or `scenario`/`name`/`version`) directly.
- */
-type CreateSourceWithoutPrompt =
-  | { modules: OrchestrationConfigWithTemplate }
-  | { modules: OrchestrationModuleConfigList }
-  | OrchestrationConfigRefById
-  | OrchestrationConfigRefByName;
-
-/**
- * Completion API for the SAP AI Core Orchestration Service that exposes a fluent builder API.
- * Call it directly to select a configuration source by shape, or call one of its `use*` methods to select a source explicitly, then call `create` on the returned builder.
- * @experimental This API is experimental and may change at any time without prior notice.
- */
-export interface CompletionApi {
-  /* oxlint-disable typescript/unified-signatures -- separate call signatures improve discoverability and per-variant JSDoc */
-  /**
-   * Select an inline module configuration without a standing prompt as the source for a request.
-   * The returned builder's `create` accepts a per-call `prompt`, because an inline template is the only source that can be extended at request time.
-   * @experimental This signature is experimental and may change at any time without prior notice.
-   * @param config - A single orchestration module configuration without a standing prompt. The prompt is supplied per call through `create({ prompt })`.
-   * @returns A builder whose `create` sends the request.
-   */
-  (config: OrchestrationConfigWithoutTemplate): OrchestrationConfigBuilder;
-  /**
-   * Select a module configuration whose standing prompt is an inline template or a remote prompt-registry template reference as the source for a request.
-   * The returned builder's `create` omits `prompt`, because the messages are fixed in the configuration.
-   * @experimental This signature is experimental and may change at any time without prior notice.
-   * @param config - A single orchestration module configuration whose `promptTemplating.prompt` is an inline template or a `TemplateRef`.
-   * @returns A builder whose `create` sends the request.
-   */
-  (
-    config: OrchestrationConfigWithTemplate
-  ): OrchestrationConfigWithTemplateBuilder;
-  /**
-   * Select a stored configuration reference as the source for a request.
-   * The returned builder's `create` omits `prompt`, because the template is defined remotely and cannot be extended inline.
-   * @experimental This signature is experimental and may change at any time without prior notice.
-   * @param config - A reference to a stored configuration by `id`, or by `scenario`, `name`, and `version`.
-   * @returns A builder whose `create` sends the request.
-   */
-  (
-    config: OrchestrationConfigRefById | OrchestrationConfigRefByName
-  ): OrchestrationConfigWithTemplateBuilder;
-  /**
-   * Select a fallback list of module configurations as the source for a request.
-   * The orchestration service tries each configuration in order until one succeeds.
-   * The returned builder's `create` omits `prompt`, because each configuration carries its own prompt.
-   * @experimental This signature is experimental and may change at any time without prior notice.
-   * @param config - A non-empty list of orchestration module configurations.
-   * @returns A builder whose `create` sends the request.
-   */
-  (
-    config: OrchestrationModuleConfigList
-  ): OrchestrationConfigWithTemplateBuilder;
-  /* oxlint-enable typescript/unified-signatures */
-
-  /**
-   * Select an inline module configuration without a standing prompt as the source for a request.
-   * The returned builder's `create` accepts a per-call `prompt`, because an inline template is the only source that can be extended at request time.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param config - A single orchestration module configuration without a standing prompt. The prompt is supplied per call through `create({ prompt })`.
-   * @returns A builder whose `create` sends the request.
-   */
-  useConfigWithoutTemplate(
-    config: OrchestrationConfigWithoutTemplate
-  ): OrchestrationConfigBuilder;
-  /**
-   * Select a module configuration whose standing prompt is an inline template or a remote prompt-registry template reference as the source for a request.
-   * The returned builder's `create` omits `prompt`, because the messages are fixed in the configuration.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param config - A single orchestration module configuration whose `promptTemplating.prompt` is an inline template or a `TemplateRef`.
-   * @returns A builder whose `create` sends the request.
-   */
-  useConfigWithTemplate(
-    config: OrchestrationConfigWithTemplate
-  ): OrchestrationConfigWithTemplateBuilder;
-  /**
-   * Select a fallback list of module configurations as the source for a request.
-   * The orchestration service tries each configuration in order until one succeeds.
-   * The returned builder's `create` omits `prompt`, because each configuration carries its own prompt.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param config - A non-empty list of orchestration module configurations.
-   * @returns A builder whose `create` sends the request.
-   */
-  useFallbacks(
-    config: OrchestrationModuleConfigList
-  ): OrchestrationConfigWithTemplateBuilder;
-  /**
-   * Select a stored configuration reference as the source for a request.
-   * The returned builder's `create` omits `prompt`, because the template is defined remotely and cannot be extended inline.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param config - A reference to a stored configuration by `id`, or by `scenario`, `name`, and `version`.
-   * @returns A builder whose `create` sends the request.
-   */
-  useConfigReference(
-    config: OrchestrationConfigRefById | OrchestrationConfigRefByName
-  ): OrchestrationConfigWithTemplateBuilder;
-  /**
-   * Select a JSON string configuration (exported from AI Launchpad) as the source for a request.
-   * The returned builder's `create` omits `prompt`, because the configuration already specifies everything.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param json - A JSON string in the orchestration wire schema.
-   * @returns A builder whose `create` sends the request.
-   */
-  useRawJsonConfig(json: string): OrchestrationRawConfigJsonBuilder;
-
-  /**
-   * Select a configuration source and send the request in a single call, merging the configuration with the per-call inputs.
-   * Nest a module configuration (or a fallback list) under `modules`; pass a stored configuration reference's fields (`id`, or `scenario`/`name`/`version`) directly. Add `prompt`, `messagesHistory`, `placeholderValues`, and `stream` alongside.
-   * This is the one-call form of `completion(config).create(options)`. A per-call `prompt` is accepted only for an inline module configuration without a standing prompt, the only source whose template can be extended at request time.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param body - A configuration source — an inline module configuration without a standing prompt under `modules` (with an optional per-call `prompt`), a module configuration with a standing prompt or a fallback list under `modules`, or a stored configuration reference's fields directly — merged with the per-call inputs. `stream` is set, so the response is streamed.
-   * @param requestConfig - Transport configuration (`signal`, `headers`).
-   * @returns A stream response, because `stream` is set.
-   */
-  create(
-    body: (
-      | ({ modules: OrchestrationConfigWithoutTemplate } & OrchestrationCreateOptionsWithPrompt)
-      | (CreateSourceWithoutPrompt & OrchestrationCreateOptions)
-    ) &
-      StreamEnabledField,
-    requestConfig?: OrchestrationCreateRequestConfig
-  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>;
-  /**
-   * Select a configuration source and send the request in a single call, merging the configuration with the per-call inputs.
-   * Nest a module configuration (or a fallback list) under `modules`; pass a stored configuration reference's fields (`id`, or `scenario`/`name`/`version`) directly. Add `prompt`, `messagesHistory`, and `placeholderValues` alongside.
-   * This is the one-call form of `completion(config).create(options)`. A per-call `prompt` is accepted only for an inline module configuration without a standing prompt, the only source whose template can be extended at request time.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param body - A configuration source — an inline module configuration without a standing prompt under `modules` (with an optional per-call `prompt`), a module configuration with a standing prompt or a fallback list under `modules`, or a stored configuration reference's fields directly — merged with the per-call inputs.
-   * @param requestConfig - Transport configuration (`signal`, `headers`).
-   * @returns A single response.
-   */
-  create(
-    body?: (
-      | ({ modules: OrchestrationConfigWithoutTemplate } & OrchestrationCreateOptionsWithPrompt)
-      | (CreateSourceWithoutPrompt & OrchestrationCreateOptions)
-    ) &
-      StreamDisabledField,
-    requestConfig?: OrchestrationCreateRequestConfig
-  ): Promise<OrchestrationResponse>;
-
-  /**
-   * Send a pre-built completion request body to the orchestration service.
-   * This is the low-level transport beneath the builder API: the builders returned by the call signatures and the `use*` methods assemble a body and route it through here. Call it directly only when you already hold a complete {@link CompletionPostRequest} wire body, or its JSON serialization as a string.
-   * Pass the body as an object, or as a JSON string that is parsed and sent as-is.
-   * Streaming is driven by the body itself — set `config.stream.enabled` to `true` to stream the response. The return type is the union of both outcomes; narrow it with `instanceof`, or use a builder's `create` for a statically typed result.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param body - A complete completion request body, or a JSON string that parses into one. Set `config.stream.enabled` to `true` to stream the response.
-   * @param requestConfig - Transport configuration (`signal`, `headers`).
-   * @returns A stream response when the body enables streaming, otherwise a non-streaming response.
-   */
-  post(
-    body: CompletionPostRequest | string,
-    requestConfig?: OrchestrationCreateRequestConfig
-  ): Promise<
-    | OrchestrationResponse
-    | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  >;
-}
+};
 
 /**
  * Resolve the deployment, send a pre-built completion request body, and log fallback usage.
@@ -310,105 +159,284 @@ function createStreamFromResponse(
 }
 
 /**
- * Create a completion API for the SAP AI Core Orchestration Service.
- * The returned value is both callable — pass a configuration source and it selects a builder by shape — and carries `use*` methods that select a source explicitly.
- * @experimental This function is experimental and may change at any time without prior notice.
- * @param options - Connection information: a {@link ResourceGroupConfig} or {@link DeploymentIdConfig} to scope the deployment, or a `{ destination }` object. Omit to resolve the deployment from the default resource group.
- * @returns A callable completion API.
+ * Completion API for the SAP AI Core Orchestration Service that exposes a fluent builder API.
+ * Call {@link withModules} to carry the non-prompt orchestration modules, or one of the `use*` methods to select a configuration source explicitly, then call `create` on the returned builder.
+ * The prompt-templating pieces (`model`, `prompt`, `messages`) are supplied per call through `create`.
+ * @experimental This class is experimental and may change at any time without prior notice.
  */
-export function createCompletionApi(
-  options: CompletionApiOptions = {}
-): CompletionApi {
-  const completion = ((
-    config:
-      | OrchestrationConfigWithoutTemplate
-      | OrchestrationConfigWithTemplate
-      | OrchestrationConfigRefById
-      | OrchestrationConfigRefByName
-      | OrchestrationModuleConfigList
-  ) => {
-    if (isConfigReference(config)) {
-      return completion.useConfigReference(config);
-    }
+export class CompletionApi {
+  private options: CompletionApiOptions;
+  private modules: OrchestrationCompletionConfig;
 
-    if (Array.isArray(config)) {
-      return completion.useFallbacks(config);
-    }
+  /**
+   * Creates a completion API for the SAP AI Core Orchestration Service.
+   * @param options - Connection information: a {@link ResourceGroupConfig} or {@link DeploymentIdConfig} to scope the deployment, or a `{ destination }` object. Omit to resolve the deployment from the default resource group.
+   * @param modules - The non-prompt orchestration modules carried into `create`. Defaults to an empty object.
+   */
+  constructor(
+    options: CompletionApiOptions = {},
+    modules: OrchestrationCompletionConfig = {}
+  ) {
+    this.options = options;
+    this.modules = modules;
+  }
 
-    if (hasStandingPrompt(config)) {
-      return completion.useConfigWithTemplate(config);
-    }
-
-    return completion.useConfigWithoutTemplate(config);
-  }) as CompletionApi;
-
-  completion.useConfigWithoutTemplate = (
-    config: OrchestrationConfigWithoutTemplate
-  ): OrchestrationConfigBuilder =>
-    new OrchestrationConfigBuilder(config, completion);
-
-  completion.useConfigWithTemplate = (
-    config: OrchestrationConfigWithTemplate
-  ): OrchestrationConfigWithTemplateBuilder =>
-    new OrchestrationConfigWithTemplateBuilder(
-      parseTemplatingModule(config),
-      completion
-    );
-
-  completion.useFallbacks = (
-    config: OrchestrationModuleConfigList
-  ): OrchestrationConfigWithTemplateBuilder =>
-    new OrchestrationConfigWithTemplateBuilder(
-      parseModuleConfigList(config),
-      completion
-    );
-
-  completion.useConfigReference = (
+  /**
+   * Select a single completion configuration carrying only the non-prompt orchestration modules (`filtering`, `masking`, `grounding`, `translation`).
+   * The returned builder's `create` supplies the prompt-templating pieces for one request: `model` (required), `messages` (inline) or `template_ref` (a remote reference), plus `messagesHistory`, `placeholderValues`, and streaming options. It accepts a single request only — not a fallback list.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - The non-prompt orchestration modules. Pass an empty object (or omit) for a model-only request.
+   * @returns A builder whose `create` sends a single request.
+   */
+  withModules(
+    config?: OrchestrationCompletionConfig
+  ): OrchestrationModulesBuilder;
+  /**
+   * Select a stored configuration reference as the source for a request.
+   * The returned builder's `create` omits `prompt`, because the template is defined remotely and cannot be extended inline.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A reference to a stored configuration by `id`, or by `scenario`, `name`, and `version`.
+   * @returns A builder whose `create` sends the request.
+   */
+  withModules(
     config: OrchestrationConfigRefById | OrchestrationConfigRefByName
-  ): OrchestrationConfigWithTemplateBuilder =>
-    new OrchestrationConfigWithTemplateBuilder(config, completion);
-
-  completion.useRawJsonConfig = (
-    json: string
-  ): OrchestrationRawConfigJsonBuilder => {
-    validateJsonConfig(json);
-    return new OrchestrationRawConfigJsonBuilder(json, completion);
-  };
-
-  completion.create = ((
-    body: any,
-    requestConfig?: OrchestrationCreateRequestConfig
-  ) => {
-    if ('modules' in body) {
-      const { modules, ...createOptions } = body;
-      if (Array.isArray(modules)) {
-        return completion
-          .useFallbacks(modules as OrchestrationModuleConfigList)
-          .create(createOptions, requestConfig);
-      }
-      if (hasStandingPrompt(modules)) {
-        return completion
-          .useConfigWithTemplate(modules)
-          .create(createOptions, requestConfig);
-      }
-      return completion
-        .useConfigWithoutTemplate(modules)
-        .create(createOptions, requestConfig);
+  ): OrchestrationConfigWithTemplateBuilder;
+  /**
+   * Select a fallback list of prompt-less module configurations as the source for a request.
+   * The orchestration service tries each configuration in order until one succeeds.
+   * The returned builder's `create` supplies each fallback's prompt-templating pieces positionally through a per-fallback entries array.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A non-empty list of prompt-less orchestration module configurations.
+   * @returns A builder whose `create` sends the request.
+   */
+  withModules(
+    config: OrchestrationCompletionConfigList
+  ): OrchestrationFallbacksBuilder;
+  withModules(
+    config:
+      | OrchestrationCompletionConfig
+      | OrchestrationCompletionConfigList
+      | OrchestrationConfigRefById
+      | OrchestrationConfigRefByName = {}
+  ):
+    | OrchestrationModulesBuilder
+    | OrchestrationFallbacksBuilder
+    | OrchestrationConfigWithTemplateBuilder {
+    if (Array.isArray(config)) {
+      return new OrchestrationFallbacksBuilder(config, this);
     }
+    // `isConfigReference` only inspects `id` / `scenario`+`name`+`version`, so a
+    // prompt-less `OrchestrationCompletionConfig` is a safe input. Widen to the
+    // guard's parameter union up front so its predicate narrows `config` for
+    // both branches below.
+    const singleConfig = config as
+      | OrchestrationCompletionConfig
+      | OrchestrationConfigRefById
+      | OrchestrationConfigRefByName;
+    if (
+      isConfigReference(
+        singleConfig as OrchestrationConfigRefById | OrchestrationConfigRefByName
+      )
+    ) {
+      return this.useConfigReference(
+        singleConfig as OrchestrationConfigRefById | OrchestrationConfigRefByName
+      );
+    }
+    return new OrchestrationModulesBuilder(
+      singleConfig as OrchestrationCompletionConfig,
+      this
+    );
+  }
 
-    const { messagesHistory, placeholderValues, stream, ...configRef } = body;
-    return completion
-      .useConfigReference(configRef)
-      .create({ messagesHistory, placeholderValues, stream }, requestConfig);
-  }) as CompletionApi['create'];
+  /**
+   * Select an inline module configuration without a standing prompt as the source for a request.
+   * The returned builder's `create` accepts a per-call `prompt`, because an inline template is the only source that can be extended at request time.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A single orchestration module configuration without a standing prompt. The prompt is supplied per call through `create({ prompt })`.
+   * @returns A builder whose `create` sends the request.
+   */
+  useConfigWithoutTemplate(
+    config: OrchestrationConfigWithoutTemplate
+  ): OrchestrationConfigBuilder {
+    return new OrchestrationConfigBuilder(config, this);
+  }
 
-  completion.post = async (
+  /**
+   * Select a module configuration whose standing prompt is an inline template or a remote prompt-registry template reference as the source for a request.
+   * The returned builder's `create` omits `prompt`, because the messages are fixed in the configuration.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A single orchestration module configuration whose `promptTemplating.prompt` is an inline template or a `TemplateRef`.
+   * @returns A builder whose `create` sends the request.
+   */
+  useConfigWithTemplate(
+    config: OrchestrationConfigWithTemplate
+  ): OrchestrationConfigWithTemplateBuilder {
+    return new OrchestrationConfigWithTemplateBuilder(
+      parseTemplatingModule(config),
+      this
+    );
+  }
+
+  /**
+   * Select a fallback list of module configurations as the source for a request.
+   * The orchestration service tries each configuration in order until one succeeds.
+   * The returned builder's `create` omits `prompt`, because each configuration carries its own prompt.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A non-empty list of orchestration module configurations.
+   * @returns A builder whose `create` sends the request.
+   */
+  useFallbacks(
+    config: OrchestrationModuleConfigList
+  ): OrchestrationConfigWithTemplateBuilder {
+    return new OrchestrationConfigWithTemplateBuilder(
+      parseModuleConfigList(config),
+      this
+    );
+  }
+
+  /**
+   * Select a stored configuration reference as the source for a request.
+   * The returned builder's `create` omits `prompt`, because the template is defined remotely and cannot be extended inline.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A reference to a stored configuration by `id`, or by `scenario`, `name`, and `version`.
+   * @returns A builder whose `create` sends the request.
+   */
+  useConfigReference(
+    config: OrchestrationConfigRefById | OrchestrationConfigRefByName
+  ): OrchestrationConfigWithTemplateBuilder {
+    return new OrchestrationConfigWithTemplateBuilder(config, this);
+  }
+
+  /**
+   * Select a JSON string configuration (exported from AI Launchpad) as the source for a request.
+   * The returned builder's `create` omits `prompt`, because the configuration already specifies everything.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param json - A JSON string in the orchestration wire schema.
+   * @returns A builder whose `create` sends the request.
+   */
+  useRawJsonConfig(json: string): OrchestrationRawConfigJsonBuilder {
+    validateJsonConfig(json);
+    return new OrchestrationRawConfigJsonBuilder(json, this);
+  }
+
+  /**
+   * Send a single request, supplying the prompt inline through `messages`.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - Per-call inputs: `model` (required), `messages`, optional `prompt` options, `messagesHistory`, `placeholderValues`, and streaming options.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A stream response, because `stream` is set.
+   */
+  create(
+    body: OrchestrationCompletionCreateOptionsWithMessages & StreamEnabledField,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>;
+  /**
+   * Send a single request, supplying the prompt inline through `messages`.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - Per-call inputs: `model` (required), `messages`, optional `prompt` options, `messagesHistory`, and `placeholderValues`.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A single response.
+   */
+  create(
+    body: OrchestrationCompletionCreateOptionsWithMessages & StreamDisabledField,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationResponse>;
+  /**
+   * Send a single request, referencing a remote prompt-registry template through `template_ref`.
+   * `messages` is not accepted, because the template lives remotely and cannot be extended inline.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - Per-call inputs: `model` (required), `template_ref`, `messagesHistory`, `placeholderValues`, and streaming options.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A stream response, because `stream` is set.
+   */
+  create(
+    body: OrchestrationCompletionCreateOptionsWithTemplateRef &
+      StreamEnabledField,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>;
+  /**
+   * Send a single request, referencing a remote prompt-registry template through `template_ref`.
+   * `messages` is not accepted, because the template lives remotely and cannot be extended inline.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - Per-call inputs: `model` (required), `template_ref`, `messagesHistory`, and `placeholderValues`.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A single response.
+   */
+  create(
+    body: OrchestrationCompletionCreateOptionsWithTemplateRef &
+      StreamDisabledField,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationResponse>;
+  /**
+   * Send a fallback-chain request: the shared modules fanned over several prompt entries under `fallbacks`, tried in order until one succeeds.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - `fallbacks` (the per-fallback `model` and prompt pieces), plus request-global `messagesHistory`, `placeholderValues`, and streaming options.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A stream response, because `stream` is set.
+   */
+  create(
+    body: OrchestrationCompletionCreateFallbacksOptions & StreamEnabledField,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationStreamResponse<OrchestrationStreamChunkResponse>>;
+  /**
+   * Send a fallback-chain request: the shared modules fanned over several prompt entries under `fallbacks`, tried in order until one succeeds.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - `fallbacks` (the per-fallback `model` and prompt pieces), plus request-global `messagesHistory` and `placeholderValues`.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A single response.
+   */
+  create(
+    body: OrchestrationCompletionCreateFallbacksOptions & StreamDisabledField,
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<OrchestrationResponse>;
+  create(
+    body: (
+      | OrchestrationCompletionCreateOptions
+      | OrchestrationCompletionCreateFallbacksOptions
+    ) & {
+      stream?:
+        | boolean
+        | { enabled?: boolean }
+        | NewStreamOptionsWithoutFallbacks
+        | NewStreamOptionsWithFallbacks;
+    },
+    requestConfig?: OrchestrationCreateRequestConfig
+  ): Promise<
+    | OrchestrationResponse
+    | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
+  > {
+    const postRequest =
+      'fallbacks' in body
+        ? buildFallbackChainPostRequest(
+            this.modules,
+            body.fallbacks,
+            {
+              messagesHistory: body.messagesHistory,
+              placeholderValues: body.placeholderValues
+            },
+            body.stream
+          )
+        : buildSingleCompletionPostRequest(this.modules, body);
+    return this.post(postRequest, requestConfig);
+  }
+
+  /**
+   * Send a pre-built completion request body to the orchestration service.
+   * This is the low-level transport beneath the builder API: the builders returned by the `use*` methods assemble a body and route it through here. Call it directly only when you already hold a complete {@link CompletionPostRequest} wire body, or its JSON serialization as a string.
+   * Pass the body as an object, or as a JSON string that is parsed and sent as-is.
+   * Streaming is driven by the body itself — set `config.stream.enabled` to `true` to stream the response. The return type is the union of both outcomes; narrow it with `instanceof`, or use a builder's `create` for a statically typed result.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param body - A complete completion request body, or a JSON string that parses into one. Set `config.stream.enabled` to `true` to stream the response.
+   * @param requestConfig - Transport configuration (`signal`, `headers`).
+   * @returns A stream response when the body enables streaming, otherwise a non-streaming response.
+   */
+  async post(
     body: CompletionPostRequest | string,
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
     | OrchestrationResponse
     | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
-  > => {
+  > {
     let requestBody: CompletionPostRequest;
     if (typeof body === 'string') {
       validateJsonConfig(body);
@@ -422,7 +450,7 @@ export function createCompletionApi(
     if (!streaming) {
       requestConfig?.signal?.throwIfAborted();
       const response = await sendCompletionRequest(
-        options,
+        this.options,
         requestBody,
         requestConfig
       );
@@ -439,17 +467,19 @@ export function createCompletionApi(
     }
 
     try {
-      const streamResponse = await sendCompletionRequest(options, requestBody, {
-        ...requestConfig,
-        responseType: 'stream',
-        signal: controller.signal
-      });
+      const streamResponse = await sendCompletionRequest(
+        this.options,
+        requestBody,
+        {
+          ...requestConfig,
+          responseType: 'stream',
+          signal: controller.signal
+        }
+      );
       return createStreamFromResponse(streamResponse, controller);
     } catch (error) {
       controller.abort();
       throw error;
     }
-  };
-
-  return completion;
+  }
 }

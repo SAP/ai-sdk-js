@@ -265,7 +265,7 @@ describe('Orchestration client fluent builder API', () => {
 
     const response = await new Orchestration().completion.create({
       modules: config,
-      prompt
+      messages: prompt
     });
 
     expect(response).toBeInstanceOf(OrchestrationResponse);

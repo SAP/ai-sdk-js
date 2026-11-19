@@ -34,11 +34,11 @@ import type {
   PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
 import type { ChatModel, EmbeddingModel } from './model-types.ts';
+import type { StreamOptions } from './orchestration-streaming-types.ts';
 import type {
   NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks,
-  StreamOptions
-} from './orchestration-streaming-types.ts';
+  NewStreamOptionsWithoutFallbacks
+} from './new/orchestration-streaming-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
@@ -121,9 +121,9 @@ export interface OrchestrationCreateOptionsWithPrompt extends OrchestrationCreat
   /**
    * The current turn's chat messages, appended to the inline prompt template.
    * @example
-   * prompt: [{ role: 'user', content: 'What is the capital of France?' }]
+   * messages: [{ role: 'user', content: 'What is the capital of France?' }]
    */
-  prompt?: ChatMessages;
+  messages?: ChatMessages;
 }
 
 /**
