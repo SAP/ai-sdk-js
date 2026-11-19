@@ -95,7 +95,7 @@ await new Orchestration().completion
 
 // config reference
 await new Orchestration().completion
-  .withConfigRef({ id: 'ID' }) // xor?
+  .withConfigRef({ id: 'ID' }) 
   .withModules()
   .create({ stream: true });
 
@@ -117,23 +117,23 @@ await new Orchestration().completion.post({
 });
 
 // RAW JSON CONFIG as a string (unparsed and sent as-is)
-await new Orchestration().completion.postStream(
-  `{
-  "config": {
-    "modules": {
-      "prompt_templating": {
-        "model": { "name": "amazon--nova-lite" },
-        "prompt": {
-          "template": [
-            { "role": "assistant", "content": "You are a helpful assistant." }
-          ]
-        }
-      }
-    },
-    stream: { enabled: true }
-  }
-}`
-);
+// await new Orchestration().completion.postStream(
+//   `{
+//   "config": {
+//     "modules": {
+//       "prompt_templating": {
+//         "model": { "name": "amazon--nova-lite" },
+//         "prompt": {
+//           "template": [
+//             { "role": "assistant", "content": "You are a helpful assistant." }
+//           ]
+//         }
+//       }
+//     },
+//     stream: { enabled: true }
+//   }
+// }`
+// );
 
 // TODO: check for fallbacks, if you can have equally long lists
 // TODO: config_ref => new function+ overrides + scenario vs. id

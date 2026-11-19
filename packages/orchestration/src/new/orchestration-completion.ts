@@ -5,14 +5,13 @@ import { createLogger } from '@sap-cloud-sdk/util';
 import { OrchestrationResponse } from '../orchestration-response.ts';
 import { OrchestrationStreamResponse } from '../orchestration-stream-response.ts';
 import { OrchestrationStream } from '../orchestration-stream.ts';
-import { isConfigReference } from '../orchestration-types.ts';
 import { validateJsonConfig } from '../util/parse-config.ts';
 import {
   buildFallbackChainPostRequest,
   buildSingleCompletionPostRequest
 } from './builders/completion-request-helpers.ts';
 import {
-  OrchestrationConfigWithTemplateBuilder,
+  OrchestrationConfigRefBuilder,
   OrchestrationFallbacksBuilder,
   OrchestrationModulesBuilder
 } from './builders/index.ts';
@@ -183,16 +182,6 @@ export class CompletionApi {
     config?: OrchestrationCompletionConfig
   ): OrchestrationModulesBuilder;
   /**
-   * Select a stored configuration reference as the source for a request.
-   * The returned builder's `create` omits `prompt`, because the template is defined remotely and cannot be extended inline.
-   * @experimental This method is experimental and may change at any time without prior notice.
-   * @param config - A reference to a stored configuration by `id`, or by `scenario`, `name`, and `version`.
-   * @returns A builder whose `create` sends the request.
-   */
-  withModules(
-    config: OrchestrationConfigRefById | OrchestrationConfigRefByName
-  ): OrchestrationConfigWithTemplateBuilder;
-  /**
    * Select a fallback list of prompt-less module configurations as the source for a request.
    * The orchestration service tries each configuration in order until one succeeds.
    * The returned builder's `create` supplies each fallback's prompt-templating pieces positionally through a per-fallback entries array.
@@ -204,44 +193,25 @@ export class CompletionApi {
     config: OrchestrationCompletionConfigList
   ): OrchestrationFallbacksBuilder;
   withModules(
-    config:
-      | OrchestrationCompletionConfig
-      | OrchestrationCompletionConfigList
-      | OrchestrationConfigRefById
-      | OrchestrationConfigRefByName = {}
-  ):
-    | OrchestrationModulesBuilder
-    | OrchestrationFallbacksBuilder
-    | OrchestrationConfigWithTemplateBuilder {
+    config: OrchestrationCompletionConfig | OrchestrationCompletionConfigList = {}
+  ): OrchestrationModulesBuilder | OrchestrationFallbacksBuilder {
     if (Array.isArray(config)) {
       return new OrchestrationFallbacksBuilder(config, this);
     }
-    // `isConfigReference` only inspects `id` / `scenario`+`name`+`version`, so a
-    // prompt-less `OrchestrationCompletionConfig` is a safe input. Widen to the
-    // guard's parameter union up front so its predicate narrows `config` for
-    // both branches below.
-    const singleConfig = config as
-      | OrchestrationCompletionConfig
-      | OrchestrationConfigRefById
-      | OrchestrationConfigRefByName;
-    if (
-      isConfigReference(
-        singleConfig as
-          | OrchestrationConfigRefById
-          | OrchestrationConfigRefByName
-      )
-    ) {
-      return new OrchestrationConfigWithTemplateBuilder(
-        singleConfig as
-          | OrchestrationConfigRefById
-          | OrchestrationConfigRefByName,
-        this
-      );
-    }
-    return new OrchestrationModulesBuilder(
-      singleConfig as OrchestrationCompletionConfig,
-      this
-    );
+    return new OrchestrationModulesBuilder(config, this);
+  }
+
+  /**
+   * Select a stored configuration reference as the source for a request.
+   * Chain `withModules` on the returned builder to add override modules (or call it with no arguments to send the stored configuration unchanged), then `create` to send the request.
+   * @experimental This method is experimental and may change at any time without prior notice.
+   * @param config - A reference to a stored configuration by `id`, or by `scenario`, `name`, and `version`.
+   * @returns An intermediate builder whose `withModules` selects the override modules.
+   */
+  withConfigRef(
+    config: OrchestrationConfigRefById | OrchestrationConfigRefByName
+  ): OrchestrationConfigRefBuilder {
+    return new OrchestrationConfigRefBuilder(config, this);
   }
 
   /**

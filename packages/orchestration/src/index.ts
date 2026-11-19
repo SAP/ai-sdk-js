@@ -77,7 +77,10 @@ export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-r
 export { OrchestrationStream } from './orchestration-stream.ts';
 export { OrchestrationClient } from './orchestration-client.ts';
 export { Orchestration } from './new/orchestration.ts';
-export type { OrchestrationConfigWithTemplateBuilder } from './new/builders/index.ts';
+export type {
+  OrchestrationConfigWithTemplateBuilder,
+  OrchestrationConfigRefBuilder
+} from './new/builders/index.ts';
 export { OrchestrationResponse } from './orchestration-response.ts';
 export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
 export { OrchestrationEmbeddingResponse } from './orchestration-embedding-response.ts';
