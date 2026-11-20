@@ -409,6 +409,16 @@ export type OrchestrationConfigRefOverride = Omit<
 };
 
 /**
+ * Module overrides applied on top of a stored orchestration config reference.
+ * Derived from {@link OrchestrationConfigRefOverride}'s `modules` by dropping `prompt_templating`, because the prompt is supplied per call through `create` and streaming through its `stream` option.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigRefModules = Omit<
+  NonNullable<OrchestrationConfigRefOverride['modules']>,
+  'prompt_templating'
+>;
+
+/**
  * Reference to an orchestration configuration by its unique ID.
  * @example
  * const configRef: OrchestrationConfigRefById = {

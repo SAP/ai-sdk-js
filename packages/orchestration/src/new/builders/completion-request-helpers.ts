@@ -3,11 +3,20 @@ import { parseModuleConfigList } from '../../util/parse-config.ts';
 
 import type {
   ChatCompletionRequest,
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName,
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
   PromptTemplatingModule
 } from '../../orchestration-types.ts';
-import type { CompletionPostRequest } from '../../client/api/schema/index.ts';
+import type {
+  CompletionPostRequest,
+  CompletionRequestConfigurationReferenceById,
+  CompletionRequestConfigurationReferenceByNameScenarioVersion,
+  PartialOrchestrationConfig,
+  PartialPromptTemplatingModuleConfig,
+  Template
+} from '../../client/api/schema/index.ts';
 import type {
   OrchestrationCompletionConfig,
   OrchestrationCompletionCreateOptions,
@@ -142,4 +151,82 @@ export function buildFallbackChainPostRequest(
     !!stream,
     undefined
   );
+}
+
+/**
+ * Assemble a completion request backed by a stored configuration reference.
+ * The inline `create` body carries the same prompt-templating pieces as the other builders; map them into the config_ref override: `model` becomes `config.modules.prompt_templating.model`, while `messages` and the template options (`defaults`/`response_format`/`tools`) — or a remote `template_ref` — become `config.modules.prompt_templating.prompt`. `messagesHistory` is sent as `messages_history`.
+ * This mirrors the legacy `constructCompletionPostRequestFromConfigReference`, but builds the request here so the shared util keeps its original behavior; this path additionally routes `messages` into the template rather than `messages_history`.
+ * @param configRef - The stored configuration reference, with any module overrides already merged.
+ * @param body - The per-call `model`, prompt pieces, `messagesHistory`, `placeholderValues`, and `stream`.
+ * @returns The completion post request body.
+ * @internal
+ */
+export function buildConfigRefPostRequest(
+  configRef: OrchestrationConfigRefById | OrchestrationConfigRefByName,
+  body: OrchestrationCompletionCreateOptions & {
+    messagesHistory?: ChatCompletionRequest['messagesHistory'];
+    placeholderValues?: ChatCompletionRequest['placeholderValues'];
+    stream?: unknown;
+  }
+): CompletionPostRequest {
+  const { messagesHistory, placeholderValues, stream, ...entry } = body;
+  const { model, template_ref, messages, ...templateOptions } =
+    entry as OrchestrationInlinePromptOptions & {
+      model?: OrchestrationModelOption;
+      template_ref?: PartialPromptTemplatingModuleConfig['prompt'];
+      messages?: ChatCompletionRequest['messages'];
+    };
+
+  // Build the prompt override: a remote `template_ref` overrides the prompt
+  // directly; otherwise `messages` and the template options
+  // (defaults/response_format/tools) become a Template. `messages` are always
+  // the template here — never messages_history — so the stored prompt is
+  // replaced rather than used as conversation history.
+  let prompt: PartialPromptTemplatingModuleConfig['prompt'] | undefined;
+  if (template_ref) {
+    prompt = template_ref;
+  } else if (messages?.length || Object.keys(templateOptions).length) {
+    prompt = {
+      ...(templateOptions as Omit<Template, 'template'>),
+      template: messages ?? []
+    };
+  }
+
+  const promptTemplating: PartialPromptTemplatingModuleConfig = {
+    ...(model && { model: normalizeModel(model) }),
+    ...(prompt && { prompt })
+  };
+
+  const { overrideConfig, ...configReference } = configRef;
+
+  // Merge the per-call prompt-templating override into the stored override's
+  // modules, preserving any module overrides already carried by the reference.
+  const modules = Object.keys(promptTemplating).length
+    ? {
+        ...overrideConfig?.modules,
+        prompt_templating: {
+          ...overrideConfig?.modules?.prompt_templating,
+          ...promptTemplating
+        }
+      }
+    : overrideConfig?.modules;
+
+  const config: PartialOrchestrationConfig = {
+    ...overrideConfig,
+    ...(modules && { modules }),
+    stream: {
+      ...overrideConfig?.stream,
+      enabled: stream === true
+    }
+  };
+
+  return {
+    config_ref: configReference,
+    config,
+    ...(placeholderValues && { placeholder_values: placeholderValues }),
+    ...(messagesHistory?.length && { messages_history: messagesHistory })
+  } as
+    | CompletionRequestConfigurationReferenceById
+    | CompletionRequestConfigurationReferenceByNameScenarioVersion;
 }

@@ -95,8 +95,19 @@ await new Orchestration().completion
 
 // config reference
 await new Orchestration().completion
-  .withConfigRef({ id: 'ID' }) 
-  .withModules()
+  .withConfigRef({ id: 'ID' })
+  .withModules({
+    filtering: { input: { filters: [{ type: 'azure_content_safety' }] } }
+  })
+  .create({
+    model: 'amazon--nova-lite',
+    messages: [{ role: 'assistant', content: 'You are a helpful assistant.' }],
+    stream: true
+  });
+
+// config reference, stored configuration unchanged
+await new Orchestration().completion
+  .withConfigRef({ id: 'ID' })
   .create({ stream: true });
 
 // RAW JSON CONFIG as an object
