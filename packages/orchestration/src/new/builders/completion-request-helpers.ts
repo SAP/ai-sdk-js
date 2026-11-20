@@ -18,19 +18,16 @@ import type {
   OrchestrationModuleConfigList,
   PromptTemplatingModule
 } from '../../orchestration-types.ts';
+import type { OrchestrationCompletionCreateOptions } from '../types/global-create-options.ts';
 import type { OrchestrationCompletionCreateFallbacksOptions } from '../types/list-create-options.ts';
 import type {
   OrchestrationCompletionConfig,
-  OrchestrationCompletionConfigList,
-  OrchestrationFallbackEntry,
-  OrchestrationInlinePromptOptions,
-  OrchestrationModelOption
+  OrchestrationCompletionConfigList
 } from '../types/orchestration-types.ts';
-import type { OrchestrationCompletionCreateOptions } from '../types/single-create-options.ts';
 import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from '../types/streaming.ts';
+  OrchestrationModelOption,
+  OrchestrationInlinePromptOptions
+} from '../types/prompt-templating-create-options.ts';
 
 /**
  * Normalize a model option into the {@link PromptTemplatingModule} `model` shape, expanding a bare model-name shorthand.
@@ -55,7 +52,7 @@ export function normalizeModel(
  */
 function entryToModuleConfig(
   config: OrchestrationCompletionConfig,
-  entry: OrchestrationFallbackEntry
+  entry: OrchestrationInlinePromptOptions
 ): {
   moduleConfig: OrchestrationModuleConfig;
   messages?: ChatCompletionRequest['messages'];
@@ -88,14 +85,12 @@ function entryToModuleConfig(
  */
 export function buildSingleCompletionPostRequest(
   config: OrchestrationCompletionConfig,
-  body: OrchestrationCompletionCreateOptions & {
-    stream?: boolean | NewStreamOptionsWithoutFallbacks;
-  }
+  body: OrchestrationCompletionCreateOptions
 ): CompletionPostRequest {
   const { messagesHistory, placeholderValues, stream, ...entry } = body;
   const { moduleConfig, messages } = entryToModuleConfig(
     config,
-    entry as OrchestrationFallbackEntry
+    entry as OrchestrationInlinePromptOptions
   );
 
   const request: ChatCompletionRequest = {
@@ -127,9 +122,7 @@ export function buildSingleCompletionPostRequest(
  */
 export function buildFallbackChainPostRequest(
   config: OrchestrationCompletionConfigList,
-  body: OrchestrationCompletionCreateFallbacksOptions & {
-    stream?: boolean | NewStreamOptionsWithFallbacks;
-  }
+  body: OrchestrationCompletionCreateFallbacksOptions
 ): CompletionPostRequest {
   const { promptConfigs: entries, stream, ...global } = body;
   const configForIndex = (index: number): OrchestrationCompletionConfig =>
@@ -138,7 +131,7 @@ export function buildFallbackChainPostRequest(
   const list = entries.map((entry, index) => {
     const { moduleConfig, messages } = entryToModuleConfig(
       configForIndex(index),
-      entry
+      entry as OrchestrationInlinePromptOptions
     );
     // Bake this fallback's messages into its own template, since the shared
     // helper applies a single `request` across the whole list.
@@ -182,15 +175,7 @@ export function buildFallbackChainPostRequest(
  */
 export function buildConfigRefPostRequest(
   configRef: OrchestrationConfigRefById | OrchestrationConfigRefByName,
-  body: OrchestrationCompletionCreateOptions & {
-    messagesHistory?: ChatCompletionRequest['messagesHistory'];
-    placeholderValues?: ChatCompletionRequest['placeholderValues'];
-    stream?:
-      | boolean
-      | { enabled?: boolean }
-      | NewStreamOptionsWithoutFallbacks
-      | NewStreamOptionsWithFallbacks;
-  }
+  body: OrchestrationCompletionCreateOptions
 ): CompletionPostRequest {
   const { messagesHistory, placeholderValues, stream, ...entry } = body;
   const { model, template_ref, messages, ...templateOptions } =

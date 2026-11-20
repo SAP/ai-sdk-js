@@ -1,7 +1,4 @@
-import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from './types/streaming.ts';
+import type { GlobalStreamOptions } from '../client/api/schema/index.ts';
 
 /**
  * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
@@ -11,10 +8,7 @@ export interface StreamEnabledField {
   stream:
     | true
     | { enabled: true }
-    | (Omit<NewStreamOptionsWithoutFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      })
-    | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
+    | (Omit<GlobalStreamOptions, 'enabled'> & {
         enabled?: true | undefined;
       });
 }

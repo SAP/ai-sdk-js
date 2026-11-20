@@ -1,3 +1,4 @@
+// oxlint-disable typescript/unified-signatures typescript/no-redundant-type-constituents
 import { buildConfigRefPostRequest } from './completion-request-helpers.ts';
 
 import type { OrchestrationResponse } from '../../orchestration-response.ts';
@@ -14,16 +15,12 @@ import type {
   StreamEnabledField
 } from '../completion-stream-types.ts';
 import type { CompletionApi } from '../orchestration-completion.ts';
-import type { OrchestrationCompletionCreateOptionsWithTemplateRef } from '../types/orchestration-types.ts';
 import type {
   OrchestrationCompletionCreateOptions,
   OrchestrationCompletionCreateOptionsWithMessages,
+  OrchestrationCompletionCreateOptionsWithTemplateRef,
   OrchestrationCreateRequestConfig
-} from '../types/single-create-options.ts';
-import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from '../types/streaming.ts';
+} from '../types/global-create-options.ts';
 
 /**
  * Intermediate builder for a request backed by a stored configuration reference.
@@ -127,10 +124,6 @@ export class OrchestrationConfigRefBuilder {
     body?: {
       messagesHistory?: ChatCompletionRequest['messagesHistory'];
       placeholderValues?: ChatCompletionRequest['placeholderValues'];
-      stream?:
-        | boolean
-        | NewStreamOptionsWithoutFallbacks
-        | NewStreamOptionsWithFallbacks;
     },
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
@@ -142,11 +135,6 @@ export class OrchestrationConfigRefBuilder {
       Partial<OrchestrationCompletionCreateOptionsWithTemplateRef> & {
         messagesHistory?: ChatCompletionRequest['messagesHistory'];
         placeholderValues?: ChatCompletionRequest['placeholderValues'];
-        stream?:
-          | boolean
-          | { enabled?: boolean }
-          | NewStreamOptionsWithoutFallbacks
-          | NewStreamOptionsWithFallbacks;
       } = {},
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
@@ -158,11 +146,6 @@ export class OrchestrationConfigRefBuilder {
       body as OrchestrationCompletionCreateOptions & {
         messagesHistory?: ChatCompletionRequest['messagesHistory'];
         placeholderValues?: ChatCompletionRequest['placeholderValues'];
-        stream?:
-          | boolean
-          | { enabled?: boolean }
-          | NewStreamOptionsWithoutFallbacks
-          | NewStreamOptionsWithFallbacks;
       }
     );
     return this.client.post(postRequest, requestConfig);

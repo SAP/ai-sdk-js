@@ -1,3 +1,4 @@
+// oxlint-disable typescript/unified-signatures
 import { buildSingleCompletionPostRequest } from './completion-request-helpers.ts';
 
 import type { OrchestrationResponse } from '../../orchestration-response.ts';
@@ -9,18 +10,12 @@ import type {
 } from '../completion-stream-types.ts';
 import type { CompletionApi } from '../orchestration-completion.ts';
 import type {
-  OrchestrationCompletionConfig,
-  OrchestrationCompletionCreateOptionsWithTemplateRef
-} from '../types/orchestration-types.ts';
-import type {
   OrchestrationCompletionCreateOptions,
   OrchestrationCompletionCreateOptionsWithMessages,
+  OrchestrationCompletionCreateOptionsWithTemplateRef,
   OrchestrationCreateRequestConfig
-} from '../types/single-create-options.ts';
-import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from '../types/streaming.ts';
+} from '../types/global-create-options.ts';
+import type { OrchestrationCompletionConfig } from '../types/orchestration-types.ts';
 
 /**
  * Builder returned by `completion.withModules(config)` for a single non-prompt module configuration.
@@ -87,13 +82,7 @@ export class OrchestrationModulesBuilder {
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   create(
-    body: OrchestrationCompletionCreateOptions & {
-      stream?:
-        | boolean
-        | { enabled?: boolean }
-        | NewStreamOptionsWithoutFallbacks
-        | NewStreamOptionsWithFallbacks;
-    },
+    body: OrchestrationCompletionCreateOptions,
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
     | OrchestrationResponse

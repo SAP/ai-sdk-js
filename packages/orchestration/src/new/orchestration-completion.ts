@@ -1,3 +1,4 @@
+// oxlint-disable typescript/unified-signatures typescript/no-redundant-type-constituents
 import { getOrchestrationDeploymentId } from '@sap-ai-sdk/ai-api/internal.js';
 import { executeRequest } from '@sap-ai-sdk/core';
 import { createLogger } from '@sap-cloud-sdk/util';
@@ -34,21 +35,17 @@ import type {
   StreamDisabledField,
   StreamEnabledField
 } from './completion-stream-types.ts';
-import type { OrchestrationCompletionCreateFallbacksOptions } from './types/list-create-options.ts';
-import type {
-  OrchestrationCompletionConfig,
-  OrchestrationCompletionConfigList,
-  OrchestrationCompletionCreateOptionsWithTemplateRef
-} from './types/orchestration-types.ts';
 import type {
   OrchestrationCompletionCreateOptions,
   OrchestrationCompletionCreateOptionsWithMessages,
+  OrchestrationCompletionCreateOptionsWithTemplateRef,
   OrchestrationCreateRequestConfig
-} from './types/single-create-options.ts';
+} from './types/global-create-options.ts';
+import type { OrchestrationCompletionCreateFallbacksOptions } from './types/list-create-options.ts';
 import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from './types/streaming.ts';
+  OrchestrationCompletionConfig,
+  OrchestrationCompletionConfigList
+} from './types/orchestration-types.ts';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -272,16 +269,9 @@ export class CompletionApi {
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   create(
-    body: (
+    body:
       | OrchestrationCompletionCreateOptions
-      | OrchestrationCompletionCreateFallbacksOptions
-    ) & {
-      stream?:
-        | boolean
-        | { enabled?: boolean }
-        | NewStreamOptionsWithoutFallbacks
-        | NewStreamOptionsWithFallbacks;
-    },
+      | OrchestrationCompletionCreateFallbacksOptions,
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
     | OrchestrationResponse

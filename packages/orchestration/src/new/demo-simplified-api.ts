@@ -148,3 +148,21 @@ await new Orchestration().completion.post({
 
 // TODO: check for fallbacks, if you can have equally long lists
 // TODO: config_ref => new function+ overrides + scenario vs. id
+
+// streaming module config
+
+new Orchestration().completion
+  .withModules({
+    filtering: {
+      output: {
+        filters: [{ type: 'azure_content_safety' }],
+        stream_options: { overlap: 3 }
+      }
+    }
+  })
+  .create({
+    messages: [{ role: 'assistant', content: 'You are a helpful assistant.' }],
+    // this type is broken and should allow me to set model + prompt streaming options
+    model: {},
+    stream: true
+  });

@@ -8,13 +8,9 @@ import type {
   StreamEnabledField
 } from '../completion-stream-types.ts';
 import type { CompletionApi } from '../orchestration-completion.ts';
+import type { OrchestrationCreateRequestConfig } from '../types/global-create-options.ts';
 import type { OrchestrationCompletionCreateFallbacksOptions } from '../types/list-create-options.ts';
 import type { OrchestrationCompletionConfigList } from '../types/orchestration-types.ts';
-import type { OrchestrationCreateRequestConfig } from '../types/single-create-options.ts';
-import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from '../types/streaming.ts';
 
 /**
  * Builder returned by `completion.withModules(configList)` for a fallback list of prompt-less module configurations.
@@ -57,13 +53,7 @@ export class OrchestrationFallbacksBuilder {
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   create(
-    body: OrchestrationCompletionCreateFallbacksOptions & {
-      stream?:
-        | boolean
-        | { enabled?: boolean }
-        | NewStreamOptionsWithoutFallbacks
-        | NewStreamOptionsWithFallbacks;
-    },
+    body: OrchestrationCompletionCreateFallbacksOptions,
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<
     | OrchestrationResponse

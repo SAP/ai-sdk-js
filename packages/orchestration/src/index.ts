@@ -76,10 +76,10 @@ export { OrchestrationStream } from './orchestration-stream.ts';
 export { OrchestrationClient } from './orchestration-client.ts';
 export { Orchestration } from './new/orchestration.ts';
 export type {
-  OrchestrationCreateOptions,
+  OrchestrationGlobalCreateOptions as OrchestrationCreateOptions,
   OrchestrationCreateOptionsWithPrompt,
   OrchestrationCreateRequestConfig
-} from './new/types/single-create-options.ts';
+} from './new/types/global-create-options.ts';
 export type { OrchestrationConfigRefBuilder } from './new/builders/index.ts';
 export { OrchestrationResponse } from './orchestration-response.ts';
 export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';

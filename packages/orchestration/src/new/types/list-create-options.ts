@@ -1,21 +1,19 @@
 import type {
-  OrchestrationFallbackEntry,
-  OrchestrationFallbacksGlobalOptions
-} from './orchestration-types.ts';
-import type { OrchestrationCompletionCreateOptions } from './single-create-options.ts';
-import type { NewStreamOptionsWithFallbacks } from './streaming.ts';
+  OrchestrationCompletionCreateOptions,
+  OrchestrationGlobalCreateOptions
+} from './global-create-options.ts';
+import type { OrchestrationInlinePromptOptions } from './prompt-templating-create-options.ts';
 
 /**
  * The list form of the callable builder's `create`: a fallback chain over the one shared configuration.
  * Supply the per-fallback prompt-templating pieces under `fallbacks`; the orchestration service tries each in order until one succeeds. `messagesHistory` and `placeholderValues` are request-global, applied to every fallback.
  * @experimental This type is experimental and may change at any time without prior notice.
  */
-export interface OrchestrationCompletionCreateFallbacksOptions extends OrchestrationFallbacksGlobalOptions {
+export interface OrchestrationCompletionCreateFallbacksOptions extends OrchestrationGlobalCreateOptions {
   /**
    * The per-fallback prompt-templating pieces, tried in order until one succeeds. Each supplies its fallback's `model` and either inline `messages` or a remote `template_ref`.
    */
-  promptConfigs: OrchestrationFallbackEntry[];
-  stream?: boolean | NewStreamOptionsWithFallbacks;
+  promptConfigs: OrchestrationInlinePromptOptions[];
 }
 
 /**
