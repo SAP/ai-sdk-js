@@ -2,14 +2,6 @@ import { constructCompletionPostRequest } from '../../util/index.ts';
 import { parseModuleConfigList } from '../../util/parse-config.ts';
 
 import type {
-  ChatCompletionRequest,
-  OrchestrationConfigRefById,
-  OrchestrationConfigRefByName,
-  OrchestrationModuleConfig,
-  OrchestrationModuleConfigList,
-  PromptTemplatingModule
-} from '../../orchestration-types.ts';
-import type {
   CompletionPostRequest,
   CompletionRequestConfigurationReferenceById,
   CompletionRequestConfigurationReferenceByNameScenarioVersion,
@@ -17,6 +9,15 @@ import type {
   PartialPromptTemplatingModuleConfig,
   Template
 } from '../../client/api/schema/index.ts';
+import type {
+  ChatCompletionRequest,
+  LlmModelDetails,
+  OrchestrationConfigRefById,
+  OrchestrationConfigRefByName,
+  OrchestrationModuleConfig,
+  OrchestrationModuleConfigList,
+  PromptTemplatingModule
+} from '../../orchestration-types.ts';
 import type {
   OrchestrationCompletionConfig,
   OrchestrationCompletionCreateOptions,
@@ -35,7 +36,7 @@ import type {
  */
 export function normalizeModel(
   model: OrchestrationModelOption
-): PromptTemplatingModule['model'] {
+): LlmModelDetails {
   return typeof model === 'string' ? { name: model } : model;
 }
 
@@ -55,9 +56,10 @@ function entryToModuleConfig(
   messages?: ChatCompletionRequest['messages'];
 } {
   const { model, ...promptOptions } = entry;
-  const { messages, ...prompt } = promptOptions as OrchestrationInlinePromptOptions & {
-    messages?: ChatCompletionRequest['messages'];
-  };
+  const { messages, ...prompt } =
+    promptOptions as OrchestrationInlinePromptOptions & {
+      messages?: ChatCompletionRequest['messages'];
+    };
 
   const moduleConfig: OrchestrationModuleConfig = {
     ...config,
@@ -101,7 +103,12 @@ export function buildSingleCompletionPostRequest(
 
   // TODO: map per-module stream options from the `stream` object into the
   // helper's `streamOptions` param (same gap as the other `new/` builders).
-  return constructCompletionPostRequest(moduleConfig, request, !!stream, undefined);
+  return constructCompletionPostRequest(
+    moduleConfig,
+    request,
+    !!stream,
+    undefined
+  );
 }
 
 /**

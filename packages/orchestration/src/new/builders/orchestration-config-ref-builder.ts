@@ -1,8 +1,8 @@
 import { buildConfigRefPostRequest } from './completion-request-helpers.ts';
 
+import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
 import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
-import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type {
   ChatCompletionRequest,
   OrchestrationConfigRefById,
@@ -10,6 +10,7 @@ import type {
   OrchestrationConfigRefModules,
   OrchestrationCreateRequestConfig
 } from '../../orchestration-types.ts';
+import type { CompletionApi } from '../orchestration-completion.ts';
 import type {
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
@@ -19,12 +20,11 @@ import type {
   OrchestrationCompletionCreateOptionsWithMessages,
   OrchestrationCompletionCreateOptionsWithTemplateRef
 } from '../orchestration-types.ts';
-import type { CompletionApi } from '../orchestration-completion.ts';
 
 /**
  * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
  */
-type StreamEnabledField = {
+interface StreamEnabledField {
   stream:
     | true
     | { enabled: true }
@@ -34,14 +34,14 @@ type StreamEnabledField = {
     | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
         enabled?: true | undefined;
       });
-};
+}
 
 /**
  * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
  */
-type StreamDisabledField = {
+interface StreamDisabledField {
   stream?: false | { enabled: false | undefined };
-};
+}
 
 /**
  * Intermediate builder for a request backed by a stored configuration reference.
@@ -106,7 +106,8 @@ export class OrchestrationConfigRefBuilder {
    * @returns A single response.
    */
   create(
-    body: OrchestrationCompletionCreateOptionsWithMessages & StreamDisabledField,
+    body: OrchestrationCompletionCreateOptionsWithMessages &
+      StreamDisabledField,
     requestConfig?: OrchestrationCreateRequestConfig
   ): Promise<OrchestrationResponse>;
   /**
