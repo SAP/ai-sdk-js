@@ -18,14 +18,19 @@ import type {
   OrchestrationModuleConfigList,
   PromptTemplatingModule
 } from '../../orchestration-types.ts';
+import type { OrchestrationCompletionCreateFallbacksOptions } from '../types/list-create-options.ts';
 import type {
   OrchestrationCompletionConfig,
-  OrchestrationCompletionCreateOptions,
+  OrchestrationCompletionConfigList,
   OrchestrationFallbackEntry,
-  OrchestrationFallbacksGlobalOptions,
   OrchestrationInlinePromptOptions,
   OrchestrationModelOption
-} from '../orchestration-types.ts';
+} from '../types/orchestration-types.ts';
+import type { OrchestrationCompletionCreateOptions } from '../types/single-create-options.ts';
+import type {
+  NewStreamOptionsWithFallbacks,
+  NewStreamOptionsWithoutFallbacks
+} from '../types/streaming.ts';
 
 /**
  * Normalize a model option into the {@link PromptTemplatingModule} `model` shape, expanding a bare model-name shorthand.
@@ -84,9 +89,7 @@ function entryToModuleConfig(
 export function buildSingleCompletionPostRequest(
   config: OrchestrationCompletionConfig,
   body: OrchestrationCompletionCreateOptions & {
-    messagesHistory?: ChatCompletionRequest['messagesHistory'];
-    placeholderValues?: ChatCompletionRequest['placeholderValues'];
-    stream?: unknown;
+    stream?: boolean | NewStreamOptionsWithoutFallbacks;
   }
 ): CompletionPostRequest {
   const { messagesHistory, placeholderValues, stream, ...entry } = body;
@@ -112,9 +115,10 @@ export function buildSingleCompletionPostRequest(
 }
 
 /**
- * Assemble a fallback-chain completion request: one shared config fanned over several prompt entries.
- * Each entry's prompt is baked into a copy of the shared config, so every fallback carries distinct messages.
- * @param config - The shared non-prompt module configuration, spread into every fallback.
+ * Assemble a fallback-chain completion request by fanning several prompt entries over the non-prompt configuration.
+ * The configuration source is either a single config spread into every fallback, or a config list supplying one config per fallback index (positionally aligned to `entries`).
+ * Each entry's prompt is baked into its own config copy, so every fallback carries distinct messages.
+ * @param config - The non-prompt module configuration: one config spread into every fallback, or a list of one config per fallback index.
  * @param entries - The per-fallback `model` and prompt pieces, tried in order.
  * @param global - Request-global options (`messagesHistory`, `placeholderValues`) applied to every fallback.
  * @param stream - Whether streaming is enabled.
@@ -122,13 +126,20 @@ export function buildSingleCompletionPostRequest(
  * @internal
  */
 export function buildFallbackChainPostRequest(
-  config: OrchestrationCompletionConfig,
-  entries: OrchestrationFallbackEntry[],
-  global: OrchestrationFallbacksGlobalOptions,
-  stream?: unknown
+  config: OrchestrationCompletionConfigList,
+  body: OrchestrationCompletionCreateFallbacksOptions & {
+    stream?: boolean | NewStreamOptionsWithFallbacks;
+  }
 ): CompletionPostRequest {
-  const list = entries.map(entry => {
-    const { moduleConfig, messages } = entryToModuleConfig(config, entry);
+  const { promptConfigs: entries, stream, ...global } = body;
+  const configForIndex = (index: number): OrchestrationCompletionConfig =>
+    Array.isArray(config) ? config[index] : config;
+
+  const list = entries.map((entry, index) => {
+    const { moduleConfig, messages } = entryToModuleConfig(
+      configForIndex(index),
+      entry
+    );
     // Bake this fallback's messages into its own template, since the shared
     // helper applies a single `request` across the whole list.
     if (messages?.length) {
@@ -174,7 +185,11 @@ export function buildConfigRefPostRequest(
   body: OrchestrationCompletionCreateOptions & {
     messagesHistory?: ChatCompletionRequest['messagesHistory'];
     placeholderValues?: ChatCompletionRequest['placeholderValues'];
-    stream?: unknown;
+    stream?:
+      | boolean
+      | { enabled?: boolean }
+      | NewStreamOptionsWithoutFallbacks
+      | NewStreamOptionsWithFallbacks;
   }
 ): CompletionPostRequest {
   const { messagesHistory, placeholderValues, stream, ...entry } = body;

@@ -35,10 +35,6 @@ import type {
 } from './client/api/schema/index.ts';
 import type { ChatModel, EmbeddingModel } from './model-types.ts';
 import type { StreamOptions } from './orchestration-streaming-types.ts';
-import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from './new/orchestration-streaming-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
@@ -77,63 +73,6 @@ export interface ChatCompletionRequest {
    */
   placeholderValues?: Record<string, string>;
 }
-
-/**
- * Per-call inputs for a {@link OrchestrationClient} builder's `create` method.
- * The prompt is not included here: it is supplied only through the `config` builder's `create`, whose options type adds it.
- * @experimental This type is experimental and may change at any time without prior notice.
- */
-export interface OrchestrationCreateOptions {
-  /**
-   * Prior conversation turns, appended to the request as context and never merged into a prompt template.
-   */
-  messagesHistory?: ChatMessages;
-  /**
-   * Values for the `{{?placeholder}}` variables in the prompt template.
-   * @example
-   * placeholderValues: {
-   *   product: 'SAP Cloud SDK'
-   * }
-   */
-  placeholderValues?: Record<string, string>;
-  /**
-   * Whether to stream the response, optionally carrying stream options.
-   * Pass `true` or a stream options object to stream, or omit it (or pass `false`) for a single response.
-   * When streaming, `create` returns an {@link OrchestrationStreamResponse}, otherwise an {@link OrchestrationResponse}.
-   * Use the plain object form to set stream options, or {@link NewStreamOptionsWithFallbacks} to set per-config options for module fallback.
-   * @example
-   * stream: true
-   * @example
-   * stream: { chunk_size: 100 }
-   */
-  stream?:
-    | boolean
-    | NewStreamOptionsWithoutFallbacks
-    | NewStreamOptionsWithFallbacks;
-}
-
-/**
- * Per-call inputs for the `config` builder's `create` method.
- * Adds the current-turn `prompt` to {@link OrchestrationCreateOptions}, because the inline configuration is the only source whose template can be extended per call.
- * @experimental This type is experimental and may change at any time without prior notice.
- */
-export interface OrchestrationCreateOptionsWithPrompt extends OrchestrationCreateOptions {
-  /**
-   * The current turn's chat messages, appended to the inline prompt template.
-   * @example
-   * messages: [{ role: 'user', content: 'What is the capital of France?' }]
-   */
-  messages?: ChatMessages;
-}
-
-/**
- * Transport configuration for a builder's `create` method, passed as its optional second argument.
- * Use `headers` to pass service-specific headers, and `signal` to cancel the request.
- * @experimental This type is experimental and may change at any time without prior notice.
- */
-export type OrchestrationCreateRequestConfig = CustomRequestConfig & {
-  headers?: OrchestrationRequestHeaders;
-};
 
 /**
  * LLM model details.

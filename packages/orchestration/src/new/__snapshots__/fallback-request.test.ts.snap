@@ -1,0 +1,128 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fallback-chain request assembly > spreads a distinct config per fallback index via withModules(list).create 1`] = `
+{
+  "config": {
+    "modules": [
+      {
+        "filtering": {
+          "input": {
+            "filters": [
+              {
+                "type": "azure_content_safety",
+              },
+            ],
+          },
+        },
+        "prompt_templating": {
+          "model": {
+            "name": "amazon--nova-lite",
+            "params": {
+              "stream_options": {
+                "include_usage": true,
+              },
+            },
+          },
+          "prompt": {
+            "template": [
+              {
+                "content": "You are a helpful assistant.",
+                "role": "assistant",
+              },
+            ],
+          },
+        },
+      },
+      {
+        "filtering": {
+          "input": {
+            "filters": [
+              {
+                "config": {
+                  "categories": {
+                    "harm": true,
+                  },
+                },
+                "type": "granite_guardian_4_1",
+              },
+            ],
+          },
+        },
+        "prompt_templating": {
+          "model": {
+            "name": "amazon--nova-micro",
+            "params": {
+              "stream_options": {
+                "include_usage": true,
+              },
+            },
+          },
+          "prompt": {
+            "template": [
+              {
+                "content": "You are a helpful assistant.",
+                "role": "assistant",
+              },
+            ],
+          },
+        },
+      },
+    ],
+    "stream": {
+      "enabled": true,
+    },
+  },
+}
+`;
+
+exports[`fallback-chain request assembly > spreads one shared config across every fallback via completion.create 1`] = `
+{
+  "config": {
+    "modules": [
+      {
+        "prompt_templating": {
+          "model": {
+            "name": "amazon--nova-lite",
+            "params": {
+              "stream_options": {
+                "include_usage": true,
+              },
+            },
+          },
+          "prompt": {
+            "template": [
+              {
+                "content": "You are a helpful assistant.",
+                "role": "assistant",
+              },
+            ],
+          },
+        },
+      },
+      {
+        "prompt_templating": {
+          "model": {
+            "name": "amazon--nova-micro",
+            "params": {
+              "stream_options": {
+                "include_usage": true,
+              },
+            },
+          },
+          "prompt": {
+            "template": [
+              {
+                "content": "You are a helpful assistant.",
+                "role": "assistant",
+              },
+            ],
+          },
+        },
+      },
+    ],
+    "stream": {
+      "enabled": true,
+    },
+  },
+}
+`;

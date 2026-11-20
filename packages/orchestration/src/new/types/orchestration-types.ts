@@ -4,13 +4,13 @@ import type {
   ChatMessages,
   Template,
   TemplateRef
-} from '../client/api/schema/index.ts';
-import type { ChatModel } from '../model-types.ts';
+} from '../../client/api/schema/index.ts';
+import type { ChatModel } from '../../model-types.ts';
 import type {
   LlmModelDetails,
-  OrchestrationCreateOptions,
   OrchestrationModuleConfig
-} from '../orchestration-types.ts';
+} from '../../orchestration-types.ts';
+import type { OrchestrationCreateOptions } from './single-create-options.ts';
 
 /**
  * The model to use for a request, as either the full {@link LlmModelDetails} object or a bare model-name shorthand.
@@ -38,23 +38,6 @@ export type OrchestrationCompletionConfig = Omit<
 export type OrchestrationInlinePromptOptions = Omit<Template, 'template'>;
 
 /**
- * Per-call inputs for the callable builder's `create` when the prompt is supplied inline through `messages`.
- * `model` is required; `messages` carries the current-turn and template content. The inline templating options (`defaults`, `response_format`, `tools`) are spread at the top level.
- * @experimental This type is experimental and may change at any time without prior notice.
- */
-export interface OrchestrationCompletionCreateOptionsWithMessages
-  extends OrchestrationCreateOptions, OrchestrationInlinePromptOptions {
-  /**
-   * The model to use for the request, as a {@link LlmModelDetails} object or a bare model-name shorthand.
-   */
-  model: OrchestrationModelOption;
-  /**
-   * Chat messages for the request, including templated messages with `{{?placeholder}}` variables.
-   */
-  messages: ChatMessages;
-}
-
-/**
  * Per-call inputs for the callable builder's `create` when the prompt is a remote prompt-registry {@link TemplateRef}.
  * `model` is required and `template_ref` is spread at the top level. `messages` is not allowed, because the template lives remotely and cannot be extended inline.
  * @experimental This type is experimental and may change at any time without prior notice.
@@ -66,16 +49,6 @@ export interface OrchestrationCompletionCreateOptionsWithTemplateRef
    */
   model: OrchestrationModelOption;
 }
-
-/**
- * Per-call inputs for the callable builder's `create`.
- * Either supply the prompt inline through `messages` (with optional `defaults`, `response_format`, `tools`), or reference a remote template through `template_ref`; the two are mutually exclusive.
- * @experimental This type is experimental and may change at any time without prior notice.
- */
-export type OrchestrationCompletionCreateOptions = Xor<
-  OrchestrationCompletionCreateOptionsWithMessages,
-  OrchestrationCompletionCreateOptionsWithTemplateRef
->;
 
 /**
  * A fallback list of prompt-less module configurations supplied to the callable builder's `withModules`.
@@ -121,16 +94,4 @@ export interface OrchestrationFallbacksGlobalOptions {
    * Placeholder values applied to every fallback request.
    */
   placeholderValues?: Record<string, string>;
-}
-
-/**
- * The list form of the callable builder's `create`: a fallback chain over the one shared configuration.
- * Supply the per-fallback prompt-templating pieces under `fallbacks`; the orchestration service tries each in order until one succeeds. `messagesHistory` and `placeholderValues` are request-global, applied to every fallback.
- * @experimental This type is experimental and may change at any time without prior notice.
- */
-export interface OrchestrationCompletionCreateFallbacksOptions extends OrchestrationFallbacksGlobalOptions {
-  /**
-   * The per-fallback prompt-templating pieces, tried in order until one succeeds. Each supplies its fallback's `model` and either inline `messages` or a remote `template_ref`.
-   */
-  promptConfigs: OrchestrationFallbackEntry[];
 }

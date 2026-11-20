@@ -7,41 +7,23 @@ import type {
   ChatCompletionRequest,
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName,
-  OrchestrationConfigRefModules,
-  OrchestrationCreateRequestConfig
+  OrchestrationConfigRefModules
 } from '../../orchestration-types.ts';
-import type { CompletionApi } from '../orchestration-completion.ts';
 import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from '../orchestration-streaming-types.ts';
+  StreamDisabledField,
+  StreamEnabledField
+} from '../completion-stream-types.ts';
+import type { CompletionApi } from '../orchestration-completion.ts';
+import type { OrchestrationCompletionCreateOptionsWithTemplateRef } from '../types/orchestration-types.ts';
 import type {
   OrchestrationCompletionCreateOptions,
   OrchestrationCompletionCreateOptionsWithMessages,
-  OrchestrationCompletionCreateOptionsWithTemplateRef
-} from '../orchestration-types.ts';
-
-/**
- * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
- */
-interface StreamEnabledField {
-  stream:
-    | true
-    | { enabled: true }
-    | (Omit<NewStreamOptionsWithoutFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      })
-    | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      });
-}
-
-/**
- * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
- */
-interface StreamDisabledField {
-  stream?: false | { enabled: false | undefined };
-}
+  OrchestrationCreateRequestConfig
+} from '../types/single-create-options.ts';
+import type {
+  NewStreamOptionsWithFallbacks,
+  NewStreamOptionsWithoutFallbacks
+} from '../types/streaming.ts';
 
 /**
  * Intermediate builder for a request backed by a stored configuration reference.
@@ -176,7 +158,11 @@ export class OrchestrationConfigRefBuilder {
       body as OrchestrationCompletionCreateOptions & {
         messagesHistory?: ChatCompletionRequest['messagesHistory'];
         placeholderValues?: ChatCompletionRequest['placeholderValues'];
-        stream?: unknown;
+        stream?:
+          | boolean
+          | { enabled?: boolean }
+          | NewStreamOptionsWithoutFallbacks
+          | NewStreamOptionsWithFallbacks;
       }
     );
     return this.client.post(postRequest, requestConfig);

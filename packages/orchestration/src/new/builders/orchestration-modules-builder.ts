@@ -3,40 +3,24 @@ import { buildSingleCompletionPostRequest } from './completion-request-helpers.t
 import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
 import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
-import type { OrchestrationCreateRequestConfig } from '../../orchestration-types.ts';
+import type {
+  StreamDisabledField,
+  StreamEnabledField
+} from '../completion-stream-types.ts';
 import type { CompletionApi } from '../orchestration-completion.ts';
+import type {
+  OrchestrationCompletionConfig,
+  OrchestrationCompletionCreateOptionsWithTemplateRef
+} from '../types/orchestration-types.ts';
+import type {
+  OrchestrationCompletionCreateOptions,
+  OrchestrationCompletionCreateOptionsWithMessages,
+  OrchestrationCreateRequestConfig
+} from '../types/single-create-options.ts';
 import type {
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
-} from '../orchestration-streaming-types.ts';
-import type {
-  OrchestrationCompletionConfig,
-  OrchestrationCompletionCreateOptions,
-  OrchestrationCompletionCreateOptionsWithMessages,
-  OrchestrationCompletionCreateOptionsWithTemplateRef
-} from '../orchestration-types.ts';
-
-/**
- * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
- */
-interface StreamEnabledField {
-  stream:
-    | true
-    | { enabled: true }
-    | (Omit<NewStreamOptionsWithoutFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      })
-    | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      });
-}
-
-/**
- * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
- */
-interface StreamDisabledField {
-  stream?: false | { enabled: false | undefined };
-}
+} from '../types/streaming.ts';
 
 /**
  * Builder returned by `completion.withModules(config)` for a single non-prompt module configuration.

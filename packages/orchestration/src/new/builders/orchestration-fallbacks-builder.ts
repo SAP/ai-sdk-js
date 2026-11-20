@@ -1,49 +1,20 @@
-import { constructCompletionPostRequest } from '../../util/index.ts';
-import { parseModuleConfigList } from '../../util/parse-config.ts';
-import { normalizeModel } from './completion-request-helpers.ts';
+import { buildFallbackChainPostRequest } from './completion-request-helpers.ts';
 
 import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
 import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
 import type {
-  ChatCompletionRequest,
-  OrchestrationModuleConfig,
-  OrchestrationModuleConfigList,
-  OrchestrationCreateRequestConfig,
-  PromptTemplatingModule
-} from '../../orchestration-types.ts';
+  StreamDisabledField,
+  StreamEnabledField
+} from '../completion-stream-types.ts';
 import type { CompletionApi } from '../orchestration-completion.ts';
+import type { OrchestrationCompletionCreateFallbacksOptions } from '../types/list-create-options.ts';
+import type { OrchestrationCompletionConfigList } from '../types/orchestration-types.ts';
+import type { OrchestrationCreateRequestConfig } from '../types/single-create-options.ts';
 import type {
   NewStreamOptionsWithFallbacks,
   NewStreamOptionsWithoutFallbacks
-} from '../orchestration-streaming-types.ts';
-import type {
-  OrchestrationCompletionConfigList,
-  OrchestrationCompletionCreateFallbacksOptions,
-  OrchestrationInlinePromptOptions
-} from '../orchestration-types.ts';
-
-/**
- * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
- */
-interface StreamEnabledField {
-  stream:
-    | true
-    | { enabled: true }
-    | (Omit<NewStreamOptionsWithoutFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      })
-    | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      });
-}
-
-/**
- * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
- */
-interface StreamDisabledField {
-  stream?: false | { enabled: false | undefined };
-}
+} from '../types/streaming.ts';
 
 /**
  * Builder returned by `completion.withModules(configList)` for a fallback list of prompt-less module configurations.
@@ -98,12 +69,7 @@ export class OrchestrationFallbacksBuilder {
     | OrchestrationResponse
     | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
-    const {
-      promptConfigs: fallbacks,
-      messagesHistory,
-      placeholderValues,
-      stream
-    } = body;
+    const { promptConfigs: fallbacks } = body;
 
     if (fallbacks.length !== this.configs.length) {
       throw new Error(
@@ -111,45 +77,9 @@ export class OrchestrationFallbacksBuilder {
       );
     }
 
-    // Bake each entry's prompt into its own fallback config's
-    // `promptTemplating`, so each fallback carries distinct messages. The
-    // shared helper applies a single `request` across the whole list, so the
-    // per-fallback prompt cannot travel through it — it is resolved here first.
-    const list = fallbacks.map((entry, index) => {
-      const { model, ...promptOptions } = entry;
-      const { messages, ...prompt } =
-        promptOptions as OrchestrationInlinePromptOptions & {
-          messages?: ChatCompletionRequest['messages'];
-        };
-      return {
-        ...this.configs[index],
-        promptTemplating: {
-          model: normalizeModel(model),
-          prompt: {
-            ...(messages && { template: messages }),
-            ...prompt
-          } as PromptTemplatingModule['prompt']
-        }
-      } as OrchestrationModuleConfig;
-    }) as OrchestrationModuleConfigList;
-
-    const request: ChatCompletionRequest = {
-      messagesHistory,
-      placeholderValues
-    };
-    const streamEnabled = !!stream;
-
-    // TODO: map per-fallback stream options from the `stream` object into the
-    // helper's `streamOptions` param. The `stream` field uses the new
-    // `NewStreamOptions*` shape, while `constructCompletionPostRequest` still
-    // expects the legacy `StreamOptions`. Left undefined until that translation
-    // is settled (same gap as the other `new/` builders).
-    const postRequest = constructCompletionPostRequest(
-      parseModuleConfigList(list),
-      request,
-      streamEnabled,
-      undefined
-    );
+    // Each fallback carries its own config from the list, positionally aligned
+    // to the entries; the shared helper spreads `this.configs[index]` per entry.
+    const postRequest = buildFallbackChainPostRequest(this.configs, body);
     return this.client.post(postRequest, requestConfig);
   }
 }

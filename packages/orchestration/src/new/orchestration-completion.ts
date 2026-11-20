@@ -15,6 +15,7 @@ import {
   OrchestrationFallbacksBuilder,
   OrchestrationModulesBuilder
 } from './builders/index.ts';
+import { isFallbacksCreateOptions } from './types/list-create-options.ts';
 
 import type {
   DeploymentIdConfig,
@@ -27,21 +28,27 @@ import type { CompletionPostRequest } from '../client/api/schema/index.ts';
 import type { OrchestrationStreamChunkResponse } from '../orchestration-stream-chunk-response.ts';
 import type {
   OrchestrationConfigRefById,
-  OrchestrationConfigRefByName,
-  OrchestrationCreateRequestConfig
+  OrchestrationConfigRefByName
 } from '../orchestration-types.ts';
 import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from './orchestration-streaming-types.ts';
+  StreamDisabledField,
+  StreamEnabledField
+} from './completion-stream-types.ts';
+import type { OrchestrationCompletionCreateFallbacksOptions } from './types/list-create-options.ts';
 import type {
   OrchestrationCompletionConfig,
   OrchestrationCompletionConfigList,
-  OrchestrationCompletionCreateFallbacksOptions,
+  OrchestrationCompletionCreateOptionsWithTemplateRef
+} from './types/orchestration-types.ts';
+import type {
   OrchestrationCompletionCreateOptions,
   OrchestrationCompletionCreateOptionsWithMessages,
-  OrchestrationCompletionCreateOptionsWithTemplateRef
-} from './orchestration-types.ts';
+  OrchestrationCreateRequestConfig
+} from './types/single-create-options.ts';
+import type {
+  NewStreamOptionsWithFallbacks,
+  NewStreamOptionsWithoutFallbacks
+} from './types/streaming.ts';
 
 const logger = createLogger({
   package: 'orchestration',
@@ -54,28 +61,6 @@ const logger = createLogger({
 type CompletionApiOptions = (ResourceGroupConfig | DeploymentIdConfig) & {
   destination?: HttpDestinationOrFetchOptions;
 };
-
-/**
- * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
- */
-interface StreamEnabledField {
-  stream:
-    | true
-    | { enabled: true }
-    | (Omit<NewStreamOptionsWithoutFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      })
-    | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
-        enabled?: true | undefined;
-      });
-}
-
-/**
- * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
- */
-interface StreamDisabledField {
-  stream?: false | { enabled: false | undefined };
-}
 
 /**
  * Resolve the deployment, send a pre-built completion request body, and log fallback usage.
@@ -197,10 +182,9 @@ export class CompletionApi {
       | OrchestrationCompletionConfig
       | OrchestrationCompletionConfigList = {}
   ): OrchestrationModulesBuilder | OrchestrationFallbacksBuilder {
-    if (Array.isArray(config)) {
-      return new OrchestrationFallbacksBuilder(config, this);
-    }
-    return new OrchestrationModulesBuilder(config, this);
+    return Array.isArray(config)
+      ? new OrchestrationFallbacksBuilder(config, this)
+      : new OrchestrationModulesBuilder(config, this);
   }
 
   /**
@@ -303,18 +287,19 @@ export class CompletionApi {
     | OrchestrationResponse
     | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
-    const postRequest =
-      'fallbacks' in body
-        ? buildFallbackChainPostRequest(
-            this.modules,
-            body.promptConfigs,
-            {
-              messagesHistory: body.messagesHistory,
-              placeholderValues: body.placeholderValues
-            },
-            body.stream
-          )
-        : buildSingleCompletionPostRequest(this.modules, body);
+    let postRequest;
+    if (isFallbacksCreateOptions(body) && Array.isArray(this.modules)) {
+      postRequest = buildFallbackChainPostRequest(this.modules, body);
+    } else if (
+      !isFallbacksCreateOptions(body) &&
+      !Array.isArray(this.modules)
+    ) {
+      postRequest = buildSingleCompletionPostRequest(this.modules, body);
+    } else {
+      throw new Error(
+        'Mismatch between modules and body: use promptConfigs with an array of modules for fallback chains, or a single module with a plain body for single completions.'
+      );
+    }
     return this.post(postRequest, requestConfig);
   }
 

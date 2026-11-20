@@ -17,9 +17,6 @@ export type {
   TranslationModule,
   PromptTemplate,
   ChatCompletionRequest,
-  OrchestrationCreateOptions,
-  OrchestrationCreateOptionsWithPrompt,
-  OrchestrationCreateRequestConfig,
   RequestOptions,
   DocumentGroundingServiceConfig,
   DocumentGroundingServiceFilter,
@@ -78,6 +75,11 @@ export { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-r
 export { OrchestrationStream } from './orchestration-stream.ts';
 export { OrchestrationClient } from './orchestration-client.ts';
 export { Orchestration } from './new/orchestration.ts';
+export type {
+  OrchestrationCreateOptions,
+  OrchestrationCreateOptionsWithPrompt,
+  OrchestrationCreateRequestConfig
+} from './new/types/single-create-options.ts';
 export type { OrchestrationConfigRefBuilder } from './new/builders/index.ts';
 export { OrchestrationResponse } from './orchestration-response.ts';
 export { OrchestrationEmbeddingClient } from './orchestration-embedding-client.ts';
