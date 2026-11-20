@@ -26,7 +26,7 @@ import type {
 /**
  * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
  */
-type StreamEnabledField = {
+interface StreamEnabledField {
   stream:
     | true
     | { enabled: true }
@@ -36,14 +36,14 @@ type StreamEnabledField = {
     | (Omit<NewStreamOptionsWithFallbacks, 'enabled'> & {
         enabled?: true | undefined;
       });
-};
+}
 
 /**
  * The `stream` field in its non-streaming form: omitted, `false`, or `{ enabled: false }`.
  */
-type StreamDisabledField = {
+interface StreamDisabledField {
   stream?: false | { enabled: false | undefined };
-};
+}
 
 /**
  * Builder returned by `completion.withModules(configList)` for a fallback list of prompt-less module configurations.
