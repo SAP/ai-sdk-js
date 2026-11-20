@@ -43,8 +43,7 @@ export type OrchestrationInlinePromptOptions = Omit<Template, 'template'>;
  * @experimental This type is experimental and may change at any time without prior notice.
  */
 export interface OrchestrationCompletionCreateOptionsWithMessages
-  extends OrchestrationCreateOptions,
-    OrchestrationInlinePromptOptions {
+  extends OrchestrationCreateOptions, OrchestrationInlinePromptOptions {
   /**
    * The model to use for the request, as a {@link LlmModelDetails} object or a bare model-name shorthand.
    */
@@ -61,8 +60,7 @@ export interface OrchestrationCompletionCreateOptionsWithMessages
  * @experimental This type is experimental and may change at any time without prior notice.
  */
 export interface OrchestrationCompletionCreateOptionsWithTemplateRef
-  extends OrchestrationCreateOptions,
-    TemplateRef {
+  extends OrchestrationCreateOptions, TemplateRef {
   /**
    * The model to use for the request, as a {@link LlmModelDetails} object or a bare model-name shorthand.
    */
@@ -130,10 +128,9 @@ export interface OrchestrationFallbacksGlobalOptions {
  * Supply the per-fallback prompt-templating pieces under `fallbacks`; the orchestration service tries each in order until one succeeds. `messagesHistory` and `placeholderValues` are request-global, applied to every fallback.
  * @experimental This type is experimental and may change at any time without prior notice.
  */
-export interface OrchestrationCompletionCreateFallbacksOptions
-  extends OrchestrationFallbacksGlobalOptions {
+export interface OrchestrationCompletionCreateFallbacksOptions extends OrchestrationFallbacksGlobalOptions {
   /**
    * The per-fallback prompt-templating pieces, tried in order until one succeeds. Each supplies its fallback's `model` and either inline `messages` or a remote `template_ref`.
    */
-  fallbacks: OrchestrationFallbackEntry[];
+  promptConfigs: OrchestrationFallbackEntry[];
 }

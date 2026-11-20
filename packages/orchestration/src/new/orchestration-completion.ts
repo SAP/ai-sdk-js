@@ -193,7 +193,9 @@ export class CompletionApi {
     config: OrchestrationCompletionConfigList
   ): OrchestrationFallbacksBuilder;
   withModules(
-    config: OrchestrationCompletionConfig | OrchestrationCompletionConfigList = {}
+    config:
+      | OrchestrationCompletionConfig
+      | OrchestrationCompletionConfigList = {}
   ): OrchestrationModulesBuilder | OrchestrationFallbacksBuilder {
     if (Array.isArray(config)) {
       return new OrchestrationFallbacksBuilder(config, this);
@@ -305,7 +307,7 @@ export class CompletionApi {
       'fallbacks' in body
         ? buildFallbackChainPostRequest(
             this.modules,
-            body.fallbacks,
+            body.promptConfigs,
             {
               messagesHistory: body.messagesHistory,
               placeholderValues: body.placeholderValues

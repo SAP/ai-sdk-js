@@ -6,22 +6,22 @@ import type { OrchestrationResponse } from '../../orchestration-response.ts';
 import type { OrchestrationStreamChunkResponse } from '../../orchestration-stream-chunk-response.ts';
 import type { OrchestrationStreamResponse } from '../../orchestration-stream-response.ts';
 import type {
-  NewStreamOptionsWithFallbacks,
-  NewStreamOptionsWithoutFallbacks
-} from '../orchestration-streaming-types.ts';
-import type {
   ChatCompletionRequest,
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
   OrchestrationCreateRequestConfig,
   PromptTemplatingModule
 } from '../../orchestration-types.ts';
+import type { CompletionApi } from '../orchestration-completion.ts';
+import type {
+  NewStreamOptionsWithFallbacks,
+  NewStreamOptionsWithoutFallbacks
+} from '../orchestration-streaming-types.ts';
 import type {
   OrchestrationCompletionConfigList,
   OrchestrationCompletionCreateFallbacksOptions,
   OrchestrationInlinePromptOptions
 } from '../orchestration-types.ts';
-import type { CompletionApi } from '../orchestration-completion.ts';
 
 /**
  * The `stream` field in its streaming form: `true`, `{ enabled: true }`, or a stream-options object.
@@ -98,7 +98,12 @@ export class OrchestrationFallbacksBuilder {
     | OrchestrationResponse
     | OrchestrationStreamResponse<OrchestrationStreamChunkResponse>
   > {
-    const { fallbacks, messagesHistory, placeholderValues, stream } = body;
+    const {
+      promptConfigs: fallbacks,
+      messagesHistory,
+      placeholderValues,
+      stream
+    } = body;
 
     if (fallbacks.length !== this.configs.length) {
       throw new Error(

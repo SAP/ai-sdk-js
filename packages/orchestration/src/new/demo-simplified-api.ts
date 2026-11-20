@@ -43,7 +43,7 @@ await new Orchestration().completion.create({
 
 // fallbacks without other config
 await new Orchestration().completion.create({
-  fallbacks: [
+  promptConfigs: [
     {
       model: 'amazon--nova-lite',
       messages: [{ role: 'assistant', content: 'You are a helpful assistant.' }]
