@@ -252,6 +252,60 @@ export interface OrchestrationModuleConfig {
 }
 
 /**
+ * Orchestration module configuration without a standing prompt template.
+ * Derived from {@link OrchestrationModuleConfig} by dropping the inline `promptTemplating.prompt.template`, because the `config` source supplies the template content per call through `create({ prompt })` (see ADR 012).
+ * `tools`, `response_format`, and `defaults` remain configurable, as they are fixed at construction time. A standing template or remote template reference is not allowed here — pass a config with a standing prompt to `config` instead.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithoutTemplate = Omit<
+  OrchestrationModuleConfig,
+  'promptTemplating'
+> & {
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt?: Omit<PromptTemplate, 'template'> & { template?: never };
+  };
+};
+
+/**
+ * Orchestration module configuration whose standing prompt is an inline template.
+ * Derived from {@link OrchestrationModuleConfig} by requiring `promptTemplating.prompt` to be a {@link PromptTemplate} with a `template`.
+ * The messages are fixed in the configuration, so the `config` builder's `create` omits `prompt`.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithInlineTemplate = Omit<
+  OrchestrationModuleConfig,
+  'promptTemplating'
+> & {
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt: PromptTemplate & { template: TemplatingChatMessage };
+  };
+};
+
+/**
+ * Orchestration module configuration whose standing prompt is a remote prompt-registry {@link TemplateRef}.
+ * Derived from {@link OrchestrationModuleConfig} by requiring `promptTemplating.prompt` to be a `TemplateRef`.
+ * The template is resolved remotely, so the `config` builder's `create` omits `prompt`.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithTemplateRef = Omit<
+  OrchestrationModuleConfig,
+  'promptTemplating'
+> & {
+  promptTemplating: Omit<PromptTemplatingModule, 'prompt'> & {
+    prompt: TemplateRef;
+  };
+};
+
+/**
+ * Orchestration module configuration whose standing prompt is already set, either as an inline template or as a remote prompt-registry template reference.
+ * Because the messages are fixed in the configuration, the `config` builder's `create` omits `prompt`.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigWithTemplate =
+  | OrchestrationConfigWithInlineTemplate
+  | OrchestrationConfigWithTemplateRef;
+
+/**
  * Non-empty list of orchestration module configurations for module fallback.
  * The orchestration service will try each configuration in order until one succeeds.
  * @example
@@ -292,6 +346,16 @@ export type OrchestrationConfigRefOverride = Omit<
 > & {
   stream?: Omit<GlobalStreamOptions, 'enabled'>;
 };
+
+/**
+ * Module overrides applied on top of a stored orchestration config reference.
+ * Derived from {@link OrchestrationConfigRefOverride}'s `modules` by dropping `prompt_templating`, because the prompt is supplied per call through `create` and streaming through its `stream` option.
+ * @experimental This type is experimental and may change at any time without prior notice.
+ */
+export type OrchestrationConfigRefModules = Omit<
+  NonNullable<OrchestrationConfigRefOverride['modules']>,
+  'prompt_templating'
+>;
 
 /**
  * Reference to an orchestration configuration by its unique ID.
