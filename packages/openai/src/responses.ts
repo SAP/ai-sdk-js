@@ -80,13 +80,13 @@ export class SapResponses {
     body: Params,
     options?: RequestOptions
   ): APIPromise<ParsedResponse<ParsedT>> {
-    return this.openAiResponses.parse(
+    return this.openAiResponses.parse<Params & { model: string }, ParsedT>(
       {
         ...body,
         // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
         model: body.model as any
       } satisfies ResponseCreateParamsWithTools,
       options
-    ) as APIPromise<ParsedResponse<ParsedT>>;
+    );
   }
 }

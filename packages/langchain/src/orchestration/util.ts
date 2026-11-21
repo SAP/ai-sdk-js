@@ -156,6 +156,7 @@ function mapLangChainToolCallToOrchestrationToolCall(
       }
     }));
   }
+  return undefined;
 }
 
 /**
@@ -223,7 +224,7 @@ function stripReasoningFromContent(
     return '';
   }
   if (stripped.length === 1 && stripped[0].type === 'text') {
-    return (stripped[0] as ContentBlock.Text).text;
+    return stripped[0].text;
   }
   return stripped;
 }
@@ -378,6 +379,7 @@ function mapOrchestrationToLangChainToolCall(
       type: 'tool_call'
     }));
   }
+  return undefined;
 }
 
 /**

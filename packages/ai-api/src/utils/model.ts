@@ -35,6 +35,7 @@ export function extractModel(
   if (isFoundationModel(model)) {
     return model;
   }
+  return undefined;
 }
 
 /**

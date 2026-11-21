@@ -180,4 +180,4 @@ export const githubTools: StructuredToolInterface[] = [
   getIssue,
   searchCode,
   getFileContents
-] as unknown as StructuredToolInterface[];
+];

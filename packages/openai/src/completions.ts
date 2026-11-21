@@ -82,13 +82,13 @@ export class SapCompletions {
     body: Params,
     options?: RequestOptions
   ): APIPromise<ParsedChatCompletion<ParsedT>> {
-    return this.openAiCompletions.parse(
+    return this.openAiCompletions.parse<Params & { model: string }, ParsedT>(
       {
         ...body,
         // SAP AI Core routes via deployment URL; model is required by the OpenAI SDK type but ignored by the API
         model: body.model as any
       } satisfies ChatCompletionCreateParamsNonStreaming,
       options
-    ) as APIPromise<ParsedChatCompletion<ParsedT>>;
+    );
   }
 }

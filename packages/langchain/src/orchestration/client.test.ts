@@ -1479,6 +1479,7 @@ describe('orchestration service client', () => {
     // `messageIdx` is passed in (rather than computed as `length - 1`) so the
     // assertion would fail if the implementation pinned the breakpoint to a
     // different message than the last one.
+    // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep this assertion helper next to the cache-control tests.
     function assertCacheControlAt(
       messageIdx: number,
       expectedContent: string,
