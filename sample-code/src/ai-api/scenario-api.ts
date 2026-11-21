@@ -1,6 +1,10 @@
-import { ScenarioApi } from '@sap-ai-sdk/ai-api';
+import { ScenarioApi, getModels } from '@sap-ai-sdk/ai-api';
 
-import type { AiScenarioList, AiModelList } from '@sap-ai-sdk/ai-api';
+import type {
+  AiScenarioList,
+  AiModelList,
+  AiModelBaseData
+} from '@sap-ai-sdk/ai-api';
 
 /**
  * Get all scenarios.
@@ -28,4 +32,12 @@ export async function getModelsInScenario(
   return ScenarioApi.scenarioQueryModels(scenarioId, {
     'AI-Resource-Group': resourceGroup
   }).execute();
+}
+
+/**
+ * Retrieve all available models from the foundation-models scenario using the convenience helper.
+ * @returns All models available on Gen AI Hub.
+ */
+export async function getAllAvailableModels(): Promise<AiModelBaseData[]> {
+  return getModels();
 }

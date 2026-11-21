@@ -4,7 +4,10 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import {
-  resolveDeploymentUrl,
+  getFoundationModelDeploymentId,
+  filterFoundationModelsByCapability,
+  filterFoundationModelsNonDeprecated,
+  getFoundationModelLatestVersions,
   type AiDeploymentStatus
 } from '@sap-ai-sdk/ai-api';
 import { OrchestrationClient } from '@sap-ai-sdk/orchestration';
@@ -18,7 +21,11 @@ import {
   stopDeployments,
   deleteDeployments
 } from './ai-api/deployment-api.ts';
-import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
+import {
+  getScenarios,
+  getModelsInScenario,
+  getAllAvailableModels
+} from './ai-api/scenario-api.ts';
 import {
   createCollection,
   createDocumentsWithTimestamp,
@@ -281,14 +288,29 @@ app.get('/ai-api/models', async (req, res) => {
   }
 });
 
-app.get('/ai-api/deployment-url', async (req, res) => {
+app.get('/ai-api/models/discovery', async (req, res) => {
   try {
-    res.send(
-      await resolveDeploymentUrl({
-        scenarioId: 'foundation-models',
-        model: { name: 'gpt-5.4' }
-      })
-    );
+    let models = await getAllAvailableModels();
+    const { capability, latestOnly, activeOnly } = req.query;
+
+    if (typeof capability === 'string') {
+      models = filterFoundationModelsByCapability(models, capability);
+    }
+    if (activeOnly === 'true') {
+      models = filterFoundationModelsNonDeprecated(models);
+    }
+    if (latestOnly === 'true') {
+      return res.send(getFoundationModelLatestVersions(models));
+    }
+    res.send(models);
+  } catch (error: any) {
+    sendError(res, error);
+  }
+});
+
+app.get('/ai-api/deployment-id', async (req, res) => {
+  try {
+    res.send(await getFoundationModelDeploymentId('gpt-5.4', 'azure-openai'));
   } catch (error: any) {
     sendError(res, error);
   }

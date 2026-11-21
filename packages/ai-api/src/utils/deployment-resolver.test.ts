@@ -11,7 +11,10 @@ import {
   getAllDeployments,
   resolveDeploymentId,
   resolveDeploymentUrlById,
-  resolveDeploymentUrlForModel
+  resolveDeploymentUrlForModel,
+  getFoundationModelDeploymentUrl,
+  getOrchestrationDeploymentId,
+  getOrchestrationDeploymentUrl
 } from './deployment-resolver.ts';
 
 describe('deployment resolver', () => {
@@ -282,6 +285,130 @@ describe('resolveDeploymentUrlForModel', () => {
       resolveDeploymentUrlForModel('gpt-4.1', baseOptions)
     ).rejects.toThrow(
       "Deployment for model 'gpt-4.1' has no deployment URL. Ensure the deployment is running."
+    );
+  });
+});
+
+describe('getOrchestrationDeploymentId', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('returns the deployment ID by looking up the orchestration scenario', async () => {
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: 'orch-dep-1' });
+
+    const id = await getOrchestrationDeploymentId({});
+    expect(id).toBe('orch-dep-1');
+  });
+
+  it('returns the deployment ID directly when DeploymentIdConfig is provided', async () => {
+    const id = await getOrchestrationDeploymentId({
+      deploymentId: 'explicit-id'
+    });
+    expect(id).toBe('explicit-id');
+  });
+});
+
+describe('getOrchestrationDeploymentUrl', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('resolves the deployment URL by looking up the orchestration scenario', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'orchestration' },
+      {
+        id: 'orch-dep-1',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/orch-dep-1`
+      }
+    );
+
+    const url = await getOrchestrationDeploymentUrl({});
+    expect(url).toContain('orch-dep-1');
+  });
+
+  it('throws when the orchestration deployment has no URL', async () => {
+    mockDeploymentsList({ scenarioId: 'orchestration' }, { id: 'orch-dep-1' });
+
+    await expect(getOrchestrationDeploymentUrl({})).rejects.toThrow(
+      'Orchestration deployment has no deployment URL.'
+    );
+  });
+
+  it('resolves the deployment URL by ID when DeploymentIdConfig is provided', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/orch-explicit')
+      .reply(200, {
+        id: 'orch-explicit',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/orch-explicit`
+      });
+
+    const url = await getOrchestrationDeploymentUrl({
+      deploymentId: 'orch-explicit'
+    });
+    expect(url).toContain('orch-explicit');
+  });
+});
+
+describe('getFoundationModelDeploymentUrl', () => {
+  beforeEach(() => {
+    mockClientCredentialsGrantCall();
+  });
+
+  afterEach(() => {
+    nock.cleanAll();
+    deploymentCache.clear();
+  });
+
+  it('resolves the deployment URL by model name', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      {
+        id: 'fm-dep-1',
+        model: { name: 'gpt-4o', version: 'latest' },
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/fm-dep-1`
+      }
+    );
+
+    const url = await getFoundationModelDeploymentUrl('gpt-4o', 'azure-openai');
+    expect(url).toContain('fm-dep-1');
+  });
+
+  it('resolves the deployment URL by deployment ID when DeploymentIdConfig is provided', async () => {
+    nock(aiCoreDestination.url)
+      .get('/v2/lm/deployments/fm-explicit')
+      .reply(200, {
+        id: 'fm-explicit',
+        deploymentUrl: `${aiCoreDestination.url}/v2/inference/deployments/fm-explicit`
+      });
+
+    const url = await getFoundationModelDeploymentUrl(
+      { deploymentId: 'fm-explicit' },
+      'azure-openai'
+    );
+    expect(url).toContain('fm-explicit');
+  });
+
+  it('throws when the deployment has no URL', async () => {
+    mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      { id: 'fm-no-url', model: { name: 'gpt-4o', version: 'latest' } }
+    );
+
+    await expect(
+      getFoundationModelDeploymentUrl('gpt-4o', 'azure-openai')
+    ).rejects.toThrow(
+      "Deployment for model 'gpt-4o' has no deployment URL. Ensure the deployment is running."
     );
   });
 });

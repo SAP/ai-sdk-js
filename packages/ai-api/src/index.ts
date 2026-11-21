@@ -4,7 +4,17 @@ export type {
   ModelDeployment,
   DeploymentIdConfig,
   ModelConfig,
-  ResourceGroupConfig
+  ResourceGroupConfig,
+  ModelQueryOptions
 } from './utils/index.ts';
 
-export { resolveDeploymentUrl } from './utils/index.ts';
+export {
+  getFoundationModelDeploymentId,
+  getFoundationModelDeploymentUrl,
+  getOrchestrationDeploymentId,
+  getOrchestrationDeploymentUrl,
+  getModels,
+  filterFoundationModelsByCapability,
+  filterFoundationModelsNonDeprecated,
+  getFoundationModelLatestVersions
+} from './utils/index.ts';
