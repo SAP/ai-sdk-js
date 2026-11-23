@@ -56,7 +56,7 @@
     "@types/node": "22.20.5",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "5.1.1",
-    "jose": "6.2.17",
+    "jose": "6.2.18",
     "knip": "6.46.0",
     "memfs": "4.80.1",
     "nock": "14.0.17",
