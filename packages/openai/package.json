@@ -59,9 +59,9 @@
   },
   "devDependencies": {
     "@types/ws": "8.18.2",
-    "openai": "7.55.0",
-    "vitest": "5.1.0",
-    "ws": "8.22.2"
+    "openai": "7.60.0",
+    "vitest": "5.1.1",
+    "ws": "8.23.0"
   },
   "peerDependencies": {
     "openai": "^7.5.0",

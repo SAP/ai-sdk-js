@@ -4,7 +4,7 @@
       "executableId": "aicore-mistralai(SAP-hosted)",
       "model": "mistralai--mistral-large-instruct",
       "version": "2407",
-      "availableInOrchestration": "yes",
+      "availableInOrchestration": "Yes",
       "deprecated": "Yes",
       "retirementDate": "2026-10-30",
       "suggestedReplacement": "mistralai--mistral-medium",
@@ -14,7 +14,7 @@
       "executableId": "",
       "model": "mistralai--mistral-small-instruct",
       "version": "2503",
-      "availableInOrchestration": "yes",
+      "availableInOrchestration": "Yes",
       "deprecated": "Yes",
       "retirementDate": "2026-12-31",
       "suggestedReplacement": "mistralai--mistral-small",
@@ -23,8 +23,8 @@
     {
       "executableId": "",
       "model": "mistralai--mistral-medium-instruct",
-      "version": "2505 (latest)",
-      "availableInOrchestration": "yes",
+      "version": "2505",
+      "availableInOrchestration": "Yes",
       "deprecated": "Yes",
       "retirementDate": "2026-11-30",
       "suggestedReplacement": "mistralai--mistral-medium",
@@ -34,7 +34,7 @@
       "executableId": "",
       "model": "mistralai--mistral-small",
       "version": "2603",
-      "availableInOrchestration": "yes",
+      "availableInOrchestration": "Yes",
       "deprecated": "",
       "retirementDate": "2027-03-31 or later",
       "suggestedReplacement": "",
@@ -483,7 +483,7 @@
     {
       "executableId": "gcp-vertexai (Google)",
       "model": "gemini-2.5-flash",
-      "version": "001 (latest)",
+      "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "Yes",
       "retirementDate": "2026-10-20",
@@ -493,17 +493,17 @@
     {
       "executableId": "gcp-vertexai (Google)",
       "model": "gemini-3.5-flash",
-      "version": "001 (latest)",
+      "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "",
+      "retirementDate": "2027-05-19",
       "suggestedReplacement": "",
       "retired": ""
     },
     {
       "executableId": "gcp-vertexai (Google)",
       "model": "gemini-3.8-flash",
-      "version": "001 (latest)",
+      "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "",
       "retirementDate": "",
@@ -513,7 +513,7 @@
     {
       "executableId": "gcp-vertexai (Google)",
       "model": "gemini-2.5-flash-lite",
-      "version": "001 (latest)",
+      "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "Yes",
       "retirementDate": "2026-10-20",
@@ -533,7 +533,7 @@
     {
       "executableId": "gcp-vertexai (Google)",
       "model": "gemini-2.5-pro",
-      "version": "001 (latest)",
+      "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "Yes",
       "retirementDate": "2026-10-20",
@@ -553,10 +553,10 @@
     {
       "executableId": "gcp-vertexai (Google)",
       "model": "gemini-embedding",
-      "version": "001 (latest)",
+      "version": "001",
       "availableInOrchestration": "yes",
       "deprecated": "",
-      "retirementDate": "No current plans for retirement",
+      "retirementDate": "",
       "suggestedReplacement": "",
       "retired": ""
     },
@@ -987,6 +987,106 @@
       "availableInOrchestration": "yes",
       "deprecated": "",
       "retirementDate": "2027-09-21",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "aicore-sap (SAP-hosted)",
+      "model": "sap-rpt-ts",
+      "version": "1",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-6-astra",
+      "version": "2026-09-03",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-6-luna",
+      "version": "2026-09-22",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "azure-openai (Azure)",
+      "model": "gpt-6.1-sol",
+      "version": "2026-09-29",
+      "availableInOrchestration": "",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "",
+      "model": "qwen3.8-max",
+      "version": "version: latest Context: 0 < T < 1M",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "",
+      "model": "qwen3.7-max",
+      "version": "version: latest Context:0 < T < 1M",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "alibaba-bailian",
+      "model": "qwen3.7-plus",
+      "version": "version: latest ---------Context:0 < T < 256K --------- Context:256K < T < 1M",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "alibaba-bailian",
+      "model": "qwen3.6-plus",
+      "version": "version:latest Context:0 < T < 32K ---------- Context:256K < T < 1M",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "alibaba-bailian",
+      "model": "qwen3.6-flash",
+      "version": "version: latest Context:0 < T < 256K --------- 256K < T < 1M",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "",
+      "suggestedReplacement": "",
+      "retired": ""
+    },
+    {
+      "executableId": "alibaba-bailian",
+      "model": "text-embedding-v4",
+      "version": "latest",
+      "availableInOrchestration": "Yes",
+      "deprecated": "",
+      "retirementDate": "",
       "suggestedReplacement": "",
       "retired": ""
     }
