@@ -25,10 +25,10 @@
     "lint:fix": "oxlint --fix && oxfmt ."
   },
   "dependencies": {
-    "@langchain/classic": "1.0.59",
+    "@langchain/classic": "1.0.61",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
-    "@langchain/mcp-adapters": "2.0.2",
+    "@langchain/mcp-adapters": "2.0.3",
     "@langchain/textsplitters": "1.0.2",
     "@modelcontextprotocol/sdk": "1.32.2",
     "@sap-cloud-sdk/resilience": "catalog:",
@@ -36,8 +36,8 @@
     "@types/express": "5.0.6",
     "express": "5.3.0",
     "langchain": "catalog:",
-    "openai": "7.53.0",
-    "ws": "8.22.2",
+    "openai": "7.60.0",
+    "ws": "8.23.0",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
-    "@upstash/context7-mcp": "4.6.0",
+    "@upstash/context7-mcp": "4.7.3",
     "hyparquet-writer": "0.18.0"
   },
   "peerDependencies": {
