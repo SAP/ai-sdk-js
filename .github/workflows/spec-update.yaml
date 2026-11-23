@@ -167,7 +167,7 @@ jobs:
         uses: oasdiff/oasdiff-action/breaking@14ca7009a63c417dfe27b7c44359c4bcccaf8eee # v0.2.1
         with:
           base: 'origin/main:${{ steps.resolve.outputs.file_path }}'
-          revision: 'HEAD:${{ steps.resolve.outputs.file_path }}'
+          revision: '${{ steps.resolve.outputs.file_path }}'
           fail-on: ERR
           review: false
 
