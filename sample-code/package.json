@@ -36,8 +36,8 @@
     "@types/express": "5.0.6",
     "express": "5.3.0",
     "langchain": "catalog:",
-    "openai": "7.55.0",
-    "ws": "8.22.2",
+    "openai": "7.60.0",
+    "ws": "8.23.0",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "@sap-ai-sdk/rpt": "workspace:^",
     "@sap-ai-sdk/tabular-orchestration": "workspace:^",
     "@types/ws": "8.18.2",
-    "@upstash/context7-mcp": "4.6.0",
+    "@upstash/context7-mcp": "4.7.3",
     "hyparquet-writer": "0.18.0"
   },
   "peerDependencies": {

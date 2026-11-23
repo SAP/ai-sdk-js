@@ -33,14 +33,16 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type { TemplatingChatMessage } from './client/api/schema/index.ts';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 import type {
+  StreamOptions,
+  StreamOptionsWithoutOverrides
+} from './orchestration-streaming-types.ts';
+import type {
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName,
   ChatCompletionRequest,
   RequestOptions,
-  StreamOptions,
-  BaseStreamOptions,
   OrchestrationRequestHeaders
 } from './orchestration-types.ts';
 
@@ -273,7 +275,7 @@ export class OrchestrationClient {
                 this.config,
                 request,
                 stream,
-                streamOptions as BaseStreamOptions | undefined
+                streamOptions as StreamOptionsWithoutOverrides | undefined
               );
 
     const deploymentId = await getOrchestrationDeploymentId(
