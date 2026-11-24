@@ -655,6 +655,9 @@ importers:
       '@sap-ai-sdk/context-registry':
         specifier: workspace:^
         version: link:../packages/context-registry
+      '@sap-ai-sdk/core':
+        specifier: workspace:^
+        version: link:../packages/core
       '@sap-ai-sdk/document-grounding':
         specifier: workspace:^
         version: link:../packages/document-grounding
