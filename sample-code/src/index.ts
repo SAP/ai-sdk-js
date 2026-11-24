@@ -77,6 +77,13 @@ export {
 } from './document-grounding.ts';
 
 export {
+  createCollectionAndWait,
+  runPipelineAndWait,
+  createDataDestinationAndWait,
+  deleteDataDestinationAndWait
+} from './polling.ts';
+
+export {
   createPromptTemplate,
   deletePromptTemplate
 } from './prompt-registry.ts';
