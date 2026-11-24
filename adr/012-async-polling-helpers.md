@@ -2,7 +2,7 @@
 
 ## Status
 
-proposed — pending final review (backoff and terminal-model coverage decided; see below)
+proposed — final implemented design recorded under "Implementation outcome", which notes where it supersedes the decisions below.
 
 ## Context
 
@@ -39,6 +39,55 @@ Expose a thin blocking helper and per-service convenience wrappers as the public
 The helper and wrappers carry an `AbortSignal` and a `maxWaitTime` budget, and back off on 429 using the retry value the service returns in the response body.
 Defer generator integration, a full poller object, and a runtime strategy enum.
 The decisions and recommendations behind this are recorded below; the status stays `proposed` pending final review approval.
+
+## Implementation outcome
+
+Implementation refined several points below.
+The original discussion is kept for the decision trail; where it differs, this section is authoritative.
+
+**Public API (`@sap-ai-sdk/core`):**
+
+- `poll(trigger, options)` — an async generator that only yields status and never sleeps;
+  the caller drives the cadence.
+- `waitUntilDone(trigger, options)` — a blocking driver on top of `poll` that adds exponential
+  backoff + jitter (default), `Retry-After`, and `AbortSignal.timeout`, returning the resource
+  and throwing `PollFailedError` / `PollTimeoutError`.
+- `statusRequest` is an `OpenApiRequestBuilder` directly (when the id is known) or a factory
+  `(created) => OpenApiRequestBuilder` deriving it from the `202` response for server-assigned
+  ids such as pipeline executions, with `notFound: 'resolve'` for deletes, optional `isDone`,
+  and `isFailure` throwing on a terminal failure.
+
+**Superseded decisions:**
+
+- **Q3 (per-service wrappers):** no `*AndWait` wrappers ship in the packages; the generic core
+  API is used directly (usage in `sample-code/src/polling.ts`), avoiding ~10 near-identical
+  wrappers drifting from the core engine.
+- **Q4 (429 source):** the engine honors the standard `Retry-After` header only, not a
+  response-body value (body parsing is non-standard and absent from the specs); exponential
+  backoff covers its absence.
+- **Q6 (primitive timing):** the pull-model primitive (`poll`, above) is public in v1 rather
+  than a follow-up — the tests drive it directly, so exposing it costs nothing extra.
+
+**Refinements beyond the original questions:**
+
+- **Timeout:** the `maxWaitTime` budget is implemented with `AbortSignal.timeout` (plus
+  `AbortSignal.any` to combine with a caller signal); the option is `timeoutMs`.
+- **Error handling:** terminal failures throw `PollFailedError`; partial states (pipeline
+  `FINISHEDWITHERRORS`) are returned for the caller to inspect via `resource.status` — there
+  is no result-union type.
+- **Test seam:** the public `sleep` option is gone; because `poll` never sleeps, tests drive
+  it directly with no fake-timer seam.
+- **Cosmetic renames:** `pollAsyncResource`/`read`/`isComplete`/`getFailure`/`intervalMs` →
+  `poll`/`waitUntilDone`/`statusRequest`/`isDone`/`isFailure`/`backoff`.
+
+**Deferred:**
+
+- Automatic `Location` polling (omitting `statusRequest`): the shared `executeRequest` builds
+  URLs against the destination base, so an absolute or `/v2`-prefixed `Location` is mangled, and
+  the exact format is service-defined and unconfirmed.
+  It is deferred until the format is confirmed and `executeRequest` can take a URL as-is, a
+  non-breaking addition.
+- Node floor: `AbortSignal.timeout` / `AbortSignal.any` need Node ≥18.17/20.3 (CI runs Node 22).
 
 ## Discussion
 
