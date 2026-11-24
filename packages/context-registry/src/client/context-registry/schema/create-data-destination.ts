@@ -5,7 +5,6 @@
  */
 
 import type { AzureDataDestinationCreateRequest } from './azure-data-destination-create-request.js';
-import type { DeltaSharingDataDestinationCreateRequest } from './delta-sharing-data-destination-create-request.js';
 import type { GCSDataDestinationCreateRequest } from './gcs-data-destination-create-request.js';
 import type { HDLDataDestinationCreateRequest } from './hdl-data-destination-create-request.js';
 import type { S3DataDestinationCreateRequest } from './s-3-data-destination-create-request.js';
@@ -16,5 +15,4 @@ export type CreateDataDestination =
   | ({ type: 'HDL' } & HDLDataDestinationCreateRequest)
   | ({ type: 'S3' } & S3DataDestinationCreateRequest)
   | ({ type: 'GCS' } & GCSDataDestinationCreateRequest)
-  | ({ type: 'AZURE' } & AzureDataDestinationCreateRequest)
-  | ({ type: 'DELTA_SHARING' } & DeltaSharingDataDestinationCreateRequest);
+  | ({ type: 'AZURE' } & AzureDataDestinationCreateRequest);
