@@ -49,9 +49,10 @@ The original discussion is kept for the decision trail; where it differs, this s
 
 - `poll(trigger, options)` — an async generator that only yields status and never sleeps;
   the caller drives the cadence.
-- `waitUntilDone(trigger, options)` — a blocking driver on top of `poll` that adds exponential
-  backoff + jitter (default), `Retry-After`, and `AbortSignal.timeout`, returning the resource
-  and throwing `PollFailedError` / `PollTimeoutError`.
+- `waitUntilDone(trigger, options)` — a blocking driver built alongside `poll` (sharing the
+  status-read and terminal-check logic rather than consuming the generator, so transient errors
+  can be retried) that adds exponential backoff + jitter (default), `Retry-After`, and
+  `AbortSignal.timeout`, returning the resource and throwing `PollFailedError` / `PollTimeoutError`.
 - `statusRequest` is an `OpenApiRequestBuilder` directly (when the id is known) or a factory
   `(created) => OpenApiRequestBuilder` deriving it from the `202` response for server-assigned
   ids such as pipeline executions, with `notFound: 'resolve'` for deletes, optional `isDone`,
@@ -77,6 +78,10 @@ The original discussion is kept for the decision trail; where it differs, this s
   is no result-union type.
 - **Test seam:** the public `sleep` option is gone; because `poll` never sleeps, tests drive
   it directly with no fake-timer seam.
+- **Transient errors:** beyond honoring `Retry-After`, `waitUntilDone` retries transient request
+  failures (status 429/502/503/504 and the `ECONNRESET`/`ETIMEDOUT`/`EAI_AGAIN` network codes),
+  bounded by `maxConsecutiveErrors` (default 5); other errors propagate.
+- **Progress callback:** an optional `onPoll(resource)` is invoked after each successful poll.
 - **Cosmetic renames:** `pollAsyncResource`/`read`/`isComplete`/`getFailure`/`intervalMs` →
   `poll`/`waitUntilDone`/`statusRequest`/`isDone`/`isFailure`/`backoff`.
 
