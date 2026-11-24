@@ -1,431 +1,335 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
+  PollFailedError,
   PollTimeoutError,
-  createAndWait,
-  deleteAndWait,
-  pollEach,
-  pollUntilTerminal
+  poll,
+  waitUntilDone
 } from './polling.ts';
 
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 import type { OpenApiRequestBuilder } from './openapi-request-builder.ts';
-import type { AsyncFlowDescriptor, PollEngineOptions } from './polling.ts';
-import type { Mock } from 'vitest';
+import type { Backoff } from './polling.ts';
 
 interface Status {
-  status: 'PENDING' | 'ACTIVE' | 'ERROR' | 'PARTIAL';
+  status: 'PENDING' | 'ACTIVE' | 'ERROR';
 }
 
-function httpError(status: number): Error {
-  return Object.assign(new Error(`HTTP ${status}`), { status });
+function httpError(status: number, headers?: Record<string, string>): Error {
+  return Object.assign(new Error(`HTTP ${status}`), { status, headers });
 }
 
-describe('pollUntilTerminal', () => {
-  let now: number;
-  let sleep: Mock<(ms: number, signal?: AbortSignal) => Promise<void>>;
+// A trigger builder whose executeRaw resolves (the 202 is not otherwise inspected).
+function triggerStub(): OpenApiRequestBuilder<unknown> {
+  return {
+    executeRaw: vi.fn<() => Promise<HttpResponse>>(
+      async () => ({ status: 202 }) as unknown as HttpResponse
+    )
+  } as unknown as OpenApiRequestBuilder<unknown>;
+}
 
-  beforeEach(() => {
-    now = 0;
-    vi.spyOn(Date, 'now').mockImplementation(() => now);
-    // Injected sleep advances the mocked clock instead of waiting.
-    sleep = vi.fn<(ms: number, signal?: AbortSignal) => Promise<void>>(
-      async (ms: number) => {
-        now += ms;
-      }
+// A status builder whose execute() runs the given function on each poll.
+function statusStub(
+  execute: () => Promise<Status>
+): OpenApiRequestBuilder<Status> {
+  return {
+    execute: vi.fn<() => Promise<Status>>(execute)
+  } as unknown as OpenApiRequestBuilder<Status>;
+}
+
+function queued(...states: Status[]): () => Promise<Status> {
+  const q = [...states];
+  return async () => {
+    const next = q.shift();
+    if (!next) {
+      throw new Error('status read called more times than expected');
+    }
+    return next;
+  };
+}
+
+const isDone = (s: Status) => s.status === 'ACTIVE';
+const isFailure = (s: Status) =>
+  s.status === 'ERROR' ? 'resource failed' : undefined;
+
+// No jitter and a zero base keep waits instant under real timers.
+const noWait: Backoff = { baseIntervalMs: 0, randomize: false };
+
+describe('waitUntilDone', () => {
+  it('returns the resource once it reaches a terminal success state', async () => {
+    const statusRequest = statusStub(
+      queued({ status: 'PENDING' }, { status: 'ACTIVE' })
     );
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  function reads(
-    ...states: Status[]
-  ): (signal: AbortSignal) => Promise<Status> {
-    const queue = [...states];
-    return vi.fn<() => Promise<Status>>(async () => {
-      const next = queue.shift();
-      if (!next) {
-        throw new Error('read called more times than expected');
-      }
-      return next;
+    const result = await waitUntilDone(triggerStub(), {
+      statusRequest,
+      isDone,
+      backoff: noWait
     });
-  }
-
-  const base = {
-    isComplete: (r: Status) => r.status === 'ACTIVE',
-    getFailure: (r: Status) =>
-      r.status === 'ERROR'
-        ? ({ outcome: 'failure', reason: 'failed' } as const)
-        : r.status === 'PARTIAL'
-          ? ({ outcome: 'partial', reason: 'partial' } as const)
-          : undefined,
-    intervalMs: 1_000
-  } satisfies Partial<PollEngineOptions<Status>>;
-
-  it('returns success immediately when already complete, without sleeping', async () => {
-    const read = reads({ status: 'ACTIVE' });
-    const result = await pollUntilTerminal({ ...base, read, sleep });
-    expect(result).toEqual({
-      outcome: 'success',
-      resource: { status: 'ACTIVE' }
-    });
-    expect(read).toHaveBeenCalledTimes(1);
-    expect(sleep).not.toHaveBeenCalled();
+    expect(result).toEqual({ status: 'ACTIVE' });
   });
 
-  it('polls until complete', async () => {
-    const read = reads(
-      { status: 'PENDING' },
-      { status: 'PENDING' },
-      { status: 'ACTIVE' }
+  it('derives the status request from the trigger response (factory form)', async () => {
+    const statusRequest = statusStub(
+      queued({ status: 'PENDING' }, { status: 'ACTIVE' })
     );
-    const result = await pollUntilTerminal({ ...base, read, sleep });
-    expect(result.outcome).toBe('success');
-    expect(read).toHaveBeenCalledTimes(3);
-    expect(sleep).toHaveBeenCalledTimes(2);
-  });
-
-  it('returns a failure outcome and stops polling', async () => {
-    const read = reads({ status: 'PENDING' }, { status: 'ERROR' });
-    const result = await pollUntilTerminal({ ...base, read, sleep });
-    expect(result).toEqual({
-      outcome: 'failure',
-      resource: { status: 'ERROR' },
-      reason: 'failed'
+    const factory = vi.fn<
+      (created: HttpResponse) => OpenApiRequestBuilder<Status>
+    >(() => statusRequest);
+    const result = await waitUntilDone(triggerStub(), {
+      statusRequest: factory,
+      isDone,
+      backoff: noWait
     });
-    expect(read).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({ status: 'ACTIVE' });
+    expect(factory).toHaveBeenCalledOnce();
   });
 
-  it('returns a partial outcome for a terminal-with-errors state', async () => {
-    const read = reads({ status: 'PARTIAL' });
-    const result = await pollUntilTerminal({ ...base, read, sleep });
-    expect(result).toEqual({
-      outcome: 'partial',
-      resource: { status: 'PARTIAL' },
-      reason: 'partial'
-    });
-  });
-
-  it('throws PollTimeoutError when the wall-clock budget is exhausted', async () => {
-    const read = vi.fn<() => Promise<Status>>(async () => ({
-      status: 'PENDING'
-    }));
+  it('throws PollFailedError on a terminal failure state', async () => {
+    const statusRequest = statusStub(queued({ status: 'ERROR' }));
     await expect(
-      pollUntilTerminal({
-        ...base,
-        read,
-        sleep,
-        maxWaitTime: 1_000,
-        intervalMs: 400
+      waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        isFailure,
+        backoff: noWait
       })
-    ).rejects.toSatisfy(
-      error => error instanceof PollTimeoutError && error.elapsedMs === 1_000
-    );
+    ).rejects.toBeInstanceOf(PollFailedError);
   });
 
-  it('keeps a fixed interval between polls', async () => {
-    const read = reads(
-      { status: 'PENDING' },
-      { status: 'PENDING' },
-      { status: 'ACTIVE' }
-    );
-    await pollUntilTerminal({ ...base, read, sleep, intervalMs: 1_000 });
-    expect(sleep.mock.calls.map(c => c[0])).toEqual([1_000, 1_000]);
-  });
-
-  it('grows the interval when exponential backoff is opted in', async () => {
-    const read = reads(
-      { status: 'PENDING' },
-      { status: 'PENDING' },
-      { status: 'PENDING' },
-      { status: 'ACTIVE' }
-    );
-    await pollUntilTerminal({
-      ...base,
-      read,
-      sleep,
-      intervalMs: 1_000,
-      backoff: { kind: 'exponential' },
-      maxWaitTime: 60_000
+  it('resolves undefined on a 404 when notFound is resolve', async () => {
+    const statusRequest = statusStub(async () => {
+      throw httpError(404);
     });
-    expect(sleep.mock.calls.map(c => c[0])).toEqual([1_000, 2_000, 4_000]);
-  });
-
-  it('honors a server retry hint over the configured interval', async () => {
-    const read = reads({ status: 'PENDING' }, { status: 'ACTIVE' });
-    await pollUntilTerminal({
-      ...base,
-      read,
-      sleep,
-      intervalMs: 1_000,
-      getRetryAfter: hint =>
-        (hint as Status).status === 'PENDING' ? 5_000 : undefined
+    const result = await waitUntilDone(triggerStub(), {
+      statusRequest,
+      notFound: 'resolve',
+      backoff: noWait
     });
-    expect(sleep).toHaveBeenCalledWith(5_000, expect.anything());
-  });
-
-  it('applies exponential backoff to retryable errors', async () => {
-    let call = 0;
-    const read = vi.fn<() => Promise<Status>>(async () => {
-      call += 1;
-      if (call <= 3) {
-        throw httpError(503);
-      }
-      return { status: 'ACTIVE' };
-    });
-    await pollUntilTerminal({
-      ...base,
-      read,
-      sleep,
-      intervalMs: 1_000,
-      backoff: { kind: 'exponential' },
-      maxConsecutiveErrors: 5,
-      maxWaitTime: 60_000
-    });
-    expect(sleep.mock.calls.map(c => c[0])).toEqual([1_000, 2_000, 4_000]);
+    expect(result).toBeUndefined();
   });
 
   it('retries a retryable error and continues', async () => {
     let call = 0;
-    const read = vi.fn<() => Promise<Status>>(async () => {
+    const statusRequest = statusStub(async () => {
       call += 1;
       if (call === 1) {
         throw httpError(503);
       }
       return { status: 'ACTIVE' };
     });
-    const result = await pollUntilTerminal({ ...base, read, sleep });
-    expect(result.outcome).toBe('success');
-    expect(read).toHaveBeenCalledTimes(2);
-  });
-
-  it('propagates the error after exceeding the consecutive-error ceiling', async () => {
-    const read = vi.fn<() => Promise<Status>>(async () => {
-      throw httpError(503);
+    const result = await waitUntilDone(triggerStub(), {
+      statusRequest,
+      isDone,
+      backoff: noWait
     });
-    await expect(
-      pollUntilTerminal({
-        ...base,
-        read,
-        sleep,
-        maxConsecutiveErrors: 2,
-        maxWaitTime: 1_000_000
-      })
-    ).rejects.toMatchObject({ status: 503 });
-    expect(read).toHaveBeenCalledTimes(3);
+    expect(result).toEqual({ status: 'ACTIVE' });
+    expect(call).toBe(2);
   });
 
   it('propagates a fatal error immediately', async () => {
-    const read = vi.fn<() => Promise<Status>>(async () => {
+    const statusRequest = statusStub(async () => {
       throw httpError(403);
     });
     await expect(
-      pollUntilTerminal({ ...base, read, sleep })
-    ).rejects.toMatchObject({
-      status: 403
-    });
-    expect(read).toHaveBeenCalledTimes(1);
+      waitUntilDone(triggerStub(), { statusRequest, isDone, backoff: noWait })
+    ).rejects.toMatchObject({ status: 403 });
   });
 
-  it('clamps the sleep to the remaining budget (no overshoot)', async () => {
-    const read = vi.fn<() => Promise<Status>>(async () => ({
-      status: 'PENDING'
-    }));
-    await pollUntilTerminal({
-      ...base,
-      read,
-      sleep,
-      maxWaitTime: 1_000,
-      intervalMs: 400
-    }).catch(() => undefined);
-    // 400, 400, then clamped to the remaining 200
-    expect(sleep.mock.calls.map(c => c[0])).toEqual([400, 400, 200]);
-  });
-
-  it('reads the retry hint from a thrown error', async () => {
-    let call = 0;
-    const read = vi.fn<() => Promise<Status>>(async () => {
-      call += 1;
-      if (call === 1) {
-        throw httpError(429);
-      }
-      return { status: 'ACTIVE' };
-    });
-    await pollUntilTerminal({
-      ...base,
-      read,
-      sleep,
-      intervalMs: 1_000,
-      getRetryAfter: hint => (hint instanceof Error ? 7_000 : undefined)
-    });
-    expect(sleep).toHaveBeenCalledWith(7_000, expect.anything());
-  });
-
-  it('aborts an in-flight wait when the signal fires mid-sleep', async () => {
-    const controller = new AbortController();
-    const read = vi.fn<() => Promise<Status>>(async () => ({
-      status: 'PENDING'
-    }));
-    // Abort while the engine is waiting between polls.
-    const abortingSleep = vi.fn<
-      (ms: number, signal?: AbortSignal) => Promise<void>
-    >(async (_ms, signal) => {
-      controller.abort();
-      signal?.throwIfAborted();
+  it('propagates the error after the consecutive-error ceiling', async () => {
+    let calls = 0;
+    const statusRequest = statusStub(async () => {
+      calls += 1;
+      throw httpError(503);
     });
     await expect(
-      pollUntilTerminal({
-        ...base,
-        read,
-        sleep: abortingSleep,
-        signal: controller.signal
+      waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        backoff: noWait,
+        maxConsecutiveErrors: 2
       })
-    ).rejects.toThrow(/abort/i);
-    expect(read).toHaveBeenCalledTimes(1);
+    ).rejects.toMatchObject({ status: 503 });
+    expect(calls).toBe(3);
   });
 
-  it('bounds an in-flight read by the wall-clock budget', async () => {
-    // A read that never settles on its own must still be cancelled at maxWaitTime.
-    // A well-behaved read rejects when its AbortSignal fires.
-    const read = vi.fn<(signal: AbortSignal) => Promise<Status>>(
-      signal =>
-        new Promise<Status>((_resolve, reject) => {
-          signal.addEventListener('abort', () => reject(signal.reason), {
-            once: true
-          });
-        })
+  it('invokes onPoll for each pending resource', async () => {
+    const statusRequest = statusStub(
+      queued({ status: 'PENDING' }, { status: 'PENDING' }, { status: 'ACTIVE' })
     );
-    await expect(
-      pollUntilTerminal({ ...base, read, maxWaitTime: 20 })
-    ).rejects.toBeInstanceOf(PollTimeoutError);
-    expect(read).toHaveBeenCalledTimes(1);
-  });
-
-  it('throws immediately when the signal is already aborted', async () => {
-    const read = vi.fn<() => Promise<Status>>();
-    const controller = new AbortController();
-    controller.abort();
-    await expect(
-      pollUntilTerminal({ ...base, read, sleep, signal: controller.signal })
-    ).rejects.toThrow(/abort/i);
-    expect(read).not.toHaveBeenCalled();
-  });
-});
-
-describe('pollEach', () => {
-  const base = {
-    isComplete: (r: Status) => r.status === 'ACTIVE',
-    intervalMs: 0,
-    sleep: async () => undefined
-  } satisfies Partial<PollEngineOptions<Status>>;
-
-  it('yields every polled resource and returns the terminal result', async () => {
-    const queue: Status[] = [
+    const seen: Status[] = [];
+    await waitUntilDone(triggerStub(), {
+      statusRequest,
+      isDone,
+      backoff: noWait,
+      onPoll: s => seen.push(s)
+    });
+    expect(seen).toEqual([
       { status: 'PENDING' },
       { status: 'PENDING' },
       { status: 'ACTIVE' }
-    ];
-    const read = vi.fn<() => Promise<Status>>(async () => queue.shift()!);
+    ]);
+  });
+
+  it('waits with an exponential schedule between polls', async () => {
+    vi.useFakeTimers();
+    try {
+      const times: number[] = [];
+      const read = queued(
+        { status: 'PENDING' },
+        { status: 'PENDING' },
+        { status: 'ACTIVE' }
+      );
+      const statusRequest = statusStub(async () => {
+        times.push(Date.now());
+        return read();
+      });
+      const promise = waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        backoff: { baseIntervalMs: 1_000, factor: 2, randomize: false }
+      });
+      await vi.advanceTimersByTimeAsync(10_000);
+      await promise;
+      // Reads at 0, then +1000, then +2000.
+      const t0 = times[0];
+      expect(times.map(t => t - t0)).toEqual([0, 1_000, 3_000]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('applies maxIntervalMs as an upper bound after jitter', async () => {
+    vi.useFakeTimers();
+    try {
+      const times: number[] = [];
+      const read = queued({ status: 'PENDING' }, { status: 'ACTIVE' });
+      const statusRequest = statusStub(async () => {
+        times.push(Date.now());
+        return read();
+      });
+      // raw=1000, jitter ×2 → 2000, capped at 1500. (If capped before jitter it would be 1000→2000.)
+      const promise = waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        backoff: {
+          baseIntervalMs: 1_000,
+          factor: 2,
+          maxIntervalMs: 1_500,
+          randomize: true,
+          randomSource: () => 1
+        }
+      });
+      await vi.advanceTimersByTimeAsync(5_000);
+      await promise;
+      const t0 = times[0];
+      expect(times.map(t => t - t0)).toEqual([0, 1_500]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('honors a Retry-After header over the configured backoff', async () => {
+    vi.useFakeTimers();
+    try {
+      let call = 0;
+      const statusRequest = statusStub(async () => {
+        call += 1;
+        if (call === 1) {
+          throw httpError(429, { 'retry-after': '2' });
+        }
+        return { status: 'ACTIVE' };
+      });
+      const promise = waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        // A huge base would never resolve within 2s unless Retry-After (2s) takes precedence.
+        backoff: { baseIntervalMs: 1_000_000, randomize: false }
+      });
+      await vi.advanceTimersByTimeAsync(2_000);
+      await expect(promise).resolves.toEqual({ status: 'ACTIVE' });
+      expect(call).toBe(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('throws PollTimeoutError when the budget is exhausted', async () => {
+    const statusRequest = statusStub(async () => ({ status: 'PENDING' }));
+    await expect(
+      waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        timeoutMs: 30,
+        backoff: { baseIntervalMs: 5, randomize: false }
+      })
+    ).rejects.toBeInstanceOf(PollTimeoutError);
+  });
+
+  it('throws immediately when the signal is already aborted', async () => {
+    const controller = new AbortController();
+    controller.abort();
+    let calls = 0;
+    const statusRequest = statusStub(async () => {
+      calls += 1;
+      return { status: 'ACTIVE' };
+    });
+    await expect(
+      waitUntilDone(triggerStub(), {
+        statusRequest,
+        isDone,
+        signal: controller.signal,
+        backoff: noWait
+      })
+    ).rejects.toThrow(/abort/i);
+    expect(calls).toBe(0);
+  });
+});
+
+describe('poll', () => {
+  it('yields pending states and returns the terminal resource', async () => {
+    const statusRequest = statusStub(
+      queued({ status: 'PENDING' }, { status: 'PENDING' }, { status: 'ACTIVE' })
+    );
     const yielded: Status[] = [];
-    const iterator = pollEach({ ...base, read });
+    const iterator = poll<Status>(triggerStub(), { statusRequest, isDone });
     let next = await iterator.next();
     while (!next.done) {
       yielded.push(next.value);
       next = await iterator.next();
     }
-    expect(yielded).toEqual([
-      { status: 'PENDING' },
-      { status: 'PENDING' },
-      { status: 'ACTIVE' }
-    ]);
-    expect(next.value).toEqual({
-      outcome: 'success',
-      resource: { status: 'ACTIVE' }
+    expect(yielded).toEqual([{ status: 'PENDING' }, { status: 'PENDING' }]);
+    expect(next.value).toEqual({ status: 'ACTIVE' });
+  });
+
+  it('throws PollFailedError on a terminal failure state', async () => {
+    const statusRequest = statusStub(queued({ status: 'ERROR' }));
+    const iterator = poll<Status>(triggerStub(), {
+      statusRequest,
+      isDone,
+      isFailure
     });
+    await expect(iterator.next()).rejects.toBeInstanceOf(PollFailedError);
+  });
+
+  it('propagates a transient error without retrying (caller owns retries)', async () => {
+    const statusRequest = statusStub(async () => {
+      throw httpError(503);
+    });
+    const iterator = poll<Status>(triggerStub(), { statusRequest, isDone });
+    await expect(iterator.next()).rejects.toMatchObject({ status: 503 });
   });
 
   it('lets the caller stop early', async () => {
-    const read = vi.fn<() => Promise<Status>>(async () => ({
-      status: 'PENDING'
-    }));
-    const iterator = pollEach({ ...base, read });
+    let calls = 0;
+    const statusRequest = statusStub(async () => {
+      calls += 1;
+      return { status: 'PENDING' };
+    });
+    const iterator = poll<Status>(triggerStub(), { statusRequest, isDone });
     const first = await iterator.next();
     expect(first.value).toEqual({ status: 'PENDING' });
-    await iterator.return(undefined as never);
-    expect(read).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe('createAndWait / deleteAndWait', () => {
-  function builderStub(): OpenApiRequestBuilder<unknown> {
-    return {
-      executeRaw: vi.fn<() => Promise<HttpResponse>>(
-        async () =>
-          ({
-            status: 202,
-            data: {},
-            headers: {},
-            request: {}
-          }) as HttpResponse
-      )
-    } as unknown as OpenApiRequestBuilder<unknown>;
-  }
-
-  function statusBuilder(
-    execute: () => Promise<Status>
-  ): OpenApiRequestBuilder<Status> {
-    return {
-      execute: vi.fn<() => Promise<Status>>(execute)
-    } as unknown as OpenApiRequestBuilder<Status>;
-  }
-
-  const descriptor = (
-    execute: () => Promise<Status>
-  ): AsyncFlowDescriptor<Status> => ({
-    statusRead: () => statusBuilder(execute),
-    isComplete: (s: Status) => s.status === 'ACTIVE',
-    getFailure: (s: Status) =>
-      s.status === 'ERROR'
-        ? { outcome: 'failure', reason: 'failed' }
-        : undefined
-  });
-
-  it('createAndWait polls the status read until complete', async () => {
-    const queue: Status[] = [{ status: 'PENDING' }, { status: 'ACTIVE' }];
-    const result = await createAndWait(
-      builderStub(),
-      descriptor(async () => queue.shift()!),
-      { intervalMs: 0 }
-    );
-    expect(result).toEqual({
-      outcome: 'success',
-      resource: { status: 'ACTIVE' }
-    });
-  });
-
-  it('deleteAndWait treats a 404 as deleted only when notFoundMeansDeleted is set', async () => {
-    const result = await deleteAndWait(
-      builderStub(),
-      descriptor(async () => {
-        throw httpError(404);
-      }),
-      { intervalMs: 0, notFoundMeansDeleted: true }
-    );
-    expect(result).toEqual({ outcome: 'success', resource: undefined });
-  });
-
-  it('deleteAndWait propagates a 404 when notFoundMeansDeleted is not set', async () => {
-    await expect(
-      deleteAndWait(
-        builderStub(),
-        descriptor(async () => {
-          throw httpError(404);
-        }),
-        { intervalMs: 0 }
-      )
-    ).rejects.toMatchObject({ status: 404 });
+    await iterator.return(undefined);
+    expect(calls).toBe(1);
   });
 });

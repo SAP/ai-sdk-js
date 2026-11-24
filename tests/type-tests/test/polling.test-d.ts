@@ -1,63 +1,70 @@
 import {
-  createAndWait,
-  deleteAndWait,
-  pollEach,
-  pollUntilTerminal,
-  PollTimeoutError
+  poll,
+  PollFailedError,
+  PollTimeoutError,
+  waitUntilDone
 } from '@sap-ai-sdk/core';
 
 import { expectAssignable, expectType } from 'tsd';
 
-import type {
-  AsyncFlowDescriptor,
-  OpenApiRequestBuilder,
-  PollResult
-} from '@sap-ai-sdk/core';
+import type { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
-interface Status {
-  status: 'PENDING' | 'ACTIVE' | 'ERROR';
+interface Created {
+  collectionURL: string;
 }
+interface Pending {
+  monitorURL: string;
+}
+type Status = Created | Pending;
 
-const engineOptions = {
-  read: async () => ({ status: 'PENDING' }) as Status,
-  isComplete: (s: Status) => s.status === 'ACTIVE'
-};
+declare const trigger: OpenApiRequestBuilder<unknown>;
+declare const statusRequest: OpenApiRequestBuilder<Status>;
 
-// pollUntilTerminal infers the resource type into PollResult<Status>.
-expectType<Promise<PollResult<Status>>>(pollUntilTerminal(engineOptions));
-
-// pollEach yields Status and returns PollResult<Status>.
-expectType<AsyncGenerator<Status, PollResult<Status>, void>>(
-  pollEach(engineOptions)
+// waitUntilDone resolves to the status type; T is inferred from statusRequest.
+expectType<Promise<Status>>(
+  waitUntilDone(trigger, { statusRequest, isDone: s => 'collectionURL' in s })
 );
 
-// isComplete / getFailure receive the resource type, not unknown.
-const descriptor: AsyncFlowDescriptor<Status> = {
-  statusRead: () => ({}) as OpenApiRequestBuilder<Status>,
-  isComplete: s => {
+// A factory form derives the status request from the trigger's 202 response.
+expectType<Promise<Status>>(
+  waitUntilDone(trigger, {
+    statusRequest: (created: HttpResponse) => {
+      expectType<HttpResponse>(created);
+      return statusRequest;
+    },
+    isDone: s => 'collectionURL' in s
+  })
+);
+
+// With notFound: 'resolve' the result widens to include undefined.
+expectType<Promise<Status | undefined>>(
+  waitUntilDone(trigger, {
+    statusRequest,
+    notFound: 'resolve',
+    isDone: s => 'collectionURL' in s
+  })
+);
+
+// poll yields the status type and returns the status type (or undefined).
+expectType<AsyncGenerator<Status, Status | undefined, void>>(
+  poll(trigger, { statusRequest, isDone: s => 'collectionURL' in s })
+);
+
+// isDone receives the inferred status type, not unknown.
+void waitUntilDone(trigger, {
+  statusRequest,
+  isDone: s => {
     expectType<Status>(s);
-    return s.status === 'ACTIVE';
-  },
-  getFailure: s =>
-    s.status === 'ERROR' ? { outcome: 'failure', reason: 'x' } : undefined
-};
+    return 'collectionURL' in s;
+  }
+});
 
-expectType<Promise<PollResult<Status>>>(
-  createAndWait<Status>({} as OpenApiRequestBuilder<unknown>, descriptor)
-);
-
-// deleteAndWait widens the resource to include undefined (gone).
-expectType<Promise<PollResult<Status | undefined>>>(
-  deleteAndWait<Status>({} as OpenApiRequestBuilder<unknown>, descriptor)
-);
-
-// PollTimeoutError is an Error with elapsedMs.
+// Error types.
 const timeout = new PollTimeoutError(1000);
 expectAssignable<Error>(timeout);
 expectType<number>(timeout.elapsedMs);
 
-// PollResult narrows on `outcome`.
-declare const result: PollResult<Status>;
-if (result.outcome === 'partial' || result.outcome === 'failure') {
-  expectType<string>(result.reason);
-}
+const failed = new PollFailedError('reason', { status: 'ERROR' });
+expectAssignable<Error>(failed);
+expectType<unknown>(failed.resource);

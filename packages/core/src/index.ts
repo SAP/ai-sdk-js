@@ -21,18 +21,9 @@ export type {
 } from './model-types.ts';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';
 export {
-  pollEach,
-  pollUntilTerminal,
-  createAndWait,
-  deleteAndWait,
-  PollTimeoutError
+  poll,
+  waitUntilDone,
+  PollTimeoutError,
+  PollFailedError
 } from './polling.ts';
-export type {
-  PollFailure,
-  PollResult,
-  Backoff,
-  PollEngineOptions,
-  AsyncFlowDescriptor,
-  CreateAndWaitOptions,
-  DeleteAndWaitOptions
-} from './polling.ts';
+export type { Backoff, PollOptions, WaitOptions } from './polling.ts';

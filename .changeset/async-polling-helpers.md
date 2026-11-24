@@ -4,6 +4,6 @@
 
 [feat] Add async polling helpers for long-running (202) calls.
 
-Core now exports `pollEach` and `pollUntilTerminal`.
-Use `createAndWait` and `deleteAndWait` to poll a call until it is done.
-The context-registry and document-grounding packages add their own wrappers.
+`@sap-ai-sdk/core` now exports `waitUntilDone` and `poll`.
+`waitUntilDone` runs a request and waits until it reaches a terminal state.
+`poll` is a lower-level generator for driving the polling cadence yourself.
