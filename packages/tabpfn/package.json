@@ -38,9 +38,7 @@
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/tabpfn.json -o ./src/client",
-    "pregenerate": "pnpm postprocess-spec",
     "postgenerate": "pnpm update-imports && pnpm make-tabpfn-internal && pnpm lint:fix",
-    "postprocess-spec": "redocly bundle ./src/spec/tabpfnopenapispecs.yaml --overlay=./src/spec/tabpfn-predict-overlay.yaml --remove-unused-components --output ./src/spec/tabpfn.json && node ./scripts/postprocess-tabpfn-spec.ts ./src/spec/tabpfn.json",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client",
     "make-tabpfn-internal": "node ../../scripts/postgenerate-tabpfn.ts ./src/client/tabpfn/tab-pfn-api.ts"
   },
@@ -51,7 +49,6 @@
     "@sap-cloud-sdk/http-client": "catalog:"
   },
   "devDependencies": {
-    "@redocly/cli": "2.77.0",
     "vitest": "5.0.4"
   }
 }

@@ -6,15 +6,23 @@
 
 import type { ClassifierMetadata } from './classifier-metadata.js';
 import type { InputUsage } from './input-usage.js';
-import type { Prediction } from './prediction.js';
 import type { RegressorMetadata } from './regressor-metadata.js';
 /**
  * Representation of the 'PredictResponse' schema.
  */
 export type PredictResponse = {
-  prediction: Prediction;
+  /**
+   * One entry per test row, shaped by `predict_params.output_type`.
+   */
+  prediction: any[] | any[][] | Record<string, any[] | any[][]>;
+  /**
+   * The settings that the request used.
+   */
   metadata:
     | ({ task: 'classification' } & ClassifierMetadata)
     | ({ task: 'regression' } & RegressorMetadata);
+  /**
+   * What the request used. Use it for metering.
+   */
   usage: InputUsage;
 };

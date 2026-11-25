@@ -8,6 +8,12 @@ SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI
 This package provides a client for the [TabPFN](https://github.com/automl/TabPFN) foundation model for tabular prediction via in-context learning.
 You send the labeled training rows and the rows you want predicted in a single request, and the model returns predictions immediately without a separate training step.
 
+Use `predict()` for inline JSON tables or presigned CSV/Parquet URLs (the deployment must allow the URL's host).
+Use `predictFiles()` for CSV or Parquet uploads to `/predict`, or `predictParquet()` for Parquet-only uploads to `/predict_parquet`.
+Both upload methods accept `{ x_train, y_train, x_test, request }`, where the tables are `Blob` or `File` values and `request` is a typed configuration object sent as a plain JSON form field.
+Set CSV blobs to `text/csv` and Parquet blobs to `application/vnd.apache.parquet`; filenames are optional.
+The new endpoints require a deployment implementing the v1.1.0 specification. Updating the SDK does not upgrade an existing deployment.
+
 ### Table of Contents
 
 - [Installation](#installation)

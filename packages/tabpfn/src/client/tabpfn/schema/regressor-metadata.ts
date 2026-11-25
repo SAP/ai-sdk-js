@@ -10,27 +10,28 @@ import type { RegressorTabPFNConfig } from './regressor-tab-pfn-config.js';
  */
 export type RegressorMetadata = {
   /**
-   * Test rows the model saw.
+   * Number of rows that the model predicted.
    */
   test_set_num_rows: number;
   /**
-   * Test columns the model saw, after encoding; differs from the request's width when columns are dropped or text columns expand.
+   * Number of columns after encoding. This number can be different from the number of columns that you sent.
    */
   test_set_num_cols: number;
   /**
-   * Ensemble size the run used.
+   * Ensemble size that the request used. Null when no ensemble ran.
    */
   n_estimators?: number | null;
   /**
+   * The type of prediction.
    * Default: "regression".
    */
   task?: 'regression';
   /**
-   * Version of the TabPFN package that served the request.
+   * Version of the TabPFN package that made the prediction.
    */
   package_version: string;
   /**
-   * The configuration the run used. Settings the request left to the model are null.
+   * The model settings that the request used.
    */
   tabpfn_config: RegressorTabPFNConfig;
 };

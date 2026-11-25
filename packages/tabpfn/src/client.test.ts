@@ -58,47 +58,38 @@ describe('tabpfn', () => {
     expect(result.prediction).toEqual([[0.83, 0.17]]);
   });
 
-  it('should derive filenames only for supported blob types', async () => {
-    mockDeploymentsList(
-      { scenarioId: 'foundation-models', executableId: 'prior-labs' },
-      { id: '1234', model: { name: 'tabpfn-3.5-plus', version: 'latest' } }
-    );
-
-    const requestScope = nock('https://api.ai.ml.hana.ondemand.com', {
-      reqheaders: {
-        'ai-resource-group': 'default'
-      }
-    })
-      .post('/v2/inference/deployments/1234/predict', body => {
-        const multipartBody = body.toString();
-        expect(multipartBody).toMatch(
-          /name="x_train"; filename="x_train\.csv"\r\nContent-Type: application\/octet-stream/
-        );
-        expect(multipartBody).toMatch(
-          /name="y_train"; filename="y_train"\r\nContent-Type: application\/json/
-        );
-        expect(multipartBody).toMatch(
-          /name="x_test"; filename="x_test\.parquet"\r\nContent-Type: application\/vnd\.apache\.parquet/
-        );
-        return true;
+  it.each(['predictFiles', 'predictParquet'] as const)(
+    'should send files and a plain JSON configuration field with %s',
+    async method => {
+      mockDeploymentsList(
+        { scenarioId: 'foundation-models', executableId: 'prior-labs' },
+        { id: '1234', model: { name: 'tabpfn-3.5-plus', version: 'latest' } }
+      );
+      const request = { task_config: { task: 'regression' as const } };
+      const path = method === 'predictParquet' ? 'predict_parquet' : 'predict';
+      const scope = nock('https://api.ai.ml.hana.ondemand.com', {
+        reqheaders: { 'ai-resource-group': 'default' }
       })
-      .reply(200, { prediction: [1.7, 2.2] });
-
-    const result = await new TabpfnClient('tabpfn-3.5-plus').predictFiles({
-      x_train: new Blob(['fake csv data']),
-      y_train: new Blob(['unsupported'], { type: 'application/json' }),
-      x_test: new Blob(['fake parquet data'], {
+        .post(`/v2/inference/deployments/1234/${path}`, body => {
+          const text = body.toString();
+          expect(text).toContain('name="x_test"');
+          expect(text).toContain('application/vnd.apache.parquet');
+          expect(text).toContain(JSON.stringify(request));
+          expect(text).not.toMatch(/name="request"; filename=/);
+          return true;
+        })
+        .reply(200, { prediction: [1.7] });
+      const data = new Blob(['PAR1'], {
         type: 'application/vnd.apache.parquet'
-      }),
-      request: {
-        task_config: {
-          task: 'regression',
-          predict_params: { output_type: 'mean' }
-        }
-      }
-    });
-
-    expect(requestScope.isDone()).toBe(true);
-    expect(result.prediction).toEqual([1.7, 2.2]);
-  });
+      });
+      const result = await new TabpfnClient('tabpfn-3.5-plus')[method]({
+        x_train: data,
+        y_train: data,
+        x_test: data,
+        request
+      });
+      expect(scope.isDone()).toBe(true);
+      expect(result.prediction).toEqual([1.7]);
+    }
+  );
 });

@@ -5,15 +5,22 @@
  */
 
 import type { RegressorPredictParams } from './regressor-predict-params.js';
-import type { RegressorTabPFNConfigInput } from './regressor-tab-pfn-config-input.js';
+import type { RegressorTabPFNConfig } from './regressor-tab-pfn-config.js';
 /**
  * Representation of the 'RegressorConfig' schema.
  */
 export type RegressorConfig = {
   /**
+   * The type of prediction.
    * Default: "regression".
    */
   task?: 'regression';
-  tabpfn_config?: RegressorTabPFNConfigInput;
+  /**
+   * Model settings for the fit.
+   */
+  tabpfn_config?: RegressorTabPFNConfig;
+  /**
+   * What the prediction returns.
+   */
   predict_params?: RegressorPredictParams;
 };

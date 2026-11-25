@@ -5,17 +5,20 @@
  */
 
 /**
- * Body of every error the application raises. Unrouted paths and wrong methods (404, 405) return `{"detail": "..."}` instead.
+ * Representation of the 'ErrorResponse' schema.
  */
 export type ErrorResponse = {
+  /**
+   * What went wrong.
+   */
   message: string;
   /**
-   * `USER_ERROR` for 4xx, `BUSY` for a 503 from the concurrency limit, `INTERNAL_ERROR` for 5xx.
+   * Machine-readable error category, such as `BUSY`.
    * Default: "GENERAL_ERROR".
    */
   error_code?: string;
   /**
-   * 32 hex characters identifying the request in the container's logs.
+   * Id to quote when reporting the error.
    */
   trace_id?: string | null;
 };

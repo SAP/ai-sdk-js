@@ -5,15 +5,22 @@
  */
 
 import type { ClassifierPredictParams } from './classifier-predict-params.js';
-import type { ClassifierTabPFNConfigInput } from './classifier-tab-pfn-config-input.js';
+import type { ClassifierTabPFNConfig } from './classifier-tab-pfn-config.js';
 /**
  * Representation of the 'ClassifierConfig' schema.
  */
 export type ClassifierConfig = {
   /**
+   * The type of prediction.
    * Default: "classification".
    */
   task?: 'classification';
-  tabpfn_config?: ClassifierTabPFNConfigInput;
+  /**
+   * Model settings for the fit.
+   */
+  tabpfn_config?: ClassifierTabPFNConfig;
+  /**
+   * What the prediction returns.
+   */
   predict_params?: ClassifierPredictParams;
 };

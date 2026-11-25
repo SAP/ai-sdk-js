@@ -10,11 +10,15 @@ import type { ClassifierOutputType } from './classifier-output-type.js';
  */
 export type ClassifierPredictParams = {
   /**
-   * `probas`: one probability per class per test row. `preds`: one label per test row. `top_k`: the k most probable classes per row, as positions plus probabilities.
+   * What `prediction` contains:
+   *
+   * * `probas`: one probability for each class, for each row.
+   * * `preds`: one label for each row.
+   * * `top_k`: the most probable classes for each row.
    */
   output_type?: ClassifierOutputType;
   /**
-   * Required with `output_type: top_k`, rejected with any other output type.
+   * Number of classes that `top_k` returns for each row. Required with `output_type=top_k`. Other output types do not permit it.
    */
   top_k?: number | null;
 };

@@ -5,10 +5,19 @@
  */
 
 /**
- * Shape of one request table as sent, before any preprocessing.
+ * Shape of one input table, as you sent it.
  */
 export type TableUsage = {
+  /**
+   * Number of rows that you sent.
+   */
   num_rows: number;
+  /**
+   * Number of columns that you sent.
+   */
   num_cols: number;
+  /**
+   * `num_rows` times `num_cols`.
+   */
   num_cells: number;
 };

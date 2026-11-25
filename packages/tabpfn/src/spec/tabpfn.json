@@ -1,179 +1,95 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "TabPFN inference container (sap)",
-    "description": "Single-call fit-and-predict API of the `sap` container distribution. A request carries the training table, the target and the test table; the container fits on the first two and predicts on the third. No state is kept between requests and there is no authentication layer in the container.\n\nBaked models: v3, v3.5. Default when `model_version` is omitted: v3.5. Listens on port 8080.",
-    "version": "9a8f2c44",
-    "x-disabled-tabpfn-config-fields": [
-      "model_path",
-      "device",
-      "ignore_pretraining_limits"
-    ]
+    "title": "TabPFN Inference API",
+    "description": "TabPFN makes predictions on tabular data in a single request. Each request to\n`POST /predict` fits on the training data in the body. Then it predicts the\ntest data in the same body.\n\n## Sending a request\n\nSend `application/json`. The predict route in the API reference has an example\nbody.\n\nA table is row-oriented or column-oriented. A row-oriented table is a list of\nrows. A column-oriented table is an object that maps each column name to its\nvalues. `y_train` is a flat list with one target for each training row.\n\nFor large tables, send `multipart/form-data` with Parquet tables to `POST /predict_parquet`. `POST /predict` also accepts `multipart/form-data`, with CSV or Parquet tables.\n\n- Send `x_train`, `y_train` and `x_test` as file parts. `X_train` and `X_test`\n  are also accepted as part names. A file name is optional.\n- Give a Parquet part the content type `application/vnd.apache.parquet`, and a\n  CSV part `text/csv`. The content type decides how the container reads the\n  part. `POST /predict_parquet` rejects a part that is not Parquet.\n- A part without a content type, or with `application/octet-stream`, is read\n  as Parquet if its content is Parquet. `POST /predict` reads it as CSV if\n  it is not.\n- Send the rest of the body as JSON in a `request` part. Send this part as a\n  plain form field, not as a file. The container rejects a `request` file.\n\nTo compress a body, send it with `Content-Encoding: gzip`.\n\n`task_config.task` is `classification` or `regression`. The task decides which\n`predict_params` apply. You cannot set some `tabpfn_config` fields on this\ncontainer. The container rejects a request that sets one of these fields. It\ndoes not ignore the field.\n\nThe deployment selects the model. The container rejects a request whose `model_version` names another model.\n\n## Classification output types\n\n| `output_type`      | `prediction`                                                | class labels in      |\n| ------------------ | ----------------------------------------------------------- | -------------------- |\n| `probas` (default) | one row per test row, one column per class                  | `metadata.classes`   |\n| `preds`            | one label per test row                                      | `metadata.classes`   |\n| `top_k`            | `{\"classes\": […], \"values\": [[…]], \"probabilities\": [[…]]}` | `prediction.classes` |\n\nThe classes are in ascending order and keep their original type.\n\nWith `top_k`, `values[j][i]` is a position in `prediction.classes`. To get the\nclass, use `classes[values[j][i]]`. Each row lists the classes from the most\nprobable to the least probable. If `top_k` is larger than the number of\nclasses, each row lists all classes. The probabilities in a row add up to 1\nonly when the row lists all classes. `top_k` is required with this output\ntype. The container rejects `top_k` with other output types.\n\n## Regression output types\n\n`mean` (default), `median`, `mode`, `quantiles`, `main` (the point estimates and\nthe quantiles), and `full`. Set `quantiles: [...]` to select the quantiles. If\nyou do not set `quantiles`, the container uses the default list. `full` returns\nthe full predicted distribution, so it accepts fewer rows.\n\n## Usage counts\n\nEach successful response has a `usage` block. The counts are for the tables as\nyou sent them, before preprocessing. You can calculate each count from the\nrequest body. For a multipart body, the counts are for the files as the\ncontainer reads them. A CSV header row is not a row.\n\n- `num_cells` is the total number of cells in the three tables.\n- `num_predictions` is one for each test row. The `output_type` does not change\n  this number.\n- `n_estimators` is the ensemble size that the request used.\n\nUse `usage` for metering. Do not use `metadata` for metering. Its widths\ndescribe the table after preprocessing, which can remove or expand columns.\n\n## Size limits\n\nThe container rejects a request over one of these limits with `422`.\nPreprocessing can add columns, for example for text columns. The column and\ncell limits also apply to the table that preprocessing makes.\n\n| Limit                           | `v4`           |\n| ------------------------------- | -------------- |\n| Training rows                   | 10,000,000     |\n| Columns                         | 20,000         |\n| Training cells (rows × columns) | 20,480,000,000 |\n| Test rows                       | 1,000,000      |\n| Test cells                      | 2,048,000,000  |\n\nEach table can take at most 10 GiB in memory after the container reads\nit.\n\n## Data in your object store\n\nThe operator can let the container read tables from your object store. A JSON\nrequest can then give a table as `{\"url\": \"...\"}`, not as values. The URL is a\npresigned GET URL of a Parquet or CSV object:\n\n```json\n{\n  \"task_config\": { \"task\": \"classification\", \"tabpfn_config\": {} },\n  \"X_train\": { \"url\": \"https://store.example/bucket/x_train.parquet?X-Amz-Signature=...\" },\n  \"y_train\": { \"url\": \"https://store.example/bucket/y_train.parquet?X-Amz-Signature=...\" },\n  \"X_test\": { \"url\": \"https://store.example/bucket/x_test.parquet?X-Amz-Signature=...\" }\n}\n```\n\nThe container has no credentials for the store. It reads only URLs on the hosts\nthat the operator allows, and it does not follow a redirect. It does not write\na URL to its log or to a response.\n\nIf the store refuses a URL (expired, forbidden or missing), the container\nreturns `422`. If the store fails (`5xx`, throttling or no answer), the\ncontainer returns `503`. Send the request again.\n\nYou can send `X_test` as values with training data by URL. Then `X_test` must\nuse the column names of the stored tables (`{\"f0\": [...], \"f1\": [...]}`). A\nlist of rows gives the columns by position only.\n\n## Request ids and errors\n\nEach response has an `X-Request-Id` header, and each error body has a\n`trace_id`. Both give the id of the request in the container's log. Give this\nid when you report a problem.\n\nTo use your own id, send it in a header. The container uses the first of these\nheaders that it finds: `Sentry-Trace`, `X-Cloud-Trace-Context`, `traceparent`,\n`X-Request-Id`, `b3` or `X-B3-TraceId`, and `X-Amzn-Trace-Id`. A trace id is\n32 or 16 hex digits, or a UUID.\n\nAn `X-Request-Id` that is not a trace id is returned unchanged, and the log\nshows it next to an id that the container makes. This applies only to a value\nof 128 printable characters or fewer, with no spaces. The container ignores a\ndifferent value.\n\nAn error body always has these three fields:\n\n```json\n{\n  \"message\": \"Invalid request. categorical_features_indices [99] do not name a column: the data has 4 columns, indexed from 0.\",\n  \"error_code\": \"USER_ERROR\",\n  \"trace_id\": \"0af7651916cd43dd8448eb211c80319c\"\n}\n```\n\nUse `error_code` in your code. `message` tells what is wrong with this request\nand what to do, and its text can change between releases. A `400`, `415` or\n`422` status with `USER_ERROR` always means that you must change the request\nbefore it can succeed.\n\n| `error_code`               | Status | Cause                                                                   | What to do                                                                                 |\n| -------------------------- | ------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |\n| `USER_ERROR`               | 400    | The request is malformed or names a value the endpoint does not accept. | Correct the field the message names and resend.                                            |\n| `REQUEST_VALIDATION_ERROR` | 422    | A field has the wrong type or shape.                                    | Correct the field the message names and resend.                                            |\n| `NOT_FOUND`                | 404    | The path does not exist on this deployment.                             | Use the predict path given in the release notes.                                           |\n| `CACHE_NOT_ENABLED`        | 400    | This deployment does not keep fitted models between requests.           | Send the training data with every request and do not set `fit_mode` or `context.model_id`. |\n| `OUT_OF_MEMORY`            | 413    | The request did not fit in the memory of the device it ran on.          | Retry once; if it repeats, send fewer rows or columns, or lower `n_estimators`.            |\n| `BUSY`                     | 503    | The deployment is at capacity.                                          | Retry after the interval in the `Retry-After` header.                                      |\n| `INTERNAL_ERROR`           | 500    | The container failed while serving the request.                         | Report the `trace_id` to your provider.                                                    |\n\nA `413` with `USER_ERROR` means that the body is larger than the free memory of\nthe container. Send fewer rows, or deploy on an instance with more memory.\n",
+    "version": "v1.1.0"
   },
-  "servers": [
-    {
-      "url": "/",
-      "description": "The TabPFN deployment URL."
-    }
-  ],
-  "tags": [
-    {
-      "name": "inference"
-    },
-    {
-      "name": "operations"
-    }
-  ],
   "paths": {
     "/predict": {
       "post": {
-        "summary": "Fit on the training data and predict the test rows",
-        "operationId": "predict",
+        "summary": "Fit on the training data and predict the test data",
+        "operationId": "handle_predict_post",
         "responses": {
           "200": {
-            "description": "The prediction, the run's metadata and the request's size. The example is illustrative.",
+            "description": "The prediction.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PredictResponse"
-                },
-                "example": {
-                  "prediction": [[0.93, 0.07]],
-                  "metadata": {
-                    "test_set_num_rows": 1,
-                    "test_set_num_cols": 2,
-                    "n_estimators": 8,
-                    "task": "classification",
-                    "package_version": "<tabpfn version>",
-                    "tabpfn_config": {
-                      "n_estimators": null,
-                      "categorical_features_indices": null,
-                      "softmax_temperature": null,
-                      "average_before_softmax": null,
-                      "random_state": null,
-                      "inference_config": null,
-                      "inference_precision": null,
-                      "ignore_pretraining_limits": true,
-                      "n_preprocessing_jobs": 4,
-                      "fit_mode": "fit_preprocessors",
-                      "device": ["cuda:0"],
-                      "memory_saving_mode": false,
-                      "model_path": "<resolved checkpoint path>",
-                      "balance_probabilities": null
-                    },
-                    "classes": ["negative", "positive"],
-                    "top_k": null
-                  },
-                  "usage": {
-                    "X_train": {
-                      "num_rows": 4,
-                      "num_cols": 2,
-                      "num_cells": 8
-                    },
-                    "y_train": {
-                      "num_rows": 4,
-                      "num_cols": 1,
-                      "num_cells": 4
-                    },
-                    "X_test": {
-                      "num_rows": 1,
-                      "num_cols": 2,
-                      "num_cells": 2
-                    },
-                    "n_estimators": 8,
-                    "num_cells": 14,
-                    "num_predictions": 1
-                  },
-                  "model_id": null
-                }
-              }
-            },
-            "headers": {
-              "Sentry-Trace": {
-                "description": "`<trace_id>-<span_id>`. The trace id is taken from a request `Sentry-Trace` or `X-Cloud-Trace-Context` header when one is sent, else generated.",
-                "schema": {
-                  "type": "string"
                 }
               }
             }
           },
           "400": {
-            "description": "Malformed body: invalid JSON, a missing `X_test` / `request` / file part, an invalid `task_config` (unknown field, out-of-range value, `top_k` rule), a `model_version` this image does not serve, or a cache feature this image does not have.",
+            "description": "The container cannot use the body:\n\n* The container cannot parse the body.\n* The body has no `task_config` or no `X_test`.\n* A `task_config` value is not valid.\n* The body is compressed but is not valid gzip.\n* `fit_mode` is `fit_with_cache`. This container does not keep fits.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "message": "model_version='v2' is not baked into this image; available: ['v3', 'v3.5'].",
-                  "error_code": "USER_ERROR",
-                  "trace_id": "3373ccbe99ff4152ab546cbc1739c96f"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body, after decompression, is larger than the container accepts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
           "415": {
-            "description": "`Content-Type` is missing or neither `application/json` nor `multipart/form-data`, or an uploaded file is neither CSV nor Parquet.",
+            "description": "The body is not JSON or multipart form data, its `Content-Encoding` is not `gzip`, or a file part is not CSV or Parquet.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "message": "Unsupported media type: 'text/plain'.",
-                  "error_code": "USER_ERROR",
-                  "trace_id": "3373ccbe99ff4152ab546cbc1739c96f"
                 }
               }
             }
           },
           "422": {
-            "description": "The body parsed but cannot be served: missing training data, an unknown top-level key, a disabled `tabpfn_config` field, a mis-shaped table, a violated size limit, or data the model rejects.",
+            "description": "The request is not valid:\n\n* A field has a value that is not valid.\n* `X_train` or `y_train` is missing.\n* The request sets a field that you cannot set on this container.\n* The data or the requested output is larger than the container accepts.\n* `model_version` names a model other than the one the deployment selects.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "message": "Config overrides not allowed for: device",
-                  "error_code": "USER_ERROR",
-                  "trace_id": "3373ccbe99ff4152ab546cbc1739c96f"
                 }
               }
             }
           },
           "500": {
-            "description": "Unexpected failure. The message is generic; quote the `trace_id`.",
+            "description": "The prediction failed in the container.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "message": "Something went wrong, please report the error with the provided trace id",
-                  "error_code": "INTERNAL_ERROR",
-                  "trace_id": "3373ccbe99ff4152ab546cbc1739c96f"
                 }
               }
             }
           },
           "503": {
-            "description": "The replica is at its concurrency limit (`error_code: BUSY`, only when `PRIOR_PREDICT_MAX_CONCURRENT_REQUESTS` is set), or the request waited more than 120 s for the GPU. Safe to retry.",
+            "description": "The container cannot serve the request now. Retry the request later.\n\n* The container is at its request limit.\n* No device became free in time.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "message": "This replica is at its concurrency limit. Retry against another replica, or raise PRIOR_PREDICT_MAX_CONCURRENT_REQUESTS.",
-                  "error_code": "BUSY",
-                  "trace_id": "3373ccbe99ff4152ab546cbc1739c96f"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying, when supplied.",
+                "schema": {
+                  "type": "integer"
                 }
               }
             }
           }
         },
-        "description": "Synchronous: the response is returned when the prediction is done. A replica holds one GPU and serves requests one at a time; further requests queue (up to 120 s for the GPU, then 503).\n\nLimits, per model:\n\n- **v3**: ≤ 1,000,000 training rows, ≤ 2,000 columns, ≤ 200,000,000 training cells, ≤ 200,000,000 training cells per estimator, ≤ 200,000,000 test cells, test rows ≤ min(1,000,000, 250,000,000,000 ÷ training rows).\n- **v3.5**: ≤ 1,000,000 training rows, ≤ 2,000 columns, ≤ 200,000,000 training cells, ≤ 200,000,000 training cells per estimator, ≤ 200,000,000 test cells, test rows ≤ min(1,000,000, 250,000,000,000 ÷ training rows).\n\nAll models: each table ≤ 5 GiB in memory; a response of at most 32,000,000 values (test rows × values per row); `full` regression ≤ 400 test rows. A violated limit is a 422.\n\nRequest bodies must not be compressed (`Content-Encoding: gzip` is not decoded). Responses are gzip-compressed when the request sends `Accept-Encoding: gzip`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -181,79 +97,52 @@
               "schema": {
                 "$ref": "#/components/schemas/PredictRequest"
               },
-              "examples": {
-                "classification": {
-                  "summary": "Class probabilities",
-                  "value": {
-                    "task_config": {
-                      "task": "classification",
-                      "tabpfn_config": {},
-                      "predict_params": {
-                        "output_type": "probas"
-                      }
-                    },
-                    "X_train": [
-                      [0.1, 0.2],
-                      [0.8, 0.9],
-                      [0.2, 0.1],
-                      [0.9, 0.7]
-                    ],
-                    "y_train": ["negative", "positive", "negative", "positive"],
-                    "X_test": [[0.15, 0.25]]
+              "example": {
+                "task_config": {
+                  "task": "classification",
+                  "tabpfn_config": {},
+                  "predict_params": {
+                    "output_type": "probas"
                   }
                 },
-                "top_k": {
-                  "summary": "Top-2 classes per row",
-                  "value": {
-                    "task_config": {
-                      "task": "classification",
-                      "predict_params": {
-                        "output_type": "top_k",
-                        "top_k": 2
-                      }
-                    },
-                    "X_train": [
-                      [0.1, 0.2],
-                      [0.8, 0.9],
-                      [0.2, 0.1],
-                      [0.9, 0.7]
-                    ],
-                    "y_train": ["negative", "positive", "negative", "positive"],
-                    "X_test": [[0.15, 0.25]]
-                  }
-                },
-                "regression": {
-                  "summary": "Quantile regression with named columns",
-                  "value": {
-                    "task_config": {
-                      "task": "regression",
-                      "tabpfn_config": {
-                        "n_estimators": 4
-                      },
-                      "predict_params": {
-                        "output_type": "quantiles",
-                        "quantiles": [0.1, 0.5, 0.9]
-                      }
-                    },
-                    "model_version": "v3",
-                    "X_train": {
-                      "sqm": [50, 80, 120, 65],
-                      "city": ["Berlin", "Munich", "Berlin", "Hamburg"]
-                    },
-                    "y_train": [250000, 610000, 590000, 380000],
-                    "X_test": {
-                      "sqm": [70],
-                      "city": ["Munich"]
-                    }
-                  }
-                }
+                "X_train": [
+                  [0.1, 0.2],
+                  [0.8, 0.9]
+                ],
+                "y_train": ["negative", "positive"],
+                "X_test": [[0.15, 0.25]]
               }
             },
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/PredictMultipart"
+                "type": "object",
+                "required": ["request", "x_test"],
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/PredictRequestPart",
+                    "description": "The rest of the body, as JSON. Send it as a plain form field, not as a file."
+                  },
+                  "x_train": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Training features, as CSV with a header row or as Parquet."
+                  },
+                  "y_train": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Training targets, as CSV or Parquet with one column. A CSV file has a header row."
+                  },
+                  "x_test": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Features to predict, as CSV with a header row or as Parquet."
+                  }
+                }
               },
               "encoding": {
+                "request": {
+                  "contentType": "application/json"
+                },
                 "x_train": {
                   "contentType": "text/csv, application/vnd.apache.parquet"
                 },
@@ -266,8 +155,139 @@
               }
             }
           }
+        }
+      }
+    },
+    "/predict_parquet": {
+      "post": {
+        "summary": "Fit on Parquet tables and predict",
+        "operationId": "handle_parquet_predict_parquet_post",
+        "responses": {
+          "200": {
+            "description": "The prediction.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The container cannot use the body:\n\n* The container cannot parse the body.\n* The body has no `task_config` or no `X_test`.\n* A `task_config` value is not valid.\n* The body is compressed but is not valid gzip.\n* `fit_mode` is `fit_with_cache`. This container does not keep fits.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body, after decompression, is larger than the container accepts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "The body is not multipart form data, its `Content-Encoding` is not `gzip`, or a file part is not Parquet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The request is not valid:\n\n* A field has a value that is not valid.\n* `X_train` or `y_train` is missing.\n* The request sets a field that you cannot set on this container.\n* The data or the requested output is larger than the container accepts.\n* `model_version` names a model other than the one the deployment selects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The prediction failed in the container.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The container cannot serve the request now. Retry the request later.\n\n* The container is at its request limit.\n* No device became free in time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying, when supplied.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
         },
-        "tags": ["inference"]
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["request", "x_test"],
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/PredictRequestPart",
+                    "description": "The rest of the body, as JSON. Send it as a plain form field, not as a file."
+                  },
+                  "x_train": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Training features, as Parquet."
+                  },
+                  "y_train": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Training targets, as Parquet with one column."
+                  },
+                  "x_test": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Features to predict, as Parquet."
+                  }
+                }
+              },
+              "encoding": {
+                "request": {
+                  "contentType": "application/json"
+                },
+                "x_train": {
+                  "contentType": "application/vnd.apache.parquet"
+                },
+                "y_train": {
+                  "contentType": "application/vnd.apache.parquet"
+                },
+                "x_test": {
+                  "contentType": "application/vnd.apache.parquet"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -277,13 +297,11 @@
         "properties": {
           "test_set_num_rows": {
             "type": "integer",
-            "title": "Test Set Num Rows",
-            "description": "Test rows the model saw."
+            "description": "Number of rows that the model predicted."
           },
           "test_set_num_cols": {
             "type": "integer",
-            "title": "Test Set Num Cols",
-            "description": "Test columns the model saw, after encoding; differs from the request's width when columns are dropped or text columns expand."
+            "description": "Number of columns after encoding. This number can be different from the number of columns that you sent."
           },
           "n_estimators": {
             "anyOf": [
@@ -294,23 +312,21 @@
                 "type": "null"
               }
             ],
-            "title": "N Estimators",
-            "description": "Ensemble size the run used."
+            "description": "Ensemble size that the request used. Null when no ensemble ran."
           },
           "task": {
             "type": "string",
             "const": "classification",
-            "title": "Task",
+            "description": "The type of prediction.",
             "default": "classification"
           },
           "package_version": {
             "type": "string",
-            "title": "Package Version",
-            "description": "Version of the TabPFN package that served the request."
+            "description": "Version of the TabPFN package that made the prediction."
           },
           "tabpfn_config": {
             "$ref": "#/components/schemas/ClassifierTabPFNConfig",
-            "description": "The configuration the run used. Settings the request left to the model are null."
+            "description": "The model settings that the request used."
           },
           "classes": {
             "anyOf": [
@@ -337,8 +353,7 @@
                 "type": "null"
               }
             ],
-            "title": "Classes",
-            "description": "Class labels in ascending order, original type. The column axis of `probas`. Null for `top_k`, where the list travels in `prediction.classes` instead."
+            "description": "Class labels in ascending order. They name the columns of `probas` and the labels of `preds`. Null with `top_k`, because `top_k` has its own `prediction.classes`."
           },
           "top_k": {
             "anyOf": [
@@ -349,8 +364,7 @@
                 "type": "null"
               }
             ],
-            "title": "Top K",
-            "description": "The request's `top_k`, else null."
+            "description": "The `top_k` value of the request."
           }
         },
         "additionalProperties": false,
@@ -360,23 +374,24 @@
           "test_set_num_cols",
           "package_version",
           "tabpfn_config"
-        ],
-        "title": "ClassifierMetadata"
+        ]
       },
       "ClassifierTabPFNConfig": {
+        "additionalProperties": false,
         "properties": {
           "n_estimators": {
             "anyOf": [
               {
-                "type": "integer",
                 "maximum": 8,
-                "minimum": 1
+                "minimum": 1,
+                "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "N Estimators"
+            "default": null,
+            "description": "Ensemble size. The model averages this number of forward passes, and each pass uses a different preprocessed view of the data. If unset, TabPFN selects the size. It selects 8 for most data. For wide tables, it selects more, so that each column gets to at least one ensemble member."
           },
           "categorical_features_indices": {
             "anyOf": [
@@ -390,7 +405,8 @@
                 "type": "null"
               }
             ],
-            "title": "Categorical Features Indices"
+            "default": null,
+            "description": "0-based indices of the categorical columns. If unset, the model finds the categorical columns."
           },
           "softmax_temperature": {
             "anyOf": [
@@ -401,7 +417,8 @@
                 "type": "null"
               }
             ],
-            "title": "Softmax Temperature"
+            "default": null,
+            "description": "A lower value makes the predicted probabilities more confident. The value 1.0 has no effect. If unset, the model uses its default value."
           },
           "average_before_softmax": {
             "anyOf": [
@@ -409,10 +426,15 @@
                 "type": "boolean"
               },
               {
+                "const": "auto",
+                "type": "string"
+              },
+              {
                 "type": "null"
               }
             ],
-            "title": "Average Before Softmax"
+            "default": null,
+            "description": "If true, the model averages the logits of the ensemble members before the softmax. If false, it averages their probabilities after the softmax. `auto` takes the setting of the checkpoint, as does unset. A true or false value cannot be combined with `AVERAGE_BEFORE_SOFTMAX` in `inference_config`."
           },
           "random_state": {
             "anyOf": [
@@ -423,7 +445,8 @@
                 "type": "null"
               }
             ],
-            "title": "Random State"
+            "default": null,
+            "description": "Random seed. The same seed gives the same results. If unset, TabPFN uses its default seed."
           },
           "inference_config": {
             "anyOf": [
@@ -435,29 +458,51 @@
                 "type": "null"
               }
             ],
-            "title": "Inference Config",
-            "description": "Refer to tabpfn.inference_config.InferenceConfig for more details."
+            "default": null,
+            "description": "Advanced inference settings. See `tabpfn.inference_config.InferenceConfig` in the TabPFN package."
           },
           "inference_precision": {
             "anyOf": [
               {
-                "type": "string",
-                "enum": ["autocast", "auto"]
+                "enum": ["autocast", "auto"],
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Inference Precision"
+            "default": null,
+            "description": "`autocast` always uses mixed precision. `auto` selects the precision from the hardware."
+          },
+          "presets": {
+            "anyOf": [
+              {
+                "enum": ["zero_inflated"],
+                "type": "string"
+              },
+              {
+                "items": {
+                  "enum": ["zero_inflated"],
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Names of bundles of inference settings. `zero_inflated` is for regression targets with many exact zeros. The keys of `inference_config` win over every preset. If unset, the model uses the settings of its checkpoint."
           },
           "n_preprocessing_jobs": {
-            "type": "integer",
-            "title": "N Preprocessing Jobs",
-            "default": 4
+            "default": 4,
+            "description": "Number of worker processes for preprocessing.",
+            "type": "integer"
           },
           "fit_mode": {
             "$ref": "#/components/schemas/FitMode",
-            "default": "fit_preprocessors"
+            "default": "fit_preprocessors",
+            "description": "How the model prepares the fit."
           },
           "memory_saving_mode": {
             "anyOf": [
@@ -468,7 +513,8 @@
                 "type": "null"
               }
             ],
-            "title": "Memory Saving Mode"
+            "default": null,
+            "description": "If true, the model divides parts of the computation into batches to use less memory. If unset, the model decides."
           },
           "balance_probabilities": {
             "anyOf": [
@@ -479,42 +525,42 @@
                 "type": "null"
               }
             ],
-            "title": "Balance Probabilities"
+            "default": null,
+            "description": "If true, the model adjusts the probabilities for the class distribution of the training data. This can help with imbalanced classes when the metric ignores class imbalance, such as balanced accuracy."
           }
         },
-        "additionalProperties": false,
-        "type": "object",
-        "title": "ClassifierTabPFNConfig"
+        "type": "object"
       },
       "FitMode": {
         "enum": ["low_memory", "fit_preprocessors", "batched"],
-        "title": "FitMode",
         "type": "string"
       },
       "InputUsage": {
         "properties": {
           "X_train": {
-            "$ref": "#/components/schemas/TableUsage"
+            "$ref": "#/components/schemas/TableUsage",
+            "description": "Shape of `X_train` as you sent it. Zero when the request has no training data."
           },
           "y_train": {
-            "$ref": "#/components/schemas/TableUsage"
+            "$ref": "#/components/schemas/TableUsage",
+            "description": "Shape of `y_train` as you sent it. Zero when the request has no training data."
           },
           "X_test": {
-            "$ref": "#/components/schemas/TableUsage"
+            "$ref": "#/components/schemas/TableUsage",
+            "description": "Shape of `X_test` as you sent it."
           },
           "n_estimators": {
             "type": "integer",
-            "title": "N Estimators"
+            "description": "Ensemble size that the request used. Never null."
           },
           "num_cells": {
             "type": "integer",
-            "title": "Num Cells",
+            "description": "Total number of cells in the three tables.",
             "readOnly": true
           },
           "num_predictions": {
             "type": "integer",
-            "title": "Num Predictions",
-            "description": "One per test row, independent of how many values `output_type`\nreturns for each.",
+            "description": "One for each test row. The `output_type` does not change this number.",
             "readOnly": true
           }
         },
@@ -528,13 +574,43 @@
           "num_cells",
           "num_predictions"
         ],
-        "title": "InputUsage",
-        "description": "Size of the request, reproducible from the posted body. Meter on this."
+        "description": "What the request used. Use it for metering.\n\nThe counts are for the tables as you sent them, before preprocessing. You can\ncalculate each count from the request body. `metadata.test_set_num_cols` is\ndifferent: it is the width after encoding."
       },
       "PredictResponse": {
         "properties": {
           "prediction": {
-            "$ref": "#/components/schemas/Prediction"
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "items": {
+                  "items": {},
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "items": {},
+                      "type": "array"
+                    },
+                    {
+                      "items": {
+                        "items": {},
+                        "type": "array"
+                      },
+                      "type": "array"
+                    }
+                  ]
+                },
+                "type": "object"
+              }
+            ],
+            "description": "One entry per test row, shaped by `predict_params.output_type`."
           },
           "metadata": {
             "oneOf": [
@@ -545,7 +621,7 @@
                 "$ref": "#/components/schemas/RegressorMetadata"
               }
             ],
-            "title": "Metadata",
+            "description": "The settings that the request used.",
             "discriminator": {
               "propertyName": "task",
               "mapping": {
@@ -555,25 +631,23 @@
             }
           },
           "usage": {
-            "$ref": "#/components/schemas/InputUsage"
+            "$ref": "#/components/schemas/InputUsage",
+            "description": "What the request used. Use it for metering."
           }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["prediction", "metadata", "usage"],
-        "title": "PredictResponse"
+        "required": ["prediction", "metadata", "usage"]
       },
       "RegressorMetadata": {
         "properties": {
           "test_set_num_rows": {
             "type": "integer",
-            "title": "Test Set Num Rows",
-            "description": "Test rows the model saw."
+            "description": "Number of rows that the model predicted."
           },
           "test_set_num_cols": {
             "type": "integer",
-            "title": "Test Set Num Cols",
-            "description": "Test columns the model saw, after encoding; differs from the request's width when columns are dropped or text columns expand."
+            "description": "Number of columns after encoding. This number can be different from the number of columns that you sent."
           },
           "n_estimators": {
             "anyOf": [
@@ -584,23 +658,21 @@
                 "type": "null"
               }
             ],
-            "title": "N Estimators",
-            "description": "Ensemble size the run used."
+            "description": "Ensemble size that the request used. Null when no ensemble ran."
           },
           "task": {
             "type": "string",
             "const": "regression",
-            "title": "Task",
+            "description": "The type of prediction.",
             "default": "regression"
           },
           "package_version": {
             "type": "string",
-            "title": "Package Version",
-            "description": "Version of the TabPFN package that served the request."
+            "description": "Version of the TabPFN package that made the prediction."
           },
           "tabpfn_config": {
             "$ref": "#/components/schemas/RegressorTabPFNConfig",
-            "description": "The configuration the run used. Settings the request left to the model are null."
+            "description": "The model settings that the request used."
           }
         },
         "additionalProperties": false,
@@ -610,194 +682,9 @@
           "test_set_num_cols",
           "package_version",
           "tabpfn_config"
-        ],
-        "title": "RegressorMetadata"
+        ]
       },
       "RegressorTabPFNConfig": {
-        "properties": {
-          "n_estimators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 8,
-                "minimum": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "N Estimators"
-          },
-          "categorical_features_indices": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "integer"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Categorical Features Indices"
-          },
-          "softmax_temperature": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Softmax Temperature"
-          },
-          "average_before_softmax": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Average Before Softmax"
-          },
-          "random_state": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Random State"
-          },
-          "inference_config": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Inference Config",
-            "description": "Refer to tabpfn.inference_config.InferenceConfig for more details."
-          },
-          "inference_precision": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": ["autocast", "auto"]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Inference Precision"
-          },
-          "n_preprocessing_jobs": {
-            "type": "integer",
-            "title": "N Preprocessing Jobs",
-            "default": 4
-          },
-          "fit_mode": {
-            "$ref": "#/components/schemas/FitMode",
-            "default": "fit_preprocessors"
-          },
-          "memory_saving_mode": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Memory Saving Mode"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "title": "RegressorTabPFNConfig"
-      },
-      "TableUsage": {
-        "properties": {
-          "num_rows": {
-            "type": "integer",
-            "title": "Num Rows"
-          },
-          "num_cols": {
-            "type": "integer",
-            "title": "Num Cols"
-          },
-          "num_cells": {
-            "type": "integer",
-            "title": "Num Cells",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["num_rows", "num_cols", "num_cells"],
-        "title": "TableUsage",
-        "description": "Shape of one request table as sent, before any preprocessing."
-      },
-      "ClassifierConfig": {
-        "additionalProperties": false,
-        "properties": {
-          "task": {
-            "const": "classification",
-            "default": "classification",
-            "title": "Task",
-            "type": "string"
-          },
-          "tabpfn_config": {
-            "$ref": "#/components/schemas/ClassifierTabPFNConfig-Input"
-          },
-          "predict_params": {
-            "$ref": "#/components/schemas/ClassifierPredictParams"
-          }
-        },
-        "title": "ClassifierConfig",
-        "type": "object"
-      },
-      "ClassifierOutputType": {
-        "enum": ["probas", "preds", "top_k"],
-        "title": "ClassifierOutputType",
-        "type": "string"
-      },
-      "ClassifierPredictParams": {
-        "additionalProperties": false,
-        "properties": {
-          "output_type": {
-            "$ref": "#/components/schemas/ClassifierOutputType",
-            "default": "probas",
-            "description": "`probas`: one probability per class per test row. `preds`: one label per test row. `top_k`: the k most probable classes per row, as positions plus probabilities."
-          },
-          "top_k": {
-            "anyOf": [
-              {
-                "minimum": 1,
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "title": "Top K",
-            "description": "Required with `output_type: top_k`, rejected with any other output type."
-          }
-        },
-        "title": "ClassifierPredictParams",
-        "type": "object"
-      },
-      "ClassifierTabPFNConfig-Input": {
         "additionalProperties": false,
         "properties": {
           "n_estimators": {
@@ -812,8 +699,7 @@
               }
             ],
             "default": null,
-            "title": "N Estimators",
-            "description": "Ensemble size: forward passes per prediction. Omit to let the model decide (8 for most data, more on very wide tables)."
+            "description": "Ensemble size. The model averages this number of forward passes, and each pass uses a different preprocessed view of the data. If unset, TabPFN selects the size. It selects 8 for most data. For wide tables, it selects more, so that each column gets to at least one ensemble member."
           },
           "categorical_features_indices": {
             "anyOf": [
@@ -828,8 +714,7 @@
               }
             ],
             "default": null,
-            "title": "Categorical Features Indices",
-            "description": "Zero-based column positions to treat as categorical. Omit to infer."
+            "description": "0-based indices of the categorical columns. If unset, the model finds the categorical columns."
           },
           "softmax_temperature": {
             "anyOf": [
@@ -841,8 +726,7 @@
               }
             ],
             "default": null,
-            "title": "Softmax Temperature",
-            "description": "Temperature applied to the output logits. Omit for the model default."
+            "description": "A lower value makes the predicted probabilities more confident. The value 1.0 has no effect. If unset, the model uses its default value."
           },
           "average_before_softmax": {
             "anyOf": [
@@ -850,12 +734,15 @@
                 "type": "boolean"
               },
               {
+                "const": "auto",
+                "type": "string"
+              },
+              {
                 "type": "null"
               }
             ],
             "default": null,
-            "title": "Average Before Softmax",
-            "description": "Average ensemble members before the softmax rather than after."
+            "description": "If true, the model averages the logits of the ensemble members before the softmax. If false, it averages their probabilities after the softmax. `auto` takes the setting of the checkpoint, as does unset. A true or false value cannot be combined with `AVERAGE_BEFORE_SOFTMAX` in `inference_config`."
           },
           "random_state": {
             "anyOf": [
@@ -867,8 +754,7 @@
               }
             ],
             "default": null,
-            "title": "Random State",
-            "description": "Seed for the ensemble's randomised preprocessing."
+            "description": "Random seed. The same seed gives the same results. If unset, TabPFN uses its default seed."
           },
           "inference_config": {
             "anyOf": [
@@ -881,8 +767,7 @@
               }
             ],
             "default": null,
-            "description": "Advanced overrides of the model's inference configuration, passed through as given.",
-            "title": "Inference Config"
+            "description": "Advanced inference settings. See `tabpfn.inference_config.InferenceConfig` in the TabPFN package."
           },
           "inference_precision": {
             "anyOf": [
@@ -895,19 +780,37 @@
               }
             ],
             "default": null,
-            "title": "Inference Precision",
-            "description": "Numeric precision of the forward pass."
+            "description": "`autocast` always uses mixed precision. `auto` selects the precision from the hardware."
+          },
+          "presets": {
+            "anyOf": [
+              {
+                "enum": ["zero_inflated"],
+                "type": "string"
+              },
+              {
+                "items": {
+                  "enum": ["zero_inflated"],
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Names of bundles of inference settings. `zero_inflated` is for regression targets with many exact zeros. The keys of `inference_config` win over every preset. If unset, the model uses the settings of its checkpoint."
           },
           "n_preprocessing_jobs": {
             "default": 4,
-            "title": "N Preprocessing Jobs",
-            "type": "integer",
-            "description": "CPU workers used for per-estimator preprocessing."
+            "description": "Number of worker processes for preprocessing.",
+            "type": "integer"
           },
           "fit_mode": {
             "$ref": "#/components/schemas/FitMode",
             "default": "fit_preprocessors",
-            "description": "`fit_preprocessors` (default), `low_memory` and `batched` are served."
+            "description": "How the model prepares the fit."
           },
           "memory_saving_mode": {
             "anyOf": [
@@ -919,59 +822,79 @@
               }
             ],
             "default": null,
-            "title": "Memory Saving Mode",
-            "description": "Omit to let the container decide: off below 10,000 training rows, on from there."
-          },
-          "balance_probabilities": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "title": "Balance Probabilities",
-            "description": "Re-weight class probabilities to counter class imbalance."
+            "description": "If true, the model divides parts of the computation into batches to use less memory. If unset, the model decides."
           }
         },
-        "title": "ClassifierTabPFNConfig",
         "type": "object"
       },
-      "ErrorResponse": {
+      "TableUsage": {
+        "properties": {
+          "num_rows": {
+            "type": "integer",
+            "description": "Number of rows that you sent."
+          },
+          "num_cols": {
+            "type": "integer",
+            "description": "Number of columns that you sent."
+          },
+          "num_cells": {
+            "type": "integer",
+            "description": "`num_rows` times `num_cols`.",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["num_rows", "num_cols", "num_cells"],
+        "description": "Shape of one input table, as you sent it."
+      },
+      "ClassifierConfig": {
         "additionalProperties": false,
         "properties": {
-          "message": {
-            "title": "Message",
+          "task": {
+            "const": "classification",
+            "default": "classification",
+            "description": "The type of prediction.",
             "type": "string"
           },
-          "error_code": {
-            "default": "GENERAL_ERROR",
-            "title": "Error Code",
-            "type": "string",
-            "x-sdk-keep-default": true,
-            "description": "`USER_ERROR` for 4xx, `BUSY` for a 503 from the concurrency limit, `INTERNAL_ERROR` for 5xx."
+          "tabpfn_config": {
+            "$ref": "#/components/schemas/ClassifierTabPFNConfig",
+            "description": "Model settings for the fit."
           },
-          "trace_id": {
+          "predict_params": {
+            "$ref": "#/components/schemas/ClassifierPredictParams",
+            "description": "What the prediction returns."
+          }
+        },
+        "type": "object"
+      },
+      "ClassifierOutputType": {
+        "enum": ["probas", "preds", "top_k"],
+        "type": "string"
+      },
+      "ClassifierPredictParams": {
+        "additionalProperties": false,
+        "properties": {
+          "output_type": {
+            "$ref": "#/components/schemas/ClassifierOutputType",
+            "default": "probas",
+            "description": "What `prediction` contains:\n\n* `probas`: one probability for each class, for each row.\n* `preds`: one label for each row.\n* `top_k`: the most probable classes for each row."
+          },
+          "top_k": {
             "anyOf": [
               {
-                "format": "uuid",
-                "type": "string"
+                "minimum": 1,
+                "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
             "default": null,
-            "title": "Trace Id",
-            "description": "32 hex characters identifying the request in the container's logs."
+            "description": "Number of classes that `top_k` returns for each row. Required with `output_type=top_k`. Other output types do not permit it."
           }
         },
-        "required": ["message"],
-        "title": "ErrorResponse",
-        "type": "object",
-        "description": "Body of every error the application raises. Unrouted paths and wrong methods (404, 405) return `{\"detail\": \"...\"}` instead."
+        "type": "object"
       },
       "RegressorConfig": {
         "additionalProperties": false,
@@ -979,22 +902,22 @@
           "task": {
             "const": "regression",
             "default": "regression",
-            "title": "Task",
+            "description": "The type of prediction.",
             "type": "string"
           },
           "tabpfn_config": {
-            "$ref": "#/components/schemas/RegressorTabPFNConfig-Input"
+            "$ref": "#/components/schemas/RegressorTabPFNConfig",
+            "description": "Model settings for the fit."
           },
           "predict_params": {
-            "$ref": "#/components/schemas/RegressorPredictParams"
+            "$ref": "#/components/schemas/RegressorPredictParams",
+            "description": "What the prediction returns."
           }
         },
-        "title": "RegressorConfig",
         "type": "object"
       },
       "RegressorOutputType": {
         "enum": ["mean", "median", "mode", "quantiles", "full", "main"],
-        "title": "RegressorOutputType",
         "type": "string"
       },
       "RegressorPredictParams": {
@@ -1003,7 +926,7 @@
           "output_type": {
             "$ref": "#/components/schemas/RegressorOutputType",
             "default": "mean",
-            "description": "`mean`, `median`, `mode`: one number per test row. `quantiles`: one array per requested quantile. `main`: mean, median, mode and quantiles together. `full`: `main` plus the predicted distribution (`logits`, `borders`)."
+            "description": "What `prediction` contains:\n\n* `mean`, `median` or `mode`: one value for each row.\n* `quantiles`: one list for each quantile.\n* `main`: the mean, median, mode and quantiles.\n* `full`: the full predicted distribution. It accepts fewer rows."
           },
           "quantiles": {
             "anyOf": [
@@ -1020,36 +943,191 @@
               }
             ],
             "default": null,
-            "title": "Quantiles",
-            "description": "Quantile levels in [0, 1]. Read by `quantiles`, `main` and `full`; ignored by the point output types. Omit for 0.1 … 0.9."
+            "description": "Quantile levels between 0 and 1, for `quantiles` and `main`. If unset, TabPFN uses its default list of 9 levels."
           }
         },
-        "title": "RegressorPredictParams",
         "type": "object"
       },
-      "RegressorTabPFNConfig-Input": {
+      "PredictRequest": {
         "additionalProperties": false,
+        "description": "Training and test data, and how to predict.",
         "properties": {
-          "n_estimators": {
+          "task_config": {
+            "description": "The task, model settings and output type.",
+            "discriminator": {
+              "mapping": {
+                "classification": "#/components/schemas/ClassifierConfig",
+                "regression": "#/components/schemas/RegressorConfig"
+              },
+              "propertyName": "task"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ClassifierConfig"
+              },
+              {
+                "$ref": "#/components/schemas/RegressorConfig"
+              }
+            ]
+          },
+          "tabpfn_systems": {
+            "default": ["preprocessing", "text"],
+            "description": "The preparation steps that run on the tables before the model. With `[]`, the model gets the tables with only minimal cleaning.\n\n* `preprocessing` cleans and encodes the columns. On v4 it adds no character n-gram features and keeps every feature it generates.\n* `text` embeds the text columns, as part of `preprocessing`.",
+            "items": {
+              "enum": ["preprocessing", "text"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "X_train": {
             "anyOf": [
               {
-                "maximum": 8,
-                "minimum": 1,
-                "type": "integer"
+                "oneOf": [
+                  {
+                    "description": "Row-oriented: one inner list per row.",
+                    "items": {
+                      "items": {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean",
+                          "null"
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "additionalProperties": {
+                      "items": {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean",
+                          "null"
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    "description": "Column-oriented: column name to its values.",
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "description": "By URL, on a deployment that allows the URL's host.",
+                    "properties": {
+                      "url": {
+                        "description": "A presigned GET URL of a CSV or Parquet file.",
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"],
+                    "type": "object"
+                  }
+                ]
               },
               {
                 "type": "null"
               }
             ],
             "default": null,
-            "title": "N Estimators",
-            "description": "Ensemble size: forward passes per prediction. Omit to let the model decide (8 for most data, more on very wide tables)."
+            "description": "Training features."
           },
-          "categorical_features_indices": {
+          "y_train": {
+            "anyOf": [
+              {
+                "oneOf": [
+                  {
+                    "description": "One target per training row.",
+                    "items": {
+                      "type": ["string", "number", "integer", "boolean", "null"]
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "additionalProperties": {
+                      "items": {
+                        "type": [
+                          "string",
+                          "number",
+                          "integer",
+                          "boolean",
+                          "null"
+                        ]
+                      },
+                      "type": "array"
+                    },
+                    "description": "A single named column.",
+                    "maxProperties": 1,
+                    "minProperties": 1,
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "description": "By URL, on a deployment that allows the URL's host.",
+                    "properties": {
+                      "url": {
+                        "description": "A presigned GET URL of a CSV or Parquet file.",
+                        "type": "string"
+                      }
+                    },
+                    "required": ["url"],
+                    "type": "object"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Training targets, one per row of `X_train`."
+          },
+          "X_test": {
+            "description": "Features to predict. The response has one prediction for each row.",
+            "oneOf": [
+              {
+                "description": "Row-oriented: one inner list per row.",
+                "items": {
+                  "items": {
+                    "type": ["string", "number", "integer", "boolean", "null"]
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "additionalProperties": {
+                  "items": {
+                    "type": ["string", "number", "integer", "boolean", "null"]
+                  },
+                  "type": "array"
+                },
+                "description": "Column-oriented: column name to its values.",
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "description": "By URL, on a deployment that allows the URL's host.",
+                "properties": {
+                  "url": {
+                    "description": "A presigned GET URL of a CSV or Parquet file.",
+                    "type": "string"
+                  }
+                },
+                "required": ["url"],
+                "type": "object"
+              }
+            ]
+          },
+          "sample_weight": {
             "anyOf": [
               {
                 "items": {
-                  "type": "integer"
+                  "type": "number"
                 },
                 "type": "array"
               },
@@ -1058,66 +1136,109 @@
               }
             ],
             "default": null,
-            "title": "Categorical Features Indices",
-            "description": "Zero-based column positions to treat as categorical. Omit to infer."
+            "description": "How much each row of `X_train` counts in the fit, one value per row. Needs a model that takes weights, and a fit that the container does not keep."
           },
-          "softmax_temperature": {
+          "label_reliability": {
             "anyOf": [
               {
-                "type": "number"
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "default": null,
-            "title": "Softmax Temperature",
-            "description": "Temperature applied to the output logits. Omit for the model default."
+            "description": "How far to trust each target of `y_train`, one value in [0, 1] per row. Needs a model that takes weights, and a fit that the container does not keep."
+          }
+        },
+        "required": ["task_config", "X_test"],
+        "type": "object"
+      },
+      "PredictRequestPart": {
+        "additionalProperties": false,
+        "description": "The fields of the JSON body, without `X_train`, `y_train` and `X_test`. Send the tables as file parts.",
+        "properties": {
+          "task_config": {
+            "description": "The task, model settings and output type.",
+            "discriminator": {
+              "mapping": {
+                "classification": "#/components/schemas/ClassifierConfig",
+                "regression": "#/components/schemas/RegressorConfig"
+              },
+              "propertyName": "task"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ClassifierConfig"
+              },
+              {
+                "$ref": "#/components/schemas/RegressorConfig"
+              }
+            ]
           },
-          "average_before_softmax": {
+          "tabpfn_systems": {
+            "default": ["preprocessing", "text"],
+            "description": "The preparation steps that run on the tables before the model. With `[]`, the model gets the tables with only minimal cleaning.\n\n* `preprocessing` cleans and encodes the columns. On v4 it adds no character n-gram features and keeps every feature it generates.\n* `text` embeds the text columns, as part of `preprocessing`.",
+            "items": {
+              "enum": ["preprocessing", "text"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sample_weight": {
             "anyOf": [
               {
-                "type": "boolean"
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "default": null,
-            "title": "Average Before Softmax",
-            "description": "Average ensemble members before the softmax rather than after."
+            "description": "How much each row of `X_train` counts in the fit, one value per row. Needs a model that takes weights, and a fit that the container does not keep."
           },
-          "random_state": {
+          "label_reliability": {
             "anyOf": [
               {
-                "type": "integer"
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
             "default": null,
-            "title": "Random State",
-            "description": "Seed for the ensemble's randomised preprocessing."
+            "description": "How far to trust each target of `y_train`, one value in [0, 1] per row. Needs a model that takes weights, and a fit that the container does not keep."
+          }
+        },
+        "required": ["task_config"],
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "description": "What went wrong.",
+            "type": "string"
           },
-          "inference_config": {
+          "error_code": {
+            "default": "GENERAL_ERROR",
+            "description": "Machine-readable error category, such as `BUSY`.",
+            "type": "string",
+            "x-sdk-keep-default": true
+          },
+          "trace_id": {
             "anyOf": [
               {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "description": "Advanced overrides of the model's inference configuration, passed through as given.",
-            "title": "Inference Config"
-          },
-          "inference_precision": {
-            "anyOf": [
-              {
-                "enum": ["autocast", "auto"],
+                "format": "uuid",
                 "type": "string"
               },
               {
@@ -1125,347 +1246,19 @@
               }
             ],
             "default": null,
-            "title": "Inference Precision",
-            "description": "Numeric precision of the forward pass."
-          },
-          "n_preprocessing_jobs": {
-            "default": 4,
-            "title": "N Preprocessing Jobs",
-            "type": "integer",
-            "description": "CPU workers used for per-estimator preprocessing."
-          },
-          "fit_mode": {
-            "$ref": "#/components/schemas/FitMode",
-            "default": "fit_preprocessors",
-            "description": "`fit_preprocessors` (default), `low_memory` and `batched` are served."
-          },
-          "memory_saving_mode": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": null,
-            "title": "Memory Saving Mode",
-            "description": "Omit to let the container decide: off below 10,000 training rows, on from there."
+            "description": "Id to quote when reporting the error."
           }
         },
-        "title": "RegressorTabPFNConfig",
+        "required": ["message"],
         "type": "object"
-      },
-      "Table": {
-        "title": "Table",
-        "description": "A feature table, at least one row. Row-oriented (list of equal-length rows; columns are then named by position) or column-oriented (object of column name → list of values). Cells are numbers, strings, booleans or null; null is a missing value. String columns are handled as categorical or free text by the preprocessing pipeline.",
-        "oneOf": [
-          {
-            "title": "Rows",
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": "array",
-              "items": {
-                "type": ["number", "string", "boolean", "null"]
-              }
-            }
-          },
-          {
-            "title": "Columns",
-            "type": "object",
-            "minProperties": 1,
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": ["number", "string", "boolean", "null"]
-              }
-            }
-          }
-        ]
-      },
-      "Target": {
-        "title": "Target",
-        "description": "The training target: exactly one column, one value per training row. A flat list, a list of one-element rows, or an object with a single column. Classification labels may be strings, integers, floats or booleans; regression targets must be numeric.",
-        "oneOf": [
-          {
-            "title": "Flat",
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": ["number", "string", "boolean", "null"]
-            }
-          },
-          {
-            "title": "Rows",
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": "array",
-              "minItems": 1,
-              "maxItems": 1,
-              "items": {
-                "type": ["number", "string", "boolean", "null"]
-              }
-            }
-          },
-          {
-            "title": "Column",
-            "type": "object",
-            "minProperties": 1,
-            "maxProperties": 1,
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": ["number", "string", "boolean", "null"]
-              }
-            }
-          }
-        ]
-      },
-      "PredictRequest": {
-        "title": "PredictRequest",
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["task_config", "X_train", "y_train", "X_test"],
-        "properties": {
-          "task_config": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ClassifierConfig"
-              },
-              {
-                "$ref": "#/components/schemas/RegressorConfig"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "task",
-              "mapping": {
-                "classification": "#/components/schemas/ClassifierConfig",
-                "regression": "#/components/schemas/RegressorConfig"
-              }
-            }
-          },
-          "tabpfn_systems": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["preprocessing", "text"]
-            },
-            "default": ["preprocessing", "text"],
-            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`."
-          },
-          "X_train": {
-            "$ref": "#/components/schemas/Table"
-          },
-          "y_train": {
-            "$ref": "#/components/schemas/Target"
-          },
-          "X_test": {
-            "$ref": "#/components/schemas/Table",
-            "description": "Same number of columns as `X_train`, in the same order."
-          }
-        },
-        "description": "`x_train` and `x_test` are accepted as aliases of `X_train` and `X_test`. Unknown top-level keys are rejected with 422."
-      },
-      "PredictRequestConfig": {
-        "title": "PredictRequestConfig",
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["task_config"],
-        "properties": {
-          "task_config": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ClassifierConfig"
-              },
-              {
-                "$ref": "#/components/schemas/RegressorConfig"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "task",
-              "mapping": {
-                "classification": "#/components/schemas/ClassifierConfig",
-                "regression": "#/components/schemas/RegressorConfig"
-              }
-            }
-          },
-          "tabpfn_systems": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["preprocessing", "text"]
-            },
-            "default": ["preprocessing", "text"],
-            "description": "Preprocessing stages to run. `[\"preprocessing\", \"text\"]` (default) is the full pipeline including text embeddings; `[\"preprocessing\"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `\"text\"` needs `\"preprocessing\"`."
-          }
-        },
-        "description": "The JSON carried in the `request` part of a multipart upload."
-      },
-      "PredictMultipart": {
-        "title": "PredictMultipart",
-        "type": "object",
-        "required": ["request", "x_train", "y_train", "x_test"],
-        "properties": {
-          "request": {
-            "type": "string",
-            "contentMediaType": "application/json",
-            "contentSchema": {
-              "$ref": "#/components/schemas/PredictRequestConfig"
-            },
-            "description": "A plain form field (not a file) holding a `PredictRequestConfig` as a JSON string."
-          },
-          "x_train": {
-            "type": "string",
-            "format": "binary",
-            "description": "CSV with a header row, or Parquet."
-          },
-          "y_train": {
-            "type": "string",
-            "format": "binary",
-            "description": "CSV with a header row, or Parquet. Exactly one column."
-          },
-          "x_test": {
-            "type": "string",
-            "format": "binary",
-            "description": "CSV with a header row, or Parquet."
-          }
-        }
-      },
-      "Prediction": {
-        "title": "Prediction",
-        "description": "Shape depends on the task and `output_type`. Non-finite numbers are serialised as null.",
-        "anyOf": [
-          {
-            "title": "ClassProbabilities",
-            "description": "Classification `probas`: `[row][class]`, columns ordered as `metadata.classes`.",
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "type": ["number", "null"]
-              }
-            }
-          },
-          {
-            "title": "ClassLabels",
-            "description": "Classification `preds`: one label per test row, in the label's original type.",
-            "type": "array",
-            "items": {
-              "type": ["string", "number", "boolean"]
-            }
-          },
-          {
-            "title": "TopK",
-            "description": "Classification `top_k`. Rows run most-probable-first and are never padded.",
-            "type": "object",
-            "required": ["classes", "values", "probabilities"],
-            "properties": {
-              "classes": {
-                "type": "array",
-                "items": {
-                  "type": ["string", "number", "boolean"]
-                },
-                "description": "Class labels in ascending order."
-              },
-              "values": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer"
-                  }
-                },
-                "description": "`[row][rank]` → position in `classes`."
-              },
-              "probabilities": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": ["number", "null"]
-                  }
-                },
-                "description": "`[row][rank]` → that class's probability."
-              }
-            }
-          },
-          {
-            "title": "PointEstimates",
-            "description": "Regression `mean`, `median`, `mode`: one number per test row.",
-            "type": "array",
-            "items": {
-              "type": ["number", "null"]
-            }
-          },
-          {
-            "title": "Quantiles",
-            "description": "Regression `quantiles`: `[quantile][row]`, quantiles in the order requested.",
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "type": ["number", "null"]
-              }
-            }
-          },
-          {
-            "title": "RegressionBundle",
-            "description": "Regression `main` (first four keys) and `full` (all six).",
-            "type": "object",
-            "required": ["mean", "median", "mode", "quantiles"],
-            "properties": {
-              "mean": {
-                "type": "array",
-                "items": {
-                  "type": ["number", "null"]
-                }
-              },
-              "median": {
-                "type": "array",
-                "items": {
-                  "type": ["number", "null"]
-                }
-              },
-              "mode": {
-                "type": "array",
-                "items": {
-                  "type": ["number", "null"]
-                }
-              },
-              "quantiles": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": ["number", "null"]
-                  }
-                },
-                "description": "`[quantile][row]`."
-              },
-              "logits": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": ["number", "null"]
-                  }
-                },
-                "description": "`full` only. `[row][bucket]` over the predicted distribution."
-              },
-              "borders": {
-                "type": "array",
-                "items": {
-                  "type": ["number", "null"]
-                },
-                "description": "`full` only. Bucket borders; one more than buckets."
-              }
-            }
-          }
-        ]
       }
     }
   },
+  "servers": [
+    {
+      "url": "/",
+      "description": "The TabPFN deployment URL."
+    }
+  ],
   "x-sap-cloud-sdk-api-name": "TabPfnApi"
 }

@@ -9,12 +9,8 @@ import type { ModelDeployment } from '@sap-ai-sdk/ai-api';
 import type { TabpfnModel } from '@sap-ai-sdk/core/internal.js';
 import type { HttpDestinationOrFetchOptions } from '@sap-cloud-sdk/connectivity';
 
-import type {
-  PredictMultipart,
-  PredictRequest,
-  PredictResponse
-} from './client/tabpfn/index.ts';
-import type { TabpfnRequestOptions } from './types.ts';
+import type { PredictRequest, PredictResponse } from './client/tabpfn/index.ts';
+import type { PredictMultipart, TabpfnRequestOptions } from './types.ts';
 
 /**
  * Representation of a TabPFN client to make tabular predictions.
@@ -50,7 +46,7 @@ export class TabpfnClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    return TabPfnApi.predictWithJson(predictionData)
+    return TabPfnApi.handlePredictPostWithJson(predictionData)
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
       .addCustomRequestConfiguration(requestConfig)
@@ -71,12 +67,26 @@ export class TabpfnClient {
     const { resourceGroup, deploymentId } =
       await this.getResourceGroupAndDeploymentId();
 
-    return TabPfnApi.predictWithMultipartFormData({
-      ...payload,
-      x_train: toFile(payload.x_train, 'x_train'),
-      y_train: toFile(payload.y_train, 'y_train'),
-      x_test: toFile(payload.x_test, 'x_test')
-    })
+    return TabPfnApi.handlePredictPostWithMultipartFormData(payload)
+      .setBasePath(`/inference/deployments/${deploymentId}`)
+      .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
+      .addCustomRequestConfiguration(requestConfig)
+      .execute(this.destination);
+  }
+
+  /**
+   * Predict from Parquet tables using the dedicated Parquet endpoint.
+   * @param payload - Parquet tables and prediction configuration.
+   * @param requestConfig - Custom request configuration.
+   * @returns Prediction response.
+   */
+  async predictParquet(
+    payload: PredictMultipart,
+    requestConfig: TabpfnRequestOptions = {}
+  ): Promise<PredictResponse> {
+    const { resourceGroup, deploymentId } =
+      await this.getResourceGroupAndDeploymentId();
+    return TabPfnApi.handleParquetPredictParquetPost(payload)
       .setBasePath(`/inference/deployments/${deploymentId}`)
       .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
       .addCustomRequestConfiguration(requestConfig)
@@ -99,27 +109,4 @@ export class TabpfnClient {
 
     return { resourceGroup, deploymentId };
   }
-}
-
-/**
- * Ensures a dataset part is a `File` with a recognizable filename.
- * Plain blobs without a mimetype default to a CSV filename. Explicitly unsupported
- * mimetypes receive no extension so the service validates them.
- * Existing `File` instances are preserved as-is.
- * @param data - The dataset blob or file.
- * @param name - Fallback filename (without extension) used when a plain `Blob` is given.
- * @returns A `File` suitable for multipart upload.
- */
-function toFile(data: File | Blob, name: string): File {
-  if (data instanceof File) {
-    return data;
-  }
-  const mimeType = data.type.toLowerCase();
-  let extension = '';
-  if (!mimeType || mimeType === 'text/csv') {
-    extension = '.csv';
-  } else if (mimeType === 'application/vnd.apache.parquet') {
-    extension = '.parquet';
-  }
-  return new File([data], `${name}${extension}`, { type: data.type });
 }

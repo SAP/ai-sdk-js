@@ -6,27 +6,71 @@
 
 import type { ClassifierConfig } from './classifier-config.js';
 import type { RegressorConfig } from './regressor-config.js';
-import type { Table } from './table.js';
-import type { Target } from './target.js';
 /**
- * `x_train` and `x_test` are accepted as aliases of `X_train` and `X_test`. Unknown top-level keys are rejected with 422.
+ * Training and test data, and how to predict.
  */
 export type PredictRequest = {
+  /**
+   * The task, model settings and output type.
+   */
   task_config:
     | ({ task: 'classification' } & ClassifierConfig)
     | ({ task: 'regression' } & RegressorConfig);
   /**
-   * Preprocessing stages to run. `["preprocessing", "text"]` (default) is the full pipeline including text embeddings; `["preprocessing"]` skips text embeddings; `[]` hands the tables to the model as sent. Order is fixed and `"text"` needs `"preprocessing"`.
+   * The preparation steps that run on the tables before the model. With `[]`, the model gets the tables with only minimal cleaning.
+   *
+   * * `preprocessing` cleans and encodes the columns. On v4 it adds no character n-gram features and keeps every feature it generates.
+   * * `text` embeds the text columns, as part of `preprocessing`.
    * Default: [
    *   "preprocessing",
    *   "text"
    * ].
    */
   tabpfn_systems?: ('preprocessing' | 'text')[];
-  X_train: Table;
-  y_train: Target;
   /**
-   * Same number of columns as `X_train`, in the same order.
+   * Training features.
    */
-  X_test: Table;
+  X_train?:
+    | (string | number | number | boolean | null)[][]
+    | Record<string, (string | number | number | boolean | null)[]>
+    | {
+        /**
+         * A presigned GET URL of a CSV or Parquet file.
+         */
+        url: string;
+      }
+    | null;
+  /**
+   * Training targets, one per row of `X_train`.
+   */
+  y_train?:
+    | (string | number | number | boolean | null)[]
+    | Record<string, (string | number | number | boolean | null)[]>
+    | {
+        /**
+         * A presigned GET URL of a CSV or Parquet file.
+         */
+        url: string;
+      }
+    | null;
+  /**
+   * Features to predict. The response has one prediction for each row.
+   */
+  X_test:
+    | (string | number | number | boolean | null)[][]
+    | Record<string, (string | number | number | boolean | null)[]>
+    | {
+        /**
+         * A presigned GET URL of a CSV or Parquet file.
+         */
+        url: string;
+      };
+  /**
+   * How much each row of `X_train` counts in the fit, one value per row. Needs a model that takes weights, and a fit that the container does not keep.
+   */
+  sample_weight?: number[] | null;
+  /**
+   * How far to trust each target of `y_train`, one value in [0, 1] per row. Needs a model that takes weights, and a fit that the container does not keep.
+   */
+  label_reliability?: number[] | null;
 };

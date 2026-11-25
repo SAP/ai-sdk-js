@@ -10,11 +10,16 @@ import type { RegressorOutputType } from './regressor-output-type.js';
  */
 export type RegressorPredictParams = {
   /**
-   * `mean`, `median`, `mode`: one number per test row. `quantiles`: one array per requested quantile. `main`: mean, median, mode and quantiles together. `full`: `main` plus the predicted distribution (`logits`, `borders`).
+   * What `prediction` contains:
+   *
+   * * `mean`, `median` or `mode`: one value for each row.
+   * * `quantiles`: one list for each quantile.
+   * * `main`: the mean, median, mode and quantiles.
+   * * `full`: the full predicted distribution. It accepts fewer rows.
    */
   output_type?: RegressorOutputType;
   /**
-   * Quantile levels in [0, 1]. Read by `quantiles`, `main` and `full`; ignored by the point output types. Omit for 0.1 … 0.9.
+   * Quantile levels between 0 and 1, for `quantiles` and `main`. If unset, TabPFN uses its default list of 9 levels.
    */
   quantiles?: number[] | null;
 };
