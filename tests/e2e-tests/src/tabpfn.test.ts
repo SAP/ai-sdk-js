@@ -7,7 +7,6 @@ import {
   predictWithStringFeatures
 } from '@sap-ai-sdk/sample-code';
 // import { TabpfnClient } from '@sap-ai-sdk/tabpfn';
-
 // import { parquetWriteBuffer } from 'hyparquet-writer';
 
 import { loadEnv } from './utils/load-env.ts';
