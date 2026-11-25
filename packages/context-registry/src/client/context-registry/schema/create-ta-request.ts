@@ -21,10 +21,7 @@ export type CreateTARequest = {
    */
   type: 'CSV' | 'PARQUET' | 'DELTA';
   /**
-   * Absolute path to the data (must start with '/').
-   * - For file-based artifacts (HDL, S3, GCS, AZURE): Standard file path (e.g., /data/customers.parquet)
-   * - For Delta Sharing artifacts (DELTA_SHARING): Format /<share>/<schema>/<table> (e.g., /sample_data/tpch/customer)
-   *
+   * Absolute path to the data artifact (must start with '/'). For file-based artifacts, use a standard file path (e.g., /data/customers.parquet).
    * @example "/data/ingest/customer_data/file1.csv"
    * Pattern: "^\\/.*".
    */

@@ -47,13 +47,28 @@ export type GcpVertexAiChatModel = LiteralUnion<
   | 'gemini-3.5-flash'
   | 'gemini-3.5-flash-lite'
   | 'gemini-3.8-flash'
-  | 'gemini-3.6-flash'
 >;
 
 /**
  * GCP Vertex AI models for embedding.
  */
 export type GcpVertexAiEmbeddingModel = LiteralUnion<'gemini-embedding'>;
+
+/**
+ * Alibaba Bailian models for chat completion.
+ */
+export type AlibabaBailianChatModel = LiteralUnion<
+  | 'qwen3.8-max'
+  | 'qwen3.7-max'
+  | 'qwen3.7-plus'
+  | 'qwen3.6-plus'
+  | 'qwen3.6-flash'
+>;
+
+/**
+ * Alibaba Bailian models for embedding.
+ */
+export type AlibabaBailianEmbeddingModel = LiteralUnion<'text-embedding-v4'>;
 
 /**
  * AWS Bedrock models for chat completion.

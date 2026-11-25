@@ -59,7 +59,7 @@ jobs:
           persist-credentials: false
 
       - name: Run Black Duck SCA scan
-        uses: blackduck-inc/black-duck-security-scan@152247222aa9cd38124acd5c0cf60f4db71adc3f # v2.11.0
+        uses: blackduck-inc/black-duck-security-scan@d8375979d21af3848d894171815d0285f9a4d983 # v2.12.0
         with:
           blackducksca_url: https://sap.blackducksoftware.com
           blackducksca_token: ${{ secrets.BLACKDUCK_API_TOKEN }}

@@ -33,14 +33,16 @@ import type { Xor } from '@sap-cloud-sdk/util';
 import type { TemplatingChatMessage } from './client/api/schema/index.ts';
 import type { OrchestrationStreamChunkResponse } from './orchestration-stream-chunk-response.ts';
 import type {
+  StreamOptions,
+  StreamOptionsWithoutOverrides
+} from './orchestration-streaming-types.ts';
+import type {
   OrchestrationModuleConfig,
   OrchestrationModuleConfigList,
   OrchestrationConfigRefById,
   OrchestrationConfigRefByName,
   ChatCompletionRequest,
   RequestOptions,
-  StreamOptions,
-  BaseStreamOptions,
   OrchestrationRequestHeaders
 } from './orchestration-types.ts';
 
@@ -162,7 +164,7 @@ export class OrchestrationClient {
 
   /**
    * Send a chat completion request to the orchestration service.
-   * @param request - Request containing the prompt, placeholder values, and message history.
+   * @param request - Request containing messages, placeholder values, and message history.
    * @param requestConfig - Additional request configuration. Use `requestConfig.headers` to pass service-specific headers:
    * - `AI-Object-Store-Secret-Name`: Name of the object store secret used by the feedback service.
    * @returns The orchestration service response.
@@ -189,7 +191,7 @@ export class OrchestrationClient {
 
   /**
    * Create a streaming chat completion request to the orchestration service.
-   * @param request - Request containing the prompt, placeholder values, and message history.
+   * @param request - Request containing messages, placeholder values, and message history.
    * @param signal - An abort signal to cancel the request.
    * @param options - Streaming options, e.g., for input/output filtering.
    * @param requestConfig - Additional request configuration. Use `requestConfig.headers` to pass service-specific headers:
@@ -273,7 +275,7 @@ export class OrchestrationClient {
                 this.config,
                 request,
                 stream,
-                streamOptions as BaseStreamOptions | undefined
+                streamOptions as StreamOptionsWithoutOverrides | undefined
               );
 
     const deploymentId = await getOrchestrationDeploymentId(

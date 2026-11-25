@@ -25,7 +25,6 @@ import {
   chatCompletionStream,
   orchestrationResponseFormat,
   orchestrationMessageHistoryWithToolCalling,
-  orchestrationMessageHistoryOnly,
   orchestrationTranslation,
   orchestrationEmbeddingWithMasking,
   OrchestrationConfigRef as orchestrationConfigRefSample,
@@ -210,13 +209,6 @@ describe('orchestration', () => {
     const chatCompletionResult =
       await orchestrationMessageHistoryWithToolCalling();
     assertContent(chatCompletionResult);
-  });
-
-  it('should complete a chat using only messagesHistory', async () => {
-    const response = await orchestrationMessageHistoryOnly();
-
-    expect(response.getContent()).toEqual(expect.any(String));
-    expect(response.getFinishReason()).toBe('stop');
   });
 
   it('should return stream of orchestration responses', async () => {

@@ -58,6 +58,7 @@ const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-5.3-codex', // Responses API only, not a standard chat completion model
   'cohere-reranker', // Re-ranker model, not a chat/embedding model
   'cohere-rerank-pro', // Re-ranker model, not a chat/embedding model
+  'sap-rpt-ts', // Specialized time-series model, not a standard SAP RPT model type
   'tabpfn-3.5-plus' // Tabular prediction model, not a chat/embedding model
 ]);
 
@@ -69,6 +70,7 @@ const MODEL_INCLUSION_LIST = new Set<string>([
 // Maps executableId prefix (lowercase) to the TypeScript type name it belongs to.
 // Embedding models are identified by model name containing 'embed'.
 const EXECUTABLE_ID_TO_TYPE: Record<string, string> = {
+  'alibaba-bailian': 'AlibabaBailianChatModel',
   'azure-openai': 'AzureOpenAiChatModel',
   'aicore-anthropic': 'AwsBedrockChatModel',
   'aicore-amazon': 'AwsBedrockChatModel',
@@ -87,7 +89,8 @@ const EXECUTABLE_ID_TO_TYPE: Record<string, string> = {
 const EMBEDDING_TYPE_MAP: Record<string, string> = {
   AzureOpenAiChatModel: 'AzureOpenAiEmbeddingModel',
   AwsBedrockChatModel: 'AwsBedrockEmbeddingModel',
-  GcpVertexAiChatModel: 'GcpVertexAiEmbeddingModel'
+  GcpVertexAiChatModel: 'GcpVertexAiEmbeddingModel',
+  AlibabaBailianChatModel: 'AlibabaBailianEmbeddingModel'
 };
 
 // Per-model type overrides for models whose executableId is missing in SAP Notes.
@@ -103,6 +106,10 @@ function resolveTypeName(row: ModelRow): string | null {
   // RPT models share the aicore-sap executableId with sap-abap-1 — distinguish by name.
   if (row.model.toLowerCase().startsWith('sap-rpt-')) {
     return 'SapRptModel';
+  }
+
+  if (row.model.toLowerCase().startsWith('qwen')) {
+    return 'AlibabaBailianChatModel';
   }
 
   const execId = row.executableId.toLowerCase().split('(')[0].trim();

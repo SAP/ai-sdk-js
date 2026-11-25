@@ -9,6 +9,8 @@ export type {
   AzureOpenAiRealtimeModel,
   GcpVertexAiChatModel,
   GcpVertexAiEmbeddingModel,
+  AlibabaBailianChatModel,
+  AlibabaBailianEmbeddingModel,
   AwsBedrockChatModel,
   AiCoreOpenSourceChatModel,
   AiCoreOpenSourceEmbeddingModel,

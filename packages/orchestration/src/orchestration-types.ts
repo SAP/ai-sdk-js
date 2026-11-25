@@ -7,7 +7,6 @@ import type {
   DocumentGroundingFilter,
   DpiConfig,
   DpiEntities,
-  FilteringStreamOptions,
   LlamaGuard38B,
   LLMModelDetails as OriginalLLMModelDetails,
   Template,
@@ -35,9 +34,11 @@ import type {
   PartialOrchestrationConfig
 } from './client/api/schema/index.ts';
 import type { ChatModel, EmbeddingModel } from './model-types.ts';
+import type { StreamOptions } from './orchestration-streaming-types.ts';
 
 /**
  * Per-request inputs for a chat completion call.
+ * Only `messages`, `messagesHistory`, and `placeholderValues` are accepted here.
  * Model parameters (`temperature`, `max_tokens`, etc.), `tools`, and `response_format`
  * must be configured in the {@link OrchestrationModuleConfig} passed to the constructor.
  */
@@ -48,27 +49,7 @@ export interface ChatCompletionRequest {
   messagesHistory?: ChatMessages;
 
   /**
-   * The prompt template or reference to use for this call. Can be either a user defined template or a reference to a template in the prompt registry.
-   * It cannot be combined with a constructor prompt or with the deprecated `messages` field, and a {@link TemplateRef} cannot be combined with a local prompt or prompt template.
-   * @example
-   * prompt: {
-   *   template: [
-   *     {
-   *       role: 'system',
-   *       content: 'You are a helpful assistant answering questions about {{?product}}.'
-   *     },
-   *     {
-   *       role: 'user',
-   *       content: 'Can you give me an overview of its key benefits?'
-   *     }
-   *   ]
-   * }
-   */
-  prompt?: Xor<PromptTemplate, TemplateRef>;
-
-  /**
    * New chat messages, including template messages.
-   * @deprecated Since v2.18.0. Pass the current turn via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
    * @example
    * messages: [
    *   {
@@ -126,7 +107,6 @@ export interface PromptTemplatingModule {
    *
    * This is meant for static instructions included with every call.
    * For per-request templating, use `messages` in `.chatCompletion()` instead.
-   * @deprecated Since v2.18.0. Supply the prompt per call via the request-level `prompt` field instead. Use {@link ChatCompletionRequest.prompt} instead.
    * @example
    * prompt: {
    *   template: [
@@ -476,73 +456,6 @@ export interface RequestOptions {
    */
   streamOptions?: StreamOptions;
 }
-
-/**
- * Base stream options without per-config overrides.
- */
-export interface BaseStreamOptions {
-  /**
-   * LLM specific stream options.
-   */
-  promptTemplating?: { include_usage?: boolean; [key: string]: any } | null;
-  /**
-   * Output filtering stream options.
-   */
-  outputFiltering?: FilteringStreamOptions;
-  /**
-   * Global stream options.
-   */
-  global?: GlobalStreamOptions;
-  /**
-   * Please use `StreamOptionsWithOverrides` if you want to specify per-config stream options for module fallback.
-   */
-  overrides?: never;
-}
-
-/**
- * Stream options with support for per-config overrides in module fallback scenarios.
- * The `overrides` property allows you to specify stream options that apply to specific module configurations by their index in the fallback list.
- * If an override is not provided for a config, it will use the shared options defined in `BaseStreamOptions`.
- * Overrides do not merge with shared options.
- */
-export type StreamOptionsWithOverrides = Omit<
-  BaseStreamOptions,
-  'overrides'
-> & {
-  /**
-   * Per-config stream options that override shared settings.
-   * Use object numeric keys for config indices you want to override.
-   * Omit keys for configs that should use shared options or set their value to undefined.
-   * @example
-   * ```typescript
-   *
-   * const optionsWithOverrides: StreamOptions = {
-   *   global: { chunk_size: 100 },
-   *   promptTemplating: { include_usage: false },
-   *   overrides: {
-   *     0: { promptTemplating: { include_usage: true } },  // config 0, replaces base options fully
-   *     // 1: resolves base options because no override is provided (`{ promptTemplating: { include_usage: false } }`)
-   *     2: { outputFiltering: { overlap: 50 } }            // config 2, replaces base options fully
-   *   }
-   * };
-   * ```
-   */
-  overrides: Partial<Record<number, ModuleStreamOptions>>;
-};
-
-/**
- * Stream options for orchestration requests.
- * Either shared stream options for every module configuration or stream options with per-config overrides for module fallback.
- */
-export type StreamOptions = BaseStreamOptions | StreamOptionsWithOverrides;
-
-/**
- * Shared stream options applied to all module configurations.
- */
-export type ModuleStreamOptions = Omit<
-  BaseStreamOptions,
-  'global' | 'overrides'
->;
 
 /**
  * Representation of the `GroundingModuleConfig` schema.
