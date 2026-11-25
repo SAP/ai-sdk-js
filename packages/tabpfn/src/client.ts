@@ -74,24 +74,24 @@ export class TabpfnClient {
       .execute(this.destination);
   }
 
-  /**
-   * Predict from Parquet tables using the dedicated Parquet endpoint.
-   * @param payload - Parquet tables and prediction configuration.
-   * @param requestConfig - Custom request configuration.
-   * @returns Prediction response.
-   */
-  async predictParquet(
-    payload: PredictMultipart,
-    requestConfig: TabpfnRequestOptions = {}
-  ): Promise<PredictResponse> {
-    const { resourceGroup, deploymentId } =
-      await this.getResourceGroupAndDeploymentId();
-    return TabPfnApi.handleParquetPredictParquetPost(payload)
-      .setBasePath(`/inference/deployments/${deploymentId}`)
-      .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
-      .addCustomRequestConfiguration(requestConfig)
-      .execute(this.destination);
-  }
+  // /**
+  // * Predict from Parquet tables using the dedicated Parquet endpoint.
+  // * @param payload - Parquet tables and prediction configuration.
+  // * @param requestConfig - Custom request configuration.
+  // * @returns Prediction response.
+  // */
+  // async predictParquet(
+  // payload: PredictMultipart,
+  // requestConfig: TabpfnRequestOptions = {}
+  // ): Promise<PredictResponse> {
+  // const { resourceGroup, deploymentId } =
+  // await this.getResourceGroupAndDeploymentId();
+  // return TabPfnApi.handleParquetPredictParquetPost(payload)
+  // .setBasePath(`/inference/deployments/${deploymentId}`)
+  // .addCustomHeaders({ 'ai-resource-group': resourceGroup || 'default' })
+  // .addCustomRequestConfiguration(requestConfig)
+  // .execute(this.destination);
+  // }
 
   /**
    * Gets the resource group and deployment ID for the TabPFN model.

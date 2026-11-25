@@ -58,7 +58,7 @@ describe('tabpfn', () => {
     expect(result.prediction).toEqual([[0.83, 0.17]]);
   });
 
-  it.each(['predictFiles', 'predictParquet'] as const)(
+  it.each(['predictFiles'] as const)(
     'should send files and a plain JSON configuration field with %s',
     async method => {
       mockDeploymentsList(
@@ -66,7 +66,7 @@ describe('tabpfn', () => {
         { id: '1234', model: { name: 'tabpfn-3.5-plus', version: 'latest' } }
       );
       const request = { task_config: { task: 'regression' as const } };
-      const path = method === 'predictParquet' ? 'predict_parquet' : 'predict';
+      const path = 'predict';
       const scope = nock('https://api.ai.ml.hana.ondemand.com', {
         reqheaders: { 'ai-resource-group': 'default' }
       })
