@@ -97,6 +97,7 @@ function getAiCoreServiceKeyFromEnv(): Service | undefined {
       tags: ['aicore']
     };
   }
+  return undefined;
 }
 
 function parseServiceKeyFromEnv(
@@ -112,4 +113,5 @@ function parseServiceKeyFromEnv(
       );
     }
   }
+  return undefined;
 }

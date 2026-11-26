@@ -25,7 +25,7 @@ async function isDirectory(entryPath: string): Promise<boolean> {
 const flatten = (arr: any[]): any[] =>
   arr.reduce(
     (prev, curr) =>
-      curr instanceof Array ? [...prev, ...flatten(curr)] : [...prev, curr],
+      Array.isArray(curr) ? [...prev, ...flatten(curr)] : [...prev, curr],
     []
   );
 

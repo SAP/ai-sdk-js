@@ -97,6 +97,8 @@ function cdsFieldToParquetSchema(field: CdsField): SchemaElement {
       };
     case 'cds.Date':
       return { ...common, type: 'INT32', converted_type: 'DATE' };
+    default:
+      throw new Error(`Unsupported CDS field type: ${field.type}`);
   }
 }
 
@@ -111,6 +113,8 @@ function encodeCdsValue(
       return Number(value);
     case 'cds.Date':
       return new Date(`${value}T00:00:00Z`);
+    default:
+      throw new Error(`Unsupported CDS field type: ${field.type}`);
   }
 }
 

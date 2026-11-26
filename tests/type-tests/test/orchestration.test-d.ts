@@ -299,12 +299,12 @@ expectType<Promise<OrchestrationResponse>>(
 /**
  * Orchestration completion parameters cannot be empty.
  */
-expectError<any>(new OrchestrationClient({}).chatCompletion());
+expectError(new OrchestrationClient({}).chatCompletion());
 
 /**
  * Either template or template_ref should be provided in prompt.
  */
-expectError<any>(
+expectError(
   new OrchestrationClient({
     promptTemplating: {
       model: {
@@ -321,7 +321,7 @@ expectError<any>(
 /**
  * Model_name is mandatory in llm_module_config.
  */
-expectError<any>(
+expectError(
   new OrchestrationClient({
     promptTemplating: {
       model: {
@@ -337,7 +337,7 @@ expectError<any>(
 /**
  * Template role should be predefined string literals.
  */
-expectError<any>(
+expectError(
   new OrchestrationClient({
     promptTemplating: {
       model: {
@@ -353,7 +353,7 @@ expectError<any>(
 /**
  * Tool message should have tool_call_id.
  */
-expectError<any>(
+expectError(
   new OrchestrationClient({
     promptTemplating: {
       model: {
@@ -955,7 +955,7 @@ expectType<
     overrides: [
       { promptTemplating: { include_usage: true } },
       { promptTemplating: { include_usage: false } }
-    ] as any
+    ]
   })
 );
 

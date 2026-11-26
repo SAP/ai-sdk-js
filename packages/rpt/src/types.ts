@@ -175,7 +175,7 @@ export type ParquetPayload = BodyPredictParquet & {
  * Compression middleware options for requests to the RPT service endpoint.
  */
 export type RptRequestCompressionMiddlewareOptions = Omit<
-  RequestCompressionMiddlewareOptions<'gzip'>,
+  RequestCompressionMiddlewareOptions,
   'algorithm'
 > & {
   /**
