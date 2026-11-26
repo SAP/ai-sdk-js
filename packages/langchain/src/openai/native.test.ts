@@ -14,6 +14,21 @@ import { createChatOpenAi, createLangChainOpenAiConfig } from './native.ts';
 
 const deploymentUrl = `${aiCoreDestination.url}/v2/inference/deployments/native-dep`;
 
+function mockModelDeployment(modelName = 'gpt-5.4', resourceGroup = 'default') {
+  return mockDeploymentsList(
+    {
+      scenarioId: 'foundation-models',
+      executableId: 'azure-openai',
+      resourceGroup
+    },
+    {
+      id: 'native-dep',
+      model: { name: modelName, version: 'latest' },
+      deploymentUrl
+    }
+  );
+}
+
 describe('native LangChain OpenAI helpers', () => {
   beforeEach(() => {
     mockClientCredentialsGrantCall();
@@ -22,24 +37,6 @@ describe('native LangChain OpenAI helpers', () => {
   afterEach(() => {
     nock.cleanAll();
   });
-
-  function mockModelDeployment(
-    modelName = 'gpt-5.4',
-    resourceGroup = 'default'
-  ) {
-    return mockDeploymentsList(
-      {
-        scenarioId: 'foundation-models',
-        executableId: 'azure-openai',
-        resourceGroup
-      },
-      {
-        id: 'native-dep',
-        model: { name: modelName, version: 'latest' },
-        deploymentUrl
-      }
-    );
-  }
 
   it('creates native configuration from a model name', async () => {
     mockModelDeployment();
