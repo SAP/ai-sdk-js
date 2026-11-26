@@ -39,7 +39,7 @@ import type { StreamOptions } from './orchestration-streaming-types.ts';
 /**
  * Per-request inputs for a chat completion call.
  * Only `messages`, `messagesHistory`, and `placeholderValues` are accepted here.
- * Model parameters (`temperature`, `max_tokens`, etc.), `tools`, and `response_format`
+ * Model parameters (`temperature`, `max_completion_tokens`, etc.), `tools`, and `response_format`
  * must be configured in the {@link OrchestrationModuleConfig} passed to the constructor.
  */
 export interface ChatCompletionRequest {
@@ -173,13 +173,16 @@ export type OrchestrationErrorResponse = ErrorResponse;
  * These are set once at client construction and apply to every request made by this client.
  * To use different parameters for a request, create a new {@link OrchestrationClient} instance.
  * You can pass model-specific parameters, that are not specified in `LlmModelParams` (e.g. `tool_choice`, `reasoning_effort`), but behavior depends on the underlying model provider.
+ * Use `max_completion_tokens` to limit the number of generated tokens; `max_tokens` is deprecated.
  * @example
- * params: { temperature: 0.7, max_tokens: 512 }
+ * params: { temperature: 0.7, max_completion_tokens: 512 }
  * @example
  * params: { reasoning_effort: 'high' }
  */
 export type LlmModelParams = {
+  /** @deprecated Since v2.19.0. Use `max_completion_tokens` instead. */
   max_tokens?: number;
+  max_completion_tokens?: number;
   temperature?: number;
   frequency_penalty?: number;
   presence_penalty?: number;

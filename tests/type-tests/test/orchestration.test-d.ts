@@ -371,8 +371,17 @@ expectError<any>(
  */
 expectAssignable<LlmModelParams>({
   max_tokens: 50,
+  max_completion_tokens: 50,
   random_property: 'random - value'
 });
+
+/**
+ * `max_completion_tokens` is explicitly typed as a number, not merely accepted
+ * via the `& Record<string, any>` index signature.
+ */
+const llmModelParamsTokenCheck = {} as LlmModelParams;
+expectType<number | undefined>(llmModelParamsTokenCheck.max_completion_tokens);
+expectError<LlmModelParams>({ max_completion_tokens: 'not-a-number' });
 
 /**
  * Model parameters should adhere to OrchestrationCompletionParameters.// Todo: Check if additional checks can be added for model_params.
