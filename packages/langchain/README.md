@@ -25,7 +25,8 @@ npm install @sap-ai-sdk/langchain
 ## Direct OpenAI access with LangChain
 
 The `@sap-ai-sdk/langchain/openai` entry point provides a factory and a configuration helper for direct access to OpenAI deployments through SAP AI Core using the upstream `@langchain/openai` package.
-These helpers are experimental. Install the optional peer dependency to use them:
+These helpers are experimental.
+Install the optional peer dependency to use them:
 
 ```bash
 npm install @langchain/openai openai
