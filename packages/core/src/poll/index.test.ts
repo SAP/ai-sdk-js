@@ -33,7 +33,7 @@ function executeWithMiddleware(
 ): Promise<HttpResponse> {
   const context: HttpMiddlewareContext = { uri: 'test', tenantId: undefined };
   let fn: (arg: HttpRequestConfig) => Promise<HttpResponse> = () => inner();
-  for (const mw of (cfg?.middleware ?? []) as HttpMiddleware[]) {
+  for (const mw of cfg?.middleware ?? []) {
     fn = mw({ fn, context });
   }
   return fn({} as HttpRequestConfig);

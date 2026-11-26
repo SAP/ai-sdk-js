@@ -87,9 +87,7 @@ interface HttpErrorShape {
 function rootCauseOf(error: unknown): HttpErrorShape | undefined {
   const root =
     error instanceof Error && isErrorWithCause(error) ? error.rootCause : error;
-  return root !== null && typeof root === 'object'
-    ? (root as HttpErrorShape)
-    : undefined;
+  return root !== null && typeof root === 'object' ? root : undefined;
 }
 
 export function httpStatus(error: unknown): number | undefined {
