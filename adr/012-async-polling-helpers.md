@@ -55,8 +55,10 @@ The original discussion is kept for the decision trail; where it differs, this s
   `AbortSignal.timeout`, returning the resource and throwing `PollFailedError` / `PollTimeoutError`.
 - `statusRequest` is an `OpenApiRequestBuilder` directly (when the id is known) or a factory
   `(created) => OpenApiRequestBuilder` deriving it from the `202` response for server-assigned
-  ids such as pipeline executions, with `notFound: 'resolve'` for deletes, optional `isDone`,
-  and `isFailure` throwing on a terminal failure.
+  ids such as pipeline executions, with `notFound: 'resolve'` for deletes and a single required
+  `checkStatus(resource)` returning `'pending' | 'done' | { failed }`. There is no implicit
+  completion default, so a create/update flow must declare completion rather than poll until
+  timeout; a terminal `{ failed }` throws `PollFailedError`.
 
 **Superseded decisions:**
 
@@ -81,9 +83,13 @@ The original discussion is kept for the decision trail; where it differs, this s
 - **Transient errors:** beyond honoring `Retry-After`, `waitUntilDone` retries transient request
   failures (status 429/502/503/504 and the `ECONNRESET`/`ETIMEDOUT`/`EAI_AGAIN` network codes),
   bounded by `maxConsecutiveErrors` (default 5); other errors propagate.
+  The retry is a custom `HttpMiddleware` injected only by `waitUntilDone` into the status-read
+  `requestConfig.middleware`, so `poll` stays retry-free and the caller owns its retries there.
+  The stock `@sap-cloud-sdk/resilience` `retry()` cannot cover this: it bails on every `4xx`,
+  ignores `Retry-After`, and has no configurable backoff.
 - **Progress callback:** an optional `onPoll(resource)` is invoked after each successful poll.
 - **Cosmetic renames:** `pollAsyncResource`/`read`/`isComplete`/`getFailure`/`intervalMs` →
-  `poll`/`waitUntilDone`/`statusRequest`/`isDone`/`isFailure`/`backoff`.
+  `poll`/`waitUntilDone`/`statusRequest`/`checkStatus`/`backoff`.
 
 **Deferred:**
 
