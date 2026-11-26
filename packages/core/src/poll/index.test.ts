@@ -285,6 +285,21 @@ describe('waitUntilDone', () => {
     expect(onPoll).toHaveBeenNthCalledWith(2, { status: 'ACTIVE' });
   });
 
+  it('invokes onPoll on a terminal failure state before throwing PollFailedError', async () => {
+    const { builder, execute } = statusStub();
+    execute.mockResolvedValue({ status: 'ERROR' });
+    const onPoll = vi.fn<(resource: Status) => void>();
+    await expect(
+      waitUntilDone(triggerStub(), {
+        statusRequest: builder,
+        checkStatus,
+        backoff,
+        onPoll
+      })
+    ).rejects.toBeInstanceOf(PollFailedError);
+    expect(onPoll).toHaveBeenCalledWith({ status: 'ERROR' });
+  });
+
   it('throws PollTimeoutError when the budget is exhausted', async () => {
     const { builder, execute } = statusStub();
     execute.mockResolvedValue({ status: 'PENDING' });
