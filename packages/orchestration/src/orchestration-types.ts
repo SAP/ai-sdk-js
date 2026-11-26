@@ -173,7 +173,6 @@ export type OrchestrationErrorResponse = ErrorResponse;
  * These are set once at client construction and apply to every request made by this client.
  * To use different parameters for a request, create a new {@link OrchestrationClient} instance.
  * You can pass model-specific parameters, that are not specified in `LlmModelParams` (e.g. `tool_choice`, `reasoning_effort`), but behavior depends on the underlying model provider.
- * Use `max_completion_tokens` to limit the number of generated tokens; `max_tokens` is deprecated.
  * @example
  * params: { temperature: 0.7, max_completion_tokens: 512 }
  * @example
