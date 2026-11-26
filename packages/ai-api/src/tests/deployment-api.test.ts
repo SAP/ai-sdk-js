@@ -13,8 +13,7 @@ import type {
   AiDeploymentDeletionResponse,
   AiDeploymentList,
   AiDeploymentModificationRequest,
-  AiDeploymentModificationResponse,
-  AiDeploymentTargetStatus
+  AiDeploymentModificationResponse
 } from '../client/AI_CORE_API/index.ts';
 
 describe('deployment', () => {
@@ -138,7 +137,7 @@ describe('deployment', () => {
       });
 
     const deploymentPatchData: AiDeploymentModificationRequest = {
-      targetStatus: 'STOPPED' as AiDeploymentTargetStatus
+      targetStatus: 'STOPPED'
     };
 
     const result: AiDeploymentModificationResponse =

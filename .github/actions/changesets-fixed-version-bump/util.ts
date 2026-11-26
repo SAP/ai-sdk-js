@@ -42,7 +42,7 @@ async function getBumpType() {
 
   const versionIncreases = releasePlan.releases
     .map(({ type }) => bumpTypeOrder.indexOf(type))
-    .sort((a, b) => b - a);
+    .toSorted((a, b) => b - a);
   return bumpTypeOrder[Math.min(...versionIncreases)];
 }
 

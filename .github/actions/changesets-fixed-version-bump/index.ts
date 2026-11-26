@@ -37,7 +37,7 @@ async function updateRootPackageJson(version: string) {
   await transformFile(resolve('package.json'), packageJson =>
     formatJson({
       ...JSON.parse(packageJson),
-      version: `${version}`
+      version
     })
   );
 }

@@ -90,8 +90,8 @@ function createDeploymentCache(cache: Cache<Deployment>) {
       deployments: AiDeployment[]
     ): void => {
       // go backwards to cache the first deployment ID for each model
-      [...deployments]
-        .reverse()
+      deployments
+        .toReversed()
         .map(deployment => transformDeploymentForCache(deployment))
         .flatMap(entry => [
           entry,
