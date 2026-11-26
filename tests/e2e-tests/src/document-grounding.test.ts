@@ -37,11 +37,20 @@ describe('document grounding', () => {
 
   it('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
     const result = await orchestrationGrounding(
-      'Retrieve the test token from the grounding context and output it verbatim without any explanation.',
+      [
+        'Read the document and copy its unique test phrase exactly, including punctuation.',
+        'Example 1: Document says "Test phrase: blue-orbit-19". Answer: blue-orbit-19',
+        'Example 2: Document says "Test phrase: !sample_42?". Answer: !sample_42?',
+        'What is the unique test phrase in the provided context?',
+        'Reply only with the phrase, or NOT_FOUND if absent.'
+      ].join('\n\n'),
       'vector',
       ['758658dc-3df6-4ab9-9de3-b55caf3b2293']
     );
-    expect(result.getContent()).toContain('&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/');
+    // Document extraction can insert whitespace into the synthetic fixture.
+    expect(result.getContent()?.replace(/\s/g, '')).toContain(
+      '&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/'
+    );
     expect(result.getIntermediateResults()).toBeDefined();
     expect(result.getIntermediateResults().grounding!.data).toBeDefined();
   });
