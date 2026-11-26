@@ -122,15 +122,12 @@ export function mapToolToOpenAiTool(
 function mapAzureOpenAiToLangChainToolCall(
   toolCalls?: AzureOpenAiChatCompletionMessageToolCalls
 ): ToolCall[] | undefined {
-  if (toolCalls) {
-    return toolCalls.map(toolCall => ({
-      id: toolCall.id,
-      name: toolCall.function.name,
-      args: JSON.parse(toolCall.function.arguments),
-      type: 'tool_call'
-    }));
-  }
-  return undefined;
+  return toolCalls?.map(toolCall => ({
+    id: toolCall.id,
+    name: toolCall.function.name,
+    args: JSON.parse(toolCall.function.arguments),
+    type: 'tool_call'
+  }));
 }
 
 /**
@@ -190,17 +187,14 @@ export function mapOutputToChatResult(
 function mapLangChainToolCallToAzureOpenAiToolCall(
   toolCalls?: ToolCall[]
 ): AzureOpenAiChatCompletionMessageToolCalls | undefined {
-  if (toolCalls) {
-    return toolCalls.map(toolCall => ({
-      id: toolCall.id || randomUUID(),
-      type: 'function',
-      function: {
-        name: toolCall.name,
-        arguments: JSON.stringify(toolCall.args)
-      }
-    }));
-  }
-  return undefined;
+  return toolCalls?.map(toolCall => ({
+    id: toolCall.id || randomUUID(),
+    type: 'function',
+    function: {
+      name: toolCall.name,
+      arguments: JSON.stringify(toolCall.args)
+    }
+  }));
 }
 
 /**

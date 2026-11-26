@@ -265,7 +265,6 @@ function ignoreNotFound(error: unknown): undefined {
   if (getHttpStatus(error) !== 404) {
     throw error;
   }
-  return undefined;
 }
 
 function getHttpStatus(error: unknown): number | undefined {

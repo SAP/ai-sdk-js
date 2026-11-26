@@ -146,17 +146,14 @@ function mapBaseMessageToChatMessage(message: BaseMessage): ChatMessage {
 function mapLangChainToolCallToOrchestrationToolCall(
   toolCalls?: ToolCall[]
 ): MessageToolCalls | undefined {
-  if (toolCalls) {
-    return toolCalls.map(toolCall => ({
-      id: toolCall.id || randomUUID(),
-      type: 'function',
-      function: {
-        name: toolCall.name,
-        arguments: JSON.stringify(toolCall.args)
-      }
-    }));
-  }
-  return undefined;
+  return toolCalls?.map(toolCall => ({
+    id: toolCall.id || randomUUID(),
+    type: 'function',
+    function: {
+      name: toolCall.name,
+      arguments: JSON.stringify(toolCall.args)
+    }
+  }));
 }
 
 /**
@@ -371,15 +368,12 @@ export function applyCacheControlToLastMessage(
 function mapOrchestrationToLangChainToolCall(
   toolCalls?: MessageToolCalls
 ): ToolCall[] | undefined {
-  if (toolCalls) {
-    return toolCalls.map(toolCall => ({
-      id: toolCall.id,
-      name: toolCall.function.name,
-      args: JSON.parse(toolCall.function.arguments),
-      type: 'tool_call'
-    }));
-  }
-  return undefined;
+  return toolCalls?.map(toolCall => ({
+    id: toolCall.id,
+    name: toolCall.function.name,
+    args: JSON.parse(toolCall.function.arguments),
+    type: 'tool_call'
+  }));
 }
 
 /**
