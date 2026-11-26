@@ -1,10 +1,12 @@
 import { createLogger } from '@sap-cloud-sdk/util';
 
 import {
-  type ChatCompletionRequest,
   type StreamOptions,
-  type BaseStreamOptions,
-  type ModuleStreamOptions,
+  type StreamOptionsWithoutOverrides,
+  type ModuleStreamOptions
+} from '../orchestration-streaming-types.ts';
+import {
+  type ChatCompletionRequest,
   type OrchestrationConfigRefById,
   type OrchestrationConfigRefByName,
   type OrchestrationModuleConfig,
@@ -278,7 +280,7 @@ export function addStreamOptions(
 /** @internal */
 export function addStreamOptions(
   moduleConfigs: ModuleConfigs,
-  streamOptions?: BaseStreamOptions
+  streamOptions?: StreamOptionsWithoutOverrides
 ): OrchestrationConfig;
 
 /**
@@ -350,7 +352,7 @@ export function constructCompletionPostRequest(
   config: OrchestrationModuleConfig,
   request?: ChatCompletionRequest,
   stream?: boolean,
-  streamOptions?: BaseStreamOptions
+  streamOptions?: StreamOptionsWithoutOverrides
 ): CompletionPostRequest;
 
 /** @internal */
@@ -400,7 +402,7 @@ export function constructCompletionPostRequest(
       ? addStreamOptions(moduleConfigurations, streamOptions)
       : addStreamOptions(
           moduleConfigurations,
-          streamOptions as BaseStreamOptions | undefined
+          streamOptions as StreamOptionsWithoutOverrides | undefined
         )
     : { modules: moduleConfigurations };
 

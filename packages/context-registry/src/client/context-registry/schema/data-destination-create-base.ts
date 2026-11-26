@@ -18,6 +18,6 @@ export type DataDestinationCreateBase = {
    * Adapter type for data access.
    * Default: "File".
    */
-  adapterType?: 'File' | 'DeltaShare';
+  adapterType?: 'File';
   labels?: Labels;
 } & Record<string, any>;
