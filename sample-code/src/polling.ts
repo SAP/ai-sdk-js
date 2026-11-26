@@ -1,4 +1,7 @@
-import { DataDestinationsApi } from '@sap-ai-sdk/context-registry';
+import {
+  contextRegistryStatus,
+  DataDestinationsApi
+} from '@sap-ai-sdk/context-registry';
 import { waitUntilDone } from '@sap-ai-sdk/core';
 import { PipelinesApi, VectorApi } from '@sap-ai-sdk/document-grounding';
 
@@ -6,6 +9,7 @@ import type {
   CreateDataDestination,
   GetDataDestination
 } from '@sap-ai-sdk/context-registry';
+import type { PollStatus } from '@sap-ai-sdk/core';
 import type {
   CollectionCreatedResponse,
   CollectionPendingResponse,
@@ -59,7 +63,7 @@ export async function createCollectionAndWait(
           idFromLocation(created, 'collections'),
           headers
         ),
-      isDone: status => 'collectionURL' in status
+      checkStatus: status => ('collectionURL' in status ? 'done' : 'pending')
     }
   );
 }
@@ -75,7 +79,7 @@ const PIPELINE_FAILURES = new Set([
  *
  * The execution id is taken from the trigger's `202` `Location` header (factory form), so
  * polling follows the run that was just triggered rather than pipeline-wide status.
- * `FINISHEDWITHERRORS` is left for the caller to inspect on the returned status.
+ * `FINISHEDWITHERRORS` completes (the caller inspects the returned status for partial success).
  * @param body - The pipeline trigger payload.
  * @returns The terminal pipeline execution status.
  */
@@ -95,12 +99,18 @@ export async function runPipelineAndWait(
           idFromLocation(created, 'executions'),
           headers
         ),
-      isDone: status =>
-        status.status === 'FINISHED' || status.status === 'FINISHEDWITHERRORS',
-      isFailure: status =>
-        status.status && PIPELINE_FAILURES.has(status.status)
-          ? String(status.status)
-          : undefined
+      checkStatus: (status): PollStatus => {
+        if (
+          status.status === 'FINISHED' ||
+          status.status === 'FINISHEDWITHERRORS'
+        ) {
+          return 'done';
+        }
+        if (status.status && PIPELINE_FAILURES.has(status.status)) {
+          return { failed: String(status.status) };
+        }
+        return 'pending';
+      }
     }
   );
 }
@@ -108,7 +118,8 @@ export async function runPipelineAndWait(
 /**
  * Create (or update) a data destination and wait until it is active.
  *
- * The caller already knows the destination name, so the status request is passed directly.
+ * The caller already knows the destination name, so the status request is passed directly, and
+ * the shared `contextRegistryStatus` preset handles the ACTIVE/ERROR lifecycle.
  * @param name - The data destination name.
  * @param body - The data destination to create.
  * @returns The data destination in its final state.
@@ -124,9 +135,7 @@ export async function createDataDestinationAndWait(
         name,
         headers
       ),
-      isDone: status => status.status === 'ACTIVE',
-      isFailure: status =>
-        status.status === 'ERROR' ? status.errorMessage || 'ERROR' : undefined
+      checkStatus: contextRegistryStatus
     }
   );
 }
@@ -145,6 +154,8 @@ export async function deleteDataDestinationAndWait(
         name,
         headers
       ),
+      // No terminal success state for delete; completion is the 404 below.
+      checkStatus: () => 'pending',
       notFound: 'resolve'
     }
   );

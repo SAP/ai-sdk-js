@@ -7,7 +7,7 @@ import {
 
 import { expectAssignable, expectType } from 'tsd';
 
-import type { OpenApiRequestBuilder } from '@sap-ai-sdk/core';
+import type { OpenApiRequestBuilder, PollStatus } from '@sap-ai-sdk/core';
 import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 interface Created {
@@ -20,10 +20,12 @@ type Status = Created | Pending;
 
 declare const trigger: OpenApiRequestBuilder<unknown>;
 declare const statusRequest: OpenApiRequestBuilder<Status>;
+const checkStatus = (s: Status): PollStatus =>
+  'collectionURL' in s ? 'done' : 'pending';
 
 // waitUntilDone resolves to the status type; T is inferred from statusRequest.
 expectType<Promise<Status>>(
-  waitUntilDone(trigger, { statusRequest, isDone: s => 'collectionURL' in s })
+  waitUntilDone(trigger, { statusRequest, checkStatus })
 );
 
 // A factory form derives the status request from the trigger's 202 response.
@@ -33,32 +35,26 @@ expectType<Promise<Status>>(
       expectType<HttpResponse>(created);
       return statusRequest;
     },
-    isDone: s => 'collectionURL' in s
+    checkStatus
   })
 );
 
-// With notFound: 'resolve' the result widens to include undefined.
+// notFound: 'resolve' widens the result to include undefined.
 expectType<Promise<Status | undefined>>(
-  waitUntilDone(trigger, {
-    statusRequest,
-    notFound: 'resolve',
-    isDone: s => 'collectionURL' in s
-  })
+  waitUntilDone(trigger, { statusRequest, checkStatus, notFound: 'resolve' })
+);
+
+// Sound for a typed variable too (not just an inline literal): a 'throw' | 'resolve'
+// variable must resolve to Promise<Status | undefined>, never silently to Promise<Status>.
+declare const nf: 'throw' | 'resolve';
+expectType<Promise<Status | undefined>>(
+  waitUntilDone(trigger, { statusRequest, checkStatus, notFound: nf })
 );
 
 // poll yields the status type and returns the status type (or undefined).
 expectType<AsyncGenerator<Status, Status | undefined, void>>(
-  poll(trigger, { statusRequest, isDone: s => 'collectionURL' in s })
+  poll(trigger, { statusRequest, checkStatus })
 );
-
-// isDone receives the inferred status type, not unknown.
-void waitUntilDone(trigger, {
-  statusRequest,
-  isDone: s => {
-    expectType<Status>(s);
-    return 'collectionURL' in s;
-  }
-});
 
 // Error types.
 const timeout = new PollTimeoutError(1000);

@@ -25,5 +25,10 @@ export {
   waitUntilDone,
   PollTimeoutError,
   PollFailedError
-} from './polling.ts';
-export type { Backoff, PollOptions, WaitOptions } from './polling.ts';
+} from './poll/index.ts';
+export type {
+  Backoff,
+  PollOptions,
+  WaitOptions,
+  PollStatus
+} from './poll/index.ts';
