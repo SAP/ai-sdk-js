@@ -1571,11 +1571,24 @@ describe('orchestration service client', () => {
 
       mockInference(
         {
-          data: constructCompletionPostRequest(
-            config,
-            { messages: [{ role: 'user', content: 'Hello' }] },
-            true
-          )
+          data: {
+            config: {
+              stream: { enabled: true },
+              modules: {
+                prompt_templating: {
+                  prompt: { template_ref: { id: 'test-template-id' } },
+                  model: {
+                    name: 'gpt-5-mini',
+                    params: {
+                      max_tokens: 50,
+                      stream_options: { include_usage: true }
+                    }
+                  }
+                }
+              }
+            },
+            messages_history: [{ role: 'user', content: 'Hello' }]
+          }
         },
         {
           data: mockResponse,
