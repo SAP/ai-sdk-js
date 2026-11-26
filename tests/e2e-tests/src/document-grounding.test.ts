@@ -35,13 +35,11 @@ describe('document grounding', () => {
     expect(result.getIntermediateResults().grounding!.data).toBeDefined();
   });
 
-  // TODO: Re-enable once SharePoint grounding is working again.
-  // oxlint-disable-next-line vitest/no-disabled-tests
-  it.skip('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
+  it('should get the result based on grounding context from SharePoint data respository via orchestration API', async () => {
     const result = await orchestrationGrounding(
       'Retrieve the test token from the grounding context and output it verbatim without any explanation.',
       'vector',
-      ['0bd2adc2-8d0d-478a-94f6-a0c10958f602']
+      ['758658dc-3df6-4ab9-9de3-b55caf3b2293']
     );
     expect(result.getContent()).toContain('&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/');
     expect(result.getIntermediateResults()).toBeDefined();
@@ -52,7 +50,7 @@ describe('document grounding', () => {
     const result = await orchestrationGrounding(
       "What is the Tom's favorite snack?",
       'vector',
-      ['8907272b-682e-4574-b8b8-9b75c393f362']
+      ['9caa9720-72cf-489c-9f87-cfbf323e9e0d']
     );
     expect(result.getContent()).toContain('Dubai Chocolate');
     expect(result.getIntermediateResults()).toBeDefined();
