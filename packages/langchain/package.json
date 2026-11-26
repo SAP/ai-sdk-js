@@ -26,6 +26,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./openai": {
+      "types": "./dist/openai/native.d.ts",
+      "default": "./dist/openai/native.js"
+    },
     "./orchestration/prompt-caching-middleware": {
       "types": "./dist/orchestration/prompt-caching-middleware/index.d.ts",
       "default": "./dist/orchestration/prompt-caching-middleware/index.js"
@@ -45,6 +49,7 @@
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
+    "@sap-ai-sdk/openai": "workspace:^",
     "@sap-ai-sdk/orchestration": "workspace:^",
     "@sap-cloud-sdk/connectivity": "catalog:",
     "@sap-cloud-sdk/util": "catalog:"
@@ -52,14 +57,19 @@
   "devDependencies": {
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
+    "@langchain/openai": "1.8.4",
     "langchain": "catalog:",
     "zod": "catalog:"
   },
   "peerDependencies": {
     "@langchain/core": "^1.2.13",
+    "@langchain/openai": "^1.8.4",
     "langchain": "^1.5.14"
   },
   "peerDependenciesMeta": {
+    "@langchain/openai": {
+      "optional": true
+    },
     "langchain": {
       "optional": true
     }

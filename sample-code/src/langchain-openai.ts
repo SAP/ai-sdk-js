@@ -1,53 +1,15 @@
-import { createOpenAiConfig } from '@sap-ai-sdk/openai';
+import {
+  createChatOpenAi,
+  createLangChainOpenAiConfig
+} from '@sap-ai-sdk/langchain/openai';
 
 import { tool } from '@langchain/core/tools';
-import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
+import { OpenAIEmbeddings } from '@langchain/openai';
 import { createAgent } from 'langchain';
 import * as z from 'zod/v4';
 
 import type { AIMessageChunk } from '@langchain/core/messages';
 import type { IterableReadableStream } from '@langchain/core/utils/stream';
-import type { ChatOpenAIFields, ClientOptions } from '@langchain/openai';
-
-/**
- * Map the `AzureOpenAI` options created by `@sap-ai-sdk/openai` to the `ClientOptions` expected by `@langchain/openai`.
- * `ChatOpenAI` and `OpenAIEmbeddings` use the deployment URL as base URL, send the SAP AI Core token as bearer token, and add the `api-version` query parameter.
- * @param deployment - The model name of the SAP AI Core deployment.
- * @returns Client options for `@langchain/openai` models.
- */
-async function createLangChainOpenAiConfig(
-  deployment: string
-): Promise<ClientOptions> {
-  const { baseURL, apiVersion, azureADTokenProvider, defaultHeaders } =
-    await createOpenAiConfig({
-      deployment,
-      clientType: 'sample-code-langchain-openai'
-    });
-
-  return {
-    baseURL,
-    apiKey: azureADTokenProvider,
-    defaultQuery: { 'api-version': apiVersion },
-    defaultHeaders
-  };
-}
-
-/**
- * Create a LangChain `ChatOpenAI` model for a SAP AI Core deployment.
- * @param deployment - The model name of the SAP AI Core deployment.
- * @param fields - Additional `ChatOpenAI` fields.
- * @returns The LangChain chat model.
- */
-async function createChatOpenAi(
-  deployment: string,
-  fields: Omit<ChatOpenAIFields, 'configuration'> = {}
-): Promise<ChatOpenAI> {
-  return new ChatOpenAI({
-    model: deployment,
-    ...fields,
-    configuration: await createLangChainOpenAiConfig(deployment)
-  });
-}
 
 /**
  * Ask GPT about the capital of France using the Chat Completions API.
