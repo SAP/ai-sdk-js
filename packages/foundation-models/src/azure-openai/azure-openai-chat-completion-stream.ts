@@ -194,13 +194,6 @@ export class AzureOpenAiChatCompletionStream<Item> extends SseStream<Item> {
     }
   }
 
-  constructor(
-    iterator: () => AsyncIterator<Item>,
-    controller: AbortController
-  ) {
-    super(iterator, controller);
-  }
-
   /**
    * Pipe the stream through a processing function.
    * @param processFn - The function to process the input stream.

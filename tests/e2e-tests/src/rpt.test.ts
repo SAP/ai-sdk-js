@@ -14,6 +14,7 @@ import type { PredictResponsePayload } from '@sap-ai-sdk/rpt';
 loadEnv();
 
 describe('rpt', () => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep response assertions local to this integration suite.
   function verifyPredictions(predictions: PredictResponsePayload[]) {
     expect(predictions.length).toBeGreaterThan(0);
     expect(predictions.length).toBe(2);

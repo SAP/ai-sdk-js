@@ -73,7 +73,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getTokenUsage(): TokenUsage | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this._data.final_result?.usage;
   }
@@ -93,7 +93,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getFinishReason(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this.findChoiceByIndex(choiceIndex)?.finish_reason;
   }
@@ -106,7 +106,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getContent(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     const choice = this.findChoiceByIndex(choiceIndex);
     return choice?.message?.content;
@@ -119,7 +119,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getToolCalls(choiceIndex = 0): MessageToolCalls | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     const choice = this.findChoiceByIndex(choiceIndex);
     return choice?.message?.tool_calls;
@@ -132,7 +132,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getRefusal(choiceIndex = 0): string | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     const choice = this.findChoiceByIndex(choiceIndex);
     return choice?.message?.refusal;
@@ -148,7 +148,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getReasoningContent(choiceIndex = 0): string[] | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     const blocks =
       this.findChoiceByIndex(choiceIndex)?.message?.reasoning_content;
@@ -165,7 +165,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getAllMessages(choiceIndex = 0): ChatMessages | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     const messages: ChatMessage[] =
       this._data.intermediate_results?.templating ?? [];
@@ -180,7 +180,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getAssistantMessage(choiceIndex = 0): AssistantChatMessage | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this.findChoiceByIndex(choiceIndex)?.message;
   }
@@ -191,7 +191,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getIntermediateResults(): ModuleResults | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this._data.intermediate_results;
   }
@@ -204,7 +204,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getIntermediateFailures(): OrchestrationError[] | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this._data.intermediate_failures;
   }
@@ -216,7 +216,7 @@ export class OrchestrationStreamResponse<T> {
    */
   findChoiceByIndex(index: number): LlmChoice | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this.getChoices().find((c: { index: number }) => c.index === index);
   }
@@ -228,7 +228,7 @@ export class OrchestrationStreamResponse<T> {
    */
   getCitations(): Citation[] | undefined {
     if (this.isStreamOpen()) {
-      return;
+      return undefined;
     }
     return this._data.final_result?.citations;
   }
