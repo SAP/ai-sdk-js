@@ -10,7 +10,10 @@ import {
   mockDeploymentsList,
   mockInference
 } from '../../../../test-util/mock-http.ts';
-import { createChatOpenAi, createLangChainOpenAiConfig } from './native.ts';
+import {
+  createChatOpenAi,
+  createLangChainOpenAiConfig
+} from './native/index.ts';
 
 const deploymentUrl = `${aiCoreDestination.url}/v2/inference/deployments/native-dep`;
 
