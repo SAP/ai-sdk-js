@@ -20,6 +20,10 @@ import {
 } from './ai-api/deployment-api.ts';
 import { getScenarios, getModelsInScenario } from './ai-api/scenario-api.ts';
 import {
+  createMessage as anthropicMessages,
+  streamMessage as anthropicMessagesStream
+} from './anthropic.ts';
+import {
   createCollection,
   createDocumentsWithTimestamp,
   deleteCollection,
@@ -513,6 +517,35 @@ app.get('/openai/responses-multi-turn', async (req, res) => {
       .send(await responsesApiMultiTurn());
   } catch (error: any) {
     sendError(res, error);
+  }
+});
+
+/* Foundation Models (Claude via Anthropic Bedrock SDK) */
+app.get('/anthropic/messages', (_req, res) =>
+  anthropicMessages()
+    .then(message => res.json(message))
+    .catch(error => sendError(res, error))
+);
+
+app.get('/anthropic/messages-stream', async (_req, res) => {
+  try {
+    const stream = anthropicMessagesStream();
+    res.on('close', () => stream.abort());
+    if (res.destroyed) {
+      stream.abort();
+      return;
+    }
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+
+    for await (const event of stream) {
+      res.write(`event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`);
+    }
+  } catch (error) {
+    sendError(res, error, !res.headersSent);
+  } finally {
+    res.end();
   }
 });
 

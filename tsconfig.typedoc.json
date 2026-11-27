@@ -2,6 +2,7 @@
   "extends": "./tsconfig.base.json",
   "include": [
     "./packages/ai-api/**/*",
+    "./packages/anthropic/**/*",
     "./packages/core/**/*",
     "./packages/context-registry/**/*",
     "./packages/document-grounding/**/*",
@@ -23,6 +24,9 @@
   "references": [
     {
       "path": "./packages/ai-api"
+    },
+    {
+      "path": "./packages/anthropic"
     },
     {
       "path": "./packages/core"
@@ -59,6 +63,7 @@
     "out": "knowledge-base/api-reference",
     "entryPoints": [
       "packages/ai-api/src/index.ts",
+      "packages/anthropic/src/index.ts",
       "packages/core/src/index.ts",
       "packages/context-registry/src/index.ts",
       "packages/document-grounding/src/index.ts",
@@ -78,6 +83,11 @@
     "includeVersion": true,
     "hideGenerator": true,
     "excludePrivate": true,
+    "externalSymbolLinkMappings": {
+      "typescript": {
+        "File": "https://developer.mozilla.org/en-US/docs/Web/API/File"
+      }
+    },
     "treatWarningsAsErrors": false,
     "validation": {
       "invalidLink": true

@@ -15,6 +15,7 @@ Set up your SAP AI Core instance with SAP Cloud SDK for AI.
 - [Documentation](#documentation)
 - [Packages](#packages)
   - [@sap-ai-sdk/ai-api](#sap-ai-sdkai-api)
+  - [@sap-ai-sdk/anthropic](#sap-ai-sdkanthropic)
   - [@sap-ai-sdk/foundation-models](#sap-ai-sdkfoundation-models)
   - [@sap-ai-sdk/langchain](#sap-ai-sdklangchain)
   - [@sap-ai-sdk/orchestration](#sap-ai-sdkorchestration)
@@ -32,7 +33,7 @@ Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/
 
 ## Packages
 
-This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/)
+This project publishes multiple packages and is managed using [pnpm](https://pnpm.io/).
 
 ### @sap-ai-sdk/ai-api
 
@@ -47,6 +48,18 @@ This package provides tools to manage your scenarios and workflows in SAP AI Cor
 
 ```bash
 npm install @sap-ai-sdk/ai-api
+```
+
+### @sap-ai-sdk/anthropic
+
+This experimental package provides Claude access through SAP AI Core Bedrock Invoke.
+It uses the official Anthropic Bedrock SDK and its native streaming helpers.
+See the [package README](packages/anthropic/README.md) for usage.
+
+#### Installation
+
+```bash
+npm install @sap-ai-sdk/anthropic @anthropic-ai/bedrock-sdk @anthropic-ai/sdk
 ```
 
 ### @sap-ai-sdk/foundation-models

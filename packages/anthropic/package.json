@@ -1,0 +1,63 @@
+{
+  "name": "@sap-ai-sdk/anthropic",
+  "version": "2.18.0",
+  "description": "SAP AI SDK integration with the official Anthropic Bedrock SDK for Claude on SAP AI Core",
+  "keywords": [
+    "anthropic",
+    "aws-bedrock",
+    "claude",
+    "foundation-models",
+    "sap-ai-sdk"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/ai-sdk-js",
+    "directory": "packages/anthropic"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./internal.js": {
+      "types": "./dist/internal.d.ts",
+      "default": "./dist/internal.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "beta"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "test": "vitest run",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt ."
+  },
+  "dependencies": {
+    "@sap-ai-sdk/ai-api": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
+    "@sap-cloud-sdk/connectivity": "catalog:",
+    "@sap-cloud-sdk/util": "catalog:"
+  },
+  "devDependencies": {
+    "@anthropic-ai/bedrock-sdk": "0.34.4",
+    "@anthropic-ai/sdk": "0.133.0",
+    "@smithy/core": "3.40.0",
+    "vitest": "5.1.0"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/bedrock-sdk": "^0.34.4",
+    "@anthropic-ai/sdk": "^0.133.0"
+  }
+}

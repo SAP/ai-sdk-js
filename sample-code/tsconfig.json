@@ -13,6 +13,9 @@
       "path": "../packages/ai-api"
     },
     {
+      "path": "../packages/anthropic"
+    },
+    {
       "path": "../packages/foundation-models"
     },
     {
