@@ -70,6 +70,7 @@
       "packages/orchestration/src/index.ts",
       "packages/prompt-registry/src/index.ts",
       "packages/rpt/src/index.ts",
+      "packages/rpt/src/decisions/index.ts",
       "packages/tabular-orchestration/src/index.ts"
     ],
     "name": "SAP AI SDK for JavaScript",

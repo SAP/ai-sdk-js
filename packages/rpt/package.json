@@ -30,6 +30,14 @@
     "./internal.js": {
       "types": "./dist/internal.d.ts",
       "default": "./dist/internal.js"
+    },
+    "./decisions": {
+      "types": "./dist/decisions/index.d.ts",
+      "default": "./dist/decisions/index.js"
+    },
+    "./decisions/internal.js": {
+      "types": "./dist/decisions/internal.d.ts",
+      "default": "./dist/decisions/internal.js"
     }
   },
   "scripts": {
@@ -37,11 +45,14 @@
     "test": "vitest run",
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
-    "generate": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
-    "postgenerate": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
+    "generate": "pnpm generate:rpt && pnpm generate:decisions",
+    "generate:rpt": "openapi-generator --generateEsm --clearOutputDir -i ./src/spec/rpt.json -o ./src/client",
+    "generate:decisions": "openapi-generator --generateEsm --clearOutputDir -i ./src/decisions/spec/rpt-decisions.yaml -o ./src/decisions/client",
+    "postgenerate:rpt": "pnpm update-imports && pnpm make-rpt-internal && pnpm lint:fix",
+    "postgenerate:decisions": "node ../../scripts/update-imports.ts ./src/decisions/client/rpt-decisions && node ../../scripts/postgenerate-rpt.ts ./src/decisions/client/rpt-decisions/default-api.ts && pnpm lint:fix",
     "update-imports": "node ../../scripts/update-imports.ts ./src/client/rpt",
     "make-rpt-internal": "node ../../scripts/postgenerate-rpt.ts ./src/client/rpt/rpt-api.ts",
-    "pregenerate": "node ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
+    "pregenerate:rpt": "node ../../scripts/pregenerate-rpt.ts ./src/spec/rpt.json"
   },
   "dependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",

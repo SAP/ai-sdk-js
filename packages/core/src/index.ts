@@ -17,6 +17,7 @@ export type {
   AwsBedrockEmbeddingModel,
   PerplexityChatModel,
   SapRptModel,
+  SapRptDecisionsModel,
   LlmBatchModel
 } from './model-types.ts';
 export { SseStream, LineDecoder, SSEDecoder } from './stream/index.ts';

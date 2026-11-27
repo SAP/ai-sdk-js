@@ -117,6 +117,11 @@ export type AiCoreOpenSourceEmbeddingModel = LiteralUnion<
 export type SapRptModel = LiteralUnion<'sap-rpt-1.6' | 'sap-rpt-1.6-large'>;
 
 /**
+ * SAP RPT Decisions models.
+ */
+export type SapRptDecisionsModel = LiteralUnion<'sap-rpt-decisions'>;
+
+/**
  * Models supported for LLM batch processing.
  * The full list is managed by running the `update-models` skill.
  */
