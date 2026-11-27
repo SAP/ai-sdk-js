@@ -4,8 +4,7 @@ import { expectAssignable, expectError, expectType } from 'tsd';
 
 import type {
   LangChainOrchestrationModuleConfig,
-  LangChainOrchestrationModuleConfigList,
-  OrchestrationCallOptions
+  LangChainOrchestrationModuleConfigList
 } from '@sap-ai-sdk/langchain';
 
 const singleConfig: LangChainOrchestrationModuleConfig = {
@@ -37,7 +36,7 @@ expectAssignable<Promise<unknown>>(
 expectAssignable<Promise<AsyncIterable<unknown>>>(
   new OrchestrationClient(fallbackConfigs).stream('Hello', {
     stop: ['END']
-  } as OrchestrationCallOptions)
+  })
 );
 
 const emptyConfigList: LangChainOrchestrationModuleConfig[] = [];

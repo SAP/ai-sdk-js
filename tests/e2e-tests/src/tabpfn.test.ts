@@ -15,17 +15,17 @@ import type { PredictResponse } from '@sap-ai-sdk/tabpfn';
 
 loadEnv();
 
-describe('tabpfn', () => {
-  function verifyMetadata(
-    response: PredictResponse,
-    task: 'classification' | 'regression'
-  ) {
-    expect(response.metadata.task).toBe(task);
-    expect(response.metadata.test_set_num_rows).toBeGreaterThan(0);
-    expect(response.metadata.test_set_num_cols).toBeGreaterThan(0);
-    expect(response.metadata.tabpfn_config).toEqual(expect.any(Object));
-  }
+function verifyMetadata(
+  response: PredictResponse,
+  task: 'classification' | 'regression'
+): void {
+  expect(response.metadata.task).toBe(task);
+  expect(response.metadata.test_set_num_rows).toBeGreaterThan(0);
+  expect(response.metadata.test_set_num_cols).toBeGreaterThan(0);
+  expect(response.metadata.tabpfn_config).toEqual(expect.any(Object));
+}
 
+describe('tabpfn', () => {
   it('should predict classification probabilities', async () => {
     const response = await predictClassification();
     verifyMetadata(response, 'classification');
@@ -50,6 +50,8 @@ describe('tabpfn', () => {
     expect(Array.isArray(response.prediction)).toBe(true);
   });
 
+  // Re-enable these tests once the Parquet endpoint is supported on our landscape.
+  /* oxlint-disable vitest/no-commented-out-tests */
   // describe('Parquet endpoint', () => {
   // const client = new TabpfnClient('tabpfn-3.5-plus');
   // const request = {
@@ -113,6 +115,7 @@ describe('tabpfn', () => {
   // }
   // );
   // });
+  /* oxlint-enable vitest/no-commented-out-tests */
 
   it('should predict with resilience middleware', async () => {
     const response = await predictResilient();

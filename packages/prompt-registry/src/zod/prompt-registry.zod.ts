@@ -109,6 +109,7 @@ export const RegistryControllerPromptControllerCreateUpdatePromptTemplateRespons
  */
 export const registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault = `both`;
 export const registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault = false;
+export const registryControllerPromptControllerListPromptTemplatesQueryTopMin = 1;
 export const registryControllerPromptControllerListPromptTemplatesQueryTopMax = 500;
 
 export const registryControllerPromptControllerListPromptTemplatesQuerySkipDefault = 0;
@@ -122,7 +123,7 @@ export const RegistryControllerPromptControllerListPromptTemplatesQueryParams = 
   "version": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Version field of the resource.')),
   "retrieve": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerPromptControllerListPromptTemplatesQueryRetrieveDefault).check(/*#__PURE__*/ zod.describe('Whether to retrieve \'imperative\', \'declarative\', or \'both\'.')),
   "includeSpec": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerPromptControllerListPromptTemplatesQueryIncludeSpecDefault).check(/*#__PURE__*/ zod.describe('Whether include the spec section or not.')),
-  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerPromptControllerListPromptTemplatesQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
+  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerPromptControllerListPromptTemplatesQueryTopMin)).check(/*#__PURE__*/ zod.lte(registryControllerPromptControllerListPromptTemplatesQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
   "$skip": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerPromptControllerListPromptTemplatesQuerySkipMin)), registryControllerPromptControllerListPromptTemplatesQuerySkipDefault).check(/*#__PURE__*/ zod.describe('Number of results to skip before returning the page.'))
 })
 
@@ -256,6 +257,7 @@ export const RegistryControllerPromptControllerListPromptTemplateHistoryParams =
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name field of the resource.'))
 })
 
+export const registryControllerPromptControllerListPromptTemplateHistoryQueryTopMin = 1;
 export const registryControllerPromptControllerListPromptTemplateHistoryQueryTopMax = 500;
 
 export const registryControllerPromptControllerListPromptTemplateHistoryQuerySkipDefault = 0;
@@ -264,7 +266,7 @@ export const registryControllerPromptControllerListPromptTemplateHistoryQuerySki
 
 
 export const RegistryControllerPromptControllerListPromptTemplateHistoryQueryParams = /*#__PURE__*/ zod.object({
-  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerPromptControllerListPromptTemplateHistoryQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
+  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerPromptControllerListPromptTemplateHistoryQueryTopMin)).check(/*#__PURE__*/ zod.lte(registryControllerPromptControllerListPromptTemplateHistoryQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
   "$skip": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerPromptControllerListPromptTemplateHistoryQuerySkipMin)), registryControllerPromptControllerListPromptTemplateHistoryQuerySkipDefault).check(/*#__PURE__*/ zod.describe('Number of results to skip before returning the page.'))
 })
 
@@ -743,12 +745,20 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodyScenarioRegExp = new RegExp('^[a-zA-Z0-9_-]+$');
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -764,6 +774,7 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -772,20 +783,37 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -803,15 +831,27 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneTranslationInputOneConfigApplyToMin = 1;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -827,6 +867,7 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -835,20 +876,37 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -866,12 +924,17 @@ export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemTranslationInputOneConfigApplyToMin = 1;
+
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault = false;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMin = 1;
 export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamDelimitersMin = 1;
 
 
 
@@ -892,7 +955,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -909,7 +972,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -920,7 +983,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -944,7 +1007,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -954,8 +1017,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -998,7 +1061,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -1017,7 +1080,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1040,7 +1103,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1059,9 +1122,9 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -1094,7 +1157,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1113,9 +1176,9 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -1139,13 +1202,13 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -1164,13 +1227,13 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -1198,7 +1261,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -1214,7 +1277,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesOneTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -1242,7 +1305,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -1259,7 +1322,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -1270,7 +1333,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -1294,7 +1357,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -1304,8 +1367,8 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -1348,7 +1411,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -1367,7 +1430,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1390,7 +1453,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1409,9 +1472,9 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -1444,7 +1507,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1463,9 +1526,9 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -1489,13 +1552,13 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -1514,13 +1577,13 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -1548,7 +1611,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -1564,7 +1627,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoItemTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -1580,11 +1643,11 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 })
 })).check(/*#__PURE__*/ zod.describe('Configuration for output translation'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for translation module'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecModulesTwoMin)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
   "stream": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamEnabledDefault).check(/*#__PURE__*/ zod.describe('If true, the response will be streamed back to the client')),
-  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
-  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
+  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
+  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerCreateUpdateOrchestrationConfigBodySpecStreamDelimitersMin))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
 })).check(/*#__PURE__*/ zod.describe('Options for streaming. Will be ignored if enabled is false.'))
 })
 })
@@ -1605,6 +1668,7 @@ export const RegistryControllerOrchestrationConfigControllerCreateUpdateOrchestr
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryRetrieveDefault = `both`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryIncludeSpecDefault = false;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMax = 500;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipDefault = 0;
@@ -1621,7 +1685,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "includeSpec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()).check(/*#__PURE__*/ zod.describe('Whether the spec should be included in the response.')),
   "resolve_template_ref": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryResolveTemplateRefDefault).check(/*#__PURE__*/ zod.describe('DEPRECATED: Use resolveTemplateRef instead.')),
   "resolveTemplateRef": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()).check(/*#__PURE__*/ zod.describe('Whether a template reference should be resolved')),
-  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
+  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
   "$skip": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipMin)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsQuerySkipDefault).check(/*#__PURE__*/ zod.describe('Number of results to skip before returning the page.'))
 })
 
@@ -1629,12 +1693,20 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use'))
 })
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -1650,6 +1722,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -1658,20 +1731,37 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -1689,15 +1779,27 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneTranslationInputOneConfigApplyToMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -1713,6 +1815,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -1721,20 +1824,37 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -1752,12 +1872,17 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemTranslationInputOneConfigApplyToMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault = false;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamDelimitersMin = 1;
 
 
 
@@ -1785,7 +1910,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -1802,7 +1927,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -1813,7 +1938,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -1837,7 +1962,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -1847,8 +1972,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -1891,7 +2016,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -1910,7 +2035,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1933,7 +2058,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -1952,9 +2077,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -1987,7 +2112,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2006,9 +2131,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -2032,13 +2157,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -2057,13 +2182,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -2091,7 +2216,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -2107,7 +2232,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesOneTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -2135,7 +2260,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -2152,7 +2277,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -2163,7 +2288,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -2187,7 +2312,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -2197,8 +2322,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -2241,7 +2366,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -2260,7 +2385,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2283,7 +2408,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2302,9 +2427,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -2337,7 +2462,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2356,9 +2481,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -2382,13 +2507,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -2407,13 +2532,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -2441,7 +2566,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -2457,7 +2582,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoItemTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -2473,11 +2598,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 })).check(/*#__PURE__*/ zod.describe('Configuration for output translation'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for translation module'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecModulesTwoMin)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
   "stream": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamEnabledDefault).check(/*#__PURE__*/ zod.describe('If true, the response will be streamed back to the client')),
-  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
-  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
+  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
+  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigsResponseResourcesItemSpecStreamDelimitersMin))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
 })).check(/*#__PURE__*/ zod.describe('Options for streaming. Will be ignored if enabled is false.'))
 }))
 }))
@@ -2534,6 +2659,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryIncludeSpecDefault = false;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMax = 500;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipDefault = 0;
@@ -2546,7 +2672,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "includeSpec": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()).check(/*#__PURE__*/ zod.describe('Whether include the spec section or not.')),
   "resolve_template_ref": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryResolveTemplateRefDefault).check(/*#__PURE__*/ zod.describe('DEPRECATED: Use resolveTemplateRef instead.')),
   "resolveTemplateRef": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.boolean()).check(/*#__PURE__*/ zod.describe('Whether a template reference should be resolved')),
-  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
+  "$top": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQueryTopMax))).check(/*#__PURE__*/ zod.describe('Number of results to return (1–500). When omitted the full result set is returned (up to the server limit).')),
   "$skip": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipMin)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryQuerySkipDefault).check(/*#__PURE__*/ zod.describe('Number of results to skip before returning the page.'))
 })
 
@@ -2554,12 +2680,20 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use'))
 })
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -2575,6 +2709,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -2583,20 +2718,37 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -2614,15 +2766,27 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneTranslationInputOneConfigApplyToMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -2638,6 +2802,7 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -2646,20 +2811,37 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -2677,12 +2859,17 @@ export const registryControllerOrchestrationConfigControllerListOrchestrationCon
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemTranslationInputOneConfigApplyToMin = 1;
+
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault = false;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMin = 1;
 export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamDelimitersMin = 1;
 
 
 
@@ -2710,7 +2897,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -2727,7 +2914,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -2738,7 +2925,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -2762,7 +2949,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -2772,8 +2959,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -2816,7 +3003,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -2835,7 +3022,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2858,7 +3045,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2877,9 +3064,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -2912,7 +3099,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -2931,9 +3118,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -2957,13 +3144,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -2982,13 +3169,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -3016,7 +3203,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -3032,7 +3219,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesOneTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -3060,7 +3247,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -3077,7 +3264,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -3088,7 +3275,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -3112,7 +3299,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -3122,8 +3309,8 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -3166,7 +3353,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -3185,7 +3372,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -3208,7 +3395,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -3227,9 +3414,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -3262,7 +3449,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -3281,9 +3468,9 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -3307,13 +3494,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -3332,13 +3519,13 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -3366,7 +3553,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -3382,7 +3569,7 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoItemTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -3398,11 +3585,11 @@ export const RegistryControllerOrchestrationConfigControllerListOrchestrationCon
 })
 })).check(/*#__PURE__*/ zod.describe('Configuration for output translation'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for translation module'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecModulesTwoMin)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
   "stream": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamEnabledDefault).check(/*#__PURE__*/ zod.describe('If true, the response will be streamed back to the client')),
-  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
-  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
+  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
+  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerListOrchestrationConfigHistoryResponseResourcesItemSpecStreamDelimitersMin))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
 })).check(/*#__PURE__*/ zod.describe('Options for streaming. Will be ignored if enabled is false.'))
 }))
 }))
@@ -3428,12 +3615,20 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "AI-Resource-Group": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Specify a resource group id to use'))
 })
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -3449,6 +3644,7 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault = 2;
@@ -3457,20 +3653,37 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -3488,15 +3701,27 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneTranslationInputOneConfigApplyToMin = 1;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoMin = 1;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin = 1;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoItemImageUrlDetailDefault = `auto`;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemContentDefault = ``;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeReasoningContentItemSignatureDefault = ``;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneResponseFormatThreeJsonSchemaNameMax = 64;
 
@@ -3512,6 +3737,7 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptTwoTemplateRefTwoScopeDefault = `tenant`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault = `latest`;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault = 600;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMin = 1;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax = 1200;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault = 2;
@@ -3520,20 +3746,37 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault = true;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemOneConfigPromptShieldDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemOneConfigProtectedMaterialCodeDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemThreeConfigEnableReasoningDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault = 0;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin = 0;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersMin = 1;
+
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault = false;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxChunkCountExclusiveMin = 0;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneSearchConfigMaxDocumentCountExclusiveMin = 0;
@@ -3551,12 +3794,17 @@ export const registryControllerOrchestrationConfigControllerGetOrchestrationConf
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigFiltersItemOneChunkMetadataItemValueItemMax = 1024;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigPlaceholdersInputMin = 1;
 
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemTranslationInputOneTranslateMessagesHistoryDefault = true;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemTranslationInputOneConfigApplyToMin = 1;
+
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault = false;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault = 100;
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMin = 1;
 export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax = 10000;
 
+export const registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamDelimitersMin = 1;
 
 
 
@@ -3582,7 +3830,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -3599,7 +3847,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -3610,7 +3858,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -3634,7 +3882,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -3644,8 +3892,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -3688,7 +3936,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOnePromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 })).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -3707,7 +3955,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -3730,7 +3978,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -3749,9 +3997,9 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -3784,7 +4032,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -3803,9 +4051,9 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -3829,13 +4077,13 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -3854,13 +4102,13 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -3888,7 +4136,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -3904,7 +4152,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesOneTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -3932,7 +4180,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemOneContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text', 'image_url', 'file']),
@@ -3949,7 +4197,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))]),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemTwoContentTwoMin))]),
   "role": /*#__PURE__*/ zod.enum(['user'])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['assistant']),
@@ -3960,7 +4208,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemThreeContentTwoMin))])),
   "refusal": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()),
   "tool_calls": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "id": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('The ID of the tool call.')),
@@ -3984,7 +4232,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFourContentTwoMin))])
 }),/*#__PURE__*/ zod.object({
   "role": /*#__PURE__*/ zod.enum(['developer']),
   "content": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.string(),/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
@@ -3994,8 +4242,8 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "type": /*#__PURE__*/ zod.enum(['ephemeral']),
   "ttl": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['5m', '1h'])).check(/*#__PURE__*/ zod.describe('Time-to-live for the cache entry. Default is "5m" (5 minutes). "1h" (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).\n'))
 })).check(/*#__PURE__*/ zod.describe('Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models. When set, marks the content block as a cache breakpoint.\n'))
-})).check(/*#__PURE__*/ zod.minLength(1))])
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneItemFiveContentTwoMin))])
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingPromptOneTemplateOneMin)).check(/*#__PURE__*/ zod.describe('A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.')),
   "defaults": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Optional default values for the template. If a parameter has no default it is required.')),
   "response_format": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['text']).check(/*#__PURE__*/ zod.describe('The type of response format being defined: `text`'))
@@ -4038,7 +4286,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "name": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Name of the model as in LLM Access configuration')),
   "version": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.string(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelVersionDefault).check(/*#__PURE__*/ zod.describe('Version of the model to be used')),
   "params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.record(/*#__PURE__*/ zod.string(), /*#__PURE__*/ zod.unknown())).check(/*#__PURE__*/ zod.describe('Additional parameters for the model. Default values are used for mandatory parameters.')),
-  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
+  "timeout": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelTimeoutDefault).check(/*#__PURE__*/ zod.describe('Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure connection limits; in practice this primarily affects non-streaming calls where the connection may be idle while waiting for a response.')),
   "max_retries": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelMaxRetriesDefault).check(/*#__PURE__*/ zod.describe('Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.')),
   "drop_unsupported_params": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemPromptTemplatingModelDropUnsupportedParamsDefault).check(/*#__PURE__*/ zod.describe('Controls behaviour when Chat Completions parameters not supported by the Responses API are present in the request. Only applies to models that use the Responses API (responsesApiOnly: true in the model registry). When true (default): unsupported params are silently dropped and reported in the X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter causes a 400 error with an actionable message.\n'))
 }).check(/*#__PURE__*/ zod.describe('The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.\n'))
@@ -4057,7 +4305,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemOneTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['llama_guard_3_8b']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -4080,7 +4328,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -4099,9 +4347,9 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringInputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (input filtering).'))
 })).check(/*#__PURE__*/ zod.describe('List of provider type and filters')),
   "output": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "filters": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
@@ -4134,7 +4382,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemTwoTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
 }).check(/*#__PURE__*/ zod.describe('Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.')),/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['granite_guardian_4_1']).check(/*#__PURE__*/ zod.describe('Name of the filter provider type')),
@@ -4153,9 +4401,9 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "target_selector": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.union([/*#__PURE__*/ zod.object({
   "after_last_role": /*#__PURE__*/ zod.enum(['system', 'user', 'assistant', 'developer', 'tool']).check(/*#__PURE__*/ zod.describe('Filter all messages after the last message with this role in the combined message list. If no message is scoped after applying this filter, then the filter is skipped.\n'))
 }),/*#__PURE__*/ zod.object({
-  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
+  "last_messages": /*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersItemThreeTargetSelectorTwoLastMessagesMin)).check(/*#__PURE__*/ zod.describe('Number of messages from the end of the combined message list to include in filtering. Must be >= 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than the combined message list length, all messages are filtered.\n'))
 })])).check(/*#__PURE__*/ zod.describe('Selector for scoping input filtering to a subset of the combined message list (messages_history prepended to template). If not present, all input content is filtered.\n'))
-}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
+}).check(/*#__PURE__*/ zod.describe('Filter configuration for IBM Granite Guardian filter provider.'))])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneFiltersMin)).check(/*#__PURE__*/ zod.describe('Configuration for content filtering services that should be used for the given filtering step (output filtering).')),
   "stream_options": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "overlap": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemFilteringOutputOneStreamOptionsOverlapDefault).check(/*#__PURE__*/ zod.describe('Number of characters that should be additionally sent to content filtering services from previous chunks as additional context.'))
 })).check(/*#__PURE__*/ zod.describe('Stream options for output filtering. Will be ignored if stream is false.'))
@@ -4179,13 +4427,13 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingOneProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers'))
 }),/*#__PURE__*/ zod.object({
   "masking_providers": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.enum(['sap_data_privacy_integration']).check(/*#__PURE__*/ zod.describe('Type of masking service provider')),
@@ -4204,13 +4452,13 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "method": /*#__PURE__*/ zod.enum(['constant']),
   "value": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Value to be used for replacement'))
 }).check(/*#__PURE__*/ zod.describe('Replaces the entity with the specified value followed by an incrementing number')).check(/*#__PURE__*/ zod.describe('Replacement strategy to be used for the entity'))
-})])).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
+})])).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneEntitiesMin)).check(/*#__PURE__*/ zod.describe('List of entities to be masked')),
   "allowlist": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('List of strings that should not be masked')),
   "mask_grounding_input": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersItemOneMaskGroundingInputEnabledDefault).check(/*#__PURE__*/ zod.describe('controls whether the input to the grounding module will be masked with the configuration supplied in the masking module'))
 })),
   "mask_file_input_method": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.enum(['anonymization', 'skip'])).check(/*#__PURE__*/ zod.describe('Type of masking method to be used for file inputs. Required if file inputs are provided.'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemMaskingTwoMaskingProvidersMin)).check(/*#__PURE__*/ zod.describe('List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead.'))
 })])),
   "grounding": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "type": /*#__PURE__*/ zod.union([/*#__PURE__*/ zod.enum(['document_grounding_service']),/*#__PURE__*/ zod.unknown()]),
@@ -4238,7 +4486,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 }))).check(/*#__PURE__*/ zod.describe('Restrict chunks considered during search to those with the given metadata.'))
 }))).check(/*#__PURE__*/ zod.describe('Document grounding service filters to be used')),
   "placeholders": /*#__PURE__*/ zod.object({
-  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
+  "input": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemGroundingConfigPlaceholdersInputMin)).check(/*#__PURE__*/ zod.describe('Contains the input parameters used for grounding input questions')),
   "output": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Placeholder name for grounding output'))
 }).check(/*#__PURE__*/ zod.describe('Placeholders to be used for grounding input questions and output')),
   "metadata_params": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string())).check(/*#__PURE__*/ zod.describe('Parameter name used for specifying metadata parameters'))
@@ -4254,7 +4502,7 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
   "category": /*#__PURE__*/ zod.enum(['placeholders', 'template_roles']).check(/*#__PURE__*/ zod.describe('Category to apply translation to.')),
   "items": /*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('List of placeholders or roles to apply translation to')),
   "source_language": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.describe('Language of the text to be translated.'))
-}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(1))),
+}).check(/*#__PURE__*/ zod.describe('This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.\n'))).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoItemTranslationInputOneConfigApplyToMin))),
   "target_language": /*#__PURE__*/ zod.string().check(/*#__PURE__*/ zod.describe('Language to which the text should be translated.'))
 }).check(/*#__PURE__*/ zod.describe('Configuration for `sap_document_translation` translation provider.'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for input translation')),
@@ -4270,11 +4518,11 @@ export const RegistryControllerOrchestrationConfigControllerGetOrchestrationConf
 })
 })).check(/*#__PURE__*/ zod.describe('Configuration for output translation'))
 })).check(/*#__PURE__*/ zod.describe('Configuration for translation module'))
-})).check(/*#__PURE__*/ zod.minLength(1)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
+})).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecModulesTwoMin)).check(/*#__PURE__*/ zod.describe('A list of module configurations. The first configuration in the list that succeeds will be used.\n'))])),
   "stream": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.object({
   "enabled": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.boolean(), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamEnabledDefault).check(/*#__PURE__*/ zod.describe('If true, the response will be streamed back to the client')),
-  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(1)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
-  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(1))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
+  "chunk_size": /*#__PURE__*/ zod._default(/*#__PURE__*/ zod.int().check(/*#__PURE__*/ zod.gte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMin)).check(/*#__PURE__*/ zod.lte(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeMax)), registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamChunkSizeDefault).check(/*#__PURE__*/ zod.describe('Minimum number of characters per chunk that post-LLM modules operate on.')),
+  "delimiters": /*#__PURE__*/ zod.optional(/*#__PURE__*/ zod.array(/*#__PURE__*/ zod.string()).check(/*#__PURE__*/ zod.minLength(registryControllerOrchestrationConfigControllerGetOrchestrationConfigByUuidResponseSpecStreamDelimitersMin))).check(/*#__PURE__*/ zod.describe('List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.'))
 })).check(/*#__PURE__*/ zod.describe('Options for streaming. Will be ignored if enabled is false.'))
 }))
 })

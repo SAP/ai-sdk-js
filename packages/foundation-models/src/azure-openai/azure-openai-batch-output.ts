@@ -57,7 +57,7 @@ export async function parseBatchOutput(
     // typeguard - all cases handled
     data satisfies never;
     // let if fail in a natural way
-    text = data as any;
+    text = data;
   }
   return text
     .split('\n')

@@ -174,8 +174,8 @@ export async function invokeRagChain(): Promise<string> {
 
   const agentInputs = { messages: [{ role: 'user', content: inputMessage }] };
   const result = await agent.invoke(agentInputs);
-  const lastMessage = [...result.messages]
-    .reverse()
+  const lastMessage = result.messages
+    .toReversed()
     .find(msg => typeof msg.content === 'string' && msg.content.length);
   return (lastMessage?.content as string) ?? '';
 }

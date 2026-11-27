@@ -142,10 +142,13 @@ import type {
 import type { AIMessageChunk } from '@langchain/core/messages';
 
 const app = express();
-const port = 8080;
+const port = Number(process.env.PORT ?? 8080);
 
 const server = app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  const address = server.address();
+  if (address && typeof address !== 'string') {
+    console.log(`Server running at http://localhost:${address.port}`);
+  }
 });
 
 server.on('error', (error: Error) => {
@@ -887,11 +890,12 @@ app.get(
       ] as const;
       const method = (req.query.method as string | undefined) ?? 'jsonSchema';
       if (!validMethods.includes(method as (typeof validMethods)[number])) {
-        return res.status(400).json({
+        res.status(400).json({
           error: `Invalid method '${method}'. Valid methods are: ${validMethods.join(
             ', '
           )}.`
         });
+        return;
       }
 
       const includeRaw =
@@ -1553,7 +1557,7 @@ app.get('/tabpfn/predict-string-features', async (req, res) => {
       '─'.repeat(50),
       ...stringFeaturesData.xTrain.map(
         (row, i) =>
-          `${row.product.padEnd(22)} $${String(row.price.toFixed(2)).padStart(7)}   ${stringFeaturesData.yTrain[i]}`
+          `${row.product.padEnd(22)} $${row.price.toFixed(2).padStart(7)}   ${stringFeaturesData.yTrain[i]}`
       )
     ];
 
@@ -1570,7 +1574,7 @@ app.get('/tabpfn/predict-string-features', async (req, res) => {
         const probStr = probs
           .map(p => `${(p * 100).toFixed(1)}%`.padStart(10))
           .join('  ');
-        return `${row.product.padEnd(22)} $${String(row.price.toFixed(2)).padStart(7)}   ${bestLabel.padEnd(10)}   ${probStr}`;
+        return `${row.product.padEnd(22)} $${row.price.toFixed(2).padStart(7)}   ${bestLabel.padEnd(10)}   ${probStr}`;
       })
     ];
 

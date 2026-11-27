@@ -50,7 +50,7 @@ export function buildTranslationConfig<T extends ConfigType>(
           apply_to: inputConfig.applyTo.map(mapSelectorToBaseType)
         })
       }
-    } as TranslationReturnType<T>;
+    };
   }
 
   return {

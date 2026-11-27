@@ -2,7 +2,8 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "typescript", "vitest"],
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "error"
   },
   "env": {
     "builtin": true
@@ -109,7 +110,9 @@
     "typescript/prefer-as-const": "error",
     "typescript/prefer-namespace-keyword": "error",
     "typescript/triple-slash-reference": "error",
-    "unicorn/prefer-node-protocol": "error"
+    "unicorn/prefer-node-protocol": "error",
+    "no-underscore-dangle": "off",
+    "typescript/no-unsafe-type-assertion": "off"
   },
   "overrides": [
     {
@@ -300,6 +303,12 @@
       "files": ["sample-code/src/support-bot/**/*"],
       "rules": {
         "no-console": "off"
+      }
+    },
+    {
+      "files": ["sample-code/**/*.ts"],
+      "rules": {
+        "unicorn/consistent-function-scoping": "off"
       }
     }
   ]
