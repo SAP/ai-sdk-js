@@ -61,6 +61,15 @@ export {
   streamChainWithFallbackConfigs as orchestrationStreamChainWithFallbackConfigs
 } from './langchain-orchestration.ts';
 export {
+  embedQueryOpenAi,
+  invokeChatOpenAi,
+  invokeChatOpenAiAgent,
+  invokeChatOpenAiReasoning,
+  invokeChatOpenAiResponses,
+  invokeChatOpenAiStructuredOutput,
+  streamChatOpenAi
+} from './langchain-openai.ts';
+export {
   getDeployments,
   getDeploymentsWithDestination,
   createDeployment,

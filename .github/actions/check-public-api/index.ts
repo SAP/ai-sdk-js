@@ -2,7 +2,16 @@
 
 import { mkdtemp, rm, readFile, lstat, readdir, glob } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve, parse, basename, dirname, posix, sep } from 'node:path';
+import {
+  join,
+  resolve,
+  relative,
+  parse,
+  basename,
+  dirname,
+  posix,
+  sep
+} from 'node:path';
 
 import {
   defaultPrettierConfig,
@@ -200,12 +209,15 @@ export async function checkApiOfPackage(pathToPackage: string): Promise<void> {
     }
 
     const subpathExports = await getSubpathExports(pathToPackage);
+    const subpathDirectories = subpathExports.map(({ sourceFile }) =>
+      getPathWithPosixSeparator(relative(pathToSource, dirname(sourceFile)))
+    );
 
-    for (const { subpath, sourceFile } of subpathExports) {
+    for (const [index, { subpath, sourceFile }] of subpathExports.entries()) {
       info(`Check subpath export: ./${subpath}`);
       await checkIndexFileExists(sourceFile);
 
-      const subpathCompiled = join(pathCompiled, subpath);
+      const subpathCompiled = join(pathCompiled, subpathDirectories[index]);
       const exportedTypes = await parseTypeDefinitionFiles(subpathCompiled);
       const exportedIndex = await parseIndexFile(
         sourceFile,
@@ -224,7 +236,7 @@ export async function checkApiOfPackage(pathToPackage: string): Promise<void> {
 
     const allExportedTypes = await parseTypeDefinitionFilesExcluding(
       pathCompiled,
-      subpathExports.map(s => s.subpath)
+      subpathDirectories
     );
     const allExportedIndex = await parseIndexFile(
       indexFilePath,
