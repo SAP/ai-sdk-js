@@ -165,15 +165,15 @@ export class RptClient {
       ...restData
     };
 
-    const serializeBooleans = (v: any) =>
-      typeof v === 'boolean' ? String(v) : v;
-
     if (rows) {
       return {
         ...base,
         rows: rows.map(row =>
           Object.fromEntries<string | number | null>(
-            Object.entries(row).map(([k, v]) => [k, serializeBooleans(v)])
+            Object.entries(row).map(([k, v]) => [
+              k,
+              typeof v === 'boolean' ? String(v) : v
+            ])
           )
         )
       };
@@ -185,7 +185,9 @@ export class RptClient {
         columns: Object.fromEntries<(string | number | null)[]>(
           Object.entries(columns).map(([k, vals]) => [
             k,
-            vals.map(serializeBooleans)
+            vals.map((v: string | number | boolean | null) =>
+              typeof v === 'boolean' ? String(v) : v
+            )
           ])
         )
       };

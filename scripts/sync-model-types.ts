@@ -162,7 +162,7 @@ function isRetired(row: ModelRow): boolean {
   // Users can always pass the model name as a plain string regardless.
   return (
     row.retired?.toLowerCase().includes('yes') === true ||
-    row.deprecated?.toLowerCase().includes('yes') === true ||
+    row.deprecated?.toLowerCase().includes('yes') ||
     isRetiredSoon(row.retirementDate ?? '')
   );
 }
@@ -206,7 +206,7 @@ function buildLiteralUnionBlock(
   const kept = existingModels.filter(m => activeModels.has(m));
   const added = [...activeModels].filter(m => !existingModels.includes(m));
   // Stable sort by prefix to group same-vendor models together.
-  const ordered = [...kept, ...added].sort((a, b) =>
+  const ordered = [...kept, ...added].toSorted((a, b) =>
     modelPrefix(a).localeCompare(modelPrefix(b))
   );
 
@@ -353,7 +353,7 @@ async function patchModelTypes(
 
   await transformFile(MODEL_TYPES_PATH, async content => {
     let updated = content;
-    const sorted = Object.entries(typeToActiveModels).sort(([a], [b]) =>
+    const sorted = Object.entries(typeToActiveModels).toSorted(([a], [b]) =>
       a.localeCompare(b)
     );
     for (const [typeName, models] of sorted) {

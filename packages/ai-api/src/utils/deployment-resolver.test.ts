@@ -278,19 +278,19 @@ describe('resolveDeploymentUrlForModel', () => {
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },
       {
         id: 'dep-001',
-        model: { name: 'gpt-4.1', version: 'latest' },
+        model: { name: 'gpt-6-luna', version: 'latest' },
         deploymentUrl
       }
     );
 
-    await resolveDeploymentUrlForModel('gpt-4.1', baseOptions);
+    await resolveDeploymentUrlForModel('gpt-6-luna', baseOptions);
     expect(scope.isDone()).toBe(true);
-    expect(
-      await resolveDeploymentUrlForModel(
-        { modelName: 'gpt-4.1', modelVersion: 'latest' },
+    await expect(
+      resolveDeploymentUrlForModel(
+        { modelName: 'gpt-6-luna', modelVersion: 'latest' },
         baseOptions
       )
-    ).toBe(deploymentUrl);
+    ).resolves.toBe(deploymentUrl);
   });
 
   it('throws when model deployment has no URL', async () => {

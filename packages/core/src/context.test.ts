@@ -56,7 +56,7 @@ describe('context', () => {
       url: 'https://api.ai.ml.hana.ondemand.com',
       authentication: 'ClientCertificateAuthentication',
       mtlsKeyPair: { cert: 'cert', key: 'key' }
-    } as HttpDestination);
+    });
     const destination = await getAiCoreDestination();
     expect(destination.agentOptions?.timeout).toBe(1201000);
   });
@@ -75,7 +75,7 @@ describe('context', () => {
       url: 'https://api.ai.ml.hana.ondemand.com',
       authentication: 'OAuth2ClientCredentials',
       agentOptions: { timeout: 60000, keepAlive: true }
-    } as HttpDestination);
+    });
     const destination = await getAiCoreDestination();
     // A destination that already carries agentOptions wins over the injected defaults.
     expect(destination.agentOptions?.timeout).toBe(60000);

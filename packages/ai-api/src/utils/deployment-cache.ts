@@ -10,7 +10,13 @@ function getCacheKey({
   model,
   resourceGroup = 'default'
 }: DeploymentResolutionOptions) {
-  return `${scenarioId}:${executableId}:${model?.name ?? ''}:${model?.version ?? ''}:${resourceGroup}`;
+  return JSON.stringify([
+    scenarioId,
+    executableId,
+    model?.name ?? '',
+    model?.version ?? '',
+    resourceGroup
+  ]);
 }
 
 function getIdCacheKey(
@@ -21,7 +27,13 @@ function getIdCacheKey(
     resourceGroup = 'default'
   }: DeploymentResolutionOptions
 ) {
-  return `id:${scenarioId}:${executableId}:${deploymentId}:${resourceGroup}`;
+  return JSON.stringify([
+    'id',
+    scenarioId,
+    executableId,
+    deploymentId,
+    resourceGroup
+  ]);
 }
 
 interface Deployment {
@@ -78,8 +90,8 @@ function createDeploymentCache(cache: Cache<Deployment>) {
       deployments: AiDeployment[]
     ): void => {
       // go backwards to cache the first deployment ID for each model
-      [...deployments]
-        .reverse()
+      deployments
+        .toReversed()
         .map(deployment => transformDeploymentForCache(deployment))
         .flatMap(entry => [
           entry,

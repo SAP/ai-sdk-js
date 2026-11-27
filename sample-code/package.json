@@ -27,7 +27,7 @@
   "dependencies": {
     "@anthropic-ai/bedrock-sdk": "0.34.4",
     "@anthropic-ai/sdk": "0.133.0",
-    "@langchain/classic": "1.0.61",
+    "@langchain/classic": "1.0.62",
     "@langchain/core": "catalog:",
     "@langchain/langgraph": "catalog:",
     "@langchain/mcp-adapters": "2.0.3",
@@ -38,7 +38,7 @@
     "@types/express": "5.0.6",
     "express": "5.3.0",
     "langchain": "catalog:",
-    "openai": "7.60.0",
+    "openai": "7.62.0",
     "ws": "8.23.0",
     "zod": "catalog:"
   },

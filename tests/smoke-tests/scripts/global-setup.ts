@@ -6,13 +6,13 @@ import { parseEnv } from 'node:util';
 
 import type { ChildProcess } from 'node:child_process';
 
-const port = process.env.SMOKE_TEST_PORT ?? '8080';
+const port = process.env.SMOKE_TEST_PORT ?? '0';
 const timeout = 30_000;
 const envFile = resolve(import.meta.dirname, '..', '.env');
 let smokeTestServer: ChildProcess | undefined;
 
 export async function setup(): Promise<void> {
-  if (process.env.SMOKE_TEST_URL || process.env.CI) {
+  if (process.env.SMOKE_TEST_URL) {
     return;
   }
 
@@ -46,26 +46,29 @@ export async function setup(): Promise<void> {
     promise: serverPromise,
     resolve: resolvePromise,
     reject
-  } = Promise.withResolvers<void>();
+  } = Promise.withResolvers<string>();
 
   const timer = setTimeout(
     () => reject(new Error(`Server did not start within ${timeout}ms`)),
     timeout
   );
 
+  let output = '';
   server.stdout.on('data', (data: Buffer) => {
-    if (data.toString().includes('Server running')) {
+    output += data.toString();
+    const match = /Server running at (http:\/\/localhost:\d+)\r?\n/.exec(
+      output
+    );
+    if (match) {
       clearTimeout(timer);
-      resolvePromise();
+      resolvePromise(match[1]);
     }
   });
 
   server.stderr.on('data', (data: Buffer) => console.error(data.toString()));
   server.on('error', reject);
 
-  await serverPromise;
-
-  process.env.SMOKE_TEST_URL = `http://localhost:${port}`;
+  process.env.SMOKE_TEST_URL = await serverPromise;
   console.log(`Smoke test server running at ${process.env.SMOKE_TEST_URL}`);
 }
 

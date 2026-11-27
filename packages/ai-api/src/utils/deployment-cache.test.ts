@@ -135,8 +135,8 @@ describe('deployment cache', () => {
   it('should index listed deployments by ID within the listing scope', () => {
     const opts = { scenarioId: 'foundation-models', resourceGroup: 'rg' };
     deploymentCache.setAll(opts, [
-      mockAiDeployment('deployment-id1', { name: 'gpt-5-mini' }),
-      mockAiDeployment('deployment-id2', { name: 'gpt-5-mini' })
+      mockAiDeployment('deployment-id1', { name: 'gpt-6-luna' }),
+      mockAiDeployment('deployment-id2', { name: 'gpt-6-luna' })
     ]);
 
     expect(deploymentCache.getById(opts, 'deployment-id2')?.id).toEqual(
@@ -148,7 +148,7 @@ describe('deployment cache', () => {
         'deployment-id2'
       )
     ).toBeUndefined();
-    expect(deploymentCache.getById(opts, 'gpt-5-mini')).toBeUndefined();
+    expect(deploymentCache.getById(opts, 'gpt-6-luna')).toBeUndefined();
   });
 
   it('should ignore model versions without model name', () => {
