@@ -75,7 +75,7 @@ async function formatChangelog(
       .filter(entry => entry.type.name === type.name)
       .map(entry => {
         const packages = [...entry.packages]
-          .sort((left, right) => left.localeCompare(right))
+          .toSorted((left, right) => left.localeCompare(right))
           .join(', ');
         const commit = entry.commits.size
           ? ` (${[...entry.commits].join(', ')})`
