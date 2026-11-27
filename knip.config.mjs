@@ -10,10 +10,7 @@ export default {
         'src/support-bot/agent.ts'
       ],
       // spawned as CLI processes by the MCP client, so knip can't trace them
-      ignoreDependencies: [
-        '@modelcontextprotocol/server-github',
-        '@upstash/context7-mcp'
-      ]
+      ignoreDependencies: ['@upstash/context7-mcp']
     },
     'tests/type-tests': {
       // tsd entry files are not auto-detected; knip has no built-in handling for them
