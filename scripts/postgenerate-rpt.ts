@@ -12,8 +12,8 @@ if (!filePath) {
 
 transformFile(resolve(filePath), file =>
   file.replace(
-    "* This API is part of the 'rpt' service.",
-    "* This API is part of the 'rpt' service.\n * @internal"
+    /\* This API is part of the 'rpt(?:-decisions)?' service\.(?!\n \* @internal)/,
+    '$&\n * @internal'
   )
 )
   .then(() => console.log('File processed successfully.'))

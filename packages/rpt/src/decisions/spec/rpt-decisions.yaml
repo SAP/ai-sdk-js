@@ -1,0 +1,588 @@
+openapi: 3.1.0
+info:
+  title: SAP-RPT-Decisions
+  description: REST API for sap-rpt-decisions.
+  version: 1.6.0
+servers:
+  - url: /
+paths:
+  /systemone:
+    post:
+      summary: Answer questions about a state based on examples.
+      operationId: systemone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+            examples:
+              systemone_example:
+                summary: Decision Example
+                description: Evaluate a state against questions, learning from provided examples.
+                value:
+                  state:
+                    product: Monitor
+                    price: 350
+                  model: sap-rpt-decisions
+                  questions:
+                    category:
+                      type: choice
+                      instructions: Which category does this product belong to?
+                      criteria:
+                        Electronics: Powered electronic devices
+                        Accessories: Peripheral or add-on items
+                  examples:
+                    - state:
+                        product: Laptop
+                        price: 899
+                      answers:
+                        category: Electronics
+                    - state:
+                        product: Mouse
+                        price: 25
+                      answers:
+                        category: Accessories
+                    - state:
+                        product: Keyboard
+                        price: 75
+                      answers:
+                        category: Accessories
+                    - state:
+                        product: Smartphone
+                        price: 699
+                      answers:
+                        category: Electronics
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '499':
+          $ref: '#/components/responses/ClientDisconnected'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+components:
+  schemas:
+    ErrorDetail:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+          description: Path to the offending field in the request (empty for errors not tied to a specific field).
+        msg:
+          type: string
+          title: Message
+          description: Human-readable description of the error.
+        type:
+          type: string
+          title: Type
+          description: Machine-readable error type identifier.
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ErrorDetail
+      description: A single error entry describing one problem with the request.
+    ErrorResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique ID for the request.
+        status:
+          $ref: '#/components/schemas/ErrorStatus'
+          description: Status code and message describing the error category.
+        detail:
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type: array
+          title: Detail
+          description: List of individual errors. May be empty for errors without field-level detail.
+      type: object
+      required:
+        - id
+        - status
+        - detail
+      title: ErrorResponse
+      description: Error response body returned for all non-2xx responses.
+    ErrorStatus:
+      properties:
+        code:
+          type: integer
+          title: Code
+          description: Status code indicating the error category (2 = invalid input, 3 = internal error, 4 = overloaded, 5 = client disconnected, 6 = timeout).
+        message:
+          type: string
+          title: Message
+          description: Human-readable status message.
+      type: object
+      required:
+        - code
+        - message
+      title: ErrorStatus
+      description: Status code and message for an error response.
+    ChoiceAnswer:
+      properties:
+        type:
+          type: string
+          const: choice
+          title: Type
+        choice:
+          type: string
+          title: Choice
+          description: Selected option.
+        probabilities:
+          additionalProperties:
+            type: number
+            minimum: 0
+            maximum: 1
+          type: object
+          title: Probabilities
+          description: Probability per option.
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          title: Confidence
+          description: 'Confidence of the answer, in [0, 1]. A certainty score derived from the probability distribution: 0 when the options are equally likely (no information) and 1 when all probability is on a single answer. Distinct from the raw answer probabilities, which are reported separately.'
+      additionalProperties: false
+      type: object
+      required:
+        - type
+        - choice
+        - probabilities
+        - confidence
+      title: ChoiceAnswer
+      description: A ``choice`` answer in a ``/systemone`` response.
+    NoulAnswer:
+      properties:
+        type:
+          type: string
+          const: noul
+          title: Type
+        noul:
+          type: number
+          minimum: 0
+          maximum: 1
+          title: Noul
+          description: P(true) for noul questions.
+      additionalProperties: false
+      type: object
+      required:
+        - type
+        - noul
+      title: NoulAnswer
+      description: A ``noul`` answer in a ``/systemone`` response.
+    ScoreAnswer:
+      properties:
+        type:
+          type: string
+          const: score
+          title: Type
+        score:
+          type: number
+          title: Score
+          description: Probability-weighted score.
+        legend:
+          additionalProperties:
+            type: string
+          type: object
+          title: Legend
+          description: Level index to description.
+        probabilities:
+          additionalProperties:
+            type: number
+            minimum: 0
+            maximum: 1
+          type: object
+          title: Probabilities
+          description: Probability per level.
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          title: Confidence
+          description: 'Confidence of the answer, in [0, 1]. A certainty score derived from the probability distribution: 0 when the options are equally likely (no information) and 1 when all probability is on a single answer. Distinct from the raw answer probabilities, which are reported separately.'
+      additionalProperties: false
+      type: object
+      required:
+        - type
+        - score
+        - legend
+        - probabilities
+        - confidence
+      title: ScoreAnswer
+      description: A ``score`` answer in a ``/systemone`` response.
+    PredictResponseMetadata:
+      properties:
+        num_columns:
+          type: integer
+          title: Num Columns
+          description: Number of columns in the input data.
+        num_rows:
+          type: integer
+          title: Num Rows
+          description: Number of rows in the input data.
+        num_predictions:
+          type: integer
+          title: Num Predictions
+          description: Number of table cells containing the specified prediction placeholder.
+        num_query_rows:
+          type: integer
+          title: Num Query Rows
+          description: Number of rows for which a prediction was made.
+        context_mode:
+          type: string
+          title: Context Mode
+          description: The context mode used for this prediction request.
+          default: default
+      type: object
+      required:
+        - num_columns
+        - num_rows
+        - num_predictions
+        - num_query_rows
+      title: PredictResponseMetadata
+      description: Metadata about the prediction request.
+    Response:
+      additionalProperties: false
+      description: Response body for ``POST /systemone``.
+      properties:
+        model:
+          anyOf:
+            - type: string
+            - type: 'null'
+          default: null
+          description: The model that served the request.
+          title: Model
+        answers:
+          additionalProperties:
+            discriminator:
+              mapping:
+                choice: '#/components/schemas/ChoiceAnswer'
+                noul: '#/components/schemas/NoulAnswer'
+                score: '#/components/schemas/ScoreAnswer'
+              propertyName: type
+            oneOf:
+              - $ref: '#/components/schemas/NoulAnswer'
+              - $ref: '#/components/schemas/ChoiceAnswer'
+              - $ref: '#/components/schemas/ScoreAnswer'
+          description: Answers keyed by question key.
+          title: Answers
+          type: object
+        usage:
+          $ref: '#/components/schemas/Usage'
+        metadata:
+          $ref: '#/components/schemas/PredictResponseMetadata'
+          description: Metadata about the request.
+      required:
+        - answers
+        - metadata
+      title: Response
+      type: object
+    Usage:
+      properties:
+        input_tokens:
+          type: integer
+          title: Input Tokens
+          description: Number of input tokens.
+          default: 0
+        output_tokens:
+          type: integer
+          title: Output Tokens
+          description: Number of output tokens.
+          default: 0
+      additionalProperties: false
+      type: object
+      title: Usage
+    ChoiceQuestion:
+      additionalProperties: false
+      properties:
+        type:
+          const: choice
+          title: Type
+          type: string
+        instructions:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+          description: The evaluation task. This frames what is being asked and informs the answer, so phrase it to describe the decision precisely.
+          title: Instructions
+        criteria:
+          additionalProperties:
+            anyOf:
+              - type: string
+              - additionalProperties: true
+                type: object
+              - items: {}
+                type: array
+              - type: 'null'
+          description: Map of option name to a description of that option. The descriptions inform the answer, so filling them in gives a more accurate result.
+          title: Criteria
+          type: object
+          minProperties: 2
+          maxProperties: 255
+      required:
+        - type
+        - instructions
+        - criteria
+      title: ChoiceQuestion
+      type: object
+    Example:
+      additionalProperties: false
+      description: |-
+        One labeled few-shot example.
+
+        ``state`` is shaped exactly like the request's ``state``; ``answers`` holds the known answer for
+        each question, keyed by question key.
+      properties:
+        state:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+          description: The example content, shaped like the request state.
+          title: State
+        answers:
+          additionalProperties:
+            anyOf:
+              - type: string
+              - type: number
+              - type: integer
+              - type: boolean
+          description: The known answers for this example, keyed by question name/key — one entry per question the request asks. Each value is the bare known answer (e.g. an option value, "true"/"false", or a level index).
+          title: Answers
+          type: object
+      required:
+        - state
+        - answers
+      title: Example
+      type: object
+    NoulQuestion:
+      additionalProperties: false
+      properties:
+        type:
+          const: noul
+          title: Type
+          type: string
+        instructions:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+          description: The evaluation task. This frames what is being asked and informs the answer, so phrase it to describe the decision precisely.
+          title: Instructions
+        criteria:
+          anyOf:
+            - additionalProperties:
+                anyOf:
+                  - type: string
+                  - additionalProperties: true
+                    type: object
+                  - items: {}
+                    type: array
+                  - type: 'null'
+              propertyNames:
+                enum:
+                  - 'true'
+                  - 'false'
+              type: object
+            - type: 'null'
+          default: null
+          description: Optional descriptions of the "true"/"false" answers. When set, each is used to inform the answer.
+          title: Criteria
+      required:
+        - type
+        - instructions
+      title: NoulQuestion
+      type: object
+    ScoreQuestion:
+      additionalProperties: false
+      properties:
+        type:
+          const: score
+          title: Type
+          type: string
+        instructions:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+          description: The evaluation task. This frames what is being asked and informs the answer, so phrase it to describe the decision precisely.
+          title: Instructions
+        criteria:
+          description: Ordered list of level descriptions, lowest first. The descriptions inform the answer, so filling them in gives a more accurate result.
+          items:
+            anyOf:
+              - type: string
+              - additionalProperties: true
+                type: object
+              - items: {}
+                type: array
+          title: Criteria
+          type: array
+          minItems: 2
+          maxItems: 255
+      required:
+        - type
+        - instructions
+        - criteria
+      title: ScoreQuestion
+      type: object
+    Request:
+      additionalProperties: false
+      description: Request body for ``POST /systemone``.
+      properties:
+        state:
+          anyOf:
+            - type: string
+            - additionalProperties: true
+              type: object
+            - items: {}
+              type: array
+          description: The content to evaluate. A plain string, or structured data (object/array).
+          title: State
+        model:
+          anyOf:
+            - type: string
+            - type: 'null'
+          default: null
+          description: Optional model name. Accepted but ignored; the response always reports the model that served the request.
+          title: Model
+        questions:
+          additionalProperties:
+            discriminator:
+              mapping:
+                choice: '#/components/schemas/ChoiceQuestion'
+                noul: '#/components/schemas/NoulQuestion'
+                score: '#/components/schemas/ScoreQuestion'
+              propertyName: type
+            oneOf:
+              - $ref: '#/components/schemas/NoulQuestion'
+              - $ref: '#/components/schemas/ChoiceQuestion'
+              - $ref: '#/components/schemas/ScoreQuestion'
+          description: A map of question key to typed question.
+          title: Questions
+          type: object
+          minProperties: 1
+          maxProperties: 10
+        examples:
+          description: Labeled few-shot examples to learn from (required). At least two examples must be provided; more and better-matched examples improve the answer. The upper bound (2048) is the limit for this model.
+          items:
+            $ref: '#/components/schemas/Example'
+          title: Examples
+          type: array
+          minItems: 2
+          maxItems: 2048
+      required:
+        - state
+        - questions
+        - examples
+      title: Request
+      type: object
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid input data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            id: 550e8400-e29b-41d4-a716-446655440000
+            status:
+              code: 2
+              message: Invalid input
+            detail:
+              - loc: []
+                msg: Invalid input
+                type: value_error
+    ValidationError:
+      description: Validation Error - The request body failed schema validation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            id: 550e8400-e29b-41d4-a716-446655440000
+            status:
+              code: 2
+              message: Invalid input
+            detail:
+              - loc:
+                  - body
+                  - examples
+                msg: List should have at least 2 items after validation, not 1
+                type: too_short
+    ClientDisconnected:
+      description: Client Disconnected - The client closed the connection before the response was sent
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            id: 550e8400-e29b-41d4-a716-446655440000
+            status:
+              code: 5
+              message: Client disconnected
+            detail: []
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            id: 550e8400-e29b-41d4-a716-446655440000
+            status:
+              code: 3
+              message: Internal server error
+            detail: []
+    ServiceUnavailable:
+      description: Service Unavailable - Server under high load
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            id: 550e8400-e29b-41d4-a716-446655440000
+            status:
+              code: 4
+              message: Server under high load, please try again later
+            detail: []
+    GatewayTimeout:
+      description: Gateway Timeout - The request took too long to process
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            id: 550e8400-e29b-41d4-a716-446655440000
+            status:
+              code: 6
+              message: Request timed out
+            detail: []

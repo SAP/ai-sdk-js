@@ -137,3 +137,4 @@ export type {
   RealtimeAudioResult,
   RealtimeToolCallResult
 } from './openai-realtime.ts';
+export { classifyProgrammingLanguage } from './rpt-decisions.ts';

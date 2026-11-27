@@ -3,6 +3,7 @@
 SAP Cloud SDK for AI is the official Software Development Kit (SDK) for **SAP AI Core**, **SAP Generative AI Hub**, and **Orchestration Service**.
 
 This package provides a client for SAP’s Relational Pretrained Transformer model, [SAP-RPT-1](https://www.sap.com/products/artificial-intelligence/sap-rpt.html).
+It also provides an RPT Decisions client under `@sap-ai-sdk/rpt/decisions` to answer choice, binary (`noul`) and score questions based on labeled examples.
 
 ### Table of Contents
 
@@ -18,6 +19,10 @@ $ npm install @sap-ai-sdk/rpt
 ```
 
 ## Documentation
+
+Import `RptDecisionsClient` from `@sap-ai-sdk/rpt/decisions` and call `systemone()` with a state, questions and at least two labeled examples.
+Pass a model name such as `sap-rpt-decisions`, or a deployment configuration with `deploymentId` and optional `resourceGroup`, to the constructor.
+See the [programming language classification sample](../../sample-code/src/rpt-decisions.ts) for a complete example.
 
 Visit the [SAP Cloud SDK for AI (JavaScript)](https://sap.github.io/ai-sdk/docs/js/overview-cloud-sdk-for-ai-js) documentation portal to learn more about its capabilities and detailed usage.
 

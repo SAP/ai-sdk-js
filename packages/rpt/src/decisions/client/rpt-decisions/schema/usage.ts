@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2026 SAP SE or an SAP affiliate company. All rights reserved.
+ *
+ * This is a generated file powered by the SAP Cloud SDK for JavaScript.
+ */
+
+/**
+ * Representation of the 'Usage' schema.
+ */
+export type Usage = {
+  /**
+   * Number of input tokens.
+   */
+  input_tokens?: number;
+  /**
+   * Number of output tokens.
+   */
+  output_tokens?: number;
+};
