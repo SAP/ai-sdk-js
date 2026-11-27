@@ -27,7 +27,13 @@ export interface Backoff {
   randomize?: boolean;
 }
 
-// Computes the backoff wait for a 1-based attempt; the max bound is applied after jitter.
+/**
+ * Computes the backoff wait for a 1-based attempt; the max bound is applied after jitter.
+ * @param backoff - The backoff configuration, or undefined for defaults.
+ * @param attempt - The 1-based attempt number.
+ * @returns The wait in milliseconds.
+ * @internal
+ */
 export function nextInterval(
   backoff: Backoff | undefined,
   attempt: number
@@ -40,14 +46,24 @@ export function nextInterval(
   return Math.min(jittered, backoff?.maxIntervalMs ?? jittered);
 }
 
-// Sleeps for `ms`, rejecting if the signal aborts.
+/**
+ * Sleeps for `ms`, rejecting if the signal aborts.
+ * @param ms - The duration in milliseconds (clamped to >= 0).
+ * @param signal - A signal that rejects the sleep when aborted.
+ * @internal
+ */
 export async function sleep(ms: number, signal: AbortSignal): Promise<void> {
   await delay(Math.max(ms, 0), undefined, { signal });
 }
 
-// Rejects a backoff whose numbers would produce a zero/NaN wait and busy-loop the poll against
-// AI Core. `baseIntervalMs: 0` is allowed (an explicit no-delay cadence); a shrinking factor is
-// not. Mirrors the `timeoutMs` input validation in waitUntilDone.
+/**
+ * Rejects a backoff whose numbers would produce a zero/NaN wait and busy-loop the poll against
+ * AI Core. `baseIntervalMs: 0` is allowed (an explicit no-delay cadence); a shrinking factor is
+ * not. Mirrors the `timeoutMs` input validation in waitUntilDone.
+ * @param backoff - The backoff configuration to validate.
+ * @throws RangeError when a field is NaN, infinite, negative, or `factor` is below 1.
+ * @internal
+ */
 export function validateBackoff(backoff: Backoff | undefined): void {
   if (!backoff) {
     return;
@@ -90,6 +106,12 @@ function rootCauseOf(error: unknown): HttpErrorShape | undefined {
   return root !== null && typeof root === 'object' ? root : undefined;
 }
 
+/**
+ * Extracts the HTTP status from a thrown error, unwrapping `ErrorWithCause` when present.
+ * @param error - The thrown error (a raw axios error or an `ErrorWithCause`).
+ * @returns The HTTP status code, or undefined when none is present.
+ * @internal
+ */
 export function httpStatus(error: unknown): number | undefined {
   const status = rootCauseOf(error)?.response?.status;
   return typeof status === 'number' ? status : undefined;
@@ -139,6 +161,7 @@ function classifyError(error: unknown): 'retryable' | 'fatal' {
 
 /**
  * Options for {@link pollRetryMiddleware}.
+ * @internal
  */
 export interface RetryMiddlewareOptions {
   /** Backoff strategy used when the error carries no `Retry-After` hint. */
