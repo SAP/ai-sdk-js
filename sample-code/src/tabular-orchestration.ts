@@ -3,11 +3,11 @@
 import {
   TabularArtifactsApi,
   DataDestinationsApi,
-  ScenarioConfigurationManagerApi
+  ScenarioConfigurationManagerApi,
+  contextRegistryStatus
 } from '@sap-ai-sdk/context-registry';
+import { waitUntilDone } from '@sap-ai-sdk/core';
 import { TabularOrchestrationClient } from '@sap-ai-sdk/tabular-orchestration';
-
-import { pollAsyncResource } from './utils.ts';
 
 import type {
   GetDataDestinations,
@@ -15,6 +15,7 @@ import type {
   ScenarioConfigurationObject
 } from '@sap-ai-sdk/context-registry';
 import type { PredictResponse } from '@sap-ai-sdk/tabular-orchestration';
+import type { HttpResponse } from '@sap-cloud-sdk/http-client';
 
 const resourceGroup = 'default';
 const headers = { 'AI-Resource-Group': resourceGroup };
@@ -40,43 +41,30 @@ export async function listDataDestinations(): Promise<GetDataDestinations> {
 export async function createTabularArtifact(
   name: string
 ): Promise<TabularArtifactDetails> {
-  const response = await TabularArtifactsApi.createTabularArtifact(
-    name,
+  return waitUntilDone<TabularArtifactDetails>(
+    TabularArtifactsApi.createTabularArtifact(
+      name,
+      {
+        dataDestinationName,
+        type: 'PARQUET',
+        path: artifactPath,
+        csnMetadata: { definition: { definitionType: 'AUTO' } }
+      },
+      headers
+    ),
     {
-      dataDestinationName,
-      type: 'PARQUET',
-      path: artifactPath,
-      csnMetadata: { definition: { definitionType: 'AUTO' } }
-    },
-    headers
-  ).executeRaw();
-
-  if (response.status !== 202) {
-    throw new Error(`Expected 202 Accepted, got ${response.status}`);
-  }
-
-  const location = response.headers.location;
-  if (typeof location !== 'string') {
-    throw new Error('Creation response did not include a Location header');
-  }
-  const pollingName = getNameFromLocation(location, 'tabularArtifacts');
-
-  return pollAsyncResource<TabularArtifactDetails>({
-    read: () =>
-      TabularArtifactsApi.getTabularArtifactByName(
-        pollingName,
-        headers
-      ).execute(),
-    isComplete: resource => resource.status === 'ACTIVE',
-    getFailure: resource =>
-      resource.status === 'ERROR'
-        ? (resource.errorMessage ?? 'Tabular artifact creation failed')
-        : undefined,
-    onPoll: (attempt, resource) =>
-      console.log(`[${attempt}] Tabular artifact status: ${resource.status}`),
-    intervalMs: 2_000,
-    maxAttempts: 60
-  });
+      statusRequest: created =>
+        TabularArtifactsApi.getTabularArtifactByName(
+          getNameFromLocation(locationOf(created), 'tabularArtifacts'),
+          headers
+        ),
+      checkStatus: contextRegistryStatus,
+      onPoll: resource =>
+        console.log(`Tabular artifact status: ${resource.status}`),
+      backoff: { baseIntervalMs: 2_000, randomize: false },
+      timeoutMs: 2 * 60_000
+    }
+  );
 }
 
 /**
@@ -84,30 +72,25 @@ export async function createTabularArtifact(
  * @param name - The name of the artifact to delete, as returned by {@link createTabularArtifact}.
  */
 export async function deleteTabularArtifact(name: string): Promise<void> {
-  await TabularArtifactsApi.deleteTabularArtifact(name, headers).execute();
-
-  await pollAsyncResource<TabularArtifactDetails | null>({
-    read: async () => {
-      try {
-        return await TabularArtifactsApi.getTabularArtifactByName(
-          name,
-          headers
-        ).execute();
-      } catch (error) {
-        if (getHttpStatus(error) === 404) {
-          return null;
-        }
-        throw error;
-      }
-    },
-    isComplete: resource => resource === null || resource.status === 'DELETING',
-    onPoll: (attempt, resource) =>
-      console.log(
-        `[${attempt}] Tabular artifact status: ${resource?.status ?? 'gone'}`
+  await waitUntilDone<TabularArtifactDetails>(
+    TabularArtifactsApi.deleteTabularArtifact(name, headers),
+    {
+      statusRequest: TabularArtifactsApi.getTabularArtifactByName(
+        name,
+        headers
       ),
-    intervalMs: 2_000,
-    maxAttempts: 60
-  });
+      // DELETING is reported as transient ("awaiting async cleanup"), but the delete flow treats
+      // it as terminal: the resource is accepted for deletion, and polling for the eventual 404
+      // can exceed the test timeout. A 404 also completes the wait (notFound: 'resolve').
+      checkStatus: resource =>
+        resource.status === 'DELETING' ? 'done' : 'pending',
+      notFound: 'resolve',
+      onPoll: resource =>
+        console.log(`Tabular artifact status: ${resource.status}`),
+      backoff: { baseIntervalMs: 2_000, randomize: false },
+      timeoutMs: 2 * 60_000
+    }
+  );
 }
 
 /**
@@ -126,8 +109,8 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
     return existing;
   }
 
-  const response =
-    await ScenarioConfigurationManagerApi.createScenarioConfiguration(
+  return waitUntilDone<ScenarioConfigurationObject>(
+    ScenarioConfigurationManagerApi.createScenarioConfiguration(
       scenarioConfigName,
       {
         description: 'Sample scenario configuration',
@@ -135,36 +118,20 @@ export async function getOrCreateScenarioConfiguration(): Promise<ScenarioConfig
         tabularArtifacts: [{ name: artifactName }]
       },
       headers
-    ).executeRaw();
-
-  if (response.status !== 202) {
-    throw new Error(`Expected 202 Accepted, got ${response.status}`);
-  }
-
-  const location = response.headers.location;
-  if (typeof location !== 'string') {
-    throw new Error('Creation response did not include a Location header');
-  }
-  const pollingName = getNameFromLocation(location, 'scenarioConfigurations');
-
-  return pollAsyncResource<ScenarioConfigurationObject>({
-    read: () =>
-      ScenarioConfigurationManagerApi.getScenarioConfigurationByName(
-        pollingName,
-        headers
-      ).execute(),
-    isComplete: resource => resource.status === 'ACTIVE',
-    getFailure: resource =>
-      resource.status === 'ERROR'
-        ? (resource.errorMessage ?? 'Scenario configuration creation failed')
-        : undefined,
-    onPoll: (attempt, resource) =>
-      console.log(
-        `[${attempt}] Scenario configuration status: ${resource.status}`
-      ),
-    intervalMs: 2_000,
-    maxAttempts: 60
-  });
+    ),
+    {
+      statusRequest: created =>
+        ScenarioConfigurationManagerApi.getScenarioConfigurationByName(
+          getNameFromLocation(locationOf(created), 'scenarioConfigurations'),
+          headers
+        ),
+      checkStatus: contextRegistryStatus,
+      onPoll: resource =>
+        console.log(`Scenario configuration status: ${resource.status}`),
+      backoff: { baseIntervalMs: 2_000, randomize: false },
+      timeoutMs: 2 * 60_000
+    }
+  );
 }
 
 /**
@@ -249,6 +216,14 @@ export async function predictWithInlineContext(): Promise<PredictResponse> {
       }
     ]
   });
+}
+
+function locationOf(created: HttpResponse): string {
+  const location = created.headers?.location;
+  if (typeof location !== 'string') {
+    throw new Error('Creation response did not include a Location header');
+  }
+  return location;
 }
 
 function getNameFromLocation(location: string, segment: string): string {

@@ -43,6 +43,7 @@
   "devDependencies": {
     "@sap-ai-sdk/ai-api": "workspace:^",
     "@sap-ai-sdk/context-registry": "workspace:^",
+    "@sap-ai-sdk/core": "workspace:^",
     "@sap-ai-sdk/document-grounding": "workspace:^",
     "@sap-ai-sdk/foundation-models": "workspace:^",
     "@sap-ai-sdk/langchain": "workspace:^",
@@ -59,6 +60,7 @@
   "peerDependencies": {
     "@sap-ai-sdk/ai-api": "*",
     "@sap-ai-sdk/context-registry": "*",
+    "@sap-ai-sdk/core": "*",
     "@sap-ai-sdk/document-grounding": "*",
     "@sap-ai-sdk/foundation-models": "*",
     "@sap-ai-sdk/langchain": "*",
