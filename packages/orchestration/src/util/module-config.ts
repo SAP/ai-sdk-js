@@ -412,6 +412,12 @@ export function constructCompletionPostRequest(
       ? [...(request.messagesHistory || []), ...request.messages]
       : request?.messagesHistory;
 
+  if (routeMessagesToHistory && request?.messages?.length) {
+    logger.debug(
+      'Messages provided with a TemplateRef will be sent as messages_history.'
+    );
+  }
+
   return {
     config: configWithStream,
     ...(request?.placeholderValues && {
