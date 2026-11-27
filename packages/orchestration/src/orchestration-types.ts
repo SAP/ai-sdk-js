@@ -179,7 +179,7 @@ export type OrchestrationErrorResponse = ErrorResponse;
  * params: { reasoning_effort: 'high' }
  */
 export type LlmModelParams = {
-  /** @deprecated Since v2.19.0. Use `max_completion_tokens` instead. */
+  /** @deprecated Since v2.19.0. Use {@link max_completion_tokens} instead. */
   max_tokens?: number;
   max_completion_tokens?: number;
   temperature?: number;
