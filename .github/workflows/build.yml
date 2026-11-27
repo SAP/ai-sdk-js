@@ -17,11 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write # Required for SonarQube OIDC authentication.
 
     strategy:
       fail-fast: false
       matrix:
         node-version: [26, 24, 22]
+
+    env:
+      # Only scan the first matrix job; skip fork and bot PRs.
+      RUN_SONAR: >-
+        ${{ strategy.job-index == 0 && github.event.pull_request.user.type != 'Bot' &&
+            (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
 
     steps:
       - uses: $/.github/actions/setup
@@ -36,16 +43,20 @@ jobs:
         env:
           COVERAGE_FLAG: ${{ case(strategy.job-index == 0, '--coverage', '') }}
       - name: Fetch main for SonarQube blame
-        # Sonar only runs iff on first job (0) and the token is available (not on forks)
-        if: ${{ env.HAS_SONAR_TOKEN == 'true' && strategy.job-index == 0 }}
-        env:
-          HAS_SONAR_TOKEN: ${{ case(secrets.SONAR_TOKEN == '', 'false', 'true') }}
+        if: ${{ env.RUN_SONAR == 'true' }}
         run: git fetch --unshallow origin main
+      - name: Authenticate to SonarQube
+        id: sonar-auth
+        if: ${{ env.RUN_SONAR == 'true' }}
+        uses: SonarSource/sonarqube-auth-action@b372e2c2930aadfcc4f4399446da1e12772709ad # v1.2
+        with:
+          project-key: SAP_ai-sdk-js
+          export-env: 'false'
       - name: SonarQube Scan
-        if: ${{ env.SONAR_TOKEN != '' && strategy.job-index == 0 }}
+        if: ${{ steps.sonar-auth.outcome == 'success' }}
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65 # v8.4.1
+          SONAR_TOKEN: ${{ steps.sonar-auth.outputs.sonar-token }}
+        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
       - name: Wait for type tests
         wait: test-type
 

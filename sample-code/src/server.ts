@@ -137,10 +137,13 @@ import type {
 import type { AIMessageChunk } from '@langchain/core/messages';
 
 const app = express();
-const port = 8080;
+const port = Number(process.env.PORT ?? 8080);
 
 const server = app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  const address = server.address();
+  if (address && typeof address !== 'string') {
+    console.log(`Server running at http://localhost:${address.port}`);
+  }
 });
 
 server.on('error', (error: Error) => {
@@ -882,11 +885,12 @@ app.get(
       ] as const;
       const method = (req.query.method as string | undefined) ?? 'jsonSchema';
       if (!validMethods.includes(method as (typeof validMethods)[number])) {
-        return res.status(400).json({
+        res.status(400).json({
           error: `Invalid method '${method}'. Valid methods are: ${validMethods.join(
             ', '
           )}.`
         });
+        return;
       }
 
       const includeRaw =

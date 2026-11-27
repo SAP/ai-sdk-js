@@ -8,7 +8,7 @@ expectType<Promise<HttpResponse>>(
   executeRequest({ url: 'https://example.com', apiVersion: '2024-10-21' }, {})
 );
 
-expectError<any>(executeRequest({}, { prompt: 'test prompt' }));
+expectError(executeRequest({}, { prompt: 'test prompt' }));
 
 expectType<Promise<HttpResponse>>(
   executeRequest(

@@ -97,8 +97,8 @@ describe('OrchestrationStreamResponse', () => {
       });
       const warnSpy = vi.spyOn(logger, 'warn');
 
-      new OrchestrationStreamResponse();
-
+      const response = new OrchestrationStreamResponse();
+      expect(response).toBeInstanceOf(OrchestrationStreamResponse);
       expect(warnSpy).toHaveBeenCalledWith(
         'Constructing OrchestrationStreamResponse without raw HTTP response is deprecated and can lead to runtime errors when accessing `rawResponse`.'
       );

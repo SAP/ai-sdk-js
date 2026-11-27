@@ -58,6 +58,7 @@ const MODEL_EXCLUSION_LIST = new Set<string>([
   'gpt-5.3-codex', // Responses API only, not a standard chat completion model
   'cohere-reranker', // Re-ranker model, not a chat/embedding model
   'cohere-rerank-pro', // Re-ranker model, not a chat/embedding model
+  'sap-rpt-ts', // Specialized time-series model, not a standard SAP RPT model type
   'tabpfn-3.5-plus' // Tabular prediction model, not a chat/embedding model
 ]);
 
@@ -69,6 +70,7 @@ const MODEL_INCLUSION_LIST = new Set<string>([
 // Maps executableId prefix (lowercase) to the TypeScript type name it belongs to.
 // Embedding models are identified by model name containing 'embed'.
 const EXECUTABLE_ID_TO_TYPE: Record<string, string> = {
+  'alibaba-bailian': 'AlibabaBailianChatModel',
   'azure-openai': 'AzureOpenAiChatModel',
   'aicore-anthropic': 'AwsBedrockChatModel',
   'aicore-amazon': 'AwsBedrockChatModel',
@@ -87,7 +89,8 @@ const EXECUTABLE_ID_TO_TYPE: Record<string, string> = {
 const EMBEDDING_TYPE_MAP: Record<string, string> = {
   AzureOpenAiChatModel: 'AzureOpenAiEmbeddingModel',
   AwsBedrockChatModel: 'AwsBedrockEmbeddingModel',
-  GcpVertexAiChatModel: 'GcpVertexAiEmbeddingModel'
+  GcpVertexAiChatModel: 'GcpVertexAiEmbeddingModel',
+  AlibabaBailianChatModel: 'AlibabaBailianEmbeddingModel'
 };
 
 // Per-model type overrides for models whose executableId is missing in SAP Notes.
@@ -103,6 +106,10 @@ function resolveTypeName(row: ModelRow): string | null {
   // RPT models share the aicore-sap executableId with sap-abap-1 — distinguish by name.
   if (row.model.toLowerCase().startsWith('sap-rpt-')) {
     return 'SapRptModel';
+  }
+
+  if (row.model.toLowerCase().startsWith('qwen')) {
+    return 'AlibabaBailianChatModel';
   }
 
   const execId = row.executableId.toLowerCase().split('(')[0].trim();
@@ -155,7 +162,7 @@ function isRetired(row: ModelRow): boolean {
   // Users can always pass the model name as a plain string regardless.
   return (
     row.retired?.toLowerCase().includes('yes') === true ||
-    row.deprecated?.toLowerCase().includes('yes') === true ||
+    row.deprecated?.toLowerCase().includes('yes') ||
     isRetiredSoon(row.retirementDate ?? '')
   );
 }
@@ -199,7 +206,7 @@ function buildLiteralUnionBlock(
   const kept = existingModels.filter(m => activeModels.has(m));
   const added = [...activeModels].filter(m => !existingModels.includes(m));
   // Stable sort by prefix to group same-vendor models together.
-  const ordered = [...kept, ...added].sort((a, b) =>
+  const ordered = [...kept, ...added].toSorted((a, b) =>
     modelPrefix(a).localeCompare(modelPrefix(b))
   );
 
@@ -346,7 +353,7 @@ async function patchModelTypes(
 
   await transformFile(MODEL_TYPES_PATH, async content => {
     let updated = content;
-    const sorted = Object.entries(typeToActiveModels).sort(([a], [b]) =>
+    const sorted = Object.entries(typeToActiveModels).toSorted(([a], [b]) =>
       a.localeCompare(b)
     );
     for (const [typeName, models] of sorted) {

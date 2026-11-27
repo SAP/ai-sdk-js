@@ -46,6 +46,7 @@ describe('orchestration', () => {
     id: '62e8638a-ae87-4bd5-9027-a0bc67db1609'
   };
 
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep the shared response assertion within this integration suite.
   const assertContent = (response: OrchestrationResponse) => {
     expect(response.getIntermediateResults()).toBeDefined();
     expect(response.getIntermediateResults().templating).not.toHaveLength(0);

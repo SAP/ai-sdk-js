@@ -57,8 +57,8 @@ describe('AzureOpenAiChatCompletionStreamResponse', () => {
       });
       const warnSpy = vi.spyOn(logger, 'warn');
 
-      new AzureOpenAiChatCompletionStreamResponse();
-
+      const response = new AzureOpenAiChatCompletionStreamResponse();
+      expect(response).toBeInstanceOf(AzureOpenAiChatCompletionStreamResponse);
       expect(warnSpy).toHaveBeenCalledWith(
         'Constructing AzureOpenAiChatCompletionStreamResponse without raw HTTP response is deprecated and can lead to runtime errors when accessing `rawResponse`.'
       );
