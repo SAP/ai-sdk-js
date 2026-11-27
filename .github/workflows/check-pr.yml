@@ -30,6 +30,7 @@ jobs:
             pnpm-lock.yaml
             package.json
             **/package.json
+            patches
           sparse-checkout-cone-mode: false
           skip-build: 'true'
       - name: Collect changed files
