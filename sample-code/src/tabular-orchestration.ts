@@ -233,14 +233,13 @@ function getNameFromLocation(location: string, segment: string): string {
   if (!match) {
     throw new Error(`Unexpected polling location: ${location}`);
   }
-  return decodeURIComponent(match[1]!);
+  return decodeURIComponent(match[1]);
 }
 
 function ignoreNotFound(error: unknown): undefined {
   if (getHttpStatus(error) !== 404) {
     throw error;
   }
-  return undefined;
 }
 
 function getHttpStatus(error: unknown): number | undefined {

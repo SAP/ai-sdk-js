@@ -39,6 +39,16 @@ type BrowserMessage =
   | CommitAudioMessage
   | SetPttMessage;
 
+function toBuffer(data: RawData): Buffer {
+  if (Buffer.isBuffer(data)) {
+    return data;
+  }
+  if (Array.isArray(data)) {
+    return Buffer.concat(data);
+  }
+  return Buffer.from(data);
+}
+
 const getWeatherTool = {
   type: 'function' as const,
   name: 'get_weather',
@@ -161,16 +171,6 @@ export function attachRealtimeWs(server: Server): void {
       }
       audioQueue.forEach(chunk => appendAudio(client!, chunk));
       audioQueue.length = 0;
-    }
-
-    function toBuffer(data: RawData): Buffer {
-      if (Buffer.isBuffer(data)) {
-        return data;
-      }
-      if (Array.isArray(data)) {
-        return Buffer.concat(data);
-      }
-      return Buffer.from(data);
     }
 
     async function resolveToolCall(

@@ -508,7 +508,7 @@ describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
   it('should throw when the prompt is still an unparsed string', () => {
     const config: OrchestrationModuleConfig = {
       promptTemplating: {
-        prompt: 'template: [{ role: user }]' as any,
+        prompt: 'template: [{ role: user }]',
         model: { name: 'gpt-5.4' }
       }
     };
@@ -546,15 +546,17 @@ describe('resolvePromptTemplate via constructCompletionPostRequest', () => {
       request
     ) as CompletionRequestConfiguration;
 
-    expect(
-      (result.config.modules as ModuleConfigs).prompt_templating.prompt
-    ).toEqual({
+    if (Array.isArray(result.config.modules)) {
+      throw new Error('Expected a single module config');
+    }
+    expect(result.config.modules.prompt_templating.prompt).toEqual({
       template: [{ role: 'user', content: 'Hello' }]
     });
   });
 });
 
 describe('addStreamOptions with module fallback configs', () => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep this factory scoped to fallback tests.
   const createModuleConfig = (modelName: string): ModuleConfigs => ({
     prompt_templating: {
       prompt: { template: [{ role: 'user', content: 'test' }] },
@@ -1007,6 +1009,7 @@ describe('addStreamOptions with module fallback configs', () => {
 });
 
 describe('warnAboutUnusedOverrides', () => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep this factory scoped to unused-override tests.
   const createModuleConfig = (modelName: string): ModuleConfigs => ({
     prompt_templating: {
       prompt: { template: [{ role: 'user', content: 'test' }] },

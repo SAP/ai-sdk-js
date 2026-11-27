@@ -135,7 +135,7 @@ export class OrchestrationClient extends BaseChatModel<
 
     // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
     this.streaming =
-      langchainOptions?.streaming === true && this.disableStreaming !== true;
+      langchainOptions?.streaming === true && !this.disableStreaming;
   }
 
   _llmType(): string {
@@ -237,14 +237,14 @@ export class OrchestrationClient extends BaseChatModel<
     return this.withConfig({
       tools: tools.map(tool => mapToolToChatCompletionTool(tool, strict)),
       ...kwargs
-    } as Partial<OrchestrationCallOptions>);
+    });
   }
 
   withStructuredOutput<
     RunOutput extends Record<string, any> = Record<string, any>
   >(
     outputSchema: InteropZodType<RunOutput> | Record<string, any>,
-    config?: StructuredOutputMethodOptions<false>
+    config?: StructuredOutputMethodOptions
   ): Runnable<BaseLanguageModelInput, RunOutput>;
 
   withStructuredOutput<

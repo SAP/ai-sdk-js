@@ -21,20 +21,10 @@ jobs:
       - name: Update smoke test dependencies
         # Always use latest SDK packages for smoke tests to ensure they are tested against the latest version.
         run: pnpm --filter @sap-ai-sdk/smoke-tests update '@sap-ai-sdk/*' --no-save --ignore-scripts
-      - uses: vchrisb/setup-cf@f43abe0d940f27e8c59c8b29226140f3a1768496 # v3.0.1
-        with:
-          api: ${{ vars.CF_API_URL }}
-          username: ${{ secrets.CF_USER }}
-          password: ${{ secrets.CF_PASSWORD }}
-          org: ${{ vars.CF_ORG }}
-          space: ${{ vars.CF_SPACE }}
-      - name: Create deployment
-        run: pnpm smoke-tests create-deployment
       - name: smoke test
+        env:
+          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_PRODUCTION }}
         run: pnpm test:smoke
-      - name: shutdown
-        if: always()
-        run: cf stop smoke-test-app
       - name: 'Slack Notification'
         if: failure() && github.event_name == 'schedule'
         uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0

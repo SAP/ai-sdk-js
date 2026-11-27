@@ -4,6 +4,7 @@
  * Returns { active: ModelRow[], retired: RetiredModelRow[] } or { error: '...' }.
  */
 (() => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep the normalizer private to this browser-side IIFE.
   const clean = s => (s ?? '').trim().replace(/\s+/g, ' ').trim();
 
   // --- Active models table ---

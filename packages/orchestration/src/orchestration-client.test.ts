@@ -1484,7 +1484,14 @@ describe('orchestration service client', () => {
       );
     });
 
-    it('routes messages to messages_history when using a prompt template reference', async () => {
+    it('logs debug and routes messages to messages_history when using a prompt template reference', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-utils'
+      });
+
+      const debugSpy = vi.spyOn(logger, 'debug');
+
       const config: OrchestrationModuleConfig = {
         promptTemplating: {
           prompt: {
@@ -1532,6 +1539,85 @@ describe('orchestration service client', () => {
       });
 
       expect(response).toBeInstanceOf(OrchestrationResponse);
+      expect(debugSpy).toHaveBeenCalledWith(
+        'Messages provided with a TemplateRef will be sent as messages_history.'
+      );
+    });
+
+    it('logs debug and routes messages to messages_history when streaming with a prompt template reference', async () => {
+      const logger = createLogger({
+        package: 'orchestration',
+        messageContext: 'orchestration-utils'
+      });
+
+      const debugSpy = vi.spyOn(logger, 'debug');
+
+      const config: OrchestrationModuleConfig = {
+        promptTemplating: {
+          prompt: {
+            template_ref: {
+              id: 'test-template-id'
+            }
+          },
+          model: {
+            name: 'gpt-5-mini',
+            params: { max_tokens: 50 }
+          }
+        }
+      };
+
+      const mockResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunks.txt'
+      );
+
+      mockInference(
+        {
+          data: {
+            config: {
+              stream: { enabled: true },
+              modules: {
+                prompt_templating: {
+                  prompt: { template_ref: { id: 'test-template-id' } },
+                  model: {
+                    name: 'gpt-5-mini',
+                    params: {
+                      max_tokens: 50,
+                      stream_options: { include_usage: true }
+                    }
+                  }
+                }
+              }
+            },
+            messages_history: [{ role: 'user', content: 'Hello' }]
+          }
+        },
+        {
+          data: mockResponse,
+          status: 200
+        },
+        {
+          url: 'inference/deployments/1234/v2/completion'
+        }
+      );
+
+      const response = await new OrchestrationClient(config).stream({
+        messages: [{ role: 'user', content: 'Hello' }]
+      });
+
+      const initialResponse = await parseFileToString(
+        'orchestration',
+        'orchestration-chat-completion-stream-chunk-response-initial.json'
+      );
+
+      for await (const chunk of response.stream) {
+        expect(chunk._data).toEqual(JSON.parse(initialResponse));
+        break;
+      }
+
+      expect(debugSpy).toHaveBeenCalledWith(
+        'Messages provided with a TemplateRef will be sent as messages_history.'
+      );
     });
 
     it('throws error when server returns non-streaming JSON response for config reference', async () => {
