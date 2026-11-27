@@ -59,36 +59,61 @@ The fix is acknowledged but not yet committed, and there is no workaround.
 
 ## Decision
 
-The `prompt` field lives at request level only.
+The client exposes a **fluent builder**.
+An entry method on the client selects the configuration source and returns a builder.
+The entry method determines, **at the type level**, whether a prompt may still be supplied.
+A terminal `create()` sends the request, and streaming is requested through its options rather than a separate method.
 
-The core changes to the `chatCompletion()` method:
+```ts
+client.config(configWithoutPrompt).create({ prompt: [message] });
+client.configRef(configRef).create();
+client.configRef([configRef]).create();
+client.configList([configWithPrompt]).create();
+client.raw().config(configInGeneratedFormat).create();
+client.raw().configJson(jsonString).create();
+```
+
+The design rests on one idea: the prompt travels with whichever source owns it, and the builder type reflects that.
+
+- `config(config)` takes a configuration whose type **omits** the prompt, so the builder it returns accepts a `prompt` on `create({ prompt })`.
+  The caller supplies the prompt per call, and it is the only path that does.
+- `configRef(ref)` and `configRef([ref])` take one or more references to a server-side template.
+  The template lives in the registry, so the returned builder's `create()` offers **no** `prompt` — the prompt is already defined remotely.
+- `configList([config])` takes a fallback list where **each** configuration carries its own prompt.
+  A fallback list is tried in order until one configuration succeeds, and a fallback from a premium model to a cheaper one often needs a different prompt per entry.
+  Carrying the prompt inside each configuration is what lets every entry bring its own.
+  The returned builder's `create()` offers no `prompt`, because the prompts already live inside the configurations.
+- `raw().config(config)` and `raw().configJson(json)` are the low-level escape hatch.
+  They accept the generated request format — a typed `OrchestrationConfig` object or its JSON string — which already specifies everything, prompts and fallback list included.
+  Their `create()` takes no `prompt`.
+
+Because the entry method fixes whether `create()` accepts a `prompt`, no runtime throw is needed to reject a prompt where none is allowed — a misuse does not compile.
+`create()` takes an optional `{ messagesHistory?, placeholderValues?, stream? }` for the per-call inputs that are not the prompt, where `stream` selects a streamed response.
+The exact option shapes, and the builder type names, are left to a proof of concept.
+
+**Impact on existing consumers**: The LangChain integration's `OrchestrationClient` (`packages/langchain/src/orchestration/client.ts`) depends on the `messages` field as its only runtime channel.
+It maps the combined LangChain message list and passes it as `chatCompletion({ messages, ... })`, keeping the template in the constructor config.
+Migrating it means building its request through `config(...).create({ prompt })` instead.
+
+### Consequences
+
+Per-fallback prompts become expressible: `configList` carries a prompt inside each configuration.
+The question of whether a prompt is allowed is answered by the type system rather than a runtime check, so invalid combinations fail to compile instead of throwing.
+The generated `OrchestrationConfig` type must be exported publicly to back `raw().config()`, which today is reachable only through the internal entry point.
+The trade-off is a larger API surface: five entry methods and their builders replace a single `chatCompletion()` call, and callers must learn which entry point matches their configuration source.
+Alternative C collapses those five entry methods into one overloaded `config()`.
+
+## Alternatives
+
+### Option A — `prompt` at request level only
+
+The `prompt` field lives at request level only, on a single `chatCompletion()` method.
 
 - The `messages` field is removed from the `ChatCompletionRequest` type.
 - The `chatCompletion()` method gains a `prompt?: Xor<PromptTemplate, TemplateRef>` field.
 - The `messagesHistory` parameter is unchanged.
-- Passing a `prompt: TemplateRef` value alongside anything that would require merging inline messages into the template throws an error, because the SDK cannot modify a remote template.
-
-The `prompt` field is removed from the constructor.
-The constructor accepts either a config ref or module parameters and pipeline module config (filtering, masking, grounding, translation) — no `prompt`.
-Every call to the `chatCompletion()` method that needs a template or ref supplies it inline via the `prompt` field.
-
-### Config references
-
-`OrchestrationConfigRef` remains a valid constructor argument, as a mutually exclusive overload — it cannot be combined with a `prompt` or module config.
-`overrideConfig` stays on the config ref and is fixed for the client's lifetime.
-
-Config references are single-turn by nature: the stored artifact defines the full template and cannot be extended client-side.
-When the constructor holds a config ref, `chatCompletion()` accepts `messagesHistory` and `placeholderValues` but no per-call `prompt`.
-This is enforced by a generic type parameter inferred from the constructor argument (narrowing `chatCompletion()`'s signature) and a runtime throw as a safety net.
-Multi-turn conversations must use a local template or a `TemplateRef` instead.
-
-**Impact on existing consumers**: The LangChain integration's `OrchestrationClient` (`packages/langchain/src/orchestration/client.ts`) depends on the `messages` field as its only runtime channel.
-It maps the combined LangChain message list and passes it as `chatCompletion({ messages, ... })`, keeping the template in the constructor config.
-It never sets `messagesHistory` and never passes a per-request `prompt`.
-Removing the `messages` field therefore breaks this client.
-Migrating it means routing its combined list through `messagesHistory` and/or the per-request `prompt`.
-
-**Local template**:
+- The `prompt` field is removed from the constructor.
+- Passing a `prompt: TemplateRef` value alongside anything that would require merging inline messages into the template throws, because the SDK cannot modify a remote template.
 
 ```ts
 const client = new OrchestrationClient({
@@ -120,33 +145,33 @@ const resp1 = await client.chatCompletion({
 });
 const res2 = await client.chatCompletion({
   messagesHistory: resp1.getAllMessages(),
-  template: [
-    // Turn 1+
-    { role: 'user', content: 'What is the capital of France?' }
-  ]
+  prompt: {
+    template: [
+      // Turn 1+
+      { role: 'user', content: 'What is the capital of France?' }
+    ]
+  }
 });
 ```
 
-### Consequences
+**The per-fallback prompt gap**: A single orchestration request can carry a **fallback list** of module configurations.
+The service tries each configuration in order and uses the first that succeeds.
+In the SDK this is `OrchestrationModuleConfigList`, a non-empty list of `OrchestrationModuleConfig`, and each entry carries its own model under `promptTemplating.model` and its own optional `promptTemplating.prompt`.
+A fallback from a premium model to a cheaper one often needs a different prompt per entry, because the two models respond best to differently worded instructions.
+A single request-level `prompt` cannot express this: it supplies one prompt shared across the whole call, so every configuration in the fallback list receives the same prompt.
+Per-entry prompts are only expressible if the prompt travels **with each configuration**, not alongside the call.
+This gap, identified after this approach was first decided, is what reopened the design.
 
-Aligns with the API's per-request semantics.
-But it drops the SDK abstraction where a client instance maps 1:1 to a stored orchestration **configuration artifact** — the same `module_configurations` block that can be stored and referenced on the server.
-All module-level settings are fixed for the client's lifetime, and per-call arguments are layered on top (mirroring `adr/003-history-maintenance.md`: one client = one conversation = one configuration context).
-Callers must supply the template on the first call or manage it themselves.
-The constructor shapes for a local/remote template and a config ref look similar — the distinction only appears at the `chatCompletion()` call site.
+**Tradeoff**: Aligns with the API's per-request semantics and keeps a single call method.
+But a single request-level `prompt` cannot give each configuration in a fallback list its own prompt — the per-fallback prompt gap.
+Per-entry prompts are only expressible if the prompt travels with each configuration, not alongside the call.
+It also drops the SDK abstraction where a client instance maps 1:1 to a stored configuration artifact, and prompt-not-allowed cases are caught only at runtime by a throw.
 
-## Alternatives
+### Option B — `prompt` in both constructor and request
 
-### `prompt` in both constructor and request
-
-The `prompt` field is retained in the constructor as a convenience for the config-artifact use case (typically a system message or a remote template reference).
-The `chatCompletion()` method also gains a `prompt?` parameter.
-Setting the constructor `prompt` field and request `prompt` field both at once throws an error when one of them is a remote template, because the SDK cannot merge into a remote template.
-The constructor prompt will be prepended to the `messages_history` field.
-
+The `prompt` field is retained in the constructor as a convenience for the config-artifact use case, and the `chatCompletion()` method also gains a `prompt?` parameter.
+Setting both at once throws when one of them is a remote template, because the SDK cannot merge into a remote template.
 The constructor has three mutually exclusive shapes: a config ref, a module config with an optional `prompt`, or a module config with no `prompt`.
-
-**Local template** (constructor `prompt` + per-call `prompt`):
 
 ```ts
 const client = new OrchestrationClient({
@@ -159,41 +184,96 @@ const client = new OrchestrationClient({
   }
 });
 
-// Turn 1
-const resp1 = await client.chatCompletion({
+const resp = await client.chatCompletion({
   prompt: {
     template: [{ role: 'user', content: 'What is the capital of France?' }]
   }
 });
-
-// Turn 2+
-const resp2 = await client.chatCompletion({
-  messagesHistory: resp1.getAllMessages(),
-  prompt: {
-    template: [{ role: 'user', content: 'What is the typical food there?' }]
-  }
-});
-```
-
-**Remote template (TemplateRef)** (constructor `prompt` only; per-call `prompt` would conflict):
-
-```ts
-const client = new OrchestrationClient({
-  promptTemplating: {
-    model: { name: 'anthropic--claude-4.5-haiku' },
-    prompt: { template_ref: { id: 'my-system-prompt' } }
-  }
-});
-
-const resp = await client.chatCompletion({
-  placeholderValues: { user_input: 'What is the capital of France?' }
-});
 ```
 
 **Tradeoff**: Preserves the SDK's config-artifact abstraction.
-But three constructor shapes exist — config ref, module config with `prompt`, and module config without — and callers must understand which site to use for `prompt` and when.
-The TemplateRef and config ref shapes look identical at the `chatCompletion()` call site; the distinction lives in the constructor.
-This was rejected in favor of the request-level-only approach above.
+But three constructor shapes exist, and callers must understand which site to use for `prompt` and when.
+The `TemplateRef` and config ref shapes look identical at the `chatCompletion()` call site — the distinction lives in the constructor.
+It also shares the per-fallback prompt gap, since the per-call `prompt` is still a single shared field.
+
+### Option C — Overloaded single `config()`
+
+The fluent builder keeps its type-level prompt gating, but a single overloaded `config()` replaces the five entry methods.
+One `config()` absorbs every source shape — a configuration without a prompt, a configuration with a prompt, a `TemplateRef`, a `TemplateRef[]`, and a fallback list.
+The overload resolves which builder is returned, and that builder's type decides whether `create()` accepts a `prompt`.
+
+```ts
+client.config(configWithoutPrompt).create({ prompt: [message] });
+client.config(configRef).create();
+client.config([configRef]).create();
+client.config(configList).create();
+```
+
+**Tradeoff**: One entry point to learn instead of five, and the call site reads the same regardless of source.
+But the source shapes are no longer visible in the method name, so which overload applies — and therefore whether `create()` accepts a `prompt` — is legible only through the types, not the call itself.
+
+### Option D — OpenAI call-site framing over Option C
+
+Option D keeps Option C's accessor and type-level prompt gate unchanged.
+It adds a framing: the terminal call reads like OpenAI, and a documented root object wraps the standalone client.
+
+Orchestration configuration has no OpenAI analogue, so it cannot sit inside `create()` the way OpenAI's `messages` do.
+Matching OpenAI therefore means matching the **call site**: the verb is `create`, and streaming is `create({ stream: true })` with an overloaded return.
+Everything above `create()` is SAP-specific.
+
+The request splits into four axes, each on its own hop: connection, deployment, static pipeline config (`config()`, carrying the prompt gate), and dynamic input (`create()`).
+
+```ts
+new SapAi(connection)
+  .orchestration(deploymentConfig)
+  .config(staticConfig)
+  .create({ prompt: [message], stream: true });
+```
+
+`orchestration(deploymentConfig)` returns the same `Orchestration` handle a caller can construct directly, so the standalone form drops the root and merges connection and deployment into the constructor:
+
+```ts
+new Orchestration(connectionAndDeployment)
+  .config(staticConfig)
+  .create({ prompt: [message] });
+
+// identity
+sapAi.orchestration(deploymentConfig)  ≡  new Orchestration(connectionAndDeployment)
+```
+
+Deployment lives on the per-service hop rather than the root, because the root fans out to several services that each resolve their own deployment — which is what makes the full shape four single-purpose hops.
+The static-versus-dynamic split is the feature: `config()` configures the pipeline once, `create()` sends dynamic input per call.
+
+**Scope**: `SapAi` is proposal-only, and whether to build it is a separate decision.
+Option D is designed so the standalone `Orchestration` ships first and a future `SapAi` wraps it without changing the handle, builder, or terminal.
+
+#### Per-package install model
+
+A desirable property for `SapAi` is that each service accessor exists — at the type level — only when its package is imported.
+This is viable through TypeScript module augmentation, but with one inversion: core owns the `SapAi` class with an empty, open interface, and each service package augments it, because augmentation can only patch an existing declaration, never add a new top-level `SapAi`.
+
+```ts
+// @sap-ai-sdk/core
+export class SapAi {
+  /* connection */
+}
+export interface SapAi {} // open for augmentation
+
+// @sap-ai-sdk/orchestration — patches SapAi when imported
+declare module '@sap-ai-sdk/core' {
+  interface SapAi {
+    orchestration(deployment: DeploymentConfig): Orchestration;
+  }
+}
+SapAi.prototype.orchestration = function (deployment) {
+  /* ... */
+};
+```
+
+A proof of concept would need to confirm the key risk: the unlock trigger is import, not install, and the types-only augmentation and the runtime `prototype` assignment must be wired together or a typed call fails at runtime.
+
+**Tradeoff**: The terminal call site matches OpenAI, and the four-axis model carves connection, deployment, pipeline, and dynamic input so no hop does double duty, resolving the objection that connection lived on a thing named `Orchestration`.
+The cost is a four-hop chain at the root altitude and a documented root that does not yet exist, so the shippable and documented surfaces differ until `SapAi` is built.
 
 ## How Java and Python handle this
 
