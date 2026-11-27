@@ -1,0 +1,325 @@
+diff --git a/dist/parser/api.js b/dist/parser/api.js
+index d40e5316d3979363143823422dcc67198e41aa2e..3e9e26df5eb35f74227d4da575101e78e472c895 100644
+--- a/dist/parser/api.js
++++ b/dist/parser/api.js
+@@ -32,9 +32,11 @@ function parseApis(document, refs, options) {
+             operationInfo.operation.operationId = uniqueNames[i];
+             return operationInfo;
+         });
++        const parsedOperations = (0, util_1.flat)(uniquelyNamedOperations.map(operationInfo => (0, operation_1.parseOperation)(operationInfo, refs, options)));
++        const uniqueParsedNames = (0, unique_naming_1.ensureUniqueNames)(parsedOperations.map(({ operationId }) => operationId), options, { format: util_1.identity, separator: '_' });
+         return {
+             name,
+-            operations: uniquelyNamedOperations.map(operationInfo => (0, operation_1.parseOperation)(operationInfo, refs, options))
++            operations: parsedOperations.map((operation, i) => (Object.assign(Object.assign({}, operation), { operationId: uniqueParsedNames[i] })))
+         };
+     });
+ }
+diff --git a/dist/parser/media-type.d.ts b/dist/parser/media-type.d.ts
+index 4bb8c1fc99ecab2fad51926aa2475adb0ac05fde..12c9f17bf634ede30474c7042e668cadcd00d9e3 100644
+--- a/dist/parser/media-type.d.ts
++++ b/dist/parser/media-type.d.ts
+@@ -1,38 +1,27 @@
+-import { type ContentType } from 'content-type';
+ import type { OpenAPIV3 } from 'openapi-types';
+-import type { OpenApiSchema } from '../openapi-types';
++import type { OpenApiRequestBody } from '../openapi-types';
+ import type { OpenApiDocumentRefs } from './refs';
+ import type { ParserOptions } from './options';
+-type ParsedContentType = Pick<ContentType, 'type' | 'parameters'>;
+-interface EncodingInfo {
+-    contentType: string;
+-    isImplicit: boolean;
+-    parsedContentTypes: ParsedContentType[];
+-}
+-type EncodingMap = Record<string, EncodingInfo>;
+ /**
+- * Parse the type of a resolved request body or response object.
+- * @param bodyOrResponseObject - The request body or response object to parse the type from.
++ * Parsed schema and wire metadata for one media type.
++ * @internal
++ */
++export type ParsedMediaType = Pick<OpenApiRequestBody, 'schema' | 'mediaType' | 'encoding'>;
++/**
++ * Parse one selected or preferred media type from a request body or response.
++ * @param bodyOrResponseObject - The request body or response object to parse.
+  * @param refs - Object representing cross references throughout the document.
+  * @param options - Options that were set for service generation.
+- * @returns The type name of the request body if there is one.
++ * @param requestedMediaType - Optional media type to select from the content map.
++ * @returns Parsed schema, normalized media type, and optional encoding metadata.
+  * @internal
+  */
+-export declare function parseTopLevelMediaType(bodyOrResponseObject: OpenAPIV3.RequestBodyObject | OpenAPIV3.ResponseObject | undefined, refs: OpenApiDocumentRefs, options: ParserOptions): {
+-    schema: OpenApiSchema;
+-    mediaType: string;
+-    encoding?: EncodingMap;
+-} | undefined;
++export declare function parseTopLevelMediaType(bodyOrResponseObject: OpenAPIV3.RequestBodyObject | OpenAPIV3.ResponseObject | undefined, refs: OpenApiDocumentRefs, options: ParserOptions, requestedMediaType?: string): ParsedMediaType | undefined;
+ /**
+  * @internal
+  */
+-export declare function parseMediaType(bodyOrResponseObject: OpenAPIV3.RequestBodyObject | OpenAPIV3.ResponseObject | undefined, refs: OpenApiDocumentRefs, options: ParserOptions): {
+-    schema: OpenApiSchema;
+-    mediaType: string;
+-    encoding?: EncodingMap;
+-} | undefined;
++export declare function parseMediaType(bodyOrResponseObject: OpenAPIV3.RequestBodyObject | OpenAPIV3.ResponseObject | undefined, refs: OpenApiDocumentRefs, options: ParserOptions): ParsedMediaType | undefined;
+ /**
+  * @internal
+  */
+ export declare function getMediaTypes(bodyOrResponseObject: OpenAPIV3.RequestBodyObject | OpenAPIV3.ResponseObject | undefined): string[];
+-export {};
+diff --git a/dist/parser/media-type.js b/dist/parser/media-type.js
+index c1cedcbe64d8155bd51e30293314e847679cba9c..182079add951aa27401e7f4118e1f076f24498b9 100644
+--- a/dist/parser/media-type.js
++++ b/dist/parser/media-type.js
+@@ -133,16 +133,25 @@ function parseMultipartFormEncodings(mediaTypeObject, refs) {
+     return Object.keys(allEncodings).length ? allEncodings : undefined;
+ }
+ /**
+- * Parse the type of a resolved request body or response object.
+- * @param bodyOrResponseObject - The request body or response object to parse the type from.
++ * Parse one selected or preferred media type from a request body or response.
++ * @param bodyOrResponseObject - The request body or response object to parse.
+  * @param refs - Object representing cross references throughout the document.
+  * @param options - Options that were set for service generation.
+- * @returns The type name of the request body if there is one.
++ * @param requestedMediaType - Optional media type to select from the content map.
++ * @returns Parsed schema, normalized media type, and optional encoding metadata.
+  * @internal
+  */
+-function parseTopLevelMediaType(bodyOrResponseObject, refs, options) {
+-    if (bodyOrResponseObject) {
+-        const mediaTypeObject = getMediaTypeObject(bodyOrResponseObject, allowedMediaTypes);
++function parseTopLevelMediaType(bodyOrResponseObject, refs, options, requestedMediaType) {
++    const normalizedRequestedMediaType = requestedMediaType
++        ? (0, schema_1.parseMediaTypeString)(requestedMediaType)
++        : undefined;
++    if (bodyOrResponseObject &&
++        (!requestedMediaType ||
++            (normalizedRequestedMediaType &&
++                allowedMediaTypes.includes(normalizedRequestedMediaType)))) {
++        const mediaTypeObject = getMediaTypeObject(bodyOrResponseObject, normalizedRequestedMediaType
++            ? [normalizedRequestedMediaType]
++            : allowedMediaTypes);
+         if (mediaTypeObject) {
+             const encoding = mediaTypeObject.mediaType.startsWith('multipart/')
+                 ? parseMultipartFormEncodings(mediaTypeObject, refs)
+@@ -160,6 +169,7 @@ function parseTopLevelMediaType(bodyOrResponseObject, refs, options) {
+  */
+ function parseMediaType(bodyOrResponseObject, refs, options) {
+     const allMediaTypes = getMediaTypes(bodyOrResponseObject);
++    const normalizedMediaTypes = allMediaTypes.map(schema_1.parseMediaTypeString);
+     if (allMediaTypes.length) {
+         const parsedSchema = parseTopLevelMediaType(bodyOrResponseObject, refs, options);
+         if (!parsedSchema) {
+@@ -170,7 +180,8 @@ function parseMediaType(bodyOrResponseObject, refs, options) {
+         if (allMediaTypes.length === 1) {
+             return parsedSchema;
+         }
+-        return allMediaTypes.every(type => allowedMediaTypes.includes(type))
++        const allMediaTypesSupported = normalizedMediaTypes.every((type) => !!type && allowedMediaTypes.includes(type));
++        return allMediaTypesSupported
+             ? parsedSchema
+             : {
+                 schema: { anyOf: [parsedSchema.schema, { type: 'any' }] },
+@@ -192,9 +203,13 @@ function getMediaTypes(bodyOrResponseObject) {
+  */
+ function getMediaTypeObject(bodyOrResponseObject, contentType) {
+     if (bodyOrResponseObject === null || bodyOrResponseObject === void 0 ? void 0 : bodyOrResponseObject.content) {
+-        const mediaTypeEntry = Object.entries(bodyOrResponseObject.content).find(([key]) => contentType.includes(key.split(';')[0]));
++        const mediaTypeEntry = Object.entries(bodyOrResponseObject.content).find(([key]) => {
++            const normalizedMediaType = (0, schema_1.parseMediaTypeString)(key);
++            return (!!normalizedMediaType && contentType.includes(normalizedMediaType));
++        });
+         if (mediaTypeEntry) {
+-            return Object.assign(Object.assign({}, mediaTypeEntry[1]), { mediaType: mediaTypeEntry[0].split(';')[0] });
++            const normalizedMediaType = (0, schema_1.parseMediaTypeString)(mediaTypeEntry[0]);
++            return Object.assign(Object.assign({}, mediaTypeEntry[1]), { mediaType: normalizedMediaType || mediaTypeEntry[0] });
+         }
+     }
+     return undefined;
+diff --git a/dist/parser/operation-naming.d.ts b/dist/parser/operation-naming.d.ts
+index 6048c5d35b0ea95476828cd901edeedf59699fe9..e8eebec7246c0deb6b770f97c5443dfef4148831 100644
+--- a/dist/parser/operation-naming.d.ts
++++ b/dist/parser/operation-naming.d.ts
+@@ -9,6 +9,14 @@ import type { OperationInfo } from './parsing-info';
+  * @internal
+  */
+ export declare function nameOperations(operations: OperationInfo[]): OperationInfo[];
++/**
++ * Create generated operation names for request body media type variants.
++ * @param operationName - Base operation name.
++ * @param mediaTypes - Media types represented by the operation variants.
++ * @returns One operation name per media type.
++ * @internal
++ */
++export declare function getOperationVariantNames(operationName: string, mediaTypes: string[]): string[];
+ /**
+  * @internal
+  */
+diff --git a/dist/parser/operation-naming.js b/dist/parser/operation-naming.js
+index 13b123f76c89c53b0e599441c78fa2d4bc362552..1ed72d39290016f8d367bb4889a1e37b08bc6308 100644
+--- a/dist/parser/operation-naming.js
++++ b/dist/parser/operation-naming.js
+@@ -1,9 +1,11 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.nameOperations = nameOperations;
++exports.getOperationVariantNames = getOperationVariantNames;
+ exports.getOperationNameFromPatternAndMethod = getOperationNameFromPatternAndMethod;
+ const util_1 = require("@sap-cloud-sdk/util");
+ const extensions_1 = require("../extensions");
++const schema_1 = require("./schema");
+ /**
+  * Give all given operations an initial name.
+  * All operations with an extension will be renamed.
+@@ -24,6 +26,41 @@ function nameOperations(operations) {
+         ...renamedUnnamedOperations
+     ];
+ }
++/**
++ * Create generated operation names for request body media type variants.
++ * @param operationName - Base operation name.
++ * @param mediaTypes - Media types represented by the operation variants.
++ * @returns One operation name per media type.
++ * @internal
++ */
++function getOperationVariantNames(operationName, mediaTypes) {
++    if (mediaTypes.length <= 1) {
++        return [operationName];
++    }
++    const shortSuffixes = mediaTypes.map(getMediaTypeSuffix);
++    const suffixCounts = new Map();
++    shortSuffixes.forEach(suffix => {
++        suffixCounts.set(suffix, (suffixCounts.get(suffix) || 0) + 1);
++    });
++    return mediaTypes.map((mediaType, index) => {
++        const shortSuffix = shortSuffixes[index];
++        const suffix = suffixCounts.get(shortSuffix) > 1
++            ? (0, util_1.pascalCase)(((0, schema_1.parseMediaTypeString)(mediaType) || mediaType.toLowerCase()).replace(/[^a-z0-9]+/gi, ' ')) || 'MediaType'
++            : shortSuffix;
++        return `${operationName}With${suffix}`;
++    });
++}
++function getMediaTypeSuffix(mediaType) {
++    const normalizedMediaType = (0, schema_1.parseMediaTypeString)(mediaType) || mediaType.toLowerCase();
++    if (normalizedMediaType === 'application/json') {
++        return 'Json';
++    }
++    if (normalizedMediaType === 'multipart/form-data') {
++        return 'MultipartFormData';
++    }
++    const subtype = normalizedMediaType.split('/')[1] || '';
++    return (0, util_1.pascalCase)(subtype.replace(/[^a-z0-9]+/gi, ' ')) || 'MediaType';
++}
+ function validateUniqueExtensions(operations) {
+     operations.reduce((uniqueOperationNames, operationInfo) => {
+         const operationName = renameOperationWithExtension(operationInfo);
+diff --git a/dist/parser/operation.d.ts b/dist/parser/operation.d.ts
+index afdb3cd0aeb88669945a7a65a6fe997b7d8200c5..2da6bdd8155da47fb1013bdb09d0d1776a2710e2 100644
+--- a/dist/parser/operation.d.ts
++++ b/dist/parser/operation.d.ts
+@@ -11,7 +11,7 @@ import type { ParserOptions } from './options';
+  * @returns A flat list of parsed operations.
+  * @internal
+  */
+-export declare function parseOperation({ operation, pathPattern, method, pathItemParameters }: OperationInfo, refs: OpenApiDocumentRefs, options: ParserOptions): OpenApiOperation;
++export declare function parseOperation({ operation, pathPattern, method, pathItemParameters }: OperationInfo, refs: OpenApiDocumentRefs, options: ParserOptions): OpenApiOperation[];
+ /**
+  * @internal
+  */
+diff --git a/dist/parser/operation.js b/dist/parser/operation.js
+index 0393f8881281002e47e755092721b45413d43fe2..ba364ddc80a7bf2fa3999aea94683ef5332059d5 100644
+--- a/dist/parser/operation.js
++++ b/dist/parser/operation.js
+@@ -8,6 +8,7 @@ exports.parseParameters = parseParameters;
+ const util_1 = require("@sap-cloud-sdk/util");
+ const internal_1 = require("@sap-cloud-sdk/generator-common/internal");
+ const request_body_1 = require("./request-body");
++const operation_naming_1 = require("./operation-naming");
+ const schema_1 = require("./schema");
+ const responses_1 = require("./responses");
+ const unique_naming_1 = require("./unique-naming");
+@@ -20,16 +21,25 @@ const unique_naming_1 = require("./unique-naming");
+  * @internal
+  */
+ function parseOperation({ operation, pathPattern, method, pathItemParameters }, refs, options) {
+-    const requestBody = (0, request_body_1.parseRequestBody)(operation.requestBody, refs, options);
++    const requestBodies = (0, request_body_1.parseRequestBodies)(operation.requestBody, refs, options);
+     const response = (0, responses_1.parseResponses)(operation.responses, refs, options);
+     const relevantParameters = getRelevantParameters([...(pathItemParameters || []), ...(operation.parameters || [])], refs);
+     const pathParams = relevantParameters.filter(parameter => parameter.in === 'path');
+     const headerParams = relevantParameters.filter(parameter => parameter.in === 'header');
+     const queryParams = relevantParameters.filter(parameter => parameter.in === 'query');
+     const pathParameters = parsePathParameters(pathParams, refs, options);
+-    return Object.assign(Object.assign({}, operation), { method,
++    const parsedQueryParameters = parseParameters(queryParams, refs, options);
++    const parsedHeaderParameters = parseParameters(headerParams, refs, options);
++    const parsedPathPattern = parsePathPattern(pathPattern, pathParameters);
++    const requestBodyVariants = requestBodies.length
++        ? requestBodies
++        : [undefined];
++    const operationNames = requestBodies.length
++        ? (0, operation_naming_1.getOperationVariantNames)(operation.operationId, requestBodies.map(requestBody => requestBody.mediaType))
++        : [operation.operationId];
++    return requestBodyVariants.map((requestBody, index) => (Object.assign(Object.assign({}, operation), { method,
+         requestBody,
+-        response, queryParameters: parseParameters(queryParams, refs, options), headerParameters: parseParameters(headerParams, refs, options), pathParameters, pathPattern: parsePathPattern(pathPattern, pathParameters), operationId: operation.operationId, tags: operation.tags });
++        response, queryParameters: parsedQueryParameters, headerParameters: parsedHeaderParameters, pathParameters, pathPattern: parsedPathPattern, operationId: operationNames[index], tags: operation.tags })));
+ }
+ /**
+  * @internal
+diff --git a/dist/parser/request-body.d.ts b/dist/parser/request-body.d.ts
+index a363254bb949dbeb3ebb294c5453adabbc557d34..77ac3cc5a9aa0b214461669ad123edcb6b8492ce 100644
+--- a/dist/parser/request-body.d.ts
++++ b/dist/parser/request-body.d.ts
+@@ -5,4 +5,4 @@ import type { ParserOptions } from './options';
+ /**
+  * @internal
+  */
+-export declare function parseRequestBody(requestBody: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject | undefined, refs: OpenApiDocumentRefs, options: ParserOptions): OpenApiRequestBody | undefined;
++export declare function parseRequestBodies(requestBody: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject | undefined, refs: OpenApiDocumentRefs, options: ParserOptions): OpenApiRequestBody[];
+diff --git a/dist/parser/request-body.js b/dist/parser/request-body.js
+index 64fce84b9ac7241ae9a3f2841d6cbe48e0a455cc..f16d7338206c38ecce042dce3354fff90865b03c 100644
+--- a/dist/parser/request-body.js
++++ b/dist/parser/request-body.js
+@@ -1,15 +1,32 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.parseRequestBody = parseRequestBody;
++exports.parseRequestBodies = parseRequestBodies;
+ const media_type_1 = require("./media-type");
++const schema_1 = require("./schema");
+ /**
+  * @internal
+  */
+-function parseRequestBody(requestBody, refs, options) {
++function parseRequestBodies(requestBody, refs, options) {
+     const resolvedRequestBody = refs.resolveObject(requestBody);
+-    const mediaType = (0, media_type_1.parseMediaType)(resolvedRequestBody, refs, options);
+-    if (resolvedRequestBody && mediaType) {
+-        return Object.assign({ required: !!resolvedRequestBody.required, description: resolvedRequestBody.description }, mediaType);
++    if (!resolvedRequestBody) {
++        return [];
+     }
++    const mediaTypes = [
++        ...new Set((0, media_type_1.getMediaTypes)(resolvedRequestBody)
++            .map(schema_1.parseMediaTypeString)
++            .filter((mediaType) => !!mediaType))
++    ];
++    const parsedMediaTypes = mediaTypes
++        .map(mediaType => (0, media_type_1.parseTopLevelMediaType)(resolvedRequestBody, refs, options, mediaType))
++        .filter((mediaType) => !!mediaType);
++    if (parsedMediaTypes.length) {
++        return parsedMediaTypes.map(mediaType => (Object.assign({ required: !!resolvedRequestBody.required, description: resolvedRequestBody.description }, mediaType)));
++    }
++    const fallback = (0, media_type_1.parseMediaType)(resolvedRequestBody, refs, options);
++    return fallback
++        ? [
++            Object.assign({ required: !!resolvedRequestBody.required, description: resolvedRequestBody.description }, fallback)
++        ]
++        : [];
+ }
+ //# sourceMappingURL=request-body.js.map

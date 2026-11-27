@@ -70,13 +70,13 @@ permissions:
 catalog:
   '@langchain/core': ^1.2.13
   '@langchain/langgraph': ^1.4.18
-  '@sap-cloud-sdk/connectivity': 4.10.1-20261110104223.0
-  '@sap-cloud-sdk/generator-common': 4.10.1-20261110104223.0
-  '@sap-cloud-sdk/http-client': 4.10.1-20261110104223.0
-  '@sap-cloud-sdk/openapi': 4.10.1-20261110104223.0
-  '@sap-cloud-sdk/openapi-generator': 4.10.1-20261110104223.0
-  '@sap-cloud-sdk/resilience': 4.10.1-20261110104223.0
-  '@sap-cloud-sdk/util': 4.10.1-20261110104223.0
+  '@sap-cloud-sdk/connectivity': ^4.10.0
+  '@sap-cloud-sdk/generator-common': ^4.10.0
+  '@sap-cloud-sdk/http-client': ^4.10.0
+  '@sap-cloud-sdk/openapi': ^4.10.0
+  '@sap-cloud-sdk/openapi-generator': ^4.10.0
+  '@sap-cloud-sdk/resilience': ^4.10.0
+  '@sap-cloud-sdk/util': ^4.10.0
   langchain: ^1.5.14
   zod: ^4.6.6
 
@@ -109,3 +109,7 @@ dedupeInjectedDeps: true
 dedupePeerDependents: true
 lockfile:
   includeResolutionSettings: true
+patchedDependencies:
+  # Multiple request body media types: https://github.com/SAP/cloud-sdk-js/pull/7040
+  # Remove once the upstream generator release includes this change.
+  '@sap-cloud-sdk/openapi-generator@4.10.0': patches/@sap-cloud-sdk__openapi-generator@4.10.0.patch
