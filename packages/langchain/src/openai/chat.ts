@@ -87,8 +87,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
       this.disableStreaming = true;
     }
     // Enable streaming only when `streaming` is `true` (default `false`) and `disableStreaming` is not `true` (default `undefined`).
-    this.streaming =
-      fields?.streaming === true && this.disableStreaming !== true;
+    this.streaming = fields?.streaming === true && !this.disableStreaming;
 
     if (fields.supportsStrictToolCalling !== undefined) {
       this.supportsStrictToolCalling = fields.supportsStrictToolCalling;
@@ -165,7 +164,7 @@ export class AzureOpenAiChatClient extends BaseChatModel<AzureOpenAiChatCallOpti
     RunOutput extends Record<string, any> = Record<string, any>
   >(
     outputSchema: InteropZodType<RunOutput> | Record<string, any>,
-    config?: StructuredOutputMethodOptions<false>
+    config?: StructuredOutputMethodOptions
   ): Runnable<BaseLanguageModelInput, RunOutput>;
 
   withStructuredOutput<

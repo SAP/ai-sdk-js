@@ -277,7 +277,7 @@ describe('mapBaseMessageToChatMessage', () => {
     const toolMessage = new ToolMessage({
       content: undefined,
       tool_call_id: 'tool_call_id'
-    } as ToolMessageFields);
+    });
     const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
     expect(result[0]).toEqual({
       role: 'tool',
@@ -290,7 +290,7 @@ describe('mapBaseMessageToChatMessage', () => {
     const toolMessage = new ToolMessage({
       content: {} as unknown as ToolMessageFields['content'],
       tool_call_id: 'tool_call_id'
-    } as ToolMessageFields);
+    });
     const result = mapLangChainMessagesToOrchestrationMessages([toolMessage]);
     expect(result[0]).toEqual({
       role: 'tool',
@@ -327,7 +327,7 @@ describe('mapBaseMessageToChatMessage', () => {
         }
       ],
       tool_call_id: 'tool_call_id'
-    } as any);
+    });
 
     expect(() =>
       mapLangChainMessagesToOrchestrationMessages([toolMessage])
@@ -781,6 +781,7 @@ describe('mapToolToOrchestrationFunction', () => {
 });
 
 describe('mapOrchestrationChunkToLangChainMessageChunk', () => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping -- Keep this chunk factory beside its focused mapping tests.
   function createMockChunk(
     content?: string,
     toolCallChunks?: OrchestrationToolCallChunk[],

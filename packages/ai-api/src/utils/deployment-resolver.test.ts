@@ -275,6 +275,27 @@ describe('resolveDeploymentUrlForModel', () => {
     expect(url).toContain('inference/deployments/dep-001');
   });
 
+  it('serves repeated model lookups from the cache', async () => {
+    const deploymentUrl = `${aiCoreDestination.url}/v2/inference/deployments/dep-001`;
+    const scope = mockDeploymentsList(
+      { scenarioId: 'foundation-models', executableId: 'azure-openai' },
+      {
+        id: 'dep-001',
+        model: { name: 'gpt-6-luna', version: 'latest' },
+        deploymentUrl
+      }
+    );
+
+    await resolveDeploymentUrlForModel('gpt-6-luna', baseOptions);
+    expect(scope.isDone()).toBe(true);
+    await expect(
+      resolveDeploymentUrlForModel(
+        { modelName: 'gpt-6-luna', modelVersion: 'latest' },
+        baseOptions
+      )
+    ).resolves.toBe(deploymentUrl);
+  });
+
   it('throws when model deployment has no URL', async () => {
     mockDeploymentsList(
       { scenarioId: 'foundation-models', executableId: 'azure-openai' },

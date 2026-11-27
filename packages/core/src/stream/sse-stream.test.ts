@@ -1,3 +1,4 @@
+/* oxlint-disable unicorn/consistent-function-scoping -- Test stream bodies and iterators stay local to their scenarios. */
 import assert from 'node:assert';
 
 import {
@@ -11,7 +12,7 @@ class TestSseStream<Item> extends SseStream<Item> {
     return SseStream.transformToSseStream<Item>(
       response,
       new AbortController()
-    ) as TestSseStream<Item>;
+    );
   }
 }
 

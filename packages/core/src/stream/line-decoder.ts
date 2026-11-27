@@ -46,7 +46,7 @@ export class LineDecoder {
     }
 
     if (lines.length === 1 && !trailingNewline) {
-      this.buffer.push(lines[0]!);
+      this.buffer.push(lines[0]);
       return [];
     }
 

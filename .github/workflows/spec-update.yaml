@@ -164,10 +164,10 @@ jobs:
         id: breaking-changes
         if: steps.check-spec-changes.outputs.spec == 'true'
         continue-on-error: true
-        uses: oasdiff/oasdiff-action/breaking@8a211b41745fcecdfa4a86531ffbf08934fb14f6 # v0.1.23
+        uses: oasdiff/oasdiff-action/breaking@14ca7009a63c417dfe27b7c44359c4bcccaf8eee # v0.2.1
         with:
           base: 'origin/main:${{ steps.resolve.outputs.file_path }}'
-          revision: 'HEAD:${{ steps.resolve.outputs.file_path }}'
+          revision: '${{ steps.resolve.outputs.file_path }}'
           fail-on: ERR
           review: false
 
