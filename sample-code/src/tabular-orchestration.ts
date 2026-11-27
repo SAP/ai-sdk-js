@@ -79,9 +79,11 @@ export async function deleteTabularArtifact(name: string): Promise<void> {
         name,
         headers
       ),
-      // DELETING is transient (awaiting async cleanup), so there is no terminal success state;
-      // completion is the 404 the status read returns once the resource is gone.
-      checkStatus: () => 'pending',
+      // DELETING is reported as transient ("awaiting async cleanup"), but the delete flow treats
+      // it as terminal: the resource is accepted for deletion, and polling for the eventual 404
+      // can exceed the test timeout. A 404 also completes the wait (notFound: 'resolve').
+      checkStatus: resource =>
+        resource.status === 'DELETING' ? 'done' : 'pending',
       notFound: 'resolve',
       onPoll: resource =>
         console.log(`Tabular artifact status: ${resource.status}`),
