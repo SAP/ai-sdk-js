@@ -1,5 +1,5 @@
 ---
-"@sap-ai-sdk/orchestration": minor
+"@sap-ai-sdk/orchestration": patch
 ---
 
-[feat] Log a debug message when messages are routed to `messages_history` due to a `TemplateRef`.
+[fix] Log a debug message when messages are routed to `messages_history` due to a `TemplateRef`.
