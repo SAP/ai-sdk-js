@@ -12,7 +12,6 @@ Use `predict()` for inline JSON tables or presigned CSV/Parquet URLs (the deploy
 Use `predictFiles()` for CSV or Parquet uploads to `/predict`.
 The upload method accepts `{ x_train, y_train, x_test, request }`, where the tables are `Blob` or `File` values and `request` is a typed configuration object sent as a plain JSON form field.
 Set CSV blobs to `text/csv` and Parquet blobs to `application/vnd.apache.parquet`; filenames are optional.
-The new endpoints require a deployment implementing the v1.1.0 specification. Updating the SDK does not upgrade an existing deployment.
 
 ### Table of Contents
 
