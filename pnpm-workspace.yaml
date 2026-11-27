@@ -99,7 +99,7 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   - 'picomatch@4.0.5'
   - 'undici-types@6.21.0'
-  - tsrs@7.1.0-beta.tsrs5 # https://github.com/oxc-project/tsrs/issues/945
+  - tsrs # https://github.com/oxc-project/tsrs/issues/945
 trustPolicyIgnoreAfter: 131400 # 3 months
 
 # deuplicate dep resolution where possible
