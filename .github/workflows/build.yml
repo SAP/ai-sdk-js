@@ -56,7 +56,7 @@ jobs:
         if: ${{ steps.sonar-auth.outcome == 'success' }}
         env:
           SONAR_TOKEN: ${{ steps.sonar-auth.outputs.sonar-token }}
-        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
+        uses: SonarSource/sonarqube-scan-action@70bad232163b09d998ea0707ee80c0ec80798c16 # v8.5.1
       - name: Wait for type tests
         wait: test-type
 
